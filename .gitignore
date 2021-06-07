@@ -29,3 +29,6 @@ override.tf.json
 # example: *tfplan*
 
 *.DS_Store
+*.log
+*.h2.db
+settings.json

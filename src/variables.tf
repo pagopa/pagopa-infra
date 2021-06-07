@@ -18,3 +18,7 @@ variable "tags" {
     CreatedBy = "Terraform"
   }
 }
+variable "app_service_certificate_name" {
+  type        = string
+  description = "Name of the SSL/TLS certificate for the App Service"
+}
