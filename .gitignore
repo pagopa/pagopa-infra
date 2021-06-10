@@ -32,3 +32,4 @@ override.tf.json
 *.log
 *.h2.db
 settings.json
+__TMP
