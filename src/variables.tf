@@ -5,7 +5,7 @@ variable "location" {
 
 variable "prefix" {
   type    = string
-  default = "pagopaecpt"
+  default = "ecpa"
 }
 
 variable "env_short" {
