@@ -5,7 +5,7 @@ variable "location" {
 
 variable "prefix" {
   type    = string
-  default = "ecpa"
+  default = "pagopa"
 }
 
 variable "env_short" {
@@ -62,6 +62,21 @@ variable "law_retention_in_days" {
   type        = number
   description = "The workspace data retention in days"
   default     = 30
+}
+variable "key_vault_owner_id" {
+  type        = string
+  description = "Key Vaut Owner id"
+  default     = "standard"
+}
+variable "key_vault_sku" {
+  type        = string
+  description = "Key Vaut SKU"
+  default     = "standard"
+}
+
+variable "cert_name" {
+  type = string
+  default = "ecpa-d-cert-client-auth"
 }
 # variable "app_service_certificate_name" {
 #   type        = string

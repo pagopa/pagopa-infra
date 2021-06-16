@@ -30,5 +30,6 @@ resource "azurerm_app_service" "app_service" {
     type = "SystemAssigned"
   }
 
+  app_settings = var.app_settings
 
 }

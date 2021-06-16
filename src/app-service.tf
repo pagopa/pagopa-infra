@@ -16,4 +16,10 @@ module "mockpa_service" {
   app_command_line  = null
   health_check_path = ""
 
+
+  app_settings = {
+    CERT_PEM = data.azurerm_key_vault_certificate_data.app_kv_cert_data.pem
+    KEY      = data.azurerm_key_vault_certificate_data.app_kv_cert_data.key
+  }
+
 }

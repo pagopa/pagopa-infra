@@ -37,3 +37,7 @@ variable "health_check_path" {
 variable "resource_group" {
   type        = string
 }
+
+variable "app_settings" {
+  type = map(string)
+}
