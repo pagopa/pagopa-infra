@@ -37,3 +37,21 @@ variable "law_daily_quota_gb" {
   description = "The workspace daily quota for ingestion in GB."
   default     = -1
 }
+
+variable "mock_ec_always_on" {
+  type        = bool
+  description = "Mock EC always on property"
+  default     = false
+}
+
+variable "mock_ec_tier" {
+  type        = string
+  description = "Mock EC Plan tier"
+  default     = "Standard"
+}
+
+variable "mock_ec_size" {
+  type        = string
+  description = "Mock EC Plan size"
+  default     = "S1"
+}
