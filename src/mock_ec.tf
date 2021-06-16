@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "mock_ec_rg" {
 }
 
 module "mock_ec" {
-  source = "/Users/pasqualedevita/Documents/github/azurerm/app_service"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14"
 
   resource_group_name = azurerm_resource_group.mock_ec_rg.name
   location            = var.location
