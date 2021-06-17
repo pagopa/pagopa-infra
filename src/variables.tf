@@ -55,3 +55,15 @@ variable "mock_ec_size" {
   description = "Mock EC Plan size"
   default     = "S1"
 }
+
+# key vault
+variable "ad_key_vault_group_object_id" {
+  type        = string
+  description = "Id active directory group allowed to query the keyault."
+  default     = null
+}
+variable "mockec_certificate_name" {
+  type        = string
+  description = "Certificate name on Key Vault"
+  default     = null
+}
