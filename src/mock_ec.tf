@@ -22,11 +22,17 @@ module "mock_ec" {
   name                = format("%s-app-mock-ec", local.project)
   client_cert_enabled = true
   always_on           = var.mock_ec_always_on
-  linux_fx_version    = "NODE|14-lts"
-  app_command_line    = "node /home/site/wwwroot/src/server.js"
+  linux_fx_version    = "NODE|12-lts"
+  app_command_line    = "node /home/site/wwwroot/dist/index.js"
   health_check_path   = "/api/v1/info"
 
   app_settings = {
+    WEBSITE_RUN_FROM_PACKAGE       = "1"
+    WEBSITE_NODE_DEFAULT_VERSION   = "12.19.0"
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
+    NODE_ENV                       = "production"
+    PORT                           = "8080"
+
     # CERT_PEM = data.azurerm_key_vault_certificate_data.app_kv_cert_data.pem
     # KEY      = data.azurerm_key_vault_certificate_data.app_kv_cert_data.key
     CERT_PEM = "NA"
