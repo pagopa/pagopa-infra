@@ -1,4 +1,5 @@
-env_short = "d"
+env_short       = "d"
+mock_ec_enabled = true
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"

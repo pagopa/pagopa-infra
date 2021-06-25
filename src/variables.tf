@@ -38,6 +38,12 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
+variable "mock_ec_enabled" {
+  type        = bool
+  description = "Mock EC enabled"
+  default     = true
+}
+
 variable "mock_ec_always_on" {
   type        = bool
   description = "Mock EC always on property"
@@ -56,14 +62,8 @@ variable "mock_ec_size" {
   default     = "S1"
 }
 
-# key vault
-variable "ad_key_vault_group_object_id" {
-  type        = string
-  description = "Id active directory group allowed to query the keyault."
-  default     = null
-}
-variable "mockec_certificate_name" {
+variable "mockec_ssl_certificate_name" {
   type        = string
   description = "Certificate name on Key Vault"
-  default     = null
+  default     = "mock-ec-ssl-certificate-name"
 }
