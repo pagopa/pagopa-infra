@@ -30,11 +30,10 @@ module "mock_ec" {
 
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE       = "1"
-    WEBSITE_NODE_DEFAULT_VERSION   = "12.19.0"
+    WEBSITE_NODE_DEFAULT_VERSION   = "12.18.0"
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
     NODE_ENV                       = "production"
     PORT                           = "8080"
-    WEBSITES_PORT                  = "8080"
 
     CERT_PEM = data.azurerm_key_vault_secret.mock_ec_CERT_PEM[0].value
     KEY      = data.azurerm_key_vault_secret.mock_ec_CERT_KEY[0].value
