@@ -33,3 +33,4 @@ override.tf.json
 *.h2.db
 settings.json
 __TMP
+.metals/
