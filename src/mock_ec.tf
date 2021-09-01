@@ -33,6 +33,7 @@ module "mock_ec" {
     WEBSITE_NODE_DEFAULT_VERSION   = "12.18.0"
     NODE_ENV                       = "production"
     PORT                           = "8080"
+    TIMEOUT_DELAY                  = "130"
 
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.application_insights.instrumentation_key

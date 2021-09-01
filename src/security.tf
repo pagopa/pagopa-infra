@@ -60,3 +60,9 @@ resource "azurerm_key_vault_access_policy" "adgroup_contributors_policy" {
     "Delete", "Restore", "Purge", "Recover"
   ]
 }
+
+# daje
+# data "azurerm_key_vault_secret" "apim_publisher_email" {
+#   name         = "apim-publisher-email"
+#   key_vault_id = module.key_vault.id
+# }

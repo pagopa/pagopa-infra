@@ -67,3 +67,60 @@ variable "mockec_ssl_certificate_name" {
   description = "Certificate name on Key Vault"
   default     = "mock-ec-ssl-certificate-name"
 }
+
+variable "apim_publisher_name" {
+  type = string
+}
+
+variable "apim_sku" {
+  type = string
+}
+
+variable "lock_enable" {
+  type        = bool
+  default     = false
+  description = "Apply locks to block accedentaly deletions."
+}
+
+# Network
+variable "cidr_vnet" {
+  type        = list(string)
+  description = "Virtual network address space."
+}
+
+variable "cidr_integration_vnet" {
+  type        = list(string)
+  description = "Virtual network to peer with sia subscription. It should host apim and event hub."
+}
+
+variable "cidr_subnet_apim" {
+  type        = list(string)
+  description = "Address prefixes subnet api management."
+  default     = null
+
+}
+
+variable "cidr_subnet_redis" {
+  type        = list(string)
+  description = "Redis network address space."
+  default     = []
+}
+
+variable "apim_notification_sender_email" {
+  type = string
+}
+## Redis cache
+variable "redis_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "redis_sku_name" {
+  type    = string
+  default = "Standard"
+}
+
+variable "redis_family" {
+  type    = string
+  default = "C"
+}
