@@ -88,6 +88,13 @@ variable "cidr_vnet" {
   description = "Virtual network address space."
 }
 
+
+variable "cidr_vnet_app" {
+  type        = list(string)
+  description = "Virtual network address space."
+}
+
+
 variable "cidr_integration_vnet" {
   type        = list(string)
   description = "Virtual network to peer with sia subscription. It should host apim and event hub."
@@ -97,7 +104,12 @@ variable "cidr_subnet_apim" {
   type        = list(string)
   description = "Address prefixes subnet api management."
   default     = null
+}
 
+variable "cidr_subnet_appservice" {
+  type        = list(string)
+  description = "Address prefixes subnet app service."
+  default     = null
 }
 
 variable "cidr_subnet_redis" {
@@ -123,4 +135,10 @@ variable "redis_sku_name" {
 variable "redis_family" {
   type    = string
   default = "C"
+}
+
+variable "address_prefixes" {
+  type        = list(string)
+  description = "The address prefixes to use for the subnet."
+  default     = []
 }

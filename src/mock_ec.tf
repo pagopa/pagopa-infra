@@ -8,7 +8,8 @@ resource "azurerm_resource_group" "mock_ec_rg" {
 
 module "mock_ec" {
   count  = var.mock_ec_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14"
+  source = "./modules/app_service"
+  # fixme # source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14"
 
   resource_group_name = azurerm_resource_group.mock_ec_rg[0].name
   location            = var.location
@@ -27,6 +28,13 @@ module "mock_ec" {
   linux_fx_version    = "NODE|12-lts"
   app_command_line    = "node /home/site/wwwroot/dist/index.js"
   health_check_path   = "/mockEcService/api/v1/info"
+
+  # Networking
+  subnet_name     = module.vnet_app.name
+  allowed_subnets = [module.apim_snet.id]
+  allowed_ips     = []
+  subnet_id       = module.appservice_snet.id
+
 
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE       = "1"
@@ -59,7 +67,6 @@ module "mock_ec" {
 }
 
 # secrets form key vault
-
 data "azurerm_key_vault_secret" "mock_ec_CERT_PEM" {
   depends_on = [
     azurerm_key_vault_access_policy.adgroup_admin_policy,

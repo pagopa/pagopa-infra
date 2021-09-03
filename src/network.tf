@@ -16,6 +16,28 @@ module "vnet_integration" {
   tags = var.tags
 }
 
+module "vnet" {
+  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.7"
+  name                = format("%s-vnet", local.project)
+  location            = azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  address_space       = var.cidr_vnet
+
+  tags = var.tags
+
+}
+
+module "vnet_app" {
+  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.7"
+  name                = format("%s-vnetapi", local.project)
+  location            = azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  address_space       = var.cidr_vnet_app
+
+  tags = var.tags
+
+}
+
 # APIM subnet
 module "apim_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7"
@@ -40,13 +62,31 @@ module "redis_snet" {
 }
 
 
-module "vnet" {
-  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.7"
-  name                = format("%s-vnet", local.project)
-  location            = azurerm_resource_group.rg_vnet.location
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  address_space       = var.cidr_vnet
+# appservice_snet subnet 
+module "appservice_snet" {
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7"
+  name                                           = format("%s-appservice-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_appservice
+  resource_group_name                            = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  virtual_network_name                           = module.vnet.name
+  enforce_private_link_endpoint_network_policies = true
+#   delegation = {
+#     name = "delegation"
+#     service_delegation = {
+#       name    = "Microsoft.ContainerInstance/containerGroups"
+#       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+#     }
+#   }
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }  
 
 }
+
+

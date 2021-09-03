@@ -106,7 +106,8 @@ module "api_mockec_service" {
   path         = "mockec/payment"
   protocols    = ["https", "http"]
 
-  service_url  = format("https://%s", "pagopa-d-app-mock-ec.azurewebsites.net/mockEcService") # fixme # module.mock_ec.default_site_hostname)
+  service_url  = format("https://%s/mockEcService", module.mock_ec[0].default_site_hostname) # fixme
+  # service_url  = format("https://%s", "pagopa-d-app-mock-ec.azurewebsites.net/mockEcService")
   
   content_format = "swagger-json"
 
