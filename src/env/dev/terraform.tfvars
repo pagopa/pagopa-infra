@@ -14,7 +14,7 @@ apim_notification_sender_email = "info@pagopa.it"
 apim_publisher_name            = "PagoPA Centro Stella DEV"
 apim_sku                       = "Developer_1" # DEV / UAT : Developer_1 - PROD : Premium_1
 
-lock_enable = true
+lock_enable = false
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
