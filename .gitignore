@@ -34,3 +34,5 @@ override.tf.json
 settings.json
 __TMP
 .metals/
+
+*__.json
