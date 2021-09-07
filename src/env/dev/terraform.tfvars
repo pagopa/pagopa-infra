@@ -21,6 +21,11 @@ lock_enable = false
 cidr_integration_vnet  = ["10.230.5.0/24"]
 cidr_subnet_apim       = ["10.230.5.0/26"]
 cidr_subnet_redis      = ["10.1.132.0/24"]
+cidr_subnet_appgateway = ["10.1.128.0/24"]
 cidr_vnet              = ["10.1.0.0/16"]
 cidr_vnet_app          = ["10.2.0.0/16"]
 cidr_subnet_appservice = ["10.1.133.0/24"]
+
+dns_zone_prefix = "dev.platform"
+external_domain = "pagopa.it"
+

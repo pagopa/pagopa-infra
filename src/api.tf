@@ -56,6 +56,7 @@ module "apim" {
   ]
 }
 
+# fixme
 # resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 #   api_management_id = module.apim.id
 

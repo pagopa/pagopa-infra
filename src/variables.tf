@@ -118,6 +118,11 @@ variable "cidr_subnet_redis" {
   default     = []
 }
 
+variable "cidr_subnet_appgateway" {
+  type        = list(string)
+  description = "Application gateway address space."
+}
+
 variable "apim_notification_sender_email" {
   type = string
 }
@@ -142,3 +147,28 @@ variable "address_prefixes" {
   description = "The address prefixes to use for the subnet."
   default     = []
 }
+
+## Public DNS Zone ##
+variable "dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
+variable "external_domain" {
+  type        = string
+  default     = null
+  description = "Domain for delegation"
+}
+
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
+}
+
+# fixme
+# variable "app_gateway_api_app_gw_mockec_name" {
+#   type        = string
+#   description = "Application gateway api certificate name on Key Vault"
+# }

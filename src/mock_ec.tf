@@ -59,33 +59,35 @@ module "mock_ec" {
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
 
 
-    CERT_PEM = data.azurerm_key_vault_secret.mock_ec_CERT_PEM[0].value
-    KEY      = data.azurerm_key_vault_secret.mock_ec_CERT_KEY[0].value
+    # fixme
+    # CERT_PEM = data.azurerm_key_vault_secret.mock_ec_CERT_PEM[0].value
+    # KEY      = data.azurerm_key_vault_secret.mock_ec_CERT_KEY[0].value
   }
 
   tags = var.tags
 }
 
+# fixme
 # secrets form key vault
-data "azurerm_key_vault_secret" "mock_ec_CERT_PEM" {
-  depends_on = [
-    azurerm_key_vault_access_policy.adgroup_admin_policy,
-    azurerm_key_vault_access_policy.adgroup_contributors_policy
-  ]
-  count        = var.mock_ec_enabled ? 1 : 0
-  name         = "mock-ec-CERT-PEM"
-  key_vault_id = module.key_vault.id
-}
+# data "azurerm_key_vault_secret" "mock_ec_CERT_PEM" {
+#   depends_on = [
+#     azurerm_key_vault_access_policy.adgroup_admin_policy,
+#     azurerm_key_vault_access_policy.adgroup_contributors_policy
+#   ]
+#   count        = var.mock_ec_enabled ? 1 : 0
+#   name         = "mock-ec-CERT-PEM"
+#   key_vault_id = module.key_vault.id
+# }
 
-data "azurerm_key_vault_secret" "mock_ec_CERT_KEY" {
-  depends_on = [
-    azurerm_key_vault_access_policy.adgroup_admin_policy,
-    azurerm_key_vault_access_policy.adgroup_contributors_policy
-  ]
-  count        = var.mock_ec_enabled ? 1 : 0
-  name         = "mock-ec-CERT-KEY"
-  key_vault_id = module.key_vault.id
-}
+# data "azurerm_key_vault_secret" "mock_ec_CERT_KEY" {
+#   depends_on = [
+#     azurerm_key_vault_access_policy.adgroup_admin_policy,
+#     azurerm_key_vault_access_policy.adgroup_contributors_policy
+#   ]
+#   count        = var.mock_ec_enabled ? 1 : 0
+#   name         = "mock-ec-CERT-KEY"
+#   key_vault_id = module.key_vault.id
+# }
 
 # custom domain
 
