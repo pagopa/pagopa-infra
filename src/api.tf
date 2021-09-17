@@ -126,6 +126,67 @@ module "api_mockec_service" {
   subscription_required = true
 }
 
+module "api_mockmntpsp_service" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                = format("%s-mockmntpsp-service", var.env_short)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  description  = ""
+  display_name = "mock psp management service payment"
+  path         = "mockmntpsp"
+  protocols    = ["https", "http"]
+
+  service_url  = format("https://%s/actuator/health", module.mock_psp[0].default_site_hostname) # fixme
+  # service_url  = format("https://%s", "pagopa-d-app-mock-ec.azurewebsites.net/mockEcService")
+  
+  content_format = "swagger-json"
+
+  # fixme
+  # content_value = templatefile("./api/mockec_service/paForNode_Service.yaml", {
+  #   host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  # })
+
+  content_value = file("./api/mockmntpsp_service/swagger.json")
+
+
+  xml_content = file("./api/base_policy.xml")
+
+  product_ids           = [module.mockpsp_product.product_id]
+  subscription_required = true
+}
+
+module "api_mockpsp_service" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                = format("%s-mockpsp-service", var.env_short)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  description  = ""
+  display_name = "mock psp service payment"
+  path         = "mockpsp"
+  protocols    = ["https", "http"]
+
+  service_url  = format("https://%s/actuator/health", module.mock_psp[0].default_site_hostname) # fixme
+  # service_url  = format("https://%s", "pagopa-d-app-mock-ec.azurewebsites.net/mockEcService")
+  
+  content_format = "swagger-json"
+
+  # fixme
+  # content_value = templatefile("./api/mockec_service/paForNode_Service.yaml", {
+  #   host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  # })
+
+  content_value = file("./api/mockpsp_service/swagger.json")
+
+
+  xml_content = file("./api/base_policy.xml")
+
+  product_ids           = [module.mockpsp_product.product_id]
+  subscription_required = true
+}
 
 module "mockec_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.42"
@@ -143,4 +204,22 @@ module "mockec_product" {
   subscriptions_limit   = 50
 
   policy_xml = file("./api_product/mockec_api/policy.xml")
+}
+
+module "mockpsp_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.42"
+
+  product_id   = "mockpsp-api-product"
+  display_name = "MOCKPSP_API_PRODUCT"
+  description  = "MOCKPSP_API_PRODUCT"
+
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  published             = true
+  subscription_required = false
+  approval_required     = true
+  subscriptions_limit   = 50
+
+  policy_xml = file("./api_product/mockpsp_api/policy.xml")
 }
