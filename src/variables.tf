@@ -67,3 +67,26 @@ variable "mockec_ssl_certificate_name" {
   description = "Certificate name on Key Vault"
   default     = "mock-ec-ssl-certificate-name"
 }
+
+
+# Network
+variable "cidr_vnet" {
+  type        = list(string)
+  description = "Virtual network address space."
+}
+
+variable "cidr_integration_vnet" {
+  type        = list(string)
+  description = "Virtual network to peer with sia subscription. It should host apim"
+}
+
+variable "cidr_subnet_apim" {
+  type        = list(string)
+  description = "Address prefixes subnet api management."
+  default     = null
+}
+
+variable "cidr_subnet_appgateway" {
+  type        = list(string)
+  description = "Application gateway address space."
+}
