@@ -70,7 +70,7 @@ variable "mockec_ssl_certificate_name" {
 
 
 # Network
-variable "cidr_vnet" {
+variable "cidr_vnet_internal" {
   type        = list(string)
   description = "Virtual network address space."
 }
