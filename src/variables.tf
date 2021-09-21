@@ -68,9 +68,8 @@ variable "mockec_ssl_certificate_name" {
   default     = "mock-ec-ssl-certificate-name"
 }
 
-
 # Network
-variable "cidr_vnet_internal" {
+variable "cidr_vnet" {
   type        = list(string)
   description = "Virtual network address space."
 }
