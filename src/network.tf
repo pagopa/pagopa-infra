@@ -17,7 +17,7 @@ module "vnet_internal" {
 }
 
 # Subnet to host the application gateway
-module "appgateway-snet" {
+module "appgateway_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7"
   name                 = format("%s-appgateway-snet", local.project)
   address_prefixes     = var.cidr_subnet_appgateway
