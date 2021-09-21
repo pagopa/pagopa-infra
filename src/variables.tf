@@ -12,6 +12,25 @@ variable "env_short" {
   type = string
 }
 
+variable "lock_enable" {
+  type        = bool
+  default     = false
+  description = "Apply locks to block accedentaly deletions."
+}
+
+# Azure DevOps
+variable "devops_service_connection_object_id" {
+  type        = string
+  description = "Azure deveops service connection id."
+  default     = null
+}
+
+variable "azdo_sp_tls_cert_enabled" {
+  type        = string
+  description = "Enable Azure DevOps connection for TLS cert management"
+  default     = false
+}
+
 variable "tags" {
   type = map(any)
   default = {

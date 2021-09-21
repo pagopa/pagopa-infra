@@ -18,3 +18,5 @@ cidr_subnet_apim      = ["10.230.7.0/26"]
 
 external_domain = "pagopa.it"
 dns_zone_prefix = "platform"
+
+lock_enable = true
