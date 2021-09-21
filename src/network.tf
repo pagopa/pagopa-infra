@@ -31,7 +31,7 @@ module "vnet_integration" {
   name                = format("%s-integration-vnet", local.project)
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
-  address_space       = var.cidr_integration_vnet
+  address_space       = var.cidr_vnet_integration
 
   tags = var.tags
 }
