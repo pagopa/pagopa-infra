@@ -1,8 +1,8 @@
-env_short = "d"
+env_short = "p"
 
 tags = {
   CreatedBy   = "Terraform"
-  Environment = "Dev"
+  Environment = "Prod"
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
@@ -17,4 +17,4 @@ cidr_vnet_integration = ["10.230.7.0/24"] # ask to SIA
 cidr_subnet_apim      = ["10.230.7.0/26"]
 
 external_domain = "pagopa.it"
-dns_zone_prefix = "dev.platform"
+dns_zone_prefix = "platform"

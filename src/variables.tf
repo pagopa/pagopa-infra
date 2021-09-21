@@ -89,3 +89,22 @@ variable "cidr_subnet_appgateway" {
   type        = list(string)
   description = "Application gateway address space."
 }
+
+# DNS
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
+}
+
+variable "external_domain" {
+  type        = string
+  default     = null
+  description = "Domain for delegation"
+}
+
+variable "dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
