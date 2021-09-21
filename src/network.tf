@@ -22,7 +22,7 @@ module "appgateway_snet" {
   name                 = format("%s-appgateway-snet", local.project)
   address_prefixes     = var.cidr_subnet_appgateway
   resource_group_name  = azurerm_resource_group.rg_vnet.name
-  virtual_network_name = module.vnet.name
+  virtual_network_name = module.vnet_internal.name
 }
 
 # vnet integration
