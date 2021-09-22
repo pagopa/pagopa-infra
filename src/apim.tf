@@ -21,9 +21,9 @@ locals {
   apim_cert_name_proxy_endpoint   = format("%s-proxy-endpoint-cert", local.project)
   portal_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", "portal")
 
-  api_domain        = var.env_short == "p" ? "api.platoform.pagopa.it" : format("api.%s.platoform.pagopa.it", lower(var.tags["Environment"]))
-  portal_domain     = var.env_short == "p" ? "portal.platoform.pagopa.it" : format("portal.%s.platoform.pagopa.it", lower(var.tags["Environment"]))
-  management_domain = var.env_short == "p" ? "management.platoform.pagopa.it" : format("management.%s.platoform.pagopa.it", lower(var.tags["Environment"]))
+  api_domain        = var.env_short == "p" ? "api.platform.pagopa.it" : format("api.%s.platform.pagopa.it", lower(var.tags["Environment"]))
+  portal_domain     = var.env_short == "p" ? "portal.platform.pagopa.it" : format("portal.%s.platform.pagopa.it", lower(var.tags["Environment"]))
+  management_domain = var.env_short == "p" ? "management.platform.pagopa.it" : format("management.%s.platform.pagopa.it", lower(var.tags["Environment"]))
 }
 
 
