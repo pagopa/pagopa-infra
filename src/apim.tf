@@ -46,15 +46,15 @@ module "apim" {
   redis_cache_id          = module.redis.id
 
   # This enables the Username and Password Identity Provider
-  sign_up_enabled = true
+  sign_up_enabled = false
 
   lock_enable = var.lock_enable
 
-  sign_up_terms_of_service = {
-    consent_required = false
-    enabled          = false
-    text             = ""
-  }
+  # sign_up_terms_of_service = {
+  #   consent_required = false
+  #   enabled          = false
+  #   text             = ""
+  # }
 
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
@@ -75,7 +75,6 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 
   proxy {
-    # host_name    = trim(azurerm_private_dns_a_record.private_dns_a_record_api.fqdn, ".")
     host_name = local.api_domain
     key_vault_id = trimsuffix(
       data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
@@ -84,7 +83,6 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   }
 
   developer_portal {
-    # host_name = trim(azurerm_private_dns_a_record.private_dns_a_record_portal.fqdn, ".")
     host_name = local.portal_domain
     key_vault_id = trimsuffix(
       data.azurerm_key_vault_certificate.portal_platform.secret_id,

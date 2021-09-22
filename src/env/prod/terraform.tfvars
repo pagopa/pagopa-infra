@@ -22,7 +22,7 @@ dns_zone_prefix = "platform"
 
 lock_enable = true
 
-apim_publisher_name            = "PagoPA Platform PROD"
+apim_publisher_name            = "pagoPA Platform PROD"
 apim_sku                       = "Premium_1"
 
 app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"

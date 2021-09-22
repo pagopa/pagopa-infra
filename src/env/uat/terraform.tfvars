@@ -20,7 +20,7 @@ cidr_subnet_redis     = ["10.1.132.0/24"]
 external_domain = "pagopa.it"
 dns_zone_prefix = "uat.platform"
 
-apim_publisher_name            = "PagoPA Platform DEV"
+apim_publisher_name            = "pagoPA Platform DEV"
 apim_sku                       = "Developer_1"
 
 app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
