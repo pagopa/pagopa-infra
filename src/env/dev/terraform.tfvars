@@ -23,6 +23,9 @@ dns_zone_prefix = "dev.platform"
 
 azdo_sp_tls_cert_enabled            = true
 
-apim_notification_sender_email = "pagopa-alerts@pagopa.it"
 apim_publisher_name            = "PagoPA Platform UAT"
 apim_sku                       = "Developer_1"
+
+app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
+app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
+app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"

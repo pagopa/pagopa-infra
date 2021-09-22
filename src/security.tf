@@ -179,20 +179,20 @@ resource "azurerm_key_vault_access_policy" "cert_renew_policy" {
 #   key_vault_id = module.key_vault.id
 # }
 
-# data "azurerm_key_vault_certificate" "app_gw_cstar" {
-#   name         = var.app_gateway_api_certificate_name
-#   key_vault_id = module.key_vault.id
-# }
+data "azurerm_key_vault_certificate" "app_gw_platform" {
+  name         = var.app_gateway_api_certificate_name
+  key_vault_id = module.key_vault.id
+}
 
-# data "azurerm_key_vault_certificate" "portal_cstar" {
-#   name         = var.app_gateway_portal_certificate_name
-#   key_vault_id = module.key_vault.id
-# }
+data "azurerm_key_vault_certificate" "portal_platform" {
+  name         = var.app_gateway_portal_certificate_name
+  key_vault_id = module.key_vault.id
+}
 
-# data "azurerm_key_vault_certificate" "management_cstar" {
-#   name         = var.app_gateway_management_certificate_name
-#   key_vault_id = module.key_vault.id
-# }
+data "azurerm_key_vault_certificate" "management_platform" {
+  name         = var.app_gateway_management_certificate_name
+  key_vault_id = module.key_vault.id
+}
 
 # data "azurerm_key_vault_secret" "bpd_pm_client_certificate_thumbprint" {
 #   name         = "BPD-PM-client-certificate-thumbprint"

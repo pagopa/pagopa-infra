@@ -133,10 +133,6 @@ variable "apim_publisher_name" {
   type = string
 }
 
-variable "apim_notification_sender_email" {
-  type = string
-}
-
 variable "apim_sku" {
   type = string
 }
@@ -160,4 +156,19 @@ variable "cidr_subnet_redis" {
   type        = list(string)
   description = "Redis network address space."
   default     = []
+}
+
+variable "app_gateway_api_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_portal_certificate_name" {
+  type        = string
+  description = "Application gateway developer portal certificate name on Key Vault"
+}
+
+variable "app_gateway_management_certificate_name" {
+  type        = string
+  description = "Application gateway api management certificate name on Key Vault"
 }
