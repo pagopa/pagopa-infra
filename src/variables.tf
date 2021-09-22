@@ -127,3 +127,37 @@ variable "dns_zone_prefix" {
   default     = null
   description = "The dns subdomain."
 }
+
+# apim
+variable "apim_publisher_name" {
+  type = string
+}
+
+variable "apim_notification_sender_email" {
+  type = string
+}
+
+variable "apim_sku" {
+  type = string
+}
+
+## Redis cache
+variable "redis_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "redis_sku_name" {
+  type    = string
+  default = "Standard"
+}
+
+variable "redis_family" {
+  type    = string
+  default = "C"
+}
+variable "cidr_subnet_redis" {
+  type        = list(string)
+  description = "Redis network address space."
+  default     = []
+}

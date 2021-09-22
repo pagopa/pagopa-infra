@@ -26,3 +26,13 @@ module "vnet_integration" {
 
   tags = var.tags
 }
+
+## Database subnet
+module "redis_snet" {
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7"
+  count                = var.redis_sku_name == "Premium" && length(var.cidr_subnet_redis) > 0 ? 1 : 0
+  name                 = format("%s-redis-snet", local.project)
+  address_prefixes     = var.cidr_subnet_redis
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = module.vnet.name
+}
