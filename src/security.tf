@@ -18,16 +18,16 @@ module "key_vault" {
 }
 
 # ## api management policy ## 
-# resource "azurerm_key_vault_access_policy" "api_management_policy" {
-#   key_vault_id = module.key_vault.id
-#   tenant_id    = data.azurerm_client_config.current.tenant_id
-#   object_id    = module.apim.principal_id
+resource "azurerm_key_vault_access_policy" "api_management_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.apim.principal_id
 
-#   key_permissions         = []
-#   secret_permissions      = ["Get", "List"]
-#   certificate_permissions = ["Get", "List"]
-#   storage_permissions     = []
-# }
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
 
 # ## user assined identity: (application gateway) ##
 # resource "azurerm_key_vault_access_policy" "app_gateway_policy" {

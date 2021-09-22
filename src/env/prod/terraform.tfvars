@@ -9,13 +9,13 @@ tags = {
 }
 
 cidr_vnet              = ["10.1.0.0/16"]
-cidr_subnet_appgateway = ["10.1.128.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration = ["10.230.7.0/24"] # ask to SIA
 cidr_subnet_apim      = ["10.230.7.0/26"]
 cidr_subnet_redis     = ["10.1.132.0/24"]
+cidr_subnet_appgateway = ["10.1.128.0/24"]
 
 external_domain = "pagopa.it"
 dns_zone_prefix = "platform"
@@ -23,7 +23,7 @@ dns_zone_prefix = "platform"
 lock_enable = true
 
 apim_publisher_name            = "pagoPA Platform PROD"
-apim_sku                       = "Premium_1"
+apim_sku                       = "Developer_1" # change to Premium_1 before launch
 
 app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
