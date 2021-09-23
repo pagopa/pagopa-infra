@@ -84,7 +84,7 @@ module "app_gw" {
   backends = {
     apim = {
       protocol     = "Https"
-      host         = trim(azurerm_dns_a_record.dns_a_appgw_api.fqdn, ".")
+      host         = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
       port         = 443
       ip_addresses = module.apim.private_ip_addresses
       probe        = "/status-0123456789abcdef"
@@ -93,7 +93,7 @@ module "app_gw" {
 
     portal = {
       protocol     = "Https"
-      host         = trim(azurerm_dns_a_record.dns_a_apim_dev_portal.fqdn, ".")
+      host         = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
       port         = 443
       ip_addresses = module.apim.private_ip_addresses
       probe        = "/signin"
@@ -104,7 +104,7 @@ module "app_gw" {
       protocol = "Https"
       #TODO : once the migration is completed there wouldn't be need of the condition below.
       #       Only the first dns recors is required.
-      host         = var.env_short != "p" ? trim(azurerm_dns_a_record.dns-a-management_platform[0].fqdn, ".") : trim(azurerm_dns_a_record.dns-a-management-production-platform[0].fqdn, ".")
+      host         = var.env_short != "p" ? trim(azurerm_dns_a_record.dns-a-management[0].fqdn, ".") : trim(azurerm_dns_a_record.dns-a-management[0].fqdn, ".")
       port         = 443
       ip_addresses = module.apim.private_ip_addresses
       probe        = "/ServiceStatus"
