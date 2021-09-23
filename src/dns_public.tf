@@ -49,7 +49,7 @@ resource "azurerm_dns_a_record" "dns_a_api" {
   records             = [azurerm_public_ip.apigateway_public_ip.ip_address]
   tags                = var.tags
 }
-resource "azurerm_dns_a_record" "dns_a_apim_dev_portal" {
+resource "azurerm_dns_a_record" "dns_a_portal" {
   name                = "portal"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
