@@ -10,7 +10,6 @@ tags = {
 
 # main vnet
 cidr_vnet              = ["10.1.0.0/16"]
-cidr_subnet_redis      = ["10.1.132.0/24"]
 cidr_subnet_appgateway = ["10.1.128.0/24"]
 
 # integration vnet
@@ -30,4 +29,3 @@ apim_sku            = "Developer_1"
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
-
