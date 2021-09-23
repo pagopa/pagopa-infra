@@ -59,7 +59,7 @@ resource "azurerm_dns_a_record" "dns_a_portal" {
 }
 
 
-resource "azurerm_dns_a_record" "dns-a-management_platform" {
+resource "azurerm_dns_a_record" "dns-a-management" {
   count               = var.env_short == "p" ? 0 : 1
   name                = "management"
   zone_name           = azurerm_dns_zone.public[0].name
