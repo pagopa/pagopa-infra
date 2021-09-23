@@ -41,7 +41,7 @@ resource "azurerm_dns_ns_record" "platform_uat_pagopa_it_ns" {
 ## Prod ONLY records 
 
 # application gateway records
-resource "azurerm_dns_a_record" "dns_a_appgw_api" {
+resource "azurerm_dns_a_record" "dns_a_api" {
   name                = "api"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
