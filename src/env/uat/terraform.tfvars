@@ -23,7 +23,7 @@ dns_zone_prefix = "uat.platform"
 lock_enable              = true
 azdo_sp_tls_cert_enabled = true
 
-apim_publisher_name = "pagoPA Platform DEV"
+apim_publisher_name = "pagoPA Platform UAT"
 apim_sku            = "Developer_1"
 
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
