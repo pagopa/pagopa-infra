@@ -30,6 +30,8 @@ apim_sku            = "Developer_1" # change to Premium_1 before launch
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
+app_gateway_min_capacity                = 5
+app_gateway_max_capacity                = 10
 
 # change to Premium before launch
 # redis_sku_name = "Premium"

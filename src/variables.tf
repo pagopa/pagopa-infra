@@ -166,3 +166,15 @@ variable "app_gateway_management_certificate_name" {
   type        = string
   description = "Application gateway api management certificate name on Key Vault"
 }
+
+# Scaling
+
+variable "app_gateway_min_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "app_gateway_max_capacity" {
+  type    = number
+  default = 2
+}
