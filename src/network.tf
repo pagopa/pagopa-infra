@@ -198,14 +198,8 @@ module "app_gw" {
 
   # maps listener to backend
   routes = {
-
     api = {
-      listener = "app_io"
-      backend  = "apim"
-    }
-
-    broker = {
-      listener = "issuer_acquirer"
+      listener = "api"
       backend  = "apim"
     }
 
