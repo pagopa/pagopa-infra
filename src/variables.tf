@@ -19,12 +19,6 @@ variable "lock_enable" {
 }
 
 # Azure DevOps
-variable "devops_service_connection_object_id" {
-  type        = string
-  description = "Azure deveops service connection id."
-  default     = null
-}
-
 variable "azdo_sp_tls_cert_enabled" {
   type        = string
   description = "Enable Azure DevOps connection for TLS cert management"
