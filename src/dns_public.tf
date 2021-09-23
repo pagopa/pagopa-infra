@@ -39,60 +39,6 @@ resource "azurerm_dns_ns_record" "platform_uat_pagopa_it_ns" {
 }
 
 ## Prod ONLY records 
-resource "azurerm_dns_a_record" "dns-a-prod-platform" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "prod"
-  zone_name           = azurerm_dns_zone.public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  records             = ["51.137.18.218"]
-  tags                = var.tags
-}
-resource "azurerm_dns_a_record" "dns-a-developer-production-platform" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "developer"
-  zone_name           = azurerm_dns_zone.public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  records             = ["20.56.3.91"]
-  tags                = var.tags
-}
-resource "azurerm_dns_a_record" "dns-a-management-production-platform" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "management"
-  zone_name           = azurerm_dns_zone.public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  records             = ["20.56.3.91"]
-  tags                = var.tags
-}
-resource "azurerm_dns_a_record" "dns-a-test-platform" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "test"
-  zone_name           = azurerm_dns_zone.public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  records             = ["20.54.178.216"]
-  tags                = var.tags
-}
-resource "azurerm_dns_a_record" "dns-a-developer-test-platform" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "developer-test"
-  zone_name           = azurerm_dns_zone.public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  records             = ["104.45.74.7"]
-  tags                = var.tags
-}
-resource "azurerm_dns_a_record" "dns-a-management-test-platform" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "management-test"
-  zone_name           = azurerm_dns_zone.public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  records             = ["104.45.74.7"]
-  tags                = var.tags
-}
 
 # application gateway records
 resource "azurerm_dns_a_record" "dns_a_appgw_api" {
