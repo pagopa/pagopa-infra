@@ -28,6 +28,22 @@ module "vnet_integration" {
 }
 
 
+## Peering between the vnet(main) and integration vnet 
+module "vnet_peering" {
+  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.30"
+
+  location = azurerm_resource_group.rg_vnet.location
+
+  source_resource_group_name       = azurerm_resource_group.rg_vnet.name
+  source_virtual_network_name      = module.vnet.name
+  source_remote_virtual_network_id = module.vnet.id
+  source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+  target_resource_group_name       = azurerm_resource_group.rg_vnet.name
+  target_virtual_network_name      = module.vnet_integration.name
+  target_remote_virtual_network_id = module.vnet_integration.id
+  target_use_remote_gateways       = false # needed by vnet peering with SIA
+}
+
 ## Application gateway public ip ##
 resource "azurerm_public_ip" "apigateway_public_ip" {
   name                = format("%s-appgateway-pip", local.project)
