@@ -36,7 +36,7 @@ locals {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.52"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.55"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -83,11 +83,11 @@ module "app_gw" {
   ssl_profiles = [{
     name                             = format("%s-ssl-profile", local.project)
     trusted_client_certificate_names = null
-    verify_client_cert_issuer_dn     = true
+    verify_client_cert_issuer_dn     = false
     ssl_policy = {
       disabled_protocols = []
       policy_type        = "Custom"
-      policy_name        = "AppGwSslPolicyCustom"
+      policy_name        = "" # with Custom type set empty policy_name (not required by the provider)
       cipher_suites = [
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
@@ -175,8 +175,9 @@ module "app_gw" {
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
   # Logs
-  sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
-  sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
+  # todo enable
+  # sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  # sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
 
   tags = var.tags
 }

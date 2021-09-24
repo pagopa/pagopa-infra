@@ -7,7 +7,7 @@ resource "azurerm_dns_zone" "public" {
 }
 
 # Prod ONLY record to DEV public DNS delegation
-resource "azurerm_dns_ns_record" "platform_dev_pagopa_it_ns" {
+resource "azurerm_dns_ns_record" "dev_pagopa_it_ns" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "dev"
   zone_name           = azurerm_dns_zone.public[0].name
@@ -23,7 +23,7 @@ resource "azurerm_dns_ns_record" "platform_dev_pagopa_it_ns" {
 }
 
 # Prod ONLY record to UAT public DNS delegation
-resource "azurerm_dns_ns_record" "platform_uat_pagopa_it_ns" {
+resource "azurerm_dns_ns_record" "uat_pagopa_it_ns" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "uat"
   zone_name           = azurerm_dns_zone.public[0].name
