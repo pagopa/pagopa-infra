@@ -10,7 +10,7 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
 }
 
 # Subnet to host the application gateway
-module "appgateway-snet" {
+module "appgateway_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7"
   name                 = format("%s-appgateway-snet", local.project)
   address_prefixes     = var.cidr_subnet_appgateway
@@ -47,7 +47,7 @@ module "app_gw" {
   sku_tier = "WAF_v2"
 
   # Networking
-  subnet_id    = module.appgateway-snet.id
+  subnet_id    = module.appgateway_snet.id
   public_ip_id = azurerm_public_ip.appgateway_public_ip.id
 
   # Configure backends
