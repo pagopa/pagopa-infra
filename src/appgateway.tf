@@ -71,10 +71,8 @@ module "app_gw" {
     }
 
     management = {
-      protocol = "Https"
-      #TODO : once the migration is completed there wouldn't be need of the condition below.
-      #       Only the first dns recors is required.
-      host         = var.env_short != "p" ? trim(azurerm_dns_a_record.dns-a-management[0].fqdn, ".") : trim(azurerm_dns_a_record.dns-a-management[0].fqdn, ".")
+      protocol     = "Https"
+      host         = trim(azurerm_dns_a_record.dns_a_management.fqdn, ".")
       port         = 443
       ip_addresses = module.apim.private_ip_addresses
       probe        = "/ServiceStatus"
@@ -84,7 +82,7 @@ module "app_gw" {
 
   ssl_profiles = [{
     name                             = format("%s-ssl-profile", local.project)
-    trusted_client_certificate_names = null # [format("%s-issuer-chain", local.project)]
+    trusted_client_certificate_names = null
     verify_client_cert_issuer_dn     = true
     ssl_policy = {
       disabled_protocols = []
@@ -101,21 +99,16 @@ module "app_gw" {
   }]
 
   trusted_client_certificates = []
-  # trusted_client_certificates = [
-  #   {
-  #     secret_name  = format("platform-%s-issuer-chain", var.env_short)
-  #     key_vault_id = module.key_vault.id
-  #   }
-  # ]
 
   # Configure listeners
   listeners = {
 
     api = {
       protocol         = "Https"
-      host             = var.env_short == "p" ? "api.platform.pagopa.it" : format("api.%s.platform.pagopa.it", lower(var.tags["Environment"]))
+      host             = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
       port             = 443
       ssl_profile_name = format("%s-ssl-profile", local.project)
+
       certificate = {
         name = var.app_gateway_api_certificate_name
         id = trimsuffix(
@@ -127,9 +120,10 @@ module "app_gw" {
 
     portal = {
       protocol         = "Https"
-      host             = var.env_short == "p" ? "portal.platform.pagopa.it" : format("portal.%s.platform.pagopa.it", lower(var.tags["Environment"]))
+      host             = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
       port             = 443
       ssl_profile_name = format("%s-ssl-profile", local.project)
+
       certificate = {
         name = var.app_gateway_portal_certificate_name
         id = trimsuffix(
@@ -141,7 +135,7 @@ module "app_gw" {
 
     management = {
       protocol         = "Https"
-      host             = var.env_short == "p" ? "management.platform.pagopa.it" : format("management.%s.platform.pagopa.it", lower(var.tags["Environment"]))
+      host             = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
       port             = 443
       ssl_profile_name = format("%s-ssl-profile", local.project)
 
@@ -172,7 +166,6 @@ module "app_gw" {
       backend  = "management"
     }
   }
-
 
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]

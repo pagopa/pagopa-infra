@@ -27,7 +27,6 @@ module "vnet_integration" {
   tags = var.tags
 }
 
-
 ## Peering between the vnet(main) and integration vnet 
 module "vnet_peering" {
   source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.30"
@@ -43,4 +42,3 @@ module "vnet_peering" {
   target_remote_virtual_network_id = module.vnet_integration.id
   target_use_remote_gateways       = false # needed by vnet peering with SIA
 }
-

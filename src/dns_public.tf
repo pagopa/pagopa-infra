@@ -6,7 +6,7 @@ resource "azurerm_dns_zone" "public" {
   tags = var.tags
 }
 
-# DEV public DNS delegation
+# Prod ONLY record to DEV public DNS delegation
 resource "azurerm_dns_ns_record" "platform_dev_pagopa_it_ns" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "dev"
@@ -22,7 +22,7 @@ resource "azurerm_dns_ns_record" "platform_dev_pagopa_it_ns" {
   tags = var.tags
 }
 
-# UAT public DNS delegation
+# Prod ONLY record to UAT public DNS delegation
 resource "azurerm_dns_ns_record" "platform_uat_pagopa_it_ns" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "uat"
@@ -38,8 +38,6 @@ resource "azurerm_dns_ns_record" "platform_uat_pagopa_it_ns" {
   tags = var.tags
 }
 
-## Prod ONLY records 
-
 # application gateway records
 resource "azurerm_dns_a_record" "dns_a_api" {
   name                = "api"
@@ -49,6 +47,7 @@ resource "azurerm_dns_a_record" "dns_a_api" {
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
   tags                = var.tags
 }
+
 resource "azurerm_dns_a_record" "dns_a_portal" {
   name                = "portal"
   zone_name           = azurerm_dns_zone.public[0].name
@@ -58,9 +57,7 @@ resource "azurerm_dns_a_record" "dns_a_portal" {
   tags                = var.tags
 }
 
-
-resource "azurerm_dns_a_record" "dns-a-management" {
-  count               = var.env_short == "p" ? 0 : 1
+resource "azurerm_dns_a_record" "dns_a_management" {
   name                = "management"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
