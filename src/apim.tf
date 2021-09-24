@@ -21,11 +21,10 @@ locals {
   apim_cert_name_proxy_endpoint   = format("%s-proxy-endpoint-cert", local.project)
   portal_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", "portal")
 
-  api_domain        = var.env_short == "p" ? "api.platform.pagopa.it" : format("api.%s.platform.pagopa.it", lower(var.tags["Environment"]))
-  portal_domain     = var.env_short == "p" ? "portal.platform.pagopa.it" : format("portal.%s.platform.pagopa.it", lower(var.tags["Environment"]))
-  management_domain = var.env_short == "p" ? "management.platform.pagopa.it" : format("management.%s.platform.pagopa.it", lower(var.tags["Environment"]))
+  api_domain        = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+  portal_domain     = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
+  management_domain = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
 }
-
 
 ###########################
 ## Api Management (apim) ## 
