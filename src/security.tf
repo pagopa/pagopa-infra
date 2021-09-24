@@ -29,16 +29,16 @@ resource "azurerm_key_vault_access_policy" "api_management_policy" {
   storage_permissions     = []
 }
 
-# ## user assined identity: (application gateway) ##
-# resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
-#   key_vault_id            = module.key_vault.id
-#   tenant_id               = data.azurerm_client_config.current.tenant_id
-#   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
-#   key_permissions         = ["Get", "List"]
-#   secret_permissions      = ["Get", "List"]
-#   certificate_permissions = ["Get", "List", "Purge"]
-#   storage_permissions     = []
-# }
+## user assined identity: (application gateway) ##
+resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
+  key_vault_id            = module.key_vault.id
+  tenant_id               = data.azurerm_client_config.current.tenant_id
+  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List", "Purge"]
+  storage_permissions     = []
+}
 
 # Azure AD
 data "azuread_group" "adgroup_admin" {

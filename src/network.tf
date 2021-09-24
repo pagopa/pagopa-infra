@@ -114,7 +114,7 @@ module "app_gw" {
 
   ssl_profiles = [{
     name                             = format("%s-issuer-mauth-profile", local.project)
-    trusted_client_certificate_names = [format("%s-issuer-chain", local.project)]
+    trusted_client_certificate_names = null # [format("%s-issuer-chain", local.project)]
     verify_client_cert_issuer_dn     = true
     ssl_policy = {
       disabled_protocols = []

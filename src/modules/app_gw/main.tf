@@ -1,8 +1,9 @@
-data "azurerm_key_vault_secret" "client_cert" {
-  for_each     = { for t in var.trusted_client_certificates : t.secret_name => t }
-  name         = each.value.secret_name
-  key_vault_id = each.value.key_vault_id
-}
+# fixme optional
+# data "azurerm_key_vault_secret" "client_cert" {
+#   for_each     = { for t in var.trusted_client_certificates : t.secret_name => t }
+#   name         = each.value.secret_name
+#   key_vault_id = each.value.key_vault_id
+# }
 
 
 resource "azurerm_application_gateway" "this" {
@@ -93,14 +94,15 @@ resource "azurerm_application_gateway" "this" {
     }
   }
 
-  dynamic "trusted_client_certificate" {
-    for_each = var.trusted_client_certificates
-    iterator = t
-    content {
-      name = t.value.secret_name
-      data = data.azurerm_key_vault_secret.client_cert[t.value.secret_name].value
-    }
-  }
+  # fixme
+  # dynamic "trusted_client_certificate" {
+  #   for_each = var.trusted_client_certificates
+  #   iterator = t
+  #   content {
+  #     name = t.value.secret_name
+  #     data = data.azurerm_key_vault_secret.client_cert[t.value.secret_name].value
+  #   }
+  # }
 
   dynamic "ssl_profile" {
     for_each = var.ssl_profiles
