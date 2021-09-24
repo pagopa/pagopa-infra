@@ -35,7 +35,7 @@ module "mock_ec_api" {
   path         = "mock-ec/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s/mockEcService/api", module.mock_ec[0].default_site_hostname)
+  service_url = format("https://%s/mockEcService", module.mock_ec[0].default_site_hostname)
 
   content_value = templatefile("./api/product-mock-ec/api-mock-ec/v1/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
