@@ -63,7 +63,7 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: DEV-PAGOPA--SERVICE-CONN-RO
+              SUBSCRIPTION: DEV-PAGOPA-RO-SERVICE-CONN
               ENVIRONMENT: dev
 
   - stage: plan_uat
@@ -75,7 +75,7 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: UAT-PAGOPA--SERVICE-CONN-RO
+              SUBSCRIPTION: UAT-PAGOPA-RO-SERVICE-CONN
               ENVIRONMENT: uat
 
   - stage: plan_prod
@@ -87,5 +87,5 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-PAGOPA--SERVICE-CONN-RO
+              SUBSCRIPTION: PROD-PAGOPA-RO-SERVICE-CONN
               ENVIRONMENT: prod
