@@ -56,7 +56,7 @@ stages:
 
   - stage: plan_dev
     dependsOn: [install]
-    condition: and(succeeded(), eq(parameters.DEV, true))
+    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     jobs:
       - job: terraform_plan
         steps:
@@ -68,7 +68,7 @@ stages:
 
   - stage: plan_uat
     dependsOn: [install]
-    condition: and(succeeded(), eq(parameters.UAT, true))
+    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     jobs:
       - job: terraform_plan
         steps:
@@ -80,7 +80,7 @@ stages:
 
   - stage: plan_prod
     dependsOn: [install]
-    condition: and(succeeded(), eq(parameters.PROD, true))
+    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     jobs:
       - job: terraform_plan
         steps:
