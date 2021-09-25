@@ -1,0 +1,91 @@
+# Automatically triggered on PR
+# Only triggers on branches
+trigger:
+  paths:
+    include:
+      - 'src/*'
+      - '.devops/*'
+    exclude:
+      - 'src/k8s/*'
+pr:
+  branches:
+    include:
+      - main
+
+parameters:
+  - name: 'DEV'
+    displayName: 'Plan on DEV environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'UAT'
+    displayName: 'Plan on UAT environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'PROD'
+    displayName: 'Plan on PROD environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v17
+      endpoint: 'io-azure-devops-github-ro'
+
+stages:
+  - stage: install
+    jobs:
+      - job: terraform_install
+        steps:
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
+
+  - stage: plan_dev
+    dependsOn: [install]
+    condition: and(succeeded(), eq(parameters.DEV, true))
+    jobs:
+      - job: terraform_plan
+        steps:
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: DEV-PAGOPA--SERVICE-CONN-RO
+              ENVIRONMENT: dev
+
+  - stage: plan_uat
+    dependsOn: [install]
+    condition: and(succeeded(), eq(parameters.UAT, true))
+    jobs:
+      - job: terraform_plan
+        steps:
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: UAT-PAGOPA--SERVICE-CONN-RO
+              ENVIRONMENT: uat
+
+  - stage: plan_prod
+    dependsOn: [install]
+    condition: and(succeeded(), eq(parameters.PROD, true))
+    jobs:
+      - job: terraform_plan
+        steps:
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-PAGOPA--SERVICE-CONN-RO
+              ENVIRONMENT: prod
