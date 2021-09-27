@@ -53,7 +53,27 @@ resources:
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
-  - stage: install
+  - stage: install_dev
+    pool:
+      name: pagopa-uat-linux
+    jobs:
+      - job: terraform_install
+        steps:
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
+
+  - stage: install_uat
+    pool:
+      name: pagopa-uat-linux
+    jobs:
+      - job: terraform_install
+        steps:
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
+
+  - stage: install_prod
+    pool:
+      name: pagopa-uat-linux
     jobs:
       - job: terraform_install
         steps:
@@ -61,7 +81,7 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
 
   - stage: plan_dev
-    dependsOn: [install]
+    dependsOn: [install_dev]
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
       name: pagopa-uat-linux
@@ -75,7 +95,7 @@ stages:
               ENVIRONMENT: dev
 
   - stage: plan_uat
-    dependsOn: [install]
+    dependsOn: [install_uat]
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
       name: pagopa-uat-linux
@@ -89,7 +109,7 @@ stages:
               ENVIRONMENT: uat
 
   - stage: plan_prod
-    dependsOn: [install]
+    dependsOn: [install_prod]
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
       name: pagopa-uat-linux
