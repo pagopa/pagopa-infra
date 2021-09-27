@@ -1,22 +1,6 @@
-# Automatically triggered on PR
-# Only triggers on branches
-# trigger:
-#   paths:
-#     include:
-#       - 'src/*'
-#       - '.devops/*'
-#     exclude:
-#       - 'src/k8s/*'
-pr:
-  branches:
-    include:
-      - main
-  paths:
-    include:
-      - 'src/*'
-      - '.devops/*'
-    exclude:
-      - 'src/k8s/*'
+# only manual
+trigger: none
+pr: none
 
 parameters:
   - name: 'DEV'
@@ -61,13 +45,22 @@ stages:
     jobs:
       - job: terraform_install
         steps:
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         dependsOn: terraform_install
         steps:
-          # 2. Run terragrunt plan
+          # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
+              ENVIRONMENT: dev
+      - job: terraform_apply
+        dependsOn: terraform_install
+        environment: 'DEV'
+        steps:
+          # 3. Run terraform apply
+          - template: templates/terraform-apply/template.yaml@terraform
             parameters:
               SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
               ENVIRONMENT: dev
@@ -80,13 +73,22 @@ stages:
     jobs:
       - job: terraform_install
         steps:
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         dependsOn: terraform_install
         steps:
-          # 2. Run terragrunt plan
+          # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
+              ENVIRONMENT: uat
+      - job: terraform_apply
+        dependsOn: terraform_install
+        environment: 'UAT'
+        steps:
+          # 3. Run terraform apply
+          - template: templates/terraform-apply/template.yaml@terraform
             parameters:
               SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
               ENVIRONMENT: uat
@@ -99,13 +101,22 @@ stages:
     jobs:
       - job: terraform_install
         steps:
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         dependsOn: terraform_install
         steps:
-          # 2. Run terragrunt plan
+          # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
+              ENVIRONMENT: prod
+      - job: terraform_apply
+        dependsOn: terraform_install
+        environment: 'PROD'
+        steps:
+          # 3. Run terraform apply
+          - template: templates/terraform-apply/template.yaml@terraform
             parameters:
               SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
               ENVIRONMENT: prod
