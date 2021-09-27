@@ -53,7 +53,7 @@ resources:
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
-  - stage: install_dev
+  - stage: DEV
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
@@ -63,35 +63,6 @@ stages:
         steps:
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
-
-  - stage: install_uat
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
-    pool:
-      name: pagopa-uat-linux
-    jobs:
-      - job: terraform_install
-        steps:
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
-
-  - stage: install_prod
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
-    pool:
-      name: pagopa-uat-linux
-    jobs:
-      - job: terraform_install
-        steps:
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
-
-  - stage: plan_dev
-    dependsOn: [install_dev]
-    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
-    pool:
-      name: pagopa-uat-linux
-    jobs:
       - job: terraform_plan
         steps:
           # 2. Run terragrunt plan
@@ -100,12 +71,16 @@ stages:
               SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
               ENVIRONMENT: dev
 
-  - stage: plan_uat
-    dependsOn: [install_uat]
+  - stage: UAT
+    dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
       name: pagopa-uat-linux
     jobs:
+      - job: terraform_install
+        steps:
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         steps:
           # 2. Run terragrunt plan
@@ -114,12 +89,16 @@ stages:
               SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
               ENVIRONMENT: uat
 
-  - stage: plan_prod
-    dependsOn: [install_prod]
+  - stage: PROD
+    dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
       name: pagopa-uat-linux
     jobs:
+      - job: terraform_install
+        steps:
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         steps:
           # 2. Run terragrunt plan
