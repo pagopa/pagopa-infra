@@ -55,15 +55,20 @@ stages:
             parameters:
               SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
               ENVIRONMENT: dev
-      - job: terraform_apply
-        dependsOn: terraform_install
+      - deployment: terraform_apply
+        dependsOn: terraform_plan
+        continueOnError: false
         environment: 'DEV'
-        steps:
-          # 3. Run terraform apply
-          - template: templates/terraform-apply/template.yaml@terraform
-            parameters:
-              SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
-              ENVIRONMENT: dev
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                # 3. Run terraform apply
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
+                    ENVIRONMENT: dev
 
   - stage: UAT
     dependsOn: []
@@ -78,20 +83,26 @@ stages:
       - job: terraform_plan
         dependsOn: terraform_install
         steps:
+          - checkout: self
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
               ENVIRONMENT: uat
-      - job: terraform_apply
-        dependsOn: terraform_install
+      - deployment: terraform_apply
+        dependsOn: terraform_plan
+        continueOnError: false
         environment: 'UAT'
-        steps:
-          # 3. Run terraform apply
-          - template: templates/terraform-apply/template.yaml@terraform
-            parameters:
-              SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
-              ENVIRONMENT: uat
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                # 3. Run terraform apply
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
+                    ENVIRONMENT: uat
 
   - stage: PROD
     dependsOn: []
@@ -106,17 +117,23 @@ stages:
       - job: terraform_plan
         dependsOn: terraform_install
         steps:
+          - checkout: self
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
               ENVIRONMENT: prod
-      - job: terraform_apply
-        dependsOn: terraform_install
+      - deployment: terraform_apply
+        dependsOn: terraform_plan
+        continueOnError: false
         environment: 'PROD'
-        steps:
-          # 3. Run terraform apply
-          - template: templates/terraform-apply/template.yaml@terraform
-            parameters:
-              SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
-              ENVIRONMENT: prod
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                # 3. Run terraform apply
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
+                    ENVIRONMENT: prod
