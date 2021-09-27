@@ -54,6 +54,7 @@ resources:
 
 stages:
   - stage: install_dev
+    dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
       name: pagopa-uat-linux
@@ -64,6 +65,7 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
 
   - stage: install_uat
+    dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
       name: pagopa-uat-linux
@@ -74,6 +76,7 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
 
   - stage: install_prod
+    dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
       name: pagopa-uat-linux
