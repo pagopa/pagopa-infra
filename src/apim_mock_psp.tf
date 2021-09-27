@@ -41,7 +41,8 @@ module "mock_psp_api" {
 
   service_url = format("https://%s/mockPspService", module.mock_psp[0].default_site_hostname)
 
-  content_value = templatefile("./api/mockpsp_api/v1/_swagger.json.tpl", {
+  content_format = "openapi"
+  content_value = templatefile("./api/mockpsp_api/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
@@ -69,8 +70,9 @@ module "mock_psp_webview" {
   protocols    = ["https"]
 
   service_url = format("https://%s/mockPspWebview", module.mock_psp[0].default_site_hostname)
-
-  content_value = templatefile("./api/mockpsp_webview/v1/_swagger.json.tpl", {
+  
+  content_format = "openapi"
+  content_value = templatefile("./api/mockpsp_webview/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 

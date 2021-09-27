@@ -1,9 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Pagopa webview PM Mock",
+    "title": "Pagopa PM Mock",
     "version": "1.0.0"
   },
+  "servers": [{
+      "url": "https://${host}"
+  }],
   "tags": [
     {
       "name": "paypalmock",
@@ -15,24 +18,47 @@
     }
   ],
   "paths": {
-      "/transactions/": {
+    "/paypalpsp/api/pp_oboarding_back": {
       "post": {
-        "operationId": "Paypal",
-        "description": "API to support Paypal onboarding",
-        "produces": [
-          "text/html"
+        "tags": [
+          "paypalmock"
         ],
+        "summary": "server to server api used to start onboarding",
+        "requestBody": {
+          "description": "New Onboarding required",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartOnboardingRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "html with redirect io-pay"
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "500": {
-            "description": "generic error"
+            "description": "Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/StartOnboardingResponseSuccess"
+                    },
+                    {
+                      "$ref": "#/components/schemas/StartOnboardingResponseError"
+                    }
+                  ]
+                }
+              }
+            }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   },
