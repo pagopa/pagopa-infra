@@ -1,16 +1,22 @@
 # Automatically triggered on PR
 # Only triggers on branches
-trigger:
+# trigger:
+#   paths:
+#     include:
+#       - 'src/*'
+#       - '.devops/*'
+#     exclude:
+#       - 'src/k8s/*'
+pr:
+  branches:
+    include:
+      - main
   paths:
     include:
       - 'src/*'
       - '.devops/*'
     exclude:
       - 'src/k8s/*'
-pr:
-  branches:
-    include:
-      - main
 
 parameters:
   - name: 'DEV'
@@ -57,6 +63,8 @@ stages:
   - stage: plan_dev
     dependsOn: [install]
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
+    pool:
+      name: pagopa-uat-linux
     jobs:
       - job: terraform_plan
         steps:
@@ -69,6 +77,8 @@ stages:
   - stage: plan_uat
     dependsOn: [install]
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
+    pool:
+      name: pagopa-uat-linux
     jobs:
       - job: terraform_plan
         steps:
@@ -81,6 +91,8 @@ stages:
   - stage: plan_prod
     dependsOn: [install]
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    pool:
+      name: pagopa-uat-linux
     jobs:
       - job: terraform_plan
         steps:
