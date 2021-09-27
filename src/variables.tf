@@ -83,6 +83,38 @@ variable "cidr_subnet_mock_ec" {
   default     = null
 }
 
+# mock_ec
+
+variable "mock_psp_enabled" {
+  type        = bool
+  description = "Mock PSP enabled"
+  default     = false
+}
+
+variable "mock_psp_always_on" {
+  type        = bool
+  description = "Mock PSP always on property"
+  default     = false
+}
+
+variable "mock_psp_tier" {
+  type        = string
+  description = "Mock PSP Plan tier"
+  default     = "Standard"
+}
+
+variable "mock_psp_size" {
+  type        = string
+  description = "Mock PSP Plan size"
+  default     = "S1"
+}
+
+variable "cidr_subnet_mock_psp" {
+  type        = list(string)
+  description = "Address prefixes subnet mock psp"
+  default     = null
+}
+
 # Network
 variable "cidr_vnet" {
   type        = list(string)
