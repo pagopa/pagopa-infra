@@ -64,6 +64,7 @@ stages:
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
+        dependsOn: terraform_install
         steps:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
@@ -82,6 +83,7 @@ stages:
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
+        dependsOn: terraform_install
         steps:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
@@ -100,6 +102,7 @@ stages:
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
+        dependsOn: terraform_install
         steps:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
