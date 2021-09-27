@@ -17,7 +17,7 @@ module "mock_ec_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api/product-mock-ec/base_policy.xml")
+  policy_xml = file("./api_product/mockec_api/v1/_base_policy.xml")
 }
 
 module "mock_ec_api" {
@@ -37,9 +37,9 @@ module "mock_ec_api" {
 
   service_url = format("https://%s/mockEcService", module.mock_ec[0].default_site_hostname)
 
-  content_value = templatefile("./api/product-mock-ec/api-mock-ec/v1/_swagger.json.tpl", {
+  content_value = templatefile("./api/mockec_api/v1/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/product-mock-ec/api-mock-ec/v1/_base_policy.xml")
+  xml_content = file("./api/mockec_api/v1/mockec_policy.xml")
 }
