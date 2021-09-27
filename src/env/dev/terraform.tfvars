@@ -11,9 +11,10 @@ tags = {
 # main vnet
 cidr_vnet              = ["10.1.0.0/16"]
 cidr_subnet_appgateway = ["10.1.128.0/24"]
-## ..
-cidr_subnet_mock_ec  = ["10.1.240.0/29"]
-cidr_subnet_mock_psp = ["10.1.240.8/29"]
+cidr_subnet_azdoa      = ["10.1.130.0/24"]
+cidr_subnet_mock_ec    = ["10.1.240.0/29"]
+cidr_subnet_mock_psp   = ["10.1.240.8/29"]
+
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -26,6 +27,8 @@ dns_zone_prefix = "dev.platform"
 
 lock_enable              = false
 azdo_sp_tls_cert_enabled = true
+enable_azdoa             = true
+enable_iac_pipeline      = true
 
 apim_publisher_name = "pagoPA Platform DEV"
 apim_sku            = "Developer_1"
