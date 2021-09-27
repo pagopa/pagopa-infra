@@ -17,7 +17,7 @@ module "mock_psp_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/mockpsp_api/v1/_base_policy.xml")
+  policy_xml = file("./api_product/mockpsp_api/_base_policy.xml")
 }
 
 ##############
@@ -45,7 +45,7 @@ module "mock_psp_api" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/mockpsp_api/v1/mockpsp_policy.xml")
+  xml_content = file("./api/mockpsp_api/v1/_base_policy.xml")
 }
 
 
@@ -74,5 +74,5 @@ module "mock_psp_webview" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/mockpsp_webview/v1/mockpsp_policy.xml")
+  xml_content = file("./api/mockpsp_webview/v1/_base_policy.xml")
 }
