@@ -2,7 +2,7 @@
 ## Products ##
 ##############
 
-module "mock_psp_product" {
+module "apim_mock_psp_product" {
   count  = var.mock_psp_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
@@ -24,14 +24,14 @@ module "mock_psp_product" {
 ##    API   ##
 ##############
 
-module "mock_psp_api" {
+module "apim_mock_psp_api" {
   count  = var.mock_psp_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
-  name                  = format("%s-api-mock-psp", var.env_short)
+  name                  = format("%s-mock-psp-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.mock_psp_product[0].product_id]
+  product_ids           = [module.apim_mock_psp_product[0].product_id]
   subscription_required = true
 
   description  = "mock psp api"
@@ -54,14 +54,14 @@ module "mock_psp_api" {
 ## WEB VIEW ##
 ##############
 
-module "mock_psp_webview" {
+module "apim_mock_psp_webview" {
   count  = var.mock_psp_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
-  name                  = format("%s-webview-mock-psp", var.env_short)
+  name                  = format("%s-mock-psp-webview", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.mock_psp_product[0].product_id]
+  product_ids           = [module.apim_mock_psp_product[0].product_id]
   subscription_required = false
 
   description  = "mock psp webview"

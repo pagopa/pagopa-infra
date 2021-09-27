@@ -2,7 +2,7 @@
 ## Products ##
 ##############
 
-module "mock_ec_product" {
+module "apim_mock_ec_product" {
   count  = var.mock_ec_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
@@ -20,14 +20,14 @@ module "mock_ec_product" {
   policy_xml = file("./api_product/mockec_api/_base_policy.xml")
 }
 
-module "mock_ec_api" {
+module "apim_mock_ec_api" {
   count  = var.mock_ec_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
-  name                  = format("%s-api-mock-ec", var.env_short)
+  name                  = format("%s-mock-ec-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.mock_ec_product[0].product_id]
+  product_ids           = [module.apim_mock_ec_product[0].product_id]
   subscription_required = false
 
   description  = "mock ec api"
