@@ -115,6 +115,38 @@ variable "cidr_subnet_mock_psp" {
   default     = null
 }
 
+# api_config
+
+variable "api_config_enabled" {
+  type        = bool
+  description = "Api Config enabled"
+  default     = false
+}
+
+variable "cidr_subnet_api_config" {
+  type        = list(string)
+  description = "Address prefixes subnet api config"
+  default     = null
+}
+
+variable "api_config_tier" {
+  type        = string
+  description = "Api config Plan tier"
+  default     = "Standard"
+}
+
+variable "api_config_size" {
+  type        = string
+  description = "Api Config Plan size"
+  default     = "S1"
+}
+
+variable "api_config_always_on" {
+  type        = bool
+  description = "Api Config always on property"
+  default     = false
+}
+
 # Network
 variable "cidr_vnet" {
   type        = list(string)
