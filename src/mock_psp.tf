@@ -43,10 +43,12 @@ module "mock_psp" {
   name                = format("%s-app-mock-psp", local.project)
   client_cert_enabled = false
   always_on           = var.mock_psp_always_on
-  linux_fx_version    = "TOMCAT|9.0-java11"
+  linux_fx_version    = "JAVA|8-jre8"
   health_check_path   = "/mockPspService/api/v1/info"
 
   app_settings = {
+
+    SERVER-PUBLIC-URL = format("https://api.%s.platform.pagopa.it/mock-psp/mng-api", var.env_short)
   }
 
   allowed_subnets = [module.apim_snet.id]
