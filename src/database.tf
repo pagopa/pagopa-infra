@@ -15,7 +15,6 @@ data "azurerm_key_vault_secret" "db_administrator_login_password" {
   key_vault_id = module.key_vault.id
 }
 
-#tfsec:ignore:azure-database-no-public-access
 module "postgresql" {
   source                           = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v1.0.51"
   name                             = format("%s-postgresql", local.project)
@@ -31,7 +30,7 @@ module "postgresql" {
   geo_redundant_backup_enabled     = var.db_geo_redundant_backup_enabled
   enable_replica                   = var.db_enable_replica
   ssl_minimal_tls_version_enforced = "TLS1_2"
-  public_network_access_enabled    = true
+  public_network_access_enabled    = false
   lock_enable                      = var.lock_enable
 
   network_rules         = var.db_network_rules
@@ -40,9 +39,7 @@ module "postgresql" {
   configuration         = var.db_configuration
   configuration_replica = var.db_configuration
 
-  alerts_enabled                        = var.db_alerts_enabled
-  monitor_metric_alert_criteria         = var.db_metric_alerts
-  replica_monitor_metric_alert_criteria = var.db_metric_alerts
+  alerts_enabled = var.db_alerts_enabled
 
   tags = var.tags
 }
