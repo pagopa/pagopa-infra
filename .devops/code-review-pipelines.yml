@@ -32,9 +32,8 @@ parameters:
       - False
       - True
 
-# Set variables once
 variables:
-  TIME_OUT: 10
+  TIME_OUT: 5
 
 pool:
   vmImage: 'ubuntu-20.04'

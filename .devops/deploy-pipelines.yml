@@ -25,6 +25,9 @@ parameters:
       - False
       - True
 
+variables:
+  TIME_OUT: 5
+
 pool:
   vmImage: 'ubuntu-20.04'
 
@@ -45,6 +48,7 @@ stages:
       name: pagopa-dev-linux
     jobs:
       - job: plan
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
@@ -87,6 +91,7 @@ stages:
       name: pagopa-uat-linux
     jobs:
       - job: plan
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
@@ -129,6 +134,7 @@ stages:
       name: pagopa-prod-linux
     jobs:
       - job: plan
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
