@@ -1,12 +1,3 @@
-# Automatically triggered on PR
-# Only triggers on branches
-# trigger:
-#   paths:
-#     include:
-#       - 'src/*'
-#       - '.devops/*'
-#     exclude:
-#       - 'src/k8s/*'
 pr:
   branches:
     include:
@@ -41,7 +32,9 @@ parameters:
       - False
       - True
 
-TIME_OUT: 10
+# Set variables once
+variables:
+  TIME_OUT: 10
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -67,7 +60,7 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         dependsOn: terraform_install
-        timeoutInMinutes: '$(TIME_OUT)'
+        timeoutInMinutes: $(TIME_OUT)
         steps:
           - checkout: self
           # 2. Run terragrunt plan
@@ -88,7 +81,7 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         dependsOn: terraform_install
-        timeoutInMinutes: '$(TIME_OUT)'
+        timeoutInMinutes: $(TIME_OUT)
         steps:
           - checkout: self
           # 2. Run terragrunt plan
@@ -109,7 +102,7 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         dependsOn: terraform_install
-        timeoutInMinutes: '$(TIME_OUT)'
+        timeoutInMinutes: $(TIME_OUT)
         steps:
           - checkout: self
           # 2. Run terragrunt plan
