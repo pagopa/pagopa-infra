@@ -60,7 +60,7 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         dependsOn: terraform_install
-        timeoutInMinutes: $(TIME_OUT)
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
           # 2. Run terragrunt plan
@@ -81,7 +81,7 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         dependsOn: terraform_install
-        timeoutInMinutes: $(TIME_OUT)
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
           # 2. Run terragrunt plan
@@ -102,7 +102,7 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
         dependsOn: terraform_install
-        timeoutInMinutes: $(TIME_OUT)
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
           # 2. Run terragrunt plan
