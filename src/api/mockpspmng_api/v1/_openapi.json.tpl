@@ -18,13 +18,13 @@
     }
   ],
   "paths": {
-      "/transactions": {
-      "post": {
-        "operationId": "Paypal",
-        "description": "API to support Paypal onboarding",
+      "/": {
+      "get": {
+        "operationId": "test",
+        "description": "TEST api",
         "responses": {
           "200": {
-            "description": "html with redirect io-pay"
+            "description": "html with redirect"
           },
           "400": {
             "description": "Bad request"
