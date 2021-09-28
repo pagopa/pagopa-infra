@@ -13,6 +13,7 @@
 <policies>
     <inbound>
         <base />
+        <rewrite-uri template="/" />
     </inbound>
     <backend>
         <base />
