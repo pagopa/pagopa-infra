@@ -60,13 +60,13 @@ stages:
     pool:
       name: pagopa-dev-linux
     jobs:
-      - job: init
-        steps:
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
+      # - job: init
+      #   steps:
+      #     # 1. Install terraform
+      #     - template: templates/terraform-setup/template.yaml@terraform
       - deployment: apply
         continueOnError: false
-        dependsOn: init
+        # dependsOn: init
         environment: 'DEV'
         strategy:
           runOnce:
@@ -102,13 +102,13 @@ stages:
     pool:
       name: pagopa-uat-linux
     jobs:
-      - job: init
-        steps:
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
+      # - job: init
+      #   steps:
+      #     # 1. Install terraform
+      #     - template: templates/terraform-setup/template.yaml@terraform
       - deployment: apply
         continueOnError: false
-        dependsOn: init
+        # dependsOn: init
         environment: 'UAT'
         strategy:
           runOnce:
@@ -144,13 +144,13 @@ stages:
     pool:
       name: pagopa-prod-linux
     jobs:
-      - job: init
-        steps:
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
+      # - job: init
+      #   steps:
+      #     # 1. Install terraform
+      #     - template: templates/terraform-setup/template.yaml@terraform
       - deployment: apply
         continueOnError: false
-        dependsOn: init
+        # dependsOn: init
         environment: 'PROD'
         strategy:
           runOnce:
