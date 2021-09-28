@@ -73,7 +73,7 @@ stages:
             deploy:
               steps:
                 - checkout: self
-                # 2. Run terraform apply
+                # 3. Run terraform apply
                 - template: templates/terraform-apply/template.yaml@terraform
                   parameters:
                     SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
@@ -115,7 +115,7 @@ stages:
             deploy:
               steps:
                 - checkout: self
-                # 2. Run terraform apply
+                # 3. Run terraform apply
                 - template: templates/terraform-apply/template.yaml@terraform
                   parameters:
                     SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
@@ -157,7 +157,7 @@ stages:
             deploy:
               steps:
                 - checkout: self
-                # 2. Run terraform apply
+                # 3. Run terraform apply
                 - template: templates/terraform-apply/template.yaml@terraform
                   parameters:
                     SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
