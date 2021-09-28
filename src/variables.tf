@@ -236,3 +236,52 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
+
+## Database server postgresl 
+variable "db_sku_name" {
+  type        = string
+  description = "Specifies the SKU Name for this PostgreSQL Server."
+}
+
+variable "db_geo_redundant_backup_enabled" {
+  type        = bool
+  default     = false
+  description = "Turn Geo-redundant server backups on/off."
+}
+
+variable "db_enable_replica" {
+  type        = bool
+  default     = false
+  description = "Create a PostgreSQL Server Replica."
+}
+
+variable "db_storage_mb" {
+  type        = number
+  description = "Max storage allowed for a server"
+  default     = 5120
+}
+
+variable "db_configuration" {
+  type        = map(string)
+  description = "PostgreSQL Server configuration"
+  default     = {}
+}
+
+variable "db_alerts_enabled" {
+  type        = bool
+  default     = false
+  description = "Database alerts enabled?"
+}
+
+variable "db_network_rules" {
+  type = object({
+    ip_rules                       = list(string)
+    allow_access_to_azure_services = bool
+  })
+  default = {
+    ip_rules = []
+    # dblink
+    allow_access_to_azure_services = true
+  }
+  description = "Database network rules"
+}
