@@ -48,7 +48,7 @@ module "mock_psp" {
 
   app_settings = {
 
-    SERVER-PUBLIC-URL = format("https://api.%s.platform.pagopa.it/mock-psp/mng-api", var.env_short)
+    SERVER_PUBLIC_URL = format("https://api.%s.%s/mock-psp/mng-api", var.dns_zone_prefix, var.external_domain)
   }
 
   allowed_subnets = [module.apim_snet.id]
