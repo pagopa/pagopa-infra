@@ -5,3 +5,4 @@ resource "azurerm_resource_group" "default_roleassignment_rg" {
 
   tags = var.tags
 }
+
