@@ -37,7 +37,8 @@ resources:
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
-  - stage: DEV
+  # DEV
+  - stage: terraform_init_DEV
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
@@ -47,16 +48,28 @@ stages:
         steps:
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
+
+  - stage: terraform_plan_DEV
+    dependsOn: [terraform_init_DEV]
+    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
+    pool:
+      name: pagopa-dev-linux
+    jobs:
       - job: terraform_plan
-        dependsOn: terraform_install
         steps:
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
               ENVIRONMENT: dev
+
+  - stage: terraform_apply_DEV
+    dependsOn: [terraform_plan_DEV]
+    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
+    pool:
+      name: pagopa-dev-linux
+    jobs:
       - deployment: terraform_apply
-        dependsOn: terraform_plan
         continueOnError: false
         environment: 'DEV'
         strategy:
@@ -70,7 +83,8 @@ stages:
                     SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
                     ENVIRONMENT: dev
 
-  - stage: UAT
+  # UAT
+  - stage: terraform_init_UAT
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
@@ -80,17 +94,28 @@ stages:
         steps:
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
+
+  - stage: terraform_plan_UAT
+    dependsOn: [terraform_init_UAT]
+    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
+    pool:
+      name: pagopa-uat-linux
+    jobs:
       - job: terraform_plan
-        dependsOn: terraform_install
         steps:
-          - checkout: self
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
               ENVIRONMENT: uat
+
+  - stage: terraform_apply_UAT
+    dependsOn: [terraform_plan_UAT]
+    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
+    pool:
+      name: pagopa-uat-linux
+    jobs:
       - deployment: terraform_apply
-        dependsOn: terraform_plan
         continueOnError: false
         environment: 'UAT'
         strategy:
@@ -104,7 +129,8 @@ stages:
                     SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
                     ENVIRONMENT: uat
 
-  - stage: PROD
+  # PROD
+  - stage: terraform_init_PROD
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
@@ -114,17 +140,28 @@ stages:
         steps:
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
+
+  - stage: terraform_plan_PROD
+    dependsOn: [terraform_init_PROD]
+    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    pool:
+      name: pagopa-prod-linux
+    jobs:
       - job: terraform_plan
-        dependsOn: terraform_install
         steps:
-          - checkout: self
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
               ENVIRONMENT: prod
+
+  - stage: terraform_apply_PROD
+    dependsOn: [terraform_plan_PROD]
+    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    pool:
+      name: pagopa-prod-linux
+    jobs:
       - deployment: terraform_apply
-        dependsOn: terraform_plan
         continueOnError: false
         environment: 'PROD'
         strategy:
