@@ -37,4 +37,6 @@ app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 app_gateway_min_capacity                = 1
 app_gateway_max_capacity                = 2
 
-mock_ec_enabled = true
+db_sku_name = "B_Gen4_1"
+
+db_enable_replica = false
