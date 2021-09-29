@@ -109,102 +109,102 @@ locals {
     end : cidrhost(rule, pow(2, (32 - parseint(split("/", rule)[1], 10))) - 1)
   }]
 
-  private_dns_zone_name = var.private_dns_zone_id == null ? azurerm_private_dns_zone.this[0].name : var.private_dns_zone_name
-  private_dns_zone_id   = var.private_dns_zone_id == null ? azurerm_private_dns_zone.this[0].id : var.private_dns_zone_id
+  # private_dns_zone_name = var.private_dns_zone_id == null ? azurerm_private_dns_zone.this[0].name : var.private_dns_zone_name
+  # private_dns_zone_id   = var.private_dns_zone_id == null ? azurerm_private_dns_zone.this[0].id : var.private_dns_zone_id
 
   configuration_replica = var.enable_replica ? var.configuration_replica : {}
 }
 
-resource "azurerm_private_dns_zone" "this" {
-  count = var.private_dns_zone_id == null ? 1 : 0
+# resource "azurerm_private_dns_zone" "this" {
+#   count = var.private_dns_zone_id == null ? 1 : 0
 
-  name                = var.private_dns_zone_name
-  resource_group_name = var.resource_group_name
+#   name                = var.private_dns_zone_name
+#   resource_group_name = var.resource_group_name
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "this" {
+# resource "azurerm_private_dns_zone_virtual_network_link" "this" {
 
-  name                  = format("%s-private-dns-zone-link", var.name)
-  resource_group_name   = var.resource_group_name
-  private_dns_zone_name = local.private_dns_zone_name
-  virtual_network_id    = var.virtual_network_id
+#   name                  = format("%s-private-dns-zone-link", var.name)
+#   resource_group_name   = var.resource_group_name
+#   private_dns_zone_name = local.private_dns_zone_name
+#   virtual_network_id    = var.virtual_network_id
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
-resource "azurerm_private_endpoint" "this" {
-  name                = format("%s-private-endpoint", azurerm_postgresql_server.this.name)
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  subnet_id           = var.subnet_id
+# resource "azurerm_private_endpoint" "this" {
+#   name                = format("%s-private-endpoint", azurerm_postgresql_server.this.name)
+#   location            = var.location
+#   resource_group_name = var.resource_group_name
+#   subnet_id           = var.subnet_id
 
-  private_dns_zone_group {
-    name                 = format("%s-private-dns-zone-group", var.name)
-    private_dns_zone_ids = [local.private_dns_zone_id]
-  }
+#   private_dns_zone_group {
+#     name                 = format("%s-private-dns-zone-group", var.name)
+#     private_dns_zone_ids = [local.private_dns_zone_id]
+#   }
 
-  private_service_connection {
-    name                           = format("%s-private-service-connection", azurerm_postgresql_server.this.name)
-    private_connection_resource_id = azurerm_postgresql_server.this.id
-    is_manual_connection           = false
-    subresource_names              = ["postgreSqlServer"]
-  }
+#   private_service_connection {
+#     name                           = format("%s-private-service-connection", azurerm_postgresql_server.this.name)
+#     private_connection_resource_id = azurerm_postgresql_server.this.id
+#     is_manual_connection           = false
+#     subresource_names              = ["postgreSqlServer"]
+#   }
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
-resource "azurerm_private_endpoint" "replica" {
-  count = var.enable_replica ? 1 : 0
+# resource "azurerm_private_endpoint" "replica" {
+#   count = var.enable_replica ? 1 : 0
 
-  name                = format("%s-private-endpoint", azurerm_postgresql_server.replica[0].name)
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  subnet_id           = var.subnet_id
+#   name                = format("%s-private-endpoint", azurerm_postgresql_server.replica[0].name)
+#   location            = var.location
+#   resource_group_name = var.resource_group_name
+#   subnet_id           = var.subnet_id
 
-  private_dns_zone_group {
-    name                 = format("%s-private-dns-zone-group", var.name)
-    private_dns_zone_ids = [local.private_dns_zone_id]
-  }
+#   private_dns_zone_group {
+#     name                 = format("%s-private-dns-zone-group", var.name)
+#     private_dns_zone_ids = [local.private_dns_zone_id]
+#   }
 
-  private_service_connection {
-    name                           = format("%s-private-service-connection", azurerm_postgresql_server.replica[0].name)
-    private_connection_resource_id = azurerm_postgresql_server.replica[0].id
-    is_manual_connection           = false
-    subresource_names              = ["postgreSqlServer"]
-  }
+#   private_service_connection {
+#     name                           = format("%s-private-service-connection", azurerm_postgresql_server.replica[0].name)
+#     private_connection_resource_id = azurerm_postgresql_server.replica[0].id
+#     is_manual_connection           = false
+#     subresource_names              = ["postgreSqlServer"]
+#   }
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
-resource "azurerm_postgresql_virtual_network_rule" "network_rule" {
-  name                                 = format("%s-vnet-rule", var.name)
-  resource_group_name                  = var.resource_group_name
-  server_name                          = azurerm_postgresql_server.this.name
-  subnet_id                            = var.subnet_id
-  ignore_missing_vnet_service_endpoint = true
-}
+# resource "azurerm_postgresql_virtual_network_rule" "network_rule" {
+#   name                                 = format("%s-vnet-rule", var.name)
+#   resource_group_name                  = var.resource_group_name
+#   server_name                          = azurerm_postgresql_server.this.name
+#   subnet_id                            = var.subnet_id
+#   ignore_missing_vnet_service_endpoint = true
+# }
 
-resource "azurerm_postgresql_firewall_rule" "this" {
-  count = length(local.firewall_rules)
+# resource "azurerm_postgresql_firewall_rule" "this" {
+#   count = length(local.firewall_rules)
 
-  name                = format("%s-fw-rule-%d", var.name, count.index)
-  resource_group_name = var.resource_group_name
-  server_name         = azurerm_postgresql_server.this.name
-  start_ip_address    = local.firewall_rules[count.index].start
-  end_ip_address      = local.firewall_rules[count.index].end
-}
+#   name                = format("%s-fw-rule-%d", var.name, count.index)
+#   resource_group_name = var.resource_group_name
+#   server_name         = azurerm_postgresql_server.this.name
+#   start_ip_address    = local.firewall_rules[count.index].start
+#   end_ip_address      = local.firewall_rules[count.index].end
+# }
 
-resource "azurerm_postgresql_firewall_rule" "azure" {
-  count = var.network_rules.allow_access_to_azure_services ? 1 : 0
+# resource "azurerm_postgresql_firewall_rule" "azure" {
+#   count = var.network_rules.allow_access_to_azure_services ? 1 : 0
 
-  name                = format("%s-allow-azure-access", var.name)
-  resource_group_name = var.resource_group_name
-  server_name         = azurerm_postgresql_server.this.name
-  start_ip_address    = "0.0.0.0"
-  end_ip_address      = "0.0.0.0"
-}
+#   name                = format("%s-allow-azure-access", var.name)
+#   resource_group_name = var.resource_group_name
+#   server_name         = azurerm_postgresql_server.this.name
+#   start_ip_address    = "0.0.0.0"
+#   end_ip_address      = "0.0.0.0"
+# }
 
 resource "azurerm_postgresql_configuration" "main" {
   for_each = var.configuration

@@ -1,5 +1,4 @@
 resource "azurerm_resource_group" "data_rg" {
-  count    = var.prostgres_enabled ? 1 : 0
   name     = format("%s-data-rg", local.project)
   location = var.location
 
@@ -40,8 +39,8 @@ data "azurerm_key_vault_secret" "db_user_login_password" {
 module "postgresql" {
   source                           = "./modules/postgresql_server"
   name                             = format("%s-postgresql", local.project)
-  location                         = azurerm_resource_group.data_rg[0].location
-  resource_group_name              = azurerm_resource_group.data_rg[0].name
+  location                         = azurerm_resource_group.data_rg.location
+  resource_group_name              = azurerm_resource_group.data_rg.name
   virtual_network_id               = module.vnet.id
   subnet_id                        = module.mock_data_snet.id
   administrator_login              = data.azurerm_key_vault_secret.db_administrator_login.value
