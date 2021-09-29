@@ -8,19 +8,23 @@ module "redis_snet" {
   virtual_network_name = module.vnet.name
 }
 
-module "redis" {
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Enable when all infra is defined !!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  source = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v1.0.37"
+# module "redis" {
 
-  name                  = format("%s-redis", local.project)
-  resource_group_name   = azurerm_resource_group.data.name
-  location              = azurerm_resource_group.data.location
-  capacity              = var.redis_capacity
-  enable_non_ssl_port   = false
-  family                = var.redis_family
-  sku_name              = var.redis_sku_name
-  enable_authentication = true
-  subnet_id             = length(module.redis_snet.*.id) == 0 ? null : module.redis_snet[0].id
+#   source = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v1.0.37"
 
-  tags = var.tags
-}
+#   name                  = format("%s-redis", local.project)
+#   resource_group_name   = azurerm_resource_group.data.name
+#   location              = azurerm_resource_group.data.location
+#   capacity              = var.redis_capacity
+#   enable_non_ssl_port   = false
+#   family                = var.redis_family
+#   sku_name              = var.redis_sku_name
+#   enable_authentication = true
+#   subnet_id             = length(module.redis_snet.*.id) == 0 ? null : module.redis_snet[0].id
+
+#   tags = var.tags
+# }
