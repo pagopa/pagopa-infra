@@ -54,7 +54,7 @@ resource "azurerm_postgresql_server" "this" {
 provider "postgresql" {
   host             = azurerm_postgresql_server.this.fqdn
   port             = 5432
-  username         = "${var.db_username}@${azurerm_postgresql_server.this.name}"
+  username         = "${var.db_username}@mock-db"
   password         = var.db_password
   sslmode          = "require"
   expected_version = "10"
