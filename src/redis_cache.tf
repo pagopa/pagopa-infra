@@ -9,9 +9,8 @@ module "redis_snet" {
 }
 
 module "redis" {
-
+  count  = var.redis_cache_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v1.0.37"
-
   name                  = format("%s-redis", local.project)
   resource_group_name   = azurerm_resource_group.data.name
   location              = azurerm_resource_group.data.location

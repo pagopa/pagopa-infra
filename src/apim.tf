@@ -40,8 +40,9 @@ module "apim" {
   publisher_email         = data.azurerm_key_vault_secret.apim_publisher_email.value
   sku_name                = var.apim_sku
   virtual_network_type    = "Internal"
-  redis_connection_string = module.redis.primary_connection_string
-  redis_cache_id          = module.redis.id
+
+  redis_connection_string = var.redis_cache_enabled ? module.redis[0].primary_connection_string : null
+  redis_cache_id = var.redis_cache_enabled ? module.redis[0].id : null
 
   # This enables the Username and Password Identity Provider
   sign_up_enabled = false
