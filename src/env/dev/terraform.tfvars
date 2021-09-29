@@ -14,6 +14,7 @@ cidr_subnet_appgateway = ["10.1.128.0/24"]
 cidr_subnet_azdoa      = ["10.1.130.0/24"]
 cidr_subnet_mock_ec    = ["10.1.240.0/29"]
 cidr_subnet_mock_psp   = ["10.1.240.8/29"]
+cidr_subnet_mock_data  = ["10.1.240.16/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -39,3 +40,7 @@ app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 mock_ec_enabled = true
 
 mock_psp_enabled = true
+
+db_sku_name = "B_Gen4_1"
+
+db_enable_replica = false

@@ -285,3 +285,9 @@ variable "db_network_rules" {
   }
   description = "Database network rules"
 }
+
+variable "cidr_subnet_mock_data" {
+  type        = list(string)
+  description = "Address prefixes subnet mock data"
+  default     = null
+}
