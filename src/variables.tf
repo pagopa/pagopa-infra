@@ -166,6 +166,13 @@ variable "apim_sku" {
 }
 
 ## Redis cache
+
+variable "redis_cache_enabled" {
+  type        = bool
+  description = "redis cache enabled"
+  default     = false
+}
+
 variable "redis_capacity" {
   type    = number
   default = 1
