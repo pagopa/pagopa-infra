@@ -291,3 +291,15 @@ variable "cidr_subnet_mock_data" {
   description = "Address prefixes subnet mock data"
   default     = null
 }
+
+variable "mock_data_public" {
+  type        = bool
+  default     = false
+  description = "Mock database public?"
+}
+
+variable "prostgres_enabled" {
+  type        = bool
+  default     = false
+  description = "Mock postegres database enable?"
+}

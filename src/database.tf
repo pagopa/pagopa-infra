@@ -1,5 +1,5 @@
-resource "azurerm_resource_group" "mock_data_rg" {
-  name     = format("%s-db-rg", local.project)
+resource "azurerm_resource_group" "data_rg" {
+  name     = format("%s-data-rg", local.project)
   location = var.location
 
   tags = var.tags
@@ -27,10 +27,11 @@ data "azurerm_key_vault_secret" "db_administrator_login_password" {
 
 #tfsec:ignore:azure-database-no-public-access
 module "postgresql" {
+  count                            = var.prostgres_enabled ? 1 : 0
   source                           = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v1.0.51"
   name                             = format("%s-postgresql", local.project)
-  location                         = azurerm_resource_group.mock_data_rg.location
-  resource_group_name              = azurerm_resource_group.mock_data_rg.name
+  location                         = azurerm_resource_group.data_rg.location
+  resource_group_name              = azurerm_resource_group.data_rg.name
   virtual_network_id               = module.vnet.id
   subnet_id                        = module.mock_data_snet.id
   administrator_login              = data.azurerm_key_vault_secret.db_administrator_login.value
@@ -41,12 +42,12 @@ module "postgresql" {
   geo_redundant_backup_enabled     = var.db_geo_redundant_backup_enabled
   enable_replica                   = var.db_enable_replica
   ssl_minimal_tls_version_enforced = "TLS1_2"
-  public_network_access_enabled    = true
+  public_network_access_enabled    = var.mock_data_public
   lock_enable                      = var.lock_enable
 
-  network_rules         = var.db_network_rules
+  network_rules = var.db_network_rules
 
-  configuration         = var.db_configuration
+  configuration = var.db_configuration
 
   alerts_enabled = var.db_alerts_enabled
 

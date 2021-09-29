@@ -39,3 +39,6 @@ app_gateway_max_capacity                = 2
 # change to Premium before launch
 # redis_sku_name = "Premium"
 # redis_family   = "P"
+
+mock_psp_enabled  = false
+prostgres_enabled = false
