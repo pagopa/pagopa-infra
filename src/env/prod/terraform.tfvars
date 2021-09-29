@@ -28,14 +28,14 @@ enable_azdoa             = true
 enable_iac_pipeline      = true
 
 apim_publisher_name = "pagoPA Platform PROD"
-apim_sku            = "Developer_1" # change to Premium_1 before launch
+apim_sku            = "Developer_1" # todo change to Premium_1 before launch
 
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
-app_gateway_min_capacity                = 1
+app_gateway_min_capacity                = 0 # todo chenge to 1 before launch
 app_gateway_max_capacity                = 2
 
-# change to Premium before launch
+# todo change to Premium before launch
 # redis_sku_name = "Premium"
 # redis_family   = "P"

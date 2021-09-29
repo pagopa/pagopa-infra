@@ -212,7 +212,7 @@ variable "app_gateway_management_certificate_name" {
 
 variable "app_gateway_min_capacity" {
   type    = number
-  default = 1
+  default = 0
 }
 
 variable "app_gateway_max_capacity" {
