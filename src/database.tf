@@ -28,7 +28,7 @@ data "azurerm_key_vault_secret" "db_administrator_login_password" {
 #tfsec:ignore:azure-database-no-public-access
 module "postgresql" {
   count                            = var.prostgres_enabled ? 1 : 0
-  source                           = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v1.0.51"
+  source                           = "./modules/postgresql_server"
   name                             = format("%s-postgresql", local.project)
   location                         = azurerm_resource_group.data_rg.location
   resource_group_name              = azurerm_resource_group.data_rg.name
@@ -52,4 +52,11 @@ module "postgresql" {
   alerts_enabled = var.db_alerts_enabled
 
   tags = var.tags
+
+  db_name             = var.db_name
+  db_username         = var.db_username
+  db_password         = var.db_password
+  db_connection_limit = var.db_connection_limit
+  db_schema           = var.db_schema
+
 }

@@ -47,7 +47,11 @@ module "mock_psp" {
   health_check_path   = "/mockPspService/api/v1/info"
 
   app_settings = {
-    SERVER_PUBLIC_URL = format("https://api.%s.%s/mock-psp/mng-api", var.dns_zone_prefix, var.external_domain)
+    SERVER_PUBLIC_URL           = format("https://api.%s.%s/mock-psp/mng-api", var.dns_zone_prefix, var.external_domain),
+    PAGOPA_MOCK_PSP_DB_USERNAME = "",
+    PAGOPA_MOCK_PSP_DB_PWD      = "",
+    PAGOPA_MOCK_PSP_DB_URL      = "",
+    SERVER_PORT                 = 7954,
   }
 
   allowed_subnets = [module.apim_snet.id]
