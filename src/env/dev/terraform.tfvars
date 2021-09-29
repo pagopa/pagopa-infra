@@ -40,7 +40,7 @@ app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 mock_ec_enabled = true
 
 mock_psp_enabled  = true
-db_sku_name       = "B_Gen4_1"
+db_sku_name       = "B_Gen5_1"
 db_enable_replica = false
 mock_data_public  = true
 prostgres_enabled = true
