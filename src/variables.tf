@@ -303,3 +303,18 @@ variable "prostgres_enabled" {
   default     = false
   description = "Mock postegres database enable?"
 }
+
+variable "db_name" {
+  type    = string
+  default = null
+}
+
+variable "db_connection_limit" {
+  type    = number
+  default = -1 //no limit
+}
+
+variable "db_schema" {
+  type    = string
+  default = null
+}

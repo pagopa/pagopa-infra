@@ -277,7 +277,7 @@ variable "db_collate" {
 
 variable "db_connection_limit" {
   type    = number
-  default = -1  //no limit
+  default = -1 //no limit
 }
 
 variable "db_allow_connections" {

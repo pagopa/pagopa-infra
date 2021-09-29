@@ -44,3 +44,5 @@ db_sku_name       = "B_Gen5_1"
 db_enable_replica = false
 mock_data_public  = true
 prostgres_enabled = true
+db_name           = "mock-db"
+db_schema         = "mock-psp"

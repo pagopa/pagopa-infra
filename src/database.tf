@@ -1,4 +1,5 @@
 resource "azurerm_resource_group" "data_rg" {
+  count    = var.prostgres_enabled ? 1 : 0
   name     = format("%s-data-rg", local.project)
   location = var.location
 
@@ -25,13 +26,22 @@ data "azurerm_key_vault_secret" "db_administrator_login_password" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "db_user_login" {
+  name         = "db-user-login"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "db_user_login_password" {
+  name         = "db-user-login-password"
+  key_vault_id = module.key_vault.id
+}
+
 #tfsec:ignore:azure-database-no-public-access
 module "postgresql" {
-  count                            = var.prostgres_enabled ? 1 : 0
   source                           = "./modules/postgresql_server"
   name                             = format("%s-postgresql", local.project)
-  location                         = azurerm_resource_group.data_rg.location
-  resource_group_name              = azurerm_resource_group.data_rg.name
+  location                         = azurerm_resource_group.data_rg[0].location
+  resource_group_name              = azurerm_resource_group.data_rg[0].name
   virtual_network_id               = module.vnet.id
   subnet_id                        = module.mock_data_snet.id
   administrator_login              = data.azurerm_key_vault_secret.db_administrator_login.value
@@ -54,9 +64,8 @@ module "postgresql" {
   tags = var.tags
 
   db_name             = var.db_name
-  db_username         = var.db_username
-  db_password         = var.db_password
+  db_username         = data.azurerm_key_vault_secret.db_user_login.value
+  db_password         = data.azurerm_key_vault_secret.db_user_login.value
   db_connection_limit = var.db_connection_limit
   db_schema           = var.db_schema
-
 }

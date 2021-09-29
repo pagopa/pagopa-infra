@@ -1,3 +1,20 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "= 2.76.0"
+    }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "= 2.3.0"
+    }
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "= 1.14.0"
+    }
+  }
+}
+
 resource "azurerm_postgresql_server" "this" {
   name                = var.name
   location            = var.location
@@ -32,6 +49,17 @@ resource "azurerm_postgresql_server" "this" {
   }
 
   tags = var.tags
+}
+
+provider "postgresql" {
+  host             = azurerm_postgresql_server.this.fqdn
+  port             = 5432
+  username         = "${var.db_username}@${azurerm_postgresql_server.this.name}"
+  password         = var.db_password
+  sslmode          = "require"
+  expected_version = "10"
+  superuser        = false
+  connect_timeout  = 15
 }
 
 resource "azurerm_postgresql_server" "replica" {
@@ -339,7 +367,7 @@ resource "postgresql_role" "this" {
 */
 resource "postgresql_schema" "this" {
   name  = var.db_schema
-  owner = postgresql_role.this.db_username
+  owner = postgresql_role.this.name
 }
 
 /*
