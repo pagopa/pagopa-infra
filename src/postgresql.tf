@@ -1,14 +1,7 @@
-resource "azurerm_resource_group" "data_rg" {
-  name     = format("%s-data-rg", local.project)
-  location = var.location
-
-  tags = var.tags
-}
-
-module "mock_data_snet" {
+module "postgresql_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7"
-  name                                           = format("%s-mock-data-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_mock_data
+  name                                           = format("%s-postgresql-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_postgresql
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
   service_endpoints                              = ["Microsoft.Sql"]
@@ -37,34 +30,31 @@ data "azurerm_key_vault_secret" "db_user_login_password" {
 
 #tfsec:ignore:azure-database-no-public-access
 module "postgresql" {
-  source                           = "./modules/postgresql_server"
+  count  = var.prostgresql_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v1.0.51"
+
   name                             = format("%s-postgresql", local.project)
-  location                         = azurerm_resource_group.data_rg.location
-  resource_group_name              = azurerm_resource_group.data_rg.name
+  location                         = azurerm_resource_group.data.location
+  resource_group_name              = azurerm_resource_group.data.name
   virtual_network_id               = module.vnet.id
-  subnet_id                        = module.mock_data_snet.id
+  subnet_id                        = module.postgresql_snet.id
   administrator_login              = data.azurerm_key_vault_secret.db_administrator_login.value
   administrator_login_password     = data.azurerm_key_vault_secret.db_administrator_login_password.value
-  sku_name                         = var.db_sku_name
-  storage_mb                       = var.db_storage_mb
-  db_version                       = 10
-  geo_redundant_backup_enabled     = var.db_geo_redundant_backup_enabled
-  enable_replica                   = var.db_enable_replica
+  sku_name                         = var.postgresql_sku_name
+  storage_mb                       = var.postgresql_storage_mb
+  db_version                       = 11
+  geo_redundant_backup_enabled     = var.postgresql_geo_redundant_backup_enabled
+  enable_replica                   = var.postgresql_enable_replica
   ssl_minimal_tls_version_enforced = "TLS1_2"
-  public_network_access_enabled    = var.mock_data_public
+  public_network_access_enabled    = var.postgresql_public_network_access_enabled
   lock_enable                      = var.lock_enable
 
-  network_rules = var.db_network_rules
+  network_rules = var.postgresql_network_rules
 
-  configuration = var.db_configuration
+  configuration = var.postgresql_configuration
 
-  alerts_enabled = var.db_alerts_enabled
+  alerts_enabled = var.postgresql_alerts_enabled
 
   tags = var.tags
-
-  db_name             = var.db_name
-  db_username         = data.azurerm_key_vault_secret.db_user_login.value
-  db_password         = data.azurerm_key_vault_secret.db_user_login.value
-  db_connection_limit = var.db_connection_limit
-  db_schema           = var.db_schema
 }
+

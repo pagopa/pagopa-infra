@@ -14,7 +14,7 @@ cidr_subnet_appgateway = ["10.1.128.0/24"]
 cidr_subnet_azdoa      = ["10.1.130.0/24"]
 cidr_subnet_mock_ec    = ["10.1.240.0/29"]
 cidr_subnet_mock_psp   = ["10.1.240.8/29"]
-cidr_subnet_mock_data  = ["10.1.240.16/29"]
+cidr_subnet_postgresql = ["10.1.240.16/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -37,12 +37,17 @@ app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 
-mock_ec_enabled = true
+mock_ec_enabled  = true
+mock_psp_enabled = true
 
-mock_psp_enabled  = true
-db_sku_name       = "B_Gen5_1"
-db_enable_replica = false
-mock_data_public  = true
-prostgres_enabled = true
-db_name           = "mock-db"
-db_schema         = "mock-psp"
+postgresql_sku_name                      = "GP_Gen5_2" # fixme verify
+postgresql_enable_replica                = false
+postgresql_public_network_access_enabled = true
+prostgresql_enabled                      = true
+postgresql_network_rules = {
+  ip_rules = [
+    "0.0.0.0/0"
+  ]
+  # dblink
+  allow_access_to_azure_services = false
+}

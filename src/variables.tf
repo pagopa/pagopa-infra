@@ -238,83 +238,81 @@ variable "enable_iac_pipeline" {
 }
 
 ## Database server postgresl 
-variable "db_sku_name" {
+variable "postgresql_sku_name" {
   type        = string
   description = "Specifies the SKU Name for this PostgreSQL Server."
 }
 
-variable "db_geo_redundant_backup_enabled" {
+variable "postgresql_geo_redundant_backup_enabled" {
   type        = bool
   default     = false
   description = "Turn Geo-redundant server backups on/off."
 }
 
-variable "db_enable_replica" {
+variable "postgresql_enable_replica" {
   type        = bool
   default     = false
   description = "Create a PostgreSQL Server Replica."
 }
 
-variable "db_storage_mb" {
+variable "postgresql_storage_mb" {
   type        = number
   description = "Max storage allowed for a server"
   default     = 5120
 }
 
-variable "db_configuration" {
+variable "postgresql_configuration" {
   type        = map(string)
   description = "PostgreSQL Server configuration"
   default     = {}
 }
 
-variable "db_alerts_enabled" {
+variable "postgresql_alerts_enabled" {
   type        = bool
   default     = false
   description = "Database alerts enabled?"
 }
 
-variable "db_network_rules" {
-  type = object({
-    ip_rules                       = list(string)
-    allow_access_to_azure_services = bool
-  })
-  default = {
-    ip_rules = []
-    # dblink
-    allow_access_to_azure_services = true
-  }
-  description = "Database network rules"
-}
-
-variable "cidr_subnet_mock_data" {
+variable "cidr_subnet_postgresql" {
   type        = list(string)
-  description = "Address prefixes subnet mock data"
+  description = "Address prefixes subnet postgresql"
   default     = null
 }
 
-variable "mock_data_public" {
+variable "postgresql_public_network_access_enabled" {
   type        = bool
   default     = false
-  description = "Mock database public?"
+  description = "database public"
 }
 
-variable "prostgres_enabled" {
+variable "prostgresql_enabled" {
   type        = bool
   default     = false
   description = "Mock postegres database enable?"
 }
 
-variable "db_name" {
+variable "postgresql_network_rules" {
+  description = "Network rules restricting access to the postgresql server."
+  type = object({
+    ip_rules                       = list(string)
+    allow_access_to_azure_services = bool
+  })
+  default = {
+    ip_rules                       = []
+    allow_access_to_azure_services = false
+  }
+}
+variable "postgresql_name" {
   type    = string
   default = null
 }
 
-variable "db_connection_limit" {
+variable "postgresql_connection_limit" {
   type    = number
   default = -1 //no limit
 }
 
-variable "db_schema" {
+variable "postgresql_schema" {
   type    = string
   default = null
 }

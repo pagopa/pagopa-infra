@@ -14,7 +14,7 @@ cidr_subnet_appgateway = ["10.1.128.0/24"]
 cidr_subnet_azdoa      = ["10.1.130.0/24"]
 cidr_subnet_mock_ec    = ["10.1.240.0/29"]
 cidr_subnet_mock_psp   = ["10.1.240.8/29"]
-cidr_subnet_mock_data  = ["10.1.240.16/29"]
+cidr_subnet_postgresql = ["10.1.240.16/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -38,8 +38,8 @@ app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 app_gateway_min_capacity                = 1
 app_gateway_max_capacity                = 2
 
-mock_psp_enabled  = false
-db_sku_name       = "B_Gen5_1"
-db_enable_replica = false
-mock_data_public  = false
-prostgres_enabled = false
+mock_psp_enabled                 = false
+db_sku_name                      = "B_Gen5_1"
+db_enable_replica                = false
+db_public_network_access_enabled = false
+prostgres_enabled                = false

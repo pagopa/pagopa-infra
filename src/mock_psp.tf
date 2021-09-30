@@ -47,11 +47,11 @@ module "mock_psp" {
   health_check_path   = "/mockPspService/api/v1/info"
 
   app_settings = {
-    SERVER_PUBLIC_URL           = format("https://api.%s.%s/mock-psp/mng-api", var.dns_zone_prefix, var.external_domain),
-    PAGOPA_MOCK_PSP_DB_USERNAME = data.azurerm_key_vault_secret.db_user_login.value,
-    PAGOPA_MOCK_PSP_DB_PWD      = data.azurerm_key_vault_secret.db_user_login_password.value,
-    PAGOPA_MOCK_PSP_DB_URL      = format("%s:5432/%s", module.postgresql.fqdn, var.db_name),
-    SERVER_PORT                 = 7954,
+    SERVER_PUBLIC_URL = format("https://api.%s.%s/mock-psp/mng-api", var.dns_zone_prefix, var.external_domain),
+    # PAGOPA_MOCK_PSP_DB_USERNAME = data.azurerm_key_vault_secret.db_user_login.value,
+    # PAGOPA_MOCK_PSP_DB_PWD      = data.azurerm_key_vault_secret.db_user_login_password.value,
+    # PAGOPA_MOCK_PSP_DB_URL      = format("%s:5432/%s", module.postgresql.fqdn, var.db_name),
+    # SERVER_PORT                 = 7954,
   }
 
   allowed_subnets = [module.apim_snet.id]
