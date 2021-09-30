@@ -43,7 +43,7 @@ module "api_config_app_service" {
   name                = format("%s-app-api-config", local.project)
   client_cert_enabled = false
   always_on           = var.api_config_always_on
-  linux_fx_version    = "TOMCAT|9.0-java11"
+  linux_fx_version    = "java|11|Java SE|8"
   health_check_path   = "/apiconfig/api/v1/info"
 
   app_settings = {
