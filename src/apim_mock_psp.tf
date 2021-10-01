@@ -14,7 +14,7 @@ module "apim_mock_psp_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
 
   policy_xml = file("./api_product/mockpsp_api/_base_policy.xml")
@@ -32,7 +32,7 @@ module "apim_mock_psp_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_mock_psp_product[0].product_id]
-  subscription_required = true
+  subscription_required = false
 
   description  = "mock psp api"
   display_name = "mock psp api"
@@ -62,7 +62,7 @@ module "apim_mock_psp_mng_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_mock_psp_product[0].product_id]
-  subscription_required = false
+  subscription_required = true
 
   description  = "mock psp mng api"
   display_name = "mock psp mng api"
