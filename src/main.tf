@@ -8,6 +8,7 @@ terraform {
       source  = "hashicorp/azuread"
       version = "= 2.3.0"
     }
+
   }
 
   backend "azurerm" {}

@@ -244,7 +244,7 @@ variable "app_gateway_management_certificate_name" {
 
 variable "app_gateway_min_capacity" {
   type    = number
-  default = 1
+  default = 0
 }
 
 variable "app_gateway_max_capacity" {
@@ -267,4 +267,89 @@ variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
+}
+
+## Database server postgresl 
+variable "postgresql_sku_name" {
+  type        = string
+  description = "Specifies the SKU Name for this PostgreSQL Server."
+}
+
+variable "postgresql_geo_redundant_backup_enabled" {
+  type        = bool
+  default     = false
+  description = "Turn Geo-redundant server backups on/off."
+}
+
+variable "postgresql_enable_replica" {
+  type        = bool
+  default     = false
+  description = "Create a PostgreSQL Server Replica."
+}
+
+variable "postgresql_storage_mb" {
+  type        = number
+  description = "Max storage allowed for a server"
+  default     = 5120
+}
+
+variable "postgresql_configuration" {
+  type        = map(string)
+  description = "PostgreSQL Server configuration"
+  default     = {}
+}
+
+variable "postgresql_alerts_enabled" {
+  type        = bool
+  default     = false
+  description = "Database alerts enabled?"
+}
+
+variable "cidr_subnet_postgresql" {
+  type        = list(string)
+  description = "Address prefixes subnet postgresql"
+  default     = null
+}
+
+variable "postgresql_public_network_access_enabled" {
+  type        = bool
+  default     = false
+  description = "database public"
+}
+
+variable "prostgresql_enabled" {
+  type        = bool
+  default     = false
+  description = "Mock postegres database enable?"
+}
+
+variable "postgresql_network_rules" {
+  description = "Network rules restricting access to the postgresql server."
+  type = object({
+    ip_rules                       = list(string)
+    allow_access_to_azure_services = bool
+  })
+  default = {
+    ip_rules                       = []
+    allow_access_to_azure_services = false
+  }
+}
+variable "postgresql_name" {
+  type    = string
+  default = null
+}
+
+variable "postgresql_connection_limit" {
+  type    = number
+  default = -1 //no limit
+}
+
+variable "postgresql_schema" {
+  type    = string
+  default = null
+}
+
+variable "prostgresql_db_mockpsp" {
+  type    = string
+  default = null
 }
