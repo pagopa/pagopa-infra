@@ -71,7 +71,7 @@
       },
       "post": {
         "operationId": "WebView POST",
-        "description": "TEST WebView paypal",,
+        "description": "TEST WebView paypal",
         "responses": {
           "200": {
             "description": "html with redirect"
