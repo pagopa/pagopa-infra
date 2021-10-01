@@ -38,8 +38,15 @@ app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 app_gateway_min_capacity                = 1
 app_gateway_max_capacity                = 2
 
-mock_psp_enabled                 = false
-db_sku_name                      = "B_Gen5_1"
-db_enable_replica                = false
-db_public_network_access_enabled = false
-prostgres_enabled                = false
+postgresql_sku_name                      = "GP_Gen5_2" # fixme verify
+postgresql_enable_replica                = false
+postgresql_public_network_access_enabled = true
+prostgresql_enabled                      = false
+postgresql_network_rules = {
+  ip_rules = [
+    "0.0.0.0/0"
+  ]
+  # dblink
+  allow_access_to_azure_services = false
+}
+prostgresql_db_mockpsp = "mock-psp" 
