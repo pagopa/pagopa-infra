@@ -37,6 +37,24 @@
     },
      "/paypalpsp/management/response/{idappio}/{apiid}": {
         "get": {
+          "parameters": [
+            {
+              "in": "path",
+              "name": "idappio",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "in": "path",
+              "name": "apiid",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],        
           "operationId": "getmanagement",
           "description": "GET management",
           "responses": {
