@@ -23,8 +23,9 @@ cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
-cidr_vnet_integration = ["10.230.7.0/24"] # todo ask to SIA
-cidr_subnet_apim      = ["10.230.7.0/26"]
+cidr_vnet_integration  = ["10.230.7.0/24"] # ask to SIA
+cidr_subnet_apim       = ["10.230.7.0/26"]
+cidr_subnet_api_config = ["10.230.7.128/29"]
 
 # dns
 external_domain = "pagopa.it"
@@ -61,3 +62,6 @@ prostgresql_db_mockpsp = "mock-psp"
 # mock
 mock_ec_enabled  = true
 mock_psp_enabled = true
+
+# api_config
+api_config_enabled = true

@@ -59,3 +59,5 @@ postgresql_public_network_access_enabled = false
 mock_ec_enabled  = false
 mock_psp_enabled = false
 
+# api_config
+api_config_enabled = false
