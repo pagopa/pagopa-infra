@@ -4,7 +4,7 @@
     "title": "PagoPA API configuration",
     "description": "Spring application to manage configuration Api for EC/PSP on the Nodo component.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.0-SNAPSHOT"
+    "version": "0.1.1"
   },
   "servers": [
     {
@@ -68,21 +68,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Stations"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Forbidden client error status."
-          },
-          "429": {
-            "description": "Too many requests"
           },
           "500": {
             "description": "Service unavailable.",
@@ -93,6 +80,19 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stations"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests"
           }
         },
         "security": [
@@ -123,24 +123,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StationDetails"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Forbidden client error status."
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "429": {
-            "description": "Too many requests"
           },
           "500": {
             "description": "Service unavailable.",
@@ -151,6 +135,22 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StationDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "security": [
@@ -191,20 +191,14 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK.",
+          "500": {
+            "description": "Service unavailable.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditorInstitutions"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
-            }
-          },
-          "403": {
-            "description": "Forbidden client error status.",
-            "content": {
-              "application/json": {}
             }
           },
           "429": {
@@ -213,12 +207,18 @@
               "application/json": {}
             }
           },
-          "500": {
-            "description": "Service unavailable.",
+          "403": {
+            "description": "Forbidden client error status.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "200": {
+            "description": "OK.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+                  "$ref": "#/components/schemas/CreditorInstitutions"
                 }
               }
             }
@@ -262,20 +262,8 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden client error status.",
-            "content": {
-              "application/json": {}
-            }
-          },
           "404": {
             "description": "Not Found",
-            "content": {
-              "application/json": {}
-            }
-          },
-          "429": {
-            "description": "Too many requests",
             "content": {
               "application/json": {}
             }
@@ -288,6 +276,18 @@
                   "$ref": "#/components/schemas/ProblemJson"
                 }
               }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "403": {
+            "description": "Forbidden client error status.",
+            "content": {
+              "application/json": {}
             }
           }
         },
@@ -319,24 +319,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StationCIList"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Forbidden client error status."
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "429": {
-            "description": "Too many requests"
           },
           "500": {
             "description": "Service unavailable.",
@@ -347,6 +331,22 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StationCIList"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "security": [
@@ -390,12 +390,6 @@
           "403": {
             "description": "Forbidden client error status."
           },
-          "404": {
-            "description": "Not Found"
-          },
-          "429": {
-            "description": "Too many requests"
-          },
           "500": {
             "description": "Service unavailable.",
             "content": {
@@ -405,6 +399,12 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "security": [
@@ -448,12 +448,6 @@
           "403": {
             "description": "Forbidden client error status."
           },
-          "404": {
-            "description": "Not Found"
-          },
-          "429": {
-            "description": "Too many requests"
-          },
           "500": {
             "description": "Service unavailable.",
             "content": {
@@ -463,6 +457,12 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "security": [
@@ -525,9 +525,6 @@
           "403": {
             "description": "Forbidden client error status."
           },
-          "429": {
-            "description": "Too many requests"
-          },
           "500": {
             "description": "Service unavailable.",
             "content": {
@@ -537,6 +534,9 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too many requests"
           }
         },
         "security": [
@@ -580,12 +580,6 @@
           "403": {
             "description": "Forbidden client error status."
           },
-          "404": {
-            "description": "Not Found"
-          },
-          "429": {
-            "description": "Too many requests"
-          },
           "500": {
             "description": "Service unavailable.",
             "content": {
@@ -595,6 +589,12 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "security": [
@@ -607,6 +607,39 @@
   },
   "components": {
     "schemas": {
+      "ProblemJson": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "An absolute URI that identifies the problem type. When dereferenced, it SHOULD provide human-readable documentation for the problem type (e.g., using HTML).",
+            "format": "uri",
+            "example": "https://example.com/problem/constraint-violation"
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          },
+          "status": {
+            "maximum": 600,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 200
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem.",
+            "example": "There was an error processing the request"
+          },
+          "instance": {
+            "type": "string",
+            "description": "An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
+            "format": "uri"
+          }
+        }
+      },
       "PageInfo": {
         "required": [
           "items_found",
@@ -679,39 +712,6 @@
           },
           "page_info": {
             "$ref": "#/components/schemas/PageInfo"
-          }
-        }
-      },
-      "ProblemJson": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "An absolute URI that identifies the problem type. When dereferenced, it SHOULD provide human-readable documentation for the problem type (e.g., using HTML).",
-            "format": "uri",
-            "example": "https://example.com/problem/constraint-violation"
-          },
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
-          },
-          "instance": {
-            "type": "string",
-            "description": "An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
-            "format": "uri"
           }
         }
       },
@@ -1097,10 +1097,10 @@
             "format": "int64"
           },
           "fourth_model": {
-            "type": "string"
+            "type": "boolean"
           },
           "broadcast": {
-            "type": "string"
+            "type": "boolean"
           }
         }
       },

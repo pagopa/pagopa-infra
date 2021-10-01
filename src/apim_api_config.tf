@@ -39,7 +39,7 @@ module "apim_api_config_api" {
   path         = "apiconfig/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s/apiconfig", module.api_config_app_service[0].default_site_hostname)
+  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service[0].default_site_hostname)
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {

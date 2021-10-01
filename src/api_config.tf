@@ -13,7 +13,7 @@ module "api_config_snet" {
   name                                           = format("%s-api-config-snet", local.project)
   address_prefixes                               = var.cidr_subnet_api_config
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
+  virtual_network_name                           = module.vnet_integration
   enforce_private_link_endpoint_network_policies = true
 
   delegation = {
@@ -43,7 +43,7 @@ module "api_config_app_service" {
   name                = format("%s-app-api-config", local.project)
   client_cert_enabled = false
   always_on           = var.api_config_always_on
-  linux_fx_version    = "TOMCAT|9.0-java11"
+  linux_fx_version    = "java|11|Java SE|8"
   health_check_path   = "/apiconfig/api/v1/info"
 
   app_settings = {
