@@ -13,7 +13,7 @@ module "api_config_snet" {
   name                                           = format("%s-api-config-snet", local.project)
   address_prefixes                               = var.cidr_subnet_api_config
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet_integration
+  virtual_network_name                           = module.vnet_integration.name
   enforce_private_link_endpoint_network_policies = true
 
   delegation = {
