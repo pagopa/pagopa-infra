@@ -18,22 +18,14 @@
     }
   ],
   "paths": {
-    "/paypalpsp/api/pp_oboarding_back": {
+    "/paypalpsp/api/pp_onboarding_back": {
       "post": {
         "tags": [
           "paypalmock"
         ],
         "summary": "server to server api used to start onboarding",
         "requestBody": {
-          "description": "New Onboarding required",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartOnboardingRequest"
-              }
-            }
-          }
+          "description": "New Onboarding required"
         },
         "responses": {
           "200": {
@@ -59,6 +51,38 @@
             "bearerAuth": []
           }
         ]
+      }
+    },
+    "/paypalweb/*": {
+      "get": {
+        "operationId": "WebView GET",
+        "description": "TEST WebView paypal",
+        "responses": {
+          "200": {
+            "description": "html with redirect"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      },
+      "post": {
+        "operationId": "WebView POST",
+        "description": "TEST WebView paypal",,
+        "responses": {
+          "200": {
+            "description": "html with redirect"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
       }
     }
   },

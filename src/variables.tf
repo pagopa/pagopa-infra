@@ -316,3 +316,8 @@ variable "postgresql_schema" {
   type    = string
   default = null
 }
+
+variable "prostgresql_db_mockpsp" {
+  type    = string
+  default = null
+}

@@ -51,3 +51,4 @@ postgresql_network_rules = {
   # dblink
   allow_access_to_azure_services = false
 }
+prostgresql_db_mockpsp                   = "mock-psp"

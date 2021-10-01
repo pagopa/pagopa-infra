@@ -18,22 +18,39 @@
     }
   ],
   "paths": {
-      "/": {
-      "get": {
-        "operationId": "test",
-        "description": "TEST api",
-        "responses": {
-          "200": {
-            "description": "html with redirect"
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "500": {
-            "description": "generic error"
+      "/paypalpsp/management/response": {
+        "patch": {
+          "operationId": "patchmanagement",
+          "description": "patch management",
+          "responses": {
+            "200": {
+              "description": "json response"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "generic error"
+            }
           }
         }
-      }
+    },
+     "/paypalpsp/management/response/{idappio}/{apiid}": {
+        "get": {
+          "operationId": "getmanagement",
+          "description": "GET management",
+          "responses": {
+            "200": {
+              "description": "json response"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "generic error"
+            }
+          }
+        }
     }
   },
   "components": {
