@@ -51,7 +51,7 @@ resource "azurerm_api_management_api" "apim_nodo_pagamenti_api" {
   # https://raw.githubusercontent.com/monodot/camel-demos/master/simple-tests/src/main/resources/wsdl/BookService.wsdl
   import {
     content_format = "wsdl-link"
-    content_value  = format("https://raw.githubusercontent.com/pasqualespica/pagopa-api/develop/psp/pspForNode.wsdl")
+    content_value  = format("https://raw.githubusercontent.com/pagopa/pagopa-infra/PAG-851-devporta-nodo-nm3/src/api/nodopagamenti_api/v1/pspForNode.wsdl")
   }
 
 }
