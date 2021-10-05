@@ -186,3 +186,5 @@ eventhubs = [
     ]
   },
 ]
+
+nodo_pagamenti_enabled = true
