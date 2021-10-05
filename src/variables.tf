@@ -153,6 +153,14 @@ variable "api_config_always_on" {
   default     = false
 }
 
+# nodo dei pagamenti
+
+variable "nodo_pagamenti_enabled" {
+  type        = bool
+  description = "nodo pagamenti enabled"
+  default     = false
+}
+
 # Network
 variable "cidr_vnet" {
   type        = list(string)
