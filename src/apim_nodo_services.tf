@@ -47,33 +47,11 @@ resource "azurerm_api_management_api" "apim_nodo_pagamenti_api" {
 
   soap_pass_through = true
 
+  # wsdl example
+  # https://raw.githubusercontent.com/monodot/camel-demos/master/simple-tests/src/main/resources/wsdl/BookService.wsdl
   import {
-    content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/v1/nodeForPsp.wsdl")
-    wsdl_selector {
-      service_name  = "pspForNode_Service"
-      endpoint_name = "http://pagopa-api.pagopa.gov.it/nodo/nodeForPsp.wsdl"
-    }
+    content_format = "wsdl-link"
+    content_value  = format("https://raw.githubusercontent.com/pasqualespica/pagopa-api/develop/psp/pspForNode.wsdl")
   }
 
 }
-
-
-# resource "azurerm_api_management_api" "broker_api" {
-#   name                  = format("%s-broker-api", local.project)
-#   resource_group_name   = azurerm_resource_group.rg_api.name
-#   api_management_name   = module.apim.name
-#   revision              = "1"
-#   display_name          = "BROKER"
-#   subscription_required = false
-#   # Service will respond on path /broker/v1/partner
-#   path              = "broker/v1"
-#   protocols         = ["http", "https"]
-#   service_url       = format("https://%s/partner", module.payments.default_site_hostname)
-#   soap_pass_through = true
-
-#   import {
-#     content_format = "wsdl-link"
-#     content_value  = format("https://%s/partner/partner.wsdl", module.payments.default_site_hostname)
-#   }
-# }
