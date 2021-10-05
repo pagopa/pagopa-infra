@@ -20,7 +20,7 @@
   "paths": {
       "/paypalpsp/management/response": {
         "get": {
-          "operationId": "getmanagement",
+          "operationId": "getmanagementresponse",
           "description": "get management",
           "responses": {
             "200": {
@@ -33,7 +33,7 @@
               "description": "generic error"
             }
           }
-        }
+        },
         "patch": {
           "operationId": "patchmanagement",
           "description": "patch management",
