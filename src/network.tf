@@ -42,3 +42,40 @@ module "vnet_peering" {
   target_remote_virtual_network_id = module.vnet_integration.id
   target_use_remote_gateways       = false # needed by vnet peering with SIA
 }
+
+
+module "route_table_peering_sia" {
+  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.25"
+
+  name                          = format("%s-sia-rt", local.project)
+  location                      = azurerm_resource_group.rg_vnet.location
+  resource_group_name           = azurerm_resource_group.rg_vnet.name
+  disable_bgp_route_propagation = false
+
+  subnet_ids = [module.apim_snet.id, module.api_config_snet[0].id]
+
+  routes = [{
+    # production
+    name                   = "to-sia-prod-subnet"
+    address_prefix         = "10.70.132.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.70.249.10"
+    },
+    {
+      # uat
+      name                   = "to-sia-uat-subnet"
+      address_prefix         = "10.70.67.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10"
+    },
+    {
+      # dev
+      name                   = "to-apim-sia-dev-subnet"
+      address_prefix         = "10.70.65.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10"
+    },
+  ]
+
+  tags = var.tags
+}
