@@ -353,3 +353,16 @@ variable "prostgresql_db_mockpsp" {
   type    = string
   default = null
 }
+
+# eventhub
+variable "eventhub_enabled" {
+  type        = bool
+  default     = false
+  description = "eventhub enable?"
+}
+
+variable "cidr_subnet_eventhub" {
+  type        = list(string)
+  description = "Address prefixes subnet mock psp"
+  default     = null
+}

@@ -26,6 +26,7 @@ cidr_subnet_mock_psp = ["10.1.240.8/29"]
 cidr_vnet_integration  = ["10.230.9.0/24"] # ask to SIA
 cidr_subnet_apim       = ["10.230.9.0/26"]
 cidr_subnet_api_config = ["10.230.9.128/29"]
+cidr_subnet_eventhub   = ["10.230.9.64/26"]
 
 # dns
 external_domain = "pagopa.it"
@@ -65,3 +66,6 @@ mock_psp_enabled = false
 
 # api_config
 api_config_enabled = true
+
+# eventhub 
+eventhub_enabled = true
