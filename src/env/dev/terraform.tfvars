@@ -70,3 +70,6 @@ api_config_enabled = true
 
 # eventhub 
 eventhub_enabled = true
+
+# checkout
+checkout_enabled = false

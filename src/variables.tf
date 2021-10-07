@@ -372,3 +372,8 @@ variable "cidr_subnet_eventhub" {
   description = "Address prefixes subnet mock psp"
   default     = null
 }
+// checkout
+variable "checkout_enabled" {
+  type    = bool
+  default = false
+}
