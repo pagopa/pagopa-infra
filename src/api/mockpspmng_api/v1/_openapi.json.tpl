@@ -19,6 +19,21 @@
   ],
   "paths": {
       "/paypalpsp/management/response": {
+        "get": {
+          "operationId": "getmanagementresponse",
+          "description": "get management",
+          "responses": {
+            "200": {
+              "description": "json response"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "generic error"
+            }
+          }
+        },
         "patch": {
           "operationId": "patchmanagement",
           "description": "patch management",
