@@ -4,11 +4,11 @@
     "title": "PagoPA API configuration",
     "description": "Spring application to manage configuration Api for EC/PSP on the Nodo component.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.2.8"
+    "version": "0.2.13"
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:8080/apiconfig/api/v1",
+      "url": "http://localhost:8080/apiconfig/api/v1",
       "description": "Generated server url"
     }
   ],
@@ -123,14 +123,24 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StationDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
           "403": {
             "description": "Forbidden client error status."
           },
           "429": {
             "description": "Too many requests"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Service unavailable.",
@@ -138,16 +148,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StationDetails"
                 }
               }
             }
@@ -201,6 +201,128 @@
         ]
       }
     },
+    "/icas": {
+      "get": {
+        "tags": [
+          "Creditor Institutions"
+        ],
+        "summary": "Get the list of ICAs",
+        "operationId": "getIcas",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Default = 50",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Page value starts from 0",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Icas"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden client error status."
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/icas/{idica}": {
+      "get": {
+        "tags": [
+          "Creditor Institutions"
+        ],
+        "summary": "Download a XML file containing the details of an ICA",
+        "operationId": "getIca",
+        "parameters": [
+          {
+            "name": "idica",
+            "in": "path",
+            "description": "Id ICA",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "403": {
+            "description": "Forbidden client error status."
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
     "/creditorinstitutions": {
       "get": {
         "tags": [
@@ -232,16 +354,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreditorInstitutions"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Forbidden client error status.",
             "content": {
@@ -252,6 +364,16 @@
             "description": "Too many requests",
             "content": {
               "application/json": {}
+            }
+          },
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditorInstitutions"
+                }
+              }
             }
           },
           "500": {
@@ -360,6 +482,15 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "403": {
+            "description": "Forbidden client error status."
+          },
+          "429": {
+            "description": "Too many requests"
+          },
           "200": {
             "description": "OK.",
             "content": {
@@ -369,15 +500,6 @@
                 }
               }
             }
-          },
-          "403": {
-            "description": "Forbidden client error status."
-          },
-          "429": {
-            "description": "Too many requests"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Service unavailable.",
@@ -418,24 +540,14 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Not Found"
+          },
           "403": {
             "description": "Forbidden client error status."
           },
           "429": {
             "description": "Too many requests"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Service unavailable.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
           },
           "200": {
             "description": "OK.",
@@ -443,6 +555,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Ibans"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -476,14 +598,24 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditorInstitutionEncodings"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
           "403": {
             "description": "Forbidden client error status."
           },
           "429": {
             "description": "Too many requests"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Service unavailable.",
@@ -494,13 +626,134 @@
                 }
               }
             }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/counterparttables": {
+      "get": {
+        "tags": [
+          "Creditor Institutions"
+        ],
+        "summary": "Get the counterparties table",
+        "operationId": "getCounterpartTables",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Default = 50",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Page value starts from 0",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Forbidden client error status."
           },
           "200": {
             "description": "OK.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditorInstitutionEncodings"
+                  "$ref": "#/components/schemas/CounterpartTables"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/counterparttables/{idcounterparttable}": {
+      "get": {
+        "tags": [
+          "Creditor Institutions"
+        ],
+        "summary": "Download a XML file containing the details of a counterpart table",
+        "operationId": "getCounterpartTable",
+        "parameters": [
+          {
+            "name": "idcounterparttable",
+            "in": "path",
+            "description": "Id counterpart table",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "creditorinstitutioncode",
+            "in": "query",
+            "description": "Creditor institution code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "403": {
+            "description": "Forbidden client error status."
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -544,9 +797,6 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "Forbidden client error status."
-          },
           "200": {
             "description": "OK.",
             "content": {
@@ -556,6 +806,9 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "Forbidden client error status."
           },
           "429": {
             "description": "Too many requests"
@@ -599,15 +852,6 @@
           }
         ],
         "responses": {
-          "403": {
-            "description": "Forbidden client error status."
-          },
-          "429": {
-            "description": "Too many requests"
-          },
-          "404": {
-            "description": "Not Found"
-          },
           "200": {
             "description": "OK.",
             "content": {
@@ -617,6 +861,15 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "403": {
+            "description": "Forbidden client error status."
+          },
+          "429": {
+            "description": "Too many requests"
           },
           "500": {
             "description": "Service unavailable.",
@@ -853,6 +1106,56 @@
           },
           "flag_online": {
             "type": "boolean"
+          }
+        }
+      },
+      "Ica": {
+        "required": [
+          "business_name",
+          "creditor_institution_code",
+          "id_ica",
+          "publication_date",
+          "validity_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id_ica": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "creditor_institution_code": {
+            "type": "string",
+            "example": "1234567890100"
+          },
+          "business_name": {
+            "type": "string",
+            "example": "Comune di Lorem Ipsum"
+          },
+          "validity_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publication_date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Icas": {
+        "required": [
+          "icas",
+          "page_info"
+        ],
+        "type": "object",
+        "properties": {
+          "icas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ica"
+            }
+          },
+          "page_info": {
+            "$ref": "#/components/schemas/PageInfo"
           }
         }
       },
@@ -1105,6 +1408,56 @@
           },
           "code": {
             "type": "string"
+          }
+        }
+      },
+      "CounterpartTable": {
+        "required": [
+          "business_name",
+          "creditor_institution_code",
+          "id_counterpart_table",
+          "publication_date",
+          "validity_date"
+        ],
+        "type": "object",
+        "properties": {
+          "id_counterpart_table": {
+            "type": "string",
+            "example": "123456789"
+          },
+          "creditor_institution_code": {
+            "type": "string",
+            "example": "1234567890100"
+          },
+          "business_name": {
+            "type": "string",
+            "example": "Comune di Lorem Ipsum"
+          },
+          "validity_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publication_date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CounterpartTables": {
+        "required": [
+          "counterpart_tables",
+          "page_info"
+        ],
+        "type": "object",
+        "properties": {
+          "counterpart_tables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CounterpartTable"
+            }
+          },
+          "page_info": {
+            "$ref": "#/components/schemas/PageInfo"
           }
         }
       },
