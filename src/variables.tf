@@ -478,3 +478,9 @@ EOD
     ))
   }))
 }
+# route table peering 
+variable "subnet_ids_route" {
+  type        = list(string)
+  description = "Address subnets for routing"
+  default     = null
+}

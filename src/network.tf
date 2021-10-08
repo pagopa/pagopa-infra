@@ -5,6 +5,16 @@ resource "azurerm_resource_group" "rg_vnet" {
   tags = var.tags
 }
 
+locals {
+
+  subnet_ids_ = [
+    module.apim_snet.id,
+    (var.api_config_enabled ? module.api_config_snet[0].id : ""),
+    (var.eventhub_enabled ? module.eventhub_snet[0].id : ""),
+  ]
+
+}
+
 # vnet
 module "vnet" {
   source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.51"
@@ -51,11 +61,9 @@ module "route_table_peering_sia" {
   resource_group_name           = azurerm_resource_group.rg_vnet.name
   disable_bgp_route_propagation = false
 
-  subnet_ids = [
-    module.apim_snet.id,
-    (var.api_config_enabled ? module.api_config_snet[0].id : null),
-    (var.eventhub_enabled ? module.eventhub_snet[0].id : null),
-  ]
+
+  subnet_ids = [for s in local.subnet_ids_ : s if s != ""]
+
 
   # 1 - apim pagopa       →   nodo sia              -- 10.230.[8|9|10].0/26   ---> ???
   # 2 - api config pagopa →   db nodo sia           -- 10.230.[8|9|10].128/29 ---> ???
