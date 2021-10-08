@@ -84,6 +84,23 @@
           }
         }
       }
+    },
+    "/static/*": {
+      "get": {
+        "operationId": "staticResourcesGET",
+        "description": "static resources GET",
+        "responses": {
+          "200": {
+            "description": "static resource"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      }
     }
   },
   "components": {
