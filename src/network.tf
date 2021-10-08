@@ -42,3 +42,78 @@ module "vnet_peering" {
   target_remote_virtual_network_id = module.vnet_integration.id
   target_use_remote_gateways       = false # needed by vnet peering with SIA
 }
+
+module "route_table_peering_sia" {
+  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.25"
+
+  name                          = format("%s-sia-rt", local.project)
+  location                      = azurerm_resource_group.rg_vnet.location
+  resource_group_name           = azurerm_resource_group.rg_vnet.name
+  disable_bgp_route_propagation = false
+
+  subnet_ids = [
+    module.apim_snet.id,
+    (var.api_config_enabled ? module.api_config_snet[0].id : null),
+    (var.eventhub_enabled ? module.eventhub_snet[0].id : null),
+  ]
+
+  # 1 - apim pagopa       →   nodo sia              -- 10.230.[8|9|10].0/26   ---> ???
+  # 2 - api config pagopa →   db nodo sia           -- 10.230.[8|9|10].128/29 ---> ???
+  # 3 - nodo sia          →   api config pagopa      -- ??? --> 10.230.[8|9|10].128/29 
+  # 4 - nodo sia          →   eventhub pagopa        -- ??? --> 10.230.[8|9|10].64/26 
+  # 5 - logstash sia      →   eventhub pagopa        -- ??? --> 10.230.[8|9|10].64/26 
+
+  routes = [
+    ### prod
+    {
+      # db nodo
+      name                   = "to-sia-db-nodo-prod-subnet"
+      address_prefix         = "10.70.132.0/24" # SIA 
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA 
+    },
+    {
+      # app nodo
+      name                   = "to-sia-app-nodo-prod-subnet"
+      address_prefix         = "10.70.132.0/24" # SIA 
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA 
+    },
+    ### uat
+    {
+      # db nodo
+      name                   = "to-sia-db-nodo-uat-subnet"
+      address_prefix         = "10.70.132.0/24" # SIA 
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA 
+    },
+    {
+      # app nodo
+      name                   = "to-sia-app-nodo-uat-subnet"
+      address_prefix         = "10.70.132.0/24" # SIA 
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA 
+    },
+    ### dev
+    {
+      # db nodo
+      name                   = "to-sia-db-nodo-dev-subnet"
+      address_prefix         = "10.70.132.0/24" # SIA 
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA 
+    },
+    {
+      # app nodo
+      name                   = "to-sia-app-nodo-dev-subnet"
+      address_prefix         = "10.70.132.0/24" # SIA 
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA 
+    },
+
+  ]
+
+  tags = var.tags
+}
+
+
+
