@@ -184,3 +184,13 @@ data "azurerm_key_vault_secret" "sec_storage_id" {
   name         = "sec-storage-id"
   key_vault_id = module.key_vault.id
 }
+
+data "azurerm_key_vault_secret" "monitor_notification_email" {
+  name         = "monitor-notification-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
+  name         = "monitor-notification-slack-email"
+  key_vault_id = module.key_vault.id
+}
