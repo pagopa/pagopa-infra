@@ -13,10 +13,10 @@ resource "azurerm_dns_ns_record" "dev_checkout" {
   zone_name           = azurerm_dns_zone.checkout_public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   records = [
-    "ns1-03.azure-dns.com.",
-    "ns2-03.azure-dns.net.",
-    "ns3-03.azure-dns.org.",
-    "ns4-03.azure-dns.info."
+    "ns1-07.azure-dns.com.",
+    "ns2-07.azure-dns.net.",
+    "ns3-07.azure-dns.org.",
+    "ns4-07.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
   tags = var.tags
@@ -29,10 +29,10 @@ resource "azurerm_dns_ns_record" "uat_checkout" {
   zone_name           = azurerm_dns_zone.checkout_public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   records = [
-    "ns1-02.azure-dns.com.",
-    "ns2-02.azure-dns.net.",
-    "ns3-02.azure-dns.org.",
-    "ns4-02.azure-dns.info."
+    "ns1-01.azure-dns.com.",
+    "ns2-01.azure-dns.net.",
+    "ns3-01.azure-dns.org.",
+    "ns4-01.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
   tags = var.tags
