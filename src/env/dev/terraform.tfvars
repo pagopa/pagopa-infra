@@ -154,7 +154,6 @@ eventhubs = [
         send   = false
         manage = false
       }
-
     ]
   },
   {
