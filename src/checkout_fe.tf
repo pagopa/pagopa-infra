@@ -54,12 +54,13 @@ resource "azurerm_cdn_profile" "checkout_cdn_p" {
 module "checkout_cdn_e" {
   source = "./modules/cdn_endpoint"
 
+  count                         = var.checkout_enabled ? 1 : 0
   name                          = format("%s-checkout-cdn-e", local.project)
   resource_group_name           = azurerm_resource_group.checkout_fe_rg[0].name
   location                      = var.location
   profile_name                  = azurerm_cdn_profile.checkout_cdn_p[0].name
   querystring_caching_behaviour = "BypassCaching"
-  origin_host_header            = module.checkout_sa[0].primary_web_host
+  origin_host_name              = module.checkout_sa[0].primary_web_host
 
 
   # allow HTTP, HSTS will make future connections over HTTPS
@@ -123,5 +124,6 @@ module "checkout_cdn_e" {
     }
 
   }]
+  tags = var.tags
 
 }
