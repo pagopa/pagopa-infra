@@ -10,25 +10,26 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
 }
 
 /**
- * CDN endpoint
+ * CDN
  */
-module "checkout_cdn_endpoint" {
-  source = "./modules/cdn_endpoint"
+module "checkout_cdn" {
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v1.0.67"
 
-  count               = var.checkout_enabled ? 1 : 0
-  product             = "checkout"
-  project             = local.project
-  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name
-  location            = var.location
+  count                 = var.checkout_enabled ? 1 : 0
+  name                  = "checkout"
+  prefix                = local.project
+  resource_group_name   = azurerm_resource_group.checkout_fe_rg[0].name
+  location              = var.location
+  hostname              = format("%s.%s", var.dns_zone_checkout, var.external_domain)
+  https_rewrite_enabled = true
+  lock_enabled          = var.lock_enable
 
-  account_kind                  = "StorageV2"
-  account_tier                  = "Standard"
-  account_replication_type      = "GRS"
-  access_tier                   = "Hot"
+  dns_zone_name                = azurerm_dns_zone.checkout_public[0].name
+  dns_zone_resource_group_name = azurerm_dns_zone.checkout_public[0].resource_group_name
+
   querystring_caching_behaviour = "BypassCaching"
 
   global_delivery_rule = {
-
     cache_expiration_action       = []
     cache_key_query_string_action = []
     modify_request_header_action  = []
@@ -68,8 +69,5 @@ module "checkout_cdn_endpoint" {
     ]
   }
 
-  https_rewrite_enabled = true
-
   tags = var.tags
-
 }
