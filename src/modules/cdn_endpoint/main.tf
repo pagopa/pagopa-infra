@@ -43,8 +43,8 @@ resource "azurerm_cdn_endpoint" "this" {
   resource_group_name           = var.resource_group_name
   location                      = var.location
   profile_name                  = azurerm_cdn_profile.this.name
-  is_https_allowed              = var.is_https_allowed
-  is_http_allowed               = var.is_http_allowed
+  is_https_allowed              = true
+  is_http_allowed               = true
   querystring_caching_behaviour = var.querystring_caching_behaviour
   origin_host_header            = module.cdn_storage_account.primary_web_host
 

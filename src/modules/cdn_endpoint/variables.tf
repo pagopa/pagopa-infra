@@ -33,16 +33,6 @@ variable "resource_group_name" {
   type = string
 }
 
-variable "is_https_allowed" {
-  type    = bool
-  default = true
-}
-
-variable "is_http_allowed" {
-  type    = bool
-  default = false
-}
-
 variable "querystring_caching_behaviour" {
   type    = string
   default = "IgnoreQueryString"
