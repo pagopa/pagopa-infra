@@ -73,3 +73,46 @@ eventhub_enabled = true
 
 # checkout
 checkout_enabled = true
+eventhubs = [
+  {
+    name              = "nodo-dei-pagamenti-log"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["testconsumer1"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "testconsumer1"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-re"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["testconsumer2"]
+    keys = [
+      {
+        name   = "logstash"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "testconsumer2"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+]
+
