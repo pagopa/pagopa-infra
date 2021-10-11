@@ -1,7 +1,7 @@
 /**
  * Storage account
  **/
-module "cdn_sa" {
+module "cdn_storage_account" {
 
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.7"
 
@@ -28,7 +28,7 @@ module "cdn_sa" {
 /**
  * cdn profile
  **/
-resource "azurerm_cdn_profile" "cdn_p" {
+resource "azurerm_cdn_profile" "this" {
   name                = format("%s-%s-cdn-p", var.project, var.product)
   resource_group_name = var.resource_group_name
   location            = var.location
@@ -38,7 +38,7 @@ resource "azurerm_cdn_profile" "cdn_p" {
 }
 
 
-resource "azurerm_cdn_endpoint" "cdn_endpoint" {
+resource "azurerm_cdn_endpoint" "this" {
   name                          = format("%s-%s-cdn-e", var.project, var.product)
   resource_group_name           = var.resource_group_name
   location                      = var.location
@@ -157,5 +157,26 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
     }
   }
 
+# rewrite HTTP to HTTPS
+   dynamic "delivery_rule_request_scheme_condition"{
+   count = var.https_rewrite_enabled ? 1 : 0
+    content 
+      {
+    name         = "EnforceHTTPS"
+    order        = 1
+    operator     = "Equal"
+    match_values = ["HTTP"]
+
+    url_redirect_action = {
+      redirect_type = "Found"
+      protocol      = "Https"
+      hostname      = null
+      path          = null
+      fragment      = null
+      query_string  = null
+    }
+
+  }
+   }
   tags = var.tags
 }

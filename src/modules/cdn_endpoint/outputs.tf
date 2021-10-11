@@ -6,6 +6,6 @@ output "hostname" {
   value = "${azurerm_cdn_endpoint.cdn_endpoint.name}.azureedge.net"
 }
 
-opreutput "name" {
+output "name" {
   value = azurerm_cdn_endpoint.cdn_endpoint.name
 }

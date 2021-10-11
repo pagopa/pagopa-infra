@@ -72,23 +72,8 @@ module "checkout_cdn_endpoint" {
     ]
   }
 
-  # rewrite HTTP to HTTPS
-  delivery_rule_request_scheme_condition = [{
-    name         = "EnforceHTTPS"
-    order        = 1
-    operator     = "Equal"
-    match_values = ["HTTP"]
+  https_rewrite_enabled = true
 
-    url_redirect_action = {
-      redirect_type = "Found"
-      protocol      = "Https"
-      hostname      = null
-      path          = null
-      fragment      = null
-      query_string  = null
-    }
-
-  }]
   tags = var.tags
 
 }

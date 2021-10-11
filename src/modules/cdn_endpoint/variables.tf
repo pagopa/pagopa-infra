@@ -123,3 +123,7 @@ variable "delivery_rule_redirect" {
   }))
   default = []
 }
+variable "https_rewrite_enabled" {
+  type    = bool
+  default = true
+}
