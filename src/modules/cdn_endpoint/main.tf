@@ -167,10 +167,10 @@ resource "azurerm_cdn_endpoint" "this" {
 
       request_scheme_condition {
         operator     = "Equal"
-        match_values = "HTTP"
+        match_values = ["HTTP"]
       }
 
-      url_redirect_action = {
+      url_redirect_action {
         redirect_type = "Found"
         protocol      = "Https"
         hostname      = null
