@@ -27,10 +27,6 @@ module "checkout_cdn_endpoint" {
   access_tier                   = "Hot"
   querystring_caching_behaviour = "BypassCaching"
 
-
-  # allow HTTP, HSTS will make future connections over HTTPS
-  is_http_allowed = true
-
   global_delivery_rule = {
 
     cache_expiration_action       = []

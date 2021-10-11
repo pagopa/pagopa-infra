@@ -157,27 +157,27 @@ resource "azurerm_cdn_endpoint" "this" {
     }
   }
 
-  # # rewrite HTTP to HTTPS
-  #    dynamic "delivery_rule_request_scheme_condition"{
-  #    count = var.https_rewrite_enabled ? 1 : 0
-  #     content 
-  #       {
-  #     name         = "EnforceHTTPS"
-  #     order        = 1
-  #     operator     = "Equal"
-  #     match_values = ["HTTP"]
+  # rewrite HTTP to HTTPS
+  # delivery_rule_request_scheme_condition {
+  #   count = var.https_rewrite_enabled ? 1 : 0
 
-  #     url_redirect_action = {
-  #       redirect_type = "Found"
-  #       protocol      = "Https"
-  #       hostname      = null
-  #       path          = null
-  #       fragment      = null
-  #       query_string  = null
-  #     }
+  #   name         = "EnforceHTTPS"
+  #   order        = 1
+  #   operator     = "Equal"
+  #   match_values = ["HTTP"]
 
+  #   url_redirect_action = {
+  #     redirect_type = "Found"
+  #     protocol      = "Https"
+  #     hostname      = null
+  #     path          = null
+  #     fragment      = null
+  #     query_string  = null
   #   }
-  #    }
+
+
+  # }
+
   tags = var.tags
 }
 
