@@ -127,3 +127,8 @@ variable "https_rewrite_enabled" {
   type    = bool
   default = true
 }
+
+variable "enable_custom_dns" {
+  type    = bool
+  default = true
+}

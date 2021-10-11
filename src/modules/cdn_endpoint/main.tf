@@ -42,15 +42,15 @@ resource "azurerm_cdn_endpoint" "this" {
   name                          = format("%s-%s-cdn-e", var.project, var.product)
   resource_group_name           = var.resource_group_name
   location                      = var.location
-  profile_name                  = azurerm_cdn_profile.cdn_p.name
+  profile_name                  = azurerm_cdn_profile.this.name
   is_https_allowed              = var.is_https_allowed
   is_http_allowed               = var.is_http_allowed
   querystring_caching_behaviour = var.querystring_caching_behaviour
-  origin_host_header            = module.cdn_sa.primary_web_host
+  origin_host_header            = module.cdn_storage_account.primary_web_host
 
   origin {
     name      = "primary"
-    host_name = module.cdn_sa.primary_web_host
+    host_name = module.cdn_storage_account.primary_web_host
   }
 
   dynamic "global_delivery_rule" {
@@ -157,26 +157,74 @@ resource "azurerm_cdn_endpoint" "this" {
     }
   }
 
-# rewrite HTTP to HTTPS
-   dynamic "delivery_rule_request_scheme_condition"{
-   count = var.https_rewrite_enabled ? 1 : 0
-    content 
-      {
-    name         = "EnforceHTTPS"
-    order        = 1
-    operator     = "Equal"
-    match_values = ["HTTP"]
+  # # rewrite HTTP to HTTPS
+  #    dynamic "delivery_rule_request_scheme_condition"{
+  #    count = var.https_rewrite_enabled ? 1 : 0
+  #     content 
+  #       {
+  #     name         = "EnforceHTTPS"
+  #     order        = 1
+  #     operator     = "Equal"
+  #     match_values = ["HTTP"]
 
-    url_redirect_action = {
-      redirect_type = "Found"
-      protocol      = "Https"
-      hostname      = null
-      path          = null
-      fragment      = null
-      query_string  = null
-    }
+  #     url_redirect_action = {
+  #       redirect_type = "Found"
+  #       protocol      = "Https"
+  #       hostname      = null
+  #       path          = null
+  #       fragment      = null
+  #       query_string  = null
+  #     }
 
-  }
-   }
+  #   }
+  #    }
   tags = var.tags
+}
+
+/*
+* Custom Domain
+*/
+resource "null_resource" "custom_domain" {
+  # needs az cli > 2.0.81
+  # see https://github.com/Azure/azure-cli/issues/12152
+  triggers = {
+    resource_group_name = var.resource_group_name
+    endpoint_name       = azurerm_cdn_endpoint.this.name
+    profile_name        = azurerm_cdn_profile.this.name
+    name                = azurerm_cdn_endpoint.this.host_name
+    hostname            = azurerm_cdn_endpoint.this.host_name
+  }
+
+  # https://docs.microsoft.com/it-it/cli/azure/cdn/custom-domain?view=azure-cli-latest
+  provisioner "local-exec" {
+    command = <<EOT
+      az cdn custom-domain create \
+        --resource-group ${self.triggers.resource_group_name} \
+        --endpoint-name ${self.triggers.endpoint_name} \
+        --profile-name ${self.triggers.profile_name} \
+        --name ${replace(self.triggers.name, ".", "-")} \
+        --hostname ${self.triggers.hostname} && \
+      az cdn custom-domain enable-https \
+        --resource-group ${self.triggers.resource_group_name} \
+        --endpoint-name ${self.triggers.endpoint_name} \
+        --profile-name ${self.triggers.profile_name} \
+        --name ${replace(self.triggers.name, ".", "-")}
+    EOT
+  }
+  # https://docs.microsoft.com/it-it/cli/azure/cdn/custom-domain?view=azure-cli-latest
+  provisioner "local-exec" {
+    when    = destroy
+    command = <<EOT
+      az cdn custom-domain disable-https \
+        --resource-group ${self.triggers.resource_group_name} \
+        --endpoint-name ${self.triggers.endpoint_name} \
+        --profile-name ${self.triggers.profile_name} \
+        --name ${replace(self.triggers.name, ".", "-")} && \
+      az cdn custom-domain delete \
+        --resource-group ${self.triggers.resource_group_name} \
+        --endpoint-name ${self.triggers.endpoint_name} \
+        --profile-name ${self.triggers.profile_name} \
+        --name ${replace(self.triggers.name, ".", "-")}
+    EOT
+  }
 }
