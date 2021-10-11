@@ -80,7 +80,7 @@ ehns_metric_alerts = {
   no_trx = {
     aggregation = "Total"
     metric_name = "IncomingMessages"
-    description = "No transactions received from acquirer in the last 24h"
+    description = "No messagge received in the last 24h"
     operator    = "LessThanOrEqual"
     threshold   = 1000
     frequency   = "PT1H"
@@ -89,7 +89,8 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values   = ["rtd-trx"]
+        values   = ["nodo-dei-pagamenti-log",
+        "nodo-dei-pagamenti-re"]
       }
     ],
   },
@@ -106,7 +107,7 @@ ehns_metric_alerts = {
   error_trx = {
     aggregation = "Total"
     metric_name = "IncomingMessages"
-    description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
+    description = "rejected received. trx write on eventhub. check immediately"
     operator    = "GreaterThan"
     threshold   = 0
     frequency   = "PT5M"
@@ -153,7 +154,6 @@ eventhubs = [
         send   = false
         manage = false
       }
-
     ]
   },
   {
