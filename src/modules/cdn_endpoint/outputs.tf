@@ -3,9 +3,9 @@ output "id" {
 }
 
 output "hostname" {
-  value = "${var.name}.azureedge.net"
+  value = "${azurerm_cdn_endpoint.cdn_endpoint.name}.azureedge.net"
 }
 
-output "name" {
-  value = var.name
+opreutput "name" {
+  value = azurerm_cdn_endpoint.cdn_endpoint.name
 }

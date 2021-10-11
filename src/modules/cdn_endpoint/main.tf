@@ -1,16 +1,56 @@
+/**
+ * Storage account
+ **/
+module "cdn_sa" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.7"
+
+  name            = replace(format("%s-%s-sa", var.project, var.product), "-", "")
+  versioning_name = format("%s-%s-sa-versioning", var.project, var.product)
+
+  account_kind             = var.account_kind
+  account_tier             = var.account_tier
+  account_replication_type = var.account_replication_type
+  access_tier              = var.access_tier
+  enable_versioning        = true
+  resource_group_name      = var.resource_group_name
+  location                 = var.location
+  allow_blob_public_access = true
+
+  lock_enabled = true
+  lock_name    = format("%s-%s-sa-lock", var.project, var.product)
+  lock_level   = "CanNotDelete"
+  lock_notes   = null
+
+  tags = var.tags
+}
+
+/**
+ * cdn profile
+ **/
+resource "azurerm_cdn_profile" "cdn_p" {
+  name                = format("%s-%s-cdn-p", var.project, var.product)
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  sku                 = "Standard_Microsoft"
+
+  tags = var.tags
+}
+
+
 resource "azurerm_cdn_endpoint" "cdn_endpoint" {
-  name                          = var.name
+  name                          = format("%s-%s-cdn-e", var.project, var.product)
   resource_group_name           = var.resource_group_name
   location                      = var.location
-  profile_name                  = var.profile_name
+  profile_name                  = azurerm_cdn_profile.cdn_p.name
   is_https_allowed              = var.is_https_allowed
   is_http_allowed               = var.is_http_allowed
   querystring_caching_behaviour = var.querystring_caching_behaviour
-  origin_host_header            = var.origin_host_name
+  origin_host_header            = module.cdn_sa.primary_web_host
 
   origin {
     name      = "primary"
-    host_name = var.origin_host_name
+    host_name = module.cdn_sa.primary_web_host
   }
 
   dynamic "global_delivery_rule" {

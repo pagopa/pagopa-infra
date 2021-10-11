@@ -1,4 +1,23 @@
-variable "name" {
+variable "product" {
+  type = string
+}
+variable "project" {
+  type = string
+}
+
+variable "account_kind" {
+  type = string
+}
+
+variable "account_tier" {
+  type = string
+}
+
+variable "account_replication_type" {
+  type = string
+}
+
+variable "access_tier" {
   type = string
 }
 
@@ -11,10 +30,6 @@ variable "tags" {
 }
 
 variable "resource_group_name" {
-  type = string
-}
-
-variable "profile_name" {
   type = string
 }
 
@@ -31,11 +46,6 @@ variable "is_http_allowed" {
 variable "querystring_caching_behaviour" {
   type    = string
   default = "IgnoreQueryString"
-}
-
-// TODO: Allow multiple origin
-variable "origin_host_name" {
-  type = string
 }
 
 variable "global_delivery_rule" {

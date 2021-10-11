@@ -10,59 +10,22 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
 }
 
 /**
- * Checkout storage account
- **/
-module "checkout_sa" {
-  count = var.checkout_enabled ? 1 : 0
-
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.7"
-
-  name            = replace(format("%s-checkout-sa", local.project), "-", "")
-  versioning_name = format("%s-checkout-sa-versioning", local.project)
-
-  account_kind             = "StorageV2"
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
-  access_tier              = "Hot"
-  enable_versioning        = true
-  resource_group_name      = azurerm_resource_group.checkout_fe_rg[0].name
-  location                 = var.location
-  allow_blob_public_access = true
-
-  lock_enabled = true
-  lock_name    = format("%s-checkout-sa-lock", local.project)
-  lock_level   = "CanNotDelete"
-  lock_notes   = null
-
-  tags = var.tags
-}
-
-/**
- * Checkout cdn profile
- **/
-resource "azurerm_cdn_profile" "checkout_cdn_p" {
-  count               = var.checkout_enabled ? 1 : 0
-  name                = format("%s-checkout-cdn-p", local.project)
-  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name
-  location            = var.location
-  sku                 = "Standard_Microsoft"
-
-  tags = var.tags
-}
-
-/**
  * CDN endpoint
  */
 module "checkout_cdn_e" {
   source = "./modules/cdn_endpoint"
 
-  count                         = var.checkout_enabled ? 1 : 0
-  name                          = format("%s-checkout-cdn-e", local.project)
-  resource_group_name           = azurerm_resource_group.checkout_fe_rg[0].name
-  location                      = var.location
-  profile_name                  = azurerm_cdn_profile.checkout_cdn_p[0].name
+  count               = var.checkout_enabled ? 1 : 0
+  product             = "checkout"
+  project             = local.project
+  resource_group_name = azurerm_resource_group.checkout_fe_rg[0].name
+  location            = var.location
+
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GRS"
+  access_tier                   = "Hot"
   querystring_caching_behaviour = "BypassCaching"
-  origin_host_name              = module.checkout_sa[0].primary_web_host
 
 
   # allow HTTP, HSTS will make future connections over HTTPS
