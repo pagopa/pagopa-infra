@@ -17,7 +17,9 @@ module "checkout_sa" {
 
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.7"
 
-  name                     = replace(format("%s-checkout-sa", local.project), "-", "")
+  name            = replace(format("%s-checkout-sa", local.project), "-", "")
+  versioning_name = format("%s-checkout-sa-versioning", local.project)
+
   account_kind             = "StorageV2"
   account_tier             = "Standard"
   account_replication_type = "GRS"
