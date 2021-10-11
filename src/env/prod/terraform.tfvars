@@ -27,8 +27,9 @@ cidr_subnet_apim      = ["10.230.10.0/26"]
 cidr_subnet_eventhub  = ["10.230.10.64/26"]
 
 # dns
-external_domain = "pagopa.it"
-dns_zone_prefix = "platform"
+external_domain   = "pagopa.it"
+dns_zone_prefix   = "platform"
+dns_zone_checkout = "checkout"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
