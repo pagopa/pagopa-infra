@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
 /**
  * CDN endpoint
  */
-module "checkout_cdn_e" {
+module "checkout_cdn_endpoint" {
   source = "./modules/cdn_endpoint"
 
   count               = var.checkout_enabled ? 1 : 0
