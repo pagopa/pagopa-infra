@@ -64,11 +64,13 @@ module "route_table_peering_sia" {
 
   subnet_ids = [for s in local.subnet_ids_ : s if s != ""]
 
-  # 1 - apim pagopa       →   nodo sia              -- 10.230.[8|9|10].0/26   ---> ???
-  # 2 - api config pagopa →   db nodo sia           -- 10.230.[8|9|10].128/29 ---> ???
+
+  # 1 - apim pagopa       →   nodo sia               -- 10.230.[8|9|10].0/26   ---> ???
+  # 2 - api config pagopa →   db nodo sia            -- 10.230.[8|9|10].128/29 ---> ???
   # 3 - nodo sia          →   api config pagopa      -- ??? --> 10.230.[8|9|10].128/29 
   # 4 - nodo sia          →   eventhub pagopa        -- ??? --> 10.230.[8|9|10].64/26 
   # 5 - logstash sia      →   eventhub pagopa        -- ??? --> 10.230.[8|9|10].64/26 
+  # 6 - nodo sia          →   apim pagopa            -- ??? --> 10.230.[8|9|10].0/26 
 
   routes = [
     ### prod
