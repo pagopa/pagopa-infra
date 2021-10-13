@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
  * CDN
  */
 module "checkout_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v1.0.67"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v1.0.68"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"
@@ -26,7 +26,10 @@ module "checkout_cdn" {
 
   dns_zone_name                = azurerm_dns_zone.checkout_public[0].name
   dns_zone_resource_group_name = azurerm_dns_zone.checkout_public[0].resource_group_name
-
+  
+  index_document     = var.index_document
+  error_404_document = var.error_404_document
+  
   querystring_caching_behaviour = "BypassCaching"
 
   global_delivery_rule = {

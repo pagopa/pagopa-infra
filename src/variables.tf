@@ -396,3 +396,11 @@ variable "azuread_service_principal_azure_cdn_frontdoor_id" {
   # this is the deafult value for tenant pagopa.it
   default = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 }
+
+variable "index_document" {
+  type    = string
+}
+
+variable "error_404_document" {
+  type    = string
+}

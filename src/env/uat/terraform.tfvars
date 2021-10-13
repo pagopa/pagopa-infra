@@ -72,3 +72,6 @@ eventhub_enabled = true
 
 # checkout
 checkout_enabled = true
+
+index_document     = "index.html"
+error_404_document = "not_found.html"
