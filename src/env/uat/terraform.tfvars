@@ -69,3 +69,109 @@ api_config_enabled = true
 
 # eventhub 
 eventhub_enabled = true
+
+ehns_sku_name = "Standard"
+
+ehns_alerts_enabled = false
+ehns_metric_alerts = {
+  no_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "No transactions received from acquirer in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values   = ["rtd-trx"]
+      }
+    ],
+  },
+  active_connections = {
+    aggregation = "Average"
+    metric_name = "ActiveConnections"
+    description = null
+    operator    = "LessThanOrEqual"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT15M"
+    dimension   = [],
+  },
+  error_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
+    operator    = "GreaterThan"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT30M"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = ["nodo-dei-pagamenti-log",
+        "nodo-dei-pagamenti-re"]
+      }
+    ],
+  },
+}
+
+eventhubs = [
+  {
+    name              = "nodo-dei-pagamenti-log"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["logstash-rx1", "logstash-rx2", "logstash-rx3"]
+    keys = [
+      {
+        name   = "logstash"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "logstash-rx1"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "logstash-rx2"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "logstash-rx3"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-re"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["nodo-dei-pagamenti-rx1"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-rx1"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+]
+

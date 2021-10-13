@@ -124,27 +124,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-log"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["testconsumer1"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "testconsumer1"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-re"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["testconsumer2"]
+    consumers         = ["logstash-rx1", "logstash-rx2", "logstash-rx3"]
     keys = [
       {
         name   = "logstash"
@@ -153,7 +133,40 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "testconsumer2"
+        name   = "logstash-rx1"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "logstash-rx2"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "logstash-rx3"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-re"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["nodo-dei-pagamenti-rx1"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-rx1"
         listen = true
         send   = false
         manage = false
