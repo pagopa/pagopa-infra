@@ -17,9 +17,9 @@ module "eventhub_snet" {
   enforce_private_link_endpoint_network_policies = true
 }
 
-module "event_hub" {
+module "event_hub01" {
   source                   = "git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.51"
-  name                     = format("%s-evh-ns", local.project)
+  name                     = format("%s-evh-ns01", local.project)
   location                 = var.location
   resource_group_name      = azurerm_resource_group.msg_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
