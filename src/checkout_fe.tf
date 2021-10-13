@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
  * CDN
  */
 module "checkout_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v1.0.68"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v1.0.72"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"
@@ -24,12 +24,16 @@ module "checkout_cdn" {
   https_rewrite_enabled = true
   lock_enabled          = var.lock_enable
 
+  index_document     = "index.html"
+  error_404_document = "not_found.html"
+
   dns_zone_name                = azurerm_dns_zone.checkout_public[0].name
   dns_zone_resource_group_name = azurerm_dns_zone.checkout_public[0].resource_group_name
-  
-  index_document     = var.index_document
-  error_404_document = var.error_404_document
-  
+
+  keyvault_resource_group_name = module.key_vault.resource_group_name
+  keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
+  keyvault_vault_name          = module.key_vault.name
+
   querystring_caching_behaviour = "BypassCaching"
 
   global_delivery_rule = {

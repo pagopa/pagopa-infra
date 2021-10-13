@@ -72,4 +72,4 @@ api_config_enabled = true
 eventhub_enabled = true
 
 # checkout
-checkout_enabled = false
+checkout_enabled = true
