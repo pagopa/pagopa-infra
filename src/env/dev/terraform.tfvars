@@ -73,7 +73,7 @@ eventhub_enabled = true
 
 # checkout
 checkout_enabled = true
-ehns_sku_name = "Standard"
+ehns_sku_name    = "Standard"
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
@@ -89,7 +89,7 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values   = ["nodo-dei-pagamenti-log",
+        values = ["nodo-dei-pagamenti-log",
         "nodo-dei-pagamenti-re"]
       }
     ],
