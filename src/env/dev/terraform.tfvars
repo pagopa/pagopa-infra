@@ -131,7 +131,7 @@ eventhubs = [
     consumers         = ["logstash-rx1", "logstash-rx2", "logstash-rx3"]
     keys = [
       {
-        name   = "logstash"
+        name   = "logstash-SIA"
         listen = false
         send   = true
         manage = false
@@ -164,7 +164,7 @@ eventhubs = [
     consumers         = ["nodo-dei-pagamenti-rx1"]
     keys = [
       {
-        name   = "nodo-dei-pagamenti"
+        name   = "nodo-dei-pagamenti-SIA"
         listen = false
         send   = true
         manage = false
