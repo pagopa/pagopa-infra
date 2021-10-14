@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source              = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v1.0.48"
+  source              = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v1.0.69"
   name                = format("%s-kv", local.project)
   location            = azurerm_resource_group.sec_rg.location
   resource_group_name = azurerm_resource_group.sec_rg.name
@@ -183,4 +183,24 @@ data "azurerm_key_vault_secret" "sec_storage_id" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "sec-storage-id"
   key_vault_id = module.key_vault.id
+}
+
+## azure cdn frontdoor ##
+## remember to do this: https://docs.microsoft.com/it-it/azure/frontdoor/standard-premium/how-to-configure-https-custom-domain#register-azure-front-door
+# data "azuread_service_principal" "azure_cdn_frontdoor" {
+#   application_id = "205478c0-bd83-4e1b-a9d6-db63a3e1e1c8"
+# }
+
+resource "azurerm_key_vault_access_policy" "azure_cdn_frontdoor_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = var.azuread_service_principal_azure_cdn_frontdoor_id
+
+  secret_permissions = [
+    "Get",
+  ]
+
+  certificate_permissions = [
+    "Get",
+  ]
 }

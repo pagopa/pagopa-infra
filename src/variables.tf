@@ -6,6 +6,12 @@ variable "location" {
 variable "prefix" {
   type    = string
   default = "pagopa"
+  validation {
+    condition = (
+      length(var.prefix) <= 6
+    )
+    error_message = "Max length is 6 chars."
+  }
 }
 
 variable "env_short" {
@@ -371,4 +377,22 @@ variable "cidr_subnet_eventhub" {
   type        = list(string)
   description = "Address prefixes subnet mock psp"
   default     = null
+}
+// checkout
+variable "checkout_enabled" {
+  type    = bool
+  default = false
+}
+
+variable "allow_blob_public_access" {
+  description = "Allow or disallow public access to all blobs or containers in the storage account."
+  type        = bool
+  default     = false
+}
+
+variable "azuread_service_principal_azure_cdn_frontdoor_id" {
+  type        = string
+  description = "Azure CDN Front Door Principal ID"
+  # this is the deafult value for tenant pagopa.it
+  default = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 }
