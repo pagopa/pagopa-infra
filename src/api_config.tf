@@ -47,6 +47,21 @@ module "api_config_app_service" {
   health_check_path   = "/apiconfig/api/v1/info"
 
   app_settings = {
+    # Monitoring
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+    APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
+    APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
+    APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
+    ApplicationInsightsAgent_EXTENSION_VERSION      = "~3"
+    DiagnosticServices_EXTENSION_VERSION            = "~3"
+    InstrumentationEngine_EXTENSION_VERSION         = "disabled"
+    SnapshotDebugger_EXTENSION_VERSION              = "disabled"
+    XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
+    XDT_MicrosoftApplicationInsights_Mode           = "recommended"
+    XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
+    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
+    TIMEOUT_DELAY                                   = 300
   }
 
   allowed_subnets = [module.apim_snet.id]
