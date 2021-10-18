@@ -83,7 +83,7 @@ module "apim_mock_psp_mng_api" {
   xml_content = file("./api/mockpspmng_api/v1/_base_policy.xml")
 }
 
-resource "azurerm_api_management_api_operation_policy" "example" {
+resource "azurerm_api_management_api_operation_policy" "this" {
   api_name            = local.apim_mock_psp_mng_api_name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
