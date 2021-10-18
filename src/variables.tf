@@ -415,6 +415,30 @@ variable "azuread_service_principal_azure_cdn_frontdoor_id" {
   default = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 }
 
+variable "cidr_subnet_checkout_be" {
+  type        = list(string)
+  description = "Address prefixes subnet checkout function"
+  default     = null
+}
+
+variable "checkout_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "checkout_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "checkout_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
