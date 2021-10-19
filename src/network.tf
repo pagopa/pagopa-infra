@@ -66,64 +66,66 @@ module "route_table_peering_sia" {
 
   # 1 - apim pagopa       → nodo sia                  -- 10.230.[8|9|10].0/24               --> test 185.91.56.142 (10.79.20.32) - prod 185.91.56.143 (10.79.20.34)
   # 2 - api config pagopa → db nodo sia               -- 10.230.[8|9|10].128/24             --> test xxx.xxx.xxx.xxx:
+
   # 3 - nodo sia          → api config pagopa         -- 10.79.55.23-24 e 10.79.51.23-24    --> 10.230.[8|9|10].128/24
   # 4 - nodo sia          → eventhub pagopa           -- 10.79.55.23-24 e 10.79.51.23-24    --> 10.230.[8|9|10].64/24 (porte 5671 5672 443)
   # 5 - logstash sia      → eventhub pagopa           -- xxx.xxx.xxx.xxx                    --> 10.230.[8|9|10].64/24 (porta 9093)
   # 6 - nodo sia          → apim pagopa               -- 10.79.55.23-24 e 10.79.51.23-24    --> 10.230.[8|9|10].0/24
   # 7 – xxx.xxx.xxx.xxx   → payment manager db        -- 
 
+
   routes = [
     #########
     ### prod
     #########
-    # {
-    #   # db nodo
-    #   name                   = "to-sia-db-nodo-prod-subnet"
-    #   address_prefix         = "10.70.132.0/24" # SIA 
-    #   next_hop_type          = "VirtualAppliance"
-    #   next_hop_in_ip_address = "10.70.249.10" # SIA 
-    # },
+    {
+      # db nodo
+      name                   = "to-sia-db-nodo-prod-subnet"
+      address_prefix         = "10.79.20.34/24" # SIA 
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA fixed
+    },
     {
       # nodo dei pagamenti
       name                   = "to-sia-app-nodo-prod-subnet"
-      address_prefix         = "10.70.132.0/24" # SIA  - 10.79.20.34 ???
+      address_prefix         = "10.79.20.34/24" # SIA  - todo #fixme
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.70.249.10" # SIA 
     },
     #########
     ### uat
     #########
-    # {
-    #   # db nodo
-    #   name                   = "to-sia-db-nodo-uat-subnet"
-    #   address_prefix         = "10.70.132.0/24" # SIA 
-    #   next_hop_type          = "VirtualAppliance"
-    #   next_hop_in_ip_address = "10.70.249.10" # SIA 
-    # },
+    {
+      # db nodo
+      name                   = "to-sia-db-nodo-uat-subnet"
+      address_prefix         = "10.79.20.32/24" # SIA 
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA 
+    },
     {
       # nodo dei pagamenti
       name                   = "to-sia-app-nodo-uat-subnet"
-      address_prefix         = "10.70.132.0/24" # SIA - 10.79.20.32 ???
+      address_prefix         = "10.79.20.32/24" # SIA - todo #fixme
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.70.249.10" # SIA 
     },
     #########
     ### dev
     #########
-    # {
-    #   # db nodo
-    #   name                   = "to-sia-db-nodo-dev-subnet"
-    #   address_prefix         = "10.70.132.0/24" # SIA 
-    #   next_hop_type          = "VirtualAppliance"
-    #   next_hop_in_ip_address = "10.70.249.10" # SIA 
-    # },
-    # {
-    #   # app nodo
-    #   name                   = "to-sia-app-nodo-dev-subnet"
-    #   address_prefix         = "10.70.132.0/24" # SIA 
-    #   next_hop_type          = "VirtualAppliance"
-    #   next_hop_in_ip_address = "10.70.249.10" # SIA 
-    # },
+    {
+      # db nodo
+      name                   = "to-sia-db-nodo-dev-subnet"
+      address_prefix         = "10.70.132.0/24" # SIA  - todo #fixme
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA 
+    },
+    {
+      # app nodo
+      name                   = "to-sia-app-nodo-dev-subnet"
+      address_prefix         = "10.70.132.0/24" # SIA - todo #fixme
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10" # SIA 
+    },
 
   ]
 
