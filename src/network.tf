@@ -81,34 +81,34 @@ module "route_table_peering_sia" {
     {
       # db nodo
       name                   = "to-sia-db-nodo-prod-subnet"
-      address_prefix         = "10.79.20.34/24" # SIA - todo #fixme
+      address_prefix         = "10.79.21.0/24" # SIA - todo #fixme
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.70.249.10" # SIA fixed
     },
     {
       # nodo dei pagamenti
       name                   = "to-sia-app-nodo-prod-subnet"
-      address_prefix         = "10.79.20.34/24" # SIA 
+      address_prefix         = "10.79.20.0/24" # SIA 
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.70.249.10" # SIA 
     },
     #########
     ### uat
     #########
-    {
-      # db nodo
-      name                   = "to-sia-db-nodo-uat-subnet"
-      address_prefix         = "10.79.20.32/24" # SIA - todo #fixme
-      next_hop_type          = "VirtualAppliance"
-      next_hop_in_ip_address = "10.70.249.10" # SIA 
-    },
-    {
-      # nodo dei pagamenti
-      name                   = "to-sia-app-nodo-uat-subnet"
-      address_prefix         = "10.79.20.32/24" # SIA 
-      next_hop_type          = "VirtualAppliance"
-      next_hop_in_ip_address = "10.70.249.10" # SIA 
-    },
+    # {
+    #   # db nodo
+    #   name                   = "to-sia-db-nodo-uat-subnet"
+    #   address_prefix         = "10.79.21.0/24" # SIA - todo #fixme
+    #   next_hop_type          = "VirtualAppliance"
+    #   next_hop_in_ip_address = "10.70.249.10" # SIA 
+    # },
+    # {
+    #   # nodo dei pagamenti
+    #   name                   = "to-sia-app-nodo-uat-subnet"
+    #   address_prefix         = "10.79.20.0/24" # SIA 
+    #   next_hop_type          = "VirtualAppliance"
+    #   next_hop_in_ip_address = "10.70.249.10" # SIA 
+    # },
     #########
     ### dev
     #########
@@ -122,7 +122,7 @@ module "route_table_peering_sia" {
     {
       # app nodo
       name                   = "to-sia-app-nodo-dev-subnet"
-      address_prefix         = "10.70.132.0/24" # SIA - todo #fixme
+      address_prefix         = "10.70.133.0/24" # SIA - todo #fixme
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.70.249.10" # SIA 
     },
