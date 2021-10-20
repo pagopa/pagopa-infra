@@ -17,7 +17,7 @@ module "apim_nodo_pagamenti_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/activate_nm3.xml")
+  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
 }
 
 resource "azurerm_api_management_product_api" "apim_nodo_pagamenti_products_psp_c" {
@@ -103,6 +103,16 @@ resource "azurerm_api_management_api" "apim_nodo_pagamenti_api_psp_cli" {
     content_format = "wsdl-link"
     content_value  = format("https://raw.githubusercontent.com/pagopa/pagopa-infra/PAG-851-devporta-nodo-nm3/src/api/nodopagamenti_api/v1/nodeForPsp.wsdl")
   }
+
+
+}
+
+resource "azurerm_api_management_api_policy" "apim_nodo_pagamenti_api_psp_cli_policy" {
+  api_name            = resource.azurerm_api_management_api.apim_nodo_pagamenti_api_psp_cli.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  xml_content = file("./api/nodopagamenti_api/v1/activate_nm3.xml")
 
 }
 
