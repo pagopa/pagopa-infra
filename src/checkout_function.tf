@@ -13,7 +13,7 @@ data "azurerm_key_vault_secret" "google_recaptcha_secret" {
 }
 
 # Subnet to host checkout function
-module "checkout_be_snet" {
+module "checkout_function_snet" {
   count                                          = var.checkout_enabled && var.cidr_subnet_checkout_be != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-checkout-be-snet", local.project)
