@@ -32,7 +32,7 @@ module "checkout_function_snet" {
 }
 
 module "checkout_function" {
-  count    = var.checkout_enabled ? 1 : 0
+  count  = var.checkout_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.75"
 
   resource_group_name                      = azurerm_resource_group.checkout_be_rg[0].name
@@ -41,7 +41,7 @@ module "checkout_function" {
   name                                     = "checkout"
   location                                 = var.location
   health_check_path                        = "api/v1/info"
-  subnet_out_id                            = module.checkout_be_snet[0].id
+  subnet_out_id                            = module.checkout_function_snet[0].id
   runtime_version                          = "~3"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
@@ -69,9 +69,9 @@ module "checkout_function" {
     PAGOPA_BASE_PATH = "/pagopa/api/v1"
 
 
-    IO_PAY_CHALLENGE_RESUME_URL = "https://uat.checkout.pagopa.it/response.html?id=idTransaction"
-    IO_PAY_ORIGIN               = "https://uat.checkout.pagopa.it"
-    IO_PAY_XPAY_REDIRECT        = "https://uat.checkout.pagopa.it/response.html?id=_id_&resumeType=_resumeType_&_queryParams_"
+    IO_PAY_CHALLENGE_RESUME_URL = format("%s.%s/response.html?id=idTransaction", var.dns_zone_checkout, var.external_domain)
+    IO_PAY_ORIGIN               = format("%s.%s", var.dns_zone_checkout, var.external_domain)
+    IO_PAY_XPAY_REDIRECT        = format("%s.%s/response.html?id=_id_&resumeType=_resumeType_&_queryParams_", var.dns_zone_checkout, var.external_domain)
 
     PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret
   }
