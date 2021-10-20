@@ -17,7 +17,7 @@ module "apim_nodo_pagamenti_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/activate_nm3.xml")
+  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
 }
 
 resource "azurerm_api_management_product_api" "apim_nodo_pagamenti_products_psp_c" {
