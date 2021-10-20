@@ -68,7 +68,6 @@ module "checkout_function" {
     IO_PAGOPA_PROXY  = "https://" #TODO nat gateway prod-io
     PAGOPA_BASE_PATH = "/pagopa/api/v1"
 
-    SLOT_TASK_HUBNAME = "ProductionTaskHub"
 
     IO_PAY_CHALLENGE_RESUME_URL = "https://uat.checkout.pagopa.it/response.html?id=idTransaction"
     IO_PAY_ORIGIN               = "https://uat.checkout.pagopa.it"
