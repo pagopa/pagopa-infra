@@ -1,6 +1,7 @@
 <policies>
     <inbound>
         <set-variable name="psps" value="{{brokerlist}}" />
+        <set-variable name="ecs" value="{{ecblacklist}}" />
         <set-variable name="requestPayload" value="@(context.Request.Body.As<string>(preserveContent: true))" />
         <xml-to-json kind="direct" apply="content-type-xml" consider-accept-header="false" />
         <set-variable name="idPSP" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["idPSP"])" />
@@ -12,10 +13,16 @@
         <set-variable name="noticeNumber" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["qrCode"]["noticeNumber"])" />
         <set-variable name="amount" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["amount"])" />
         <choose>
+            <!-- check if idBrokerPSP is in to PSP'whitelist -->
+            <!-- check if fiscalCode isn't in to EC'balcklist -->
             <when condition="@{
                 var brokerList = ((string) context.Variables["psps"]).Split(',');
                 var idBroker = (string) context.Variables["idBrokerPSP"];
-                return Array.Exists(brokerList, e => e == idBroker);
+
+                var eclist = ((string) context.Variables["ecs"]).Split(',');
+                var idEC = (string) context.Variables["fiscalCode"];
+
+                return Array.Exists(brokerList, e => e == idBroker) && !Array.Exists(eclist, e => e == idEC);
             }">
                 <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
                     <set-url>{{urlnodo}}</set-url>
