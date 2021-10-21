@@ -87,8 +87,8 @@ resource "azurerm_api_management_named_value" "brokerlist_value" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   # display_name        = format("brokerlist-%s", var.env_short)
-  display_name        = "brokerlist"
-  value               = var.nodo_pagamenti_psp
+  display_name = "brokerlist"
+  value        = var.nodo_pagamenti_psp
 }
 
 resource "azurerm_api_management_named_value" "ecblacklist_value" {
@@ -97,8 +97,8 @@ resource "azurerm_api_management_named_value" "ecblacklist_value" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   # display_name        = format("ecblacklist-%s", var.env_short)
-  display_name        = "ecblacklist"
-  value               = var.nodo_pagamenti_ec
+  display_name = "ecblacklist"
+  value        = var.nodo_pagamenti_ec
 }
 
 resource "azurerm_api_management_named_value" "urlnodo_value" {
@@ -107,8 +107,8 @@ resource "azurerm_api_management_named_value" "urlnodo_value" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   # display_name        = format("ecblacklist-%s", var.env_short)
-  display_name        = "urlnodo"
-  value               = var.nodo_pagamenti_url
+  display_name = "urlnodo"
+  value        = var.nodo_pagamenti_url
 }
 
 resource "azurerm_api_management_named_value" "brokerlist_value" {
