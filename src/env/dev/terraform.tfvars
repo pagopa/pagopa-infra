@@ -70,7 +70,10 @@ mock_psp_enabled = true
 # api_config
 api_config_enabled = true
 
-# eventhub
+# apim x nodo pagmenti
+nodo_pagamenti_enabled = true
+
+# eventhub 
 eventhub_enabled = true
 
 # checkout
@@ -186,5 +189,3 @@ eventhubs = [
     ]
   },
 ]
-
-nodo_pagamenti_enabled = true
