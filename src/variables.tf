@@ -164,19 +164,19 @@ variable "nodo_pagamenti_enabled" {
 variable "nodo_pagamenti_psp" {
   type        = string
   description = "PSP' white list nodo pagamenti (separate comma list) ."
-  default     = null
+  default     = ","
 }
 
 variable "nodo_pagamenti_ec" {
   type        = string
   description = "EC' black list nodo pagamenti (separate comma list)."
-  default     = null
+  default     = ","
 }
 
 variable "nodo_pagamenti_url" {
   type        = string
   description = "Nodo pagamenti url"
-  default     = null
+  default     = "https://"
 }
 
 # Network
