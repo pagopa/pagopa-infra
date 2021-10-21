@@ -75,8 +75,8 @@ eventhub_enabled = true
 checkout_enabled = true
 
 # checkout function
-checkout_function_kind     = "Dynamic"
-checkout_function_sku_name = "Dynamic"
+checkout_function_kind     = "elastic"
+checkout_function_sku_tier = "Dynamic"
 checkout_function_sku_size = "Y1"
 
 ehns_sku_name = "Standard"
