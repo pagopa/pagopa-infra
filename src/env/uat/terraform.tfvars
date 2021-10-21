@@ -21,7 +21,7 @@ cidr_subnet_azdoa      = ["10.1.130.0/24"]
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
-cidr_subnet_checkout_be = ["10.1.240.17/29"]
+cidr_subnet_checkout_be = ["10.1.240.16/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
