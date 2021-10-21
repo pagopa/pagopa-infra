@@ -20,12 +20,13 @@ cidr_subnet_azdoa      = ["10.1.130.0/24"]
 # prod only
 cidr_subnet_redis = ["10.1.132.0/24"]
 
+cidr_subnet_checkout_be = ["10.1.133.0/24"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration   = ["10.230.10.0/24"] # ask to SIA
 cidr_subnet_apim        = ["10.230.10.0/26"]
 cidr_subnet_eventhub    = ["10.230.10.64/26"]
-cidr_subnet_checkout_be = ["10.230.8.136/29"]
 
 # dns
 external_domain   = "pagopa.it"
