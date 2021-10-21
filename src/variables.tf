@@ -161,6 +161,24 @@ variable "nodo_pagamenti_enabled" {
   default     = false
 }
 
+variable "nodo_pagamenti_psp" {
+  type        = string
+  description = "PSP' white list nodo pagamenti (separate comma list) ."
+  default     = ""
+}
+
+variable "nodo_pagamenti_ec" {
+  type        = string
+  description = "EC' black list nodo pagamenti (separate comma list)."
+  default     = ""
+}
+
+variable "nodo_pagamenti_url" {
+  type        = string
+  description = "Nodo pagamenti url"
+  default     = ""
+}
+
 # Network
 variable "cidr_vnet" {
   type        = list(string)
