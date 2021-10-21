@@ -78,6 +78,37 @@ resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "pagopa-fn-checkout-url"
   value               = format("https://pagopa-%s-fn-checkout.azurewebsites.net", var.env_short)
+
+#urlnodo
+#https://10.79.20.32/uat/webservices/input
+resource "azurerm_api_management_named_value" "brokerlist_value" {
+  # name                = format("brokerlist-%s", var.env_short)
+  name                = "brokerlist"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  # display_name        = format("brokerlist-%s", var.env_short)
+  display_name        = "brokerlist"
+  value               = var.nodo_pagamenti_psp
+}
+
+resource "azurerm_api_management_named_value" "ecblacklist_value" {
+  # name                = format("ecblacklist-%s", var.env_short)
+  name                = "ecblacklist"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  # display_name        = format("ecblacklist-%s", var.env_short)
+  display_name        = "ecblacklist"
+  value               = var.nodo_pagamenti_ec
+}
+
+resource "azurerm_api_management_named_value" "urlnodo_value" {
+  # name                = format("ecblacklist-%s", var.env_short)
+  name                = "urlnodo"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  # display_name        = format("ecblacklist-%s", var.env_short)
+  display_name        = "urlnodo"
+  value               = var.nodo_pagamenti_url
 }
 
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {

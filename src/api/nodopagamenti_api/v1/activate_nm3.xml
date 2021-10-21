@@ -132,23 +132,6 @@
 								</set-body>
                             </otherwise>
                         </choose>
-                        <!-- <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
-								<soapenv:Header />
-								<soapenv:Body>
-									<nod:activatePaymentNoticeReq>
-										<idPSP>{{context.Variables["idPSP"]}}</idPSP>
-										<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
-										<idChannel>{{context.Variables["idChannel"]}}</idChannel>
-										<password>{{context.Variables["password"]}}</password>
-                                        <idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey>
-										<qrCode>
-											<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
-											<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
-										</qrCode>
-										<amount>{{context.Variables["amount"]}}</amount>
-									</nod:activatePaymentNoticeReq>
-								</soapenv:Body>
-							</soapenv:Envelope> -->
                     </when>
                     <otherwise>
                         <set-variable name="faultCode" value="@{
@@ -203,7 +186,6 @@
                 </choose>
             </when>
             <otherwise>
-                <!-- <send-request ignore-error="true" timeout="20" response-variable-name="attiva"> -->
                 <set-method>POST</set-method>
                 <set-header name="Content-Type" exists-action="override">
                     <value>application/xml</value>
@@ -263,26 +245,6 @@
 						</set-body>
                     </otherwise>
                 </choose>
-                <!--          
-					<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
-						<soapenv:Header />
-						<soapenv:Body>
-							<nod:activatePaymentNoticeReq>
-								<idPSP>{{context.Variables["idPSP"]}}</idPSP>
-								<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
-								<idChannel>{{context.Variables["idChannel"]}}</idChannel>
-								<password>{{context.Variables["password"]}}</password>
-                                <idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey>
-								<qrCode>
-									<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
-									<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
-								</qrCode>
-								<amount>{{context.Variables["amount"]}}</amount>
-							</nod:activatePaymentNoticeReq>
-						</soapenv:Body>
-					</soapenv:Envelope>
-                    -->
-                <!-- </send-request> -->
                 <set-backend-service base-url="{{urlnodo}}" />
             </otherwise>
         </choose>
