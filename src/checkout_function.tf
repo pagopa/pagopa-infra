@@ -6,11 +6,11 @@ resource "azurerm_resource_group" "checkout_be_rg" {
   tags = var.tags
 }
 
-data "azurerm_key_vault_secret" "google_recaptcha_secret" {
-  count        = var.checkout_enabled ? 1 : 0
-  name         = "google-recaptcha-secret"
-  key_vault_id = module.key_vault.id
-}
+# data "azurerm_key_vault_secret" "google_recaptcha_secret" {
+#   count        = var.checkout_enabled ? 1 : 0
+#   name         = "google-recaptcha-secret"
+#   key_vault_id = module.key_vault.id
+# }
 
 # Subnet to host checkout function
 module "checkout_function_snet" {
@@ -73,7 +73,7 @@ module "checkout_function" {
     IO_PAY_ORIGIN               = format("%s.%s", var.dns_zone_checkout, var.external_domain)
     IO_PAY_XPAY_REDIRECT        = format("%s.%s/response.html?id=_id_&resumeType=_resumeType_&_queryParams_", var.dns_zone_checkout, var.external_domain)
 
-    PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret
+    #PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret
   }
 
   allowed_subnets = [module.apim_snet.id]
