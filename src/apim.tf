@@ -70,6 +70,15 @@ module "apim" {
   ]
 }
 
+# Named values 
+resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
+  name                = "pagopa-fn-checkout-url"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pagopa-fn-checkout-url"
+  value               = format("https://pagopa-%s-fn-checkout.azurewebsites.net", var.env_short)
+}
+
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 
