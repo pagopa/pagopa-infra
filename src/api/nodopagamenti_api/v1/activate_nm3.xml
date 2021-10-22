@@ -158,6 +158,11 @@
                         <set-header name="proto" exists-action="override">
                             <value>http</value>
                         </set-header>
+                        <!--
+                        <set-header name="senderApim" exists-action="override">
+                            <value>pagopa</value>
+                        </set-header>
+                        -->
                         <choose>
                             <when condition="@(context.Variables["idempotencyKey"] == null)">
                                 <set-body template="liquid">
