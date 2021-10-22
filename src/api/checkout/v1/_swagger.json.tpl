@@ -184,57 +184,6 @@
         }
       }
     },
-    "/newsletters/{idClient}/lists/{idList}/recipients": {
-      "post": {
-        "operationId": "PostNewslettersEmails",
-        "description": "Add an email to newsletter",
-        "parameters": [
-          {
-            "name": "idList",
-            "in": "path",
-            "required": true,
-            "description": "list id",
-            "type": "string"
-          },
-          {
-            "name": "idClient",
-            "in": "path",
-            "required": true,
-            "description": "client id",
-            "type": "string",
-            "enum": [
-              "io",
-              "pagopa"
-            ]
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RecipientRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Recipient added",
-            "schema": {
-              "$ref": "#/definitions/RecipientResponse"
-            }
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "403": {
-            "description": "forbidden"
-          },
-          "500": {
-            "description": "generic error"
-          }
-        }
-      }
-    },
     "/browsers/current/info": {
       "get": {
         "operationId": "GetBrowsersInfo",
@@ -414,46 +363,6 @@
     },
     "SpezzoniCausaleVersamentoItem": {
       "$ref": "https://raw.githubusercontent.com/pagopa/io-pagopa-proxy/v0.8.6/api_pagopa.yaml#/definitions/SpezzoniCausaleVersamentoItem"
-    },
-    "RecipientRequest": {
-      "type": "object",
-      "required": [
-        "email",
-        "recaptchaToken"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string",
-          "format": "email"
-        },
-        "recaptchaToken": {
-          "type": "string"
-        },
-        "groups": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "RecipientResponse": {
-      "type": "object",
-      "required": [
-        "email"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string",
-          "format": "email"
-        }
-      }
     },
     "BrowserInfoResponse": {
       "type": "object",
