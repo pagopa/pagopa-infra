@@ -77,8 +77,8 @@ checkout_enabled = true
 
 # checkout function
 checkout_function_kind     = "elastic"
-checkout_function_sku_tier = "Dynamic"
-checkout_function_sku_size = "Y1"
+checkout_function_sku_tier = "ElasticPremium"
+checkout_function_sku_size = "EP1"
 
 ehns_sku_name = "Standard"
 
