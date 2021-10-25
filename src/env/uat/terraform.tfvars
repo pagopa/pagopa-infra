@@ -48,6 +48,9 @@ app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 
+# nat_gateway
+nat_gateway_enabled = true
+
 # postgresql
 prostgresql_enabled                      = false
 postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify
@@ -69,7 +72,7 @@ mock_psp_enabled = false
 # api_config
 api_config_enabled = true
 
-# eventhub 
+# eventhub
 eventhub_enabled = true
 
 # checkout
@@ -184,4 +187,3 @@ eventhubs = [
     ]
   },
 ]
-
