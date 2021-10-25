@@ -6,12 +6,6 @@ resource "azurerm_resource_group" "checkout_be_rg" {
   tags = var.tags
 }
 
-# data "azurerm_key_vault_secret" "google_recaptcha_secret" {
-#   count        = var.checkout_enabled ? 1 : 0
-#   name         = "google-recaptcha-secret"
-#   key_vault_id = module.key_vault.id
-# }
-
 # Subnet to host checkout function
 module "checkout_function_snet" {
   count                                          = var.checkout_enabled && var.cidr_subnet_checkout_be != null ? 1 : 0
