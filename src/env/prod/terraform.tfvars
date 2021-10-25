@@ -71,7 +71,7 @@ mock_psp_enabled = false
 api_config_enabled = false
 
 # apim x nodo pagmenti
-nodo_pagamenti_enabled = true
+nodo_pagamenti_enabled = false
 
 # eventhub 
 eventhub_enabled = true
