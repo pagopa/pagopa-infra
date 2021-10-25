@@ -71,7 +71,11 @@ mock_psp_enabled = false
 api_config_enabled = false
 
 # apim x nodo pagmenti
-nodo_pagamenti_enabled = false
+nodo_pagamenti_enabled = true
+nodo_pagamenti_psp     = "97735020584,97735020583,97735020582,97735020581"
+nodo_pagamenti_ec      = "001,002"
+nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input" # future need - here we'll set PROD node url
+
 
 # eventhub 
 eventhub_enabled = true
