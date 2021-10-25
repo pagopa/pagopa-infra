@@ -186,7 +186,7 @@ data "azurerm_key_vault_secret" "sec_storage_id" {
 }
 
 data "azurerm_key_vault_secret" "fn_checkout_key" {
-  count        = var.checkout_enabled == "p" ? 1 : 0
+  count        = var.checkout_enabled ? 1 : 0
   name         = "fn-checkout-key"
   key_vault_id = module.key_vault.id
 }
