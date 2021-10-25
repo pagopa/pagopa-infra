@@ -5,8 +5,7 @@
       <rate-limit-by-key calls="20" renewal-period="30" counter-key="@(context.Request.IpAddress)" />
       <cors>
         <allowed-origins>
-          <origin>https://checkout.pagopa.it/</origin>
-          <origin>https://uat.checkout.pagopa.it/</origin>
+          <origin>${origin}</origin>
         </allowed-origins>
         <allowed-methods>
           <method>POST</method>
