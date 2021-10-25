@@ -27,7 +27,7 @@ module "checkout_function_snet" {
 
 module "checkout_function" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.75"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.78"
 
   resource_group_name                      = azurerm_resource_group.checkout_be_rg[0].name
   prefix                                   = var.prefix
@@ -59,7 +59,7 @@ module "checkout_function" {
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-    IO_PAGOPA_PROXY  = "https://" #TODO nat gateway prod-io
+    IO_PAGOPA_PROXY  = var.checkout_pagopaproxy_host
     PAGOPA_BASE_PATH = "/pagopa/api/v1"
 
 
@@ -67,7 +67,7 @@ module "checkout_function" {
     IO_PAY_ORIGIN               = format("%s.%s", var.dns_zone_checkout, var.external_domain)
     IO_PAY_XPAY_REDIRECT        = format("%s.%s/response.html?id=_id_&resumeType=_resumeType_&_queryParams_", var.dns_zone_checkout, var.external_domain)
 
-    #PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret
+    PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret.value
   }
 
   allowed_subnets = [module.apim_snet.id]

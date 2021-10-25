@@ -80,6 +80,7 @@ checkout_enabled = true
 checkout_function_kind     = "elastic"
 checkout_function_sku_tier = "ElasticPremium"
 checkout_function_sku_size = "EP1"
+checkout_pagopaproxy_host  = "https://pagopaproxyprod.io.italia.it"
 
 ehns_sku_name = "Standard"
 
