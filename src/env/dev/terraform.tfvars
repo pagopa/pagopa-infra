@@ -21,6 +21,8 @@ cidr_subnet_azdoa      = ["10.1.130.0/24"]
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
+cidr_subnet_checkout_be = ["10.1.240.17/29"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration  = ["10.230.8.0/24"] # ask to SIA
@@ -72,8 +74,14 @@ api_config_enabled = true
 eventhub_enabled = true
 
 # checkout
-checkout_enabled = true
-ehns_sku_name    = "Standard"
+checkout_enabled = false
+
+#checkout function
+checkout_function_kind     = "Dynamic"
+checkout_function_sku_tier = "Dynamic"
+checkout_function_sku_size = "Y1"
+
+ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
