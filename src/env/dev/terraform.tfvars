@@ -74,7 +74,7 @@ api_config_enabled = true
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "97735020584,97735020583,97735020582,97735020581"
 nodo_pagamenti_ec      = "001,002"
-nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input"
+nodo_pagamenti_url     = "https://10.79.20.32/sit/webservices/input"
 
 # eventhub 
 eventhub_enabled = true
