@@ -27,7 +27,7 @@ locals {
 }
 
 ###########################
-## Api Management (apim) ## 
+## Api Management (apim) ##
 ###########################
 
 module "apim" {
@@ -70,7 +70,7 @@ module "apim" {
   ]
 }
 
-# Named values 
+# Named values
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   name                = "pagopa-fn-checkout-url"
   api_management_name = module.apim.name

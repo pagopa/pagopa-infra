@@ -69,7 +69,7 @@
                 "type": "string"
               }
             }
-          ],        
+          ],
           "operationId": "getmanagement",
           "description": "GET management",
           "responses": {
