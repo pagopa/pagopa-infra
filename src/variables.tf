@@ -452,6 +452,12 @@ variable "checkout_function_sku_size" {
   default     = null
 }
 
+variable "checkout_pagopaproxy_host" {
+  type        = string
+  description = "pagopaproxy host"
+  default     = null
+}
+
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
