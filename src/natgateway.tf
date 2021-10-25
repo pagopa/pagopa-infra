@@ -1,6 +1,6 @@
 module "nat_gw" {
   count  = var.nat_gateway_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//nat_gateway?ref=fix-deprecated-availability_zone"
+  source = "git::https://github.com/pagopa/azurerm.git//nat_gateway?ref=v1.0.77"
 
   name                = format("%s-natgw", local.project)
   resource_group_name = azurerm_resource_group.rg_vnet.name
