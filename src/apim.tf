@@ -85,6 +85,7 @@ resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "pagopa-fn-checkout-key"
   value               = data.azurerm_key_vault_secret.fn_checkout_key[0].value
+  secret              = true
 }
 
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
