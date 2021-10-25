@@ -48,4 +48,3 @@ module "apim_api_config_api" {
 
   xml_content = file("./api/apiconfig_api/v1/_base_policy.xml")
 }
-

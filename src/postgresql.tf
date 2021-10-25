@@ -49,4 +49,3 @@ module "postgresql" {
 
   tags = var.tags
 }
-

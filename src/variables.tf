@@ -175,6 +175,19 @@ variable "cidr_subnet_appgateway" {
   description = "Application gateway address space."
 }
 
+# nat gateway
+variable "nat_gateway_enabled" {
+  type        = bool
+  default     = false
+  description = "Nat Gateway enabled"
+}
+
+variable "nat_gateway_public_ips" {
+  type        = number
+  default     = 1
+  description = "Number of public outbound ips"
+}
+
 # DNS
 variable "dns_default_ttl_sec" {
   type        = number
@@ -281,7 +294,7 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-## Database server postgresl 
+## Database server postgresl
 variable "postgresql_sku_name" {
   type        = string
   description = "Specifies the SKU Name for this PostgreSQL Server."

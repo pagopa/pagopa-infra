@@ -49,6 +49,10 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_min_capacity                = 0 # todo change to at least 1
 app_gateway_max_capacity                = 2
 
+# nat_gateway
+nat_gateway_enabled    = true
+nat_gateway_public_ips = 2
+
 # todo change to Premium before launch
 # redis_sku_name = "Premium"
 # redis_family   = "P"
@@ -66,7 +70,7 @@ mock_psp_enabled = false
 # api_config
 api_config_enabled = false
 
-# eventhub 
+# eventhub
 eventhub_enabled = true
 
 # checkout
@@ -181,5 +185,3 @@ eventhubs = [
     ]
   },
 ]
-
-

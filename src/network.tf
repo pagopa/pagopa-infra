@@ -27,7 +27,7 @@ module "vnet_integration" {
   tags = var.tags
 }
 
-## Peering between the vnet(main) and integration vnet 
+## Peering between the vnet(main) and integration vnet
 module "vnet_peering" {
   source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.30"
 

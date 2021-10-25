@@ -16,7 +16,7 @@ module "key_vault" {
   tags = var.tags
 }
 
-# ## api management policy ## 
+# ## api management policy ##
 resource "azurerm_key_vault_access_policy" "api_management_policy" {
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
