@@ -65,5 +65,7 @@ module "apim_checkout_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/checkout/v1/_base_policy.xml")
+  xml_content = templatefile("./api/checkout/v1/_base_policy.xml.tpl", {
+    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+  })
 }
