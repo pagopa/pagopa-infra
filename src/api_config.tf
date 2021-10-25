@@ -47,6 +47,8 @@ module "api_config_app_service" {
   health_check_path   = "/apiconfig/api/v1/info"
 
   app_settings = {
+    # Monitoring
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
   }
 
   allowed_subnets = [module.apim_snet.id]
