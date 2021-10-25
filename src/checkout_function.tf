@@ -67,7 +67,7 @@ module "checkout_function" {
     IO_PAY_ORIGIN               = format("%s.%s", var.dns_zone_checkout, var.external_domain)
     IO_PAY_XPAY_REDIRECT        = format("%s.%s/response.html?id=_id_&resumeType=_resumeType_&_queryParams_", var.dns_zone_checkout, var.external_domain)
 
-    PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret.value
+    PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret[0].value
   }
 
   allowed_subnets = [module.apim_snet.id]
