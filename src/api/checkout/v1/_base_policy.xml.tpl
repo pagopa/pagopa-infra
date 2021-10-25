@@ -3,7 +3,7 @@
       <base />
       <set-backend-service base-url="{{pagopa-fn-checkout-url}}/api/v1" />
       <set-header name="x-functions-key" exists-action="override">
-        <value>{{fn-checkout-key}}</value>
+        <value>{{pagopa-fn-checkout-key}}</value>
       </set-header>
       <rate-limit-by-key calls="20" renewal-period="30" counter-key="@(context.Request.IpAddress)" />
       <cors>
