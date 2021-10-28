@@ -28,7 +28,7 @@ locals {
     # params for all api versions
     display_name          = "Checkout payment activation API"
     description           = "API to support payment activation"
-    path                  = "checkout/api"
+    path                  = "api/checkout/payments"
     subscription_required = false
     service_url           = null
   }
@@ -81,7 +81,7 @@ locals {
     # params for all api versions
     display_name          = "Checkout payment transaction API"
     description           = "API to support payment transaction"
-    path                  = "checkout/api"
+    path                  = "api/checkout/transactions"
     subscription_required = false
     service_url           = null
   }
