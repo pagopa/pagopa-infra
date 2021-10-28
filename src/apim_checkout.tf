@@ -81,7 +81,7 @@ locals {
     # params for all api versions
     display_name          = "Checkout payment transaction API"
     description           = "API to support payment transaction"
-    path                  = "api/checkout/transactions"
+    path                  = "api/checkout/payment-transactions"
     subscription_required = false
     service_url           = null
   }
