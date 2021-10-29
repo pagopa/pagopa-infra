@@ -17,6 +17,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_acr"></a> [acr](#module\_acr) | git::https://github.com/pagopa/azurerm.git//container_registry | v1.0.7 |
 | <a name="module_api_config_app_service"></a> [api\_config\_app\_service](#module\_api\_config\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.14 |
 | <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
 | <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/azurerm.git//api_management | v1.0.50 |
@@ -67,6 +68,7 @@
 | [azurerm_api_management_api_policy.apim_nodo_pagamenti_api_psp_cli_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_version_set.checkout_payments_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.checkout_transactions_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.checkout_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_custom_domain.api_custom_domain](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/api_management_custom_domain) | resource |
 | [azurerm_api_management_named_value.brokerlist_value](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecblacklist_value](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/api_management_named_value) | resource |
@@ -109,6 +111,7 @@
 | [azurerm_resource_group.mock_psp_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.msg_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.rg_aks](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
@@ -140,6 +143,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_acr_enabled"></a> [acr\_enabled](#input\_acr\_enabled) | Container registry enabled | `bool` | `false` | no |
 | <a name="input_allow_blob_public_access"></a> [allow\_blob\_public\_access](#input\_allow\_blob\_public\_access) | Allow or disallow public access to all blobs or containers in the storage account. | `bool` | `false` | no |
 | <a name="input_api_config_always_on"></a> [api\_config\_always\_on](#input\_api\_config\_always\_on) | Api Config always on property | `bool` | `false` | no |
 | <a name="input_api_config_enabled"></a> [api\_config\_enabled](#input\_api\_config\_enabled) | Api Config enabled | `bool` | `false` | no |
@@ -230,6 +234,9 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_container_registry_admin_password"></a> [container\_registry\_admin\_password](#output\_container\_registry\_admin\_password) | n/a |
+| <a name="output_container_registry_admin_username"></a> [container\_registry\_admin\_username](#output\_container\_registry\_admin\_username) | n/a |
+| <a name="output_container_registry_login_server"></a> [container\_registry\_login\_server](#output\_container\_registry\_login\_server) | # Container registry ## |
 | <a name="output_nat_gw_outbound_ip_addresses"></a> [nat\_gw\_outbound\_ip\_addresses](#output\_nat\_gw\_outbound\_ip\_addresses) | n/a |
 | <a name="output_vnet_address_space"></a> [vnet\_address\_space](#output\_vnet\_address\_space) | n/a |
 | <a name="output_vnet_integration_address_space"></a> [vnet\_integration\_address\_space](#output\_vnet\_integration\_address\_space) | n/a |
