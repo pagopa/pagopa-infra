@@ -42,7 +42,7 @@ enable_iac_pipeline      = true
 
 # apim
 apim_publisher_name = "pagoPA Platform DEV"
-apim_sku            = "Premium_1"
+apim_sku            = "Developer_1"
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
