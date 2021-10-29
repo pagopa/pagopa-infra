@@ -84,6 +84,7 @@ module "apim_mock_psp_mng_api" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "this" {
+  count               = var.mock_psp_enabled ? 1 : 0
   api_name            = local.apim_mock_psp_mng_api_name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
