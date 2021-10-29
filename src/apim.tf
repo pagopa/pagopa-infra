@@ -47,7 +47,7 @@ module "apim" {
   # This enables the Username and Password Identity Provider
   sign_up_enabled = false
 
-  lock_enable = var.lock_enable
+  lock_enable = false
 
   # sign_up_terms_of_service = {
   #   consent_required = false
