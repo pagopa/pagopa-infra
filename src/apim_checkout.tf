@@ -120,4 +120,8 @@ module "apim_checkout_transactions_api_v1" {
   content_value = templatefile("./api/checkout/checkout_transactions/v1/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
+
+  xml_content = templatefile("./api/checkout/checkout_transactions/v1/_base_policy.xml.tpl", {
+    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+  })
 }
