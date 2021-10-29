@@ -4,16 +4,14 @@
     "title": "Pagopa PM Mock",
     "version": "1.0.0"
   },
-  "servers": [{
+  "servers": [
+    {
       "url": "https://${host}"
-  }],
+    }
+  ],
   "tags": [
     {
       "name": "paypalmock",
-      "description": "todo"
-    },
-    {
-      "name": "paypalmanagement",
       "description": "todo"
     }
   ],
@@ -24,9 +22,6 @@
           "paypalmock"
         ],
         "summary": "server to server api used to start onboarding",
-        "requestBody": {
-          "description": "New Onboarding required"
-        },
         "responses": {
           "200": {
             "description": "Response",
@@ -53,10 +48,67 @@
         ]
       }
     },
+    "/paypalpsp/api/pp_pay_direct": {
+      "post": {
+        "tags": [
+          "paypalmock"
+        ],
+        "summary": "server to server api used to pay",
+        "responses": {
+          "200": {
+            "description": "Response"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/paypalpsp/api/pp_refund_direct": {
+      "post": {
+        "tags": [
+          "paypalmock"
+        ],
+        "summary": "server to server api used to refund payment",
+        "responses": {
+          "200": {
+            "description": "Response"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/paypalpsp/api/pp_bilagr_del": {
+      "post": {
+        "tags": [
+          "paypalmock"
+        ],
+        "summary": "server to server api used to delete contract",
+        "responses": {
+          "200": {
+            "description": "Response"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/paypalweb/*": {
       "get": {
         "operationId": "WebView GET",
         "description": "TEST WebView paypal",
+        "tags": [
+          "paypalmock"
+        ],
         "responses": {
           "200": {
             "description": "html with redirect"
@@ -72,6 +124,9 @@
       "post": {
         "operationId": "WebView POST",
         "description": "TEST WebView paypal",
+        "tags": [
+          "paypalmock"
+        ],
         "responses": {
           "200": {
             "description": "html with redirect"
@@ -105,23 +160,6 @@
   },
   "components": {
     "schemas": {
-      "StartOnboardingRequest": {
-        "required": [
-          "url_return",
-          "id_appio"
-        ],
-        "type": "object",
-        "properties": {
-          "url_return": {
-            "type": "string",
-            "description": "URL used to return the result"
-          },
-          "id_appio": {
-            "type": "string",
-            "description": "user identifier"
-          }
-        }
-      },
       "StartOnboardingResponseSuccess": {
         "required": [
           "esito",
