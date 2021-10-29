@@ -547,3 +547,11 @@ EOD
     ))
   }))
 }
+
+# acr
+
+variable "acr_enabled" {
+  type        = bool
+  description = "Container registry enabled"
+  default     = false
+}
