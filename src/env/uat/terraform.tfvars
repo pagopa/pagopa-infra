@@ -86,9 +86,9 @@ eventhub_enabled = true
 checkout_enabled = true
 
 # checkout function
-checkout_function_kind     = "elastic"
-checkout_function_sku_tier = "ElasticPremium"
-checkout_function_sku_size = "EP1"
+checkout_function_kind     = "dynamic"
+checkout_function_sku_tier = "Dynamic"
+checkout_function_sku_size = "Y1"
 checkout_pagopaproxy_host  = "https://io-p-app-pagopaproxytest.azurewebsites.net"
 
 ehns_sku_name = "Standard"
