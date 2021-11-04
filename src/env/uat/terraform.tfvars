@@ -79,7 +79,7 @@ nodo_pagamenti_ec      = "77777777777,00493410583"
 nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input"
 
 
-# eventhub 
+# eventhub
 eventhub_enabled = true
 
 # checkout

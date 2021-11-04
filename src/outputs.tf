@@ -17,3 +17,17 @@ output "vnet_integration_address_space" {
 output "nat_gw_outbound_ip_addresses" {
   value = var.nat_gateway_enabled ? module.nat_gw[0].public_ip_address : null
 }
+
+## Container registry ##
+output "container_registry_login_server" {
+  value = var.acr_enabled ? module.acr[0].login_server : null
+}
+
+output "container_registry_admin_username" {
+  value = var.acr_enabled ? module.acr[0].admin_username : null
+}
+
+output "container_registry_admin_password" {
+  value     = var.acr_enabled ? module.acr[0].admin_password : null
+  sensitive = true
+}

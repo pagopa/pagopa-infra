@@ -76,7 +76,7 @@ nodo_pagamenti_psp     = "97735020584,97735020583,97735020582,97735020581"
 nodo_pagamenti_ec      = "77777777777,00493410583"
 nodo_pagamenti_url     = "https://10.79.20.32/sit/webservices/input"
 
-# eventhub 
+# eventhub
 eventhub_enabled = true
 
 # checkout
@@ -192,3 +192,6 @@ eventhubs = [
     ]
   },
 ]
+
+# acr
+acr_enabled = true
