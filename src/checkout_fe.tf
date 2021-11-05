@@ -56,7 +56,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = " https://acardste.vaservices.eu;"
+        value  = " https://acardste.vaservices.eu https://cdn.cookielaw.org;"
       },
       {
         action = "Append"
@@ -71,7 +71,12 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self' https://www.google.com https://www.gstatic.com; style-src 'self'  'unsafe-inline'; worker-src 'none';"
+        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org;"
+      },
+      {
+        action = "Append"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = "style-src 'self'  'unsafe-inline'; worker-src 'none';"
       }
     ]
   }
