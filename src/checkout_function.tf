@@ -34,7 +34,7 @@ module "checkout_function" {
   env_short                                = var.env_short
   name                                     = "checkout"
   location                                 = var.location
-  health_check_path                        = "api/v1/info"
+  health_check_path                        = "info"
   subnet_out_id                            = module.checkout_function_snet[0].id
   runtime_version                          = "~3"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
