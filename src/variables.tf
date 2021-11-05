@@ -478,6 +478,24 @@ variable "checkout_function_sku_size" {
   default     = null
 }
 
+variable "checkout_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "checkout_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "checkout_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
 variable "checkout_function_always_on" {
   type        = bool
   description = "Always on property"
