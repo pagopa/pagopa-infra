@@ -478,7 +478,7 @@ variable "checkout_function_sku_size" {
   default     = null
 }
 
-variable "checkout_always_on" {
+variable "checkout_function_always_on" {
   type        = bool
   description = "Always on property"
   default     = false

@@ -37,7 +37,9 @@ module "checkout_function" {
   health_check_path                        = "api/v1/info"
   subnet_out_id                            = module.checkout_function_snet[0].id
   runtime_version                          = "~3"
+  always_on                                = var.checkout_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+
 
   app_service_plan_info = {
     kind                         = var.checkout_function_kind
