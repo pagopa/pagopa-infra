@@ -478,6 +478,12 @@ variable "checkout_function_sku_size" {
   default     = null
 }
 
+variable "checkout_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
 variable "checkout_pagopaproxy_host" {
   type        = string
   description = "pagopaproxy host"
