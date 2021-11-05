@@ -51,7 +51,7 @@ module "checkout_cdn" {
       {
         action = "Overwrite"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "default-src 'self'; connect-src 'self' https://api.io.italia.it https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it"
+        value  = format("default-src 'self'; connect-src 'self' https://%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_checkout, var.external_domain)
       },
       {
         action = "Append"
