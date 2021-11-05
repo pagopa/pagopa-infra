@@ -27,7 +27,7 @@ module "checkout_function_snet" {
 
 module "checkout_function" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.78"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=fn-add-support-for-app-service-plan"
 
   resource_group_name                      = azurerm_resource_group.checkout_be_rg[0].name
   prefix                                   = var.prefix
@@ -40,9 +40,10 @@ module "checkout_function" {
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
-    kind     = var.checkout_function_kind
-    sku_tier = var.checkout_function_sku_tier
-    sku_size = var.checkout_function_sku_size
+    kind                         = var.checkout_function_kind
+    sku_tier                     = var.checkout_function_sku_tier
+    sku_size                     = var.checkout_function_sku_size
+    maximum_elastic_worker_count = 0
   }
 
   app_settings = {
