@@ -17,7 +17,7 @@ module "api_config_snet" {
   enforce_private_link_endpoint_network_policies = true
 
   delegation = {
-    name               = "default"
+    name = "default"
     service_delegation = {
       name    = "Microsoft.Web/serverFarms"
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
@@ -62,8 +62,8 @@ module "api_config_app_service" {
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
     TIMEOUT_DELAY                                   = 300
-    SPRING_DATASOURCE_USERNAME                      = var.db_username
-    SPRING_DATASOURCE_PASSWORD                      = var.db_password
+    SPRING_DATASOURCE_USERNAME                      = data.azurerm_key_vault_secret.db_nodo_usr.value
+    SPRING_DATASOURCE_PASSWORD                      = data.azurerm_key_vault_secret.db_nodo_pwd.value
     SPRING_DATASOURCE_URL                           = var.db_host == null || var.db_service_name == null ? null : format("jdbc:oracle:thin@%s:%s/%s", var.db_host, var.db_port, var.db_service_name)
   }
 

@@ -226,3 +226,13 @@ data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
   name         = "monitor-notification-slack-email"
   key_vault_id = module.key_vault.id
 }
+
+data "azurerm_key_vault_secret" "db_nodo_usr" {
+  name         = "db-nodo-usr"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "db_nodo_pwd" {
+  name         = "db-nodo-pwd"
+  key_vault_id = module.key_vault.id
+}
