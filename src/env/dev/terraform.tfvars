@@ -29,6 +29,7 @@ cidr_vnet_integration  = ["10.230.8.0/24"] # ask to SIA
 cidr_subnet_apim       = ["10.230.8.0/26"]
 cidr_subnet_api_config = ["10.230.8.128/29"]
 cidr_subnet_eventhub   = ["10.230.8.64/26"]
+cidr_subnet_lb         = ["10.230.8.128/28"]
 
 # dns
 external_domain   = "pagopa.it"
@@ -195,3 +196,7 @@ eventhubs = [
 
 # acr
 acr_enabled = true
+
+# lb
+lb_enabled                 = true
+lb_integration_frontend_ip = "10.230.8.132"
