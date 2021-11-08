@@ -562,10 +562,6 @@ variable "cidr_subnet_lb" {
   description = "Address prefixes load balancer"
   default     = null
 }
-# variable "lb_integration_frontend_ip" {
-#   type    = string
-#   default = null
-# }
 
 variable "lb_enabled" {
   type        = bool
@@ -576,5 +572,5 @@ variable "lb_enabled" {
 # DNS private
 variable "private_dns_zone_db_nodo_pagamenti" {
   type    = string
-  default = "metti.qui.il.dns.com" # TODO fornito da SIA
+  default = "metti.qui.il.dns.com" # TODO fixme fornito da SIA
 }
