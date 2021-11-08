@@ -19,10 +19,10 @@ module "integration_lb" {
   location                               = var.location
   type                                   = "private"
   frontend_subnet_id                     = module.lb_snet.id
-  frontend_private_ip_address_allocation = "Static"
-  frontend_private_ip_address            = var.lb_integration_frontend_ip
-  lb_sku                                 = "Standard"
-  pip_sku                                = "Standard" #`pip_sku` must match `lb_sku`
+  frontend_private_ip_address_allocation = "Dynamic"
+  # frontend_private_ip_address            = var.lb_integration_frontend_ip
+  lb_sku  = "Standard"
+  pip_sku = "Standard" #`pip_sku` must match `lb_sku`
 
   lb_backend_pools = [
     {
@@ -45,19 +45,19 @@ module "integration_lb" {
   ]
 
   lb_port = {
-    sftp-sia = {
-      frontend_port     = "8022"
+    db-nodo-sia = {
+      frontend_port     = "1521"
       protocol          = "Tcp"
-      backend_port      = "8022",
+      backend_port      = "1521",
       backend_pool_name = "db-nodo-sia"
-      probe_name        = "tcp-8022"
+      probe_name        = "tcp-1521"
     }
   }
 
   lb_probe = {
-    tcp-8022 = {
+    tcp-1521 = {
       protocol     = "Tcp"
-      port         = "8022"
+      port         = "1521"
       request_path = ""
     }
   }
