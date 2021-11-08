@@ -29,7 +29,7 @@ cidr_vnet_integration  = ["10.230.9.0/24"] # ask to SIA
 cidr_subnet_apim       = ["10.230.9.0/26"]
 cidr_subnet_api_config = ["10.230.9.128/29"]
 cidr_subnet_eventhub   = ["10.230.9.64/26"]
-cidr_subnet_lb         = ["10.230.9.128/29"]
+cidr_subnet_lb         = ["10.230.9.136/29"]
 
 # dns
 external_domain   = "pagopa.it"
