@@ -198,4 +198,5 @@ eventhubs = [
 acr_enabled = true
 
 # lb
-lb_enabled = true
+lb_enabled          = true
+lb_backend_pool_ips = ["10.101.35.40", "10.101.35.41", "10.101.35.42"]

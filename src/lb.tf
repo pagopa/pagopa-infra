@@ -11,20 +11,13 @@ module "lb_snet" {
 
 locals {
   lb_be_ips = [
+    for s in var.lb_backend_pool_ips :
     {
-      ip      = "10.101.35.39"
-      vnet_id = module.vnet_integration.id
-    },
-    {
-      ip      = "10.101.35.40"
-      vnet_id = module.vnet_integration.id
-    },
-    {
-      ip      = "10.101.35.41"
+      ip      = s
       vnet_id = module.vnet_integration.id
     }
-
   ]
+
 }
 
 
