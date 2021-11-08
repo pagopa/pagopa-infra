@@ -9,38 +9,42 @@ module "lb_snet" {
   service_endpoints                              = ["Microsoft.Web"]
 }
 
+locals {
+  lb_be_ips = [
+    {
+      ip      = "10.101.35.39"
+      vnet_id = module.vnet_integration.id
+    },
+    {
+      ip      = "10.101.35.40"
+      vnet_id = module.vnet_integration.id
+    },
+    {
+      ip      = "10.101.35.41"
+      vnet_id = module.vnet_integration.id
+    }
+
+  ]
+}
+
+
 
 module "integration_lb" {
-  count  = var.lb_enabled && var.cidr_subnet_lb != null ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//load_balancer?ref=fix-lb-module"
-  # source                                 = "git::https://github.com/pagopa/azurerm.git//load_balancer?ref=v1.0.81"
+  count                                  = var.lb_enabled && var.cidr_subnet_lb != null ? 1 : 0
+  source                                 = "git::https://github.com/pagopa/azurerm.git//load_balancer?ref=fix-lb-module"
   name                                   = format("%s-lb-integration", local.project)
   resource_group_name                    = azurerm_resource_group.rg_vnet.name
   location                               = var.location
   type                                   = "private"
   frontend_subnet_id                     = module.lb_snet.id
   frontend_private_ip_address_allocation = "Dynamic"
-  # frontend_private_ip_address            = var.lb_integration_frontend_ip
-  lb_sku  = "Standard"
-  pip_sku = "Standard" #`pip_sku` must match `lb_sku`
+  lb_sku                                 = "Standard"
+  pip_sku                                = "Standard" #`pip_sku` must match `lb_sku`
 
   lb_backend_pools = [
     {
       name = "db-nodo-sia"
-      ips = [
-        {
-          ip      = "10.101.35.39"
-          vnet_id = module.vnet_integration.id
-        },
-        {
-          ip      = "10.101.35.40"
-          vnet_id = module.vnet_integration.id
-        },
-        {
-          ip      = "10.101.35.41"
-          vnet_id = module.vnet_integration.id
-        }
-      ]
+      ips  = local.lb_be_ips
     }
   ]
 

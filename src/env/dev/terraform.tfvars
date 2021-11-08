@@ -199,4 +199,3 @@ acr_enabled = true
 
 # lb
 lb_enabled = true
-# lb_integration_frontend_ip = "10.230.8.132"
