@@ -569,6 +569,12 @@ variable "lb_enabled" {
   default     = false
 }
 
+variable "lb_backend_pool_ips" {
+  type        = list(string)
+  description = "Address load balancer be ips"
+  default     = []
+}
+
 # DNS private
 variable "private_dns_zone_db_nodo_pagamenti" {
   type    = string
