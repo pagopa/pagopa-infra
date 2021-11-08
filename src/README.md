@@ -42,7 +42,7 @@
 | <a name="module_checkout_function_snet"></a> [checkout\_function\_snet](#module\_checkout\_function\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
 | <a name="module_event_hub01"></a> [event\_hub01](#module\_event\_hub01) | git::https://github.com/pagopa/azurerm.git//eventhub | v1.0.51 |
 | <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.7 |
-| <a name="module_integration_lb"></a> [integration\_lb](#module\_integration\_lb) | git::https://github.com/pagopa/azurerm.git//load_balancer | fix-lb-module |
+| <a name="module_integration_lb"></a> [integration\_lb](#module\_integration\_lb) | git::https://github.com/pagopa/azurerm.git//load_balancer | v1.0.83 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v1.0.69 |
 | <a name="module_lb_snet"></a> [lb\_snet](#module\_lb\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
 | <a name="module_mock_ec"></a> [mock\_ec](#module\_mock\_ec) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.14 |

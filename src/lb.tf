@@ -31,7 +31,7 @@ locals {
 
 module "integration_lb" {
   count                                  = var.lb_enabled && var.cidr_subnet_lb != null ? 1 : 0
-  source                                 = "git::https://github.com/pagopa/azurerm.git//load_balancer?ref=fix-lb-module"
+  source                                 = "git::https://github.com/pagopa/azurerm.git//load_balancer?ref=v1.0.83"
   name                                   = format("%s-lb-integration", local.project)
   resource_group_name                    = azurerm_resource_group.rg_vnet.name
   location                               = var.location
