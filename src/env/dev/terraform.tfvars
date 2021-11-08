@@ -200,5 +200,7 @@ eventhubs = [
 # acr
 acr_enabled = true
 
+# db nodo dei pagamenti
+db_service_name = "" # fixme set with data from SIA
 
 dns_a_reconds_dbnodo_ips = ["10.8.3.228"]

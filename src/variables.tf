@@ -154,33 +154,21 @@ variable "api_config_always_on" {
 }
 
 variable "db_host" {
-  type = string
+  type        = string
   description = "Host of the DB"
-  default = null
+  default     = null
 }
 
 variable "db_port" {
-  type = number
+  type        = number
   description = "Port number of the DB"
-  default = 1521
-}
-
-variable "db_username" {
-  type = string
-  description = "Username of DB"
-  default = null
-}
-
-variable "db_password" {
-  type = string
-  description = "Password of DB"
-  default = null
+  default     = 1521
 }
 
 variable "db_service_name" {
-  type = string
+  type        = string
   description = "Service Name of DB"
-  default = null
+  default     = null
 }
 
 
