@@ -555,3 +555,20 @@ variable "acr_enabled" {
   description = "Container registry enabled"
   default     = false
 }
+
+# lb load balancer
+variable "cidr_subnet_lb" {
+  type        = list(string)
+  description = "Address prefixes load balancer"
+  default     = null
+}
+variable "lb_integration_frontend_ip" {
+  type    = string
+  default = null
+}
+
+variable "lb_enabled" {
+  type        = bool
+  description = "Load balancer enabled"
+  default     = false
+}
