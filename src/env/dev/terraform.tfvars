@@ -18,8 +18,8 @@ cidr_subnet_appgateway = ["10.1.128.0/24"]
 cidr_subnet_postgresql = ["10.1.129.0/24"]
 cidr_subnet_azdoa      = ["10.1.130.0/24"]
 # dev/uat only
-cidr_subnet_mock_ec    = ["10.1.240.0/29"]
-cidr_subnet_mock_psp   = ["10.1.240.8/29"]
+cidr_subnet_mock_ec  = ["10.1.240.0/29"]
+cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
 cidr_subnet_checkout_be = ["10.1.240.17/29"]
 
@@ -54,14 +54,14 @@ prostgresql_enabled                      = true
 postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = true
-postgresql_network_rules                 = {
-  ip_rules                       = [
+postgresql_network_rules = {
+  ip_rules = [
     "0.0.0.0/0"
   ]
   # dblink
   allow_access_to_azure_services = false
 }
-prostgresql_db_mockpsp                   = "mock-psp"
+prostgresql_db_mockpsp = "mock-psp"
 
 # mock
 mock_ec_enabled  = true
@@ -90,8 +90,8 @@ checkout_function_sku_size = "Y1"
 ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
-ehns_metric_alerts  = {
-  no_trx             = {
+ehns_metric_alerts = {
+  no_trx = {
     aggregation = "Total"
     metric_name = "IncomingMessages"
     description = "No messagge received in the last 24h"
@@ -99,11 +99,11 @@ ehns_metric_alerts  = {
     threshold   = 1000
     frequency   = "PT1H"
     window_size = "P1D"
-    dimension   = [
+    dimension = [
       {
         name     = "EntityName"
         operator = "Include"
-        values   = [
+        values = [
           "nodo-dei-pagamenti-log",
           "nodo-dei-pagamenti-re"
         ]
@@ -120,7 +120,7 @@ ehns_metric_alerts  = {
     window_size = "PT15M"
     dimension   = [],
   },
-  error_trx          = {
+  error_trx = {
     aggregation = "Total"
     metric_name = "IncomingMessages"
     description = "rejected received. trx write on eventhub. check immediately"
@@ -128,11 +128,11 @@ ehns_metric_alerts  = {
     threshold   = 0
     frequency   = "PT5M"
     window_size = "PT30M"
-    dimension   = [
+    dimension = [
       {
         name     = "EntityName"
         operator = "Include"
-        values   = [
+        values = [
           "nodo-dei-pagamenti-log",
           "nodo-dei-pagamenti-re"
         ]
@@ -147,7 +147,7 @@ eventhubs = [
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
     consumers         = ["logstash-rx1", "logstash-rx2", "logstash-rx3"]
-    keys              = [
+    keys = [
       {
         name   = "logstash-SIA"
         listen = false
@@ -180,7 +180,7 @@ eventhubs = [
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
     consumers         = ["nodo-dei-pagamenti-rx1"]
-    keys              = [
+    keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
         listen = false
