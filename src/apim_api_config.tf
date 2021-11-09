@@ -24,11 +24,13 @@ module "apim_api_config_product" {
 ##    API   ##
 ##############
 
-resource "azurerm_api_management_api_version_set" "config_api" {
-  name                = format("%s-io-backend-api", var.env_short)
-  resource_group_name = module.apim.resource_group_name
+resource "azurerm_api_management_api_version_set" "api_config_api" {
+  count = var.api_config_enabled ? 1 : 0
+
+  name                = format("%s-api-config-api", var.env_short)
+  resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "api config api"
   versioning_scheme   = "Segment"
 }
 
@@ -42,8 +44,8 @@ module "apim_api_config_api" {
   product_ids           = [module.apim_api_config_product[0].product_id]
   subscription_required = false
 
-  version_set_id        = azurerm_api_management_api_version_set.checkout_transactions_api[0].id
-  api_version           = "v1"
+  version_set_id = azurerm_api_management_api_version_set.api_config_api[0].id
+  api_version    = "v1"
 
   description  = "api config api"
   display_name = "api config api"
@@ -53,7 +55,7 @@ module "apim_api_config_api" {
   service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service[0].default_site_hostname)
 
   content_format = "openapi"
-  content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
+  content_value  = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
