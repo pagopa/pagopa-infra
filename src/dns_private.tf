@@ -19,6 +19,6 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
   name                = "db-nodo-pagamenti"
   zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
   resource_group_name = azurerm_resource_group.data.name
-  ttl                 = 300
-  records             = [module.integration_lb[0].azurerm_private_ip_address]
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodo_ips
 }

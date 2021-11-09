@@ -580,26 +580,14 @@ variable "acr_enabled" {
   default     = false
 }
 
-# lb load balancer
-variable "cidr_subnet_lb" {
-  type        = list(string)
-  description = "Address prefixes load balancer"
-  default     = null
-}
 
-variable "lb_enabled" {
-  type        = bool
-  description = "Load balancer enabled"
-  default     = false
-}
-
-variable "lb_backend_pool_ips" {
+# DNS private
+variable "dns_a_reconds_dbnodo_ips" {
   type        = list(string)
-  description = "Address load balancer be ips"
+  description = "IPs address of DB Nodo"
   default     = []
 }
 
-# DNS private
 variable "private_dns_zone_db_nodo_pagamenti" {
   type    = string
   default = "metti.qui.il.dns.com" # TODO fixme fornito da SIA
