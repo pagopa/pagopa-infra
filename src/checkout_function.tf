@@ -27,7 +27,7 @@ module "checkout_function_snet" {
 
 module "checkout_function" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=fn-add-support-for-app-service-plan"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84"
 
   resource_group_name                      = azurerm_resource_group.checkout_be_rg[0].name
   prefix                                   = var.prefix
