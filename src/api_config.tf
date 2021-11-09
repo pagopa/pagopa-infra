@@ -64,7 +64,7 @@ module "api_config_app_service" {
     TIMEOUT_DELAY                                   = 300
     SPRING_DATASOURCE_USERNAME                      = data.azurerm_key_vault_secret.db_nodo_usr.value
     SPRING_DATASOURCE_PASSWORD                      = data.azurerm_key_vault_secret.db_nodo_pwd.value
-    SPRING_DATASOURCE_URL                           = var.db_host == null || var.db_service_name == null ? null : format("jdbc:oracle:thin@%s:%s/%s", var.db_host, var.db_port, var.db_service_name)
+    SPRING_DATASOURCE_URL                           = var.db_service_name == null ? null : format("jdbc:oracle:thin@%s:%s/%s", azurerm_private_dns_zone.db_nodo_dns_zone.name, var.db_port, var.db_service_name)
   }
 
   allowed_subnets = [module.apim_snet.id]
