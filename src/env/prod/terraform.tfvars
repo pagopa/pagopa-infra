@@ -85,10 +85,14 @@ eventhub_enabled = true
 checkout_enabled = true
 
 # checkout function
-checkout_function_kind     = "elastic"
-checkout_function_sku_tier = "ElasticPremium"
-checkout_function_sku_size = "EP1"
-checkout_pagopaproxy_host  = "https://io-p-app-pagopaproxyprod.azurewebsites.net"
+checkout_function_kind              = "Linux"
+checkout_function_sku_tier          = "PremiumV3"
+checkout_function_sku_size          = "P1v3"
+checkout_function_always_on         = true
+checkout_function_autoscale_minimum = 1
+checkout_function_autoscale_maximum = 3
+checkout_function_autoscale_default = 1
+checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxyprod.azurewebsites.net"
 
 ehns_sku_name = "Standard"
 
