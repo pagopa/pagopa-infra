@@ -1,6 +1,6 @@
 resource "azurerm_dns_zone" "api_config_fe_public" {
-  count               = (var.dns_zone_checkout == null || var.external_domain == null) ? 0 : 1
-  name                = join(".", [var.dns_zone_checkout, var.external_domain])
+  count               = (var.dns_zone_api_config_fe == null || var.external_domain == null) ? 0 : 1
+  name                = join(".", [var.dns_zone_api_config_fe, var.external_domain])
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
   tags = var.tags
@@ -13,10 +13,10 @@ resource "azurerm_dns_ns_record" "dev_api_config_fe" {
   zone_name           = azurerm_dns_zone.api_config_fe_public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   records = [
-    "ns1-07.azure-dns.com.",
-    "ns2-07.azure-dns.net.",
-    "ns3-07.azure-dns.org.",
-    "ns4-07.azure-dns.info."
+    "ns1-08.azure-dns.com.",
+    "ns2-08.azure-dns.net.",
+    "ns3-08.azure-dns.org.",
+    "ns4-08.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
   tags = var.tags
@@ -29,10 +29,10 @@ resource "azurerm_dns_ns_record" "uat_api_config_fe" {
   zone_name           = azurerm_dns_zone.api_config_fe_public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   records = [
-    "ns1-01.azure-dns.com.",
-    "ns2-01.azure-dns.net.",
-    "ns3-01.azure-dns.org.",
-    "ns4-01.azure-dns.info."
+    "ns1-07.azure-dns.com.",
+    "ns2-07.azure-dns.net.",
+    "ns3-07.azure-dns.org.",
+    "ns4-07.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
   tags = var.tags
