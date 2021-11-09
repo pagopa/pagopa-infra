@@ -153,11 +153,6 @@ variable "api_config_always_on" {
   default     = false
 }
 
-variable "db_host" {
-  type        = string
-  description = "Host of the DB"
-  default     = null
-}
 
 variable "db_port" {
   type        = number
