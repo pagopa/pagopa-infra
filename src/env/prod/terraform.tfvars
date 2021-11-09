@@ -27,6 +27,7 @@ cidr_subnet_checkout_be = ["10.1.133.0/24"]
 cidr_vnet_integration = ["10.230.10.0/24"] # ask to SIA
 cidr_subnet_apim      = ["10.230.10.0/26"]
 cidr_subnet_eventhub  = ["10.230.10.64/26"]
+cidr_subnet_lb        = ["10.230.10.136/29"]
 
 # dns
 external_domain   = "pagopa.it"
@@ -193,3 +194,7 @@ eventhubs = [
     ]
   },
 ]
+
+# lb
+lb_enabled          = true
+lb_backend_pool_ips = ["10.102.35.61", "10.102.35.62", "10.102.35.63"]

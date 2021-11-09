@@ -555,3 +555,28 @@ variable "acr_enabled" {
   description = "Container registry enabled"
   default     = false
 }
+
+# lb load balancer
+variable "cidr_subnet_lb" {
+  type        = list(string)
+  description = "Address prefixes load balancer"
+  default     = null
+}
+
+variable "lb_enabled" {
+  type        = bool
+  description = "Load balancer enabled"
+  default     = false
+}
+
+variable "lb_backend_pool_ips" {
+  type        = list(string)
+  description = "Address load balancer be ips"
+  default     = []
+}
+
+# DNS private
+variable "private_dns_zone_db_nodo_pagamenti" {
+  type    = string
+  default = "metti.qui.il.dns.com" # TODO fixme fornito da SIA
+}
