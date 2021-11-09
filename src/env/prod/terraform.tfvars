@@ -199,6 +199,6 @@ eventhubs = [
 ]
 
 # db nodo dei pagamenti
-db_service_name = "NDPSPCA_NODO4_CFG" # fixme set with data from SIA
+db_service_name = "" # fixme set with data from SIA
 
 dns_a_reconds_dbnodo_ips = ["10.102.35.61", "10.102.35.62", "10.102.35.63"]
