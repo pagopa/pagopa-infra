@@ -24,6 +24,14 @@ module "apim_api_config_product" {
 ##    API   ##
 ##############
 
+resource "azurerm_api_management_api_version_set" "config_api" {
+  name                = format("%s-io-backend-api", var.env_short)
+  resource_group_name = module.apim.resource_group_name
+  api_management_name = module.apim.name
+  display_name        = local.apim_io_backend_api.display_name
+  versioning_scheme   = "Segment"
+}
+
 module "apim_api_config_api" {
   count  = var.api_config_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
@@ -33,6 +41,9 @@ module "apim_api_config_api" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_api_config_product[0].product_id]
   subscription_required = false
+
+  version_set_id        = azurerm_api_management_api_version_set.checkout_transactions_api[0].id
+  api_version           = "v1"
 
   description  = "api config api"
   display_name = "api config api"
