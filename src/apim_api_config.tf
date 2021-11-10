@@ -14,8 +14,8 @@ module "apim_api_config_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
-  approval_required     = false
+  subscription_required = true
+  approval_required     = true
 
   policy_xml = file("./api_product/apiconfig_api/_base_policy.xml")
 }
