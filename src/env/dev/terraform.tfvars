@@ -207,5 +207,4 @@ dns_a_reconds_dbnodo_ips = ["10.8.3.228"]
 
 # API Config FE
 api_config_fe_enabled = true
-dns_zone_api_config_fe = "apiconfig.dev.platform"
-
+cname_record_name     = "apiconfig"

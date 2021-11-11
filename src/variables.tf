@@ -160,26 +160,22 @@ variable "db_port" {
 }
 
 variable "db_service_name" {
-  type = string
+  type        = string
   description = "Service Name of DB"
-  default = null
+  default     = null
 }
 
 
 # api_config_fe
-
 variable "api_config_fe_enabled" {
   type        = bool
   description = "Api Config FE enabled"
   default     = false
 }
 
-variable "dns_zone_api_config_fe" {
-  type        = string
-  default     = null
-  description = "The api config dns subdomain."
+variable "cname_record_name" {
+  type = string
 }
-
 
 # nodo dei pagamenti
 
