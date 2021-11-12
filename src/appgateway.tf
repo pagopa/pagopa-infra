@@ -36,7 +36,7 @@ locals {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.55"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.80"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -109,6 +109,8 @@ module "app_gw" {
       port             = 443
       ssl_profile_name = format("%s-ssl-profile", local.project)
 
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+
       certificate = {
         name = var.app_gateway_api_certificate_name
         id = trimsuffix(
@@ -167,6 +169,27 @@ module "app_gw" {
     }
   }
 
+  rewrite_rule_sets = [
+    {
+      name = "rewrite-rule-set-api"
+      rewrite_rules = [{
+        name          = "http-headers-api"
+        rule_sequence = 100
+        condition     = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    }
+  ]
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
@@ -175,9 +198,8 @@ module "app_gw" {
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
   # Logs
-  # todo enable
-  # sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
-  # sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
+  sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
 
   tags = var.tags
 }
