@@ -17,7 +17,7 @@ module "api_config_snet" {
   enforce_private_link_endpoint_network_policies = true
 
   delegation = {
-    name               = "default"
+    name = "default"
     service_delegation = {
       name    = "Microsoft.Web/serverFarms"
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
@@ -63,12 +63,12 @@ module "api_config_app_service" {
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
     TIMEOUT_DELAY                                   = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
-    WEBSITE_DNS_SERVER                              = "168.63.129.16"
-    WEBSITE_VNET_ROUTE_ALL                          = 1
+    WEBSITE_DNS_SERVER     = "168.63.129.16"
+    WEBSITE_VNET_ROUTE_ALL = 1
     # Spring Environment
-    SPRING_DATASOURCE_USERNAME                      = data.azurerm_key_vault_secret.db_nodo_usr.value
-    SPRING_DATASOURCE_PASSWORD                      = data.azurerm_key_vault_secret.db_nodo_pwd.value
-    SPRING_DATASOURCE_URL                           = var.db_service_name == null ? null : format("jdbc:oracle:thin:@%s.%s:%s/%s", azurerm_private_dns_a_record.private_dns_a_record_db_nodo.name, azurerm_private_dns_zone.db_nodo_dns_zone.name, var.db_port, var.db_service_name)
+    SPRING_DATASOURCE_USERNAME = data.azurerm_key_vault_secret.db_nodo_usr.value
+    SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.db_nodo_pwd.value
+    SPRING_DATASOURCE_URL      = var.db_service_name == null ? null : format("jdbc:oracle:thin:@%s.%s:%s/%s", azurerm_private_dns_a_record.private_dns_a_record_db_nodo.name, azurerm_private_dns_zone.db_nodo_dns_zone.name, var.db_port, var.db_service_name)
   }
 
   allowed_subnets = [module.apim_snet.id]
