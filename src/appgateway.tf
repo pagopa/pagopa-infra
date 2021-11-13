@@ -109,8 +109,6 @@ module "app_gw" {
       port             = 443
       ssl_profile_name = format("%s-ssl-profile", local.project)
 
-      rewrite_rule_set_name = "rewrite-rule-set-api"
-
       certificate = {
         name = var.app_gateway_api_certificate_name
         id = trimsuffix(
@@ -154,8 +152,9 @@ module "app_gw" {
   # maps listener to backend
   routes = {
     api = {
-      listener = "api"
-      backend  = "apim"
+      listener              = "api"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
     }
 
     portal = {
