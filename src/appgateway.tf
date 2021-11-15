@@ -139,9 +139,10 @@ module "app_gw" {
 
       certificate = {
         name = var.app_gateway_portal_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.portal_platform.secret_id,
-          data.azurerm_key_vault_certificate.portal_platform.version
+          "/${data.azurerm_key_vault_certificate.portal_platform.version}",
+          ""
         )
       }
     }
@@ -155,9 +156,10 @@ module "app_gw" {
 
       certificate = {
         name = var.app_gateway_management_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.management_platform.secret_id,
-          data.azurerm_key_vault_certificate.management_platform.version
+          "/${data.azurerm_key_vault_certificate.management_platform.version}",
+          ""
         )
       }
     }
