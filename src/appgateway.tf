@@ -53,21 +53,27 @@ module "app_gw" {
   # Configure backends
   backends = {
     apim = {
-      protocol     = "Https"
-      host         = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
-      port         = 443
-      ip_addresses = module.apim.private_ip_addresses
-      probe        = "/status-0123456789abcdef"
-      probe_name   = "probe-apim"
+      protocol                    = "Https"
+      host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
+      port                        = 443
+      ip_addresses                = module.apim.private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim"
+      request_timeout             = 180
+      pick_host_name_from_backend = false
     }
 
     portal = {
-      protocol     = "Https"
-      host         = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
-      port         = 443
-      ip_addresses = module.apim.private_ip_addresses
-      probe        = "/signin"
-      probe_name   = "probe-portal"
+      protocol                    = "Https"
+      host                        = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
+      port                        = 443
+      ip_addresses                = module.apim.private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_portal.fqdn]
+      probe                       = "/signin"
+      probe_name                  = "probe-portal"
+      request_timeout             = 180
+      pick_host_name_from_backend = false
     }
 
     management = {
@@ -75,8 +81,12 @@ module "app_gw" {
       host         = trim(azurerm_dns_a_record.dns_a_management.fqdn, ".")
       port         = 443
       ip_addresses = module.apim.private_ip_addresses
-      probe        = "/ServiceStatus"
-      probe_name   = "probe-management"
+      fqdns        = [azurerm_dns_a_record.dns_a_management.fqdn]
+
+      probe                       = "/ServiceStatus"
+      probe_name                  = "probe-management"
+      request_timeout             = 180
+      pick_host_name_from_backend = false
     }
   }
 
@@ -104,10 +114,11 @@ module "app_gw" {
   listeners = {
 
     api = {
-      protocol         = "Https"
-      host             = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      protocol           = "Https"
+      host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
 
       certificate = {
         name = var.app_gateway_api_certificate_name
@@ -119,10 +130,11 @@ module "app_gw" {
     }
 
     portal = {
-      protocol         = "Https"
-      host             = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      protocol           = "Https"
+      host               = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
 
       certificate = {
         name = var.app_gateway_portal_certificate_name
@@ -134,10 +146,11 @@ module "app_gw" {
     }
 
     management = {
-      protocol         = "Https"
-      host             = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      protocol           = "Https"
+      host               = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
 
       certificate = {
         name = var.app_gateway_management_certificate_name
@@ -158,13 +171,15 @@ module "app_gw" {
     }
 
     portal = {
-      listener = "portal"
-      backend  = "portal"
+      listener              = "portal"
+      backend               = "portal"
+      rewrite_rule_set_name = null
     }
 
     mangement = {
-      listener = "management"
-      backend  = "management"
+      listener              = "management"
+      backend               = "management"
+      rewrite_rule_set_name = null
     }
   }
 
@@ -199,6 +214,7 @@ module "app_gw" {
   # Logs
   sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
   sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
+
 
   tags = var.tags
 }
