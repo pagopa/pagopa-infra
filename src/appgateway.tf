@@ -60,7 +60,7 @@ module "app_gw" {
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 180
+      request_timeout             = 8
       pick_host_name_from_backend = false
     }
 
@@ -72,7 +72,7 @@ module "app_gw" {
       fqdns                       = [azurerm_dns_a_record.dns_a_portal.fqdn]
       probe                       = "/signin"
       probe_name                  = "probe-portal"
-      request_timeout             = 180
+      request_timeout             = 8
       pick_host_name_from_backend = false
     }
 
@@ -85,7 +85,7 @@ module "app_gw" {
 
       probe                       = "/ServiceStatus"
       probe_name                  = "probe-management"
-      request_timeout             = 180
+      request_timeout             = 8
       pick_host_name_from_backend = false
     }
   }
@@ -122,9 +122,10 @@ module "app_gw" {
 
       certificate = {
         name = var.app_gateway_api_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-          data.azurerm_key_vault_certificate.app_gw_platform.version
+          "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+          ""
         )
       }
     }
