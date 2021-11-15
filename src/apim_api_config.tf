@@ -4,7 +4,7 @@
 
 module "apim_api_config_product" {
   count  = var.api_config_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
 
   product_id   = "product-api-config"
   display_name = "product-api-config"
@@ -16,6 +16,7 @@ module "apim_api_config_product" {
   published             = true
   subscription_required = true
   approval_required     = true
+  subscriptions_limit   = 50
 
   policy_xml = file("./api_product/apiconfig_api/_base_policy.xml")
 }
