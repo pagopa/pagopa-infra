@@ -22,8 +22,7 @@ module "api_config_fe_cdn" {
   resource_group_name = azurerm_resource_group.api_config_fe_rg[0].name
   location            = var.location
 
-  cname_record_name = var.cname_record_name
-  # should be something like that            config              <dev|uat>.platform   pagapa.it
+  # should be something like that            config              <dev|uat>.platform   .pagapa.it
   hostname              = format("%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
   https_rewrite_enabled = true
   lock_enabled          = var.lock_enable
