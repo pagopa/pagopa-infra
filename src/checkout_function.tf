@@ -142,3 +142,37 @@ resource "azurerm_monitor_autoscale_setting" "checkout_function" {
     }
   }
 }
+
+# Availability: Alerting Action
+resource "azurerm_monitor_scheduled_query_rules_alert" "availability" {
+  count = var.checkout_enabled ? 1 : 0
+
+  name                = format("%s-%s-availability-alert", local.project, module.checkout_function[0].name)
+  resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email, azurerm_monitor_action_group.slack]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "Availability greater than 80%"
+  enabled        = true
+  query = format(<<-QUERY
+  requests
+    | where cloud_RoleName == '%s'
+    | summarize Total=count(), Success=count(toint(resultCode) == 200) by length=bin(timestamp,5m)
+    | extend Availability=((Success*1.0)/Total)*100
+    | project Availability
+    | limit 1
+  QUERY
+  , module.checkout_function[0].name)
+  severity    = 1
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "LessThan"
+    threshold = 80
+  }
+}
