@@ -205,4 +205,4 @@ dns_a_reconds_dbnodo_ips = ["10.102.35.61", "10.102.35.62", "10.102.35.63"]
 
 # API Config FE
 api_config_fe_enabled = true
-cname_record_name     = "apiconfig"
+cname_record_name     = "config"
