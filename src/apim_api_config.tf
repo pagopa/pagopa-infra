@@ -55,7 +55,7 @@ module "apim_api_config_api" {
   service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service[0].default_site_hostname)
 
   content_format = "openapi"
-  content_value  = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
