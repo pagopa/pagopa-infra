@@ -305,9 +305,14 @@ variable "app_gateway_management_certificate_name" {
   description = "Application gateway api management certificate name on Key Vault"
 }
 
+variable "app_gateway_sku_name" {
+  type        = string
+  description = "The Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"
+}
+
 variable "app_gateway_sku_tier" {
   type        = string
-  description = "Application gateway additional support for autoscaling, zone redundancy and Static VIP"
+  description = "The Tier of the SKU to use for this Application Gateway. Possible values are Standard, Standard_v2, WAF and WAF_v2"
 }
 
 # Scaling
