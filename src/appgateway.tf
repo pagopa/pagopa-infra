@@ -43,8 +43,8 @@ module "app_gw" {
   name                = format("%s-app-gw", local.project)
 
   # SKU
-  sku_name = "WAF_v2"
-  sku_tier = "WAF_v2"
+  sku_name = var.app_gateway_sku_tier
+  sku_tier = var.app_gateway_sku_tier
 
   # Networking
   subnet_id    = module.appgateway_snet.id
