@@ -170,7 +170,7 @@
                             <value>http</value>
                         </set-header>
                         <choose>
-                            <when condition="@(context.Variables["idempotencyKey"] == null)">
+                            <when condition="@(context.Variables["idempotencyKey"] == null && context.Variables["expirationTime"] == null )">
                                 <set-body template="liquid">
 									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 										<soapenv:Header />
@@ -185,13 +185,16 @@
 													<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
+												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 												<amount>{{context.Variables["amount"]}}</amount>
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
                             </when>
-                            <otherwise>
+                        </choose>
+                        <choose>
+                            <when condition="@(context.Variables["idempotencyKey"] != null && context.Variables["expirationTime"] == null)">
                                 <set-body template="liquid">
 									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 										<soapenv:Header />
@@ -206,12 +209,61 @@
 													<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
+												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 												<amount>{{context.Variables["amount"]}}</amount>
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
-                            </otherwise>
+                            </when>
+                        </choose>
+                        <choose>
+                            <when condition="@(context.Variables["idempotencyKey"] == null && context.Variables["expirationTime"] != null)">
+                                <set-body template="liquid">
+									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+										<soapenv:Header />
+										<soapenv:Body>
+											<nod:activatePaymentNoticeReq>
+												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+												<password>{{context.Variables["password"]}}</password>
+												<!-- <idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey> -->
+												<qrCode>
+													<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+												</qrCode>
+												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
+												<amount>{{context.Variables["amount"]}}</amount>
+											</nod:activatePaymentNoticeReq>
+										</soapenv:Body>
+									</soapenv:Envelope>
+								</set-body>
+                            </when>
+                        </choose>
+                        <choose>
+                            <when condition="@(context.Variables["idempotencyKey"] != null && context.Variables["expirationTime"] != null )">
+                                <set-body template="liquid">
+									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+										<soapenv:Header />
+										<soapenv:Body>
+											<nod:activatePaymentNoticeReq>
+												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
+												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
+												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
+												<password>{{context.Variables["password"]}}</password>
+												<idempotencyKey>{{context.Variables["idempotencyKey"]}}</idempotencyKey>
+												<qrCode>
+													<fiscalCode>{{context.Variables["fiscalCode"]}}</fiscalCode>
+													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
+												</qrCode>
+												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
+												<amount>{{context.Variables["amount"]}}</amount>
+											</nod:activatePaymentNoticeReq>
+										</soapenv:Body>
+									</soapenv:Envelope>
+								</set-body>
+                            </when>
                         </choose>
                         <!-- <set-backend-service base-url="{{urlnodo}}" /> -->
                     </when>
