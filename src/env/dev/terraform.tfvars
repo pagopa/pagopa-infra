@@ -201,8 +201,8 @@ eventhubs = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port         = 1523
-db_service_name = "NDPSPCT_NODO4_CFG" # fixme set with data from SIA
+db_port                  = 1523
+db_service_name          = "NDPSPCT_NODO4_CFG" # fixme set with data from SIA
 dns_a_reconds_dbnodo_ips = ["10.8.3.228"]
 
 # API Config FE
