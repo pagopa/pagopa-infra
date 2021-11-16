@@ -21,7 +21,7 @@ variable "env_short" {
 variable "lock_enable" {
   type        = bool
   default     = false
-  description = "Apply locks to block accedentaly deletions."
+  description = "Apply locks to block accidentally deletions."
 }
 
 # Azure DevOps
@@ -153,7 +153,6 @@ variable "api_config_always_on" {
   default     = false
 }
 
-
 variable "db_port" {
   type        = number
   description = "Port number of the DB"
@@ -166,6 +165,17 @@ variable "db_service_name" {
   default     = null
 }
 
+
+# api_config_fe
+variable "api_config_fe_enabled" {
+  type        = bool
+  description = "Api Config FE enabled"
+  default     = false
+}
+
+variable "cname_record_name" {
+  type = string
+}
 
 # nodo dei pagamenti
 
