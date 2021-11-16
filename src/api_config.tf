@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "api_config_rg" {
 
 locals {
   apiconfig_cors_configuration = {
-    origins = [format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)]
+    origins = ["*"]
     methods = ["*"]
   }
 }
