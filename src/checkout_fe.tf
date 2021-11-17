@@ -51,12 +51,12 @@ module "checkout_cdn" {
       {
         action = "Overwrite"
         name   = "Content-Security-Policy-Report-Only"
-        value  = format("default-src 'self'; connect-src 'self' https://%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_checkout, var.external_domain)
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = " https://acardste.vaservices.eu https://cdn.cookielaw.org;"
+        value  = " https://acardste.vaservices.eu https://cdn.cookielaw.org https://privacyportal-de.onetrust.com;"
       },
       {
         action = "Append"
@@ -71,7 +71,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org;"
+        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com;"
       },
       {
         action = "Append"

@@ -107,6 +107,7 @@ resource "azurerm_api_management_api" "apim_nodo_pagamenti_api_psp_cli" {
 
 }
 
+#tfsec:ignore:general-secrets-sensitive-in-attribute-value
 resource "azurerm_api_management_api_policy" "apim_nodo_pagamenti_api_psp_cli_policy" {
   api_name            = resource.azurerm_api_management_api.apim_nodo_pagamenti_api_psp_cli.name
   api_management_name = module.apim.name

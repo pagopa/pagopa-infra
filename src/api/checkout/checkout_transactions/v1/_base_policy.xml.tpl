@@ -1,11 +1,5 @@
 <policies>
     <inbound>
-      <base />
-      <set-backend-service base-url="{{pagopa-fn-checkout-url}}/api/v1" />
-      <set-header name="x-functions-key" exists-action="override">
-        <value>{{pagopa-fn-checkout-key}}</value>
-      </set-header>
-      <rate-limit-by-key calls="20" renewal-period="30" counter-key="@(context.Request.IpAddress)" />
       <cors>
         <allowed-origins>
           <origin>*</origin>
@@ -19,6 +13,12 @@
           <header>Content-Type</header>
         </allowed-headers>
       </cors>
+      <base />
+      <set-backend-service base-url="{{pagopa-fn-checkout-url}}/api/v1" />
+      <set-header name="x-functions-key" exists-action="override">
+        <value>{{pagopa-fn-checkout-key}}</value>
+      </set-header>
+      <rate-limit-by-key calls="20" renewal-period="30" counter-key="@(context.Request.IpAddress)" />
     </inbound>
     <outbound>
       <base />
