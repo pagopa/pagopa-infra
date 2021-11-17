@@ -14,7 +14,7 @@
     <inbound>
         <cors>
             <allowed-origins>
-                <origin>https://config.dev.platform.pagopa.it</origin>
+                <origin>${origin}</origin>
             </allowed-origins>
             <allowed-methods>
                 <method>GET</method>

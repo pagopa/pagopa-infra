@@ -46,5 +46,7 @@ module "apim_api_config_api" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/apiconfig_api/v1/_base_policy.xml")
+  xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
+    origin = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
+  })
 }
