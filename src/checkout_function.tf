@@ -178,7 +178,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
 }
 
 resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
-  name                = format("%s-%s", module.portal_backend_1.name, "5xx")
+  name                = format("%s-%s", module.checkout_function.name, "5xx")
   resource_group_name = azurerm_resource_group.monitor_rg.name
   scopes              = [module.checkout_function.id]
   severity            = 1
