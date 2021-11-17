@@ -144,7 +144,7 @@ resource "azurerm_monitor_autoscale_setting" "checkout_function" {
 }
 
 # Availability: Alerting Action
-resource "azurerm_monitor_scheduled_query_rules_alert" "availability" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   count = var.checkout_enabled ? 1 : 0
 
   name                = format("%s-%s-availability-alert", local.project, module.checkout_function[0].name)
@@ -175,4 +175,29 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "availability" {
     operator  = "LessThan"
     threshold = 80
   }
+}
+
+resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
+  name                = format("%s-%s", module.portal_backend_1.name, "5xx")
+  resource_group_name = azurerm_resource_group.monitor_rg.name
+  scopes              = [module.portal_backend_1.id]
+  severity            = 1
+  frequency           = "PT1M"
+  window_size         = "PT5M"
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email, azurerm_monitor_action_group.slack]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+
+  criteria {
+    aggregation      = "Count"
+    metric_namespace = "Microsoft.Web/sites"
+    metric_name      = "Http5xx"
+    operator         = "GreaterThanOrEqual"
+    threshold        = "10"
+  }
+
+  tags = var.tags
 }

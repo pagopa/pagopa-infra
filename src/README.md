@@ -81,6 +81,7 @@
 | [azurerm_api_management_product_api.apim_nodo_pagamenti_products_psp_c](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_product_api.apim_nodo_pagamenti_products_psp_s](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/api_management_product_api) | resource |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/application_insights) | resource |
+| [azurerm_application_insights_web_test.checkout_fe_web_test](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/application_insights_web_test) | resource |
 | [azurerm_dns_a_record.dns_a_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_management](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_portal](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/dns_a_record) | resource |
