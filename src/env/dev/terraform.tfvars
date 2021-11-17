@@ -50,6 +50,7 @@ app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
+app_gateway_alerts_enabled              = false
 
 # postgresql
 prostgresql_enabled                      = true
@@ -76,7 +77,7 @@ api_config_enabled = true
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "97735020584,97735020583,97735020582,97735020581"
 nodo_pagamenti_ec      = "77777777777,00493410583"
-nodo_pagamenti_url     = "https://10.79.20.32/sit/webservices/input"
+nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input" # fixme sit
 
 # eventhub
 eventhub_enabled = true
