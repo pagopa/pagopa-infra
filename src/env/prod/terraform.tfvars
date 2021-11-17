@@ -48,6 +48,8 @@ app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_min_capacity                = 1
 app_gateway_max_capacity                = 3
+app_gateway_sku_name                    = "WAF_v2"
+app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_alerts_enabled              = true
 
 # nat_gateway

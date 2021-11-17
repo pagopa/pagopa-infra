@@ -47,6 +47,8 @@ apim_sku            = "Developer_1"
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
+app_gateway_sku_name                    = "Standard_v2"
+app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_alerts_enabled              = false
 
 # nat_gateway
