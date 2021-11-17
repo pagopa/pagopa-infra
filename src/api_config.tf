@@ -6,6 +6,13 @@ resource "azurerm_resource_group" "api_config_rg" {
   tags = var.tags
 }
 
+locals {
+  apiconfig_cors_configuration = {
+    origins = ["*"]
+    methods = ["*"]
+  }
+}
+
 # Subnet to host the api config
 module "api_config_snet" {
   count                                          = var.api_config_enabled && var.cidr_subnet_api_config != null ? 1 : 0
@@ -69,6 +76,7 @@ module "api_config_app_service" {
     SPRING_DATASOURCE_USERNAME = data.azurerm_key_vault_secret.db_nodo_usr.value
     SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.db_nodo_pwd.value
     SPRING_DATASOURCE_URL      = var.db_service_name == null ? null : format("jdbc:oracle:thin:@%s.%s:%s/%s", azurerm_private_dns_a_record.private_dns_a_record_db_nodo.name, azurerm_private_dns_zone.db_nodo_dns_zone.name, var.db_port, var.db_service_name)
+    CORS_CONFIGURATION         = jsonencode(local.apiconfig_cors_configuration)
   }
 
   allowed_subnets = [module.apim_snet.id]

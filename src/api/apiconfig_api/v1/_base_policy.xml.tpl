@@ -12,23 +12,38 @@
 -->
 <policies>
     <inbound>
-        <base/>
+        <cors>
+            <allowed-origins>
+                <origin>${origin}</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>GET</method>
+                <method>POST</method>
+                <method>PUT</method>
+                <method>DELETE</method>
+                <method>OPTIONS</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+        </cors>
+        <base />
         <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
         <choose>
-            <when condition="@(context.User.Groups.Any(g => g.Name == "Read Only") && !context.Variables.GetValueOrDefault<bool>("isGet"))">
+            <when condition="@(!context.Variables.GetValueOrDefault<bool>("isGet"))">
             <return-response>
-                <set-status code="403" reason="Unauthorized, api-key has read only access"/>
+                <set-status code="403" reason="Unauthorized, you have read-only access" />
             </return-response>
-            </when>
-        </choose>
-    </inbound>
-    <outbound>
-        <base/>
-    </outbound>
-    <backend>
-        <base/>
-    </backend>
-    <on-error>
-        <base/>
-    </on-error>
+        </when>
+    </choose>
+</inbound>
+<outbound>
+<base />
+</outbound>
+<backend>
+<base />
+</backend>
+<on-error>
+<base />
+</on-error>
 </policies>
