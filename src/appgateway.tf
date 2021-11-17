@@ -36,7 +36,7 @@ locals {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.87"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.89"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -45,6 +45,9 @@ module "app_gw" {
   # SKU
   sku_name = var.app_gateway_sku_name
   sku_tier = var.app_gateway_sku_tier
+
+  # WAF
+  waf_enabled = var.app_gateway_waf_enabled
 
   # Networking
   subnet_id    = module.appgateway_snet.id
@@ -265,11 +268,11 @@ module "app_gw" {
 
       criteria = [
         {
-          aggregation              = "Average"
-          metric_name              = "UnhealthyHostCount"
-          operator                 = "GreaterThan"
-          threshold                = 0
-          dimension                = []
+          aggregation = "Average"
+          metric_name = "UnhealthyHostCount"
+          operator    = "GreaterThan"
+          threshold   = 0
+          dimension   = []
         }
       ]
       dynamic_criteria = []
@@ -281,7 +284,7 @@ module "app_gw" {
       window_size   = "PT5M"
       severity      = 2
       auto_mitigate = true
-      
+
       criteria = []
       dynamic_criteria = [
         {
@@ -302,7 +305,7 @@ module "app_gw" {
       window_size   = "PT15M"
       severity      = 3
       auto_mitigate = true
-      
+
       criteria = []
       dynamic_criteria = [
         {
@@ -323,7 +326,7 @@ module "app_gw" {
       window_size   = "PT5M"
       severity      = 1
       auto_mitigate = true
-      
+
       criteria = []
       dynamic_criteria = [
         {

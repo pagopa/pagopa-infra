@@ -325,6 +325,12 @@ variable "app_gateway_sku_tier" {
   description = "The Tier of the SKU to use for this Application Gateway. Possible values are Standard, Standard_v2, WAF and WAF_v2"
 }
 
+variable "app_gateway_waf_enabled" {
+  type        = bool
+  description = "Enable waf"
+  default     = true
+}
+
 variable "app_gateway_alerts_enabled" {
   type        = bool
   description = "Enable alerts"

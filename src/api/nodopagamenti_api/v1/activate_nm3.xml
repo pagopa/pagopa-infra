@@ -39,7 +39,7 @@
             if (result.Length > 2) {
                 var idempotencyKey = result[1].Substring(1,result[1].Length-3);
                 return idempotencyKey;
-            } else { 
+            } else {
                 return null;
             }
         }" />
@@ -50,7 +50,7 @@
             if (result.Length > 2) {
                 var expirationTime = result[1].Substring(1,result[1].Length-3);
                 return expirationTime;
-            } else { 
+            } else {
                 return null;
             }
         }" />
@@ -76,7 +76,7 @@
             return amount;
         }" />
         <xml-to-json kind="direct" apply="content-type-xml" consider-accept-header="false" />
-        <!-- 
+        <!--
         <set-variable name="idPSP" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["idPSP"])" />
         <set-variable name="idBrokerPSP" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["idBrokerPSP"])" />
         <set-variable name="idChannel" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["idChannel"])" />
