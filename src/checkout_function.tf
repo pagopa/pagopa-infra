@@ -178,17 +178,17 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
 }
 
 resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
-  name                = format("%s-%s", module.checkout_function.name, "5xx")
+  count = var.checkout_enabled ? 1 : 0
+
+  name                = format("%s-%s", module.checkout_function[0].name, "5xx")
   resource_group_name = azurerm_resource_group.monitor_rg.name
-  scopes              = [module.checkout_function.id]
+  scopes              = [module.checkout_function[0].id]
   severity            = 1
   frequency           = "PT1M"
   window_size         = "PT5M"
 
   action {
-    action_group           = [azurerm_monitor_action_group.email, azurerm_monitor_action_group.slack]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
+    action_group_id = azurerm_monitor_action_group.slack.id
   }
 
   criteria {
