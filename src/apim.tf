@@ -27,7 +27,7 @@ locals {
 }
 
 ###########################
-## Api Management (apim) ## 
+## Api Management (apim) ##
 ###########################
 
 module "apim" {
@@ -47,7 +47,7 @@ module "apim" {
   # This enables the Username and Password Identity Provider
   sign_up_enabled = false
 
-  lock_enable = var.lock_enable
+  lock_enable = false
 
   # sign_up_terms_of_service = {
   #   consent_required = false
@@ -70,30 +70,85 @@ module "apim" {
   ]
 }
 
+
+resource "azurerm_api_management_group" "readonly" {
+  name                = "read-only"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Read Only"
+}
+
+# Named values
+resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
+  count               = var.checkout_enabled ? 1 : 0
+  name                = "pagopa-fn-checkout-url"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pagopa-fn-checkout-url"
+  value               = format("https://pagopa-%s-fn-checkout.azurewebsites.net", var.env_short)
+}
+
+resource "azurerm_api_management_named_value" "brokerlist_value" {
+  name                = "brokerlist"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "brokerlist"
+  value               = var.nodo_pagamenti_psp
+}
+
+resource "azurerm_api_management_named_value" "ecblacklist_value" {
+  name                = "ecblacklist"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "ecblacklist"
+  value               = var.nodo_pagamenti_ec
+}
+
+resource "azurerm_api_management_named_value" "urlnodo_value" {
+  name                = "urlnodo"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "urlnodo"
+  value               = var.nodo_pagamenti_url
+}
+
+resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {
+  count               = var.checkout_enabled ? 1 : 0
+  name                = "pagopa-fn-checkout-key"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pagopa-fn-checkout-key"
+  value               = data.azurerm_key_vault_secret.fn_checkout_key[0].value
+  secret              = true
+}
+
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 
   proxy {
     host_name = local.api_domain
-    key_vault_id = trimsuffix(
+    key_vault_id = replace(
       data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-      data.azurerm_key_vault_certificate.app_gw_platform.version
+      "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+      ""
     )
   }
 
   developer_portal {
     host_name = local.portal_domain
-    key_vault_id = trimsuffix(
+    key_vault_id = replace(
       data.azurerm_key_vault_certificate.portal_platform.secret_id,
-      data.azurerm_key_vault_certificate.portal_platform.version
+      "/${data.azurerm_key_vault_certificate.portal_platform.version}",
+      ""
     )
   }
 
   management {
     host_name = local.management_domain
-    key_vault_id = trimsuffix(
+    key_vault_id = replace(
       data.azurerm_key_vault_certificate.management_platform.secret_id,
-      data.azurerm_key_vault_certificate.management_platform.version
+      "/${data.azurerm_key_vault_certificate.management_platform.version}",
+      ""
     )
   }
 }

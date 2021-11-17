@@ -16,7 +16,7 @@ module "key_vault" {
   tags = var.tags
 }
 
-# ## api management policy ## 
+# ## api management policy ##
 resource "azurerm_key_vault_access_policy" "api_management_policy" {
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
@@ -126,25 +126,6 @@ resource "azurerm_key_vault_access_policy" "adgroup_security_policy" {
   ]
 }
 
-## azure devops ##
-data "azuread_service_principal" "azdo_sp_tls_cert" {
-  count        = var.azdo_sp_tls_cert_enabled ? 1 : 0
-  display_name = format("azdo-sp-%s-tls-cert", local.project)
-}
-
-resource "azurerm_key_vault_access_policy" "azdo_sp_tls_cert" {
-  count        = var.azdo_sp_tls_cert_enabled ? 1 : 0
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.azdo_sp_tls_cert[0].object_id
-
-  certificate_permissions = [
-    "Get",
-    "List",
-    "Import",
-  ]
-}
-
 resource "azurerm_user_assigned_identity" "appgateway" {
   resource_group_name = azurerm_resource_group.sec_rg.name
   location            = azurerm_resource_group.sec_rg.location
@@ -185,6 +166,19 @@ data "azurerm_key_vault_secret" "sec_storage_id" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "fn_checkout_key" {
+  count        = var.checkout_enabled ? 1 : 0
+  name         = "fn-checkout-key"
+  key_vault_id = module.key_vault.id
+}
+
+
+data "azurerm_key_vault_secret" "google_recaptcha_secret" {
+  count        = var.checkout_enabled ? 1 : 0
+  name         = "google-recaptcha-secret"
+  key_vault_id = module.key_vault.id
+}
+
 ## azure cdn frontdoor ##
 ## remember to do this: https://docs.microsoft.com/it-it/azure/frontdoor/standard-premium/how-to-configure-https-custom-domain#register-azure-front-door
 # data "azuread_service_principal" "azure_cdn_frontdoor" {
@@ -211,5 +205,15 @@ data "azurerm_key_vault_secret" "monitor_notification_email" {
 
 data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
   name         = "monitor-notification-slack-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "db_nodo_usr" {
+  name         = "db-nodo-usr"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "db_nodo_pwd" {
+  name         = "db-nodo-pwd"
   key_vault_id = module.key_vault.id
 }

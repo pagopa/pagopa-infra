@@ -18,7 +18,7 @@ module "appgateway_snet" {
   virtual_network_name = module.vnet.name
 }
 
-## Application gateway ## 
+## Application gateway ##
 # Since these variables are re-used - a locals block makes this more maintainable
 locals {
   backend_address_pool_name       = format("%s-appgw-be-address-pool", local.project)

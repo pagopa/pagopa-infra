@@ -6,6 +6,13 @@ resource "azurerm_resource_group" "api_config_rg" {
   tags = var.tags
 }
 
+locals {
+  apiconfig_cors_configuration = {
+    origins = ["*"]
+    methods = ["*"]
+  }
+}
+
 # Subnet to host the api config
 module "api_config_snet" {
   count                                          = var.api_config_enabled && var.cidr_subnet_api_config != null ? 1 : 0
@@ -47,6 +54,29 @@ module "api_config_app_service" {
   health_check_path   = "/apiconfig/api/v1/info"
 
   app_settings = {
+    # Monitoring
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+    APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
+    APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
+    APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
+    ApplicationInsightsAgent_EXTENSION_VERSION      = "~3"
+    DiagnosticServices_EXTENSION_VERSION            = "~3"
+    InstrumentationEngine_EXTENSION_VERSION         = "disabled"
+    SnapshotDebugger_EXTENSION_VERSION              = "disabled"
+    XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
+    XDT_MicrosoftApplicationInsights_Mode           = "recommended"
+    XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
+    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
+    TIMEOUT_DELAY                                   = 300
+    # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
+    WEBSITE_DNS_SERVER     = "168.63.129.16"
+    WEBSITE_VNET_ROUTE_ALL = 1
+    # Spring Environment
+    SPRING_DATASOURCE_USERNAME = data.azurerm_key_vault_secret.db_nodo_usr.value
+    SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.db_nodo_pwd.value
+    SPRING_DATASOURCE_URL      = var.db_service_name == null ? null : format("jdbc:oracle:thin:@%s.%s:%s/%s", azurerm_private_dns_a_record.private_dns_a_record_db_nodo.name, azurerm_private_dns_zone.db_nodo_dns_zone.name, var.db_port, var.db_service_name)
+    CORS_CONFIGURATION         = jsonencode(local.apiconfig_cors_configuration)
   }
 
   allowed_subnets = [module.apim_snet.id]

@@ -21,6 +21,8 @@ cidr_subnet_azdoa      = ["10.1.130.0/24"]
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
+cidr_subnet_checkout_be = ["10.1.240.16/29"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration  = ["10.230.9.0/24"] # ask to SIA
@@ -46,6 +48,9 @@ app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 
+# nat_gateway
+nat_gateway_enabled = true
+
 # postgresql
 prostgresql_enabled                      = false
 postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify
@@ -67,12 +72,29 @@ mock_psp_enabled = false
 # api_config
 api_config_enabled = true
 
-# eventhub 
+# apim x nodo pagmenti
+nodo_pagamenti_enabled = true
+nodo_pagamenti_psp     = "97735020584,97735020583,97735020582,97735020581"
+nodo_pagamenti_ec      = "77777777777,00493410583"
+nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input"
+
+
+# eventhub
 eventhub_enabled = true
 
 # checkout
 checkout_enabled = true
-ehns_sku_name    = "Standard"
+
+# checkout function
+checkout_function_kind              = "Linux"
+checkout_function_sku_tier          = "Standard"
+checkout_function_sku_size          = "S1"
+checkout_function_autoscale_minimum = 1
+checkout_function_autoscale_maximum = 3
+checkout_function_autoscale_default = 1
+checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
+
+ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
@@ -177,3 +199,11 @@ eventhubs = [
   },
 ]
 
+# db nodo dei pagamenti
+db_service_name = "NDPSPCA_NODO4_CFG" # fixme set with data from SIA
+
+dns_a_reconds_dbnodo_ips = ["10.101.35.40", "10.101.35.41", "10.101.35.42"]
+
+# API Config FE
+api_config_fe_enabled = true
+cname_record_name     = "config"

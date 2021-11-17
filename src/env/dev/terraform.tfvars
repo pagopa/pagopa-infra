@@ -21,6 +21,8 @@ cidr_subnet_azdoa      = ["10.1.130.0/24"]
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
+cidr_subnet_checkout_be = ["10.1.240.17/29"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration  = ["10.230.8.0/24"] # ask to SIA
@@ -68,12 +70,24 @@ mock_psp_enabled = true
 # api_config
 api_config_enabled = true
 
-# eventhub 
+# apim x nodo pagmenti
+nodo_pagamenti_enabled = true
+nodo_pagamenti_psp     = "97735020584,97735020583,97735020582,97735020581"
+nodo_pagamenti_ec      = "77777777777,00493410583"
+nodo_pagamenti_url     = "https://10.79.20.32/sit/webservices/input"
+
+# eventhub
 eventhub_enabled = true
 
 # checkout
-checkout_enabled = true
-ehns_sku_name    = "Standard"
+checkout_enabled = false
+
+#checkout function
+checkout_function_kind     = "Dynamic"
+checkout_function_sku_tier = "Dynamic"
+checkout_function_sku_size = "Y1"
+
+ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
@@ -89,8 +103,10 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values = ["nodo-dei-pagamenti-log",
-        "nodo-dei-pagamenti-re"]
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
       }
     ],
   },
@@ -116,8 +132,10 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values = ["nodo-dei-pagamenti-log",
-        "nodo-dei-pagamenti-re"]
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
       }
     ],
   },
@@ -179,3 +197,14 @@ eventhubs = [
   },
 ]
 
+# acr
+acr_enabled = true
+
+# db nodo dei pagamenti
+db_port                  = 1523
+db_service_name          = "NDPSPCT_NODO4_CFG" # fixme set with data from SIA
+dns_a_reconds_dbnodo_ips = ["10.8.3.228"]
+
+# API Config FE
+api_config_fe_enabled = true
+cname_record_name     = "config"

@@ -13,7 +13,7 @@
 <policies>
     <inbound>
         <base />
-        <mock-response status-code="200" content-type="application/json" />
+        <rewrite-uri template="/" />
     </inbound>
     <backend>
         <base />

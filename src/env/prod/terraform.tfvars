@@ -20,6 +20,8 @@ cidr_subnet_azdoa      = ["10.1.130.0/24"]
 # prod only
 cidr_subnet_redis = ["10.1.132.0/24"]
 
+cidr_subnet_checkout_be = ["10.1.133.0/24"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration = ["10.230.10.0/24"] # ask to SIA
@@ -47,6 +49,10 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_min_capacity                = 0 # todo change to at least 1
 app_gateway_max_capacity                = 2
 
+# nat_gateway
+nat_gateway_enabled    = true
+nat_gateway_public_ips = 2
+
 # todo change to Premium before launch
 # redis_sku_name = "Premium"
 # redis_family   = "P"
@@ -64,12 +70,30 @@ mock_psp_enabled = false
 # api_config
 api_config_enabled = false
 
-# eventhub 
+# apim x nodo pagmenti
+nodo_pagamenti_enabled = true
+nodo_pagamenti_psp     = "97735020584,97735020583,97735020582,97735020581"
+nodo_pagamenti_ec      = "77777777777,00493410583"
+nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input" # future need - here we'll set PROD node url
+
+
+# eventhub
 eventhub_enabled = true
 
 # checkout
 checkout_enabled = true
-ehns_sku_name    = "Standard"
+
+# checkout function
+checkout_function_kind              = "Linux"
+checkout_function_sku_tier          = "PremiumV3"
+checkout_function_sku_size          = "P1v3"
+checkout_function_always_on         = true
+checkout_function_autoscale_minimum = 1
+checkout_function_autoscale_maximum = 3
+checkout_function_autoscale_default = 1
+checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxyprod.azurewebsites.net"
+
+ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
@@ -174,4 +198,11 @@ eventhubs = [
   },
 ]
 
+# db nodo dei pagamenti
+db_service_name = "NDPSPCP_NODO4_CFG" # fixme set with data from SIA
 
+dns_a_reconds_dbnodo_ips = ["10.102.35.61", "10.102.35.62", "10.102.35.63"]
+
+# API Config FE
+api_config_fe_enabled = true
+cname_record_name     = "config"

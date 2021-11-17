@@ -4,165 +4,139 @@
     "title": "Pagopa webview PM Mock",
     "version": "1.0.0"
   },
-  "servers": [{
-      "url": "https://${host}"
-  }],
-  "tags": [
+  "servers": [
     {
-      "name": "paypalmock",
-      "description": "todo"
-    },
+      "url": "https://${host}"
+    }
+  ],
+  "tags": [
     {
       "name": "paypalmanagement",
       "description": "todo"
     }
   ],
   "paths": {
-      "/paypalpsp/management/response": {
-        "get": {
-          "operationId": "getmanagementresponse",
-          "description": "get management",
-          "responses": {
-            "200": {
-              "description": "json response"
-            },
-            "400": {
-              "description": "Bad request"
-            },
-            "500": {
-              "description": "generic error"
-            }
-          }
-        },
-        "patch": {
-          "operationId": "patchmanagement",
-          "description": "patch management",
-          "responses": {
-            "200": {
-              "description": "json response"
-            },
-            "400": {
-              "description": "Bad request"
-            },
-            "500": {
-              "description": "generic error"
-            }
-          }
-        }
-    },
-     "/paypalpsp/management/response/{idappio}/{apiid}": {
-        "get": {
-          "parameters": [
-            {
-              "in": "path",
-              "name": "idappio",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            },
-            {
-              "in": "path",
-              "name": "apiid",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],        
-          "operationId": "getmanagement",
-          "description": "GET management",
-          "responses": {
-            "200": {
-              "description": "json response"
-            },
-            "400": {
-              "description": "Bad request"
-            },
-            "500": {
-              "description": "generic error"
-            }
-          }
-        }
-    }
-  },
-  "components": {
-    "schemas": {
-      "StartOnboardingRequest": {
-        "required": [
-          "url_return",
-          "id_appio"
+    "/paypalpsp/management/response": {
+      "get": {
+        "operationId": "getmanagementresponse",
+        "description": "get management",
+        "tags": [
+          "paypalmanagement"
         ],
-        "type": "object",
-        "properties": {
-          "url_return": {
-            "type": "string",
-            "description": "URL used to return the result"
+        "responses": {
+          "200": {
+            "description": "json response"
           },
-          "id_appio": {
-            "type": "string",
-            "description": "user identifier"
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
           }
         }
       },
-      "StartOnboardingResponseSuccess": {
-        "required": [
-          "esito",
-          "url_to_call"
+      "patch": {
+        "tags": [
+          "paypalmanagement"
         ],
-        "type": "object",
-        "properties": {
-          "esito": {
-            "type": "string",
-            "enum": [
-              "1"
-            ],
-            "description": "URL used to return the result"
+        "operationId": "patchmanagement",
+        "description": "patch management",
+        "responses": {
+          "200": {
+            "description": "json response"
           },
-          "url_to_call": {
-            "type": "string",
-            "description": "url to call to proceed with onboarding"
-          }
-        }
-      },
-      "StartOnboardingResponseError": {
-        "required": [
-          "esito",
-          "err_code",
-          "err_desc"
-        ],
-        "type": "object",
-        "properties": {
-          "esito": {
-            "type": "string",
-            "enum": [
-              "3",
-              "9"
-            ],
-            "description": "Api result"
+          "400": {
+            "description": "Bad request"
           },
-          "err_code": {
-            "type": "string",
-            "enum": [
-              "9",
-              "11",
-              "13",
-              "15",
-              "19",
-              "67"
-            ]
-          },
-          "err_desc": {
-            "type": "string"
+          "500": {
+            "description": "generic error"
           }
         }
       }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "string"
+    "/paypalpsp/management/response/{idappio}/{apiid}": {
+      "get": {
+        "tags": [
+          "paypalmanagement"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idappio",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "apiid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getmanagementwithapiid",
+        "description": "GET management with api Id",
+        "responses": {
+          "200": {
+            "description": "json response"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      }
+    },
+    "/paypalpsp/management/response/{idappio}": {
+      "get": {
+        "tags": [
+          "paypalmanagement"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idappio",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "getmanagement",
+        "description": "GET management",
+        "responses": {
+          "200": {
+            "description": "json response"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      }
+    },
+    "/info": {
+      "get": {
+        "operationId": "getappinfo",
+        "description": "GET Application info",
+        "responses": {
+          "200": {
+            "description": "json response"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
       }
     }
   }

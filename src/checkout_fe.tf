@@ -50,28 +50,33 @@ module "checkout_cdn" {
       # Content-Security-Policy (in Report mode)
       {
         action = "Overwrite"
-        name   = "Content-Security-Policy"
-        value  = "default-src 'self'; connect-src 'self' https://api.io.italia.it https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy"
-        value  = " https://acardste.vaservices.eu;"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = " https://acardste.vaservices.eu https://cdn.cookielaw.org https://privacyportal-de.onetrust.com;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy"
-        value  = "frame-ancestors 'none'; object-src 'none'; frame-src *;"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy"
+        name   = "Content-Security-Policy-Report-Only"
         value  = "img-src 'self' https://acardste.vaservices.eu https://wisp2.pagopa.gov.it data:;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy"
-        value  = "script-src 'self'; style-src 'self'  'unsafe-inline'; worker-src 'none';"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com;"
+      },
+      {
+        action = "Append"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = "style-src 'self'  'unsafe-inline'; worker-src 'none';"
       }
     ]
   }

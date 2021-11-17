@@ -21,7 +21,7 @@ variable "env_short" {
 variable "lock_enable" {
   type        = bool
   default     = false
-  description = "Apply locks to block accedentaly deletions."
+  description = "Apply locks to block accidentally deletions."
 }
 
 # Azure DevOps
@@ -153,6 +153,56 @@ variable "api_config_always_on" {
   default     = false
 }
 
+variable "db_port" {
+  type        = number
+  description = "Port number of the DB"
+  default     = 1521
+}
+
+variable "db_service_name" {
+  type        = string
+  description = "Service Name of DB"
+  default     = null
+}
+
+
+# api_config_fe
+variable "api_config_fe_enabled" {
+  type        = bool
+  description = "Api Config FE enabled"
+  default     = false
+}
+
+variable "cname_record_name" {
+  type = string
+}
+
+# nodo dei pagamenti
+
+variable "nodo_pagamenti_enabled" {
+  type        = bool
+  description = "nodo pagamenti enabled"
+  default     = false
+}
+
+variable "nodo_pagamenti_psp" {
+  type        = string
+  description = "PSP' white list nodo pagamenti (separate comma list) ."
+  default     = ","
+}
+
+variable "nodo_pagamenti_ec" {
+  type        = string
+  description = "EC' black list nodo pagamenti (separate comma list)."
+  default     = ","
+}
+
+variable "nodo_pagamenti_url" {
+  type        = string
+  description = "Nodo pagamenti url"
+  default     = "https://"
+}
+
 # Network
 variable "cidr_vnet" {
   type        = list(string)
@@ -173,6 +223,19 @@ variable "cidr_subnet_apim" {
 variable "cidr_subnet_appgateway" {
   type        = list(string)
   description = "Application gateway address space."
+}
+
+# nat gateway
+variable "nat_gateway_enabled" {
+  type        = bool
+  default     = false
+  description = "Nat Gateway enabled"
+}
+
+variable "nat_gateway_public_ips" {
+  type        = number
+  default     = 1
+  description = "Number of public outbound ips"
 }
 
 # DNS
@@ -281,7 +344,7 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-## Database server postgresl 
+## Database server postgresl
 variable "postgresql_sku_name" {
   type        = string
   description = "Specifies the SKU Name for this PostgreSQL Server."
@@ -415,6 +478,60 @@ variable "azuread_service_principal_azure_cdn_frontdoor_id" {
   default = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 }
 
+variable "cidr_subnet_checkout_be" {
+  type        = list(string)
+  description = "Address prefixes subnet checkout function"
+  default     = null
+}
+
+variable "checkout_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "checkout_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "checkout_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "checkout_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "checkout_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "checkout_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+variable "checkout_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "checkout_pagopaproxy_host" {
+  type        = string
+  description = "pagopaproxy host"
+  default     = null
+}
+
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
@@ -477,4 +594,25 @@ EOD
       }
     ))
   }))
+}
+
+# acr
+
+variable "acr_enabled" {
+  type        = bool
+  description = "Container registry enabled"
+  default     = false
+}
+
+
+# DNS private
+variable "dns_a_reconds_dbnodo_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "private_dns_zone_db_nodo_pagamenti" {
+  type    = string
+  default = "metti.qui.il.dns.com" # TODO fixme fornito da SIA
 }
