@@ -14,9 +14,8 @@ module "apim_api_config_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 50
+  subscription_required = false
+  approval_required     = false
 
   policy_xml = file("./api_product/apiconfig_api/_base_policy.xml")
 }
@@ -33,7 +32,7 @@ module "apim_api_config_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_api_config_product[0].product_id]
-  subscription_required = true
+  subscription_required = false
 
   description  = "api config api"
   display_name = "api config api"
@@ -47,5 +46,7 @@ module "apim_api_config_api" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/apiconfig_api/v1/_base_policy.xml")
+  xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
+    origin = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
+  })
 }
