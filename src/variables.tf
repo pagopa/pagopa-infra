@@ -315,6 +315,11 @@ variable "app_gateway_management_certificate_name" {
   description = "Application gateway api management certificate name on Key Vault"
 }
 
+variable "app_gateway_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
+}
 # Scaling
 
 variable "app_gateway_min_capacity" {
