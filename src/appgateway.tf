@@ -36,15 +36,15 @@ locals {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.55"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.87"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
   name                = format("%s-app-gw", local.project)
 
   # SKU
-  sku_name = "WAF_v2"
-  sku_tier = "WAF_v2"
+  sku_name = var.app_gateway_sku_name
+  sku_tier = var.app_gateway_sku_tier
 
   # Networking
   subnet_id    = module.appgateway_snet.id
@@ -53,21 +53,27 @@ module "app_gw" {
   # Configure backends
   backends = {
     apim = {
-      protocol     = "Https"
-      host         = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
-      port         = 443
-      ip_addresses = module.apim.private_ip_addresses
-      probe        = "/status-0123456789abcdef"
-      probe_name   = "probe-apim"
+      protocol                    = "Https"
+      host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
+      port                        = 443
+      ip_addresses                = module.apim.private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim"
+      request_timeout             = 8
+      pick_host_name_from_backend = false
     }
 
     portal = {
-      protocol     = "Https"
-      host         = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
-      port         = 443
-      ip_addresses = module.apim.private_ip_addresses
-      probe        = "/signin"
-      probe_name   = "probe-portal"
+      protocol                    = "Https"
+      host                        = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
+      port                        = 443
+      ip_addresses                = module.apim.private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_portal.fqdn]
+      probe                       = "/signin"
+      probe_name                  = "probe-portal"
+      request_timeout             = 8
+      pick_host_name_from_backend = false
     }
 
     management = {
@@ -75,8 +81,12 @@ module "app_gw" {
       host         = trim(azurerm_dns_a_record.dns_a_management.fqdn, ".")
       port         = 443
       ip_addresses = module.apim.private_ip_addresses
-      probe        = "/ServiceStatus"
-      probe_name   = "probe-management"
+      fqdns        = [azurerm_dns_a_record.dns_a_management.fqdn]
+
+      probe                       = "/ServiceStatus"
+      probe_name                  = "probe-management"
+      request_timeout             = 8
+      pick_host_name_from_backend = false
     }
   }
 
@@ -104,46 +114,52 @@ module "app_gw" {
   listeners = {
 
     api = {
-      protocol         = "Https"
-      host             = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      protocol           = "Https"
+      host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
 
       certificate = {
         name = var.app_gateway_api_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-          data.azurerm_key_vault_certificate.app_gw_platform.version
+          "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+          ""
         )
       }
     }
 
     portal = {
-      protocol         = "Https"
-      host             = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      protocol           = "Https"
+      host               = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
 
       certificate = {
         name = var.app_gateway_portal_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.portal_platform.secret_id,
-          data.azurerm_key_vault_certificate.portal_platform.version
+          "/${data.azurerm_key_vault_certificate.portal_platform.version}",
+          ""
         )
       }
     }
 
     management = {
-      protocol         = "Https"
-      host             = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      protocol           = "Https"
+      host               = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
 
       certificate = {
         name = var.app_gateway_management_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.management_platform.secret_id,
-          data.azurerm_key_vault_certificate.management_platform.version
+          "/${data.azurerm_key_vault_certificate.management_platform.version}",
+          ""
         )
       }
     }
@@ -152,21 +168,45 @@ module "app_gw" {
   # maps listener to backend
   routes = {
     api = {
-      listener = "api"
-      backend  = "apim"
+      listener              = "api"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
     }
 
     portal = {
-      listener = "portal"
-      backend  = "portal"
+      listener              = "portal"
+      backend               = "portal"
+      rewrite_rule_set_name = null
     }
 
     mangement = {
-      listener = "management"
-      backend  = "management"
+      listener              = "management"
+      backend               = "management"
+      rewrite_rule_set_name = null
     }
   }
 
+  rewrite_rule_sets = [
+    {
+      name = "rewrite-rule-set-api"
+      rewrite_rules = [{
+        name          = "http-headers-api"
+        rule_sequence = 100
+        condition     = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    }
+  ]
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
@@ -175,9 +215,130 @@ module "app_gw" {
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
   # Logs
-  # todo enable
-  # sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
-  # sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
+  sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
+
+  alerts_enabled = var.app_gateway_alerts_enabled
+
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    }
+  ]
+
+  # metrics docs
+  # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftnetworkapplicationgateways
+  monitor_metric_alert_criteria = {
+
+    compute_units_usage = {
+      description   = "Abnormal compute units usage, probably an high traffic peak"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 2
+      auto_mitigate = true
+
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "ComputeUnits"
+          operator                 = "GreaterOrLessThan"
+          alert_sensitivity        = "Low" # todo after api app migration change to High
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension                = []
+        }
+      ]
+    }
+
+    backend_pools_status = {
+      description   = "One or more backend pools are down, check Backend Health on Azure portal"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 0
+      auto_mitigate = true
+
+      criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "UnhealthyHostCount"
+          operator                 = "GreaterThan"
+          threshold                = 0
+          dimension                = []
+        }
+      ]
+      dynamic_criteria = []
+    }
+
+    response_time = {
+      description   = "Backends response time is too high"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 2
+      auto_mitigate = true
+      
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "BackendLastByteResponseTime"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "High"
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension                = []
+        }
+      ]
+    }
+
+    total_requests = {
+      description   = "Traffic is raising"
+      frequency     = "PT5M"
+      window_size   = "PT15M"
+      severity      = 3
+      auto_mitigate = true
+      
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Total"
+          metric_name              = "TotalRequests"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "Medium"
+          evaluation_total_count   = 1
+          evaluation_failure_count = 1
+          dimension                = []
+        }
+      ]
+    }
+
+    failed_requests = {
+      description   = "Abnormal failed requests"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 1
+      auto_mitigate = true
+      
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Total"
+          metric_name              = "FailedRequests"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "High"
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension                = []
+        }
+      ]
+    }
+
+  }
 
   tags = var.tags
 }
