@@ -36,7 +36,7 @@ locals {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.80"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.87"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -218,6 +218,127 @@ module "app_gw" {
   sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
   sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
 
+  alerts_enabled = var.app_gateway_alerts_enabled
+
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    }
+  ]
+
+  # metrics docs
+  # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftnetworkapplicationgateways
+  monitor_metric_alert_criteria = {
+
+    compute_units_usage = {
+      description   = "Abnormal compute units usage, probably an high traffic peak"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 2
+      auto_mitigate = true
+
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "ComputeUnits"
+          operator                 = "GreaterOrLessThan"
+          alert_sensitivity        = "Low" # todo after api app migration change to High
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension                = []
+        }
+      ]
+    }
+
+    backend_pools_status = {
+      description   = "One or more backend pools are down, check Backend Health on Azure portal"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 0
+      auto_mitigate = true
+
+      criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "UnhealthyHostCount"
+          operator                 = "GreaterThan"
+          threshold                = 0
+          dimension                = []
+        }
+      ]
+      dynamic_criteria = []
+    }
+
+    response_time = {
+      description   = "Backends response time is too high"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 2
+      auto_mitigate = true
+      
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "BackendLastByteResponseTime"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "High"
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension                = []
+        }
+      ]
+    }
+
+    total_requests = {
+      description   = "Traffic is raising"
+      frequency     = "PT5M"
+      window_size   = "PT15M"
+      severity      = 3
+      auto_mitigate = true
+      
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Total"
+          metric_name              = "TotalRequests"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "Medium"
+          evaluation_total_count   = 1
+          evaluation_failure_count = 1
+          dimension                = []
+        }
+      ]
+    }
+
+    failed_requests = {
+      description   = "Abnormal failed requests"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 1
+      auto_mitigate = true
+      
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Total"
+          metric_name              = "FailedRequests"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "High"
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension                = []
+        }
+      ]
+    }
+
+  }
 
   tags = var.tags
 }
