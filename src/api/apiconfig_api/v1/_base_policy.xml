@@ -12,15 +12,23 @@
 -->
 <policies>
     <inbound>
-        <base />
+        <base/>
+        <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
+        <choose>
+            <when condition="@(context.User.Groups.Any(g => g.Name == "Read Only") && !context.Variables.GetValueOrDefault<bool>("isGet"))">
+            <return-response>
+                <set-status code="403" reason="Unauthorized, api-key has read only access"/>
+            </return-response>
+            </when>
+        </choose>
     </inbound>
-    <backend>
-        <base />
-    </backend>
     <outbound>
-        <base />
+        <base/>
     </outbound>
+    <backend>
+        <base/>
+    </backend>
     <on-error>
-        <base />
+        <base/>
     </on-error>
 </policies>
