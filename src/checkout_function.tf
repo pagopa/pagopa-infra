@@ -152,7 +152,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email, azurerm_monitor_action_group.slack]
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
