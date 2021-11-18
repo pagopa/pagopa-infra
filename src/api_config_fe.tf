@@ -39,6 +39,7 @@ module "api_config_fe_cdn" {
   querystring_caching_behaviour = "BypassCaching"
 
   // https://antbutcher.medium.com/hosting-a-react-js-app-on-azure-blob-storage-azure-cdn-for-ssl-and-routing-8fdf4a48feeb
+  // it is important to add base tag in index.html too (i.e. <base href="/">)
   delivery_rule_rewrite = [{
     name  = "RewriteRules"
     order = 2
