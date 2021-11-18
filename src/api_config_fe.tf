@@ -38,47 +38,25 @@ module "api_config_fe_cdn" {
 
   querystring_caching_behaviour = "BypassCaching"
 
-  //  global_delivery_rule = {
-  //    cache_expiration_action       = []
-  //    cache_key_query_string_action = []
-  //    modify_request_header_action  = []
+  // https://antbutcher.medium.com/hosting-a-react-js-app-on-azure-blob-storage-azure-cdn-for-ssl-and-routing-8fdf4a48feeb
+  delivery_rule_rewrite = [{
+    name  = "RewriteRules"
+    order = 2
 
-  # HSTS
-  //    modify_response_header_action = [
-  //      {
-  //      action = "Overwrite"
-  //      name   = "Strict-Transport-Security"
-  //      value  = "max-age=31536000"
-  //    },
-  //      # Content-Security-Policy (in Report mode)
-  //      {
-  //        action = "Overwrite"
-  //        name   = "Content-Security-Policy-Report-Only"
-  //        value  = "default-src 'self'; connect-src 'self'"
-  //      },
-  //      {
-  //        action = "Append"
-  //        name   = "Content-Security-Policy-Report-Only"
-  //        value  = " https://acardste.vaservices.eu;"
-  //      },
-  //      {
-  //        action = "Append"
-  //        name   = "Content-Security-Policy-Report-Only"
-  //        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com;"
-  //      },
-  //      {
-  //        action = "Append"
-  //        name   = "Content-Security-Policy-Report-Only"
-  //        value  = "img-src 'self' https://acardste.vaservices.eu data:;"
-  //      },
-  //      {
-  //        action = "Append"
-  //        name   = "Content-Security-Policy-Report-Only"
-  //        value  = "script-src 'self' https://www.google.com https://www.gstatic.com; style-src 'self'  'unsafe-inline'; worker-src 'none';"
-  //      }
-  //    ]
-  //  }
+    conditions = [ {
+      condition_type = "url_file_extension_condition"
+      operator     = "LessThan"
+      match_values = ["1"]
+      transforms    = []
+      negate_condition = false
+    }]
 
+    url_rewrite_action = {
+      source_pattern          = "/"
+      destination             = "/index.html"
+      preserve_unmatched_path = false
+    }
+  }]
 
   tags = var.tags
 }
