@@ -157,7 +157,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
     custom_webhook_payload = "{}"
   }
   data_source_id = azurerm_application_insights.application_insights.id
-  description    = "Availability greater than 80%"
+  description    = "Availability greater than 99%"
   enabled        = true
   query = format(<<-QUERY
   requests
@@ -173,7 +173,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   time_window = 5
   trigger {
     operator  = "LessThan"
-    threshold = 80
+    threshold = 99
   }
 }
 
