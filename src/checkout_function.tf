@@ -169,8 +169,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   QUERY
   , format("%s-fn-%s", local.project, module.checkout_function[0].name))
   severity    = 1
-  frequency   = 10
-  time_window = 5
+  frequency   = 5
+  time_window = 10
   trigger {
     operator  = "LessThan"
     threshold = 99
