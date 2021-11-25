@@ -157,23 +157,22 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
     custom_webhook_payload = "{}"
   }
   data_source_id = azurerm_application_insights.application_insights.id
-  description    = "Availability greater than 99%"
+  description    = "Availability greater than or equal 99%"
   enabled        = true
   query = format(<<-QUERY
   requests
     | where cloud_RoleName == '%s'
-    | summarize Total=count(), Success=count(toint(resultCode) == 200) by length=bin(timestamp,5m)
+    | summarize Total=count(), Success=count(toint(resultCode) == 200) by length=bin(timestamp,10m)
     | extend Availability=((Success*1.0)/Total)*100
-    | project Availability
-    | limit 1
+    | where toint(Availability) < 99
   QUERY
   , format("%s-fn-%s", local.project, module.checkout_function[0].name))
   severity    = 1
-  frequency   = 5
-  time_window = 10
+  frequency   = 10
+  time_window = 20
   trigger {
-    operator  = "LessThan"
-    threshold = 99
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
   }
 }
 
@@ -191,12 +190,12 @@ resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
     action_group_id = azurerm_monitor_action_group.slack.id
   }
 
-  criteria {
-    aggregation      = "Count"
-    metric_namespace = "Microsoft.Web/sites"
-    metric_name      = "Http5xx"
-    operator         = "GreaterThanOrEqual"
-    threshold        = "10"
+  dynamic_criteria {
+    aggregation       = "Total"
+    metric_namespace  = "Microsoft.Web/sites"
+    metric_name       = "Http5xx"
+    operator          = "GreaterThan"
+    alert_sensitivity = "Medium"
   }
 
   tags = var.tags
