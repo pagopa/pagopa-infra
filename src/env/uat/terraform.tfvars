@@ -71,7 +71,7 @@ prostgresql_db_mockpsp = "mock-psp"
 
 # mock
 mock_ec_enabled  = true
-mock_psp_enabled = false
+mock_psp_enabled = true
 
 # api_config
 api_config_enabled = true
