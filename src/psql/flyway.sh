@@ -19,12 +19,20 @@ SCHEMA=$4
 shift 4
 other=$@
 
+if [ -z "${SUBSCRIPTION}" ]; then
+    printf "\e[1;31mYou must provide a subscription as first argument.\n"
+    exit 1
+fi
+
 if [ ! -d "${WORKDIR}/subscriptions/${SUBSCRIPTION}" ]; then
     printf "\e[1;31mYou must provide a subscription for which a variable file is defined. You provided: '%s'.\n" "${SUBSCRIPTION}" > /dev/stderr
     exit 1
 fi
 
 az account set -s "${SUBSCRIPTION}"
+
+# shellcheck disable=SC1090
+source "${WORKDIR}/subscriptions/${SUBSCRIPTION}/backend.ini"
 
 # shellcheck disable=SC2154
 printf "Subscription: %s\n" "${SUBSCRIPTION}"
@@ -47,7 +55,9 @@ mockpsp_user_password=$(az keyvault secret show --name db-mock-psp-user-login --
 
 export mockpsp_user_password="${mockpsp_user_password}"
 
+
 docker run --rm -it --network=host -v "${WORKDIR}/migrations/${SUBSCRIPTION}/${DATABASE}":/flyway/sql \
   flyway/flyway:"${FLYWAY_DOCKER_TAG}" \
   -url="${FLYWAY_URL}" -user="${FLYWAY_USER}" -password="${FLYWAY_PASSWORD}" \
   -validateMigrationNaming=true \
+  "${COMMAND}" ${other}
