@@ -99,6 +99,10 @@ checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxyprod.azureweb
 
 ehns_sku_name = "Standard"
 
+# to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
+ehns_auto_inflate_enabled     = true
+ehns_maximum_throughput_units = 5
+
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
   no_trx = {
@@ -184,7 +188,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 32 # in PROD shall be changed
     message_retention = 7  # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-rx1"]
+    consumers         = ["nodo-dei-pagamenti-rx1", "nodo-dei-pagamenti-rx2"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -193,7 +197,13 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "nodo-dei-pagamenti-rx1"
+        name   = "nodo-dei-pagamenti-rx1" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-rx2" # oper
         listen = true
         send   = false
         manage = false
