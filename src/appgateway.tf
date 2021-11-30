@@ -278,26 +278,26 @@ module "app_gw" {
       dynamic_criteria = []
     }
 
-    # response_time = {
-    #   description   = "Backends response time is too high"
-    #   frequency     = "PT5M"
-    #   window_size   = "PT5M"
-    #   severity      = 2
-    #   auto_mitigate = true
+    response_time = {
+      description   = "Backends response time is too high"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 2
+      auto_mitigate = true
 
-    #   criteria = []
-    #   dynamic_criteria = [
-    #     {
-    #       aggregation              = "Average"
-    #       metric_name              = "BackendLastByteResponseTime"
-    #       operator                 = "GreaterThan"
-    #       alert_sensitivity        = "High"
-    #       evaluation_total_count   = 2
-    #       evaluation_failure_count = 2
-    #       dimension                = []
-    #     }
-    #   ]
-    # }
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "BackendLastByteResponseTime"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "High"
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension                = []
+        }
+      ]
+    }
 
     total_requests = {
       description   = "Traffic is raising"
