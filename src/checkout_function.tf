@@ -50,7 +50,7 @@ module "checkout_function" {
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
-    WEBSITE_NODE_DEFAULT_VERSION   = "12.18.0"
+    WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
     NODE_ENV                       = "production"
 
@@ -141,4 +141,62 @@ resource "azurerm_monitor_autoscale_setting" "checkout_function" {
       }
     }
   }
+}
+
+# Availability: Alerting Action
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
+  count = var.checkout_enabled ? 1 : 0
+
+  name                = format("%s-%s-availability-alert", local.project, module.checkout_function[0].name)
+  resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "Availability greater than or equal 99%"
+  enabled        = true
+  query = format(<<-QUERY
+  requests
+    | where cloud_RoleName == '%s'
+    | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,10m)
+    | extend Availability=((Success*1.0)/Total)*100
+    | where toint(Availability) < 99
+  QUERY
+  , format("%s-fn-%s", local.project, module.checkout_function[0].name))
+  severity    = 1
+  frequency   = 10
+  time_window = 20
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
+  count = var.checkout_enabled ? 1 : 0
+
+  name                = format("%s-%s", module.checkout_function[0].name, "5xx")
+  resource_group_name = azurerm_resource_group.monitor_rg.name
+  scopes              = [module.checkout_function[0].id]
+  severity            = 1
+  frequency           = "PT1M"
+  window_size         = "PT5M"
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+
+  dynamic_criteria {
+    aggregation       = "Total"
+    metric_namespace  = "Microsoft.Web/sites"
+    metric_name       = "Http5xx"
+    operator          = "GreaterThan"
+    alert_sensitivity = "Medium"
+  }
+
+  tags = var.tags
 }
