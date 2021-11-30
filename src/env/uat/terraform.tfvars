@@ -75,6 +75,10 @@ mock_psp_enabled = false
 
 # api_config
 api_config_enabled = true
+tenant_name = "" // TODO
+policy = "B2C_1_signup_signin"
+client_id = "" // TODO
+issuer = "" // TODO
 
 # apim x nodo pagmenti
 nodo_pagamenti_enabled = true

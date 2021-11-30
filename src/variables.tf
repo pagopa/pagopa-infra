@@ -165,6 +165,29 @@ variable "db_service_name" {
   default     = null
 }
 
+variable "tenant_name" {
+  type        = string
+  description = "Tenant name"
+  default     = null
+}
+
+variable "policy" {
+  type        = string
+  description = "Policy name to get the token"
+  default     = null
+}
+
+variable "client_id" {
+  type        = string
+  description = "Client ID of the Application"
+  default     = null
+}
+
+variable "issuer" {
+  type        = string
+  description = "Issuer ID"
+  default     = null
+}
 
 # api_config_fe
 variable "api_config_fe_enabled" {

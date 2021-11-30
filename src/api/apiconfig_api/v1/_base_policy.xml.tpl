@@ -27,6 +27,15 @@
                 <header>*</header>
             </allowed-headers>
         </cors>
+         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+                    <openid-config url="https://${tenant_name}.b2clogin.com/${tenant_name}.onmicrosoft.com/${policy}/v2.0/.well-known/openid-configuration" />
+                    <audiences>
+                        <audience>${client_id}</audience>
+                    </audiences>
+                    <issuers>
+                        <issuer>https://${tenant_name}.b2clogin.com/${issuer}/v2.0/</issuer>
+                    </issuers>
+         </validate-jwt>
         <base />
         <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
         <choose>
