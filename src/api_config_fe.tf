@@ -44,11 +44,11 @@ module "api_config_fe_cdn" {
     name  = "RewriteRules"
     order = 2
 
-    conditions = [ {
-      condition_type = "url_file_extension_condition"
-      operator     = "LessThan"
-      match_values = ["1"]
-      transforms    = []
+    conditions = [{
+      condition_type   = "url_file_extension_condition"
+      operator         = "LessThan"
+      match_values     = ["1"]
+      transforms       = []
       negate_condition = false
     }]
 

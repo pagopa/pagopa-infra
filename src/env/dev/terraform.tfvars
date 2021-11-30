@@ -73,10 +73,10 @@ mock_psp_enabled = true
 
 # api_config
 api_config_enabled = true
-tenant_name = "devoperationpagopa"
-policy = "B2C_1_signup_signin"
-client_id = "f6e55ea3-6b09-49b7-81ef-9dbd9c4c2a21"
-issuer = "63c7cea0-a6e0-4d0b-970e-d5b38405ac39"
+tenant_name        = "devoperationpagopa"
+policy             = "B2C_1_signup_signin"
+client_id          = "f6e55ea3-6b09-49b7-81ef-9dbd9c4c2a21"
+issuer             = "63c7cea0-a6e0-4d0b-970e-d5b38405ac39"
 
 # apim x nodo pagmenti
 nodo_pagamenti_enabled = true

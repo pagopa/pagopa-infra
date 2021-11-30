@@ -60,10 +60,10 @@ module "apim_api_config_api" {
   })
 
   xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
+    origin      = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
     tenant_name = var.tenant_name
-    policy = var.policy
-    client_id = var.client_id
-    issuer = var.issuer
+    policy      = var.policy
+    client_id   = var.client_id
+    issuer      = var.issuer
   })
 }
