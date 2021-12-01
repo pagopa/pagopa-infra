@@ -75,10 +75,10 @@ mock_psp_enabled = false
 
 # api_config
 api_config_enabled = true
-tenant_name        = "" // TODO
+tenant_name        = "uatoperationpagopa"
 policy             = "B2C_1_signup_signin"
-client_id          = "" // TODO
-issuer             = "" // TODO
+client_id          = "93689e78-d7c4-4a66-a7c3-ebe62933efae"
+issuer             = "28ad9151-76dd-40fe-ae3c-f8ac6523678e" #tenant_id
 
 # apim x nodo pagmenti
 nodo_pagamenti_enabled = true
