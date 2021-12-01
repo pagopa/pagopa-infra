@@ -60,8 +60,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "html with redirect io-pay"
+          "302": {
+            "description": "Redirect io-pay"
           },
           "400": {
             "description": "Bad request"
@@ -89,8 +89,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "html with redirect io-pay"
+          "302": {
+            "description": "Redirect io-pay"
           },
           "400": {
             "description": "Bad request"
@@ -118,8 +118,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "html with redirect io-pay"
+          "302": {
+            "description": "Redirect io-pay"
           },
           "400": {
             "description": "Bad request"
