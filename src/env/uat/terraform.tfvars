@@ -209,9 +209,6 @@ eventhubs = [
   },
 ]
 
-# acr
-acr_enabled = true
-
 # db nodo dei pagamenti
 db_service_name = "NDPSPCA_NODO4_CFG" # fixme set with data from SIA
 
