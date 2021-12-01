@@ -103,6 +103,10 @@ checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxyprod.azureweb
 
 ehns_sku_name = "Standard"
 
+# to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
+ehns_auto_inflate_enabled     = true
+ehns_maximum_throughput_units = 5
+
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
   no_trx = {
@@ -155,7 +159,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-log"
     partitions        = 32 # in PROD shall be changed
     message_retention = 7  # in PROD shall be changed
-    consumers         = ["logstash-rx1", "logstash-rx2", "logstash-rx3"]
+    consumers         = ["logstash-pdnd", "logstash-oper", "logstash-tech"]
     keys = [
       {
         name   = "logstash-SIA"
@@ -164,19 +168,19 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "logstash-rx1"
+        name   = "logstash-pdnd"
         listen = true
         send   = false
         manage = false
       },
       {
-        name   = "logstash-rx2"
+        name   = "logstash-oper"
         listen = true
         send   = false
         manage = false
       },
       {
-        name   = "logstash-rx3"
+        name   = "logstash-tech"
         listen = true
         send   = false
         manage = false
@@ -188,7 +192,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 32 # in PROD shall be changed
     message_retention = 7  # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-rx1"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -197,7 +201,13 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "nodo-dei-pagamenti-rx1"
+        name   = "nodo-dei-pagamenti-pdnd" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-oper" # oper
         listen = true
         send   = false
         manage = false
@@ -205,6 +215,9 @@ eventhubs = [
     ]
   },
 ]
+
+# acr
+acr_enabled = true
 
 # db nodo dei pagamenti
 db_service_name = "NDPSPCP_NODO4_CFG" # fixme set with data from SIA
