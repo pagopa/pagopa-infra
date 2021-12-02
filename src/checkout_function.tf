@@ -195,7 +195,7 @@ resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
     metric_namespace  = "Microsoft.Web/sites"
     metric_name       = "Http5xx"
     operator          = "GreaterThan"
-    alert_sensitivity = "Medium"
+    alert_sensitivity = "Low"
   }
 
   tags = var.tags
