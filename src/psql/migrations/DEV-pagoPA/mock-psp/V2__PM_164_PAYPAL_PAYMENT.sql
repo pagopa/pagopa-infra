@@ -10,4 +10,3 @@ CREATE TABLE payment_paypal(
   CONSTRAINT fk_user_paypal FOREIGN KEY(user_paypal_id) REFERENCES user_paypal(id)
 );
 CREATE INDEX payment_paypal_user_paypal_id_idx ON payment_paypal (user_paypal_id);
-

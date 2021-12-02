@@ -59,4 +59,3 @@ VALUES ('PAYPAL_PSP_HMAC_KEY', 'hmac_key');
 INSERT INTO client
 (client_name, auth_key, creation_date, deleted)
 VALUES ('local', 'local123', NOW(), false);
-
