@@ -22,13 +22,6 @@
           "required": true,
           "description": "Unique identifier for payments.",
           "type": "string"
-        },
-        {
-          "name": "test",
-          "in": "query",
-          "description": "Use test environment of PagoPAClient",
-          "type": "boolean",
-          "required": false
         }
       ],
       "get": {
@@ -67,15 +60,6 @@
       }
     },
     "/payment-activations": {
-      "parameters": [
-        {
-          "name": "test",
-          "in": "query",
-          "description": "Use test environment of PagoPAClient",
-          "type": "boolean",
-          "required": false
-        }
-      ],
       "post": {
         "operationId": "activatePayment",
         "summary": "Activate Payment",
@@ -135,13 +119,6 @@
           "required": true,
           "description": "Transaction Id used to identify the communication flow.",
           "type": "string"
-        },
-        {
-          "name": "test",
-          "in": "query",
-          "description": "Use test environment of PagoPAClient",
-          "type": "boolean",
-          "required": false
         }
       ],
       "get": {
