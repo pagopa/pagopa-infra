@@ -177,7 +177,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
 }
 
 resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
-  count = false && var.checkout_enabled && var.env_short == "p" ? 1 : 0
+  count = var.checkout_enabled && var.env_short == "p" ? 1 : 0
 
   name                = format("%s-%s", module.checkout_function[0].name, "5xx")
   resource_group_name = azurerm_resource_group.monitor_rg.name
@@ -185,6 +185,8 @@ resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
   severity            = 1
   frequency           = "PT1M"
   window_size         = "PT5M"
+
+  enabled = false
 
   action {
     action_group_id = azurerm_monitor_action_group.slack.id
