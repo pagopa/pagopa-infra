@@ -162,22 +162,22 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   query = format(<<-QUERY
   requests
     | where cloud_RoleName == '%s'
-    | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,10m)
+    | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,15m)
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
   , format("%s-fn-%s", local.project, module.checkout_function[0].name))
   severity    = 1
-  frequency   = 10
-  time_window = 20
+  frequency   = 45
+  time_window = 45
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 3
   }
 }
 
 resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
-  count = var.checkout_enabled && var.env_short == "p" ? 1 : 0
+  count = false && var.checkout_enabled && var.env_short == "p" ? 1 : 0
 
   name                = format("%s-%s", module.checkout_function[0].name, "5xx")
   resource_group_name = azurerm_resource_group.monitor_rg.name
