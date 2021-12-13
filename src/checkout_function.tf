@@ -162,17 +162,17 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   query = format(<<-QUERY
   requests
     | where cloud_RoleName == '%s'
-    | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,10m)
+    | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,15m)
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
   , format("%s-fn-%s", local.project, module.checkout_function[0].name))
   severity    = 1
-  frequency   = 10
-  time_window = 20
+  frequency   = 45
+  time_window = 45
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 3
   }
 }
 
@@ -186,6 +186,8 @@ resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
   frequency           = "PT1M"
   window_size         = "PT5M"
 
+  enabled = false
+
   action {
     action_group_id = azurerm_monitor_action_group.slack.id
   }
@@ -195,7 +197,7 @@ resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
     metric_namespace  = "Microsoft.Web/sites"
     metric_name       = "Http5xx"
     operator          = "GreaterThan"
-    alert_sensitivity = "Medium"
+    alert_sensitivity = "Low"
   }
 
   tags = var.tags
