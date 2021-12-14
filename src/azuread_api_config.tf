@@ -55,4 +55,5 @@ resource "azuread_application_password" "apiconfig-fe-secret" {
 
 output "apiconfig-fe-secret" {
   value = azuread_application_password.apiconfig-fe-secret.value
+  sensitive = true
 }
