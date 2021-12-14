@@ -145,7 +145,7 @@ resource "azurerm_monitor_autoscale_setting" "checkout_function" {
 
 # Availability: Alerting Action
 resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
-  count = var.checkout_enabled && var.env_short == "p"  ? 1 : 0
+  count = var.checkout_enabled && var.env_short == "p" ? 1 : 0
 
   name                = format("%s-%s-availability-alert", local.project, module.checkout_function[0].name)
   resource_group_name = azurerm_resource_group.checkout_be_rg[0].name

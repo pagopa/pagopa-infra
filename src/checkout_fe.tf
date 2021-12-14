@@ -85,7 +85,7 @@ module "checkout_cdn" {
 }
 
 resource "azurerm_application_insights_web_test" "checkout_fe_web_test" {
-  count                   = var.checkout_enabled && var.env_short == "p"  ? 1 : 0
+  count                   = var.checkout_enabled && var.env_short == "p" ? 1 : 0
   name                    = format("%s-checkout-fe-web-test", local.project)
   location                = var.location
   resource_group_name     = azurerm_resource_group.monitor_rg.name
