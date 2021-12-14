@@ -28,6 +28,15 @@
             </allowed-headers>
         </cors>
         <base />
+        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+           <openid-config url="https://login.microsoftonline.com/${pagopa_tenant_id}/v2.0/.well-known/openid-configuration" />
+           <required-claims>
+               <claim name="aud">
+                    <value>${apiconfig_be_client_id}</value>
+               </claim>
+           </required-claims>
+        </validate-jwt>
+
         <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
         <choose>
             <when condition="@(!context.Variables.GetValueOrDefault<bool>("isGet"))">

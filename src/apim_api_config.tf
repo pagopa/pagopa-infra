@@ -43,6 +43,9 @@ module "apim_api_config_api" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_api_config_product[0].product_id]
   subscription_required = false
+#  oauth2_authorization  = {
+#    authorization_server_name = "apiconfig-oauth2"
+#  }
 
   version_set_id = azurerm_api_management_api_version_set.api_config_api[0].id
   api_version    = "v1"
@@ -61,5 +64,7 @@ module "apim_api_config_api" {
 
   xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
     origin = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
+    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
+    apiconfig_be_client_id = azuread_application.apiconfig-be.application_id
   })
 }
