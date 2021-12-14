@@ -165,6 +165,11 @@ variable "db_service_name" {
   default     = null
 }
 
+variable "xsd_ica" {
+  type = string
+  description = "XML Schema of Informatica Conto Accredito"
+}
+
 
 # api_config_fe
 variable "api_config_fe_enabled" {
