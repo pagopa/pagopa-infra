@@ -445,11 +445,6 @@ variable "postgresql_connection_limit" {
   default = -1 //no limit
 }
 
-variable "postgresql_schema_mockpsp" {
-  type    = string
-  default = null
-}
-
 variable "prostgresql_db_mockpsp" {
   type    = string
   default = null
