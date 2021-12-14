@@ -39,7 +39,7 @@ resource "azuread_application" "apiconfig-fe" {
       iterator = scope
       content {
         id   = scope.value.id
-        type = scope.value.type
+        type = "Scope"
       }
     }
 
