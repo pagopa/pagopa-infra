@@ -22,6 +22,3 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
   ttl                 = 60
   records             = var.dns_a_reconds_dbnodo_ips
 }
-
-
-

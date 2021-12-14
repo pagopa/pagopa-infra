@@ -8,17 +8,6 @@ module "postgresql_snet" {
   enforce_private_link_endpoint_network_policies = true
 }
 
-
-resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
-  name                  = "pagopa-d-postgresql-private-dns-zone-group"
-    resource_group_name = azurerm_resource_group.data.name
-
-  private_dns_zone_name = module.azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
-  virtual_network_id    = module.vnet.id
-
-  tags = var.tags
-}
-
 data "azurerm_key_vault_secret" "db_administrator_login" {
   count        = var.prostgresql_enabled ? 1 : 0
   name         = "db-administrator-login"
@@ -34,7 +23,7 @@ data "azurerm_key_vault_secret" "db_administrator_login_password" {
 #tfsec:ignore:azure-database-no-public-access
 module "postgresql" {
   count  = var.prostgresql_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.0.0"
+  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.0.5"
 
   name                = format("%s-postgresql", local.project)
   location            = azurerm_resource_group.data.location
@@ -53,16 +42,12 @@ module "postgresql" {
     enabled              = false
     virtual_network_id   = module.vnet.id
     subnet_id            = module.postgresql_snet.id
-    private_dns_zone_ids = [azurerm_private_dns_zone.azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id]
+    private_dns_zone_ids = []
   }
 
-  storage_mb                       = var.postgresql_storage_mb
-  enable_replica                   = var.postgresql_enable_replica
-  ssl_minimal_tls_version_enforced = "TLS1_2"
-
+  enable_replica = var.postgresql_enable_replica
   alerts_enabled = var.postgresql_alerts_enabled
-
-  lock_enable = var.lock_enable
+  lock_enable    = var.lock_enable
 
   tags = var.tags
 }
