@@ -2,9 +2,9 @@ resource "random_uuid" "oauth2_permission_scope_id" {}
 
 # https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-protect-backend-with-aad#1-register-an-application-in-azure-ad-to-represent-the-api
 resource "azuread_application" "apiconfig-be" {
-  display_name               = format("%s-apiconfig-be", local.project)
-  sign_in_audience           = "AzureADMyOrg"
-  identifier_uris            = [format("api://%s-apiconfig-be", local.project)]
+  display_name     = format("%s-apiconfig-be", local.project)
+  sign_in_audience = "AzureADMyOrg"
+  identifier_uris  = [format("api://%s-apiconfig-be", local.project)]
 
   api {
     mapped_claims_enabled          = true
@@ -23,20 +23,26 @@ resource "azuread_application" "apiconfig-be" {
 
 # https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-protect-backend-with-aad#2-register-another-application-in-azure-ad-to-represent-a-client-application
 resource "azuread_application" "apiconfig-fe" {
-  display_name               = format("%s-apiconfig-fe", local.project)
-  sign_in_audience           = "AzureADMultipleOrgs"
+  display_name     = format("%s-apiconfig-fe", local.project)
+  sign_in_audience = "AzureADMultipleOrgs"
 
   single_page_application {
     redirect_uris = [format("https://%s/", module.api_config_fe_cdn[0].hostname), "http://localhost:3000/"]
   }
 
+  # https://docs.microsoft.com/en-us/azure/api-management/api-management-howto-protect-backend-with-aad#3-grant-permissions-in-azure-ad
   required_resource_access {
     resource_app_id = azuread_application.apiconfig-be.id
 
-    resource_access {
-      id   = azuread_application.apiconfig-be.api.oauth2_permission_scope.id
-      type = "Scope"
+    dynamic "resource_access" {
+      for_each = azuread_application.apiconfig-be.api[0].oauth2_permission_scope
+      iterator = scope
+      content {
+        id   = scope.value.id
+        type = scope.value.type
+      }
     }
+
   }
 }
 
@@ -46,7 +52,7 @@ resource "time_rotating" "apiconfig-fe-secret-expiration" {
 
 resource "azuread_application_password" "apiconfig-fe-secret" {
   application_object_id = azuread_application.apiconfig-fe.object_id
-  rotate_when_changed = {
+  rotate_when_changed   = {
     rotation = time_rotating.apiconfig-fe-secret-expiration.id
   }
 }
