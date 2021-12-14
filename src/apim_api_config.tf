@@ -34,18 +34,25 @@ resource "azurerm_api_management_api_version_set" "api_config_api" {
   versioning_scheme   = "Segment"
 }
 
+locals {
+  pagopa_tenant_id       = data.azurerm_client_config.current.tenant_id
+#  apiconfig_be_client_id = azuread_application.apiconfig-be.application_id
+  apiconfig_be_client_id = ""
+}
+
 module "apim_api_config_api" {
-  count  = var.api_config_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  count = var.api_config_enabled ? 1 : 0
+  #  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=PCFG-98-azure-ad"
 
   name                  = format("%s-api-config-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_api_config_product[0].product_id]
   subscription_required = false
-#  oauth2_authorization  = {
-#    authorization_server_name = "apiconfig-oauth2"
-#  }
+  oauth2_authorization = {
+    authorization_server_name = "apiconfig-oauth2"
+  }
 
   version_set_id = azurerm_api_management_api_version_set.api_config_api[0].id
   api_version    = "v1"
@@ -63,8 +70,27 @@ module "apim_api_config_api" {
   })
 
   xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
-    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
-    apiconfig_be_client_id = azuread_application.apiconfig-be.application_id
+    origin                 = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
+    pagopa_tenant_id       = local.pagopa_tenant_id
+    apiconfig_be_client_id = local.apiconfig_be_client_id
   })
+}
+
+########################
+##    CONFIGURATION   ##
+########################
+
+resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
+  name                         = "apiconfig-oauth2"
+  display_name                 = "apiconfig-oauth2"
+  api_management_name          = module.apim.name
+  resource_group_name          = azurerm_resource_group.rg_api.name
+  client_registration_endpoint = "http://localhost"
+  grant_types                  = ["authorizationCode"]
+  authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
+  authorization_methods        = ["GET", "POST"]
+  token_endpoint               = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
+  default_scope                = format("%s/%s", tolist(azuread_application.apiconfig-be.identifier_uris)[0], tolist(azuread_application.apiconfig-be.api[0].oauth2_permission_scope)[0].value)
+  client_id                    = azuread_application.apiconfig-fe.application_id
+  client_secret                = azuread_application_password.apiconfig-fe-secret.value
 }

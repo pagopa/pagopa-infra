@@ -34,13 +34,9 @@ resource "azuread_application" "apiconfig-fe" {
   required_resource_access {
     resource_app_id = azuread_application.apiconfig-be.id
 
-    dynamic "resource_access" {
-      for_each = azuread_application.apiconfig-be.api[0].oauth2_permission_scope
-      iterator = scope
-      content {
-        id   = scope.value.id
-        type = "Scope"
-      }
+    resource_access {
+      id   = tolist(azuread_application.apiconfig-be.api[0].oauth2_permission_scope)[0].id
+      type = "Scope"
     }
 
   }
@@ -52,7 +48,11 @@ resource "time_rotating" "apiconfig-fe-secret-expiration" {
 
 resource "azuread_application_password" "apiconfig-fe-secret" {
   application_object_id = azuread_application.apiconfig-fe.object_id
-  rotate_when_changed   = {
+  rotate_when_changed = {
     rotation = time_rotating.apiconfig-fe-secret-expiration.id
   }
+}
+
+output "apiconfig-fe-secret" {
+  value = azuread_application_password.apiconfig-fe-secret.value
 }
