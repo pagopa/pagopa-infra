@@ -29,4 +29,24 @@ resource "azuread_application" "apiconfig-fe" {
   single_page_application {
     redirect_uris = [format("https://%s/", module.api_config_fe_cdn[0].hostname), "http://localhost:3000/"]
   }
+
+  required_resource_access {
+    resource_app_id = azuread_application.apiconfig-be.id
+
+    resource_access {
+      id   = azuread_application.apiconfig-be.api.oauth2_permission_scope.id
+      type = "Scope"
+    }
+  }
+}
+
+resource "time_rotating" "apiconfig-fe-secret-expiration" {
+  rotation_months = 6
+}
+
+resource "azuread_application_password" "apiconfig-fe-secret" {
+  application_object_id = azuread_application.apiconfig-fe.object_id
+  rotate_when_changed = {
+    rotation = time_rotating.apiconfig-fe-secret-expiration.id
+  }
 }
