@@ -217,3 +217,8 @@ data "azurerm_key_vault_secret" "db_nodo_pwd" {
   name         = "db-nodo-pwd"
   key_vault_id = module.key_vault.id
 }
+
+data "azurerm_key_vault_secret" "apiconfig-client-secret" {
+  name         = "apiconfig-client-secret"
+  key_vault_id = module.key_vault.id
+}

@@ -80,6 +80,13 @@ module "apim_api_config_api" {
 ##    CONFIGURATION   ##
 ########################
 
+data "azuread_application" "apiconfig-fe" {
+  display_name = "pagopa-apiconfig-fe"
+}
+data "azuread_application" "apiconfig-be" {
+  display_name = "pagopa-apiconfig-be"
+}
+
 resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   name                         = "apiconfig-oauth2"
   display_name                 = "apiconfig-oauth2"
@@ -90,7 +97,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
   authorization_methods        = ["GET", "POST"]
   token_endpoint               = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
-  default_scope                = format("%s/%s", tolist(azuread_application.apiconfig-be.identifier_uris)[0], tolist(azuread_application.apiconfig-be.api[0].oauth2_permission_scope)[0].value)
-  client_id                    = azuread_application.apiconfig-fe.application_id
-  client_secret                = azuread_application_password.apiconfig-fe-secret.value
+  default_scope                = format("%s/%s", tolist(data.azuread_application.apiconfig-be.identifier_uris)[0], tolist(data.azuread_application.apiconfig-be.api[0].oauth2_permission_scope)[0].value)
+  client_id                    = data.azuread_application.apiconfig-fe.application_id
+  client_secret                = data.azurerm_key_vault_secret.apiconfig-client-secret.value
 }
