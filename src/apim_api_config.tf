@@ -36,8 +36,7 @@ resource "azurerm_api_management_api_version_set" "api_config_api" {
 
 locals {
   pagopa_tenant_id       = data.azurerm_client_config.current.tenant_id
-#  apiconfig_be_client_id = azuread_application.apiconfig-be.application_id
-  apiconfig_be_client_id = ""
+  apiconfig_be_client_id = data.azuread_application.apiconfig-be.application_id
 }
 
 module "apim_api_config_api" {
@@ -80,17 +79,33 @@ module "apim_api_config_api" {
 ##    CONFIGURATION   ##
 ########################
 
+data "azuread_application" "apiconfig-fe" {
+  display_name = "pagopa-apiconfig-fe"
+}
+data "azuread_application" "apiconfig-be" {
+  display_name = "pagopa-apiconfig-be"
+}
+
+
 resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   name                         = "apiconfig-oauth2"
-  display_name                 = "apiconfig-oauth2"
   api_management_name          = module.apim.name
   resource_group_name          = azurerm_resource_group.rg_api.name
-  client_registration_endpoint = "http://localhost"
-  grant_types                  = ["authorizationCode"]
+  display_name                 = "apiconfig-oauth2"
   authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
-  authorization_methods        = ["GET", "POST"]
-  token_endpoint               = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
-  default_scope                = format("%s/%s", tolist(azuread_application.apiconfig-be.identifier_uris)[0], tolist(azuread_application.apiconfig-be.api[0].oauth2_permission_scope)[0].value)
-  client_id                    = azuread_application.apiconfig-fe.application_id
-  client_secret                = azuread_application_password.apiconfig-fe-secret.value
+  client_id                    = data.azuread_application.apiconfig-fe.application_id
+  client_registration_endpoint = "http://localhost"
+
+  grant_types           = ["authorizationCode"]
+  authorization_methods = ["GET", "POST"]
+
+  token_endpoint = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
+  default_scope = format("%s/%s",
+    data.azuread_application.apiconfig-be.identifier_uris[0],
+  "access-apiconfig-be")
+  client_secret = data.azurerm_key_vault_secret.apiconfig-client-secret.value
+
+  bearer_token_sending_methods = ["authorizationHeader"]
+  client_authentication_method = ["Body"]
+
 }
