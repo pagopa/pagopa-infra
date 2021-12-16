@@ -21,7 +21,7 @@ data "azurerm_key_vault_secret" "db_administrator_login_password" {
 }
 
 resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
-  count               = var.prostgresql_enabled ? 1 : 0
+  count               = var.postgres_private_endpoint_enabled ? 1 : 0
   name                = "privatelink.postgres.database.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
@@ -29,7 +29,7 @@ resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet" {
-  count                 = var.prostgresql_enabled ? 1 : 0
+  count                 = var.postgres_private_endpoint_enabled ? 1 : 0
   name                  = module.vnet.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com[0].name
@@ -58,10 +58,10 @@ module "postgresql" {
   network_rules                 = var.postgresql_network_rules
 
   private_endpoint = {
-    enabled              = true
+    enabled              = var.postgres_private_endpoint_enabled
     virtual_network_id   = module.vnet.id
     subnet_id            = module.postgresql_snet.id
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_postgres_database_azure_com[0].id]
+    private_dns_zone_ids = var.postgres_private_endpoint_enabled ? [azurerm_private_dns_zone.privatelink_postgres_database_azure_com[0].id] : []
   }
 
   enable_replica = var.postgresql_enable_replica
