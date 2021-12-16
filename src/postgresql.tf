@@ -21,7 +21,7 @@ data "azurerm_key_vault_secret" "db_administrator_login_password" {
 }
 
 resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
-  count  = var.prostgresql_enabled ? 1 : 0
+  count               = var.prostgresql_enabled ? 1 : 0
   name                = "privatelink.postgres.database.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
