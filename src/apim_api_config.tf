@@ -91,14 +91,14 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   api_management_name          = module.apim.name
   resource_group_name          = azurerm_resource_group.rg_api.name
   display_name                 = "apiconfig-oauth2"
-  authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
+  authorization_endpoint       = "https://login.microsoftonline.com/7788edaf-0346-4068-9d79-c868aed15b3d/oauth2/v2.0/authorize"
   client_id                    = data.azuread_application.apiconfig-fe.application_id
   client_registration_endpoint = "http://localhost"
 
   grant_types           = ["authorizationCode"]
   authorization_methods = ["GET", "POST"]
 
-  token_endpoint = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
+  token_endpoint = "https://login.microsoftonline.com/7788edaf-0346-4068-9d79-c868aed15b3d/oauth2/v2.0/token"
   default_scope = format("%s/%s",
     data.azuread_application.apiconfig-be.identifier_uris[0],
   "access-apiconfig-be")
