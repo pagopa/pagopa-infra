@@ -40,9 +40,8 @@ locals {
 }
 
 module "apim_api_config_api" {
-  count = var.api_config_enabled ? 1 : 0
-  #  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=PCFG-98-azure-ad"
+  count  = var.api_config_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12"
 
   name                  = format("%s-api-config-api", var.env_short)
   api_management_name   = module.apim.name
