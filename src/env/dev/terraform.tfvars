@@ -231,3 +231,4 @@ buyerbanks_function_sku_size          = "S1"
 buyerbanks_function_autoscale_minimum = 1
 buyerbanks_function_autoscale_maximum = 3
 buyerbanks_function_autoscale_default = 1
+buyerbanks_delete_retention_days      = 30

@@ -696,3 +696,20 @@ variable "buyerbanks_function_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
+
+variable "buyerbanks_enable_versioning" {
+  type        = bool
+  description = "Enable buyerbanks sa versioning"
+  default     = false
+}
+
+variable "buyerbanks_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "buyerbanks_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted buyerbanks."
+}

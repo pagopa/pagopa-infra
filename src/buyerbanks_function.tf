@@ -48,10 +48,12 @@ module "buyerbanks_function" {
   }
 
   app_settings = {
-    FUNCTIONS_WORKER_RUNTIME       = "node"
-    WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
-    FUNCTIONS_WORKER_PROCESS_COUNT = 4
-    NODE_ENV                       = "production"
+    FUNCTIONS_WORKER_RUNTIME        = "node"
+    WEBSITE_NODE_DEFAULT_VERSION    = "14.16.0"
+    FUNCTIONS_WORKER_PROCESS_COUNT  = 4
+    NODE_ENV                        = "production"
+    BUYERBANKS_SA_CONNECTION_STRING = module.buyerbanks_storage[0].primary_connection_string
+    BUYERBANKS_BLOB_CONTAINER       = azurerm_storage_container.banks[0].name
   }
 
   allowed_subnets = [module.apim_snet.id]
@@ -122,4 +124,36 @@ resource "azurerm_monitor_autoscale_setting" "buyerbanks_function" {
       }
     }
   }
+}
+
+#tfsec:ignore:azure-storage-default-action-deny
+module "buyerbanks_storage" {
+  count = var.buyerbanks_enabled ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
+
+  name                       = replace(format("%s-buyerbanks-storage", local.project), "-", "")
+  account_kind               = "StorageV2"
+  account_tier               = "Standard"
+  account_replication_type   = "LRS"
+  access_tier                = "Hot"
+  versioning_name            = "versioning"
+  enable_versioning          = var.buyerbanks_enable_versioning
+  resource_group_name        = azurerm_resource_group.buyerbanks_rg[0].name
+  location                   = var.location
+  advanced_threat_protection = var.buyerbanks_advanced_threat_protection
+  allow_blob_public_access   = false
+
+  blob_properties_delete_retention_policy_days = var.buyerbanks_delete_retention_days
+
+  tags = var.tags
+}
+
+## blob container buyerbanks 
+resource "azurerm_storage_container" "banks" {
+  count = var.buyerbanks_enabled ? 1 : 0
+
+  name                  = "banks"
+  storage_account_name  = module.buyerbanks_storage[0].name
+  container_access_type = "private"
 }
