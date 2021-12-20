@@ -107,11 +107,6 @@
                 var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
-                <choose>
-                    <when condition="@(context.Variables["idempotencyKey"] != null)">
-                        <cache-store-value key="@((string) context.Variables["idempotencyKey"])" value="1" duration="3600" caching-type="internal" />
-                    </when>
-                </choose>
                 <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
                     <set-url>{{urlnodo}}</set-url>
                     <set-method>POST</set-method>
