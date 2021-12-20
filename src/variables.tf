@@ -166,7 +166,7 @@ variable "db_service_name" {
 }
 
 variable "xsd_ica" {
-  type = string
+  type        = string
   description = "XML Schema of Informatica Conto Accredito"
 }
 
