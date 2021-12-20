@@ -1,4 +1,3 @@
-
 CREATE TABLE pp_onboarding_back(
   id            SERIAL PRIMARY KEY,
   url_return    varchar(2014) not null,

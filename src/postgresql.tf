@@ -71,9 +71,9 @@ module "postgresql" {
   tags = var.tags
 }
 
-resource "azurerm_postgresql_database" "mock_psp_db" {
-  count  = var.prostgresql_enabled ? 1 : 0
-  name                = "mock-psp"
+resource "azurerm_postgresql_database" "this" {
+  count               = var.prostgresql_enabled ? 1 : 0
+  name                = "mock_psp"
   resource_group_name = azurerm_resource_group.data.name
   server_name         = module.postgresql[0].name
   charset             = "UTF8"
