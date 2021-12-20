@@ -54,6 +54,9 @@ module "buyerbanks_function" {
     NODE_ENV                        = "production"
     BUYERBANKS_SA_CONNECTION_STRING = module.buyerbanks_storage[0].primary_connection_string
     BUYERBANKS_BLOB_CONTAINER       = azurerm_storage_container.banks[0].name
+    PAGOPA_BUYERBANKS_CERT          = azurerm_key_vault_certificate.buyerbanks_cert[0].certificate_data_base64
+    PAGOPA_BUYERBANKS_THUMBPRINT    = azurerm_key_vault_certificate.buyerbanks_cert[0].thumbprint
+    PAGOPA_BUYERBANKS_KEY_CERT      = data.azurerm_key_vault_secret.pagopa_buyerbank_cert_key[0].value
   }
 
   allowed_subnets = [module.apim_snet.id]
@@ -149,11 +152,68 @@ module "buyerbanks_storage" {
   tags = var.tags
 }
 
-## blob container buyerbanks 
+## blob container buyerbanks
 resource "azurerm_storage_container" "banks" {
   count = var.buyerbanks_enabled ? 1 : 0
 
   name                  = "banks"
   storage_account_name  = module.buyerbanks_storage[0].name
   container_access_type = "private"
+}
+
+/*
+ * KEY cert - buyerbanks functions
+ */
+data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_key" {
+  count        = var.buyerbanks_enabled ? 1 : 0
+  name         = "pagopa-buyerbank-cert-key"
+  key_vault_id = module.key_vault.id
+}
+
+/*
+ * X.509 cert - buyerbanks functions
+ */
+resource "azurerm_key_vault_certificate" "buyerbanks_cert" {
+  count = var.buyerbanks_enabled ? 1 : 0
+
+  name         = format("%s-%s-cert", local.project, module.buyerbanks_function[0].name)
+  key_vault_id = module.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 2048
+      key_type   = "RSA"
+      reuse_key  = true
+    }
+
+    lifetime_action {
+      action {
+        action_type = "EmailContacts"
+      }
+
+      trigger {
+        days_before_expiry = 30
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pem-file"
+    }
+
+    x509_certificate_properties {
+
+      key_usage = [
+        "digitalSignature",
+        "nonRepudiation"
+      ]
+
+      subject            = var.env_short == "p" ? format("CN=%s-buyerbanks", local.project) : format("CN=%s-buyerbanks-%s", local.project, var.env_short)
+      validity_in_months = 12
+    }
+  }
 }
