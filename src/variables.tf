@@ -712,4 +712,5 @@ variable "buyerbanks_advanced_threat_protection" {
 variable "buyerbanks_delete_retention_days" {
   type        = number
   description = "Number of days to retain deleted buyerbanks."
+  default     = 30
 }
