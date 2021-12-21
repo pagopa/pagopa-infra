@@ -54,3 +54,18 @@ resource "azurerm_monitor_action_group" "slack" {
 
   tags = var.tags
 }
+
+## web availabolity test
+
+module "web_test_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=application-insights-web-test-preview-module"
+
+  subscription_id                   = data.azurerm_subscription.current.subscription_id
+  name                              = format("%s-test-api-platform", local.project)
+  location                          = azurerm_resource_group.monitor_rg.location
+  resource_group                    = azurerm_resource_group.monitor_rg.name
+  application_insight_name          = azurerm_application_insights.application_insights.name
+  request_url                       = "https://api.dev.platform.pagopa.it"
+  ssl_cert_remaining_lifetime_check = 20
+
+}
