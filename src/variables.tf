@@ -642,3 +642,75 @@ variable "private_dns_zone_db_nodo_pagamenti" {
   type    = string
   default = "metti.qui.il.dns.com" # TODO fixme fornito da SIA
 }
+
+# Buyer Banks
+variable "buyerbanks_enabled" {
+  type        = bool
+  description = "buyerbanks functions enabled"
+  default     = false
+}
+
+variable "cidr_subnet_buyerbanks" {
+  type        = list(string)
+  description = "Address prefixes subnet buyerbanks"
+  default     = null
+}
+variable "buyerbanks_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "buyerbanks_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "buyerbanks_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "buyerbanks_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "buyerbanks_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "buyerbanks_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "buyerbanks_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+variable "buyerbanks_enable_versioning" {
+  type        = bool
+  description = "Enable buyerbanks sa versioning"
+  default     = false
+}
+
+variable "buyerbanks_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "buyerbanks_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted buyerbanks."
+  default     = 30
+}

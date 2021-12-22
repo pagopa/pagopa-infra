@@ -223,3 +223,6 @@ xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/In
 # API Config FE
 api_config_fe_enabled = true
 cname_record_name     = "config"
+
+# buyerbanks functions
+buyerbanks_enabled = false
