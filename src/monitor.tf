@@ -57,13 +57,13 @@ resource "azurerm_monitor_action_group" "slack" {
 
 ## web availabolity test
 locals {
-  test_urls = concat(
-    [azurerm_dns_a_record.dns_a_api.fqdn],
-    [azurerm_dns_a_record.dns_a_portal.fqdn],
-    [azurerm_dns_a_record.dns_a_management.fqdn],
-    [length(module.api_config_fe_cdn.*.hostname) == 0 ? "" : module.api_config_fe_cdn[0].hostname],
-    [length(module.checkout_cdn.*.hostname) == 0 ? "" : module.checkout_cdn[0].hostname],
-  )
+  test_urls = flatten([
+    trimsuffix(azurerm_dns_a_record.dns_a_api.fqdn, "."),
+    trimsuffix(azurerm_dns_a_record.dns_a_portal.fqdn, "."),
+    trimsuffix(azurerm_dns_a_record.dns_a_management.fqdn, "."),
+    module.api_config_fe_cdn.*.fqdn,
+    module.checkout_cdn.*.fqdn
+  ])
 }
 
 module "web_test_api" {
