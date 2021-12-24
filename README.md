@@ -20,6 +20,18 @@ After installation install terraform:
 tfenv install
 ```
 
+## Environment management
+
+In order to properly populate terraform variables for each environment, a script located at `src/terraform.sh` is provided.
+
+Terraform invocations described here where environent parameters are required can be replaced with invocations to `terraform.sh` by passing an environment specification. For example:
+
+```sh
+./terraform.sh plan dev -module=api_config
+```
+
+**NOTE**: `terraform.sh` must be run from the `src` folder.
+
 ## Terraform modules
 
 As PagoPA we build our standard Terraform modules, check available modules:
