@@ -27,7 +27,7 @@ In order to properly populate terraform variables for each environment, a script
 Terraform invocations described here where environent parameters are required can be replaced with invocations to `terraform.sh` by passing an environment specification. For example:
 
 ```sh
-./terraform.sh plan dev -module=api_config
+./terraform.sh plan dev -target=module=api_config
 ```
 
 **NOTE**: `terraform.sh` must be run from the `src` folder.
