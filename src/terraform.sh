@@ -6,11 +6,13 @@ action=$1
 env=$2
 
 if [ -z "$action" ]; then
+  echo "Usage: ./terraform.sh ACTION ENV [PARAMS]"
   echo "Missed action: init, apply, plan"
   exit 0
 fi
 
 if [ -z "$env" ]; then
+  echo "Usage: ./terraform.sh ACTION ENV [PARAMS]"
   echo "env should be: dev, uat or prod."
   exit 0
 fi
