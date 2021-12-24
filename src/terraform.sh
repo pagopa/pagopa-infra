@@ -4,8 +4,6 @@ set -e
 
 action=$1
 env=$2
-shift 2
-other=$@
 
 if [ -z "$action" ]; then
   echo "Missed action: init, apply, plan"
@@ -16,6 +14,9 @@ if [ -z "$env" ]; then
   echo "env should be: dev, uat or prod."
   exit 0
 fi
+
+shift 2
+other=$@
 
 source "./env/$env/backend.ini"
 az account set -s "${subscription}"
