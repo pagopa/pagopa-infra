@@ -714,3 +714,49 @@ variable "buyerbanks_delete_retention_days" {
   description = "Number of days to retain deleted buyerbanks."
   default     = 30
 }
+
+# pagopa-proxy
+variable "proxy_enabled" {
+  type        = bool
+  description = "Enable pagopa-proxy?"
+  default     = false
+}
+
+variable "cidr_subnet_proxy" {
+  type        = list(string)
+  description = "Address prefixes subnet proxy"
+  default     = null
+}
+
+variable "proxy_redis_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "proxy_redis_sku_name" {
+  type    = string
+  default = null
+}
+
+variable "proxy_redis_family" {
+  type    = string
+  default = "C"
+}
+
+variable "proxy_tier" {
+  type        = string
+  description = "Proxy Plan tier"
+  default     = null
+}
+
+variable "proxy_size" {
+  type        = string
+  description = "Proxy Plan size"
+  default     = null
+}
+
+variable "proxy_always_on" {
+  type        = bool
+  description = "Proxy always on property"
+  default     = false
+}
