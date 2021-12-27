@@ -93,7 +93,6 @@ module "web_test_api" {
   resource_group                    = azurerm_resource_group.monitor_rg.name
   application_insight_name          = azurerm_application_insights.application_insights.name
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
-  expected_http_status              = each.value.http_status
   ssl_cert_remaining_lifetime_check = 7
 
   actions = [
