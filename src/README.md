@@ -18,7 +18,7 @@
 |------|--------|---------|
 | <a name="module_acr"></a> [acr](#module\_acr) | git::https://github.com/pagopa/azurerm.git//container_registry?ref=v1.0.7 |  |
 | <a name="module_api_config_app_service"></a> [api\_config\_app\_service](#module\_api\_config\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14 |  |
-| <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.16 |  |
+| <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18 |  |
 | <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
 | <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/azurerm.git//api_management?ref=v1.0.50 |  |
 | <a name="module_apim_api_config_api"></a> [apim\_api\_config\_api](#module\_apim\_api\_config\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12 |  |
@@ -37,7 +37,10 @@
 | <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
 | <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v1.0.57 |  |
 | <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.3 |  |
-| <a name="module_checkout_cdn"></a> [checkout\_cdn](#module\_checkout\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.16 |  |
+| <a name="module_buyerbanks_function"></a> [buyerbanks\_function](#module\_buyerbanks\_function) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84 |  |
+| <a name="module_buyerbanks_function_snet"></a> [buyerbanks\_function\_snet](#module\_buyerbanks\_function\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
+| <a name="module_buyerbanks_storage"></a> [buyerbanks\_storage](#module\_buyerbanks\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13 |  |
+| <a name="module_checkout_cdn"></a> [checkout\_cdn](#module\_checkout\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18 |  |
 | <a name="module_checkout_function"></a> [checkout\_function](#module\_checkout\_function) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84 |  |
 | <a name="module_checkout_function_snet"></a> [checkout\_function\_snet](#module\_checkout\_function\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
 | <a name="module_event_hub01"></a> [event\_hub01](#module\_event\_hub01) | git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.51 |  |
@@ -56,7 +59,7 @@
 | <a name="module_vnet"></a> [vnet](#module\_vnet) | git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.51 |  |
 | <a name="module_vnet_integration"></a> [vnet\_integration](#module\_vnet\_integration) | git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.51 |  |
 | <a name="module_vnet_peering"></a> [vnet\_peering](#module\_vnet\_peering) | git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.30 |  |
-| <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.15 |  |
+| <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.18 |  |
 
 ## Resources
 
@@ -102,9 +105,11 @@
 | [azurerm_key_vault_access_policy.app_gateway_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azure_cdn_frontdoor_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_certificate.buyerbanks_cert](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/key_vault_certificate) | resource |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/monitor_action_group) | resource |
+| [azurerm_monitor_autoscale_setting.buyerbanks_function](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.checkout_function](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_metric_alert.checkout_fn_5xx](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.checkout_availability](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -115,6 +120,7 @@
 | [azurerm_resource_group.api_config_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.api_config_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.azdo_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.buyerbanks_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.checkout_be_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.checkout_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
@@ -127,6 +133,7 @@
 | [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
+| [azurerm_storage_container.banks](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/storage_container) | resource |
 | [azurerm_user_assigned_identity.appgateway](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/user_assigned_identity) | resource |
 | [azuread_application.apiconfig-be](https://registry.terraform.io/providers/hashicorp/azuread/2.6.0/docs/data-sources/application) | data source |
 | [azuread_application.apiconfig-fe](https://registry.terraform.io/providers/hashicorp/azuread/2.6.0/docs/data-sources/application) | data source |
@@ -151,6 +158,7 @@
 | [azurerm_key_vault_secret.google_recaptcha_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_notification_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_notification_slack_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.pagopa_buyerbank_cert_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.sec_storage_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.sec_workspace_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/subscription) | data source |
@@ -188,6 +196,17 @@
 | <a name="input_app_gateway_waf_enabled"></a> [app\_gateway\_waf\_enabled](#input\_app\_gateway\_waf\_enabled) | Enable waf | `bool` | `true` | no |
 | <a name="input_azdo_sp_tls_cert_enabled"></a> [azdo\_sp\_tls\_cert\_enabled](#input\_azdo\_sp\_tls\_cert\_enabled) | Enable Azure DevOps connection for TLS cert management | `string` | `false` | no |
 | <a name="input_azuread_service_principal_azure_cdn_frontdoor_id"></a> [azuread\_service\_principal\_azure\_cdn\_frontdoor\_id](#input\_azuread\_service\_principal\_azure\_cdn\_frontdoor\_id) | Azure CDN Front Door Principal ID | `string` | `"f3b3f72f-4770-47a5-8c1e-aa298003be12"` | no |
+| <a name="input_buyerbanks_advanced_threat_protection"></a> [buyerbanks\_advanced\_threat\_protection](#input\_buyerbanks\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
+| <a name="input_buyerbanks_delete_retention_days"></a> [buyerbanks\_delete\_retention\_days](#input\_buyerbanks\_delete\_retention\_days) | Number of days to retain deleted buyerbanks. | `number` | `30` | no |
+| <a name="input_buyerbanks_enable_versioning"></a> [buyerbanks\_enable\_versioning](#input\_buyerbanks\_enable\_versioning) | Enable buyerbanks sa versioning | `bool` | `false` | no |
+| <a name="input_buyerbanks_enabled"></a> [buyerbanks\_enabled](#input\_buyerbanks\_enabled) | buyerbanks functions enabled | `bool` | `false` | no |
+| <a name="input_buyerbanks_function_always_on"></a> [buyerbanks\_function\_always\_on](#input\_buyerbanks\_function\_always\_on) | Always on property | `bool` | `false` | no |
+| <a name="input_buyerbanks_function_autoscale_default"></a> [buyerbanks\_function\_autoscale\_default](#input\_buyerbanks\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
+| <a name="input_buyerbanks_function_autoscale_maximum"></a> [buyerbanks\_function\_autoscale\_maximum](#input\_buyerbanks\_function\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
+| <a name="input_buyerbanks_function_autoscale_minimum"></a> [buyerbanks\_function\_autoscale\_minimum](#input\_buyerbanks\_function\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
+| <a name="input_buyerbanks_function_kind"></a> [buyerbanks\_function\_kind](#input\_buyerbanks\_function\_kind) | App service plan kind | `string` | `null` | no |
+| <a name="input_buyerbanks_function_sku_size"></a> [buyerbanks\_function\_sku\_size](#input\_buyerbanks\_function\_sku\_size) | App service plan sku size | `string` | `null` | no |
+| <a name="input_buyerbanks_function_sku_tier"></a> [buyerbanks\_function\_sku\_tier](#input\_buyerbanks\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_checkout_enabled"></a> [checkout\_enabled](#input\_checkout\_enabled) | checkout | `bool` | `false` | no |
 | <a name="input_checkout_function_always_on"></a> [checkout\_function\_always\_on](#input\_checkout\_function\_always\_on) | Always on property | `bool` | `false` | no |
 | <a name="input_checkout_function_autoscale_default"></a> [checkout\_function\_autoscale\_default](#input\_checkout\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
@@ -199,6 +218,7 @@
 | <a name="input_checkout_pagopaproxy_host"></a> [checkout\_pagopaproxy\_host](#input\_checkout\_pagopaproxy\_host) | pagopaproxy host | `string` | `null` | no |
 | <a name="input_cidr_subnet_api_config"></a> [cidr\_subnet\_api\_config](#input\_cidr\_subnet\_api\_config) | Address prefixes subnet api config | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_apim"></a> [cidr\_subnet\_apim](#input\_cidr\_subnet\_apim) | Address prefixes subnet api management. | `list(string)` | `null` | no |
+| <a name="input_cidr_subnet_buyerbanks"></a> [cidr\_subnet\_buyerbanks](#input\_cidr\_subnet\_buyerbanks) | Address prefixes subnet buyerbanks | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_checkout_be"></a> [cidr\_subnet\_checkout\_be](#input\_cidr\_subnet\_checkout\_be) | Address prefixes subnet checkout function | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_eventhub"></a> [cidr\_subnet\_eventhub](#input\_cidr\_subnet\_eventhub) | Address prefixes subnet eventhub | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_mock_ec"></a> [cidr\_subnet\_mock\_ec](#input\_cidr\_subnet\_mock\_ec) | Address prefixes subnet mock ec | `list(string)` | `null` | no |
