@@ -716,47 +716,47 @@ variable "buyerbanks_delete_retention_days" {
 }
 
 # pagopa-proxy
-variable "proxy_enabled" {
+variable "pagopa_proxy_enabled" {
   type        = bool
   description = "Enable pagopa-proxy?"
   default     = false
 }
 
-variable "cidr_subnet_proxy" {
+variable "cidr_subnet_pagopa_proxy" {
   type        = list(string)
   description = "Address prefixes subnet proxy"
   default     = null
 }
 
-variable "proxy_redis_capacity" {
+variable "pagopa_proxy_redis_capacity" {
   type    = number
   default = 1
 }
 
-variable "proxy_redis_sku_name" {
+variable "pagopa_proxy_redis_sku_name" {
   type    = string
   default = null
 }
 
-variable "proxy_redis_family" {
+variable "pagopa_proxy_redis_family" {
   type    = string
   default = "C"
 }
 
-variable "proxy_tier" {
+variable "pagopa_proxy_tier" {
   type        = string
-  description = "Proxy Plan tier"
+  description = "pagopa-proxy Plan tier"
   default     = null
 }
 
-variable "proxy_size" {
+variable "pagopa_proxy_size" {
   type        = string
-  description = "Proxy Plan size"
+  description = "pagopa-proxy Plan size"
   default     = null
 }
 
-variable "proxy_always_on" {
+variable "pagopa_proxy_always_on" {
   type        = bool
-  description = "Proxy always on property"
+  description = "pagopa-proxy always on property"
   default     = false
 }
