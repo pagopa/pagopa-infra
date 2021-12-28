@@ -21,9 +21,9 @@ cidr_subnet_azdoa      = ["10.1.130.0/24"]
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
-cidr_subnet_checkout_be = ["10.1.240.17/29"]
-cidr_subnet_buyerbanks  = ["10.1.240.24/29"]
-cidr_subnet_proxy       = ["10.1.240.32/29"]
+cidr_subnet_checkout_be  = ["10.1.240.17/29"]
+cidr_subnet_buyerbanks   = ["10.1.240.24/29"]
+cidr_subnet_pagopa_proxy = ["10.1.240.32/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -234,10 +234,10 @@ buyerbanks_function_autoscale_maximum = 3
 buyerbanks_function_autoscale_default = 1
 buyerbanks_delete_retention_days      = 30
 
-# proxy app service
-proxy_enabled        = true
-proxy_redis_capacity = 1
-proxy_redis_sku_name = "Standard"
-proxy_redis_family   = "C"
-proxy_tier           = "Standard"
-proxy_size           = "S1"
+# pagopa-proxy app service
+pagopa_proxy_enabled        = true
+pagopa_proxy_redis_capacity = 1
+pagopa_proxy_redis_sku_name = "Standard"
+pagopa_proxy_redis_family   = "C"
+pagopa_proxy_tier           = "Standard"
+pagopa_proxy_size           = "S1"
