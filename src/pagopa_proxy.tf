@@ -39,6 +39,13 @@ module "pagopa_proxy_redis" {
   subnet_id             = module.pagopa_proxy_snet[0].id
 
   tags = var.tags
+
+  private_endpoint = {
+    enabled              = false
+    virtual_network_id   = null
+    subnet_id            = null
+    private_dns_zone_ids = []
+  }
 }
 
 module "pagopa_proxy_app_service" {
@@ -51,6 +58,7 @@ module "pagopa_proxy_app_service" {
   # App service plan vars
   plan_name     = format("%s-plan-pagopa-proxy", local.project)
   plan_kind     = "Windows"
+  plan_type     = "internal"
   plan_sku_tier = var.pagopa_proxy_tier
   plan_sku_size = var.pagopa_proxy_size
 
@@ -85,9 +93,7 @@ module "pagopa_proxy_app_service" {
 
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
-
-  subnet_name = module.pagopa_proxy_snet[0].name
-  subnet_id   = module.pagopa_proxy_snet[0].id
+  subnet_id       = module.pagopa_proxy_snet[0].id
 
   tags = var.tags
 }
