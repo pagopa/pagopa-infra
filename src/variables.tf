@@ -760,3 +760,9 @@ variable "pagopa_proxy_always_on" {
   description = "pagopa-proxy always on property"
   default     = false
 }
+
+variable "pagopa_proxy_redis_private_endpoint_enabled" {
+  type        = bool
+  description = "Enable private endpoint for redis instance asociated to pagopa-proxy?"
+  default     = true
+}
