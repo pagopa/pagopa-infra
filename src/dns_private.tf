@@ -22,3 +22,11 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
   ttl                 = 60
   records             = var.dns_a_reconds_dbnodo_ips
 }
+
+resource "azurerm_private_dns_zone" "privatelink_redis_pagopa_proxy" {
+  count               = var.pagopa_proxy_redis_private_endpoint_enabled ? 1 : 0
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = azurerm_resource_group.data.name
+
+  tags = var.tags
+}
