@@ -64,7 +64,7 @@ module "acr" {
   name                = replace(format("%s-acr", local.project), "-", "")
   resource_group_name = azurerm_resource_group.rg_aks.name
   location            = azurerm_resource_group.rg_aks.location
-  admin_enabled       = false
+  admin_enabled       = true
 
   tags = var.tags
 }
