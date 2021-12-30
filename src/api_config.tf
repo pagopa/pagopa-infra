@@ -34,7 +34,7 @@ module "api_config_snet" {
 
 module "api_config_app_service" {
   count  = var.api_config_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.93"
 
   resource_group_name = azurerm_resource_group.api_config_rg[0].name
   location            = var.location
@@ -72,8 +72,7 @@ module "api_config_app_service" {
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
     TIMEOUT_DELAY                                   = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
-    WEBSITE_DNS_SERVER     = "168.63.129.16"
-    WEBSITE_VNET_ROUTE_ALL = 1
+    WEBSITE_DNS_SERVER = "168.63.129.16"
     # Spring Environment
     SPRING_DATASOURCE_USERNAME = data.azurerm_key_vault_secret.db_nodo_usr.value
     SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.db_nodo_pwd.value
