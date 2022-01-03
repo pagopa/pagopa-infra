@@ -43,7 +43,7 @@ enable_azdoa             = true
 enable_iac_pipeline      = true
 
 # redis private endpoint
-redis_private_endpoint_enabled = false
+redis_private_endpoint_enabled = true
 
 # apim
 apim_publisher_name = "pagoPA Platform DEV"
