@@ -13,10 +13,12 @@ lock_enable = false
 
 # networking
 # main vnet
-cidr_vnet              = ["10.1.0.0/16"]
-cidr_subnet_appgateway = ["10.1.128.0/24"]
-cidr_subnet_postgresql = ["10.1.129.0/24"]
-cidr_subnet_azdoa      = ["10.1.130.0/24"]
+cidr_vnet                      = ["10.1.0.0/16"]
+cidr_subnet_appgateway         = ["10.1.128.0/24"]
+cidr_subnet_postgresql         = ["10.1.129.0/24"]
+cidr_subnet_azdoa              = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis = ["10.1.139.0/24"]
+
 # dev/uat only
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]

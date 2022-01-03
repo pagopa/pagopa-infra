@@ -25,6 +25,16 @@ module "pagopa_proxy_snet" {
   }
 }
 
+module "pagopa_proxy_redis_snet" {
+  count                                          = var.pagopa_proxy_enabled ? 1 : 0
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.19"
+  name                                           = format("%s-pagopa-proxy-redis-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_pagopa_proxy_redis
+  resource_group_name                            = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = module.vnet.name
+  enforce_private_link_endpoint_network_policies = true
+}
+
 module "pagopa_proxy_redis" {
   count                 = var.pagopa_proxy_enabled ? 1 : 0
   source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.19"
@@ -42,7 +52,7 @@ module "pagopa_proxy_redis" {
   private_endpoint = {
     enabled              = var.redis_private_endpoint_enabled
     virtual_network_id   = azurerm_resource_group.rg_vnet.id
-    subnet_id            = module.pagopa_proxy_snet[0].id
+    subnet_id            = module.pagopa_proxy_redis_snet[0].id
     private_dns_zone_ids = var.redis_private_endpoint_enabled ? [azurerm_private_dns_zone.privatelink_redis_cache_windows_net[0].id] : []
   }
 }
