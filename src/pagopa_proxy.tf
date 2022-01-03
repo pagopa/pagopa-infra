@@ -36,7 +36,6 @@ module "pagopa_proxy_redis" {
   family                = var.pagopa_proxy_redis_family
   sku_name              = var.pagopa_proxy_redis_sku_name
   enable_authentication = true
-  subnet_id             = module.pagopa_proxy_snet[0].id
 
   tags = var.tags
 
