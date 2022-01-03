@@ -44,7 +44,7 @@ module "pagopa_proxy_redis" {
     enabled              = var.pagopa_proxy_redis_private_endpoint_enabled
     virtual_network_id   = azurerm_resource_group.rg_vnet.id
     subnet_id            = module.pagopa_proxy_snet[0].id
-    private_dns_zone_ids = var.pagopa_proxy_redis_private_endpoint_enabled ? [azurerm_private_dns_zone.privatelink_redis_pagopa_proxy[0].id] : []
+    private_dns_zone_ids = var.pagopa_proxy_redis_private_endpoint_enabled ? [azurerm_private_dns_zone.redis_pagopa_proxy_dns_zone[0].id] : []
   }
 }
 
