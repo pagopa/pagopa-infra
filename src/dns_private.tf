@@ -24,7 +24,7 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
 }
 
 resource "azurerm_private_dns_zone" "redis_pagopa_proxy_dns_zone" {
-  count               = var.pagopa_proxy_redis_private_endpoint_enabled ? 1 : 0
+  count               = var.pagopa_proxy_enabled && var.pagopa_proxy_redis_private_endpoint_enabled ? 1 : 0
   name                = "privatelink.redis.cache.windows.net"
   resource_group_name = azurerm_resource_group.data.name
 
