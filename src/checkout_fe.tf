@@ -61,7 +61,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com;"
+        value  = "frame-ancestors 'none'; object-src 'none';"
       },
       {
         action = "Append"
