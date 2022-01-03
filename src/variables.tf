@@ -305,6 +305,12 @@ variable "cidr_subnet_redis" {
   default     = []
 }
 
+variable "redis_private_endpoint_enabled" {
+  type        = bool
+  description = "Enable private endpoints for redis instances?"
+  default     = true
+}
+
 variable "app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
@@ -759,10 +765,4 @@ variable "pagopa_proxy_always_on" {
   type        = bool
   description = "pagopa-proxy always on property"
   default     = false
-}
-
-variable "pagopa_proxy_redis_private_endpoint_enabled" {
-  type        = bool
-  description = "Enable private endpoint for redis instance asociated to pagopa-proxy?"
-  default     = true
 }

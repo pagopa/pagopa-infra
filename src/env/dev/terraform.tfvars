@@ -42,6 +42,9 @@ azdo_sp_tls_cert_enabled = true
 enable_azdoa             = true
 enable_iac_pipeline      = true
 
+# redis private endpoint
+redis_private_endpoint_enabled = false
+
 # apim
 apim_publisher_name = "pagoPA Platform DEV"
 apim_sku            = "Developer_1"
@@ -235,10 +238,9 @@ buyerbanks_function_autoscale_default = 1
 buyerbanks_delete_retention_days      = 30
 
 # pagopa-proxy app service
-pagopa_proxy_enabled                        = true
-pagopa_proxy_redis_capacity                 = 0
-pagopa_proxy_redis_sku_name                 = "Basic"
-pagopa_proxy_redis_family                   = "C"
-pagopa_proxy_tier                           = "Standard"
-pagopa_proxy_size                           = "S1"
-pagopa_proxy_redis_private_endpoint_enabled = false
+pagopa_proxy_enabled        = true
+pagopa_proxy_redis_capacity = 0
+pagopa_proxy_redis_sku_name = "Basic"
+pagopa_proxy_redis_family   = "C"
+pagopa_proxy_tier           = "Standard"
+pagopa_proxy_size           = "S1"
