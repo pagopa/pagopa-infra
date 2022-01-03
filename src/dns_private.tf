@@ -32,7 +32,7 @@ resource "azurerm_private_dns_zone" "redis_pagopa_proxy_dns_zone" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "redis_pagopa_proxy_vnet_link" {
-  count                 = var.pagopa_proxy_redis_private_endpoint_enabled ? 1 : 0
+  count                 = var.pagopa_proxy_enabled && var.pagopa_proxy_redis_private_endpoint_enabled ? 1 : 0
   name                  = module.vnet.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.redis_pagopa_proxy_dns_zone
