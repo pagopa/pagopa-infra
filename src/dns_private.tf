@@ -26,7 +26,7 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
 resource "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
   count               = var.redis_private_endpoint_enabled ? 1 : 0
   name                = "privatelink.redis.cache.windows.net"
-  resource_group_name = azurerm_resource_group.data.name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
 
   tags = var.tags
 }
