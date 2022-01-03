@@ -71,12 +71,12 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com;"
+        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com"
       },
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "style-src 'self'  'unsafe-inline'; worker-src 'none';"
+        value  = " 'unsafe-inline'; style-src 'self'  'unsafe-inline'; worker-src 'none';"
       }
     ]
   }
