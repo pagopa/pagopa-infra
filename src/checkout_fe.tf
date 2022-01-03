@@ -47,35 +47,35 @@ module "checkout_cdn" {
       name   = "Strict-Transport-Security"
       value  = "max-age=31536000"
       },
-      # Content-Security-Policy (in Report mode)
+      # Content-Security-Policy
       {
         action = "Overwrite"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = "Content-Security-Policy"
         value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = "Content-Security-Policy"
         value  = " https://acardste.vaservices.eu https://cdn.cookielaw.org https://privacyportal-de.onetrust.com;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = "Content-Security-Policy"
         value  = "frame-ancestors 'none'; object-src 'none';"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = "Content-Security-Policy"
         value  = "img-src 'self' https://acardste.vaservices.eu https://wisp2.pagopa.gov.it data:;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = "Content-Security-Policy"
         value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = "Content-Security-Policy"
         value  = " 'unsafe-inline'; style-src 'self'  'unsafe-inline'; worker-src 'none';"
       }
     ]
