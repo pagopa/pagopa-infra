@@ -734,6 +734,12 @@ variable "cidr_subnet_pagopa_proxy" {
   default     = null
 }
 
+variable "cidr_subnet_pagopa_proxy_redis" {
+  type        = list(string)
+  description = "Address prefixes subnet redis for pagopa proxy"
+  default     = null
+}
+
 variable "pagopa_proxy_redis_capacity" {
   type    = number
   default = 1
