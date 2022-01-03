@@ -76,8 +76,8 @@ module "pagopa_proxy_app_service" {
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
     # proxy-specific env vars
-    PAGOPA_HOST                = data.azurerm_key_vault_secret.pagopa_proxy_host[0].value
-    PAGOPA_PORT                = data.azurerm_key_vault_secret.pagopa_proxy_port[0].value
+    PAGOPA_HOST                = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
+    PAGOPA_PORT                = 443
     PAGOPA_PASSWORD            = data.azurerm_key_vault_secret.pagopa_proxy_password[0].value
     PAGOPA_ID_PSP              = data.azurerm_key_vault_secret.pagopa_proxy_id_psp[0].value
     PAGOPA_ID_INT_PSP          = data.azurerm_key_vault_secret.pagopa_proxy_id_intermediario_psp[0].value
@@ -96,18 +96,6 @@ module "pagopa_proxy_app_service" {
   subnet_id       = module.pagopa_proxy_snet[0].id
 
   tags = var.tags
-}
-
-data "azurerm_key_vault_secret" "pagopa_proxy_host" {
-  count        = var.pagopa_proxy_enabled ? 1 : 0
-  name         = "pagopa-proxy-host"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "pagopa_proxy_port" {
-  count        = var.pagopa_proxy_enabled ? 1 : 0
-  name         = "pagopa-proxy-port"
-  key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "pagopa_proxy_password" {
