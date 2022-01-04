@@ -190,7 +190,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -209,7 +209,14 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-sia-rx" # oper
+        listen = true
+        send   = false
+        manage = false
       }
+
     ]
   },
 ]
