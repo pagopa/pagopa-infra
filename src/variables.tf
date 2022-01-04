@@ -305,6 +305,12 @@ variable "cidr_subnet_redis" {
   default     = []
 }
 
+variable "redis_private_endpoint_enabled" {
+  type        = bool
+  description = "Enable private endpoints for redis instances?"
+  default     = true
+}
+
 variable "app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
@@ -713,4 +719,56 @@ variable "buyerbanks_delete_retention_days" {
   type        = number
   description = "Number of days to retain deleted buyerbanks."
   default     = 30
+}
+
+# pagopa-proxy
+variable "pagopa_proxy_enabled" {
+  type        = bool
+  description = "Enable pagopa-proxy?"
+  default     = false
+}
+
+variable "cidr_subnet_pagopa_proxy" {
+  type        = list(string)
+  description = "Address prefixes subnet proxy"
+  default     = null
+}
+
+variable "cidr_subnet_pagopa_proxy_redis" {
+  type        = list(string)
+  description = "Address prefixes subnet redis for pagopa proxy"
+  default     = null
+}
+
+variable "pagopa_proxy_redis_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "pagopa_proxy_redis_sku_name" {
+  type    = string
+  default = null
+}
+
+variable "pagopa_proxy_redis_family" {
+  type    = string
+  default = "C"
+}
+
+variable "pagopa_proxy_tier" {
+  type        = string
+  description = "pagopa-proxy Plan tier"
+  default     = null
+}
+
+variable "pagopa_proxy_size" {
+  type        = string
+  description = "pagopa-proxy Plan size"
+  default     = null
+}
+
+variable "pagopa_proxy_always_on" {
+  type        = bool
+  description = "pagopa-proxy always on property"
+  default     = false
 }
