@@ -28,6 +28,7 @@
             </allowed-headers>
         </cors>
         <base />
+        <rate-limit calls="90" renewal-period="90"/>
         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
            <openid-config url="https://login.microsoftonline.com/${pagopa_tenant_id}/v2.0/.well-known/openid-configuration" />
            <required-claims>
