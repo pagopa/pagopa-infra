@@ -121,6 +121,41 @@ module "apim_checkout_payment_activations_api_v1" {
   })
 }
 
+# pagopa-proxy SOAP web service FespCdService
+locals {
+  apim_proxy_nodo_ws = {
+    display_name          = "pagopa-proxy FespCdService"
+    description           = "SOAP service used from Nodo to relay idPayment"
+    path                  = "api/checkout/activations"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+module "apim_proxy_nodo_ws" {
+  count  = var.pagopa_proxy_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.23"
+
+  name                  = format("%s-proxy-nodo-ws", var.env_short)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_checkout_product[0].product_id]
+  subscription_required = local.apim_proxy_nodo_ws.subscription_required
+  service_url           = local.apim_proxy_nodo_ws.service_url
+
+  description  = local.apim_proxy_nodo_ws.description
+  display_name = local.apim_proxy_nodo_ws.display_name
+  path         = local.apim_proxy_nodo_ws.path
+  protocols    = ["https"]
+
+  content_format = "wsdl-link"
+  content_value  = "https://raw.githubusercontent.com/pagopa/io-pagopa-proxy/v0.20.1-RELEASE/src/wsdl/CdPerNodo.wsdl"
+
+  xml_content = templatefile("./api/checkout/checkout_nodo_ws/_base_policy.xml.tpl", {
+    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+  })
+}
+
 ######################################
 ## API checkout payment transaction ##
 ######################################
