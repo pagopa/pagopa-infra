@@ -97,7 +97,7 @@ module "pagopa_proxy_app_service" {
     REDIS_DB_URL      = module.pagopa_proxy_redis[0].hostname
     REDIS_DB_PORT     = module.pagopa_proxy_redis[0].ssl_port
     REDIS_DB_PASSWORD = module.pagopa_proxy_redis[0].primary_access_key
-    REDIS_USE_CLUSTER = true
+    REDIS_USE_CLUSTER = var.env_short == "p"
   }
 
   allowed_subnets = [module.apim_snet.id]
