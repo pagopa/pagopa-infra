@@ -94,7 +94,7 @@ module "pagopa_proxy_app_service" {
     PAGOPA_ID_CANALE_PAGAMENTO = data.azurerm_key_vault_secret.pagopa_proxy_id_canale_pagamento[0].value
     PAGOPA_WS_URI              = data.azurerm_key_vault_secret.pagopa_proxy_ws_uri[0].value
 
-    REDIS_DB_URL      = module.pagopa_proxy_redis[0].hostname
+    REDIS_DB_URL      = format("redis://%s", module.pagopa_proxy_redis[0].hostname)
     REDIS_DB_PORT     = module.pagopa_proxy_redis[0].ssl_port
     REDIS_DB_PASSWORD = module.pagopa_proxy_redis[0].primary_access_key
     REDIS_USE_CLUSTER = var.env_short == "p"
