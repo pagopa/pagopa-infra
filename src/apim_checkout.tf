@@ -132,28 +132,44 @@ locals {
   }
 }
 
-module "apim_proxy_nodo_ws" {
-  count  = var.pagopa_proxy_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.23"
+resource "azurerm_api_management_api" "apim_proxy_nodo_ws" {
+  count = var.pagopa_proxy_enabled ? 1 : 0
 
   name                  = format("%s-proxy-nodo-ws", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_checkout_product[0].product_id]
   subscription_required = local.apim_proxy_nodo_ws.subscription_required
   service_url           = local.apim_proxy_nodo_ws.service_url
+  revision              = "1"
 
   description  = local.apim_proxy_nodo_ws.description
   display_name = local.apim_proxy_nodo_ws.display_name
   path         = local.apim_proxy_nodo_ws.path
   protocols    = ["https"]
 
-  content_format = "wsdl-link"
-  content_value  = "https://raw.githubusercontent.com/pagopa/io-pagopa-proxy/v0.20.1-RELEASE/src/wsdl/CdPerNodo.wsdl"
+  soap_pass_through = true
+
+  import {
+    content_format = "wsdl-link"
+    content_value  = "https://raw.githubusercontent.com/pagopa/io-pagopa-proxy/v0.20.1-RELEASE/src/wsdl/CdPerNodo.wsdl"
+  }
+}
+
+resource "azurerm_api_management_api_policy" "apim_proxy_nodo_ws_policy" {
+  api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws[0].name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/checkout/checkout_nodo_ws/_base_policy.xml.tpl", {
     origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
   })
+}
+
+resource "azurerm_api_management_product_api" "apim_proxy_nodo_ws_product" {
+  product_id          = module.apim_checkout_product[0].product_id
+  api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws[0].name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
 }
 
 ######################################
