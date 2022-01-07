@@ -126,7 +126,7 @@ locals {
   apim_proxy_nodo_ws = {
     display_name          = "pagopa-proxy FespCdService"
     description           = "SOAP service used from Nodo to relay idPayment"
-    path                  = "api/checkout/activations"
+    path                  = "api/checkout/nodo_ws"
     subscription_required = false
     service_url           = null
   }
