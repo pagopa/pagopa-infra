@@ -14,7 +14,7 @@
         </allowed-headers>
       </cors>
       <base />
-      <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
+      <set-backend-service base-url="{{pagopa-appservice-proxy-url}}/FespCdService" />
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     </inbound>
     <outbound>
