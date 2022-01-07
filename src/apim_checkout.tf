@@ -132,7 +132,15 @@ locals {
   }
 }
 
-resource "azurerm_api_management_api" "apim_proxy_nodo_ws" {
+resource "azurerm_api_management_api_version_set" "proxy_nodo_ws" {
+  name                = format("%s-proxy-nodo-ws", var.env_short)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_proxy_nodo_ws.display_name
+  versioning_scheme   = "Segment"
+}
+
+resource "azurerm_api_management_api" "apim_proxy_nodo_ws_v1" {
   count = var.pagopa_proxy_enabled ? 1 : 0
 
   name                  = format("%s-proxy-nodo-ws", var.env_short)
@@ -140,6 +148,8 @@ resource "azurerm_api_management_api" "apim_proxy_nodo_ws" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_proxy_nodo_ws.subscription_required
   service_url           = local.apim_proxy_nodo_ws.service_url
+  version_set_id        = azurerm_api_management_api_version_set.proxy_nodo_ws.id
+  version               = "v1"
   revision              = "1"
 
   description  = local.apim_proxy_nodo_ws.description
@@ -155,19 +165,19 @@ resource "azurerm_api_management_api" "apim_proxy_nodo_ws" {
   }
 }
 
-resource "azurerm_api_management_api_policy" "apim_proxy_nodo_ws_policy" {
-  api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws[0].name
+resource "azurerm_api_management_api_policy" "apim_proxy_nodo_ws_policy_v1" {
+  api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws_v1[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  xml_content = templatefile("./api/checkout/checkout_nodo_ws/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/checkout/checkout_nodo_ws/v1/_base_policy.xml.tpl", {
     origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
   })
 }
 
-resource "azurerm_api_management_product_api" "apim_proxy_nodo_ws_product" {
+resource "azurerm_api_management_product_api" "apim_proxy_nodo_ws_product_v1" {
   product_id          = module.apim_checkout_product[0].product_id
-  api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws[0].name
+  api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws_v1[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 }
