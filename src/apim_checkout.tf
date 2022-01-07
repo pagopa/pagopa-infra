@@ -133,6 +133,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "proxy_nodo_ws" {
+  count = var.pagopa_proxy_enabled ? 1 : 0
+
   name                = format("%s-proxy-nodo-ws", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -148,7 +150,7 @@ resource "azurerm_api_management_api" "apim_proxy_nodo_ws_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_proxy_nodo_ws.subscription_required
   service_url           = local.apim_proxy_nodo_ws.service_url
-  version_set_id        = azurerm_api_management_api_version_set.proxy_nodo_ws.id
+  version_set_id        = azurerm_api_management_api_version_set.proxy_nodo_ws[0].id
   version               = "v1"
   revision              = "1"
 
@@ -166,6 +168,8 @@ resource "azurerm_api_management_api" "apim_proxy_nodo_ws_v1" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_proxy_nodo_ws_policy_v1" {
+  count = var.pagopa_proxy_enabled ? 1 : 0
+
   api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws_v1[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -176,6 +180,8 @@ resource "azurerm_api_management_api_policy" "apim_proxy_nodo_ws_policy_v1" {
 }
 
 resource "azurerm_api_management_product_api" "apim_proxy_nodo_ws_product_v1" {
+  count = var.pagopa_proxy_enabled ? 1 : 0
+
   product_id          = module.apim_checkout_product[0].product_id
   api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws_v1[0].name
   api_management_name = module.apim.name
