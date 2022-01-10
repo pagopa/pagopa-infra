@@ -48,15 +48,22 @@ module "buyerbanks_function" {
   }
 
   app_settings = {
-    FUNCTIONS_WORKER_RUNTIME        = "node"
-    WEBSITE_NODE_DEFAULT_VERSION    = "14.16.0"
-    FUNCTIONS_WORKER_PROCESS_COUNT  = 4
-    NODE_ENV                        = "production"
-    BUYERBANKS_SA_CONNECTION_STRING = module.buyerbanks_storage[0].primary_connection_string
-    BUYERBANKS_BLOB_CONTAINER       = azurerm_storage_container.banks[0].name
-    PAGOPA_BUYERBANKS_CERT          = azurerm_key_vault_certificate.buyerbanks_cert[0].certificate_data_base64
-    PAGOPA_BUYERBANKS_THUMBPRINT    = azurerm_key_vault_certificate.buyerbanks_cert[0].thumbprint
-    PAGOPA_BUYERBANKS_KEY_CERT      = data.azurerm_key_vault_secret.pagopa_buyerbank_cert_key[0].value
+    FUNCTIONS_WORKER_RUNTIME          = "node"
+    WEBSITE_NODE_DEFAULT_VERSION      = "14.16.0"
+    FUNCTIONS_WORKER_PROCESS_COUNT    = 4
+    NODE_ENV                          = "production"
+    BUYERBANKS_SA_CONNECTION_STRING   = module.buyerbanks_storage[0].primary_connection_string
+    BUYERBANKS_BLOB_CONTAINER         = azurerm_storage_container.banks[0].name
+    PAGOPA_BUYERBANKS_CERT            = azurerm_key_vault_certificate.buyerbanks_cert[0].certificate_data_base64
+    PAGOPA_BUYERBANKS_THUMBPRINT      = data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint[0].value
+    PAGOPA_BUYERBANKS_KEY_CERT        = data.azurerm_key_vault_secret.pagopa_buyerbank_cert_key[0].value
+    PAGOPA_BUYERBANKS_BRANCH          = "1000"
+    PAGOPA_BUYERBANKS_CERT_PASSPHRASE = ""
+    PAGOPA_BUYERBANKS_INSTITUTE       = "100"
+    PAGOPA_BUYERBANKS_RS_URL          = "https://rs-te.mybankpayments.eu"
+    PAGOPA_BUYERBANKS_SIGNATURE       = data.azurerm_key_vault_secret.pagopa_buyerbank_signature[0].value
+    PAGOPA_BUYERBANKS_SIGN_ALG        = "RSA-SHA256"
+    PAGOPA_BUYERBANKS_SIGN_ALG_STRING = "SHA256withRSA"
   }
 
   allowed_subnets = [module.apim_snet.id]
@@ -169,6 +176,25 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_key" {
   name         = "pagopa-buyerbank-cert-key"
   key_vault_id = module.key_vault.id
 }
+
+/*
+ * Cert thumbprint - buyerbanks functions
+ */
+data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint" {
+  count        = var.buyerbanks_enabled ? 1 : 0
+  name         = "pagopa-buyerbank-thumbprint"
+  key_vault_id = module.key_vault.id
+}
+
+/*
+ * Body signature - buyerbanks functions
+ */
+data "azurerm_key_vault_secret" "pagopa_buyerbank_signature" {
+  count        = var.buyerbanks_enabled ? 1 : 0
+  name         = "pagopa-buyerbank-signature"
+  key_vault_id = module.key_vault.id
+}
+
 
 /*
  * X.509 cert - buyerbanks functions
