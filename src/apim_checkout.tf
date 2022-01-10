@@ -124,7 +124,7 @@ module "apim_checkout_payment_activations_api_v1" {
 # pagopa-proxy SOAP web service FespCdService
 locals {
   apim_proxy_nodo_ws = {
-    display_name          = "pagopa-proxy FespCdService"
+    display_name          = "Checkout CdInfoWisp"
     description           = "SOAP service used from Nodo to relay idPayment"
     path                  = "api/checkout/nodo_ws"
     subscription_required = false
