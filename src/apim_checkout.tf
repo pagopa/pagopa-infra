@@ -123,40 +123,40 @@ module "apim_checkout_payment_activations_api_v1" {
 
 # pagopa-proxy SOAP web service FespCdService
 locals {
-  apim_proxy_nodo_ws = {
+  apim_cd_info_wisp = {
     display_name          = "Checkout CdInfoWisp"
     description           = "SOAP service used from Nodo to relay idPayment"
-    path                  = "api/checkout/nodo_ws"
+    path                  = "api/checkout/CdInfoWisp"
     subscription_required = false
     service_url           = null
   }
 }
 
-resource "azurerm_api_management_api_version_set" "proxy_nodo_ws" {
+resource "azurerm_api_management_api_version_set" "cd_info_wisp" {
   count = var.pagopa_proxy_enabled ? 1 : 0
 
-  name                = format("%s-proxy-nodo-ws", var.env_short)
+  name                = format("%s-cd-info-wisp", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
-  display_name        = local.apim_proxy_nodo_ws.display_name
+  display_name        = local.apim_cd_info_wisp.display_name
   versioning_scheme   = "Segment"
 }
 
-resource "azurerm_api_management_api" "apim_proxy_nodo_ws_v1" {
+resource "azurerm_api_management_api" "apim_cd_info_wisp_v1" {
   count = var.pagopa_proxy_enabled ? 1 : 0
 
-  name                  = format("%s-proxy-nodo-ws", var.env_short)
+  name                  = format("%s-cd-info-wisp", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  subscription_required = local.apim_proxy_nodo_ws.subscription_required
-  service_url           = local.apim_proxy_nodo_ws.service_url
-  version_set_id        = azurerm_api_management_api_version_set.proxy_nodo_ws[0].id
+  subscription_required = local.apim_cd_info_wisp.subscription_required
+  service_url           = local.apim_cd_info_wisp.service_url
+  version_set_id        = azurerm_api_management_api_version_set.cd_info_wisp[0].id
   version               = "v1"
   revision              = "1"
 
-  description  = local.apim_proxy_nodo_ws.description
-  display_name = local.apim_proxy_nodo_ws.display_name
-  path         = local.apim_proxy_nodo_ws.path
+  description  = local.apim_cd_info_wisp.description
+  display_name = local.apim_cd_info_wisp.display_name
+  path         = local.apim_cd_info_wisp.path
   protocols    = ["https"]
 
   soap_pass_through = true
@@ -167,10 +167,10 @@ resource "azurerm_api_management_api" "apim_proxy_nodo_ws_v1" {
   }
 }
 
-resource "azurerm_api_management_api_policy" "apim_proxy_nodo_ws_policy_v1" {
+resource "azurerm_api_management_api_policy" "apim_cd_info_wisp_policy_v1" {
   count = var.pagopa_proxy_enabled ? 1 : 0
 
-  api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws_v1[0].name
+  api_name            = resource.azurerm_api_management_api.apim_cd_info_wisp_v1[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
@@ -179,11 +179,11 @@ resource "azurerm_api_management_api_policy" "apim_proxy_nodo_ws_policy_v1" {
   })
 }
 
-resource "azurerm_api_management_product_api" "apim_proxy_nodo_ws_product_v1" {
+resource "azurerm_api_management_product_api" "apim_cd_info_wisp_product_v1" {
   count = var.pagopa_proxy_enabled ? 1 : 0
 
   product_id          = module.apim_checkout_product[0].product_id
-  api_name            = resource.azurerm_api_management_api.apim_proxy_nodo_ws_v1[0].name
+  api_name            = resource.azurerm_api_management_api.apim_cd_info_wisp_v1[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 }
