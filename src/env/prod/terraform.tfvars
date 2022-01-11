@@ -216,9 +216,10 @@ eventhubs = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_service_name = "NDPSPCP_NODO4_CFG" # fixme set with data from SIA
-
-dns_a_reconds_dbnodo_ips = ["10.102.35.61", "10.102.35.62", "10.102.35.63"]
+db_port                            = 1521
+db_service_name                    = "NDPSPCT_NODO4_CFG"
+dns_a_reconds_dbnodo_ips           = ["10.102.35.61", "10.102.35.62", "10.102.35.63"]
+private_dns_zone_db_nodo_pagamenti = "prod.db-nodo-pagamenti.com"
 
 # API Config
 xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
