@@ -162,8 +162,8 @@ resource "azurerm_api_management_api" "apim_cd_info_wisp_v1" {
   soap_pass_through = true
 
   import {
-    content_format = "wsdl-link"
-    content_value  = "https://raw.githubusercontent.com/pagopa/io-pagopa-proxy/v0.20.1-RELEASE/src/wsdl/CdPerNodo.wsdl"
+    content_format = "wsdl"
+    content_value  = "./api/checkout/checkout_nodo_ws/v1/CdPerNodo.wsdl"
   }
 }
 
