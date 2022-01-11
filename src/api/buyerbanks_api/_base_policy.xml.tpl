@@ -1,18 +1,9 @@
 <policies>
     <inbound>
-      <cors>
-        <allowed-methods>
-          <method>GET</method>
-          <method>POST</method>
-        </allowed-methods>
-        <allowed-headers>
-          <header>Content-Type</header>
-        </allowed-headers>
-      </cors>
       <base />
-      <set-backend-service base-url="{{pagopa-fn-buyerbank-url}}/api/v1" />
+      <set-backend-service base-url="{{pagopa-fn-buyerbanks-url}}/api/v1" />
       <set-header name="x-functions-key" exists-action="override">
-        <value>{{pagopa-fn-buyerbank-key}}</value>
+        <value>{{pagopa-fn-buyerbanks-key}}</value>
       </set-header>
       <rate-limit-by-key calls="50" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     </inbound>
