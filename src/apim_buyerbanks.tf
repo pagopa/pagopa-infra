@@ -17,7 +17,7 @@ module "apim_buyerbanks_product" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api_product/buyerbanks/_base_policy.xml")
+  policy_xml = file("./api_product/buyerbanks_api/_base_policy.xml")
 }
 
 #####################################
