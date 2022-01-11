@@ -140,8 +140,10 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values = ["nodo-dei-pagamenti-log",
-        "nodo-dei-pagamenti-re"]
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
       }
     ],
   },
@@ -213,9 +215,10 @@ eventhubs = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_service_name = "NDPSPCA_NODO4_CFG" # fixme set with data from SIA
-
-dns_a_reconds_dbnodo_ips = ["10.101.35.40", "10.101.35.41", "10.101.35.42"]
+db_port                            = 1521
+db_service_name                    = "NDPSPCA_PP_NODO4_CFG" # TODO chiedere a SIA
+dns_a_reconds_dbnodo_ips           = ["10.101.35.39", "10.101.35.40", "10.101.35.41"]
+private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
 # API Config
 xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"

@@ -646,7 +646,7 @@ variable "dns_a_reconds_dbnodo_ips" {
 
 variable "private_dns_zone_db_nodo_pagamenti" {
   type    = string
-  default = "metti.qui.il.dns.com" # TODO fixme fornito da SIA
+  default = "dev.db-nodo-pagamenti.com"
 }
 
 # Buyer Banks
