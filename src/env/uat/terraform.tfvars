@@ -216,7 +216,7 @@ acr_enabled = true
 
 # db nodo dei pagamenti
 db_port                            = 1521
-db_service_name                    = "NDPSPCT_NODO4_CFG"
+db_service_name                    = "NDPSPCT_PP_NODO4_CFG" #da verificare
 dns_a_reconds_dbnodo_ips           = ["10.101.35.39", "10.101.35.40", "10.101.35.41"]
 private_dns_zone_db_nodo_pagamenti = "uat.db-nodo-pagamenti.com"
 
