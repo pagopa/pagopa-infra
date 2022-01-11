@@ -98,6 +98,16 @@ checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
 
+# buyerbanks functions
+buyerbanks_enabled                    = true
+buyerbanks_function_kind              = "Linux"
+buyerbanks_function_sku_tier          = "Standard"
+buyerbanks_function_sku_size          = "S1"
+buyerbanks_function_autoscale_minimum = 1
+buyerbanks_function_autoscale_maximum = 3
+buyerbanks_function_autoscale_default = 1
+buyerbanks_delete_retention_days      = 30
+
 ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
@@ -224,5 +234,3 @@ xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/In
 api_config_fe_enabled = true
 cname_record_name     = "config"
 
-# buyerbanks functions
-buyerbanks_enabled = false
