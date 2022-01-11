@@ -92,7 +92,7 @@ module "pagopa_proxy_app_service" {
     PAGOPA_ID_INT_PSP          = data.azurerm_key_vault_secret.pagopa_proxy_id_intermediario_psp[0].value
     PAGOPA_ID_CANALE           = data.azurerm_key_vault_secret.pagopa_proxy_id_canale[0].value
     PAGOPA_ID_CANALE_PAGAMENTO = data.azurerm_key_vault_secret.pagopa_proxy_id_canale_pagamento[0].value
-    PAGOPA_WS_URI              = data.azurerm_key_vault_secret.pagopa_proxy_ws_uri[0].value
+    PAGOPA_WS_URI              = "/api/nodo-per-psp/v1"
 
     REDIS_DB_URL      = format("redis://%s", module.pagopa_proxy_redis[0].hostname)
     REDIS_DB_PORT     = module.pagopa_proxy_redis[0].ssl_port
@@ -134,11 +134,5 @@ data "azurerm_key_vault_secret" "pagopa_proxy_id_intermediario_psp" {
 data "azurerm_key_vault_secret" "pagopa_proxy_id_psp" {
   count        = var.pagopa_proxy_enabled ? 1 : 0
   name         = "pagopa-proxy-id-psp"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "pagopa_proxy_ws_uri" {
-  count        = var.pagopa_proxy_enabled ? 1 : 0
-  name         = "pagopa-proxy-ws-uri"
   key_vault_id = module.key_vault.id
 }
