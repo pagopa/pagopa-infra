@@ -95,6 +95,7 @@ module "pagopa_proxy_app_service" {
     PAGOPA_WS_NODO_PER_PSP_URI = "/api/nodo-per-psp/v1"
     PAGOPA_WS_NODE_FOR_PSP_URI = "/api/node-for-psp/v1"
     PAGOPA_WS_NODE_FOR_IO_URI  = "/api/node-for-io/v1"
+    NM3_ENABLED                = true
 
     REDIS_DB_URL      = format("redis://%s", module.pagopa_proxy_redis[0].hostname)
     REDIS_DB_PORT     = module.pagopa_proxy_redis[0].ssl_port
