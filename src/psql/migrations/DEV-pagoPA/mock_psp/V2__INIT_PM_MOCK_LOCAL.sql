@@ -51,11 +51,11 @@ CREATE TABLE config(
 );
 
 INSERT INTO config(property_key, property_value)
-VALUES ('PAYPAL_PSP_DEFAULT_BACK_URL', 'http://pagopa-dev:8080/pp-restapi-CD/v3/webview/paypal/fallback');
+VALUES ('PAYPAL_PSP_DEFAULT_BACK_URL', 'https://acardste.vaservices.eu:1443/pp-restapi-CD/v3/webview/paypal/fallback');
 
 INSERT INTO config(property_key, property_value)
-VALUES ('PAYPAL_PSP_HMAC_KEY', 'hmac_key');
+VALUES ('PAYPAL_PSP_HMAC_KEY', '${paypal_psp_hmac_key}');
 
 INSERT INTO client
 (client_name, auth_key, creation_date, deleted)
-VALUES ('local', 'local123', NOW(), false);
+VALUES ('local', '${mock_psp_auth_key}', NOW(), false);
