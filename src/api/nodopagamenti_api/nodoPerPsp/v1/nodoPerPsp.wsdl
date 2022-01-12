@@ -3,16 +3,16 @@
   Questo WSDL rappresenta l'interfaccia esposta dal Nodo dei Pagamenti Telematici
   per la verifica dei pagamenti in attesa verso i PSP.
 -->
-<wsdl:definitions name="PPT" 
+<wsdl:definitions name="PPT"
   xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
-  xmlns:ppt="http://ws.pagamenti.telematici.gov/"  
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
-  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
-  xmlns:tns="http://PuntoAccessoPSP.spcoop.gov.it/servizi/PagamentiTelematiciPspNodo" 
+  xmlns:ppt="http://ws.pagamenti.telematici.gov/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:tns="http://PuntoAccessoPSP.spcoop.gov.it/servizi/PagamentiTelematiciPspNodo"
 	xmlns:qrc="http://PuntoAccessoPSP.spcoop.gov.it/QrCode"
   targetNamespace="http://PuntoAccessoPSP.spcoop.gov.it/servizi/PagamentiTelematiciPspNodo">
-  
+
 	<wsdl:types>
 		<xsd:schema version="1.0" targetNamespace="http://ws.pagamenti.telematici.gov/">
 <!-- **** BEGIN: tipi semplici  ****-->
@@ -880,7 +880,7 @@
 					<xsd:any minOccurs="0" maxOccurs="6" namespace="##any" />
 				</xsd:sequence>
 			</xsd:complexType>
-						
+
 			<xsd:complexType name="ctSpezzoneStrutturatoCausaleVersamento">
 					<xsd:sequence>
 							<xsd:element type="ppt:stText25" name="causaleSpezzone" minOccurs="1" />
@@ -936,7 +936,7 @@
 					</xsd:choice>
 				</xsd:sequence>
 			</xsd:complexType>
-			
+
 			<xsd:complexType name="nodoTipoDatiPagamentoPSP">
 				<xsd:sequence>
 					<xsd:element name="importoSingoloVersamento" type="ppt:stImporto" minOccurs="1">
@@ -1036,7 +1036,7 @@
 	<wsdl:message name="nodoAttivaRPTResponse">
 		<wsdl:part name="bodyrisposta" element="ppt:nodoAttivaRPTRisposta" />
 	</wsdl:message>
-	
+
 	<wsdl:portType name="PagamentiTelematiciPspNodo">
 		<wsdl:operation name="nodoVerificaRPT">
 			<wsdl:input message="tns:nodoVerificaRPT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoVerificaRPTRichiesta" />
