@@ -85,7 +85,7 @@ module "apim_checkout_payments_api_v1" {
 resource "azurerm_api_management_api_version_set" "checkout_payment_activations_api" {
   count = var.pagopa_proxy_enabled ? 1 : 0
 
-  name                = format("%s-checkout-payment-activations-api", var.env_short)
+  name                = format("%s-checkout-payment-activations-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_checkout_payment_activations_api.display_name
@@ -97,7 +97,7 @@ module "apim_checkout_payment_activations_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.23"
 
-  name                  = format("%s-checkout-payment-activations-api", var.env_short)
+  name                  = format("%s-checkout-payment-activations-api", local.project)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_checkout_product[0].product_id]
@@ -135,7 +135,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "cd_info_wisp" {
   count = var.pagopa_proxy_enabled ? 1 : 0
 
-  name                = format("%s-cd-info-wisp", var.env_short)
+  name                = format("%s-cd-info-wisp", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_cd_info_wisp.display_name
@@ -145,7 +145,7 @@ resource "azurerm_api_management_api_version_set" "cd_info_wisp" {
 resource "azurerm_api_management_api" "apim_cd_info_wisp_v1" {
   count = var.pagopa_proxy_enabled ? 1 : 0
 
-  name                  = format("%s-cd-info-wisp", var.env_short)
+  name                  = format("%s-cd-info-wisp", local.project)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_cd_info_wisp.subscription_required
@@ -163,7 +163,11 @@ resource "azurerm_api_management_api" "apim_cd_info_wisp_v1" {
 
   import {
     content_format = "wsdl"
-    content_value  = "./api/checkout/checkout_nodo_ws/v1/CdPerNodo.wsdl"
+    content_value  = file("./api/checkout/checkout_nodo_ws/v1/CdPerNodo.wsdl")
+    wsdl_selector {
+      service_name  = "FespCdService"
+      endpoint_name = "FespCdPortType"
+    }
   }
 }
 
