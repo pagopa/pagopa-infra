@@ -55,11 +55,12 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy" {
   xml_content = file("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml")
 }
 
+
 resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_policy" {
   api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "activatePaymentNotice"
+  operation_id        = "61d70973b78e982064458676"
 
   xml_content = file("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml")
 }
