@@ -34,7 +34,7 @@ module "api_config_snet" {
 
 module "api_config_app_service" {
   count  = var.api_config_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.93"
 
   resource_group_name = azurerm_resource_group.api_config_rg[0].name
   location            = var.location
@@ -50,8 +50,10 @@ module "api_config_app_service" {
   name                = format("%s-app-api-config", local.project)
   client_cert_enabled = false
   always_on           = var.api_config_always_on
-  linux_fx_version    = "JAVA|11-java11"
-  health_check_path   = "/apiconfig/api/v1/info"
+  # linux_fx_version    = "JAVA|11-java11"
+  linux_fx_version  = format("DOCKER|%s/api-apiconfig-backend:%s", module.acr[0].login_server, "latest")
+  health_check_path = "/apiconfig/api/v1/info"
+
 
   app_settings = {
     # Monitoring
@@ -70,14 +72,22 @@ module "api_config_app_service" {
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
     TIMEOUT_DELAY                                   = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
-    WEBSITE_DNS_SERVER     = "168.63.129.16"
-    WEBSITE_VNET_ROUTE_ALL = 1
+    WEBSITE_DNS_SERVER = "168.63.129.16"
     # Spring Environment
     SPRING_DATASOURCE_USERNAME = data.azurerm_key_vault_secret.db_nodo_usr.value
     SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.db_nodo_pwd.value
     SPRING_DATASOURCE_URL      = var.db_service_name == null ? null : format("jdbc:oracle:thin:@%s.%s:%s/%s", azurerm_private_dns_a_record.private_dns_a_record_db_nodo.name, azurerm_private_dns_zone.db_nodo_dns_zone.name, var.db_port, var.db_service_name)
     CORS_CONFIGURATION         = jsonencode(local.apiconfig_cors_configuration)
     XSD_ICA                    = var.xsd_ica
+
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    WEBSITES_PORT                       = 8080
+    # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
+    # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
+    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
+
   }
 
   allowed_subnets = [module.apim_snet.id]

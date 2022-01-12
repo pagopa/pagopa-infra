@@ -13,15 +13,18 @@ lock_enable = true
 
 # networking
 # main vnet
-cidr_vnet              = ["10.1.0.0/16"]
-cidr_subnet_appgateway = ["10.1.128.0/24"]
-cidr_subnet_postgresql = ["10.1.129.0/24"]
-cidr_subnet_azdoa      = ["10.1.130.0/24"]
+cidr_vnet                      = ["10.1.0.0/16"]
+cidr_subnet_appgateway         = ["10.1.128.0/24"]
+cidr_subnet_postgresql         = ["10.1.129.0/24"]
+cidr_subnet_azdoa              = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+
 # dev/uat only
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
-cidr_subnet_checkout_be = ["10.1.240.16/29"]
+cidr_subnet_checkout_be  = ["10.1.240.16/29"]
+cidr_subnet_pagopa_proxy = ["10.1.240.24/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -142,8 +145,10 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values = ["nodo-dei-pagamenti-log",
-        "nodo-dei-pagamenti-re"]
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
       }
     ],
   },
@@ -215,9 +220,10 @@ eventhubs = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_service_name = "NDPSPCA_NODO4_CFG" # fixme set with data from SIA
-
-dns_a_reconds_dbnodo_ips = ["10.101.35.40", "10.101.35.41", "10.101.35.42"]
+db_port                            = 1521
+db_service_name                    = "NDPSPCA_PP_NODO4_CFG" # TODO chiedere a SIA
+dns_a_reconds_dbnodo_ips           = ["10.101.35.39", "10.101.35.40", "10.101.35.41"]
+private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
 # API Config
 xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
@@ -225,3 +231,14 @@ xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/In
 # API Config FE
 api_config_fe_enabled = true
 cname_record_name     = "config"
+
+# buyerbanks functions
+buyerbanks_enabled = false
+
+# pagopa-proxy app service
+pagopa_proxy_enabled        = true
+pagopa_proxy_redis_capacity = 0
+pagopa_proxy_redis_sku_name = "Basic"
+pagopa_proxy_redis_family   = "C"
+pagopa_proxy_tier           = "Standard"
+pagopa_proxy_size           = "S1"

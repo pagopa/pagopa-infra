@@ -305,6 +305,12 @@ variable "cidr_subnet_redis" {
   default     = []
 }
 
+variable "redis_private_endpoint_enabled" {
+  type        = bool
+  description = "Enable private endpoints for redis instances?"
+  default     = true
+}
+
 variable "app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
@@ -641,5 +647,129 @@ variable "dns_a_reconds_dbnodo_ips" {
 
 variable "private_dns_zone_db_nodo_pagamenti" {
   type    = string
-  default = "metti.qui.il.dns.com" # TODO fixme fornito da SIA
+  default = "dev.db-nodo-pagamenti.com"
+}
+
+# Buyer Banks
+variable "buyerbanks_enabled" {
+  type        = bool
+  description = "buyerbanks functions enabled"
+  default     = false
+}
+
+variable "cidr_subnet_buyerbanks" {
+  type        = list(string)
+  description = "Address prefixes subnet buyerbanks"
+  default     = null
+}
+variable "buyerbanks_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "buyerbanks_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "buyerbanks_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "buyerbanks_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "buyerbanks_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "buyerbanks_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "buyerbanks_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+variable "buyerbanks_enable_versioning" {
+  type        = bool
+  description = "Enable buyerbanks sa versioning"
+  default     = false
+}
+
+variable "buyerbanks_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "buyerbanks_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted buyerbanks."
+  default     = 30
+}
+
+# pagopa-proxy
+variable "pagopa_proxy_enabled" {
+  type        = bool
+  description = "Enable pagopa-proxy?"
+  default     = false
+}
+
+variable "cidr_subnet_pagopa_proxy" {
+  type        = list(string)
+  description = "Address prefixes subnet proxy"
+  default     = null
+}
+
+variable "cidr_subnet_pagopa_proxy_redis" {
+  type        = list(string)
+  description = "Address prefixes subnet redis for pagopa proxy"
+  default     = null
+}
+
+variable "pagopa_proxy_redis_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "pagopa_proxy_redis_sku_name" {
+  type    = string
+  default = null
+}
+
+variable "pagopa_proxy_redis_family" {
+  type    = string
+  default = "C"
+}
+
+variable "pagopa_proxy_tier" {
+  type        = string
+  description = "pagopa-proxy Plan tier"
+  default     = null
+}
+
+variable "pagopa_proxy_size" {
+  type        = string
+  description = "pagopa-proxy Plan size"
+  default     = null
+}
+
+variable "pagopa_proxy_always_on" {
+  type        = bool
+  description = "pagopa-proxy always on property"
+  default     = false
 }

@@ -4,23 +4,26 @@ set -e
 
 action=$1
 env=$2
-shift 2
-other=$@
 
 if [ -z "$action" ]; then
+  echo "Usage: ./terraform.sh ACTION ENV [PARAMS]"
   echo "Missed action: init, apply, plan"
   exit 0
 fi
 
 if [ -z "$env" ]; then
+  echo "Usage: ./terraform.sh ACTION ENV [PARAMS]"
   echo "env should be: dev, uat or prod."
   exit 0
 fi
 
+shift 2
+other=$@
+
 source "./env/$env/backend.ini"
 az account set -s "${subscription}"
 
-if echo "init plan apply refresh import output state taint destroy" | grep -w $action > /dev/null; then
+if echo "init plan apply refresh import output state taint destroy console" | grep -w $action > /dev/null; then
   if [ $action = "init" ]; then
     terraform $action -backend-config="./env/$env/backend.tfvars" $other
   elif [ $action = "output" ] || [ $action = "state" ] || [ $action = "taint" ]; then

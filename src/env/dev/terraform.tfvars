@@ -13,15 +13,19 @@ lock_enable = false
 
 # networking
 # main vnet
-cidr_vnet              = ["10.1.0.0/16"]
-cidr_subnet_appgateway = ["10.1.128.0/24"]
-cidr_subnet_postgresql = ["10.1.129.0/24"]
-cidr_subnet_azdoa      = ["10.1.130.0/24"]
+cidr_vnet                      = ["10.1.0.0/16"]
+cidr_subnet_appgateway         = ["10.1.128.0/24"]
+cidr_subnet_postgresql         = ["10.1.129.0/24"]
+cidr_subnet_azdoa              = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis = ["10.1.139.0/24"]
+
 # dev/uat only
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
-cidr_subnet_checkout_be = ["10.1.240.17/29"]
+cidr_subnet_checkout_be  = ["10.1.240.17/29"]
+cidr_subnet_buyerbanks   = ["10.1.240.24/29"]
+cidr_subnet_pagopa_proxy = ["10.1.240.32/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -39,6 +43,9 @@ dns_zone_checkout = "dev.checkout"
 azdo_sp_tls_cert_enabled = true
 enable_azdoa             = true
 enable_iac_pipeline      = true
+
+# redis private endpoint
+redis_private_endpoint_enabled = true
 
 # apim
 apim_publisher_name = "pagoPA Platform DEV"
@@ -185,7 +192,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -204,7 +211,14 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-sia-rx" # oper
+        listen = true
+        send   = false
+        manage = false
       }
+
     ]
   },
 ]
@@ -213,9 +227,10 @@ eventhubs = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                  = 1523
-db_service_name          = "NDPSPCT_NODO4_CFG" # fixme set with data from SIA
-dns_a_reconds_dbnodo_ips = ["10.8.3.228"]
+db_port                            = 1523
+db_service_name                    = "NDPSPCT_PP_NODO4_CFG"
+dns_a_reconds_dbnodo_ips           = ["10.8.3.228"]
+private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
 
 # API Config
 xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
@@ -223,3 +238,21 @@ xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/In
 # API Config FE
 api_config_fe_enabled = true
 cname_record_name     = "config"
+
+# buyerbanks functions
+buyerbanks_enabled                    = true
+buyerbanks_function_kind              = "Linux"
+buyerbanks_function_sku_tier          = "Standard"
+buyerbanks_function_sku_size          = "S1"
+buyerbanks_function_autoscale_minimum = 1
+buyerbanks_function_autoscale_maximum = 3
+buyerbanks_function_autoscale_default = 1
+buyerbanks_delete_retention_days      = 30
+
+# pagopa-proxy app service
+pagopa_proxy_enabled        = true
+pagopa_proxy_redis_capacity = 0
+pagopa_proxy_redis_sku_name = "Basic"
+pagopa_proxy_redis_family   = "C"
+pagopa_proxy_tier           = "Standard"
+pagopa_proxy_size           = "S1"
