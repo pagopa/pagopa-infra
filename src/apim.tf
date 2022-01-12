@@ -131,6 +131,16 @@ resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "checkout_google_recaptcha_secret" {
+  count               = var.pagopa_proxy_enabled ? 1 : 0
+  name                = "google-recaptcha-secret"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "google-recaptcha-secret"
+  value               = data.azurerm_key_vault_secret.google_recaptcha_secret[0].value
+  secret              = true
+}
+
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 

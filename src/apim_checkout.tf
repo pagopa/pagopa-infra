@@ -121,6 +121,16 @@ module "apim_checkout_payment_activations_api_v1" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
+  count               = var.pagopa_proxy_enabled ? 1 : 0
+  api_name            = format("%s-checkout-payment-activations-api-v1", var.env_short)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "getPaymentInfo"
+
+  xml_content = file("./api/checkout/checkout_payment_activations/v1/_recaptcha_check.xml.tpl")
+}
+
 # pagopa-proxy SOAP web service FespCdService
 locals {
   apim_cd_info_wisp = {

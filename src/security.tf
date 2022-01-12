@@ -174,7 +174,7 @@ data "azurerm_key_vault_secret" "fn_checkout_key" {
 
 
 data "azurerm_key_vault_secret" "google_recaptcha_secret" {
-  count        = var.checkout_enabled ? 1 : 0
+  count        = var.checkout_enabled || var.pagopa_proxy_enabled ? 1 : 0
   name         = "google-recaptcha-secret"
   key_vault_id = module.key_vault.id
 }
