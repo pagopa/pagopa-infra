@@ -57,6 +57,8 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy" {
 
 
 resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_policy" {
+  count = var.env_short == "d" ? 1 : 0
+
   api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
