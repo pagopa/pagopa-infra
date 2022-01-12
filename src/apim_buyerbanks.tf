@@ -29,7 +29,7 @@ locals {
     display_name          = "pagoPA buyerbanks API"
     description           = "API to support buyerbanks list update"
     path                  = "api/buyerbanks"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
