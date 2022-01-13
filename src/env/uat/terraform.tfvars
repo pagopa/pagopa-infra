@@ -13,15 +13,18 @@ lock_enable = true
 
 # networking
 # main vnet
-cidr_vnet              = ["10.1.0.0/16"]
-cidr_subnet_appgateway = ["10.1.128.0/24"]
-cidr_subnet_postgresql = ["10.1.129.0/24"]
-cidr_subnet_azdoa      = ["10.1.130.0/24"]
+cidr_vnet                      = ["10.1.0.0/16"]
+cidr_subnet_appgateway         = ["10.1.128.0/24"]
+cidr_subnet_postgresql         = ["10.1.129.0/24"]
+cidr_subnet_azdoa              = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+
 # dev/uat only
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
-cidr_subnet_checkout_be = ["10.1.240.16/29"]
+cidr_subnet_checkout_be  = ["10.1.240.16/29"]
+cidr_subnet_pagopa_proxy = ["10.1.240.24/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -60,6 +63,8 @@ prostgresql_enabled                      = false
 postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = true
+postgres_private_endpoint_enabled        = false
+
 postgresql_network_rules = {
   ip_rules = [
     "0.0.0.0/0"
@@ -78,8 +83,8 @@ api_config_enabled = true
 
 # apim x nodo pagmenti
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "97735020584,97735020583,97735020582,97735020581"
-nodo_pagamenti_ec      = "77777777777,00493410583"
+nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,08658331007,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725"
+nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571"
 nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input"
 
 
@@ -140,8 +145,10 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values = ["nodo-dei-pagamenti-log",
-        "nodo-dei-pagamenti-re"]
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
       }
     ],
   },
@@ -213,9 +220,10 @@ eventhubs = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_service_name = "NDPSPCA_NODO4_CFG" # fixme set with data from SIA
-
-dns_a_reconds_dbnodo_ips = ["10.101.35.40", "10.101.35.41", "10.101.35.42"]
+db_port                            = 1521
+db_service_name                    = "NDPSPCA_PP_NODO4_CFG" # TODO chiedere a SIA
+dns_a_reconds_dbnodo_ips           = ["10.101.35.39", "10.101.35.40", "10.101.35.41"]
+private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
 # API Config
 xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
@@ -226,3 +234,11 @@ cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_enabled = false
+
+# pagopa-proxy app service
+pagopa_proxy_enabled        = true
+pagopa_proxy_redis_capacity = 0
+pagopa_proxy_redis_sku_name = "Basic"
+pagopa_proxy_redis_family   = "C"
+pagopa_proxy_tier           = "Standard"
+pagopa_proxy_size           = "S1"
