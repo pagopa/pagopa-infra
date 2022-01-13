@@ -48,9 +48,9 @@ module "mock_psp" {
 
   app_settings = {
     SERVER_PUBLIC_URL           = format("https://api.%s.%s/mock-psp/api", var.dns_zone_prefix, var.external_domain),
-    PAGOPA_MOCK_PSP_DB_USERNAME = format("%s@%s", data.azurerm_key_vault_secret.db_mock_psp_user_login[0].value, module.postgresql[0].name),
+    PAGOPA_MOCK_PSP_DB_USERNAME = format("%s@pagopa-d-postgresql", data.azurerm_key_vault_secret.db_mock_psp_user_login[0].value),
     PAGOPA_MOCK_PSP_DB_PWD      = data.azurerm_key_vault_secret.db_mock_psp_user_login_password[0].value,
-    PAGOPA_MOCK_PSP_DB_URL      = format("%s:5432/%s", module.postgresql[0].fqdn, var.prostgresql_db_mockpsp)
+    PAGOPA_MOCK_PSP_DB_URL      = format("pagopa-d-postgresql.postgres.database.azure.com:5432/mock_psp?currentSchema=mock_psp_%s&sslmode=require", var.env_short)
   }
 
   allowed_subnets = [module.apim_snet.id]
