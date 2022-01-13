@@ -57,12 +57,12 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy" {
 
 
 resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_policy" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" || var.env_short == "u" ? 1 : 0
 
   api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "61d70973b78e982064458676"
+  operation_id        = var.env_short == "d" ? "61d70973b78e982064458676" : "61dedb1872975e13800fd7ff"
 
   xml_content = file("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml")
 }
