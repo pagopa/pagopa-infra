@@ -77,9 +77,9 @@ api_config_enabled = false
 
 # apim x nodo pagmenti
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = ""
-nodo_pagamenti_ec      = ""
-nodo_pagamenti_url     = "" # future need - here we'll set PROD node url
+nodo_pagamenti_psp     = "-"
+nodo_pagamenti_ec      = "-"
+nodo_pagamenti_url     = "-" # future need - here we'll set PROD node url
 
 
 # eventhub
