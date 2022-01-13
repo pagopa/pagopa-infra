@@ -31,7 +31,7 @@ locals {
 ###########################
 
 module "apim" {
-  source               = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v1.0.50"
+  source               = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.1.1"
   subnet_id            = module.apim_snet.id
   location             = azurerm_resource_group.rg_api.location
   name                 = format("%s-apim", local.project)
@@ -62,6 +62,10 @@ module "apim" {
     management-api-domain = local.management_domain
     apim-name             = format("%s-apim", local.project)
   })
+
+  # Logs
+  sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
 
   tags = var.tags
 
