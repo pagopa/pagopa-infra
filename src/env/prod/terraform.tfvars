@@ -79,7 +79,7 @@ api_config_enabled = false
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "-"
 nodo_pagamenti_ec      = "-"
-nodo_pagamenti_url     = "-" # future need - here we'll set PROD node url
+nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input" # future need - here we'll set PROD node url
 
 
 # eventhub
