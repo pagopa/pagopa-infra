@@ -63,6 +63,8 @@ prostgresql_enabled                      = false
 postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = true
+postgres_private_endpoint_enabled        = false
+
 postgresql_network_rules = {
   ip_rules = [
     "0.0.0.0/0"
@@ -74,7 +76,7 @@ prostgresql_db_mockpsp = "mock-psp"
 
 # mock
 mock_ec_enabled  = true
-mock_psp_enabled = false
+mock_psp_enabled = true
 
 # api_config
 api_config_enabled = true

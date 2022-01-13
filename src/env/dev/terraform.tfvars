@@ -62,9 +62,11 @@ app_gateway_alerts_enabled              = false
 
 # postgresql
 prostgresql_enabled                      = true
-postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify
+postgresql_sku_name                      = "B_Gen5_1" # todo fixme verify
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = true
+postgres_private_endpoint_enabled        = false
+
 postgresql_network_rules = {
   ip_rules = [
     "0.0.0.0/0"

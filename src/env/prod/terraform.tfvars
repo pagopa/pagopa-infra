@@ -66,6 +66,7 @@ prostgresql_enabled                      = false
 postgresql_sku_name                      = "GP_Gen5_2" # todo change before launch
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = false
+postgres_private_endpoint_enabled        = false
 
 # mock
 mock_ec_enabled  = false
