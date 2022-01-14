@@ -16,6 +16,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: init
+        run: |
+          cd src
+          sed -i -e 's/backend "azurerm" {}//g' main.tf
+          docker run -v $(pwd):/tmp hashicorp/terraform:latest init
+
       - name: test
         run: |
           TAG=latest
