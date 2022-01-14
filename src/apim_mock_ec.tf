@@ -18,6 +18,8 @@ module "apim_mock_ec_product" {
   approval_required     = false
 
   policy_xml = file("./api_product/mockec_api/_base_policy.xml")
+
+  
 }
 
 module "apim_mock_ec_api" {
