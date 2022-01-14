@@ -4,8 +4,6 @@ on:
   push:
     branches-ignore:
       - main
-    paths-ignore:
-      - 'CODEOWNERS'
 
 jobs:
   static_analysis:
