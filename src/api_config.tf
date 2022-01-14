@@ -11,9 +11,6 @@ locals {
     origins = ["*"]
     methods = ["*"]
   }
-
-
-  
 }
 
 # Subnet to host the api config

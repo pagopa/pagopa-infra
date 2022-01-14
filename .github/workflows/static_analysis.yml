@@ -2,7 +2,6 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     branches-ignore:
       - main
     paths-ignore:
@@ -15,13 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: init
+      - name: init_src
         run: |
           cd src
-          sed -i -e 's/backend "azurerm" {}//g' main.tf
-          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:latest init
+          sed -i -e 's/backend "azurerm" {}//g' main.tf # use local backend
+          TAG=latest
+          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
 
-      - name: test
+      - name: run_test
         run: |
           TAG=latest
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
