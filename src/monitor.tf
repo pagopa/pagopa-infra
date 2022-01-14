@@ -23,6 +23,8 @@ resource "azurerm_application_insights" "application_insights" {
   resource_group_name = azurerm_resource_group.monitor_rg.name
   application_type    = "other"
 
+  workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
   tags = var.tags
 }
 
