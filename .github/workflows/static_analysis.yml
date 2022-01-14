@@ -19,7 +19,7 @@ jobs:
         run: |
           cd src
           sed -i -e 's/backend "azurerm" {}//g' main.tf
-          docker run -v $(pwd):/tmp hashicorp/terraform:latest init
+          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:latest init
 
       - name: test
         run: |
