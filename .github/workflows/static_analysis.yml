@@ -14,9 +14,10 @@ jobs:
 
       - name: init_src
         run: |
+          TAG=$(cat .terraform-version)
           cd src
           sed -i -e 's/backend "azurerm" {}//g' main.tf # use local backend
-          TAG=latest
+          #TAG=latest
           docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
 
       - name: run_test
