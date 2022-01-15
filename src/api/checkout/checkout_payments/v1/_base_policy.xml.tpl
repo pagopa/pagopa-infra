@@ -14,6 +14,9 @@
         </allowed-headers>
       </cors>
       <base />
+      <set-header name="x-functions-key" exists-action="override">
+        <value>{{pagopa-fn-checkout-key}}</value>
+      </set-header>
       <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     </inbound>
