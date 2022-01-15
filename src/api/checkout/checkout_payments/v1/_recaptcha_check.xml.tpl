@@ -21,7 +21,7 @@
                   <set-status code="401" reason="Unauthorized" />
               </return-response>
           </when>
-      </choose>    
+      </choose>
       <!-- Check google reCAPTCHA token validity END -->
     </inbound>
     <outbound>
