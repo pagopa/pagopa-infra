@@ -1,4 +1,4 @@
-name: Docker
+name: Static Analysis
 
 on:
   push:
