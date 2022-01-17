@@ -4,6 +4,13 @@
       <!-- Check google reCAPTCHA token validity START -->
       <set-variable name="recaptchaSecret" value="{{google-recaptcha-secret}}" />
       <set-variable name="recaptchaToken" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("recaptchaResponse"))" />
+      <choose>
+        <when condition="@(context.Variables["recaptchaToken"] == null || context.Variables["recaptchaToken"] == '')">
+              <return-response>
+                  <set-status code="401" reason="Unauthorized" />
+              </return-response>
+          </when>
+      </choose>
       <set-variable name="recaptchaBodyRequest" value="@{
             return $"secret=${context.Variables["recaptchaSecret"]}&response=${context.Variables["recaptchaToken"]}";
         }" />
