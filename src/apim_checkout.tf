@@ -33,7 +33,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_payments_api" {
-  name                = format("%s-checkout-payments-api", t)
+  name                = format("%s-checkout-payments-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_checkout_payments_api.display_name
@@ -74,6 +74,24 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
   operation_id        = "getPaymentInfo"
 
   xml_content = file("./api/checkout/checkout_payments/v1/_recaptcha_check.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_activation_status_api" {
+  api_name            = format("%s-checkout-payments-api-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "getActivationStatus"
+
+  xml_content = file("./api/checkout/checkout_payments/v1/_idpayment_check.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_browser_info_api" {
+  api_name            = format("%s-checkout-payments-api-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "GetBrowsersInfo"
+
+  xml_content = file("./api/checkout/checkout_payments/v1/_browserinfo.xml.tpl")
 }
 
 # pagopa-proxy SOAP web service FespCdService
