@@ -777,5 +777,5 @@ variable "pagopa_proxy_always_on" {
 variable "nodo_ip_filter" {
   type        = string
   description = "IP Node"
-  default     = null
+  default     = ""
 }
