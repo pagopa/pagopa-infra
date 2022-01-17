@@ -33,7 +33,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_payments_api" {
-  name                = format("%s-checkout-payments-api", var.env_short)
+  name                = format("%s-checkout-payments-api", t)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_checkout_payments_api.display_name
@@ -43,7 +43,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payments_api" {
 module "apim_checkout_payments_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
-  name                  = format("%s-checkout-payments-api", var.env_short)
+  name                  = format("%s-checkout-payments-api", local.project)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_checkout_product.product_id]
