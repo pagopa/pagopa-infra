@@ -5,7 +5,7 @@
       <set-variable name="recaptchaSecret" value="{{google-recaptcha-secret}}" />
       <set-variable name="recaptchaToken" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("recaptchaResponse"))" />
       <choose>
-        <when condition="@(context.Variables["recaptchaToken"] == null || context.Variables["recaptchaToken"] == '')">
+        <when condition="@(context.Variables["recaptchaToken"] == null || context.Variables["recaptchaToken"] == "")">
               <return-response>
                   <set-status code="401" reason="Unauthorized" />
               </return-response>
