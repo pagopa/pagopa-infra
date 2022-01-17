@@ -23,7 +23,7 @@ cidr_subnet_pagopa_proxy_redis = ["10.1.139.0/24"]
 cidr_subnet_mock_ec  = ["10.1.240.0/29"]
 cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
-cidr_subnet_checkout_be  = ["10.1.240.17/29"]
+cidr_subnet_checkout_be  = ["10.1.240.16/29"]
 cidr_subnet_buyerbanks   = ["10.1.240.24/29"]
 cidr_subnet_pagopa_proxy = ["10.1.240.32/29"]
 
@@ -93,12 +93,16 @@ nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input" # fixme sit
 eventhub_enabled = true
 
 # checkout
-checkout_enabled = false
+checkout_enabled = true
 
-#checkout function
-checkout_function_kind     = "Dynamic"
+# checkout function
+checkout_function_kind     = "Linux"
 checkout_function_sku_tier = "Dynamic"
 checkout_function_sku_size = "Y1"
+checkout_function_autoscale_minimum = 1
+checkout_function_autoscale_maximum = 3
+checkout_function_autoscale_default = 1
+checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
 
 ehns_sku_name = "Standard"
 
@@ -256,4 +260,4 @@ pagopa_proxy_redis_sku_name = "Basic"
 pagopa_proxy_redis_family   = "C"
 pagopa_proxy_tier           = "Standard"
 pagopa_proxy_size           = "S1"
-nodo_ip_filter              = ""
+nodo_ip_filter              = "10.79.20.32"

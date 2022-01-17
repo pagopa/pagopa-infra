@@ -3,7 +3,7 @@
 ##############
 
 module "apim_checkout_product" {
-  count  = var.checkout_enabled || var.pagopa_proxy_enabled ? 1 : 0
+  count  = var.checkout_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
   product_id   = "checkout"
@@ -71,7 +71,7 @@ module "apim_checkout_payments_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
-  api_name            = format("%s-checkout-payments-api-v1", local.project)
+  api_name            = format("%s-checkout-payments-api-v1", var.env_short)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getPaymentInfo"
@@ -80,7 +80,7 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_activation_status_api" {
-  api_name            = format("%s-checkout-payments-api-v1", local.project)
+  api_name            = format("%s-checkout-payments-api-v1", var.env_short)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getActivationStatus"
@@ -89,7 +89,7 @@ resource "azurerm_api_management_api_operation_policy" "get_activation_status_ap
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_browser_info_api" {
-  api_name            = format("%s-checkout-payments-api-v1", local.project)
+  api_name            = format("%s-checkout-payments-api-v1", var.env_short)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "GetBrowsersInfo"
