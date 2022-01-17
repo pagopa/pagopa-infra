@@ -1,9 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.1.0",
-    "title": "Proxy PagoPA",
-    "description": "Proxy for PagoPA payment services"
+    "version": "1.0.0",
+    "title": "Checkout API",
+    "contact": {
+      "name": "pagoPA team",
+    },
+    "description": "Documentation of the Checkout Function API here.\n"
   },
   "host": "${host}",
   "basePath": "/api/v1",
@@ -140,6 +143,26 @@
             "schema": {
               "$ref": "#/definitions/ProblemJson"
             }
+          }
+        }
+      }
+    },
+    "/browsers/current/info": {
+      "get": {
+        "operationId": "GetBrowsersInfo",
+        "description": "Get info of the current browser used by the user",
+        "responses": {
+          "200": {
+            "description": "Browser info retrieved",
+            "schema": {
+              "$ref": "#/definitions/BrowserInfoResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
           }
         }
       }
@@ -389,6 +412,25 @@
         },
         "importoSpezzone": {
           "$ref": "#/definitions/ImportoEuroCents"
+        }
+      }
+    },
+    "BrowserInfoResponse": {
+      "type": "object",
+      "required": [
+        "ip",
+        "useragent",
+        "accept"
+      ],
+      "properties": {
+        "ip": {
+          "type": "string"
+        },
+        "useragent": {
+          "type": "string"
+        },
+        "accept": {
+          "type": "string"
         }
       }
     },
