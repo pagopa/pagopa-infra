@@ -62,6 +62,33 @@
             "description": "PagoPA services are not available or request is rejected"
           }
         }
+      },
+      "put": {
+        "operationId": "SyncBuyerBanks",
+        "summary": "Request for an update of buyerbank list",
+        "description": "Synchronize buyerbanks with MyBank web services",
+        "responses": {
+          "200": {
+            "description": "Request outcome",
+            "schema": {
+              "$ref": "#/definitions/BuyerBanksPutResponse"
+            },
+            "examples": {
+              "application/json": {
+                "result": "success"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Verification of the signature failed"
+          },
+          "500": {
+            "description": "PagoPA services are not available or request is rejected"
+          }
+        }
       }
     }
   },
@@ -124,6 +151,17 @@
               }
             }
           }
+        }
+      }
+    },
+    "BuyerBanksPutResponse": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "string"
         }
       }
     }
