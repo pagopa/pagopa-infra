@@ -15,7 +15,7 @@
           <!-- Check idPayment in pagoPA env- START -->
           <set-variable name="codice_contesto_pagamento" value="@(context.Request.MatchedParameters["codice_contesto_pagamento"])" />
           <send-request ignore-error="true" timeout="10" response-variable-name="response" mode="new">
-            <set-url>$"{{pagopa-appservice-proxy-url}}/api/v1/payment-activations/${context.Variables["codice_contesto_pagamento"]}"</set-url>
+            <set-url>{{pagopa-appservice-proxy-url}}/api/v1/payment-activations/{{context.Variables["codice_contesto_pagamento"]}}"</set-url>
             <set-method>GET</set-method>
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
