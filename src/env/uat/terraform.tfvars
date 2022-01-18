@@ -243,4 +243,5 @@ pagopa_proxy_redis_sku_name = "Basic"
 pagopa_proxy_redis_family   = "C"
 pagopa_proxy_tier           = "Standard"
 pagopa_proxy_size           = "S1"
-nodo_ip_filter              = ""
+# TODO this is dev valuer ... replace with uat value.
+nodo_ip_filter              = "10.79.20.32"
