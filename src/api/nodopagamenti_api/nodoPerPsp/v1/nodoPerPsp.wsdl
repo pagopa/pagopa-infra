@@ -1124,7 +1124,6 @@
 
   <wsdl:binding name="PagamentiTelematiciPspNodobinding" type="tns:PagamentiTelematiciPspNodo">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
-
     <wsdl:operation name="nodoVerificaRPT">
       <soap:operation soapAction="nodoVerificaRPT" />
       <wsdl:input>
@@ -1134,7 +1133,6 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-
     <wsdl:operation name="nodoAttivaRPT">
       <soap:operation soapAction="nodoAttivaRPT" />
       <wsdl:input>
@@ -1144,7 +1142,6 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-
     <wsdl:operation name="nodoInviaFlussoRendicontazione">
       <soap:operation soapAction="nodoInviaFlussoRendicontazione" />
       <wsdl:input>
