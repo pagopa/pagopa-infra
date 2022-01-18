@@ -41,6 +41,7 @@ enable_iac_pipeline      = true
 # apim
 apim_publisher_name = "pagoPA Platform PROD"
 apim_sku            = "Premium_1"
+apim_alerts_enabled = true
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
