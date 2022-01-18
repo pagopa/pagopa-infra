@@ -103,7 +103,7 @@ module "apim" {
       description   = "Apim abnormal response time"
       frequency     = "PT5M"
       window_size   = "PT5M"
-      severity      = 1
+      severity      = 2
       auto_mitigate = true
 
       criteria = []
@@ -126,7 +126,7 @@ module "apim" {
       description   = "Apim abnormal failed requests"
       frequency     = "PT5M"
       window_size   = "PT5M"
-      severity      = 1
+      severity      = 2
       auto_mitigate = true
 
       criteria = []
