@@ -45,6 +45,7 @@ enable_iac_pipeline      = true
 # apim
 apim_publisher_name = "pagoPA Platform UAT"
 apim_sku            = "Developer_1"
+apim_alerts_enabled = false
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
