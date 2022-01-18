@@ -430,6 +430,12 @@ variable "prostgresql_enabled" {
   description = "Mock postegres database enable?"
 }
 
+variable "postgres_private_endpoint_enabled" {
+  type        = bool
+  default     = false
+  description = "Private endpoint database enable?"
+}
+
 variable "postgresql_network_rules" {
   description = "Network rules restricting access to the postgresql server."
   type = object({
@@ -449,11 +455,6 @@ variable "postgresql_name" {
 variable "postgresql_connection_limit" {
   type    = number
   default = -1 //no limit
-}
-
-variable "postgresql_schema" {
-  type    = string
-  default = null
 }
 
 variable "prostgresql_db_mockpsp" {

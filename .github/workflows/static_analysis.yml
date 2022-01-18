@@ -1,0 +1,25 @@
+name: Static Analysis
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  static_analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: init_src
+        run: |
+          TAG=$(cat .terraform-version)
+          cd src
+          sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
+          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
+
+      - name: run_test
+        run: |
+          TAG=latest
+          docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
