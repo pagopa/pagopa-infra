@@ -98,6 +98,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   grant_types           = ["authorizationCode"]
   authorization_methods = ["GET", "POST"]
 
+  #tfsec:ignore:GEN003
   token_endpoint = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
   default_scope = format("%s/%s",
     data.azuread_application.apiconfig-be.identifier_uris[0],
