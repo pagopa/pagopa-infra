@@ -85,9 +85,18 @@ locals {
 
 }
 
+## ATTENTION this web test can cause an issue with the following error message:
+## The "for_each" value depends on resource attributes that cannot be .... 
+## If so .... comment out any tests with a condition based on the length (eg: length(module.checkout_cdn.*.fqdn))
+## and run the apply in two steps
 module "web_test_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.18"
+
+  depends_on = [
+    module.checkout_cdn, module.api_config_fe_cdn,
+  ]
+
   for_each = { for v in local.test_urls : v.host => v if v != null }
-  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.18"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.host)
@@ -105,7 +114,6 @@ module "web_test_api" {
       action_group_id = azurerm_monitor_action_group.slack.id,
     },
   ]
-
 }
 
 resource "azurerm_monitor_diagnostic_setting" "activity_log" {
