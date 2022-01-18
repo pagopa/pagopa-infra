@@ -64,6 +64,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = var.env_short == "d" ? "61d70973b78e982064458676" : "61dedb1872975e13800fd7ff"
 
+  #tfsec:ignore:GEN005
   xml_content = file("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml")
 }
 
