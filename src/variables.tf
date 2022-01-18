@@ -277,6 +277,12 @@ variable "apim_sku" {
   type = string
 }
 
+variable "apim_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
+}
+
 ## Redis cache
 
 variable "redis_cache_enabled" {
@@ -303,6 +309,12 @@ variable "cidr_subnet_redis" {
   type        = list(string)
   description = "Redis network address space."
   default     = []
+}
+
+variable "redis_private_endpoint_enabled" {
+  type        = bool
+  description = "Enable private endpoints for redis instances?"
+  default     = true
 }
 
 variable "app_gateway_api_certificate_name" {
@@ -424,6 +436,12 @@ variable "prostgresql_enabled" {
   description = "Mock postegres database enable?"
 }
 
+variable "postgres_private_endpoint_enabled" {
+  type        = bool
+  default     = false
+  description = "Private endpoint database enable?"
+}
+
 variable "postgresql_network_rules" {
   description = "Network rules restricting access to the postgresql server."
   type = object({
@@ -443,11 +461,6 @@ variable "postgresql_name" {
 variable "postgresql_connection_limit" {
   type    = number
   default = -1 //no limit
-}
-
-variable "postgresql_schema" {
-  type    = string
-  default = null
 }
 
 variable "prostgresql_db_mockpsp" {
@@ -640,7 +653,7 @@ variable "dns_a_reconds_dbnodo_ips" {
 
 variable "private_dns_zone_db_nodo_pagamenti" {
   type    = string
-  default = "metti.qui.il.dns.com" # TODO fixme fornito da SIA
+  default = "dev.db-nodo-pagamenti.com"
 }
 
 # Buyer Banks
@@ -713,4 +726,56 @@ variable "buyerbanks_delete_retention_days" {
   type        = number
   description = "Number of days to retain deleted buyerbanks."
   default     = 30
+}
+
+# pagopa-proxy
+variable "pagopa_proxy_enabled" {
+  type        = bool
+  description = "Enable pagopa-proxy?"
+  default     = false
+}
+
+variable "cidr_subnet_pagopa_proxy" {
+  type        = list(string)
+  description = "Address prefixes subnet proxy"
+  default     = null
+}
+
+variable "cidr_subnet_pagopa_proxy_redis" {
+  type        = list(string)
+  description = "Address prefixes subnet redis for pagopa proxy"
+  default     = null
+}
+
+variable "pagopa_proxy_redis_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "pagopa_proxy_redis_sku_name" {
+  type    = string
+  default = null
+}
+
+variable "pagopa_proxy_redis_family" {
+  type    = string
+  default = "C"
+}
+
+variable "pagopa_proxy_tier" {
+  type        = string
+  description = "pagopa-proxy Plan tier"
+  default     = null
+}
+
+variable "pagopa_proxy_size" {
+  type        = string
+  description = "pagopa-proxy Plan size"
+  default     = null
+}
+
+variable "pagopa_proxy_always_on" {
+  type        = bool
+  description = "pagopa-proxy always on property"
+  default     = false
 }

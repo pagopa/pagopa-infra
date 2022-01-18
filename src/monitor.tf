@@ -23,6 +23,8 @@ resource "azurerm_application_insights" "application_insights" {
   resource_group_name = azurerm_resource_group.monitor_rg.name
   application_type    = "other"
 
+  workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
   tags = var.tags
 }
 
@@ -104,4 +106,52 @@ module "web_test_api" {
     },
   ]
 
+}
+
+resource "azurerm_monitor_diagnostic_setting" "activity_log" {
+  count                      = var.env_short == "p" ? 1 : 0
+  name                       = "SecurityLogs"
+  target_resource_id         = format("/subscriptions/%s", data.azurerm_subscription.current.subscription_id)
+  log_analytics_workspace_id = data.azurerm_key_vault_secret.sec_workspace_id[0].value
+  storage_account_id         = data.azurerm_key_vault_secret.sec_storage_id[0].value
+
+  log {
+    category = "Administrative"
+    enabled  = true
+  }
+
+  log {
+    category = "Security"
+    enabled  = true
+  }
+
+  log {
+    category = "Alert"
+    enabled  = true
+  }
+
+  log {
+    category = "Autoscale"
+    enabled  = false
+  }
+
+  log {
+    category = "Policy"
+    enabled  = false
+  }
+
+  log {
+    category = "Recommendation"
+    enabled  = false
+  }
+
+  log {
+    category = "ResourceHealth"
+    enabled  = false
+  }
+
+  log {
+    category = "ServiceHealth"
+    enabled  = false
+  }
 }

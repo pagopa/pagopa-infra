@@ -75,6 +75,11 @@
             var amount = result[1].Substring(1,result[1].Length-3);
             return amount;
         }" />
+        <choose>
+            <when condition="@(context.Variables["idempotencyKey"] != null)">
+                <cache-lookup-value key="@((string) context.Variables["idempotencyKey"])" variable-name="idempotencyKeyRx" caching-type="internal" />
+            </when>
+        </choose>
         <xml-to-json kind="direct" apply="content-type-xml" consider-accept-header="false" />
         <!--
         <set-variable name="idPSP" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["idPSP"])" />
@@ -88,7 +93,7 @@
         -->
         <choose>
             <!-- check if idBrokerPSP is in to PSP'whitelist -->
-            <!-- check if fiscalCode isn't in to EC'balcklist -->
+            <!-- check if fiscalCode isn't in to EC'blacklist -->
             <when condition="@{
                 var brokerList = ((string) context.Variables["psps"]).Split(',');
                 var idBroker = (string) context.Variables["idBrokerPSP"];
@@ -96,7 +101,11 @@
                 var eclist = ((string) context.Variables["ecs"]).Split(',');
                 var idEC = (string) context.Variables["fiscalCode"];
 
-                return Array.Exists(brokerList, e => e == idBroker) && !Array.Exists(eclist, e => e == idEC);
+                // return Array.Exists(brokerList, e => e == idBroker) && !Array.Exists(eclist, e => e == idEC);
+                var isBrkPSPintoPSPwhiteList = Array.Exists(brokerList, e => e == idBroker);
+                var isFiscalCodeNotInBlackList = !Array.Exists(eclist, e => e == idEC);
+                var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
+                return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
                 <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
                     <set-url>{{urlnodo}}</set-url>
@@ -155,6 +164,11 @@
                         <!-- <set-variable name="amountrx" value="@(((IResponse)context.Variables["verifica" ]).Body.As<JObject>().Property("soapenv:Envelope"))" /> -->
                         <!-- <set-variable name="amountrx" value="@(((IResponse)context.Variables["verifica"]).Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nfpsp$verifyPaymentNoticeRes"]["paymentList"]["paymentOptionDescription"]["amount"])" /> -->
                         <!-- <json-to-xml apply="always" consider-accept-header="true" parse-date="false" /> -->
+                        <choose>
+                            <when condition="@(context.Variables["idempotencyKey"] != null)">
+                                <cache-store-value key="@((string) context.Variables["idempotencyKey"])" value="@((string) context.Variables["amount"])" duration="3600" caching-type="internal" />
+                            </when>
+                        </choose>
                         <set-header name="Content-Type" exists-action="override">
                             <value>application/xml</value>
                         </set-header>
@@ -384,6 +398,14 @@
                 </choose>
             </when>
             <otherwise>
+                <set-variable name="amount" value="@{
+                    var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
+                    if (isIdempotencyKeyNotAlreadytRx) {
+                        return (string) context.Variables["amount"];
+                    } else {
+                        return (string) context.Variables["idempotencyKeyRx"];
+                    }
+                }" />
                 <set-method>POST</set-method>
                 <set-header name="Content-Type" exists-action="override">
                     <value>application/xml</value>
