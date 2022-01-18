@@ -261,3 +261,6 @@ pagopa_proxy_redis_family   = "C"
 pagopa_proxy_tier           = "Standard"
 pagopa_proxy_size           = "S1"
 nodo_ip_filter              = "10.79.20.32"
+
+# nodo-dei-pagamenti-test
+nodo_pagamenti_test_enabled = true
