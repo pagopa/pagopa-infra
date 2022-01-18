@@ -21,10 +21,10 @@ module "nodo_pagamenti_test_cdn" {
   resource_group_name = azurerm_resource_group.nodo_pagamenti_test_rg[0].name
   location            = var.location
 
-  hostname            = ""
-  lock_enabled        = var.lock_enable
-  index_document      = "index.html"
-  error_404_document  = "not_found.html"
+  hostname           = ""
+  lock_enabled       = var.lock_enable
+  index_document     = "index.html"
+  error_404_document = "not_found.html"
 
   dns_zone_name                = azurerm_dns_zone.public[0].name
   dns_zone_resource_group_name = azurerm_dns_zone.public[0].resource_group_name

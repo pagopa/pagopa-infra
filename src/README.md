@@ -9,60 +9,62 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | = 2.6.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | = 2.87.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.6.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.87.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_acr"></a> [acr](#module\_acr) | git::https://github.com/pagopa/azurerm.git//container_registry?ref=v1.0.7 |  |
-| <a name="module_api_config_app_service"></a> [api\_config\_app\_service](#module\_api\_config\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.93 |  |
-| <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18 |  |
-| <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
-| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.1.1 |  |
-| <a name="module_apim_api_config_api"></a> [apim\_api\_config\_api](#module\_apim\_api\_config\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12 |  |
-| <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84 |  |
-| <a name="module_apim_checkout_payments_api_v1"></a> [apim\_checkout\_payments\_api\_v1](#module\_apim\_checkout\_payments\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
-| <a name="module_apim_checkout_product"></a> [apim\_checkout\_product](#module\_apim\_checkout\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16 |  |
-| <a name="module_apim_checkout_transactions_api_v1"></a> [apim\_checkout\_transactions\_api\_v1](#module\_apim\_checkout\_transactions\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
-| <a name="module_apim_mock_ec_api"></a> [apim\_mock\_ec\_api](#module\_apim\_mock\_ec\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
-| <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16 |  |
-| <a name="module_apim_mock_psp_api"></a> [apim\_mock\_psp\_api](#module\_apim\_mock\_psp\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
-| <a name="module_apim_mock_psp_mng_api"></a> [apim\_mock\_psp\_mng\_api](#module\_apim\_mock\_psp\_mng\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
-| <a name="module_apim_mock_psp_product"></a> [apim\_mock\_psp\_product](#module\_apim\_mock\_psp\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16 |  |
-| <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
-| <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.89 |  |
-| <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
-| <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v1.0.57 |  |
-| <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.3 |  |
-| <a name="module_buyerbanks_function"></a> [buyerbanks\_function](#module\_buyerbanks\_function) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84 |  |
-| <a name="module_buyerbanks_function_snet"></a> [buyerbanks\_function\_snet](#module\_buyerbanks\_function\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
-| <a name="module_buyerbanks_storage"></a> [buyerbanks\_storage](#module\_buyerbanks\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13 |  |
-| <a name="module_checkout_cdn"></a> [checkout\_cdn](#module\_checkout\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18 |  |
-| <a name="module_checkout_function"></a> [checkout\_function](#module\_checkout\_function) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84 |  |
-| <a name="module_checkout_function_snet"></a> [checkout\_function\_snet](#module\_checkout\_function\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
-| <a name="module_event_hub01"></a> [event\_hub01](#module\_event\_hub01) | git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.51 |  |
-| <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7 |  |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault?ref=v1.0.90 |  |
-| <a name="module_mock_ec"></a> [mock\_ec](#module\_mock\_ec) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14 |  |
-| <a name="module_mock_ec_snet"></a> [mock\_ec\_snet](#module\_mock\_ec\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
-| <a name="module_mock_psp"></a> [mock\_psp](#module\_mock\_psp) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14 |  |
-| <a name="module_mock_psp_snet"></a> [mock\_psp\_snet](#module\_mock\_psp\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
-| <a name="module_monitor"></a> [monitor](#module\_monitor) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
-| <a name="module_nat_gw"></a> [nat\_gw](#module\_nat\_gw) | git::https://github.com/pagopa/azurerm.git//nat_gateway?ref=v1.0.77 |  |
-| <a name="module_pagopa_proxy_app_service"></a> [pagopa\_proxy\_app\_service](#module\_pagopa\_proxy\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.19 |  |
-| <a name="module_pagopa_proxy_redis"></a> [pagopa\_proxy\_redis](#module\_pagopa\_proxy\_redis) | git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.19 |  |
-| <a name="module_pagopa_proxy_redis_snet"></a> [pagopa\_proxy\_redis\_snet](#module\_pagopa\_proxy\_redis\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.19 |  |
-| <a name="module_pagopa_proxy_snet"></a> [pagopa\_proxy\_snet](#module\_pagopa\_proxy\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.19 |  |
-| <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.0.5 |  |
-| <a name="module_postgresql_snet"></a> [postgresql\_snet](#module\_postgresql\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7 |  |
-| <a name="module_redis"></a> [redis](#module\_redis) | git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v1.0.37 |  |
-| <a name="module_redis_snet"></a> [redis\_snet](#module\_redis\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
-| <a name="module_vnet"></a> [vnet](#module\_vnet) | git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.51 |  |
-| <a name="module_vnet_integration"></a> [vnet\_integration](#module\_vnet\_integration) | git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.51 |  |
-| <a name="module_vnet_peering"></a> [vnet\_peering](#module\_vnet\_peering) | git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.30 |  |
-| <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.18 |  |
+| <a name="module_acr"></a> [acr](#module\_acr) | git::https://github.com/pagopa/azurerm.git//container_registry | v1.0.7 |
+| <a name="module_api_config_app_service"></a> [api\_config\_app\_service](#module\_api\_config\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.93 |
+| <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn | v2.0.18 |
+| <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
+| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/azurerm.git//api_management | v2.1.1 |
+| <a name="module_apim_api_config_api"></a> [apim\_api\_config\_api](#module\_apim\_api\_config\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.0.12 |
+| <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.84 |
+| <a name="module_apim_checkout_payment_activations_api_v1"></a> [apim\_checkout\_payment\_activations\_api\_v1](#module\_apim\_checkout\_payment\_activations\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.0.23 |
+| <a name="module_apim_checkout_payments_api_v1"></a> [apim\_checkout\_payments\_api\_v1](#module\_apim\_checkout\_payments\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
+| <a name="module_apim_checkout_product"></a> [apim\_checkout\_product](#module\_apim\_checkout\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.16 |
+| <a name="module_apim_checkout_transactions_api_v1"></a> [apim\_checkout\_transactions\_api\_v1](#module\_apim\_checkout\_transactions\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
+| <a name="module_apim_mock_ec_api"></a> [apim\_mock\_ec\_api](#module\_apim\_mock\_ec\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
+| <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.16 |
+| <a name="module_apim_mock_psp_api"></a> [apim\_mock\_psp\_api](#module\_apim\_mock\_psp\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
+| <a name="module_apim_mock_psp_mng_api"></a> [apim\_mock\_psp\_mng\_api](#module\_apim\_mock\_psp\_mng\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
+| <a name="module_apim_mock_psp_product"></a> [apim\_mock\_psp\_product](#module\_apim\_mock\_psp\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.16 |
+| <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
+| <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/azurerm.git//app_gateway | v1.0.89 |
+| <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
+| <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v1.0.57 |
+| <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.3 |
+| <a name="module_buyerbanks_function"></a> [buyerbanks\_function](#module\_buyerbanks\_function) | git::https://github.com/pagopa/azurerm.git//function_app | v1.0.84 |
+| <a name="module_buyerbanks_function_snet"></a> [buyerbanks\_function\_snet](#module\_buyerbanks\_function\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
+| <a name="module_buyerbanks_storage"></a> [buyerbanks\_storage](#module\_buyerbanks\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.0.13 |
+| <a name="module_checkout_cdn"></a> [checkout\_cdn](#module\_checkout\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn | v2.0.18 |
+| <a name="module_checkout_function"></a> [checkout\_function](#module\_checkout\_function) | git::https://github.com/pagopa/azurerm.git//function_app | v1.0.84 |
+| <a name="module_checkout_function_snet"></a> [checkout\_function\_snet](#module\_checkout\_function\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
+| <a name="module_event_hub01"></a> [event\_hub01](#module\_event\_hub01) | git::https://github.com/pagopa/azurerm.git//eventhub | v1.0.51 |
+| <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.7 |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v1.0.90 |
+| <a name="module_mock_ec"></a> [mock\_ec](#module\_mock\_ec) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.14 |
+| <a name="module_mock_ec_snet"></a> [mock\_ec\_snet](#module\_mock\_ec\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
+| <a name="module_mock_psp"></a> [mock\_psp](#module\_mock\_psp) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.14 |
+| <a name="module_mock_psp_snet"></a> [mock\_psp\_snet](#module\_mock\_psp\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
+| <a name="module_monitor"></a> [monitor](#module\_monitor) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
+| <a name="module_nat_gw"></a> [nat\_gw](#module\_nat\_gw) | git::https://github.com/pagopa/azurerm.git//nat_gateway | v1.0.77 |
+| <a name="module_nodo_pagamenti_test_cdn"></a> [nodo\_pagamenti\_test\_cdn](#module\_nodo\_pagamenti\_test\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn | v2.0.18 |
+| <a name="module_pagopa_proxy_app_service"></a> [pagopa\_proxy\_app\_service](#module\_pagopa\_proxy\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service | v2.0.19 |
+| <a name="module_pagopa_proxy_redis"></a> [pagopa\_proxy\_redis](#module\_pagopa\_proxy\_redis) | git::https://github.com/pagopa/azurerm.git//redis_cache | v2.0.19 |
+| <a name="module_pagopa_proxy_redis_snet"></a> [pagopa\_proxy\_redis\_snet](#module\_pagopa\_proxy\_redis\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.19 |
+| <a name="module_pagopa_proxy_snet"></a> [pagopa\_proxy\_snet](#module\_pagopa\_proxy\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.19 |
+| <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | git::https://github.com/pagopa/azurerm.git//postgresql_server | v2.0.5 |
+| <a name="module_postgresql_snet"></a> [postgresql\_snet](#module\_postgresql\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.7 |
+| <a name="module_redis"></a> [redis](#module\_redis) | git::https://github.com/pagopa/azurerm.git//redis_cache | v1.0.37 |
+| <a name="module_redis_snet"></a> [redis\_snet](#module\_redis\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
+| <a name="module_vnet"></a> [vnet](#module\_vnet) | git::https://github.com/pagopa/azurerm.git//virtual_network | v1.0.51 |
+| <a name="module_vnet_integration"></a> [vnet\_integration](#module\_vnet\_integration) | git::https://github.com/pagopa/azurerm.git//virtual_network | v1.0.51 |
+| <a name="module_vnet_peering"></a> [vnet\_peering](#module\_vnet\_peering) | git::https://github.com/pagopa/azurerm.git//virtual_network_peering | v1.0.30 |
+| <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview | v2.0.18 |
 
 ## Resources
 
@@ -153,6 +155,7 @@
 | [azurerm_resource_group.mock_psp_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.msg_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.nodo_pagamenti_test_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.pagopa_proxy_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_aks](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
@@ -293,6 +296,7 @@
 | <a name="input_nodo_pagamenti_ec"></a> [nodo\_pagamenti\_ec](#input\_nodo\_pagamenti\_ec) | EC' black list nodo pagamenti (separate comma list). | `string` | `","` | no |
 | <a name="input_nodo_pagamenti_enabled"></a> [nodo\_pagamenti\_enabled](#input\_nodo\_pagamenti\_enabled) | nodo pagamenti enabled | `bool` | `false` | no |
 | <a name="input_nodo_pagamenti_psp"></a> [nodo\_pagamenti\_psp](#input\_nodo\_pagamenti\_psp) | PSP' white list nodo pagamenti (separate comma list) . | `string` | `","` | no |
+| <a name="input_nodo_pagamenti_test_enabled"></a> [nodo\_pagamenti\_test\_enabled](#input\_nodo\_pagamenti\_test\_enabled) | test del nodo dei pagamenti enabled | `bool` | `false` | no |
 | <a name="input_nodo_pagamenti_url"></a> [nodo\_pagamenti\_url](#input\_nodo\_pagamenti\_url) | Nodo pagamenti url | `string` | `"https://"` | no |
 | <a name="input_pagopa_proxy_always_on"></a> [pagopa\_proxy\_always\_on](#input\_pagopa\_proxy\_always\_on) | pagopa-proxy always on property | `bool` | `false` | no |
 | <a name="input_pagopa_proxy_enabled"></a> [pagopa\_proxy\_enabled](#input\_pagopa\_proxy\_enabled) | Enable pagopa-proxy? | `bool` | `false` | no |
