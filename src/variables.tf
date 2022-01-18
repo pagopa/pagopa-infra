@@ -208,6 +208,13 @@ variable "nodo_pagamenti_url" {
   default     = "https://"
 }
 
+# nodo dei pagamenti - test
+variable "nodo_pagamenti_test_enabled" {
+  type        = bool
+  description = "test del nodo dei pagamenti enabled"
+  default     = false
+}
+
 # Network
 variable "cidr_vnet" {
   type        = list(string)
