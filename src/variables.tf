@@ -277,6 +277,12 @@ variable "apim_sku" {
   type = string
 }
 
+variable "apim_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
+}
+
 ## Redis cache
 
 variable "redis_cache_enabled" {
