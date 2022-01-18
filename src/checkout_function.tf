@@ -81,7 +81,7 @@ module "checkout_function" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "checkout_function" {
-  count = var.checkout_enabled ? 1 : 0
+  count = var.checkout_enabled && var.env_short != "d" ? 1 : 0
 
   name                = format("%s-%s-autoscale", local.project, module.checkout_function[0].name)
   resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
