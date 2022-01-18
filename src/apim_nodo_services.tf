@@ -280,10 +280,10 @@ resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodoPerPa/v1/NodoPerPa.wsdl")
+    content_value  = file("./api/nodopagamenti_api/nodoPerPa/v1/nodoPerPa.wsdl")
     wsdl_selector {
-      service_name  = "PagamentiTelematiciPaNodoservice"
-      endpoint_name = "PPTPort"
+      service_name  = "PagamentiTelematiciRPTservice"
+      endpoint_name = "PagamentiTelematiciRPTPort"
     }
   }
 

@@ -16,91 +16,7 @@
   <wsdl:types>
     <xsd:schema version="2.1.2" targetNamespace="http://ws.pagamenti.telematici.gov/ppthead">
       <!-- START <xsd:import schemaLocation="envelope.xsd" namespace="http://schemas.xmlsoap.org/soap/envelope/" /> -->
-      <!-- Envelope, header and body -->
-      <xs:element name="Envelope" type="tns:Envelope" />
-      <xs:complexType name="Envelope">
-        <xs:sequence>
-          <xs:element ref="tns:Header" minOccurs="0" />
-          <xs:element ref="tns:Body" minOccurs="1" />
-          <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax" />
-        </xs:sequence>
-        <xs:anyAttribute namespace="##other" processContents="lax" />
-      </xs:complexType>
-
-      <xs:element name="Header" type="tns:Header" />
-      <xs:complexType name="Header">
-        <xs:sequence>
-          <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="lax" />
-        </xs:sequence>
-        <xs:anyAttribute namespace="##other" processContents="lax" />
-      </xs:complexType>
-
-      <xs:element name="Body" type="tns:Body" />
-      <xs:complexType name="Body">
-        <xs:sequence>
-          <xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="lax" />
-        </xs:sequence>
-        <xs:anyAttribute namespace="##any" processContents="lax">
-          <xs:annotation>
-            <xs:documentation>
-                    Prose in the spec does not specify that attributes are allowed on the Body element
-            </xs:documentation>
-          </xs:annotation>
-        </xs:anyAttribute>
-      </xs:complexType>
-
-
-      <!-- Global Attributes.  The following attributes are intended to be usable via qualified attribute names on any complex type referencing them.  -->
-      <xs:attribute name="mustUnderstand">
-        <xs:simpleType>
-          <xs:restriction base='xs:boolean'>
-            <xs:pattern value='0|1' />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="actor" type="xs:anyURI" />
-
-      <xs:simpleType name="encodingStyle">
-        <xs:annotation>
-          <xs:documentation>
-                'encodingStyle' indicates any canonicalization conventions followed in the contents of the containing element.  For example, the value 'http://schemas.xmlsoap.org/soap/encoding/' indicates the pattern described in SOAP specification
-          </xs:documentation>
-        </xs:annotation>
-        <xs:list itemType="xs:anyURI" />
-      </xs:simpleType>
-
-      <xs:attribute name="encodingStyle" type="tns:encodingStyle" />
-      <xs:attributeGroup name="encodingStyle">
-        <xs:attribute ref="tns:encodingStyle" />
-      </xs:attributeGroup>
-
-      <xs:element name="Fault" type="tns:Fault" />
-      <xs:complexType name="Fault" final="extension">
-        <xs:annotation>
-          <xs:documentation>
-                Fault reporting structure
-          </xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-          <xs:element name="faultcode" type="xs:QName" />
-          <xs:element name="faultstring" type="xs:string" />
-          <xs:element name="faultactor" type="xs:anyURI" minOccurs="0" />
-          <xs:element name="detail" type="tns:detail" minOccurs="0" />
-        </xs:sequence>
-      </xs:complexType>
-
-      <xs:complexType name="detail">
-        <xs:sequence>
-          <xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="lax" />
-        </xs:sequence>
-        <xs:anyAttribute namespace="##any" processContents="lax" />
-      </xs:complexType>
-
-
       <!-- STOP  <xsd:import schemaLocation="envelope.xsd" namespace="http://schemas.xmlsoap.org/soap/envelope/" /> -->
-
-
-
       <xsd:simpleType name="stText35">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="1" />
@@ -135,8 +51,8 @@
             <xsd:element name="identificativoUnivocoVersamento" type="ppthead:stText35" />
             <xsd:element name="codiceContestoPagamento" type="ppthead:stText35" />
           </xsd:sequence>
-          <xsd:attribute ref="soapenv:actor" use="optional" />
-          <xsd:attribute ref="soapenv:mustUnderstand" use="optional" />
+          <!-- <xsd:attribute ref="soapenv:actor" use="optional" />
+          <xsd:attribute ref="soapenv:mustUnderstand" use="optional" /> -->
         </xsd:complexType>
       </xsd:element>
       <xsd:element name="intestazioneCarrelloPPT"
@@ -147,8 +63,8 @@
             <xsd:element name="identificativoStazioneIntermediarioPA" type="ppthead:stText35" />
             <xsd:element name="identificativoCarrello" type="ppthead:stIdentificativoCarrello" />
           </xsd:sequence>
-          <xsd:attribute ref="soapenv:actor" use="optional" />
-          <xsd:attribute ref="soapenv:mustUnderstand" use="optional" />
+          <!-- <xsd:attribute ref="soapenv:actor" use="optional" />
+          <xsd:attribute ref="soapenv:mustUnderstand" use="optional" /> -->
         </xsd:complexType>
       </xsd:element>
     </xsd:schema>
@@ -210,42 +126,6 @@
           <xsd:enumeration value="1" />
         </xsd:restriction>
       </xsd:simpleType>
-
-      <xsd:element name="nodoChiediCopiaRT" type="ppt:nodoChiediCopiaRT" />
-      <xsd:element name="nodoChiediCopiaRTRisposta" type="ppt:nodoChiediCopiaRTRisposta" />
-
-      <xsd:element name="nodoInviaRichiestaStorno" type="ppt:nodoInviaRichiestaStorno" />
-      <xsd:element name="nodoInviaRichiestaStornoRisposta" type="ppt:nodoInviaRichiestaStornoRisposta" />
-
-      <xsd:element name="nodoInviaRispostaRevoca" type="ppt:nodoInviaRispostaRevoca" />
-      <xsd:element name="nodoInviaRispostaRevocaRisposta" type="ppt:nodoInviaRispostaRevocaRisposta" />
-
-      <xsd:element name="nodoChiediListaPendentiRPT" type="ppt:nodoChiediListaPendentiRPT" />
-      <xsd:element name="nodoChiediListaPendentiRPTRisposta" type="ppt:nodoChiediListaPendentiRPTRisposta" />
-
-      <xsd:element name="nodoChiediStatoRPT" type="ppt:nodoChiediStatoRPT" />
-      <xsd:element name="nodoChiediStatoRPTRisposta" type="ppt:nodoChiediStatoRPTRisposta" />
-
-      <xsd:element name="nodoInviaRPT" type="ppt:nodoInviaRPT" />
-      <xsd:element name="nodoInviaRPTRisposta" type="ppt:nodoInviaRPTRisposta" />
-
-      <xsd:element name="nodoInviaCarrelloRPT" type="ppt:nodoInviaCarrelloRPT" />
-      <xsd:element name="nodoInviaCarrelloRPTRisposta" type="ppt:nodoInviaCarrelloRPTRisposta" />
-
-      <xsd:element name="nodoChiediInformativaPSP" type="ppt:nodoChiediInformativaPSP" />
-      <xsd:element name="nodoChiediInformativaPSPRisposta" type="ppt:nodoChiediInformativaPSPRisposta" />
-
-      <xsd:element name="nodoPAChiediInformativaPA" type="ppt:nodoPAChiediInformativaPA" />
-      <xsd:element name="nodoPAChiediInformativaPARisposta" type="ppt:nodoPAChiediInformativaPARisposta" />
-
-      <xsd:element name="nodoChiediElencoQuadraturePA" type="ppt:nodoChiediElencoQuadraturePA" />
-      <xsd:element name="nodoChiediElencoQuadraturePARisposta" type="ppt:nodoChiediElencoQuadraturePARisposta" />
-
-      <xsd:element name="nodoChiediQuadraturaPA" type="ppt:nodoChiediQuadraturaPA" />
-      <xsd:element name="nodoChiediQuadraturaPARisposta" type="ppt:nodoChiediQuadraturaPARisposta" />
-
-      <xsd:element name="nodoChiediElencoFlussiRendicontazione" type="ppt:nodoChiediElencoFlussiRendicontazione" />
-      <xsd:element name="nodoChiediElencoFlussiRendicontazioneRisposta" type="ppt:nodoChiediElencoFlussiRendicontazioneRisposta" />
 
       <xsd:element name="nodoChiediFlussoRendicontazione" type="ppt:nodoChiediFlussoRendicontazione" />
       <xsd:element name="nodoChiediFlussoRendicontazioneRisposta" type="ppt:nodoChiediFlussoRendicontazioneRisposta" />
@@ -715,7 +595,7 @@
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
 
     <wsdl:operation name="nodoChiediElencoFlussiRendicontazione">
-      <soap:operation soapAction="nodoChiediElencoFlussiRendicontazione" style="document" />
+      <soap:operation soapAction="nodoChiediElencoFlussiRendicontazione"  />
       <wsdl:input name="nodoChiediElencoFlussiRendicontazione">
         <soap:body use="literal" />
       </wsdl:input>
@@ -725,7 +605,7 @@
     </wsdl:operation>
 
     <wsdl:operation name="nodoChiediFlussoRendicontazione">
-      <soap:operation soapAction="nodoChiediFlussoRendicontazione" style="document" />
+      <soap:operation soapAction="nodoChiediFlussoRendicontazione"  />
       <wsdl:input name="nodoChiediFlussoRendicontazione">
         <soap:body use="literal" />
       </wsdl:input>
@@ -733,5 +613,13 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+  </wsdl:binding>
+
+
+  <wsdl:service name="PagamentiTelematiciRPTservice">
+    <wsdl:port name="PagamentiTelematiciRPTPort" binding="tns:PagamentiTelematiciRPTbinding">
+      <soap:address location="http://NodoPagamentiSPC.spcoop.gov.it/" />
+    </wsdl:port>
+  </wsdl:service>
 
 </wsdl:definitions>

@@ -1042,6 +1042,29 @@
         </xsd:complexContent>
       </xsd:complexType>
 
+			<xsd:complexType name="nodoInviaFlussoRendicontazione">
+				<xsd:sequence>
+					<xsd:element name="identificativoPSP" type="ppt:stText35" />
+					<xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" />
+					<xsd:element name="identificativoCanale" type="ppt:stText35" />
+					<xsd:element name="password" type="ppt:stPassword" />
+					<xsd:element name="identificativoDominio" type="ppt:stText35" />
+					<xsd:element name="identificativoFlusso" type="xsd:string" />
+					<xsd:element name="dataOraFlusso" type="xsd:dateTime" />
+					<xsd:element name="xmlRendicontazione" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream"
+						xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="nodoInviaFlussoRendicontazioneRisposta">
+				<xsd:complexContent>
+					<xsd:extension base="ppt:risposta">
+						<xsd:sequence>
+							<xsd:element name="esito" type="xsd:string" minOccurs="1" />
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+
       <!-- Wrapper Elements -->
       <xsd:element name="nodoVerificaRPT" type="ppt:nodoVerificaRPT" />
       <xsd:element name="nodoVerificaRPTRisposta" type="ppt:nodoVerificaRPTRisposta" />
@@ -1101,6 +1124,7 @@
 
   <wsdl:binding name="PagamentiTelematiciPspNodobinding" type="tns:PagamentiTelematiciPspNodo">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
     <wsdl:operation name="nodoVerificaRPT">
       <soap:operation soapAction="nodoVerificaRPT" />
       <wsdl:input>
@@ -1110,6 +1134,7 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+
     <wsdl:operation name="nodoAttivaRPT">
       <soap:operation soapAction="nodoAttivaRPT" />
       <wsdl:input>
@@ -1119,6 +1144,7 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+
     <wsdl:operation name="nodoInviaFlussoRendicontazione">
       <soap:operation soapAction="nodoInviaFlussoRendicontazione" />
       <wsdl:input>
