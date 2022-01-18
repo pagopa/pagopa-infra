@@ -96,9 +96,9 @@ eventhub_enabled = true
 checkout_enabled = true
 
 # checkout function
-checkout_function_kind     = "Linux"
-checkout_function_sku_tier = "Dynamic"
-checkout_function_sku_size = "Y1"
+checkout_function_kind              = "Linux"
+checkout_function_sku_tier          = "Dynamic"
+checkout_function_sku_size          = "Y1"
 checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
