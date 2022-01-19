@@ -55,7 +55,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payments_api" {
 module "apim_checkout_payments_api_v1" {
   count = var.checkout_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=add-apim-outputs"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = format("%s-checkout-payments-api", var.env_short)
   api_management_name   = module.apim.name
