@@ -41,3 +41,39 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_redis_cach
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone" "apim_private_dns_zone" {
+  name                = format("%s.%s", var.dns_zone_prefix, var.external_domain)
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_a_record" "dns_a_private_apim" {
+  name                = "api"
+  zone_name           = azurerm_private_dns_zone.apim_private_dns_zone.name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = module.apim.private_ip_addresses
+  tags                = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "apim_net_vnet" {
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.apim_private_dns_zone.name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "apim_net_vnet_integration" {
+  name                  = module.vnet_integration.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.apim_private_dns_zone.name
+  virtual_network_id    = module.vnet_integration.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
