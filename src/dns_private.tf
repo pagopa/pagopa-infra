@@ -42,14 +42,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_redis_cach
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone" "apim_private_dns_zone" {
+resource "azurerm_private_dns_zone" "platform_private_dns_zone" {
   name                = format("%s.%s", var.dns_zone_prefix, var.external_domain)
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
   tags = var.tags
 }
 
-resource "azurerm_private_dns_a_record" "dns_a_private_apim" {
+resource "azurerm_private_dns_a_record" "platform_dns_a_private" {
   name                = "api"
   zone_name           = azurerm_private_dns_zone.apim_private_dns_zone.name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -58,7 +58,7 @@ resource "azurerm_private_dns_a_record" "dns_a_private_apim" {
   tags                = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "apim_net_vnet" {
+resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet" {
   name                  = module.vnet.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.apim_private_dns_zone.name
@@ -68,7 +68,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "apim_net_vnet" {
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "apim_net_vnet_integration" {
+resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet_integration" {
   name                  = module.vnet_integration.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.apim_private_dns_zone.name
