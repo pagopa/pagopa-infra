@@ -1,6 +1,5 @@
 <policies>
     <inbound>
-      <base />
       <!-- Check google reCAPTCHA token validity START -->
       <set-variable name="recaptchaSecret" value="{{google-recaptcha-secret}}" />
       <set-variable name="recaptchaToken" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("recaptchaResponse"))" />
@@ -30,6 +29,7 @@
           </when>
       </choose>
       <!-- Check google reCAPTCHA token validity END -->
+      <base />
     </inbound>
     <outbound>
       <base />
