@@ -31,7 +31,7 @@ locals {
 ###########################
 
 module "apim" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.1.12"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=add-apim-outputs"
 
   subnet_id            = module.apim_snet.id
   location             = azurerm_resource_group.rg_api.location
