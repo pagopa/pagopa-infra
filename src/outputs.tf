@@ -31,3 +31,12 @@ output "container_registry_admin_password" {
   value     = var.acr_enabled ? module.acr[0].admin_password : null
   sensitive = true
 }
+
+# Blob storage
+output "primary_blob_host" {
+  value = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage.primary_blob_host : null
+}
+
+output "primary_web_host" {
+  value = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage.primary_web_host : null
+}
