@@ -55,7 +55,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payments_api" {
 module "apim_checkout_payments_api_v1" {
   count = var.checkout_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=add-apim-outputs"
 
   name                  = format("%s-checkout-payments-api", var.env_short)
   api_management_name   = module.apim.name
@@ -79,6 +79,56 @@ module "apim_checkout_payments_api_v1" {
   xml_content = templatefile("./api/checkout/checkout_payments/v1/_base_policy.xml.tpl", {
     origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
   })
+}
+
+resource "azurerm_api_management_api_diagnostic" "apim_checkout_payments_api_v1" {
+  identifier               = "applicationinsights"
+  resource_group_name      = azurerm_resource_group.rg_api.name
+  api_management_name      = module.apim.name
+  api_name                 = module.apim_checkout_payments_api_v1[0].name
+  api_management_logger_id = module.apim.logger_id
+
+  sampling_percentage       = 100
+  always_log_errors         = true
+  log_client_ip             = true
+  verbosity                 = "verbose"
+  http_correlation_protocol = "W3C"
+
+  frontend_request {
+    body_bytes = 8192
+    headers_to_log = [
+      "content-type",
+      "accept",
+      "origin",
+    ]
+  }
+
+  frontend_response {
+    body_bytes = 8192
+    headers_to_log = [
+      "content-type",
+      "content-length",
+      "origin",
+    ]
+  }
+
+  backend_request {
+    body_bytes = 8192
+    headers_to_log = [
+      "content-type",
+      "accept",
+      "origin",
+    ]
+  }
+
+  backend_response {
+    body_bytes = 8192
+    headers_to_log = [
+      "content-type",
+      "content-length",
+      "origin",
+    ]
+  }
 }
 
 # Payment activation APIs (new)
