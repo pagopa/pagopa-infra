@@ -51,7 +51,7 @@ resource "azurerm_private_dns_zone" "platform_private_dns_zone" {
 
 resource "azurerm_private_dns_a_record" "platform_dns_a_private" {
   name                = "api"
-  zone_name           = azurerm_private_dns_zone.apim_private_dns_zone.name
+  zone_name           = azurerm_private_dns_zone.platform_private_dns_zone.name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = module.apim.private_ip_addresses
@@ -61,7 +61,7 @@ resource "azurerm_private_dns_a_record" "platform_dns_a_private" {
 resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet" {
   name                  = module.vnet.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
-  private_dns_zone_name = azurerm_private_dns_zone.apim_private_dns_zone.name
+  private_dns_zone_name = azurerm_private_dns_zone.platform_private_dns_zone.name
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
@@ -71,7 +71,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
 resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet_integration" {
   name                  = module.vnet_integration.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
-  private_dns_zone_name = azurerm_private_dns_zone.apim_private_dns_zone.name
+  private_dns_zone_name = azurerm_private_dns_zone.platform_private_dns_zone.name
   virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
