@@ -232,3 +232,11 @@ cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_enabled = false
+
+# pagopa-proxy app service
+pagopa_proxy_enabled        = false
+pagopa_proxy_redis_capacity = 0
+pagopa_proxy_redis_sku_name = "Standard"
+pagopa_proxy_redis_family   = "C"
+pagopa_proxy_tier           = "PremiumV3"
+pagopa_proxy_size           = "P1v3"
