@@ -96,38 +96,18 @@ resource "azurerm_api_management_api_diagnostic" "apim_checkout_payments_api_v1"
 
   frontend_request {
     body_bytes = 8192
-    headers_to_log = [
-      "content-type",
-      "accept",
-      "origin",
-    ]
   }
 
   frontend_response {
     body_bytes = 8192
-    headers_to_log = [
-      "content-type",
-      "content-length",
-      "origin",
-    ]
   }
 
   backend_request {
     body_bytes = 8192
-    headers_to_log = [
-      "content-type",
-      "accept",
-      "origin",
-    ]
   }
 
   backend_response {
     body_bytes = 8192
-    headers_to_log = [
-      "content-type",
-      "content-length",
-      "origin",
-    ]
   }
 }
 
