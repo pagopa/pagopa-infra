@@ -81,36 +81,6 @@ module "apim_checkout_payments_api_v1" {
   })
 }
 
-resource "azurerm_api_management_api_diagnostic" "apim_checkout_payments_api_v1" {
-  identifier               = "applicationinsights"
-  resource_group_name      = azurerm_resource_group.rg_api.name
-  api_management_name      = module.apim.name
-  api_name                 = module.apim_checkout_payments_api_v1[0].name
-  api_management_logger_id = module.apim.logger_id
-
-  sampling_percentage       = 100
-  always_log_errors         = true
-  log_client_ip             = true
-  verbosity                 = "verbose"
-  http_correlation_protocol = "W3C"
-
-  frontend_request {
-    body_bytes = 8192
-  }
-
-  frontend_response {
-    body_bytes = 8192
-  }
-
-  backend_request {
-    body_bytes = 8192
-  }
-
-  backend_response {
-    body_bytes = 8192
-  }
-}
-
 # Payment activation APIs (new)
 resource "azurerm_api_management_api_version_set" "checkout_payment_activations_api" {
   name                = format("%s-checkout-payment-activations-api", local.project)
