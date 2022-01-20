@@ -140,7 +140,7 @@ locals {
   apim_cd_info_wisp = {
     display_name          = "Checkout CdInfoWisp"
     description           = "SOAP service used from Nodo to relay idPayment"
-    path                  = "api/checkout/CdInfoWisp"
+    path                  = "checkout/io-for-node/CdInfoWisp"
     subscription_required = false
     service_url           = null
   }
