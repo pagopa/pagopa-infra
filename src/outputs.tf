@@ -42,11 +42,11 @@ output "nodo_test_sa_web_host" {
 }
 
 output "nodo_test_sa_connection_string" {
-  value = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_connection_string : null
+  value     = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_connection_string : null
   sensitive = true
 }
 
 output "nodo_test_sa_blob_connection_string" {
-  value = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_blob_connection_string : null
+  value     = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_blob_connection_string : null
   sensitive = true
 }
