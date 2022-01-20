@@ -63,6 +63,7 @@ module "pagopa_proxy_app_service" {
   plan_name     = format("%s-plan-pagopa-proxy", local.project)
   plan_kind     = "Linux"
   plan_type     = "internal"
+  plan_reserved = true
   plan_sku_tier = var.pagopa_proxy_tier
   plan_sku_size = var.pagopa_proxy_size
 
