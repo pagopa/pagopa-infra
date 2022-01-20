@@ -55,7 +55,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payments_api" {
 module "apim_checkout_payments_api_v1" {
   count = var.checkout_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = format("%s-checkout-payments-api", var.env_short)
   api_management_name   = module.apim.name
@@ -118,7 +118,7 @@ module "apim_checkout_payment_activations_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
-  api_name            = format("%s-checkout-payment-activations-api", local.project)
+  api_name            = format("%s-checkout-payment-activations-api-v1", local.project)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getPaymentInfo"
@@ -127,7 +127,7 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_activation_status_api" {
-  api_name            = format("%s-checkout-payment-activations-api", local.project)
+  api_name            = format("%s-checkout-payment-activations-api-v1", local.project)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getActivationStatus"
@@ -140,7 +140,7 @@ locals {
   apim_cd_info_wisp = {
     display_name          = "Checkout CdInfoWisp"
     description           = "SOAP service used from Nodo to relay idPayment"
-    path                  = "api/checkout/CdInfoWisp"
+    path                  = "checkout/io-for-node/CdInfoWisp"
     subscription_required = false
     service_url           = null
   }
