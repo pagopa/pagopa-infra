@@ -146,26 +146,6 @@
           }
         }
       }
-    },
-    "/browsers/current/info": {
-      "get": {
-        "operationId": "GetBrowsersInfo",
-        "description": "Get info of the current browser used by the user",
-        "responses": {
-          "200": {
-            "description": "Browser info retrieved",
-            "schema": {
-              "$ref": "#/definitions/BrowserInfoResponse"
-            }
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "500": {
-            "description": "generic error"
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -412,25 +392,6 @@
         },
         "importoSpezzone": {
           "$ref": "#/definitions/ImportoEuroCents"
-        }
-      }
-    },
-    "BrowserInfoResponse": {
-      "type": "object",
-      "required": [
-        "ip",
-        "useragent",
-        "accept"
-      ],
-      "properties": {
-        "ip": {
-          "type": "string"
-        },
-        "useragent": {
-          "type": "string"
-        },
-        "accept": {
-          "type": "string"
         }
       }
     },
