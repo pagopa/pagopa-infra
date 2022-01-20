@@ -95,7 +95,7 @@ module "pagopa_proxy_app_service" {
   plan_sku_tier = var.pagopa_proxy_tier
   plan_sku_size = var.pagopa_proxy_size
 
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version = "NODE|14-lts"
 
   # App service plan
   name                = format("%s-app-pagopa-proxy", local.project)
