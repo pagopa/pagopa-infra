@@ -73,21 +73,23 @@ locals {
       host = trimsuffix(azurerm_dns_a_record.dns_a_management.fqdn, "."),
       path = "/ServiceStatus",
     },
-    length(module.api_config_fe_cdn.*.fqdn) == 0 ? null : {
-      host = module.api_config_fe_cdn[0].fqdn,
+    {
+      host = join(".",
+      compact(["config", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
     },
-    length(module.checkout_cdn.*.fqdn) == 0 ? null : {
-      host = module.checkout_cdn[0].fqdn,
+    {
+      host = join(".",
+      compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "checkout.pagopa.it"])),
       path = "",
     },
   ]
-
 }
 
 module "web_test_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.18"
+
   for_each = { for v in local.test_urls : v.host => v if v != null }
-  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.18"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.host)
@@ -105,7 +107,6 @@ module "web_test_api" {
       action_group_id = azurerm_monitor_action_group.slack.id,
     },
   ]
-
 }
 
 resource "azurerm_monitor_diagnostic_setting" "activity_log" {
