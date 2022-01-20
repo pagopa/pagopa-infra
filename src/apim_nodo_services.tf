@@ -5,7 +5,7 @@ locals {
   apim_node_for_psp_api = {
     display_name          = "Node for PSP WS (NM3)"
     description           = "Web services to support PSP in payment activations, defined in nodeForPsp.wsdl"
-    path                  = "api/node-for-psp"
+    path                  = "nodo/node-for-psp"
     subscription_required = false
     service_url           = null
   }
@@ -74,7 +74,7 @@ locals {
   apim_nodo_per_psp_api = {
     display_name          = "Nodo per PSP WS"
     description           = "Web services to support PSP in payment activations, defined in nodoPerPsp.wsdl"
-    path                  = "api/nodo-per-psp"
+    path                  = "nodo/nodo-per-psp"
     subscription_required = false
     service_url           = null
   }
@@ -131,7 +131,7 @@ locals {
   apim_node_for_io_api = {
     display_name          = "Node for IO WS"
     description           = "Web services to support activeIO, defined in nodeForIO.wsdl"
-    path                  = "api/node-for-io"
+    path                  = "nodo/node-for-io"
     subscription_required = false
     service_url           = null
   }
@@ -189,7 +189,7 @@ locals {
   apim_psp_for_node_api = {
     display_name          = "PSP for Node WS (NM3)"
     description           = "Web services to support payment transaction started on any PagoPA client, defined in pspForNode.wsdl"
-    path                  = "api/psp-for-node"
+    path                  = "nodo/psp-for-node"
     subscription_required = false
     service_url           = null
   }
@@ -247,7 +247,7 @@ locals {
   apim_nodo_per_pa_api = {
     display_name          = "Nodo per PA WS"
     description           = "Web services to support PA in payment activations, defined in nodoPerPa.wsdl"
-    path                  = "api/nodo-per-pa"
+    path                  = "nodo/nodo-per-pa"
     subscription_required = false
     service_url           = null
   }
