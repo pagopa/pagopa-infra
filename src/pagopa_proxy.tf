@@ -80,7 +80,7 @@ module "pagopa_proxy_redis" {
 module "pagopa_proxy_app_service" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.19"
 
-  ddepends_on = [
+  depends_on = [
     module.pagopa_proxy_snet
   ]
 
