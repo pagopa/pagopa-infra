@@ -118,7 +118,7 @@ module "apim_checkout_payment_activations_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
-  api_name            = format("%s-checkout-payment-activations-api", local.project)
+  api_name            = format("%s-v1", apim_checkout_payment_activations_api_v1.name)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getPaymentInfo"
@@ -127,7 +127,7 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_activation_status_api" {
-  api_name            = format("%s-checkout-payment-activations-api", local.project)
+  api_name            = format("%s-v1", apim_checkout_payment_activations_api_v1.name)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getActivationStatus"
