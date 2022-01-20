@@ -263,3 +263,7 @@ nodo_ip_filter              = "10.79.20.32"
 
 # nodo-dei-pagamenti-test
 nodo_pagamenti_test_enabled = true
+
+
+# fdr
+fdr_delete_retention_days = 30

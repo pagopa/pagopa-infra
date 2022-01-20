@@ -777,4 +777,22 @@ variable "nodo_ip_filter" {
   type        = string
   description = "IP Node"
   default     = ""
+# fdr
+
+variable "fdr_enable_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "fdr_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "fdr_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
 }
