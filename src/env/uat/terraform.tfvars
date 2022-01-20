@@ -237,7 +237,6 @@ cname_record_name     = "config"
 buyerbanks_enabled = false
 
 # pagopa-proxy app service
-pagopa_proxy_enabled        = true
 pagopa_proxy_redis_capacity = 0
 pagopa_proxy_redis_sku_name = "Basic"
 pagopa_proxy_redis_family   = "C"

@@ -180,12 +180,11 @@ resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
 }
 
 resource "azurerm_api_management_named_value" "pagopa_appservice_proxy_url_value" {
-  count               = var.pagopa_proxy_enabled ? 1 : 0
   name                = "pagopa-appservice-proxy-url"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "pagopa-appservice-proxy-url"
-  value               = format("https://%s", module.pagopa_proxy_app_service[0].default_site_hostname)
+  value               = format("https://%s", module.pagopa_proxy_app_service.default_site_hostname)
 }
 
 resource "azurerm_api_management_named_value" "brokerlist_value" {
@@ -223,7 +222,6 @@ resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {
 }
 
 resource "azurerm_api_management_named_value" "checkout_google_recaptcha_secret" {
-  count               = var.pagopa_proxy_enabled ? 1 : 0
   name                = "google-recaptcha-secret"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name

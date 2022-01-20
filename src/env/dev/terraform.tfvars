@@ -255,7 +255,6 @@ buyerbanks_function_autoscale_default = 1
 buyerbanks_delete_retention_days      = 30
 
 # pagopa-proxy app service
-pagopa_proxy_enabled        = true
 pagopa_proxy_redis_capacity = 0
 pagopa_proxy_redis_sku_name = "Basic"
 pagopa_proxy_redis_family   = "C"

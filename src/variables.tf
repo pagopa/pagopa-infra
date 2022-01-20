@@ -728,13 +728,6 @@ variable "buyerbanks_delete_retention_days" {
   default     = 30
 }
 
-# pagopa-proxy
-variable "pagopa_proxy_enabled" {
-  type        = bool
-  description = "Enable pagopa-proxy?"
-  default     = false
-}
-
 variable "cidr_subnet_pagopa_proxy" {
   type        = list(string)
   description = "Address prefixes subnet proxy"

@@ -25,16 +25,26 @@ module "apim_checkout_product" {
 #####################################
 locals {
   apim_checkout_payments_api = {
+    # params for all api versions
     display_name          = "Checkout payment activation API"
     description           = "API to support payment activation"
     path                  = "api/checkout/payments"
     subscription_required = false
     service_url           = null
   }
+
+  apim_checkout_payment_activations_api = {
+    display_name          = "Checkout 2.0 payment activations API"
+    description           = "API to support payment activations"
+    path                  = "checkout/payments"
+    subscription_required = false
+    service_url           = null
+  }
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_payments_api" {
-  count               = var.checkout_enabled ? 1 : 0
+  count = var.checkout_enabled ? 1 : 0
+
   name                = format("%s-checkout-payments-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -43,7 +53,8 @@ resource "azurerm_api_management_api_version_set" "checkout_payments_api" {
 }
 
 module "apim_checkout_payments_api_v1" {
-  count  = var.checkout_enabled ? 1 : 0
+  count = var.checkout_enabled ? 1 : 0
+
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
   name                  = format("%s-checkout-payments-api", var.env_short)
@@ -70,31 +81,58 @@ module "apim_checkout_payments_api_v1" {
   })
 }
 
+# Payment activation APIs (new)
+resource "azurerm_api_management_api_version_set" "checkout_payment_activations_api" {
+  name                = format("%s-checkout-payment-activations-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_checkout_payment_activations_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_checkout_payment_activations_api_v1" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.23"
+
+  name                  = format("%s-checkout-payment-activations-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_checkout_product[0].product_id]
+  subscription_required = local.apim_checkout_payment_activations_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.checkout_payment_activations_api.id
+  api_version           = "v1"
+  service_url           = local.apim_checkout_payment_activations_api.service_url
+
+  description  = local.apim_checkout_payment_activations_api.description
+  display_name = local.apim_checkout_payment_activations_api.display_name
+  path         = local.apim_checkout_payment_activations_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/checkout/checkout_payment_activations/v1/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/checkout/checkout_payment_activations/v1/_base_policy.xml.tpl", {
+    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+  })
+}
+
 resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
-  api_name            = format("%s-checkout-payments-api-v1", var.env_short)
+  api_name            = format("%s-checkout-payment-activations-api", local.project)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getPaymentInfo"
 
-  xml_content = file("./api/checkout/checkout_payments/v1/_recaptcha_check.xml.tpl")
+  xml_content = file("./api/checkout/checkout_payment_activations/v1/_recaptcha_check.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_activation_status_api" {
-  api_name            = format("%s-checkout-payments-api-v1", var.env_short)
+  api_name            = format("%s-checkout-payment-activations-api", local.project)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getActivationStatus"
 
-  xml_content = file("./api/checkout/checkout_payments/v1/_idpayment_check.xml.tpl")
-}
-
-resource "azurerm_api_management_api_operation_policy" "get_browser_info_api" {
-  api_name            = format("%s-checkout-payments-api-v1", var.env_short)
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "GetBrowsersInfo"
-
-  xml_content = file("./api/checkout/checkout_payments/v1/_browserinfo.xml.tpl")
+  xml_content = file("./api/checkout/checkout_payment_activations/v1/_idpayment_check.xml.tpl")
 }
 
 # pagopa-proxy SOAP web service FespCdService
