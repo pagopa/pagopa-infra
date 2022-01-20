@@ -31,3 +31,22 @@ output "container_registry_admin_password" {
   value     = var.acr_enabled ? module.acr[0].admin_password : null
   sensitive = true
 }
+
+# Blob storage
+output "nodo_test_sa_blob_host" {
+  value = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_blob_host : null
+}
+
+output "nodo_test_sa_web_host" {
+  value = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_web_host : null
+}
+
+output "nodo_test_sa_connection_string" {
+  value     = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_connection_string : null
+  sensitive = true
+}
+
+output "nodo_test_sa_blob_connection_string" {
+  value     = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_blob_connection_string : null
+  sensitive = true
+}

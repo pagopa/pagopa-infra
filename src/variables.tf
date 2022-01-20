@@ -208,6 +208,13 @@ variable "nodo_pagamenti_url" {
   default     = "https://"
 }
 
+# nodo dei pagamenti - test
+variable "nodo_pagamenti_test_enabled" {
+  type        = bool
+  description = "test del nodo dei pagamenti enabled"
+  default     = false
+}
+
 # Network
 variable "cidr_vnet" {
   type        = list(string)
@@ -728,13 +735,6 @@ variable "buyerbanks_delete_retention_days" {
   default     = 30
 }
 
-# pagopa-proxy
-variable "pagopa_proxy_enabled" {
-  type        = bool
-  description = "Enable pagopa-proxy?"
-  default     = false
-}
-
 variable "cidr_subnet_pagopa_proxy" {
   type        = list(string)
   description = "Address prefixes subnet proxy"
@@ -778,4 +778,10 @@ variable "pagopa_proxy_always_on" {
   type        = bool
   description = "pagopa-proxy always on property"
   default     = false
+}
+
+variable "nodo_ip_filter" {
+  type        = string
+  description = "IP Node"
+  default     = ""
 }

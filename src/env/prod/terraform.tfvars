@@ -13,14 +13,17 @@ lock_enable = true
 
 # networking
 # main vnet
-cidr_vnet              = ["10.1.0.0/16"]
-cidr_subnet_appgateway = ["10.1.128.0/24"]
-cidr_subnet_postgresql = ["10.1.129.0/24"]
-cidr_subnet_azdoa      = ["10.1.130.0/24"]
+cidr_vnet                      = ["10.1.0.0/16"]
+cidr_subnet_appgateway         = ["10.1.128.0/24"]
+cidr_subnet_postgresql         = ["10.1.129.0/24"]
+cidr_subnet_azdoa              = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+
 # prod only
 cidr_subnet_redis = ["10.1.132.0/24"]
 
-cidr_subnet_checkout_be = ["10.1.133.0/24"]
+cidr_subnet_checkout_be  = ["10.1.133.0/24"]
+cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -232,3 +235,13 @@ cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_enabled = false
+
+# pagopa-proxy app service
+pagopa_proxy_enabled        = false
+pagopa_proxy_redis_capacity = 0
+pagopa_proxy_redis_sku_name = "Standard"
+pagopa_proxy_redis_family   = "C"
+pagopa_proxy_tier           = "PremiumV3"
+pagopa_proxy_size           = "P1v3"
+# TODO this is dev value ... replace with uat value.
+nodo_ip_filter = "10.79.20.32"

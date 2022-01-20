@@ -244,3 +244,15 @@ xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/In
 # API Config FE
 api_config_fe_enabled = true
 cname_record_name     = "config"
+
+# pagopa-proxy app service
+pagopa_proxy_redis_capacity = 0
+pagopa_proxy_redis_sku_name = "Basic"
+pagopa_proxy_redis_family   = "C"
+pagopa_proxy_tier           = "Standard"
+pagopa_proxy_size           = "S1"
+# TODO this is dev value ... replace with uat value.
+nodo_ip_filter = "10.79.20.32"
+
+# nodo-dei-pagamenti-test
+nodo_pagamenti_test_enabled = true

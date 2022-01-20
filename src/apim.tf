@@ -31,7 +31,7 @@ locals {
 ###########################
 
 module "apim" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.1.12"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.1.13"
 
   subnet_id            = module.apim_snet.id
   location             = azurerm_resource_group.rg_api.location
@@ -180,12 +180,11 @@ resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
 }
 
 resource "azurerm_api_management_named_value" "pagopa_appservice_proxy_url_value" {
-  count               = var.pagopa_proxy_enabled ? 1 : 0
   name                = "pagopa-appservice-proxy-url"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "pagopa-appservice-proxy-url"
-  value               = format("https://%s", module.pagopa_proxy_app_service[0].default_site_hostname)
+  value               = format("https://%s", module.pagopa_proxy_app_service.default_site_hostname)
 }
 
 resource "azurerm_api_management_named_value" "brokerlist_value" {
@@ -218,7 +217,16 @@ resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "pagopa-fn-checkout-key"
-  value               = data.azurerm_key_vault_secret.fn_checkout_key[0].value
+  value               = data.azurerm_key_vault_secret.fn_checkout_key.value
+  secret              = true
+}
+
+resource "azurerm_api_management_named_value" "checkout_google_recaptcha_secret" {
+  name                = "google-recaptcha-secret"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "google-recaptcha-secret"
+  value               = data.azurerm_key_vault_secret.google_recaptcha_secret.value
   secret              = true
 }
 
