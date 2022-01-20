@@ -237,9 +237,10 @@ cname_record_name     = "config"
 buyerbanks_enabled = false
 
 # pagopa-proxy app service
-pagopa_proxy_enabled        = true
 pagopa_proxy_redis_capacity = 0
 pagopa_proxy_redis_sku_name = "Basic"
 pagopa_proxy_redis_family   = "C"
 pagopa_proxy_tier           = "Standard"
 pagopa_proxy_size           = "S1"
+# TODO this is dev value ... replace with uat value.
+nodo_ip_filter = "10.79.20.32"

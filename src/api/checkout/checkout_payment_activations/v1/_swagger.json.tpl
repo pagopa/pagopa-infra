@@ -1,9 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.1.0",
-    "title": "Proxy PagoPA",
-    "description": "Proxy for PagoPA payment services"
+    "version": "1.0.0",
+    "title": "Checkout API",
+    "contact": {
+      "name": "pagoPA team",
+    },
+    "description": "Documentation of the Checkout Function API here.\n"
   },
   "host": "${host}",
   "basePath": "/api/v1",
