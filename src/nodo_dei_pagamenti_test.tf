@@ -17,7 +17,7 @@ module "nodo_test_storage" {
   count  = var.nodo_pagamenti_test_enabled ? 1 : 0
 
   name                     = replace(format("%s-nodotestsa", local.project), "-", "")
-  account_kind             = "BlobStorage"
+  account_kind             = "StorageV2"
   account_tier             = "Standard"
   account_replication_type = "LRS"
   access_tier              = "Hot"
@@ -31,3 +31,9 @@ module "nodo_test_storage" {
 
   tags = var.tags
 }
+
+//resource "azurerm_storage_container" "nodo_test_storage_container" {
+//  name                  = "$web"
+//  storage_account_name  = module.nodo_test_storage[0].name
+//  container_access_type = "blob"
+//}
