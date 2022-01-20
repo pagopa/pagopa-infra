@@ -57,9 +57,9 @@ module "buyerbanks_function" {
     PAGOPA_BUYERBANKS_CERT            = azurerm_key_vault_certificate.buyerbanks_cert[0].certificate_data_base64
     PAGOPA_BUYERBANKS_THUMBPRINT      = data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint[0].value
     PAGOPA_BUYERBANKS_KEY_CERT        = data.azurerm_key_vault_secret.pagopa_buyerbank_cert_key[0].value
-    PAGOPA_BUYERBANKS_BRANCH          = "1000"
+    PAGOPA_BUYERBANKS_BRANCH          = "10000"
     PAGOPA_BUYERBANKS_CERT_PASSPHRASE = ""
-    PAGOPA_BUYERBANKS_INSTITUTE       = "100"
+    PAGOPA_BUYERBANKS_INSTITUTE       = "1000"
     PAGOPA_BUYERBANKS_RS_URL          = "https://rs-te.mybankpayments.eu"
     PAGOPA_BUYERBANKS_SIGNATURE       = data.azurerm_key_vault_secret.pagopa_buyerbank_signature[0].value
     PAGOPA_BUYERBANKS_SIGN_ALG        = "RSA-SHA256"
