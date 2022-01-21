@@ -49,7 +49,7 @@ module "apim_buyerbanks_api_v1" {
   name                  = format("%s-buyerbanks-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_buyerbanks_product.product_id]
+  product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_buyerbanks_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.buyerbanks_api.id
   api_version           = "v1"

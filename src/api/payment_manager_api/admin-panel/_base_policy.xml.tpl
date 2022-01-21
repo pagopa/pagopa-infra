@@ -1,13 +1,11 @@
 <policies>
     <inbound>
       <base />
+      <set-backend-service base-url="https://acardste.vaservices.eu:1443" />
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     </inbound>
     <outbound>
       <base />
-      <set-header name="cache-control" exists-action="override">
-          <value>no-store</value>
-      </set-header>
     </outbound>
     <backend>
       <base />
