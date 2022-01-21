@@ -138,7 +138,7 @@ resource "azurerm_api_management_api_operation_policy" "get_activation_status_ap
 # pagopa-proxy SOAP web service FespCdService
 locals {
   apim_cd_info_wisp = {
-    display_name          = "Checkout CdInfoWisp"
+    display_name          = "IO for Node WS"
     description           = "SOAP service used from Nodo to relay idPayment"
     path                  = "checkout/io-for-node/CdInfoWisp"
     subscription_required = false

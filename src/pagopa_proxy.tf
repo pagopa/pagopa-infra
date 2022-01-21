@@ -95,6 +95,8 @@ module "pagopa_proxy_app_service" {
   plan_sku_tier = var.pagopa_proxy_tier
   plan_sku_size = var.pagopa_proxy_size
 
+  linux_fx_version = "NODE|14-lts"
+
   # App service plan
   name                = format("%s-app-pagopa-proxy", local.project)
   client_cert_enabled = false
@@ -116,9 +118,9 @@ module "pagopa_proxy_app_service" {
     PAGOPA_ID_INT_PSP          = data.azurerm_key_vault_secret.pagopa_proxy_id_intermediario_psp.value
     PAGOPA_ID_CANALE           = data.azurerm_key_vault_secret.pagopa_proxy_id_canale.value
     PAGOPA_ID_CANALE_PAGAMENTO = data.azurerm_key_vault_secret.pagopa_proxy_id_canale_pagamento.value
-    PAGOPA_WS_NODO_PER_PSP_URI = "/api/nodo-per-psp/v1"
-    PAGOPA_WS_NODE_FOR_PSP_URI = "/api/node-for-psp/v1"
-    PAGOPA_WS_NODE_FOR_IO_URI  = "/api/node-for-io/v1"
+    PAGOPA_WS_NODO_PER_PSP_URI = "/nodo/nodo-per-psp/v1"
+    PAGOPA_WS_NODE_FOR_PSP_URI = "/nodo/node-for-psp/v1"
+    PAGOPA_WS_NODE_FOR_IO_URI  = "/nodo/node-for-io/v1"
     NM3_ENABLED                = true
 
     REDIS_DB_URL      = format("redis://%s", module.pagopa_proxy_redis.hostname)
