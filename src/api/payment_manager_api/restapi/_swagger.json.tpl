@@ -2015,7 +2015,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/ApproveTerms"
         }
       },
@@ -2104,7 +2103,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/BuyerBanks"
         }
       },
@@ -2117,7 +2115,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/BuyerBank"
         }
       },
@@ -2201,7 +2198,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/CheckCardBin"
         }
       },
@@ -2214,7 +2210,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/CheckCardBin"
         }
       },
@@ -2438,32 +2433,25 @@
         "avgFee": {
           "type": "number",
           "format": "double",
-          "allowEmptyValue": false
         },
         "codiceAbi": {
           "type": "string",
-          "allowEmptyValue": false
         },
         "idPsp": {
           "type": "string",
-          "allowEmptyValue": false
         },
         "maxFee": {
           "type": "integer",
-          "allowEmptyValue": false
         },
         "onboard": {
           "type": "boolean",
           "example": false,
-          "allowEmptyValue": false
         },
         "privacyUrl": {
           "type": "string",
-          "allowEmptyValue": false
         },
         "ragioneSociale": {
           "type": "string",
-          "allowEmptyValue": false
         }
       },
       "title": "PayPalPsp"
@@ -2475,7 +2463,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Pay"
         }
       },
@@ -2543,7 +2530,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Payment"
         }
       },
@@ -2685,7 +2671,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/PspListResponseData"
         }
       },
@@ -2717,7 +2702,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Psp"
         }
       },
@@ -2749,7 +2733,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Resume"
         }
       },
@@ -2762,7 +2745,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/SPIDAuthenticationRecord"
         }
       },
@@ -2775,7 +2757,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/SPIDAuthenticationRecord"
         }
       },
@@ -2837,7 +2818,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/SelectedPspListResponseBody"
         }
       },
@@ -2885,7 +2865,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/SellerBanksParams"
         }
       },
@@ -2913,7 +2892,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Session"
         }
       },
@@ -2950,7 +2928,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/SpidSession"
         }
       },
@@ -2981,7 +2958,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/StartSession"
         }
       },
@@ -3003,7 +2979,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/StartSpidSession"
         }
       },
@@ -3129,7 +3104,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/AppTransaction"
         }
       },
@@ -3142,7 +3116,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Transaction"
         }
       },
@@ -3202,7 +3175,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/TransactionStatus"
         }
       },
@@ -3276,7 +3248,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/User"
         }
       },
@@ -3289,7 +3260,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/User"
         }
       },
@@ -3405,7 +3375,6 @@
       "properties": {
         "data": {
           "type": "array",
-          "allowEmptyValue": false,
           "items": {
             "$ref": "#/definitions/Wallet"
           }
@@ -3420,7 +3389,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Wallet"
         }
       },
@@ -3433,7 +3401,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Wallet"
         }
       },

@@ -1576,13 +1576,6 @@
             "required": true,
             "type": "integer",
             "format": "int64"
-          },
-          {
-            "name": "pspId",
-            "in": "path",
-            "description": "pspId",
-            "required": true,
-            "type": "string"
           }
         ],
         "responses": {
@@ -2423,7 +2416,6 @@
       "properties": {
         "data": {
           "type": "array",
-          "allowEmptyValue": false,
           "items": {
             "$ref": "#/definitions/BPay"
           }
@@ -2438,7 +2430,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/PanResponse"
         }
       },
@@ -2552,7 +2543,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/CheckCardBin"
         }
       },
@@ -2565,7 +2555,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/CheckCardBin"
         }
       },
@@ -2578,7 +2567,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/CobadgeResponse"
         }
       },
@@ -2693,7 +2681,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/DeletedWallets"
         }
       },
@@ -2868,32 +2855,25 @@
         "avgFee": {
           "type": "number",
           "format": "double",
-          "allowEmptyValue": false
         },
         "codiceAbi": {
           "type": "string",
-          "allowEmptyValue": false
         },
         "idPsp": {
           "type": "string",
-          "allowEmptyValue": false
         },
         "maxFee": {
           "type": "integer",
-          "allowEmptyValue": false
         },
         "onboard": {
           "type": "boolean",
           "example": false,
-          "allowEmptyValue": false
         },
         "privacyUrl": {
           "type": "string",
-          "allowEmptyValue": false
         },
         "ragioneSociale": {
           "type": "string",
-          "allowEmptyValue": false
         }
       },
       "title": "PayPalPsp"
@@ -3057,7 +3037,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Payment"
         }
       },
@@ -3071,7 +3050,6 @@
       "properties": {
         "data": {
           "type": "array",
-          "allowEmptyValue": false,
           "items": {
             "$ref": "#/definitions/PayPalPsp"
           }
@@ -3207,33 +3185,26 @@
       "properties": {
         "codiceAbi": {
           "type": "string",
-          "allowEmptyValue": false
         },
         "defaultPsp": {
           "type": "boolean",
           "example": false,
-          "allowEmptyValue": false
         },
         "fee": {
           "type": "integer",
-          "allowEmptyValue": false
         },
         "idPsp": {
           "type": "string",
-          "allowEmptyValue": false
         },
         "onboard": {
           "type": "boolean",
           "example": false,
-          "allowEmptyValue": false
         },
         "privacyUrl": {
           "type": "string",
-          "allowEmptyValue": false
         },
         "ragioneSociale": {
           "type": "string",
-          "allowEmptyValue": false
         }
       },
       "title": "PspData"
@@ -3246,7 +3217,6 @@
       "properties": {
         "data": {
           "type": "array",
-          "allowEmptyValue": false,
           "items": {
             "$ref": "#/definitions/PspData"
           }
@@ -3277,7 +3247,6 @@
       "properties": {
         "data": {
           "type": "array",
-          "allowEmptyValue": false,
           "items": {
             "$ref": "#/definitions/Psp"
           }
@@ -3292,7 +3261,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Psp"
         }
       },
@@ -3310,7 +3278,6 @@
       "properties": {
         "data": {
           "type": "array",
-          "allowEmptyValue": false,
           "items": {
             "$ref": "#/definitions/BPay"
           }
@@ -3325,7 +3292,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/CobadgeResponse"
         }
       },
@@ -3338,7 +3304,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/PanResponse"
         }
       },
@@ -3351,7 +3316,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Satispay"
         }
       },
@@ -3394,7 +3358,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Satispay"
         }
       },
@@ -3438,7 +3401,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Session"
         }
       },
@@ -3588,7 +3550,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Transaction"
         }
       },
@@ -3662,7 +3623,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/User"
         }
       },
@@ -3778,7 +3738,6 @@
       "properties": {
         "data": {
           "type": "array",
-          "allowEmptyValue": false,
           "items": {
             "$ref": "#/definitions/Wallet"
           }
@@ -3802,7 +3761,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/WalletPaymentStatus"
         }
       },
@@ -3815,7 +3773,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/WalletPaymentStatus"
         }
       },
@@ -3828,7 +3785,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Wallet"
         }
       },
@@ -3841,7 +3797,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/Wallet"
         }
       },
@@ -3907,7 +3862,6 @@
       "properties": {
         "data": {
           "type": "array",
-          "allowEmptyValue": false,
           "items": {
             "$ref": "#/definitions/WalletV2"
           }
@@ -3922,7 +3876,6 @@
       ],
       "properties": {
         "data": {
-          "allowEmptyValue": false,
           "$ref": "#/definitions/WalletV2"
         }
       },
