@@ -107,7 +107,6 @@ checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
 
 # buyerbanks functions
-buyerbanks_enabled                    = true
 buyerbanks_function_kind              = "Linux"
 buyerbanks_function_sku_tier          = "Standard"
 buyerbanks_function_sku_size          = "S1"

@@ -176,7 +176,6 @@ data "azurerm_key_vault_secret" "fn_checkout_key" {
 }
 
 data "azurerm_key_vault_secret" "fn_buyerbanks_key" {
-  count        = var.buyerbanks_enabled ? 1 : 0
   name         = "fn-buyerbanks-key"
   key_vault_id = module.key_vault.id
 }

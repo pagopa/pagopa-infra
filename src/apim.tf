@@ -231,7 +231,6 @@ resource "azurerm_api_management_named_value" "checkout_google_recaptcha_secret"
 }
 
 resource "azurerm_api_management_named_value" "pagopa_fn_buyerbanks_url_value" {
-  count               = var.buyerbanks_enabled ? 1 : 0
   name                = "pagopa-fn-buyerbanks-url"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -241,12 +240,11 @@ resource "azurerm_api_management_named_value" "pagopa_fn_buyerbanks_url_value" {
 
 
 resource "azurerm_api_management_named_value" "pagopa_fn_buyerbanks_key" {
-  count               = var.buyerbanks_enabled ? 1 : 0
   name                = "pagopa-fn-buyerbanks-key"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "pagopa-fn-buyerbanks-key"
-  value               = data.azurerm_key_vault_secret.fn_buyerbanks_key[0].value
+  value               = data.azurerm_key_vault_secret.fn_buyerbanks_key.value
   secret              = true
 }
 

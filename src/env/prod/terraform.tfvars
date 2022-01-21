@@ -234,7 +234,13 @@ api_config_fe_enabled = true
 cname_record_name     = "config"
 
 # buyerbanks functions
-buyerbanks_enabled = false
+buyerbanks_function_kind              = "Linux"
+buyerbanks_function_sku_tier          = "PremiumV3"
+buyerbanks_function_sku_size          = "P1v3"
+buyerbanks_function_autoscale_minimum = 1
+buyerbanks_function_autoscale_maximum = 3
+buyerbanks_function_autoscale_default = 1
+buyerbanks_delete_retention_days      = 30
 
 # pagopa-proxy app service
 pagopa_proxy_enabled        = false
