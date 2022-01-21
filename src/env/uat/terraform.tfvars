@@ -25,6 +25,7 @@ cidr_subnet_mock_psp = ["10.1.240.8/29"]
 
 cidr_subnet_checkout_be  = ["10.1.240.16/29"]
 cidr_subnet_pagopa_proxy = ["10.1.240.24/29"]
+cidr_subnet_buyerbanks   = ["10.1.240.32/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -32,6 +33,7 @@ cidr_vnet_integration  = ["10.230.9.0/24"] # ask to SIA
 cidr_subnet_apim       = ["10.230.9.0/26"]
 cidr_subnet_api_config = ["10.230.9.128/29"]
 cidr_subnet_eventhub   = ["10.230.9.64/26"]
+
 
 # dns
 external_domain   = "pagopa.it"
@@ -103,6 +105,15 @@ checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
+
+# buyerbanks functions
+buyerbanks_function_kind              = "Linux"
+buyerbanks_function_sku_tier          = "Standard"
+buyerbanks_function_sku_size          = "S1"
+buyerbanks_function_autoscale_minimum = 1
+buyerbanks_function_autoscale_maximum = 3
+buyerbanks_function_autoscale_default = 1
+buyerbanks_delete_retention_days      = 30
 
 ehns_sku_name = "Standard"
 
@@ -232,9 +243,6 @@ xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/In
 # API Config FE
 api_config_fe_enabled = true
 cname_record_name     = "config"
-
-# buyerbanks functions
-buyerbanks_enabled = false
 
 # pagopa-proxy app service
 pagopa_proxy_redis_capacity = 0
