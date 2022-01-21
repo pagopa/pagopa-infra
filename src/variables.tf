@@ -663,13 +663,6 @@ variable "private_dns_zone_db_nodo_pagamenti" {
   default = "dev.db-nodo-pagamenti.com"
 }
 
-# Buyer Banks
-variable "buyerbanks_enabled" {
-  type        = bool
-  description = "buyerbanks functions enabled"
-  default     = false
-}
-
 variable "cidr_subnet_buyerbanks" {
   type        = list(string)
   description = "Address prefixes subnet buyerbanks"

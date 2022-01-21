@@ -174,6 +174,10 @@ data "azurerm_key_vault_secret" "fn_checkout_key" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "fn_buyerbanks_key" {
+  name         = "fn-buyerbanks-key"
+  key_vault_id = module.key_vault.id
+}
 
 data "azurerm_key_vault_secret" "google_recaptcha_secret" {
   name         = "google-recaptcha-secret"

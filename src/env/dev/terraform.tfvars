@@ -245,7 +245,6 @@ api_config_fe_enabled = true
 cname_record_name     = "config"
 
 # buyerbanks functions
-buyerbanks_enabled                    = true
 buyerbanks_function_kind              = "Linux"
 buyerbanks_function_sku_tier          = "Standard"
 buyerbanks_function_sku_size          = "S1"
