@@ -61,9 +61,9 @@ module "apim_buyerbanks_api_v1" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/buyerbanks_api/_swagger.json.tpl", {
+  content_value = templatefile("./api/payment_manager_api/buyerbanks/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/buyerbanks_api/_base_policy.xml.tpl")
+  xml_content = file("./api/payment_manager_api/buyerbanks/_base_policy.xml.tpl")
 }
