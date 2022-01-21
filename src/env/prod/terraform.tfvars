@@ -24,6 +24,7 @@ cidr_subnet_redis = ["10.1.132.0/24"]
 
 cidr_subnet_checkout_be  = ["10.1.133.0/24"]
 cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
+cidr_subnet_buyerbanks   = ["10.1.134.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
