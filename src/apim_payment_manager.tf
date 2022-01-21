@@ -2,12 +2,12 @@
 ## Products ##
 ##############
 
-module "apim_buyerbanks_product" {
+module "apim_payment_manager_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
-  product_id   = "buyerbanks"
-  display_name = "buyerbanks pagoPA"
-  description  = "Product for buyerbanks pagoPA"
+  product_id   = "payment-manager"
+  display_name = "Payment Manager pagoPA"
+  description  = "Product for Payment Manager pagoPA"
 
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -16,7 +16,7 @@ module "apim_buyerbanks_product" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api_product/buyerbanks_api/_base_policy.xml")
+  policy_xml = file("./api_product/payment_manager_api/_base_policy.xml")
 }
 
 #####################################
@@ -27,7 +27,7 @@ locals {
     # params for all api versions
     display_name          = "pagoPA buyerbanks API"
     description           = "API to support buyerbanks list update"
-    path                  = "api/buyerbanks"
+    path                  = "payment-manager"
     subscription_required = true
     service_url           = null
   }
