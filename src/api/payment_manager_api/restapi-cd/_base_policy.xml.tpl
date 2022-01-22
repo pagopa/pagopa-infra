@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://acardste.vaservices.eu:1443/pp-restapi-CD" />
+      <set-backend-service base-url="${endpoint}" />
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     </inbound>
     <outbound>

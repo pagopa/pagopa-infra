@@ -82,6 +82,11 @@ locals {
   }
 }
 
+data "azurerm_key_vault_secret" "pm_restapi_ip" {
+  name         = "pm-restapi-ip"
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_api_management_api_version_set" "pm_restapi_api" {
 
   name                = format("%s-pm-restapi-api", local.project)
@@ -114,7 +119,9 @@ module "apim_pm_restapi_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/restapi/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/restapi/_base_policy.xml.tpl", {
+    endpoint = format("https://%s:1443/pp-restapi", data.azurerm_key_vault_secret.pm_restapi_ip.value)
+  })
 }
 
 #####################################
@@ -129,6 +136,11 @@ locals {
     subscription_required = false
     service_url           = null
   }
+}
+
+data "azurerm_key_vault_secret" "pm_restapicd_ip" {
+  name         = "pm-restapicd-ip"
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_api_version_set" "pm_restapicd_api" {
@@ -163,7 +175,9 @@ module "apim_pm_restapicd_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/restapi-cd/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/restapi-cd/_base_policy.xml.tpl", {
+    endpoint = format("https://%s:1443/pp-restapi-CD", data.azurerm_key_vault_secret.pm_restapicd_ip.value)
+  })
 }
 
 #####################################
@@ -177,6 +191,11 @@ locals {
     subscription_required = false
     service_url           = null
   }
+}
+
+data "azurerm_key_vault_secret" "pm_logging_ip" {
+  name         = "pm-logging-ip"
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_api_version_set" "pm_logging_api" {
@@ -211,7 +230,9 @@ module "apim_pm_logging_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/logging/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/logging/_base_policy.xml.tpl", {
+    endpoint = format("https://%s:1443/db_logging", data.azurerm_key_vault_secret.pm_logging_ip.value)
+  })
 }
 
 ############################
@@ -225,6 +246,11 @@ locals {
     subscription_required = false
     service_url           = null
   }
+}
+
+data "azurerm_key_vault_secret" "pm_webview_ip" {
+  name         = "pm-webview-ip"
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_api_version_set" "pm_webview_api" {
@@ -259,7 +285,9 @@ module "apim_pm_webview_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/webview-cd/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/webview-cd/_base_policy.xml.tpl",{
+    endpoint = format("https://%s:1443/pp-restapi-CD", data.azurerm_key_vault_secret.pm_webview_ip.value)
+  })
 }
 
 ############################
@@ -273,6 +301,11 @@ locals {
     subscription_required = false
     service_url           = null
   }
+}
+
+data "azurerm_key_vault_secret" "pm_adminpanel_ip" {
+  name         = "pm-adminpanel-ip"
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_api_version_set" "pm_adminpanel_api" {
@@ -307,7 +340,9 @@ module "apim_pm_adminpanel_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl")
+  xml_content = file("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
+    endpoint = format("https://%s:1443/pp-admin-panel", data.azurerm_key_vault_secret.pm_adminpanel_ip.value)
+  })
 }
 
 #####################
@@ -321,6 +356,11 @@ locals {
     subscription_required = false
     service_url           = null
   }
+}
+
+data "azurerm_key_vault_secret" "wisp_ip" {
+  name         = "wisp-ip"
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_api_version_set" "pm_wisp_api" {
@@ -355,5 +395,7 @@ module "apim_pm_wisp_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/wisp/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/wisp/_base_policy.xml.tpl",{
+    endpoint = format("https://%s:1443/wallet", data.azurerm_key_vault_secret.wisp_ip.value)
+  })
 }
