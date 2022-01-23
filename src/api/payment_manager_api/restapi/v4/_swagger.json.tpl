@@ -42,7 +42,7 @@
     "application/json"
   ],
   "paths": {
-    "/v4/payments/{id}/actions/check": {
+    "/payments/{id}/actions/check": {
       "get": {
         "tags": [
           "payments-controller"
@@ -84,7 +84,7 @@
         }
       }
     },
-    "/v4/payments/{id}/actions/check-internal": {
+    "/payments/{id}/actions/check-internal": {
       "get": {
         "tags": [
           "payments-controller"
@@ -119,7 +119,7 @@
         }
       }
     },
-    "/v4/payments/{id}/actions/delete": {
+    "/payments/{id}/actions/delete": {
       "delete": {
         "tags": [
           "payments-controller"
@@ -170,7 +170,7 @@
         ]
       }
     },
-    "/v4/payments/{id}/actions/pay": {
+    "/payments/{id}/actions/pay": {
       "post": {
         "tags": [
           "payments-controller"
@@ -233,7 +233,7 @@
         ]
       }
     },
-    "/v4/payments/{id}/actions/pay3ds2": {
+    "/payments/{id}/actions/pay3ds2": {
       "post": {
         "tags": [
           "payments-controller"
@@ -303,7 +303,7 @@
         ]
       }
     },
-    "/v4/psps": {
+    "/psps": {
       "get": {
         "tags": [
           "psp-controller"
@@ -334,7 +334,7 @@
         ]
       }
     },
-    "/v4/psps/actions/get-buyer-bank/{idBuyer}": {
+    "/psps/actions/get-buyer-bank/{idBuyer}": {
       "get": {
         "tags": [
           "psp-controller"
@@ -375,7 +375,7 @@
         ]
       }
     },
-    "/v4/psps/actions/get-seller-bank/{idBuyer}": {
+    "/psps/actions/get-seller-bank/{idBuyer}": {
       "post": {
         "tags": [
           "psp-controller"
@@ -431,7 +431,7 @@
         ]
       }
     },
-    "/v4/psps/buyer-banks": {
+    "/psps/buyer-banks": {
       "get": {
         "tags": [
           "psp-controller"
@@ -472,7 +472,7 @@
         ]
       }
     },
-    "/v4/psps/seller/list": {
+    "/psps/seller/list": {
       "get": {
         "tags": [
           "psp-controller"
@@ -532,7 +532,7 @@
         ]
       }
     },
-    "/v4/psps/{id}": {
+    "/psps/{id}": {
       "get": {
         "tags": [
           "psp-controller"
@@ -573,7 +573,7 @@
         ]
       }
     },
-    "/v4/resources": {
+    "/resources": {
       "get": {
         "tags": [
           "resource-controller"
@@ -609,7 +609,7 @@
         }
       }
     },
-    "/v4/resources/psp/{id}": {
+    "/resources/psp/{id}": {
       "get": {
         "tags": [
           "resource-controller"
@@ -642,7 +642,7 @@
         }
       }
     },
-    "/v4/resources/service/img/pa-logo/{idLogo}": {
+    "/resources/service/img/pa-logo/{idLogo}": {
       "get": {
         "tags": [
           "resource-controller"
@@ -674,7 +674,7 @@
         }
       }
     },
-    "/v4/resources/service/img/{imgName}": {
+    "/resources/service/img/{imgName}": {
       "get": {
         "tags": [
           "resource-controller"
@@ -706,7 +706,7 @@
         }
       }
     },
-    "/v4/resources/service/{id}": {
+    "/resources/service/{id}": {
       "get": {
         "tags": [
           "resource-controller"
@@ -739,7 +739,7 @@
         }
       }
     },
-    "/v4/spid-authentication-record": {
+    "/spid-authentication-record": {
       "post": {
         "tags": [
           "spid-registry-controller"
@@ -787,7 +787,7 @@
         ]
       }
     },
-    "/v4/transactions": {
+    "/transactions": {
       "get": {
         "tags": [
           "transaction-controller"
@@ -818,7 +818,7 @@
         ]
       }
     },
-    "/v4/transactions/{id}": {
+    "/transactions/{id}": {
       "get": {
         "tags": [
           "transaction-controller"
@@ -859,7 +859,7 @@
         ]
       }
     },
-    "/v4/transactions/{id}/actions/check": {
+    "/transactions/{id}/actions/check": {
       "get": {
         "tags": [
           "transaction-controller"
@@ -906,7 +906,7 @@
         ]
       }
     },
-    "/v4/transactions/{id}/actions/resume": {
+    "/transactions/{id}/actions/resume": {
       "post": {
         "tags": [
           "transaction-controller"
@@ -973,7 +973,7 @@
         ]
       }
     },
-    "/v4/transactions/{id}/actions/resume3ds2": {
+    "/transactions/{id}/actions/resume3ds2": {
       "post": {
         "tags": [
           "transaction-controller"
@@ -1040,7 +1040,7 @@
         ]
       }
     },
-    "/v4/users": {
+    "/users": {
       "get": {
         "tags": [
           "users-controller"
@@ -1117,7 +1117,7 @@
         ]
       }
     },
-    "/v4/users/actions/approve-terms": {
+    "/users/actions/approve-terms": {
       "post": {
         "tags": [
           "users-controller"
@@ -1165,7 +1165,7 @@
         ]
       }
     },
-    "/v4/users/actions/check-session": {
+    "/users/actions/check-session": {
       "get": {
         "tags": [
           "users-controller"
@@ -1205,7 +1205,7 @@
         ]
       }
     },
-    "/v4/users/actions/logout": {
+    "/users/actions/logout": {
       "post": {
         "tags": [
           "users-controller"
@@ -1239,7 +1239,7 @@
         ]
       }
     },
-    "/v4/users/actions/spid/success": {
+    "/users/actions/spid/success": {
       "post": {
         "tags": [
           "users-controller"
@@ -1294,7 +1294,7 @@
         ]
       }
     },
-    "/v4/users/actions/start-session": {
+    "/users/actions/start-session": {
       "post": {
         "tags": [
           "users-controller"
@@ -1337,7 +1337,7 @@
         }
       }
     },
-    "/v4/users/actions/start-session-spid": {
+    "/users/actions/start-session-spid": {
       "post": {
         "tags": [
           "users-controller"
@@ -1369,7 +1369,7 @@
         }
       }
     },
-    "/v4/users/byTransactionId/{transactionId}": {
+    "/users/byTransactionId/{transactionId}": {
       "get": {
         "tags": [
           "users-controller"
@@ -1409,7 +1409,7 @@
         ]
       }
     },
-    "/v4/wallet": {
+    "/wallet": {
       "get": {
         "tags": [
           "wallet-controller"
@@ -1493,7 +1493,7 @@
         ]
       }
     },
-    "/v4/wallet/actions/check-card-bin": {
+    "/wallet/actions/check-card-bin": {
       "post": {
         "tags": [
           "wallet-controller"
@@ -1541,7 +1541,7 @@
         ]
       }
     },
-    "/v4/wallet/byTransactionId/{transactionId}": {
+    "/wallet/byTransactionId/{transactionId}": {
       "get": {
         "tags": [
           "wallet-controller"
@@ -1581,7 +1581,7 @@
         ]
       }
     },
-    "/v4/wallet/delete-contract": {
+    "/wallet/delete-contract": {
       "delete": {
         "tags": [
           "wallet-controller"
@@ -1621,7 +1621,7 @@
         ]
       }
     },
-    "/v4/wallet/set-favorite": {
+    "/wallet/set-favorite": {
       "post": {
         "tags": [
           "wallet-controller"
@@ -1670,7 +1670,7 @@
         ]
       }
     },
-    "/v4/wallet/set-visible": {
+    "/wallet/set-visible": {
       "post": {
         "tags": [
           "wallet-controller"
@@ -1719,7 +1719,7 @@
         ]
       }
     },
-    "/v4/wallet/{id}": {
+    "/wallet/{id}": {
       "get": {
         "tags": [
           "wallet-controller"
@@ -1850,7 +1850,7 @@
         ]
       }
     },
-    "/v4/wallet/{id}/actions/confirm": {
+    "/wallet/{id}/actions/confirm": {
       "post": {
         "tags": [
           "wallet-controller"
@@ -1897,7 +1897,7 @@
         ]
       }
     },
-    "/v4/wallet/{id}/actions/favourite": {
+    "/wallet/{id}/actions/favourite": {
       "post": {
         "tags": [
           "wallet-controller"
