@@ -185,7 +185,7 @@ module "apim_pm_restapicd_api_v1" {
 #####################################
 locals {
   apim_pm_logging_api = {
-    display_name          = "Payment Manager logging CD API"
+    display_name          = "Payment Manager logging API"
     description           = "API to support PM logging"
     path                  = "payment-manager/logging"
     subscription_required = false
@@ -231,7 +231,7 @@ module "apim_pm_logging_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/logging/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/db_logging", data.azurerm_key_vault_secret.pm_logging_ip.value)
+    endpoint = format("https://%s:1443/db-logging", data.azurerm_key_vault_secret.pm_logging_ip.value)
   })
 }
 
