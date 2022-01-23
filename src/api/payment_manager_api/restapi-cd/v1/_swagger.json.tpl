@@ -70,7 +70,7 @@
     "application/json"
   ],
   "paths": {
-    "/v1/bancomat/abi": {
+    "/bancomat/abi": {
       "get": {
         "tags": [
           "bancomat-controller"
@@ -128,7 +128,7 @@
         ]
       }
     },
-    "/v1/bancomat/add-wallets": {
+    "/bancomat/add-wallets": {
       "post": {
         "tags": [
           "bancomat-controller"
@@ -176,7 +176,7 @@
         ]
       }
     },
-    "/v1/bancomat/pans": {
+    "/bancomat/pans": {
       "get": {
         "tags": [
           "bancomat-controller"
@@ -219,7 +219,7 @@
         ]
       }
     },
-    "/v1/bpay/add-wallets": {
+    "/bpay/add-wallets": {
       "post": {
         "tags": [
           "b-pay-controller"
@@ -267,7 +267,7 @@
         ]
       }
     },
-    "/v1/bpay/list": {
+    "/bpay/list": {
       "get": {
         "tags": [
           "b-pay-controller"
@@ -307,7 +307,7 @@
         ]
       }
     },
-    "/v1/cobadge/add-wallets": {
+    "/cobadge/add-wallets": {
       "post": {
         "tags": [
           "cobadge-controller"
@@ -355,7 +355,7 @@
         ]
       }
     },
-    "/v1/cobadge/pans": {
+    "/cobadge/pans": {
       "get": {
         "tags": [
           "cobadge-controller"
@@ -402,7 +402,7 @@
         ]
       }
     },
-    "/v1/cobadge/search/{searchRequestId}": {
+    "/cobadge/search/{searchRequestId}": {
       "get": {
         "tags": [
           "cobadge-controller"
@@ -442,7 +442,7 @@
         ]
       }
     },
-    "/v1/payments/{id}": {
+    "/payments/{id}": {
       "delete": {
         "tags": [
           "payments-controller"
@@ -486,7 +486,7 @@
         ]
       }
     },
-    "/v1/payments/{id}/actions/check": {
+    "/payments/{id}/actions/check": {
       "get": {
         "tags": [
           "payments-controller"
@@ -521,7 +521,7 @@
         }
       }
     },
-    "/v1/payments/{id}/actions/check-internal": {
+    "/payments/{id}/actions/check-internal": {
       "get": {
         "tags": [
           "payments-controller"
@@ -556,7 +556,7 @@
         }
       }
     },
-    "/v1/payments/{id}/actions/delete": {
+    "/payments/{id}/actions/delete": {
       "delete": {
         "tags": [
           "payments-controller"
@@ -600,7 +600,7 @@
         ]
       }
     },
-    "/v1/psps": {
+    "/psps": {
       "get": {
         "tags": [
           "psp-controller"
@@ -631,7 +631,7 @@
         ]
       }
     },
-    "/v1/psps/all": {
+    "/psps/all": {
       "get": {
         "tags": [
           "psp-controller"
@@ -685,7 +685,7 @@
         ]
       }
     },
-    "/v1/psps/selected": {
+    "/psps/selected": {
       "get": {
         "tags": [
           "psp-controller"
@@ -739,7 +739,7 @@
         ]
       }
     },
-    "/v1/psps/{id}": {
+    "/psps/{id}": {
       "get": {
         "tags": [
           "psp-controller"
@@ -780,7 +780,7 @@
         ]
       }
     },
-    "/v1/resources": {
+    "/resources": {
       "get": {
         "tags": [
           "resource-controller"
@@ -806,7 +806,7 @@
         }
       }
     },
-    "/v1/resources/img/{imgName}": {
+    "/resources/img/{imgName}": {
       "get": {
         "tags": [
           "resource-controller"
@@ -838,7 +838,7 @@
         }
       }
     },
-    "/v1/resources/psp/{id}": {
+    "/resources/psp/{id}": {
       "get": {
         "tags": [
           "resource-controller"
@@ -871,7 +871,7 @@
         }
       }
     },
-    "/v1/resources/service/{id}": {
+    "/resources/service/{id}": {
       "get": {
         "tags": [
           "resource-controller"
@@ -904,7 +904,7 @@
         }
       }
     },
-    "/v1/satispay/add-wallet": {
+    "/satispay/add-wallet": {
       "post": {
         "tags": [
           "satispay-controller"
@@ -952,7 +952,7 @@
         ]
       }
     },
-    "/v1/satispay/consumers": {
+    "/satispay/consumers": {
       "get": {
         "tags": [
           "satispay-controller"
@@ -983,7 +983,7 @@
         ]
       }
     },
-    "/v1/transactions": {
+    "/transactions": {
       "get": {
         "tags": [
           "transaction-controller"
@@ -1014,7 +1014,7 @@
         ]
       }
     },
-    "/v1/transactions/{id}": {
+    "/transactions/{id}": {
       "get": {
         "tags": [
           "transaction-controller"
@@ -1055,7 +1055,7 @@
         ]
       }
     },
-    "/v1/users": {
+    "/users": {
       "get": {
         "tags": [
           "users-controller"
@@ -1086,7 +1086,7 @@
         ]
       }
     },
-    "/v1/users/actions/start-session": {
+    "/users/actions/start-session": {
       "get": {
         "tags": [
           "users-controller"
@@ -1128,7 +1128,7 @@
         }
       }
     },
-    "/v1/users/byTransactionId/{transactionId}": {
+    "/users/byTransactionId/{transactionId}": {
       "get": {
         "tags": [
           "users-controller"
@@ -1168,7 +1168,7 @@
         ]
       }
     },
-    "/v1/users/check-session": {
+    "/users/check-session": {
       "get": {
         "tags": [
           "users-controller"
@@ -1208,7 +1208,7 @@
         ]
       }
     },
-    "/v1/wallet": {
+    "/wallet": {
       "get": {
         "tags": [
           "wallet-controller"
@@ -1292,7 +1292,7 @@
         ]
       }
     },
-    "/v1/wallet/actions/check-card-bin": {
+    "/wallet/actions/check-card-bin": {
       "post": {
         "tags": [
           "wallet-controller"
@@ -1340,7 +1340,7 @@
         ]
       }
     },
-    "/v1/wallet/byTransactionId/{transactionId}": {
+    "/wallet/byTransactionId/{transactionId}": {
       "get": {
         "tags": [
           "wallet-controller"
@@ -1380,7 +1380,7 @@
         ]
       }
     },
-    "/v1/wallet/cc": {
+    "/wallet/cc": {
       "post": {
         "tags": [
           "wallet-controller"
@@ -1428,7 +1428,7 @@
         ]
       }
     },
-    "/v1/wallet/delete-contract": {
+    "/wallet/delete-contract": {
       "delete": {
         "tags": [
           "wallet-controller"
@@ -1468,7 +1468,7 @@
         ]
       }
     },
-    "/v1/wallet/{id}": {
+    "/wallet/{id}": {
       "get": {
         "tags": [
           "wallet-controller"
@@ -1599,7 +1599,7 @@
         ]
       }
     },
-    "/v1/wallet/{id}/actions/confirm": {
+    "/wallet/{id}/actions/confirm": {
       "post": {
         "tags": [
           "wallet-controller"
@@ -1646,7 +1646,7 @@
         ]
       }
     },
-    "/v1/wallet/{id}/actions/favourite": {
+    "/wallet/{id}/actions/favourite": {
       "post": {
         "tags": [
           "wallet-controller"
@@ -1693,7 +1693,7 @@
         ]
       }
     },
-    "/v1/wallet/{id}/{pspId}": {
+    "/wallet/{id}/{pspId}": {
       "delete": {
         "tags": [
           "wallet-controller"
@@ -1729,510 +1729,6 @@
           },
           "403": {
             "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/v2/payments/{id}/psps": {
-      "get": {
-        "tags": [
-          "payments-v-2-controller"
-        ],
-        "summary": "getPspListV2",
-        "operationId": "getPspListV2UsingGET",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "id",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "idWallet",
-            "in": "query",
-            "description": "idWallet",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "cellphoneNumber",
-            "in": "query",
-            "description": "cellphoneNumber",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "externalPsId",
-            "in": "query",
-            "description": "externalPsId",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "language",
-            "in": "query",
-            "description": "language",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "isList",
-            "in": "query",
-            "description": "isList",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/PspDataListResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/v2/wallet": {
-      "get": {
-        "tags": [
-          "wallet-v-2-controller"
-        ],
-        "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo (walletType Card o Bancomat), SatispayInfo (walletType Satispay), BPayInfo (walletType BPay)]",
-        "operationId": "getWalletsV2UsingGET",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/WalletV2ListResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/v2/wallet/delete-wallets": {
-      "delete": {
-        "tags": [
-          "wallet-v-2-controller"
-        ],
-        "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo (walletType Card o Bancomat), SatispayInfo (walletType Satispay), BPayInfo (walletType BPay)]",
-        "operationId": "deleteWalletsByServiceUsingDELETE",
-        "parameters": [
-          {
-            "name": "service",
-            "in": "query",
-            "description": "service",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/DeletedWalletsResponse"
-            }
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/v2/wallet/{id}": {
-      "put": {
-        "tags": [
-          "wallet-v-2-controller"
-        ],
-        "summary": "updateWallet",
-        "operationId": "updateWalletUsingPUT_1",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "id",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "in": "body",
-            "name": "walletRequest",
-            "description": "walletRequest",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/WalletRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/WalletResponse"
-            }
-          },
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/v2/wallet/{id}/payment-status": {
-      "get": {
-        "tags": [
-          "wallet-v-2-controller"
-        ],
-        "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo (walletType Card o Bancomat), SatispayInfo (walletType Satispay), BPayInfo (walletType BPay)]",
-        "operationId": "getWalletPaymentStatusUsingGET",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "id",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/WalletPaymentStatusResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      },
-      "put": {
-        "tags": [
-          "wallet-v-2-controller"
-        ],
-        "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo (walletType Card o Bancomat), SatispayInfo (walletType Satispay), BPayInfo (walletType BPay)]",
-        "operationId": "changeWalletPaymentStatusUsingPUT",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "id",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "in": "body",
-            "name": "walletPaymentStatusRequest",
-            "description": "walletPaymentStatusRequest",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/WalletPaymentStatusRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/WalletV2Response"
-            }
-          },
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/v3/paypal/psps": {
-      "get": {
-        "tags": [
-          "pay-pal-controller"
-        ],
-        "summary": "getPaypalPsps",
-        "operationId": "getPaypalPspsUsingGET",
-        "parameters": [
-          {
-            "name": "language",
-            "in": "query",
-            "description": "language",
-            "required": false,
-            "type": "string",
-            "default": "it"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/PaypalPspListResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/v3/wallet": {
-      "get": {
-        "tags": [
-          "wallet-v-3-controller"
-        ],
-        "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo (walletType Card o Bancomat), SatispayInfo (walletType Satispay), BPayInfo (walletType BPay), GenericInstrumentInfo (walletType Generic), PayPalInfo (walletType PayPal)]",
-        "operationId": "getWalletsV3UsingGET",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/WalletV2ListResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/v3/wallet/delete-wallets": {
-      "delete": {
-        "tags": [
-          "wallet-v-3-controller"
-        ],
-        "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo (walletType Card o Bancomat), SatispayInfo (walletType Satispay), BPayInfo (walletType BPay), GenericInstrumentInfo (walletType Generic), PayPalInfo (walletType PayPal)]",
-        "operationId": "deleteWalletsByServiceUsingDELETE_1",
-        "parameters": [
-          {
-            "name": "service",
-            "in": "query",
-            "description": "service",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/DeletedWalletsResponse"
-            }
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      }
-    },
-    "/v3/wallet/{id}/payment-status": {
-      "get": {
-        "tags": [
-          "wallet-v-3-controller"
-        ],
-        "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo (walletType Card o Bancomat), SatispayInfo (walletType Satispay), BPayInfo (walletType BPay), GenericInstrumentInfo (walletType Generic), PayPalInfo (walletType PayPal)]",
-        "operationId": "getWalletPaymentStatusUsingGET_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "id",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/WalletPaymentStatusResponse"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        },
-        "security": [
-          {
-            "Bearer": []
-          }
-        ]
-      },
-      "put": {
-        "tags": [
-          "wallet-v-3-controller"
-        ],
-        "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo (walletType Card o Bancomat), SatispayInfo (walletType Satispay), BPayInfo (walletType BPay), GenericInstrumentInfo (walletType Generic), PayPalInfo (walletType PayPal)]",
-        "operationId": "changeWalletPaymentStatusUsingPUT_1",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "id",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "in": "body",
-            "name": "walletPaymentStatusRequest",
-            "description": "walletPaymentStatusRequest",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/WalletPaymentStatusRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/WalletV2Response"
-            }
-          },
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
           }
         },
         "security": [
