@@ -10,16 +10,20 @@
   "basePath": "/pp-restapi-CD",
   "tags": [
     {
-      "name": "b-pay-controller-cd",
+      "name": "b-pay-controller",
       "description": "B Pay Controller"
     },
     {
-      "name": "bancomat-controller-cd",
+      "name": "bancomat-controller",
       "description": "Bancomat Controller"
     },
     {
-      "name": "cobadge-controller-cd",
+      "name": "cobadge-controller",
       "description": "Cobadge Controller"
+    },
+    {
+      "name": "pay-pal-controller",
+      "description": "Pay Pal Controller"
     },
     {
       "name": "payments-controller",
@@ -69,7 +73,7 @@
     "/bancomat/abi": {
       "get": {
         "tags": [
-          "bancomat-controller-cd"
+          "bancomat-controller"
         ],
         "summary": "restituisce la lista paginata degli ABI salvati a DB.size = numero di elementi da visualizzare sulla pagina (max 15).start = posizione dell'elemento da cui partire all'interno della lista.abiQuery = sottostringa a contenuta nei valori di ABI o nome dell'elemento.",
         "operationId": "getAbiListUsingGET",
@@ -127,7 +131,7 @@
     "/bancomat/add-wallets": {
       "post": {
         "tags": [
-          "bancomat-controller-cd"
+          "bancomat-controller"
         ],
         "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo]",
         "operationId": "addWalletsBancomatCardUsingPOST",
@@ -175,7 +179,7 @@
     "/bancomat/pans": {
       "get": {
         "tags": [
-          "bancomat-controller-cd"
+          "bancomat-controller"
         ],
         "summary": "getPans",
         "operationId": "getPansUsingGET",
@@ -218,7 +222,7 @@
     "/bpay/add-wallets": {
       "post": {
         "tags": [
-          "b-pay-controller-cd"
+          "b-pay-controller"
         ],
         "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [BPayInfo]",
         "operationId": "addWalletsBPayUsingPOST",
@@ -266,7 +270,7 @@
     "/bpay/list": {
       "get": {
         "tags": [
-          "b-pay-controller-cd"
+          "b-pay-controller"
         ],
         "summary": "getBpayList",
         "operationId": "getBpayListUsingGET",
@@ -306,7 +310,7 @@
     "/cobadge/add-wallets": {
       "post": {
         "tags": [
-          "cobadge-controller-cd"
+          "cobadge-controller"
         ],
         "summary": "Possibili sottotipi del campo info (PaymentMethodInfo): [CardInfo]",
         "operationId": "addWalletsCobadgePaymentInstrumentAsCreditCardUsingPOST",
@@ -354,7 +358,7 @@
     "/cobadge/pans": {
       "get": {
         "tags": [
-          "cobadge-controller-cd"
+          "cobadge-controller"
         ],
         "summary": "getCobadges",
         "operationId": "getCobadgesUsingGET",
@@ -401,7 +405,7 @@
     "/cobadge/search/{searchRequestId}": {
       "get": {
         "tags": [
-          "cobadge-controller-cd"
+          "cobadge-controller"
         ],
         "summary": "getCobadgeByRequestId",
         "operationId": "getCobadgeByRequestIdUsingGET",
