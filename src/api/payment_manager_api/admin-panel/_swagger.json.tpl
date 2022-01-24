@@ -3,7 +3,7 @@
   "info": {
     "description": "Payment Manager API - pp-admin-panel",
     "version": "1.0",
-    "title": "Payment Manager API",
+    "title": "Payment Manager API - pp-admin-panel",
     "x-version": "36.1.3"
   },
   "host": "${host}",
