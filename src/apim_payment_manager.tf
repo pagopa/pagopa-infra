@@ -76,7 +76,7 @@ locals {
     # params for all api versions
     display_name          = "Payment Manager restapi API"
     description           = "API to support payment trasactions for Checkout and Wisp"
-    path                  = "payment-manager/restapi"
+    path                  = "payment-manager/pp-restapi"
     subscription_required = false
     service_url           = null
   }
@@ -132,7 +132,7 @@ locals {
     # params for all api versions
     display_name          = "Payment Manager restapi CD API"
     description           = "API to support payment trasactions for app IO"
-    path                  = "payment-manager/restapi-cd"
+    path                  = "payment-manager/pp-restapi-CD"
     subscription_required = false
     service_url           = null
   }
@@ -327,7 +327,7 @@ locals {
   apim_pm_logging_api = {
     display_name          = "Payment Manager logging API"
     description           = "API to support PM logging"
-    path                  = "payment-manager/logging"
+    path                  = "payment-manager/db-logging"
     subscription_required = false
     service_url           = null
   }
@@ -437,7 +437,7 @@ locals {
   apim_pm_adminpanel_api = {
     display_name          = "Payment Manager admin panel frontend"
     description           = "Frontend to support PM operations"
-    path                  = "payment-manager/admin-panel"
+    path                  = "payment-manager/pp-admin-panel"
     subscription_required = false
     service_url           = null
   }
@@ -492,7 +492,7 @@ locals {
   apim_pm_wisp_api = {
     display_name          = "Payment Manager Wisp"
     description           = "Frontend to support payments"
-    path                  = "payment-manager/wisp"
+    path                  = "payment-manager/wallet"
     subscription_required = false
     service_url           = null
   }
