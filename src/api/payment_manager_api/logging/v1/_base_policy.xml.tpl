@@ -2,7 +2,9 @@
     <inbound>
       <base />
       <set-backend-service base-url="${endpoint}" />
-      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+      <ip-filter action="allow">
+        <address>${restapi-ip-filter}</address>
+      </ip-filter>
     </inbound>
     <outbound>
       <base />

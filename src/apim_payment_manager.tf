@@ -288,7 +288,8 @@ module "apim_pm_restapirtd_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi-rtd/v1/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/pp-restapi-rtd/v1", data.azurerm_key_vault_secret.pm_restapirtd_ip.value)
+    endpoint          = format("https://%s:1443/pp-restapi-rtd/v1", data.azurerm_key_vault_secret.pm_restapirtd_ip.value)
+    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
 
@@ -317,6 +318,7 @@ module "apim_pm_restapirtd_api_v2" {
 
   xml_content = templatefile("./api/payment_manager_api/restapi-rtd/v2/_base_policy.xml.tpl", {
     endpoint = format("https://%s:1443/pp-restapi-rtd/v2", data.azurerm_key_vault_secret.pm_restapirtd_ip.value)
+    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
 
@@ -371,7 +373,8 @@ module "apim_pm_logging_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/logging/v1/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/db-logging", data.azurerm_key_vault_secret.pm_logging_ip.value)
+    endpoint          = format("https://%s:1443/db-logging", data.azurerm_key_vault_secret.pm_logging_ip.value)
+    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
 
