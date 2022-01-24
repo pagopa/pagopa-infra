@@ -23,7 +23,7 @@
     }
   ],
   "paths": {
-    "/v1/user": {
+    "/user": {
       "x-swagger-router-controller": "SSOController",
       "get": {
         "operationId": "getUserForBPD",
