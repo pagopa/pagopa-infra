@@ -425,7 +425,7 @@ module "apim_pm_webview_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/webview-cd/_base_policy.xml.tpl",{
+  xml_content = templatefile("./api/payment_manager_api/webview-cd/_base_policy.xml.tpl", {
     endpoint = format("https://%s:1443/pp-restapi-CD/v3/webview", data.azurerm_key_vault_secret.pm_webview_ip.value)
   })
 }
@@ -535,7 +535,7 @@ module "apim_pm_wisp_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/wisp/_base_policy.xml.tpl",{
+  xml_content = templatefile("./api/payment_manager_api/wisp/_base_policy.xml.tpl", {
     endpoint = format("https://%s:1443/wallet", data.azurerm_key_vault_secret.wisp_ip.value)
   })
 }
