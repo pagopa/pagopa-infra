@@ -255,3 +255,5 @@ nodo_ip_filter = "10.79.20.32"
 
 # nodo-dei-pagamenti-test
 nodo_pagamenti_test_enabled = true
+
+io_bpd_hostname="portal.test.pagopa.gov.it" #TO UPDATE with uat hostname

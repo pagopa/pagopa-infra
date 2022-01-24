@@ -778,3 +778,9 @@ variable "nodo_ip_filter" {
   description = "IP Node"
   default     = ""
 }
+
+variable "io_bpd_hostname" {
+  type        = string
+  description = "IO BPD hostname"
+  default     = ""
+}
