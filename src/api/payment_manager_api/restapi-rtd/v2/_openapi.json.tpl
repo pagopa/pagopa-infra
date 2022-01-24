@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Registro Transazioni Digitali",
-    "description": "RESTful API provided by the \"Payment Manager\" system to the \"Registro Transazioni Digitali\" system",
+    "title": "Registro Transazioni Digitali v2",
+    "description": "RESTful API provided by the \"Payment Manager\" system to the \"Registro Transazioni Digitali\" system v2",
     "version": "1.10.0"
   },
   "servers": [

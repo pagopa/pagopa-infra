@@ -3,7 +3,7 @@
   "info": {
     "description": "Payment Manager API - pp-logging",
     "version": "1.0",
-    "title": "Payment Manager API",
+    "title": "Payment Manager API - pp-logging",
     "x-version": "36.1.3"
   },
   "host": "${host}",
