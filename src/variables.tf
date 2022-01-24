@@ -777,8 +777,9 @@ variable "nodo_ip_filter" {
   type        = string
   description = "IP Node"
   default     = ""
-# fdr
+}
 
+# fdr
 variable "fdr_enable_versioning" {
   type        = bool
   description = "Enable sa versioning"
