@@ -590,6 +590,7 @@ module "apim_pmclient_iobpd_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/io-bpd/_base_policy.xml.tpl", {
-    endpoint = format("https://%s/pagopa/api/v1", local.apim_pmclient_iobpd_api.io_bpd_hostname)
+    endpoint          = format("https://%s/pagopa/api/v1", local.apim_pmclient_iobpd_api.io_bpd_hostname)
+    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
