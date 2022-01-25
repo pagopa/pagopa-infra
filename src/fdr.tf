@@ -36,6 +36,10 @@ resource "azurerm_role_assignment" "data_contributor_role" {
   scope                = module.fdr_flows_sa.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = module.apim.principal_id
+
+  depends_on = [
+    module.fdr_flows_sa
+  ]
 }
 
 # 2 - Change container Authentication method to Azure AD authentication
@@ -48,10 +52,14 @@ resource "null_resource" "change_auth_fdr_blob_container" {
   provisioner "local-exec" {
     command = <<EOT
               az storage container set-permission \
-                --name ${azurerm_storage_container.fdr_rend_flow.name}
+                --name ${azurerm_storage_container.fdr_rend_flow.name} \
                 --account-name ${module.fdr_flows_sa.name} \
                 --account-key ${module.fdr_flows_sa.primary_access_key} \
                 --auth-mode login
           EOT
   }
+
+  depends_on = [
+    azurerm_storage_container.fdr_rend_flow
+  ]
 }
