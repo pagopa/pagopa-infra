@@ -372,6 +372,12 @@ variable "app_gateway_max_capacity" {
   default = 2
 }
 
+variable "app_gateway_deny_paths" {
+  type        = list(string)
+  description = "Deny paths on app gateway"
+  default     = []
+}
+
 # Azure DevOps Agent
 variable "enable_azdoa" {
   type        = bool
