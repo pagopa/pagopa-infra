@@ -18,25 +18,9 @@ module "appgateway_snet" {
   virtual_network_name = module.vnet.name
 }
 
-## Application gateway ##
-# Since these variables are re-used - a locals block makes this more maintainable
-locals {
-  backend_address_pool_name       = format("%s-appgw-be-address-pool", local.project)
-  frontend_http_port_name         = format("%s-appgw-fe-http-port", local.project)
-  frontend_https_port_name        = format("%s-appgw-fe-https-port", local.project)
-  frontend_ip_configuration_name  = format("%s-appgw-fe-ip-configuration", local.project)
-  http_setting_name               = format("%s-appgw-be-http-settings", local.project)
-  http_listener_name              = format("%s-appgw-fe-http-settings", local.project)
-  https_listener_name             = format("%s-appgw-fe-https-settings", local.project)
-  http_request_routing_rule_name  = format("%s-appgw-http-reqs-routing-rule", local.project)
-  https_request_routing_rule_name = format("%s-appgw-https-reqs-routing-rule", local.project)
-  acme_le_ssl_cert_name           = format("%s-appgw-acme-le-ssl-cert", local.project)
-  http_to_https_redirect_rule     = format("%s-appgw-http-to-https-redirect-rule", local.project)
-}
-
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.89"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.1.20"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -192,22 +176,41 @@ module "app_gw" {
   rewrite_rule_sets = [
     {
       name = "rewrite-rule-set-api"
-      rewrite_rules = [{
-        name          = "http-headers-api"
-        rule_sequence = 100
-        condition     = null
-        request_header_configurations = [
-          {
-            header_name  = "X-Forwarded-For"
-            header_value = "{var_client_ip}"
-          },
-          {
-            header_name  = "X-Client-Ip"
-            header_value = "{var_client_ip}"
-          },
-        ]
-        response_header_configurations = []
-      }]
+      rewrite_rules = [
+        {
+          name          = "http-deny-path"
+          rule_sequence = 1
+          condition = {
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_deny_paths)
+            ignore_case = true
+            negate      = false
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+        },
+        {
+          name          = "http-headers-api"
+          rule_sequence = 100
+          condition     = null
+          request_header_configurations = [
+            {
+              header_name  = "X-Forwarded-For"
+              header_value = "{var_client_ip}"
+            },
+            {
+              header_name  = "X-Client-Ip"
+              header_value = "{var_client_ip}"
+            },
+          ]
+          response_header_configurations = []
+          url                            = null
+        },
+      ]
     }
   ]
   # TLS

@@ -60,6 +60,9 @@ app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
 app_gateway_alerts_enabled              = false
+app_gateway_deny_paths = [
+  "/notfound/*",
+]
 
 # postgresql
 prostgresql_enabled                      = true
