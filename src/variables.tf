@@ -784,3 +784,15 @@ variable "io_bpd_hostname" {
   description = "IO BPD hostname"
   default     = ""
 }
+
+variable "xpay_hostname" {
+  type        = string
+  description = "Nexi xpay hostname"
+  default     = ""
+}
+
+variable "paytipper_hostname" {
+  type        = string
+  description = "Paytipper hostname"
+  default     = ""
+}
