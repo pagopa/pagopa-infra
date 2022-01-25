@@ -136,6 +136,40 @@ module "pagopa_proxy_app_service" {
   tags = var.tags
 }
 
+# Availability: Alerting Action
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa_proxy_availability" {
+  # only for PROD env
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-%s-availability-alert", local.project, module.pagopa_proxy_app_service.name)
+  resource_group_name = azurerm_resource_group.pagopa_proxy_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "Availability greater than or equal 99%"
+  enabled        = true
+  query = format(<<-QUERY
+  requests
+    | where cloud_RoleName == '%s'
+    | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,15m)
+    | extend Availability=((Success*1.0)/Total)*100
+    | where toint(Availability) < 99
+  QUERY
+  , format("%s-fn-%s", local.project, module.pagopa_proxy_app_service.name))
+  severity    = 1
+  frequency   = 45
+  time_window = 45
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
 data "azurerm_key_vault_secret" "pagopa_proxy_password" {
   name         = "pagopa-proxy-password"
   key_vault_id = module.key_vault.id
