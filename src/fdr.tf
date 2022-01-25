@@ -27,3 +27,12 @@ resource "azurerm_storage_container" "fdr_rend_flow" {
   storage_account_name  = module.fdr_flows_sa.name
   container_access_type = "private"
 }
+
+
+# https://medium.com/marcus-tee-anytime/secure-azure-blob-storage-with-azure-api-management-managed-identities-b0b82b53533c
+# Change container Authentication method - to Azure AD authentication, too
+resource "azurerm_role_assignment" "data-contributor-role" {
+  scope                = module.fdr_flows_sa.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = module.apim.principal_id
+}
