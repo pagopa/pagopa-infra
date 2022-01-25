@@ -372,6 +372,12 @@ variable "app_gateway_max_capacity" {
   default = 2
 }
 
+variable "app_gateway_deny_paths" {
+  type        = list(string)
+  description = "Deny paths on app gateway"
+  default     = []
+}
+
 # Azure DevOps Agent
 variable "enable_azdoa" {
   type        = bool
@@ -795,4 +801,22 @@ variable "paytipper_hostname" {
   type        = string
   description = "Paytipper hostname"
   default     = ""
+
+# fdr
+variable "fdr_enable_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "fdr_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "fdr_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
 }
