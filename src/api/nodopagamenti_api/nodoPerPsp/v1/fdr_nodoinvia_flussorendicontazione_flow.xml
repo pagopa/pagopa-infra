@@ -41,18 +41,13 @@
         <base />
     </backend>
     <outbound>
-        <return-response>
-            <set-header name="Content-Type" exists-action="override">
-                <value>application/xml</value>
-            </set-header>
-            <set-body>@(context.Response.Body.As<string>())</set-body>
-        </return-response>
+        <set-variable name="originalrsp" value="@(context.Response.Body.As<string>())" />
         <cache-lookup-value key="@{
                 var fdrFileName=(string) context.Variables["identificativoPSP"]+"_"+context.Variables["identificativoFlusso"]+"_"+context.Variables["dataOraFlusso"];
                 return fdrFileName;
             }" variable-name="xmlRendicontazione" caching-type="internal" />
         <set-variable name="esito" value="@{
-                var response = context.Response.Body.As<String>();
+                var response = (string) context.Variables["originalrsp"];
                 String[] spearator = {"esito"};
                 String[] result = response.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
                 var esito = result[1].Substring(1,result[1].Length-3);
@@ -106,6 +101,12 @@
                 </send-request>
             </when>
         </choose>
+        <return-response>
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/xml</value>
+            </set-header>
+            <set-body>@((string)context.Variables["originalrsp"])</set-body>
+        </return-response>
         <base />
     </outbound>
     <on-error>
