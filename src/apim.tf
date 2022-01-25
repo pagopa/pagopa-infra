@@ -248,6 +248,22 @@ resource "azurerm_api_management_named_value" "pagopa_fn_buyerbanks_key" {
   secret              = true
 }
 
+# fdr
+resource "azurerm_api_management_named_value" "fdrsaname" {
+  name                = "fdrsaname"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "fdrcontainername"
+  value               = module.fdr_flows_sa.name
+}
+
+resource "azurerm_api_management_named_value" "fdrcontainername" {
+  name                = "fdrcontainername"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "fdrcontainername"
+  value               = azurerm_storage_container.fdr_rend_flow.name
+}
 
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
