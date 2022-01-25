@@ -253,7 +253,7 @@ resource "azurerm_api_management_named_value" "fdrsaname" {
   name                = "fdrsaname"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "fdrcontainername"
+  display_name        = "fdrsaname"
   value               = module.fdr_flows_sa.name
 }
 

@@ -126,7 +126,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy" {
 
 resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
 
-  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1.name
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e9630cb78e981290d7c74c" : "61e9630cb78e981290d7c74c"
