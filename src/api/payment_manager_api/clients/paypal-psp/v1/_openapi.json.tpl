@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Paypal PSP API",
-    "description": "Paypal API to support onboarding and paypal payment"
+    "description": "Paypal API to support onboarding and paypal payment",
     "version": "1.0.0"
   },
   "servers": [

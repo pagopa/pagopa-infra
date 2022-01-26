@@ -256,5 +256,6 @@ pagopa_proxy_size           = "P1v3"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
-io_bpd_hostname = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
-xpay_hostname   = "ecommerce.nexi.it"
+io_bpd_hostname    = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
+xpay_hostname      = "ecommerce.nexi.it"
+paytipper_hostname = "st.paytipper.com"
