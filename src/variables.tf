@@ -801,6 +801,7 @@ variable "paytipper_hostname" {
   type        = string
   description = "Paytipper hostname"
   default     = ""
+}
 
 # fdr
 variable "fdr_enable_versioning" {
