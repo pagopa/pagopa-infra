@@ -803,6 +803,12 @@ variable "paytipper_hostname" {
   default     = ""
 }
 
+variable "bpd_hostname" {
+  type        = string
+  description = "BPD hostname"
+  default     = ""
+}
+
 # fdr
 variable "fdr_enable_versioning" {
   type        = bool

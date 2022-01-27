@@ -270,6 +270,7 @@ nodo_pagamenti_test_enabled = true
 io_bpd_hostname    = "portal.test.pagopa.gov.it"
 xpay_hostname      = "int-ecommerce.nexi.it"
 paytipper_hostname = "st.paytipper.com"
+bpd_hostname       = "api.dev.cstar.pagopa.it"
 
 # fdr
 fdr_delete_retention_days = 30
