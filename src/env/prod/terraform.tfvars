@@ -260,4 +260,5 @@ io_bpd_hostname    = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
 xpay_hostname      = "ecommerce.nexi.it"
 paytipper_hostname = "st.paytipper.com"
 bpd_hostname       = "api.cstar.pagopa.it"
-codbage_hostname   = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
+cobadge_hostname   = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
+fesp_hostname      = "portal.test.pagopa.gov.it"

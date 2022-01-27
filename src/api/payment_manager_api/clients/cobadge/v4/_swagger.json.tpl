@@ -59,11 +59,12 @@
         "operationId": "cobadgeUsingPost",
         "parameters": [
           {
-            "name": "searchRequestId",
-            "in": "path",
-            "description": "searchRequestId",
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/CobadgeRequest"
+            },
             "required": true,
-            "type": "string"
           }
         ],
         "responses": {

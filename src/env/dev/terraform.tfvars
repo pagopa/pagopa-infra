@@ -271,7 +271,8 @@ io_bpd_hostname    = "portal.test.pagopa.gov.it"
 xpay_hostname      = "int-ecommerce.nexi.it"
 paytipper_hostname = "st.paytipper.com"
 bpd_hostname       = "api.dev.cstar.pagopa.it"
-codbage_hostname   = "portal.test.pagopa.gov.it"
+cobadge_hostname   = "portal.test.pagopa.gov.it"
+fesp_hostname      = "portal.test.pagopa.gov.it"
 
 # fdr
 fdr_delete_retention_days = 30

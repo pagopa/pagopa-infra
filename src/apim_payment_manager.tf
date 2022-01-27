@@ -798,3 +798,55 @@ module "apim_pm_cobadge_api_v4" {
     restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
+
+
+#########################
+## API FESP            ##
+#########################
+locals {
+  apim_pm_fesp_api = {
+    display_name          = "Payment Manager fesp redirect API"
+    description           = "API to support fesp redirect"
+    path                  = "payment-manager/clients/fesp"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "apim_pm_fesp_api" {
+
+  name                = format("%s-pm-fesp-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_fesp_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_fesp_api_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-fesp-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_fesp_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.apim_pm_fesp_api.id
+  api_version           = "v4"
+  service_url           = local.apim_pm_fesp_api.service_url
+
+  description  = local.apim_pm_fesp_api.description
+  display_name = local.apim_pm_fesp_api.display_name
+  path         = local.apim_pm_fesp_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/payment_manager_api/clients/fesp/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/payment_manager_api/clients/fesp/_base_policy.xml.tpl", {
+    endpoint          = format("https://%s", var.fesp_hostname)
+    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
+  })
+}

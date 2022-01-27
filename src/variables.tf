@@ -815,6 +815,12 @@ variable "cobadge_hostname" {
   default     = ""
 }
 
+variable "fesp_hostname" {
+  type        = string
+  description = "Fesp hostname"
+  default     = ""
+}
+
 # fdr
 variable "fdr_enable_versioning" {
   type        = bool
