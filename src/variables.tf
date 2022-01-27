@@ -809,6 +809,12 @@ variable "bpd_hostname" {
   default     = ""
 }
 
+variable "cobadge_hostname" {
+  type        = string
+  description = "Cobadge hostname"
+  default     = ""
+}
+
 # fdr
 variable "fdr_enable_versioning" {
   type        = bool

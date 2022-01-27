@@ -263,3 +263,4 @@ io_bpd_hostname    = "portal.test.pagopa.gov.it" #TO UPDATE with uat hostname
 xpay_hostname      = "int-ecommerce.nexi.it"
 paytipper_hostname = "st.paytipper.com"
 bpd_hostname       = "api.uat.cstar.pagopa.it"
+codbage_hostname   = "portal.test.pagopa.gov.it"
