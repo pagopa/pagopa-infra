@@ -31,6 +31,7 @@
         <rate-limit-by-key calls="60"
             renewal-period="60"
             counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization","").AsJwt()?.Subject)" />
+
         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
            <openid-config url="https://login.microsoftonline.com/${pagopa_tenant_id}/v2.0/.well-known/openid-configuration" />
            <required-claims>
@@ -41,13 +42,15 @@
         </validate-jwt>
 
         <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
+        <set-variable name="isPost" value="@(context.Request.Method.Equals("POST"))" />
+        <set-variable name="isXsd" value="@(context.Request.Url.Path.Contains("xsd"))" />
         <choose>
-            <when condition="@(!context.Variables.GetValueOrDefault<bool>("isGet"))">
-            <return-response>
-                <set-status code="403" reason="Unauthorized, you have read-only access" />
-            </return-response>
-        </when>
-    </choose>
+            <when condition="@(!(context.Variables.GetValueOrDefault<bool>("isPost") && context.Variables.GetValueOrDefault<bool>("isXsd")) && !context.Variables.GetValueOrDefault<bool>("isGet"))">
+                <return-response>
+                    <set-status code="403" reason="Unauthorized, you have read-only access" />
+                </return-response>
+            </when>
+        </choose>
 </inbound>
 <outbound>
 <base />
