@@ -1,3 +1,45 @@
+##############
+## Products ##
+##############
+
+module "apim_nodo_dei_pagamenti_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+
+  product_id   = "nodo"
+  display_name = "Nodo dei Pagamenti"
+  description  = "Product for Nodo dei Pagamenti"
+
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  published             = true
+  subscription_required = false
+  approval_required     = false
+
+  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+}
+
+locals {
+
+  api_nodo_product = [
+    azurerm_api_management_api.apim_node_for_psp_api_v1.name,
+    azurerm_api_management_api.apim_nodo_per_psp_api_v1.name,
+    azurerm_api_management_api.apim_node_for_io_api_v1.name,
+    azurerm_api_management_api.apim_psp_for_node_api_v1.name,
+    azurerm_api_management_api.apim_nodo_per_pa_api_v1.name,
+  ]
+
+}
+
+resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api" {
+  for_each = toset(local.api_nodo_product)
+
+  api_name            = each.key
+  product_id          = module.apim_nodo_dei_pagamenti_product.product_id
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+}
+
 ############################
 ## WS node for psp (NM3) ##
 ############################
