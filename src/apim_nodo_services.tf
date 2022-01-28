@@ -306,3 +306,52 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
 
   xml_content = file("./api/nodopagamenti_api/nodoPerPa/v1/_base_policy.xml")
 }
+
+######################
+## Nodo per PM API  ##
+######################
+locals {
+  apim_nodo_per_pm_api = {
+    display_name          = "Nodo per Payment Manager API"
+    description           = "API to support Payment Manager"
+    path                  = "nodo/nodo-per-pm"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "nodo_per_pm_api" {
+
+  name                = format("%s-nodo-per-pm-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_nodo_per_pm_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_nodo_per_pm_api_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-nodo-per-pm-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  subscription_required = local.apim_nodo_per_pm_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id
+  api_version           = "v1"
+  service_url           = local.apim_nodo_per_pm_api.service_url
+
+  description  = local.apim_nodo_per_pm_api.description
+  display_name = local.apim_nodo_per_pm_api.display_name
+  path         = local.apim_nodo_per_pm_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/_base_policy.xml.tpl", {
+    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
+  })
+}

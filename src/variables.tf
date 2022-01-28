@@ -785,6 +785,42 @@ variable "nodo_ip_filter" {
   default     = ""
 }
 
+variable "io_bpd_hostname" {
+  type        = string
+  description = "IO BPD hostname"
+  default     = ""
+}
+
+variable "xpay_hostname" {
+  type        = string
+  description = "Nexi xpay hostname"
+  default     = ""
+}
+
+variable "paytipper_hostname" {
+  type        = string
+  description = "Paytipper hostname"
+  default     = ""
+}
+
+variable "bpd_hostname" {
+  type        = string
+  description = "BPD hostname"
+  default     = ""
+}
+
+variable "cobadge_hostname" {
+  type        = string
+  description = "Cobadge hostname"
+  default     = ""
+}
+
+variable "fesp_hostname" {
+  type        = string
+  description = "Fesp hostname"
+  default     = ""
+}
+
 # fdr
 variable "fdr_enable_versioning" {
   type        = bool
