@@ -3,7 +3,7 @@ locals {
     WEBSITE_NODE_DEFAULT_VERSION = "14.16.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     WEBSITE_VNET_ROUTE_ALL       = "1"
-     
+
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
