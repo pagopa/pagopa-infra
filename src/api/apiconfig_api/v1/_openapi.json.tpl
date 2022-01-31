@@ -1078,7 +1078,7 @@
                     "enabled": {
                         "type": "boolean"
                     },
-                    "payment_type": {
+                    "payment_types": {
                         "items": {
                             "enum": [
                                 "BBT",
@@ -1099,7 +1099,7 @@
                 "required": [
                     "channel_code",
                     "enabled",
-                    "payment_type"
+                    "payment_types"
                 ],
                 "type": "object"
             },
@@ -1108,7 +1108,7 @@
                     "channel_code": {
                         "type": "string"
                     },
-                    "payment_type": {
+                    "payment_types": {
                         "items": {
                             "enum": [
                                 "BBT",
@@ -1128,7 +1128,7 @@
                 },
                 "required": [
                     "channel_code",
-                    "payment_type"
+                    "payment_types"
                 ],
                 "type": "object"
             },
@@ -1148,7 +1148,7 @@
             },
             "PspChannelPaymentTypes": {
                 "properties": {
-                    "payment_type": {
+                    "payment_types": {
                         "items": {
                             "enum": [
                                 "BBT",
@@ -1167,7 +1167,7 @@
                     }
                 },
                 "required": [
-                    "payment_type"
+                    "payment_types"
                 ],
                 "type": "object"
             },
