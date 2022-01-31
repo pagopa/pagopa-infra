@@ -152,7 +152,6 @@ module "pagopa_proxy_app_service" {
   plan_sku_size = var.pagopa_proxy_size
 
   linux_fx_version = "NODE|14-lts"
-  app_command_line = "node /home/site/wwwroot/src/server.js"
 
   # App service plan
   name                = format("%s-app-pagopa-proxy", local.project)
@@ -172,6 +171,7 @@ module "pagopa_proxy_app_service" {
 
 
 module "pagopa_proxy_app_service_slot_staging" {
+
   source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
 
   # App service plan
@@ -186,7 +186,6 @@ module "pagopa_proxy_app_service_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
   health_check_path = "/ping"
 
   # App settings
