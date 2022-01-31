@@ -1,3 +1,45 @@
+##############
+## Products ##
+##############
+
+module "apim_nodo_dei_pagamenti_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+
+  product_id   = "nodo"
+  display_name = "Nodo dei Pagamenti"
+  description  = "Product for Nodo dei Pagamenti"
+
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  published             = true
+  subscription_required = false
+  approval_required     = false
+
+  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+}
+
+locals {
+
+  api_nodo_product = [
+    azurerm_api_management_api.apim_node_for_psp_api_v1.name,
+    azurerm_api_management_api.apim_nodo_per_psp_api_v1.name,
+    azurerm_api_management_api.apim_node_for_io_api_v1.name,
+    azurerm_api_management_api.apim_psp_for_node_api_v1.name,
+    azurerm_api_management_api.apim_nodo_per_pa_api_v1.name,
+  ]
+
+}
+
+resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api" {
+  for_each = toset(local.api_nodo_product)
+
+  api_name            = each.key
+  product_id          = module.apim_nodo_dei_pagamenti_product.product_id
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+}
+
 ############################
 ## WS node for psp (NM3) ##
 ############################
@@ -305,4 +347,53 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = file("./api/nodopagamenti_api/nodoPerPa/v1/_base_policy.xml")
+}
+
+######################
+## Nodo per PM API  ##
+######################
+locals {
+  apim_nodo_per_pm_api = {
+    display_name          = "Nodo per Payment Manager API"
+    description           = "API to support Payment Manager"
+    path                  = "nodo/nodo-per-pm"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "nodo_per_pm_api" {
+
+  name                = format("%s-nodo-per-pm-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_nodo_per_pm_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_nodo_per_pm_api_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-nodo-per-pm-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  subscription_required = local.apim_nodo_per_pm_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id
+  api_version           = "v1"
+  service_url           = local.apim_nodo_per_pm_api.service_url
+
+  description  = local.apim_nodo_per_pm_api.description
+  display_name = local.apim_nodo_per_pm_api.display_name
+  path         = local.apim_nodo_per_pm_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/_base_policy.xml.tpl", {
+    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
+  })
 }

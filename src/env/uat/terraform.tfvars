@@ -258,3 +258,11 @@ nodo_ip_filter = "10.79.20.32"
 
 # nodo-dei-pagamenti-test
 nodo_pagamenti_test_enabled = true
+
+# payment-manager clients
+io_bpd_hostname    = "portal.test.pagopa.gov.it" #TO UPDATE with uat hostname
+xpay_hostname      = "int-ecommerce.nexi.it"
+paytipper_hostname = "st.paytipper.com"
+bpd_hostname       = "api.uat.cstar.pagopa.it"
+cobadge_hostname   = "portal.test.pagopa.gov.it"
+fesp_hostname      = "portal.test.pagopa.gov.it"
