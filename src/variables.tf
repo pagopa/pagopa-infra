@@ -773,12 +773,6 @@ variable "pagopa_proxy_size" {
   default     = null
 }
 
-variable "pagopa_proxy_always_on" {
-  type        = bool
-  description = "pagopa-proxy always on property"
-  default     = false
-}
-
 variable "nodo_ip_filter" {
   type        = string
   description = "IP Node"
