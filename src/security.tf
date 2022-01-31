@@ -170,6 +170,11 @@ data "azurerm_key_vault_secret" "sec_storage_id" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "io_be_api_key" {
+  name         = "io-be-api-key"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "fn_checkout_key" {
   name         = "fn-checkout-key"
   key_vault_id = module.key_vault.id
