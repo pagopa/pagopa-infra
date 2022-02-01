@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="${endpoint}" />
+      <set-backend-service base-url="{{pm-gtw-hostname}}/pp-restapi/v4" />
     </inbound>
     <outbound>
       <base />
