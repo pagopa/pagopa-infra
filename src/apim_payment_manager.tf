@@ -24,6 +24,11 @@ data "azurerm_key_vault_secret" "pm_gtw_hostname" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "pm_restapi_ip" {
+  name         = "pm-restapi-ip"
+  key_vault_id = module.key_vault.id
+}
+
 #####################################
 ## API buyerbanks                  ##
 #####################################
@@ -275,7 +280,6 @@ module "apim_pm_restapirtd_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi-rtd/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s:1443/pp-restapi-rtd/v1", data.azurerm_key_vault_secret.pm_restapirtd_ip.value)
     restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
@@ -304,7 +308,6 @@ module "apim_pm_restapirtd_api_v2" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi-rtd/v2/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s:1443/pp-restapi-rtd/v2", data.azurerm_key_vault_secret.pm_restapirtd_ip.value)
     restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
@@ -360,7 +363,6 @@ module "apim_pm_logging_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/logging/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s:1443/db-logging", data.azurerm_key_vault_secret.pm_logging_ip.value)
     restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
@@ -392,7 +394,7 @@ resource "azurerm_api_management_api_version_set" "pm_webview_api" {
   versioning_scheme   = "Segment"
 }
 
-module "apim_pm_webview_api_v1" {
+module "apim_pm_webview_api_v3" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
@@ -402,7 +404,7 @@ module "apim_pm_webview_api_v1" {
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_webview_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_webview_api.id
-  api_version           = "v1"
+  api_version           = "v3"
   service_url           = local.apim_pm_webview_api.service_url
 
   description  = local.apim_pm_webview_api.description
@@ -411,13 +413,11 @@ module "apim_pm_webview_api_v1" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/webview-cd/_swagger.json.tpl", {
+  content_value = templatefile("./api/payment_manager_api/webview-cd/v3/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/webview-cd/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/pp-restapi-CD/v3/webview", data.azurerm_key_vault_secret.pm_webview_ip.value)
-  })
+  xml_content = file("./api/payment_manager_api/webview-cd/v3/_base_policy.xml.tpl")
 }
 
 ############################
@@ -507,7 +507,10 @@ module "apim_pm_wisp_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/wisp/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/wisp/_base_policy.xml.tpl", {
+    origin = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
+
+  })
 }
 
 ########################
