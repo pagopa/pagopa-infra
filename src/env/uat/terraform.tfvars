@@ -236,7 +236,7 @@ acr_enabled = true
 
 # db nodo dei pagamenti
 db_port                            = 1521
-db_service_name                    = "NDPSPCA_PP_NODO4_CFG" # TODO chiedere a SIA
+db_service_name                    = "NDPSPCA_PP_NODO4_CFG"
 dns_a_reconds_dbnodo_ips           = ["10.101.35.39", "10.101.35.40", "10.101.35.41"]
 private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
@@ -258,3 +258,11 @@ nodo_ip_filter = "10.79.20.32"
 
 # nodo-dei-pagamenti-test
 nodo_pagamenti_test_enabled = true
+
+# payment-manager clients
+io_bpd_hostname    = "portal.test.pagopa.gov.it" #TO UPDATE with uat hostname
+xpay_hostname      = "int-ecommerce.nexi.it"
+paytipper_hostname = "st.paytipper.com"
+bpd_hostname       = "api.uat.cstar.pagopa.it"
+cobadge_hostname   = "portal.test.pagopa.gov.it"
+fesp_hostname      = "portal.test.pagopa.gov.it"

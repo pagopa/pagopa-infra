@@ -1,3 +1,59 @@
+locals {
+  pagopa_proxy_config = {
+    WEBSITE_NODE_DEFAULT_VERSION = "14.16.0"
+    WEBSITE_RUN_FROM_PACKAGE     = "1"
+    WEBSITE_VNET_ROUTE_ALL       = "1"
+    WEBSITE_DNS_SERVER           = "168.63.129.16"
+
+    # Monitoring
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
+
+    # proxy-specific env vars
+    PAGOPA_HOST                = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
+    PAGOPA_PORT                = 443
+    PAGOPA_PASSWORD            = data.azurerm_key_vault_secret.pagopa_proxy_password.value
+    PAGOPA_ID_PSP              = data.azurerm_key_vault_secret.pagopa_proxy_id_psp.value
+    PAGOPA_ID_INT_PSP          = data.azurerm_key_vault_secret.pagopa_proxy_id_intermediario_psp.value
+    PAGOPA_ID_CANALE           = data.azurerm_key_vault_secret.pagopa_proxy_id_canale.value
+    PAGOPA_ID_CANALE_PAGAMENTO = data.azurerm_key_vault_secret.pagopa_proxy_id_canale_pagamento.value
+    PAGOPA_WS_NODO_PER_PSP_URI = "/nodo/nodo-per-psp/v1"
+    PAGOPA_WS_NODE_FOR_PSP_URI = "/nodo/node-for-psp/v1"
+    PAGOPA_WS_NODE_FOR_IO_URI  = "/nodo/node-for-io/v1"
+    NM3_ENABLED                = true
+
+    REDIS_DB_URL      = format("redis://%s", module.pagopa_proxy_redis.hostname)
+    REDIS_DB_PORT     = module.pagopa_proxy_redis.ssl_port
+    REDIS_DB_PASSWORD = module.pagopa_proxy_redis.primary_access_key
+    REDIS_USE_CLUSTER = var.env_short == "p"
+  }
+}
+
+data "azurerm_key_vault_secret" "pagopa_proxy_password" {
+  name         = "pagopa-proxy-password"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "pagopa_proxy_id_canale" {
+  name         = "pagopa-proxy-id-canale"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "pagopa_proxy_id_canale_pagamento" {
+  name         = "pagopa-proxy-id-canale-pagamento"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "pagopa_proxy_id_intermediario_psp" {
+  name         = "pagopa-proxy-id-intermediario-psp"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "pagopa_proxy_id_psp" {
+  name         = "pagopa-proxy-id-psp"
+  key_vault_id = module.key_vault.id
+}
+
+
 resource "azurerm_resource_group" "pagopa_proxy_rg" {
   name     = format("%s-pagopa-proxy-rg", local.project)
   location = var.location
@@ -78,7 +134,7 @@ module "pagopa_proxy_redis" {
 }
 
 module "pagopa_proxy_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.19"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.28"
 
   depends_on = [
     module.pagopa_proxy_snet
@@ -96,6 +152,7 @@ module "pagopa_proxy_app_service" {
   plan_sku_size = var.pagopa_proxy_size
 
   linux_fx_version = "NODE|14-lts"
+  app_command_line = "node /home/site/wwwroot/src/server.js"
 
   # App service plan
   name                = format("%s-app-pagopa-proxy", local.project)
@@ -103,31 +160,8 @@ module "pagopa_proxy_app_service" {
   always_on           = var.pagopa_proxy_always_on
   health_check_path   = "/ping"
 
-  app_settings = {
-    WEBSITE_NODE_DEFAULT_VERSION = "14.16.0"
-    WEBSITE_RUN_FROM_PACKAGE     = "1"
-
-    # Monitoring
-    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
-
-    # proxy-specific env vars
-    PAGOPA_HOST                = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
-    PAGOPA_PORT                = 443
-    PAGOPA_PASSWORD            = data.azurerm_key_vault_secret.pagopa_proxy_password.value
-    PAGOPA_ID_PSP              = data.azurerm_key_vault_secret.pagopa_proxy_id_psp.value
-    PAGOPA_ID_INT_PSP          = data.azurerm_key_vault_secret.pagopa_proxy_id_intermediario_psp.value
-    PAGOPA_ID_CANALE           = data.azurerm_key_vault_secret.pagopa_proxy_id_canale.value
-    PAGOPA_ID_CANALE_PAGAMENTO = data.azurerm_key_vault_secret.pagopa_proxy_id_canale_pagamento.value
-    PAGOPA_WS_NODO_PER_PSP_URI = "/nodo/nodo-per-psp/v1"
-    PAGOPA_WS_NODE_FOR_PSP_URI = "/nodo/node-for-psp/v1"
-    PAGOPA_WS_NODE_FOR_IO_URI  = "/nodo/node-for-io/v1"
-    NM3_ENABLED                = true
-
-    REDIS_DB_URL      = format("redis://%s", module.pagopa_proxy_redis.hostname)
-    REDIS_DB_PORT     = module.pagopa_proxy_redis.ssl_port
-    REDIS_DB_PASSWORD = module.pagopa_proxy_redis.primary_access_key
-    REDIS_USE_CLUSTER = var.env_short == "p"
-  }
+  # App settings
+  app_settings = local.pagopa_proxy_config
 
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
@@ -136,27 +170,31 @@ module "pagopa_proxy_app_service" {
   tags = var.tags
 }
 
-data "azurerm_key_vault_secret" "pagopa_proxy_password" {
-  name         = "pagopa-proxy-password"
-  key_vault_id = module.key_vault.id
-}
 
-data "azurerm_key_vault_secret" "pagopa_proxy_id_canale" {
-  name         = "pagopa-proxy-id-canale"
-  key_vault_id = module.key_vault.id
-}
+module "pagopa_proxy_app_service_slot_staging" {
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
 
-data "azurerm_key_vault_secret" "pagopa_proxy_id_canale_pagamento" {
-  name         = "pagopa-proxy-id-canale-pagamento"
-  key_vault_id = module.key_vault.id
-}
+  # App service plan
+  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
+  app_service_id      = module.pagopa_proxy_app_service.id
+  app_service_name    = module.pagopa_proxy_app_service.name
 
-data "azurerm_key_vault_secret" "pagopa_proxy_id_intermediario_psp" {
-  name         = "pagopa-proxy-id-intermediario-psp"
-  key_vault_id = module.key_vault.id
-}
+  # App service
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.pagopa_proxy_rg.name
+  location            = azurerm_resource_group.pagopa_proxy_rg.location
 
-data "azurerm_key_vault_secret" "pagopa_proxy_id_psp" {
-  name         = "pagopa-proxy-id-psp"
-  key_vault_id = module.key_vault.id
+  always_on         = true
+  linux_fx_version  = "NODE|14-lts"
+  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  health_check_path = "/ping"
+
+  # App settings
+  app_settings = local.pagopa_proxy_config
+
+  allowed_subnets = [module.apim_snet.id]
+  allowed_ips     = []
+  subnet_id       = module.pagopa_proxy_snet.id
+
+  tags = var.tags
 }
