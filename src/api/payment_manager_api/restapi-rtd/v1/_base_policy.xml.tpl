@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="${endpoint}" />
+      <set-backend-service base-url="{{pm-gtw-hostname}}/pp-restapi-rtd/v1" />
       <ip-filter action="allow">
         <address>${restapi-ip-filter}</address>
       </ip-filter>
