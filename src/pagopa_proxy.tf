@@ -192,7 +192,7 @@ module "pagopa_proxy_app_service_slot_staging" {
   # App settings
   app_settings = local.pagopa_proxy_config
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [module.apim_snet.id, module.azdoa_snet[0].id]
   allowed_ips     = []
   subnet_id       = module.pagopa_proxy_snet.id
 
