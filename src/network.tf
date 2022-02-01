@@ -77,7 +77,7 @@ module "route_table_peering_sia" {
     },
     {
       # uat
-      name                   = "to-appservice-outbound-sia-uat-subnet"
+      name                   = "to-pm-appservice-outbound-sia-uat-subnet"
       address_prefix         = "10.70.72.0/24"
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.70.249.10"
