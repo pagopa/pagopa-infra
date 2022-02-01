@@ -19,6 +19,11 @@ module "apim_payment_manager_product" {
   policy_xml = file("./api_product/payment_manager_api/_base_policy.xml")
 }
 
+data "azurerm_key_vault_secret" "pm_gtw_hostname" {
+  name         = "pm-gtw-hostname"
+  key_vault_id = module.key_vault.id
+}
+
 #####################################
 ## API buyerbanks                  ##
 #####################################
@@ -438,17 +443,12 @@ module "apim_pm_webview_api_v1" {
 ############################
 locals {
   apim_pm_adminpanel_api = {
-    display_name          = "Payment Manager admin panel frontend"
+    display_name          = "Payment Manager - Admin pPnel "
     description           = "Frontend to support PM operations"
-    path                  = "payment-manager/pp-admin-panel"
+    path                  = "pp-admin-panel"
     subscription_required = false
     service_url           = null
   }
-}
-
-data "azurerm_key_vault_secret" "pm_adminpanel_ip" {
-  name         = "pm-adminpanel-ip"
-  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_api_version_set" "pm_adminpanel_api" {
@@ -469,8 +469,6 @@ module "apim_pm_adminpanel_api_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_adminpanel_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pm_adminpanel_api.id
-  api_version           = "v1"
   service_url           = local.apim_pm_adminpanel_api.service_url
 
   description  = local.apim_pm_adminpanel_api.description
@@ -484,7 +482,7 @@ module "apim_pm_adminpanel_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/pp-admin-panel", data.azurerm_key_vault_secret.pm_adminpanel_ip.value)
+    origin = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
   })
 }
 
