@@ -184,7 +184,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
   query = format(<<-QUERY
   requests
     | where cloud_RoleName == '%s'
-    | where name contains "SyncBuyerBanks"
+    | where name contains "UpdateBuyerBanks"
     | summarize Sucess=count(success == true) by length=bin(timestamp,24h)
     | where toint(Sucess) >= 1
 
