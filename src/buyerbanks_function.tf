@@ -61,6 +61,8 @@ module "buyerbanks_function" {
     PAGOPA_BUYERBANKS_SIGNATURE       = data.azurerm_key_vault_secret.pagopa_buyerbank_signature.value
     PAGOPA_BUYERBANKS_SIGN_ALG        = "RSA-SHA256"
     PAGOPA_BUYERBANKS_SIGN_ALG_STRING = "SHA256withRSA"
+    PAGOPA_BUYERBANKS_CERT_PEER       = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_cert_peer[0].value : null
+    PAGOPA_BUYERBANKS_THUMBPRINT_PEER = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint_peer[0].value : null
   }
 
   allowed_subnets = [module.apim_snet.id]
@@ -253,6 +255,23 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_signature" {
   key_vault_id = module.key_vault.id
 }
 
+/*
+ * MyBank certificate for response authentication
+ */
+data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_peer" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "pagopa-buyerbank-cert-peer"
+  key_vault_id = module.key_vault.id
+}
+
+/*
+ * MyBank certificate thumbprint
+ */
+data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint_peer" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "pagopa-buyerbank-thumbprint-peer"
+  key_vault_id = module.key_vault.id
+}
 
 /*
  * X.509 cert - buyerbanks functions
