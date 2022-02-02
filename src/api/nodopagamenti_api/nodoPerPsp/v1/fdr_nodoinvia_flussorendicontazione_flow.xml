@@ -52,8 +52,6 @@
             return xmlRendicontazione;
         }" />
         <cache-store-value key="@{
-            // identificativoPSP##identificativoIntermediarioPSP##identificativoCanale##identificativoDominio##identificativoFlusso##dataOraFlusso.xml
-
             var fdrFileName=(string) context.Variables["identificativoPSP"]+"##"+context.Variables["identificativoIntermediarioPSP"]+"##"+context.Variables["identificativoCanale"]+"##"+context.Variables["identificativoDominio"]+"##"+context.Variables["identificativoFlusso"]+"##"+context.Variables["dataOraFlusso"];
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
