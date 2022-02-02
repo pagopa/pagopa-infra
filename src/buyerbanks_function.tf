@@ -48,7 +48,7 @@ module "buyerbanks_function" {
     FUNCTIONS_WORKER_RUNTIME          = "node"
     WEBSITE_NODE_DEFAULT_VERSION      = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT    = 4
-    NODE_ENV                          = "production"
+    NODE_ENV                          = var.env_short == "p" ? "production" : "uat"
     BUYERBANKS_SA_CONNECTION_STRING   = module.buyerbanks_storage.primary_connection_string
     BUYERBANKS_BLOB_CONTAINER         = azurerm_storage_container.banks.name
     PAGOPA_BUYERBANKS_CERT            = azurerm_key_vault_certificate.buyerbanks_cert.certificate_data_base64
