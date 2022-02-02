@@ -19,6 +19,16 @@ module "apim_payment_manager_product" {
   policy_xml = file("./api_product/payment_manager_api/_base_policy.xml")
 }
 
+data "azurerm_key_vault_secret" "pm_gtw_hostname" {
+  name         = "pm-gtw-hostname"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "pm_restapi_ip" {
+  name         = "pm-restapi-ip"
+  key_vault_id = module.key_vault.id
+}
+
 #####################################
 ## API buyerbanks                  ##
 #####################################
@@ -82,11 +92,6 @@ locals {
   }
 }
 
-data "azurerm_key_vault_secret" "pm_restapi_ip" {
-  name         = "pm-restapi-ip"
-  key_vault_id = module.key_vault.id
-}
-
 resource "azurerm_api_management_api_version_set" "pm_restapi_api" {
 
   name                = format("%s-pm-restapi-api", local.project)
@@ -119,9 +124,7 @@ module "apim_pm_restapi_api_v4" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/pp-restapi/v4", data.azurerm_key_vault_secret.pm_restapi_ip.value)
-  })
+  xml_content = file("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl")
 }
 
 #####################################
@@ -136,11 +139,6 @@ locals {
     subscription_required = false
     service_url           = null
   }
-}
-
-data "azurerm_key_vault_secret" "pm_restapicd_ip" {
-  name         = "pm-restapicd-ip"
-  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_api_version_set" "pm_restapicd_api" {
@@ -175,9 +173,7 @@ module "apim_pm_restapicd_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-cd/v1/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/pp-restapi-CD/v1", data.azurerm_key_vault_secret.pm_restapicd_ip.value)
-  })
+  xml_content = file("./api/payment_manager_api/restapi-cd/v1/_base_policy.xml.tpl")
 }
 
 module "apim_pm_restapicd_api_v2" {
@@ -203,9 +199,7 @@ module "apim_pm_restapicd_api_v2" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-cd/v2/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/pp-restapi-CD/v2", data.azurerm_key_vault_secret.pm_restapicd_ip.value)
-  })
+  xml_content = file("./api/payment_manager_api/restapi-cd/v2/_base_policy.xml.tpl")
 }
 
 module "apim_pm_restapicd_api_v3" {
@@ -231,9 +225,7 @@ module "apim_pm_restapicd_api_v3" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-cd/v3/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/pp-restapi-CD/v3", data.azurerm_key_vault_secret.pm_restapicd_ip.value)
-  })
+  xml_content = file("./api/payment_manager_api/restapi-cd/v3/_base_policy.xml.tpl")
 }
 
 #####################################
@@ -288,7 +280,6 @@ module "apim_pm_restapirtd_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi-rtd/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s:1443/pp-restapi-rtd/v1", data.azurerm_key_vault_secret.pm_restapirtd_ip.value)
     restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
@@ -317,7 +308,6 @@ module "apim_pm_restapirtd_api_v2" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi-rtd/v2/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s:1443/pp-restapi-rtd/v2", data.azurerm_key_vault_secret.pm_restapirtd_ip.value)
     restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
@@ -373,7 +363,6 @@ module "apim_pm_logging_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/logging/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s:1443/db-logging", data.azurerm_key_vault_secret.pm_logging_ip.value)
     restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
@@ -405,7 +394,7 @@ resource "azurerm_api_management_api_version_set" "pm_webview_api" {
   versioning_scheme   = "Segment"
 }
 
-module "apim_pm_webview_api_v1" {
+module "apim_pm_webview_api_v3" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
@@ -415,7 +404,7 @@ module "apim_pm_webview_api_v1" {
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_webview_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_webview_api.id
-  api_version           = "v1"
+  api_version           = "v3"
   service_url           = local.apim_pm_webview_api.service_url
 
   description  = local.apim_pm_webview_api.description
@@ -424,13 +413,11 @@ module "apim_pm_webview_api_v1" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/webview-cd/_swagger.json.tpl", {
+  content_value = templatefile("./api/payment_manager_api/webview-cd/v3/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/webview-cd/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/pp-restapi-CD/v3/webview", data.azurerm_key_vault_secret.pm_webview_ip.value)
-  })
+  xml_content = file("./api/payment_manager_api/webview-cd/v3/_base_policy.xml.tpl")
 }
 
 ############################
@@ -438,17 +425,12 @@ module "apim_pm_webview_api_v1" {
 ############################
 locals {
   apim_pm_adminpanel_api = {
-    display_name          = "Payment Manager admin panel frontend"
+    display_name          = "Payment Manager - Admin pPnel "
     description           = "Frontend to support PM operations"
-    path                  = "payment-manager/pp-admin-panel"
+    path                  = "pp-admin-panel"
     subscription_required = false
     service_url           = null
   }
-}
-
-data "azurerm_key_vault_secret" "pm_adminpanel_ip" {
-  name         = "pm-adminpanel-ip"
-  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_api_version_set" "pm_adminpanel_api" {
@@ -469,8 +451,6 @@ module "apim_pm_adminpanel_api_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_adminpanel_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pm_adminpanel_api.id
-  api_version           = "v1"
   service_url           = local.apim_pm_adminpanel_api.service_url
 
   description  = local.apim_pm_adminpanel_api.description
@@ -484,7 +464,7 @@ module "apim_pm_adminpanel_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/pp-admin-panel", data.azurerm_key_vault_secret.pm_adminpanel_ip.value)
+    origin = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
   })
 }
 
@@ -495,7 +475,7 @@ locals {
   apim_pm_wisp_api = {
     display_name          = "Payment Manager Wisp"
     description           = "Frontend to support payments"
-    path                  = "payment-manager/wallet"
+    path                  = "wallet"
     subscription_required = false
     service_url           = null
   }
@@ -504,15 +484,6 @@ locals {
 data "azurerm_key_vault_secret" "wisp_ip" {
   name         = "wisp-ip"
   key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_api_management_api_version_set" "pm_wisp_api" {
-
-  name                = format("%s-pm-wisp-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
-  display_name        = local.apim_pm_wisp_api.display_name
-  versioning_scheme   = "Segment"
 }
 
 module "apim_pm_wisp_api_v1" {
@@ -524,8 +495,6 @@ module "apim_pm_wisp_api_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_wisp_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pm_wisp_api.id
-  api_version           = "v1"
   service_url           = local.apim_pm_wisp_api.service_url
 
   description  = local.apim_pm_wisp_api.description
@@ -539,7 +508,8 @@ module "apim_pm_wisp_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/wisp/_base_policy.xml.tpl", {
-    endpoint = format("https://%s:1443/wallet", data.azurerm_key_vault_secret.wisp_ip.value)
+    origin = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
+
   })
 }
 

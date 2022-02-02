@@ -248,6 +248,15 @@ resource "azurerm_api_management_named_value" "pagopa_fn_buyerbanks_key" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "pm_gtw_hostname" {
+  name                = "pm-gtw-hostname"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pm-gtw-hostname"
+  value               = data.azurerm_key_vault_secret.pm_gtw_hostname.value
+  secret              = true
+}
+
 # fdr
 resource "azurerm_api_management_named_value" "fdrsaname" {
   name                = "fdrsaname"

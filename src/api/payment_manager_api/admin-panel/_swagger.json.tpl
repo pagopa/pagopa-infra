@@ -14,7 +14,52 @@
   "paths": {
     "/*": {
       "get": {
-        "operationId": "staticResourcesAdminPanel",
+        "operationId": "GETstaticResourcesAdminPanel",
+        "description": "static resources of Admin Panel",
+        "responses": {
+          "200": {
+            "description": "static resource"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      },
+      "post": {
+        "operationId": "POSTstaticResourcesAdminPanel",
+        "description": "static resources of Admin Panel",
+        "responses": {
+          "200": {
+            "description": "static resource"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      },
+      "head": {
+        "operationId": "HEADstaticResourcesAdminPanel",
+        "description": "static resources of Admin Panel",
+        "responses": {
+          "200": {
+            "description": "static resource"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      },
+      "options": {
+        "operationId": "OPTstaticResourcesAdminPanel",
         "description": "static resources of Admin Panel",
         "responses": {
           "200": {

@@ -152,12 +152,11 @@ module "pagopa_proxy_app_service" {
   plan_sku_size = var.pagopa_proxy_size
 
   linux_fx_version = "NODE|14-lts"
-  app_command_line = "node /home/site/wwwroot/src/server.js"
 
   # App service plan
   name                = format("%s-app-pagopa-proxy", local.project)
   client_cert_enabled = false
-  always_on           = var.pagopa_proxy_always_on
+  always_on           = var.env_short == "p" ? true : false
   health_check_path   = "/ping"
 
   # App settings
@@ -172,6 +171,8 @@ module "pagopa_proxy_app_service" {
 
 
 module "pagopa_proxy_app_service_slot_staging" {
+  count = var.env_short == "p" ? 1 : 0
+
   source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
 
   # App service plan
@@ -186,13 +187,12 @@ module "pagopa_proxy_app_service_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
   health_check_path = "/ping"
 
   # App settings
   app_settings = local.pagopa_proxy_config
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [module.apim_snet.id, module.azdoa_snet[0].id]
   allowed_ips     = []
   subnet_id       = module.pagopa_proxy_snet.id
 
