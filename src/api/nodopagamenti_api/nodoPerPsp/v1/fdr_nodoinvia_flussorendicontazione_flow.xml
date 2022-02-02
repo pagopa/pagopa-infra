@@ -9,6 +9,27 @@
             var identificativoPSP = result[1].Substring(1,result[1].Length-3);
             return identificativoPSP;
         }" />
+        <set-variable name="identificativoIntermediarioPSP" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"identificativoIntermediarioPSP"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var identificativoIntermediarioPSP = result[1].Substring(1,result[1].Length-3);
+            return identificativoIntermediarioPSP;
+        }" />
+        <set-variable name="identificativoCanale" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"identificativoCanale"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var identificativoCanale = result[1].Substring(1,result[1].Length-3);
+            return identificativoCanale;
+        }" />
+        <set-variable name="identificativoDominio" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"identificativoDominio"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var identificativoDominio = result[1].Substring(1,result[1].Length-3);
+            return identificativoDominio;
+        }" />
         <set-variable name="identificativoFlusso" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoFlusso"};
@@ -31,7 +52,9 @@
             return xmlRendicontazione;
         }" />
         <cache-store-value key="@{
-            var fdrFileName=(string) context.Variables["identificativoPSP"]+"_"+context.Variables["identificativoFlusso"]+"_"+context.Variables["dataOraFlusso"];
+            // identificativoPSP##identificativoIntermediarioPSP##identificativoCanale##identificativoDominio##identificativoFlusso##dataOraFlusso.xml
+
+            var fdrFileName=(string) context.Variables["identificativoPSP"]+"##"+context.Variables["identificativoIntermediarioPSP"]+"##"+context.Variables["identificativoCanale"]+"##"+context.Variables["identificativoDominio"]+"##"+context.Variables["identificativoFlusso"]+"##"+context.Variables["dataOraFlusso"];
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
         <base />
@@ -43,7 +66,7 @@
     <outbound>
         <set-variable name="originalrsp" value="@(context.Response.Body.As<string>())" />
         <cache-lookup-value key="@{
-                var fdrFileName=(string) context.Variables["identificativoPSP"]+"_"+context.Variables["identificativoFlusso"]+"_"+context.Variables["dataOraFlusso"];
+                var fdrFileName=(string) context.Variables["identificativoPSP"]+"##"+context.Variables["identificativoIntermediarioPSP"]+"##"+context.Variables["identificativoCanale"]+"##"+context.Variables["identificativoDominio"]+"##"+context.Variables["identificativoFlusso"]+"##"+context.Variables["dataOraFlusso"];
                 return fdrFileName;
             }" variable-name="xmlRendicontazione" caching-type="internal" />
         <set-variable name="esito" value="@{
@@ -62,7 +85,7 @@
                 <send-request mode="new" response-variable-name="result" timeout="300" ignore-error="false">
                     <!-- Get variables to configure your: storageaccount, destination container and file name with extension -->
                     <set-url>@{
-                        var fdrFileName=(string) context.Variables["identificativoPSP"]+"_"+context.Variables["identificativoFlusso"]+"_"+context.Variables["dataOraFlusso"]+".xml";
+                        var fdrFileName=(string) context.Variables["identificativoPSP"]+"##"+context.Variables["identificativoIntermediarioPSP"]+"##"+context.Variables["identificativoCanale"]+"##"+context.Variables["identificativoDominio"]+"##"+context.Variables["identificativoFlusso"]+"##"+context.Variables["dataOraFlusso"]+".xml";
                         return "https://{{fdrsaname}}.blob.core.windows.net/" + "{{fdrcontainername}}" + "/" + fdrFileName;
                         }</set-url>
                     <set-method>PUT</set-method>

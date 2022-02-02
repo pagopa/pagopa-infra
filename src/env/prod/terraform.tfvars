@@ -26,6 +26,8 @@ cidr_subnet_checkout_be  = ["10.1.133.0/24"]
 cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
 cidr_subnet_buyerbanks   = ["10.1.134.0/24"]
 
+cidr_subnet_reporting_fdr = ["10.1.135.0/24"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration = ["10.230.10.0/24"] # ask to SIA
@@ -265,3 +267,9 @@ paytipper_hostname = "st.paytipper.com"
 bpd_hostname       = "api.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
 fesp_hostname      = "portal.test.pagopa.gov.it"
+
+# fdr
+reporting_fdr_enabled           = false
+fdr_delete_retention_days       = 30
+reporting_fdr_function_sku_tier = "PremiumV3"
+reporting_fdr_function_sku_size = "P1v3"
