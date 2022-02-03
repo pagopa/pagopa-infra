@@ -166,7 +166,7 @@ module "apim_checkout_payment_activations_api_auth_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_checkout_product[0].product_id]
   subscription_required = local.apim_checkout_payment_activations_auth_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.checkout_payment_activations_api.id
+  version_set_id        = azurerm_api_management_api_version_set.checkout_payment_activations_auth_api.id
   api_version           = "v1"
   service_url           = local.apim_checkout_payment_activations_auth_api.service_url
 
@@ -186,7 +186,7 @@ module "apim_checkout_payment_activations_api_auth_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_activation_status_auth_api" {
-  api_name            = format("%s-checkout-payment-activations-api-auth-v1", local.project)
+  api_name            = format("%s-checkout-payment-activations-auth-api-v1", local.project)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getActivationStatus"
