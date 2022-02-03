@@ -282,6 +282,15 @@ resource "azurerm_api_management_named_value" "fdrcontainername" {
   value               = azurerm_storage_container.fdr_rend_flow.name
 }
 
+resource "azurerm_api_management_named_value" "io_backend_subscription_key" {
+  name                = "io-backend-subscription-key"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "io-backend-subscription-key"
+  value               = data.azurerm_key_vault_secret.io_backend_subscription_key.value
+  secret              = true
+}
+
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 
