@@ -834,12 +834,6 @@ variable "fdr_delete_retention_days" {
   default     = 30
 }
 
-
-variable "reporting_fdr_enabled" {
-  type        = bool
-  description = "Flussi di Rendicontazione Fdr - function enable"
-  default     = false
-}
 variable "reporting_fdr_function_kind" {
   type        = string
   description = "App service plan kind"
