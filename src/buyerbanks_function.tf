@@ -34,7 +34,7 @@ module "buyerbanks_function" {
   health_check_path                        = "info"
   subnet_out_id                            = module.buyerbanks_function_snet.id
   runtime_version                          = "~3"
-  always_on                                = var.checkout_function_always_on
+  always_on                                = var.env_short == "p" ? true : false
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
@@ -48,7 +48,7 @@ module "buyerbanks_function" {
     FUNCTIONS_WORKER_RUNTIME          = "node"
     WEBSITE_NODE_DEFAULT_VERSION      = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT    = 4
-    NODE_ENV                          = "production"
+    NODE_ENV                          = var.env_short == "p" ? "production" : "uat"
     BUYERBANKS_SA_CONNECTION_STRING   = module.buyerbanks_storage.primary_connection_string
     BUYERBANKS_BLOB_CONTAINER         = azurerm_storage_container.banks.name
     PAGOPA_BUYERBANKS_CERT            = azurerm_key_vault_certificate.buyerbanks_cert.certificate_data_base64
@@ -57,10 +57,12 @@ module "buyerbanks_function" {
     PAGOPA_BUYERBANKS_BRANCH          = "10000"
     PAGOPA_BUYERBANKS_CERT_PASSPHRASE = ""
     PAGOPA_BUYERBANKS_INSTITUTE       = "1000"
-    PAGOPA_BUYERBANKS_RS_URL          = "https://rs-te.mybankpayments.eu"
+    PAGOPA_BUYERBANKS_RS_URL          = var.env_short == "p" ? "https://rs-pr.mybankpayments.eu" : "https://rs-te.mybankpayments.eu"
     PAGOPA_BUYERBANKS_SIGNATURE       = data.azurerm_key_vault_secret.pagopa_buyerbank_signature.value
     PAGOPA_BUYERBANKS_SIGN_ALG        = "RSA-SHA256"
     PAGOPA_BUYERBANKS_SIGN_ALG_STRING = "SHA256withRSA"
+    PAGOPA_BUYERBANKS_CERT_PEER       = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_cert_peer[0].value : null
+    PAGOPA_BUYERBANKS_THUMBPRINT_PEER = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint_peer[0].value : null
   }
 
   allowed_subnets = [module.apim_snet.id]
@@ -132,6 +134,73 @@ resource "azurerm_monitor_autoscale_setting" "buyerbanks_function" {
   }
 }
 
+# Availability: Alerting Action
+resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_availability" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-%s-availability-alert", local.project, module.buyerbanks_function.name)
+  resource_group_name = azurerm_resource_group.buyerbanks_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "Availability greater than or equal 99%"
+  enabled        = true
+  query = format(<<-QUERY
+  requests
+    | where cloud_RoleName == '%s'
+    | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,15m)
+    | extend Availability=((Success*1.0)/Total)*100
+    | where toint(Availability) < 99
+
+  QUERY
+  , format("%s-fn-%s", local.project, module.buyerbanks_function.name))
+  severity    = 1
+  frequency   = 45
+  time_window = 45
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 3
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-%s-availability-alert", local.project, module.buyerbanks_function.name)
+  resource_group_name = azurerm_resource_group.buyerbanks_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "Availability greater than or equal 99%"
+  enabled        = true
+  query = format(<<-QUERY
+  requests
+    | where cloud_RoleName == '%s'
+    | where name contains "UpdateBuyerBanks"
+    | summarize Sucess=count(success == true) by length=bin(timestamp,24h)
+    | where toint(Sucess) >= 1
+
+  QUERY
+  , format("%s-fn-%s", local.project, module.buyerbanks_function.name))
+  severity    = 1
+  frequency   = 60
+  time_window = 1440
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
 #tfsec:ignore:azure-storage-default-action-deny
 module "buyerbanks_storage" {
 
@@ -186,6 +255,23 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_signature" {
   key_vault_id = module.key_vault.id
 }
 
+/*
+ * MyBank certificate for response authentication
+ */
+data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_peer" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "pagopa-buyerbank-cert-peer"
+  key_vault_id = module.key_vault.id
+}
+
+/*
+ * MyBank certificate thumbprint
+ */
+data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint_peer" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "pagopa-buyerbank-thumbprint-peer"
+  key_vault_id = module.key_vault.id
+}
 
 /*
  * X.509 cert - buyerbanks functions
