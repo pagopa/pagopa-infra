@@ -1,12 +1,12 @@
 <policies>
     <inbound>
-      <base />
       <!-- Check idPayment in IO env- START -->
       <set-header name="x-functions-key" exists-action="override">
         <value>{{pagopa-fn-checkout-key}}</value>
       </set-header>
       <set-backend-service base-url="{{pagopa-fn-checkout-url}}/api/v1" />
       <!-- Check idPayment in IO env - END -->
+      <base />
     </inbound>
     <outbound>
     <choose>
