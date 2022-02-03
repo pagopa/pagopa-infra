@@ -40,6 +40,20 @@ locals {
     subscription_required = false
     service_url           = null
   }
+
+  apim_checkout_payment_activations_auth_api = {
+    display_name          = "Checkout payment activations auth API"
+    description           = "Authenticated API to support payment activations"
+    path                  = "checkout/auth/payments"
+    subscription_required = true
+    service_url           = null
+  }
+}
+
+
+data "azurerm_key_vault_secret" "io_backend_subscription_key" {
+  name         = "io-backend-subscription-key"
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_payments_api" {
@@ -133,6 +147,51 @@ resource "azurerm_api_management_api_operation_policy" "get_activation_status_ap
   operation_id        = "getActivationStatus"
 
   xml_content = file("./api/checkout/checkout_payment_activations/v1/_idpayment_check.xml.tpl")
+}
+
+# Payment activation authenticated APIs
+resource "azurerm_api_management_api_version_set" "checkout_payment_activations_auth_api" {
+  name                = format("%s-checkout-payment-activations-auth-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_checkout_payment_activations_auth_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_checkout_payment_activations_api_auth_v1" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.23"
+
+  name                  = format("%s-checkout-payment-activations-auth-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_checkout_product[0].product_id]
+  subscription_required = local.apim_checkout_payment_activations_auth_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.checkout_payment_activations_api.id
+  api_version           = "v1"
+  service_url           = local.apim_checkout_payment_activations_auth_api.service_url
+
+  description  = local.apim_checkout_payment_activations_auth_api.description
+  display_name = local.apim_checkout_payment_activations_auth_api.display_name
+  path         = local.apim_checkout_payment_activations_auth_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/checkout/checkout_payment_activations_auth/v1/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/checkout/checkout_payment_activations_auth/v1/_base_policy.xml.tpl", {
+    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_activation_status_auth_api" {
+  api_name            = format("%s-checkout-payment-activations-api-auth-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "getActivationStatus"
+
+  xml_content = file("./api/checkout/checkout_payment_activations_auth/v1/_idpayment_check.xml.tpl")
 }
 
 # pagopa-proxy SOAP web service FespCdService
