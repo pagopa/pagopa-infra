@@ -1,11 +1,5 @@
 <policies>
     <inbound>
-      <!-- Check idPayment in IO env- START -->
-      <set-header name="x-functions-key" exists-action="override">
-        <value>{{pagopa-fn-checkout-key}}</value>
-      </set-header>
-      <set-backend-service base-url="{{pagopa-fn-checkout-url}}/api/v1" />
-      <!-- Check idPayment in IO env - END -->
       <base />
     </inbound>
     <outbound>
@@ -13,10 +7,13 @@
         <when condition="@(context.Response.StatusCode != 200)">
           <!-- Check idPayment in pagoPA env- START -->
           <set-variable name="codice_contesto_pagamento" value="@(context.Request.MatchedParameters["codice_contesto_pagamento"])" />
-          <set-variable name="pagopa_appservice_proxy_url" value="{{pagopa-appservice-proxy-url}}" />
+          <set-variable name="checkout_function_url" value="{{pagopa-fn-checkout-url}}" />
           <send-request ignore-error="true" timeout="10" response-variable-name="response" mode="new">
-            <set-url>@($"{(string)context.Variables["pagopa_appservice_proxy_url"]}/payment-activations/{(string)context.Variables["codice_contesto_pagamento"]}")</set-url>
+            <set-url>@($"{(string)context.Variables["checkout_function_url"]}/api/v1/payment-activations/{(string)context.Variables["codice_contesto_pagamento"]}")</set-url>
             <set-method>GET</set-method>
+            <set-header name="x-functions-key" exists-action="override">
+              <value>{{pagopa-fn-checkout-key}}</value>
+            </set-header>
           </send-request>
           <choose>
             <when condition="@(((IResponse)context.Variables["response"]).StatusCode == 200)">
