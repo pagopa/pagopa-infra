@@ -1,5 +1,4 @@
 resource "azurerm_resource_group" "reporting_fdr_rg" {
-  count = var.reporting_fdr_enabled ? 1 : 0
 
   name     = format("%s-reporting-fdr-rg", local.project)
   location = var.location
@@ -9,7 +8,7 @@ resource "azurerm_resource_group" "reporting_fdr_rg" {
 
 # Subnet to host reporting-fdr function
 module "reporting_fdr_function_snet" {
-  count                                          = var.reporting_fdr_enabled && var.cidr_subnet_reporting_fdr != null ? 1 : 0
+  count                                          = var.cidr_subnet_reporting_fdr != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-reporting-fdr-snet", local.project)
   address_prefixes                               = var.cidr_subnet_reporting_fdr
@@ -27,10 +26,9 @@ module "reporting_fdr_function_snet" {
 }
 
 module "reporting_fdr_function" {
-  count  = var.reporting_fdr_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84"
 
-  resource_group_name                      = azurerm_resource_group.reporting_fdr_rg[0].name
+  resource_group_name                      = azurerm_resource_group.reporting_fdr_rg.name
   prefix                                   = var.prefix
   env_short                                = var.env_short
   name                                     = "reportingfdr"
@@ -76,12 +74,11 @@ module "reporting_fdr_function" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "reporting_fdr_function" {
-  count = var.reporting_fdr_enabled && var.env_short != "d" ? 1 : 0
 
-  name                = format("%s-%s-autoscale", local.project, module.reporting_fdr_function[0].name)
-  resource_group_name = azurerm_resource_group.reporting_fdr_rg[0].name
+  name                = format("%s-%s-autoscale", local.project, module.reporting_fdr_function.name)
+  resource_group_name = azurerm_resource_group.reporting_fdr_rg.name
   location            = var.location
-  target_resource_id  = module.reporting_fdr_function[0].app_service_plan_id
+  target_resource_id  = module.reporting_fdr_function.app_service_plan_id
 
   profile {
     name = "default"
@@ -95,7 +92,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_fdr_function" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.reporting_fdr_function[0].id
+        metric_resource_id       = module.reporting_fdr_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -117,7 +114,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_fdr_function" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.reporting_fdr_function[0].id
+        metric_resource_id       = module.reporting_fdr_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"

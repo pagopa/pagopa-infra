@@ -295,7 +295,6 @@ cobadge_hostname   = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
 fesp_hostname      = "portal.test.pagopa.gov.it"
 
 # fdr
-reporting_fdr_enabled           = false
 fdr_delete_retention_days       = 30
 reporting_fdr_function_sku_tier = "PremiumV3"
 reporting_fdr_function_sku_size = "P1v3"
