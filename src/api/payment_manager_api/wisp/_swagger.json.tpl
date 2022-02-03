@@ -14,7 +14,52 @@
   "paths": {
     "/*": {
       "get": {
-        "operationId": "staticResourcesWisp",
+        "operationId": "GETstaticResourcesWisp",
+        "description": "static resources of Wisp",
+        "responses": {
+          "200": {
+            "description": "static resource"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      },
+      "post": {
+        "operationId": "POSTstaticResourcesWisp",
+        "description": "static resources of Wisp",
+        "responses": {
+          "200": {
+            "description": "static resource"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      },
+      "head": {
+        "operationId": "HEADstaticResourcesWisp",
+        "description": "static resources of Wisp",
+        "responses": {
+          "200": {
+            "description": "static resource"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      },
+      "options": {
+        "operationId": "OPTstaticResourcesWisp",
         "description": "static resources of Wisp",
         "responses": {
           "200": {
