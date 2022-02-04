@@ -85,7 +85,7 @@
         }
       }
     },
-    "/mock-ec/history/{noticenumber}/{primitive}": {
+    "/history/{noticenumber}/{primitive}": {
       "get": {
         "summary": "Operation history Notice Number",
         "description": "To retrieve the history of requests and responses",
@@ -117,7 +117,7 @@
         }
       }
     },
-    "/mock-ec/response/{primitive}": {
+    "/response/{primitive}": {
       "post": {
         "summary": "To configure the mock with response queue",
         "description": "To configure the mock to respond with the body when {primitive} is invoked",
