@@ -7,8 +7,8 @@ module "apim_api_config_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
 
   product_id   = "product-api-config"
-  display_name = "product-api-config"
-  description  = "product-api-config"
+  display_name = "ApiConfig"
+  description  = "Product for API Configuration of the Node "
 
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -30,7 +30,7 @@ resource "azurerm_api_management_api_version_set" "api_config_api" {
   name                = format("%s-api-config-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
-  display_name        = "api config api"
+  display_name        = "ApiConfig for Node"
   versioning_scheme   = "Segment"
 }
 
@@ -55,8 +55,8 @@ module "apim_api_config_api" {
   version_set_id = azurerm_api_management_api_version_set.api_config_api[0].id
   api_version    = "v1"
 
-  description  = "api config api"
-  display_name = "api config api"
+  description  = "Api configuration for Nodo dei Pagamenti"
+  display_name = "ApiConfig for Node"
   path         = "apiconfig/api"
   protocols    = ["https"]
 
