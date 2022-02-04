@@ -60,7 +60,10 @@ app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
 app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
-  "/notfound/*",
+  "/nodo/*",
+  "/payment-manager/clients/*",
+  "/payment-manager/restapi-rtd/*",
+  "/payment-manager/db-logging/*"
 ]
 
 # nat_gateway
