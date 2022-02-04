@@ -21,6 +21,8 @@ module "apim_mock_ec_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "mock_ec_api" {
+  count = var.mock_ec_enabled ? 1 : 0
+
   name                = format("%s-mock-ec-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -38,7 +40,7 @@ module "apim_mock_ec_api" {
   product_ids           = [module.apim_mock_ec_product[0].product_id]
   subscription_required = false
 
-  version_set_id = azurerm_api_management_api_version_set.mock_ec_api.id
+  version_set_id = azurerm_api_management_api_version_set.mock_ec_api[0].id
   api_version    = "v1"
 
   description  = "API of Mock EC"
