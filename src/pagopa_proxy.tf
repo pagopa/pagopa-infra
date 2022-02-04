@@ -20,7 +20,7 @@ locals {
     REDIS_DB_URL      = format("redis://%s", module.pagopa_proxy_redis.hostname)
     REDIS_DB_PORT     = module.pagopa_proxy_redis.ssl_port
     REDIS_DB_PASSWORD = module.pagopa_proxy_redis.primary_access_key
-    REDIS_USE_CLUSTER = false
+    REDIS_USE_CLUSTER = var.env_short == "p"
   }
 }
 
