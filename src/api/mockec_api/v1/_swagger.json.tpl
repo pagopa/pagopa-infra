@@ -132,13 +132,9 @@
           {
             "in": "query",
             "name": "override",
-            "default": "False",
+            "default": "false",
             "description": "To override last response set",
-            "type": "string",
-            "enum": [
-              "True",
-              "False"
-            ]
+            "type": "boolean"
           },
           {
             "in": "body",
