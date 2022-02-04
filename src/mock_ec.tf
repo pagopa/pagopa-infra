@@ -45,7 +45,7 @@ module "mock_ec" {
   always_on           = var.mock_ec_always_on
   linux_fx_version    = "NODE|12-lts"
   app_command_line    = "node /home/site/wwwroot/dist/index.js"
-  health_check_path   = "/mockEcService/api/v1/info"
+  health_check_path   = "/mockEcService/info"
 
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE     = "1"
