@@ -173,3 +173,64 @@ module "pagopa_proxy_app_service_slot_staging" {
 
   tags = var.tags
 }
+
+resource "azurerm_monitor_autoscale_setting" "pagopa_proxy_app_service_autoscale" {
+  name                = format("%s-autoscale-pagopa-proxy", local.project)
+  resource_group_name = azurerm_resource_group.pagopa_proxy_rg.name
+  location            = azurerm_resource_group.pagopa_proxy_rg.location
+  target_resource_id  = module.pagopa_proxy_app_service.plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.pagopa_proxy_autoscale_default
+      minimum = var.pagopa_proxy_autoscale_minimum
+      maximum = var.pagopa_proxy_autoscale_maximum
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.pagopa_proxy_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.pagopa_proxy_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+  }
+}
