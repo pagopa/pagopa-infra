@@ -57,13 +57,16 @@ module "reporting_fdr_function" {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    FLOW_SA_CONNECTION_STRING = module.fdr_flows_sa.primary_connection_string
-    FLOWS_XML_BLOB            = azurerm_storage_container.fdr_rend_flow.name
+    FLOW_SA_CONNECTION_STRING  = module.fdr_flows_sa.primary_connection_string
+    FLOWS_XML_BLOB             = azurerm_storage_container.fdr_rend_flow.name
+    EHUB_FDR_CONNECTION_STRING = module.event_hub01.keys["nodo-dei-pagamenti-fdr.nodo-dei-pagamenti-tx"].primary_connection_string
+    EHUB_FDR_NAME              = "nodo-dei-pagamenti-fdr"
 
     # acr
     DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
+
   }
 
   allowed_subnets = [module.apim_snet.id]
