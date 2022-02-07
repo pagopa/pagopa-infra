@@ -188,7 +188,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
     | where cloud_RoleName == '%s'
     | where name contains "UpdateBuyerBanks"
     | summarize Sucess=count(success == true) by length=bin(timestamp,24h)
-    | where toint(Sucess) >= 1
+    | where toint(Sucess) < 1
 
   QUERY
   , format("%s-fn-%s", local.project, module.buyerbanks_function.name))
