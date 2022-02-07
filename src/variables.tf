@@ -782,7 +782,7 @@ variable "pagopa_proxy_autoscale_minimum" {
 variable "pagopa_proxy_autoscale_maximum" {
   type        = number
   description = "The maximum number of instances for this resource."
-  default     = 20
+  default     = 10
 }
 
 variable "pagopa_proxy_autoscale_default" {
