@@ -20,6 +20,16 @@ module "apim_mock_ec_product" {
   policy_xml = file("./api_product/mockec_api/_base_policy.xml")
 }
 
+resource "azurerm_api_management_api_version_set" "mock_ec_api" {
+  count = var.mock_ec_enabled ? 1 : 0
+
+  name                = format("%s-mock-ec-api", var.env_short)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Mock EC API"
+  versioning_scheme   = "Segment"
+}
+
 module "apim_mock_ec_api" {
   count  = var.mock_ec_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
@@ -30,8 +40,11 @@ module "apim_mock_ec_api" {
   product_ids           = [module.apim_mock_ec_product[0].product_id]
   subscription_required = false
 
-  description  = "mock ec api"
-  display_name = "mock ec api"
+  version_set_id = azurerm_api_management_api_version_set.mock_ec_api[0].id
+  api_version    = "v1"
+
+  description  = "API of Mock EC"
+  display_name = "Mock EC API"
   path         = "mock-ec/api"
   protocols    = ["https"]
 

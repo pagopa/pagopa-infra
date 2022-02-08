@@ -52,7 +52,7 @@
             return xmlRendicontazione;
         }" />
         <cache-store-value key="@{
-            var fdrFileName=(string) context.Variables["identificativoPSP"]+"##"+context.Variables["identificativoIntermediarioPSP"]+"##"+context.Variables["identificativoCanale"]+"##"+context.Variables["identificativoDominio"]+"##"+context.Variables["identificativoFlusso"]+"##"+context.Variables["dataOraFlusso"];
+            var fdrFileName=(string) context.Variables["identificativoPSP"]+"--"+context.Variables["identificativoIntermediarioPSP"]+"--"+context.Variables["identificativoCanale"]+"--"+context.Variables["identificativoDominio"]+"--"+context.Variables["identificativoFlusso"]+"--"+context.Variables["dataOraFlusso"];
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
         <base />
@@ -64,7 +64,7 @@
     <outbound>
         <set-variable name="originalrsp" value="@(context.Response.Body.As<string>())" />
         <cache-lookup-value key="@{
-                var fdrFileName=(string) context.Variables["identificativoPSP"]+"##"+context.Variables["identificativoIntermediarioPSP"]+"##"+context.Variables["identificativoCanale"]+"##"+context.Variables["identificativoDominio"]+"##"+context.Variables["identificativoFlusso"]+"##"+context.Variables["dataOraFlusso"];
+                var fdrFileName=(string) context.Variables["identificativoPSP"]+"--"+context.Variables["identificativoIntermediarioPSP"]+"--"+context.Variables["identificativoCanale"]+"--"+context.Variables["identificativoDominio"]+"--"+context.Variables["identificativoFlusso"]+"--"+context.Variables["dataOraFlusso"];
                 return fdrFileName;
             }" variable-name="xmlRendicontazione" caching-type="internal" />
         <set-variable name="esito" value="@{
@@ -83,7 +83,7 @@
                 <send-request mode="new" response-variable-name="result" timeout="300" ignore-error="false">
                     <!-- Get variables to configure your: storageaccount, destination container and file name with extension -->
                     <set-url>@{
-                        var fdrFileName=(string) context.Variables["identificativoPSP"]+"##"+context.Variables["identificativoIntermediarioPSP"]+"##"+context.Variables["identificativoCanale"]+"##"+context.Variables["identificativoDominio"]+"##"+context.Variables["identificativoFlusso"]+"##"+context.Variables["dataOraFlusso"]+".xml";
+                        var fdrFileName=(string) context.Variables["identificativoPSP"]+"--"+context.Variables["identificativoIntermediarioPSP"]+"--"+context.Variables["identificativoCanale"]+"--"+context.Variables["identificativoDominio"]+"--"+context.Variables["identificativoFlusso"]+"--"+context.Variables["dataOraFlusso"]+".xml";
                         return "https://{{fdrsaname}}.blob.core.windows.net/" + "{{fdrcontainername}}" + "/" + fdrFileName;
                         }</set-url>
                     <set-method>PUT</set-method>
