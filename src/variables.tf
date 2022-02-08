@@ -773,6 +773,24 @@ variable "pagopa_proxy_size" {
   default     = null
 }
 
+variable "pagopa_proxy_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "pagopa_proxy_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 10
+}
+
+variable "pagopa_proxy_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 5
+}
+
 variable "nodo_ip_filter" {
   type        = string
   description = "IP Node"
