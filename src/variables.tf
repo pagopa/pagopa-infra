@@ -170,6 +170,18 @@ variable "xsd_ica" {
   description = "XML Schema of Informatica Conto Accredito"
 }
 
+variable "xsd_counterpart" {
+  type        = string
+  description = "XML Schema of Tabelle delle Controparti"
+  default = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/TabellaDelleControparti_1_0_8.xsd"
+}
+
+variable "xsd_cdi" {
+  type        = string
+  description = "XML Schema of Catalogo Dati Informativi"
+  default = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/CatalogoDatiInformativi.xsd"
+}
+
 
 # api_config_fe
 variable "api_config_fe_enabled" {
