@@ -179,7 +179,7 @@ variable "xsd_counterpart" {
 variable "xsd_cdi" {
   type        = string
   description = "XML Schema of Catalogo Dati Informativi"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/CatalogoDatiInformativi.xsd"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/CatalogoDatiInformativiPSP.xsd"
 }
 
 
