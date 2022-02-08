@@ -773,6 +773,24 @@ variable "pagopa_proxy_size" {
   default     = null
 }
 
+variable "pagopa_proxy_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "pagopa_proxy_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 10
+}
+
+variable "pagopa_proxy_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 5
+}
+
 variable "nodo_ip_filter" {
   type        = string
   description = "IP Node"
@@ -832,4 +850,52 @@ variable "fdr_delete_retention_days" {
   type        = number
   description = "Number of days to retain deleted."
   default     = 30
+}
+
+variable "reporting_fdr_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "reporting_fdr_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "reporting_fdr_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "cidr_subnet_reporting_fdr" {
+  type        = list(string)
+  description = "Address prefixes subnet reporting_fdr function"
+  default     = null
+}
+
+variable "reporting_fdr_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "reporting_fdr_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "reporting_fdr_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "reporting_fdr_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
 }

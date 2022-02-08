@@ -11,48 +11,23 @@ locals {
     # proxy-specific env vars
     PAGOPA_HOST                = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
     PAGOPA_PORT                = 443
-    PAGOPA_PASSWORD            = data.azurerm_key_vault_secret.pagopa_proxy_password.value
-    PAGOPA_ID_PSP              = data.azurerm_key_vault_secret.pagopa_proxy_id_psp.value
-    PAGOPA_ID_INT_PSP          = data.azurerm_key_vault_secret.pagopa_proxy_id_intermediario_psp.value
-    PAGOPA_ID_CANALE           = data.azurerm_key_vault_secret.pagopa_proxy_id_canale.value
-    PAGOPA_ID_CANALE_PAGAMENTO = data.azurerm_key_vault_secret.pagopa_proxy_id_canale_pagamento.value
     PAGOPA_WS_NODO_PER_PSP_URI = "/nodo/nodo-per-psp/v1"
     PAGOPA_WS_NODE_FOR_PSP_URI = "/nodo/node-for-psp/v1"
     PAGOPA_WS_NODE_FOR_IO_URI  = "/nodo/node-for-io/v1"
     NM3_ENABLED                = true
+    NODE_CONNECTIONS_CONFIG    = data.azurerm_key_vault_secret.pagopaproxy_node_clients_config.value
 
     REDIS_DB_URL      = format("redis://%s", module.pagopa_proxy_redis.hostname)
     REDIS_DB_PORT     = module.pagopa_proxy_redis.ssl_port
     REDIS_DB_PASSWORD = module.pagopa_proxy_redis.primary_access_key
-    REDIS_USE_CLUSTER = var.env_short == "p"
+    REDIS_USE_CLUSTER = false
   }
 }
 
-data "azurerm_key_vault_secret" "pagopa_proxy_password" {
-  name         = "pagopa-proxy-password"
+data "azurerm_key_vault_secret" "pagopaproxy_node_clients_config" {
+  name         = "pagopaproxy-node-clients-config"
   key_vault_id = module.key_vault.id
 }
-
-data "azurerm_key_vault_secret" "pagopa_proxy_id_canale" {
-  name         = "pagopa-proxy-id-canale"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "pagopa_proxy_id_canale_pagamento" {
-  name         = "pagopa-proxy-id-canale-pagamento"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "pagopa_proxy_id_intermediario_psp" {
-  name         = "pagopa-proxy-id-intermediario-psp"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "pagopa_proxy_id_psp" {
-  name         = "pagopa-proxy-id-psp"
-  key_vault_id = module.key_vault.id
-}
-
 
 resource "azurerm_resource_group" "pagopa_proxy_rg" {
   name     = format("%s-pagopa-proxy-rg", local.project)
@@ -197,4 +172,65 @@ module "pagopa_proxy_app_service_slot_staging" {
   subnet_id       = module.pagopa_proxy_snet.id
 
   tags = var.tags
+}
+
+resource "azurerm_monitor_autoscale_setting" "pagopa_proxy_app_service_autoscale" {
+  name                = format("%s-autoscale-pagopa-proxy", local.project)
+  resource_group_name = azurerm_resource_group.pagopa_proxy_rg.name
+  location            = azurerm_resource_group.pagopa_proxy_rg.location
+  target_resource_id  = module.pagopa_proxy_app_service.plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.pagopa_proxy_autoscale_default
+      minimum = var.pagopa_proxy_autoscale_minimum
+      maximum = var.pagopa_proxy_autoscale_maximum
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.pagopa_proxy_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.pagopa_proxy_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+  }
 }

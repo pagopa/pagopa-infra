@@ -27,6 +27,8 @@ cidr_subnet_checkout_be  = ["10.1.240.16/29"]
 cidr_subnet_buyerbanks   = ["10.1.240.24/29"]
 cidr_subnet_pagopa_proxy = ["10.1.240.32/29"]
 
+cidr_subnet_reporting_fdr = ["10.1.240.40/29"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration  = ["10.230.8.0/24"] # ask to SIA
@@ -229,6 +231,32 @@ eventhubs = [
 
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-fdr"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
 
 # acr
@@ -276,4 +304,7 @@ cobadge_hostname   = "portal.test.pagopa.gov.it"
 fesp_hostname      = "portal.test.pagopa.gov.it"
 
 # fdr
-fdr_delete_retention_days = 30
+fdr_delete_retention_days       = 30
+reporting_fdr_function_kind     = "Linux"
+reporting_fdr_function_sku_tier = "Standard"
+reporting_fdr_function_sku_size = "S1"
