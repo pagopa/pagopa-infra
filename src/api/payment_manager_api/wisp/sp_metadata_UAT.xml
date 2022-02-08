@@ -122,7 +122,7 @@ e4pIb4tF9g==
     <md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
 
         <md:KeyDescriptor use="signing">
-            <ds:KeyInfo> 
+            <ds:KeyInfo>
                 <ds:X509Data>
                     <ds:X509Certificate>
 						MIIG6zCCBdOgAwIBAgIRAOP6cnXoGEw1AAAAAFDzFd0wDQYJKoZIhvcNAQELBQAw
@@ -167,7 +167,7 @@ e4pIb4tF9g==
             </ds:KeyInfo>
         </md:KeyDescriptor>
         <md:KeyDescriptor use="signing">
-            <ds:KeyInfo> 
+            <ds:KeyInfo>
                 <ds:X509Data>
                     <ds:X509Certificate>
 						MIIHYjCCBkqgAwIBAgIQBlwyfEEWl+4AAAAAUQUq0zANBgkqhkiG9w0BAQsFADCB
@@ -216,7 +216,7 @@ e4pIb4tF9g==
         </md:KeyDescriptor>
 
         <md:KeyDescriptor use="encryption">
-            <ds:KeyInfo> 
+            <ds:KeyInfo>
                 <ds:X509Data>
                     <ds:X509Certificate>
 						MIIG6zCCBdOgAwIBAgIRAOP6cnXoGEw1AAAAAFDzFd0wDQYJKoZIhvcNAQELBQAw
@@ -261,7 +261,7 @@ e4pIb4tF9g==
             </ds:KeyInfo>
         </md:KeyDescriptor>
         <md:KeyDescriptor use="encryption">
-            <ds:KeyInfo> 
+            <ds:KeyInfo>
                 <ds:X509Data>
                     <ds:X509Certificate>
 						MIIHYjCCBkqgAwIBAgIQBlwyfEEWl+4AAAAAUQUq0zANBgkqhkiG9w0BAQsFADCB
@@ -328,8 +328,8 @@ e4pIb4tF9g==
 
     <md:Organization>
         <md:OrganizationName xml:lang="it">pagoPA</md:OrganizationName>
-        <md:OrganizationDisplayName xml:lang="it">Sistema pagoPA</md:OrganizationDisplayName>		
-		<md:OrganizationURL xml:lang="it">https://wisp2.pagopa.gov.it</md:OrganizationURL> 
+        <md:OrganizationDisplayName xml:lang="it">Sistema pagoPA</md:OrganizationDisplayName>
+		<md:OrganizationURL xml:lang="it">https://wisp2.pagopa.gov.it</md:OrganizationURL>
     </md:Organization>
 
 </md:EntityDescriptor>

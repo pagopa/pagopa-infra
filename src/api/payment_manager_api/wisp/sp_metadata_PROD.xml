@@ -319,7 +319,7 @@ sTQGtw==
 
     <md:Organization>
         <md:OrganizationName xml:lang="it">pagoPA</md:OrganizationName>
-        <md:OrganizationDisplayName xml:lang="it">Sistema pagoPA</md:OrganizationDisplayName>		
+        <md:OrganizationDisplayName xml:lang="it">Sistema pagoPA</md:OrganizationDisplayName>
 		<md:OrganizationURL xml:lang="it">https://wisp2.pagopa.gov.it</md:OrganizationURL>
     </md:Organization>
 
