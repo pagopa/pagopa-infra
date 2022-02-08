@@ -18,7 +18,7 @@ module "eventhub_snet" {
 }
 
 module "event_hub01" {
-  source                   = "git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.51"
+  source                   = "git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.66"
   name                     = format("%s-evh-ns01", local.project)
   location                 = var.location
   resource_group_name      = azurerm_resource_group.msg_rg.name
