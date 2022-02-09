@@ -159,14 +159,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   data_source_id = azurerm_application_insights.application_insights.id
   description    = "Availability greater than or equal 99%"
   enabled        = true
-  query = format(<<-QUERY
+  query = (<<-QUERY
   requests
     | where url contains '/checkout/'
     | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,15m)
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
-  , format("%s-fn-%s", local.project, module.checkout_function[0].name))
+  )
   severity    = 1
   frequency   = 30
   time_window = 30
