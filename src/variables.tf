@@ -916,3 +916,115 @@ variable "reporting_fdr_function_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
+
+# Rendicontazione gestione posizioni debitorie
+variable "cidr_subnet_reporting_batch" {
+  type        = list(string)
+  description = "Address prefixes subnet reporting_batch function"
+  default     = null
+}
+
+variable "reporting_batch_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "reporting_batch_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "reporting_batch_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "reporting_batch_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "reporting_batch_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "reporting_batch_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+variable "reporting_batch_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "paa_id_intermediario" {
+  type    = string
+  default = null
+}
+
+variable "paa_id_stazione" {
+  type    = string
+  default = null
+}
+
+variable "paa_password" {
+  type    = string
+  default = null
+}
+
+variable "cidr_subnet_reporting_service" {
+  type        = list(string)
+  description = "Address prefixes subnet reporting_service function"
+  default     = null
+}
+
+variable "reporting_service_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "reporting_service_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "reporting_service_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "reporting_service_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "reporting_service_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "reporting_service_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+variable "reporting_service_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
