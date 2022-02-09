@@ -270,7 +270,7 @@ dns_a_reconds_dbnodo_ips           = ["10.8.3.228"]
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
 
 # API Config
-xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
+xsd_ica              = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
 api_config_always_on = false
 
 # API Config FE
