@@ -262,6 +262,8 @@ private_dns_zone_db_nodo_pagamenti = "p.db-nodo-pagamenti.com"
 
 # API Config
 xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
+api_config_tier       = "PremiumV3"
+api_config_size       = "P1v3"
 
 # API Config FE
 api_config_fe_enabled = true
