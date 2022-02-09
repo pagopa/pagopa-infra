@@ -143,7 +143,7 @@ resource "azurerm_monitor_autoscale_setting" "checkout_function" {
   }
 }
 
-# Availability: Alerting Action
+# Availability: Checkout functions & pagopa-proxy
 resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   count = var.checkout_enabled && var.env_short == "p" ? 1 : 0
 
@@ -161,18 +161,18 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   enabled        = true
   query = format(<<-QUERY
   requests
-    | where cloud_RoleName == '%s'
+    | where url contains '/checkout/'
     | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,15m)
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
   , format("%s-fn-%s", local.project, module.checkout_function[0].name))
   severity    = 1
-  frequency   = 45
-  time_window = 45
+  frequency   = 30
+  time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 3
+    threshold = 2
   }
 }
 
