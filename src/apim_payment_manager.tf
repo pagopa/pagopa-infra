@@ -518,7 +518,7 @@ resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "GETSpidMetadata"
 
-  xml_content = templatefile("./api/payment_manager_api/wisp/_spid_metadata_policy.xml.tpl", { metadata = data.azurerm_key_vault_secret.pm_wisp_metadata })
+  xml_content = templatefile("./api/payment_manager_api/wisp/_spid_metadata_policy.xml.tpl", { metadata = data.azurerm_key_vault_secret.pm_wisp_metadata.value })
 }
 
 ########################
