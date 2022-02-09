@@ -79,6 +79,8 @@ module "api_config_app_service" {
     SPRING_DATASOURCE_URL      = var.db_service_name == null ? null : format("jdbc:oracle:thin:@%s.%s:%s/%s", azurerm_private_dns_a_record.private_dns_a_record_db_nodo.name, azurerm_private_dns_zone.db_nodo_dns_zone.name, var.db_port, var.db_service_name)
     CORS_CONFIGURATION         = jsonencode(local.apiconfig_cors_configuration)
     XSD_ICA                    = var.xsd_ica
+    XSD_COUNTERPART            = var.xsd_counterpart
+    XSD_CDI                    = var.xsd_cdi
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
