@@ -100,3 +100,25 @@ module "api_config_app_service" {
 
   tags = var.tags
 }
+
+module "apiconfig_db_healthcheck" {
+  count  = var.api_config_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.1.26"
+
+  subscription_id                   = data.azurerm_subscription.current.subscription_id
+  name                              = format("%s-%s", module.api_config_app_service[0].name, "db-healthcheck")
+  location                          = azurerm_resource_group.api_config_rg[0].location
+  resource_group                    = azurerm_resource_group.api_config_rg[0].name
+  application_insight_name          = azurerm_application_insights.application_insights.name
+  request_url                       = format("https://%s%s", module.apim_api_config_api[0].name, module.api_config_app_service[0].health_check_path)
+  expected_http_status              = 200
+  timeout                           = 60
+  content_validation                = "up"
+
+  actions                           = [
+                                        {
+                                          action_group_id = azurerm_monitor_action_group.slack.id,
+                                        },
+                                      ]
+
+}
