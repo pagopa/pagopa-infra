@@ -478,7 +478,7 @@ locals {
     path                  = "wallet"
     subscription_required = false
     service_url           = null
-    metadata              = var.env_short == "p" ? file("./api/payment_manager_api/wisp/sp_metadata_PROD.xml") : file("./api/payment_manager_api/wisp/sp_metadata_UAT.xml")
+    metadata              = file("./api/payment_manager_api/wisp/sp_metadata_${var.env}.xml")
   }
 }
 
