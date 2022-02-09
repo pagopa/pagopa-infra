@@ -29,6 +29,9 @@ cidr_subnet_pagopa_proxy = ["10.1.240.32/29"]
 
 cidr_subnet_reporting_fdr = ["10.1.240.40/29"]
 
+cidr_subnet_reporting_batch   = ["10.1.240.48/29"]
+cidr_subnet_reporting_service = ["10.1.240.56/29"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration  = ["10.230.8.0/24"] # ask to SIA
@@ -310,3 +313,18 @@ fdr_delete_retention_days       = 30
 reporting_fdr_function_kind     = "Linux"
 reporting_fdr_function_sku_tier = "Standard"
 reporting_fdr_function_sku_size = "S1"
+
+# rendicontaione gpd
+reporting_batch_function_kind              = "Linux"
+reporting_batch_function_sku_tier          = "Standard"
+reporting_batch_function_sku_size          = "S1"
+reporting_batch_function_autoscale_minimum = 1
+reporting_batch_function_autoscale_maximum = 3
+reporting_batch_function_autoscale_default = 1
+
+reporting_service_function_kind              = "Linux"
+reporting_service_function_sku_tier          = "Standard"
+reporting_service_function_sku_size          = "S1"
+reporting_service_function_autoscale_minimum = 1
+reporting_service_function_autoscale_maximum = 3
+reporting_service_function_autoscale_default = 1
