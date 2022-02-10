@@ -103,20 +103,20 @@ module "api_config_app_service" {
 
 # Node database availability: Alerting Action
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck" {
-  count  = var.api_config_enabled ? 1 : 0
+  count = var.api_config_enabled ? 1 : 0
 
-  name                              = format("%s-%s", module.api_config_app_service[0].name, "db-healthcheck")
-  resource_group_name               = azurerm_resource_group.api_config_rg[0].name
-  location                          = var.location
+  name                = format("%s-%s", module.api_config_app_service[0].name, "db-healthcheck")
+  resource_group_name = azurerm_resource_group.api_config_rg[0].name
+  location            = var.location
 
   action {
-    action_group                    = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject                   = "Email Header"
-    custom_webhook_payload          = "{}"
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
   }
-  data_source_id                    = azurerm_application_insights.application_insights.id
-  description                       = "Availability greater than or equal 99%"
-  enabled                           = true
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "Availability greater than or equal 99%"
+  enabled        = true
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s" and tostring(message) contains "dbConnection"
@@ -125,7 +125,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
-  , module.api_config_app_service[0].name
+    , module.api_config_app_service[0].name
   )
   severity    = 1
   frequency   = 45
