@@ -210,6 +210,14 @@ resource "azurerm_api_management_named_value" "urlnodo_value" {
   value               = var.nodo_pagamenti_url
 }
 
+resource "azurerm_api_management_named_value" "ip_nodo_value" {
+  name                = "ip-nodo"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "ip-nodo"
+  value               = var.ip_nodo
+}
+
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {
   count               = var.checkout_enabled ? 1 : 0
   name                = "pagopa-fn-checkout-key"
