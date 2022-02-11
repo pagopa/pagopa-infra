@@ -161,7 +161,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   enabled        = true
   query = (<<-QUERY
   requests
-    | where url contains '/checkout/'
+    | where url startswith 'https://api.platform.pagopa.it/checkout/' or url startswith 'https://api.platform.pagopa.it/api/checkout/'
     | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,15m)
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
