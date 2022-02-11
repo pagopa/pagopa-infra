@@ -44,6 +44,12 @@
               "$ref": "#/definitions/ProblemJson"
             }
           },
+          "424": {
+            "description": "Invalid `Nodo` response",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
           "500": {
             "description": "PagoPA services are not available or request is rejected by PagoPa",
             "schema": {
@@ -94,6 +100,12 @@
               "$ref": "#/definitions/ProblemJson"
             }
           },
+          "424": {
+            "description": "Invalid `Nodo` response",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
           "500": {
             "description": "PagoPA services are not available",
             "schema": {
@@ -128,6 +140,12 @@
           },
           "400": {
             "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "424": {
+            "description": "Invalid `Nodo` response",
             "schema": {
               "$ref": "#/definitions/ProblemJson"
             }
