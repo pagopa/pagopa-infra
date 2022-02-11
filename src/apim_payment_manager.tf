@@ -481,8 +481,8 @@ locals {
   }
 }
 
-data "azurerm_key_vault_secret" "wisp_ip" {
-  name         = "wisp-ip"
+data "azurerm_key_vault_secret" "pm_wisp_metadata" {
+  name         = "pm-wisp-metadata"
   key_vault_id = module.key_vault.id
 }
 
@@ -509,8 +509,16 @@ module "apim_pm_wisp_api_v1" {
 
   xml_content = templatefile("./api/payment_manager_api/wisp/_base_policy.xml.tpl", {
     origin = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
-
   })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
+  api_name            = format("%s-pm-wisp-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "GETSpidMetadata"
+
+  xml_content = templatefile("./api/payment_manager_api/wisp/_spid_metadata_policy.xml.tpl", { metadata = data.azurerm_key_vault_secret.pm_wisp_metadata.value })
 }
 
 ########################
