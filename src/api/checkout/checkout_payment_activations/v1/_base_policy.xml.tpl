@@ -42,15 +42,15 @@
              }</set-body>
                 </return-response>
             </when>
-            <when condition="@(context.Response.StatusCode != 500)">
-                <return-response>
+            <otherwise>
+              <return-response>
                     <set-status code="@(context.Response.StatusCode)" />
                     <set-header name="Content-Type" exists-action="override">
                         <value>application/json</value>
                     </set-header>
                     <set-body>@(((JObject) context.Variables["body"]).ToString())</set-body>
                 </return-response>
-            </when>
+            </otherwise>
         </choose>
         <base />
     </outbound>

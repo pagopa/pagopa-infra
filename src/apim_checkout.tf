@@ -194,6 +194,43 @@ resource "azurerm_api_management_api_operation_policy" "get_activation_status_au
   xml_content = file("./api/checkout/checkout_payment_activations_auth/v1/_idpayment_check.xml.tpl")
 }
 
+# Payment activation v2 authenticated APIs
+module "apim_checkout_payment_activations_api_auth_v2" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.23"
+
+  name                  = format("%s-checkout-payment-activations-auth-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_checkout_product[0].product_id]
+  subscription_required = local.apim_checkout_payment_activations_auth_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.checkout_payment_activations_auth_api.id
+  api_version           = "v2"
+  service_url           = local.apim_checkout_payment_activations_auth_api.service_url
+
+  description  = local.apim_checkout_payment_activations_auth_api.description
+  display_name = local.apim_checkout_payment_activations_auth_api.display_name
+  path         = local.apim_checkout_payment_activations_auth_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/checkout/checkout_payment_activations_auth/v2/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/checkout/checkout_payment_activations_auth/v2/_base_policy.xml.tpl", {
+    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_activation_status_auth_api_v2" {
+  api_name            = format("%s-checkout-payment-activations-auth-api-v2", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "getActivationStatus"
+
+  xml_content = file("./api/checkout/checkout_payment_activations_auth/v2/_idpayment_check.xml.tpl")
+}
+
 # pagopa-proxy SOAP web service FespCdService
 locals {
   apim_cd_info_wisp = {
