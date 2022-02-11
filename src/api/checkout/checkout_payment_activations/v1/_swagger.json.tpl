@@ -45,7 +45,7 @@
             }
           },
           "424": {
-            "description": "Unexpected error. The requests cannot be handled by PagoPa services.",
+            "description": "PagoPA service error. The requests cannot be handled by PagoPa services.",
             "schema": {
               "$ref": "#/definitions/ProblemJson"
             }
@@ -101,7 +101,7 @@
             }
           },
           "424": {
-            "description": "Unexpected error. The requests cannot be handled by PagoPa services.",
+            "description": "PagoPA service error. The requests cannot be handled by PagoPa services.",
             "schema": {
               "$ref": "#/definitions/ProblemJson"
             }
