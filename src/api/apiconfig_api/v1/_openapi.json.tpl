@@ -1083,7 +1083,7 @@
                         "type": "string"
                     },
                     "ip": {
-                        "example": "locahost",
+                        "example": "localhost",
                         "type": "string"
                     },
                     "port": {
@@ -1111,7 +1111,7 @@
                         "type": "boolean"
                     },
                     "ip": {
-                        "example": "locahost",
+                        "example": "localhost",
                         "type": "string"
                     },
                     "port": {
@@ -1677,7 +1677,7 @@
         "description": "Spring Application exposes Api to manage configuration for EC/PSP on the Nodo dei Pagamenti",
         "termsOfService": "https://www.pagopa.gov.it/",
         "title": "PagoPA API configuration",
-        "version": "0.2.33-1"
+        "version": "0.2.33-2"
     },
     "openapi": "3.0.1",
     "paths": {
@@ -4174,7 +4174,7 @@
         },
         "/channels/{channelcode}/paymenttypes": {
             "get": {
-                "operationId": "getPaymentTypes_1",
+                "operationId": "getChannelPaymentTypes",
                 "parameters": [
                     {
                         "description": "Channel code",
@@ -4319,7 +4319,7 @@
                 }
             ],
             "post": {
-                "operationId": "createPaymentType_1",
+                "operationId": "createChannelPaymentType",
                 "parameters": [
                     {
                         "description": "Channel code",
@@ -4484,7 +4484,7 @@
         },
         "/channels/{channelcode}/paymenttypes/{paymenttypecode}": {
             "delete": {
-                "operationId": "deletePaymentType",
+                "operationId": "deleteChannelPaymentType",
                 "parameters": [
                     {
                         "description": "Channel code",
@@ -4880,7 +4880,7 @@
         },
         "/configuration/ftpservers/host/{host}/port/{port}/service/{service}": {
             "delete": {
-                "operationId": "deleteFtpServer_1",
+                "operationId": "deleteFtpServer",
                 "parameters": [
                     {
                         "description": "Host",
@@ -5892,7 +5892,7 @@
                 }
             ],
             "put": {
-                "operationId": "updateConfigurationKey_1",
+                "operationId": "updateConfigurationKey",
                 "parameters": [
                     {
                         "description": "Configuration category",
@@ -6294,7 +6294,7 @@
         },
         "/configuration/paymenttypes/{paymentTypeCode}": {
             "delete": {
-                "operationId": "deleteFtpServer",
+                "operationId": "deletePaymentType",
                 "parameters": [
                     {
                         "description": "Payment type code",
@@ -6566,7 +6566,7 @@
                 }
             ],
             "put": {
-                "operationId": "updateConfigurationKey",
+                "operationId": "updatePaymentType",
                 "parameters": [
                     {
                         "description": "Payment type code",
@@ -7506,7 +7506,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ConfigurationKey"
+                                    "$ref": "#/components/schemas/WfespPluginConf"
                                 }
                             }
                         },
@@ -8163,19 +8163,22 @@
                 "operationId": "createCounterpartTable",
                 "requestBody": {
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "file": {
+                                        "description": "The file to upload",
                                         "format": "binary",
                                         "type": "string"
                                     }
                                 },
+                                "required": [
+                                    "file"
+                                ],
                                 "type": "object"
                             }
                         }
                     },
-                    "description": "The file to upload",
                     "required": true
                 },
                 "responses": {
@@ -8289,7 +8292,7 @@
                         "Authorization": []
                     }
                 ],
-                "summary": "Update a counterpart table",
+                "summary": "Upload a XML file containing the details of a Counterpart table",
                 "tags": [
                     "Creditor Institutions"
                 ]
@@ -8431,7 +8434,7 @@
                         "Authorization": []
                     }
                 ],
-                "summary": "Delete a counterpart table",
+                "summary": "Delete a Counterpart table XML file ",
                 "tags": [
                     "Creditor Institutions"
                 ]
@@ -10798,7 +10801,7 @@
                         "Authorization": []
                     }
                 ],
-                "summary": "Update a XML file containing the details of an ICA",
+                "summary": "Upload a XML file containing the details of an ICA",
                 "tags": [
                     "Creditor Institutions"
                 ]
@@ -11074,7 +11077,7 @@
                         "Authorization": []
                     }
                 ],
-                "summary": "Delete an ICA file",
+                "summary": "Delete an ICA XML file",
                 "tags": [
                     "Creditor Institutions"
                 ]
