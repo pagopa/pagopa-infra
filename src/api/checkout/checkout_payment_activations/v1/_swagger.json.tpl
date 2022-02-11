@@ -45,7 +45,7 @@
             }
           },
           "424": {
-            "description": "Invalid `Nodo` response",
+            "description": "Unexpected error. The requests cannot be handled by PagoPa services.",
             "schema": {
               "$ref": "#/definitions/ProblemJson"
             }
@@ -101,7 +101,7 @@
             }
           },
           "424": {
-            "description": "Invalid `Nodo` response",
+            "description": "Unexpected error. The requests cannot be handled by PagoPa services.",
             "schema": {
               "$ref": "#/definitions/ProblemJson"
             }
@@ -140,12 +140,6 @@
           },
           "400": {
             "description": "Invalid input",
-            "schema": {
-              "$ref": "#/definitions/ProblemJson"
-            }
-          },
-          "424": {
-            "description": "Invalid `Nodo` response",
             "schema": {
               "$ref": "#/definitions/ProblemJson"
             }
