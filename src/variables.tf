@@ -220,6 +220,11 @@ variable "nodo_pagamenti_url" {
   default     = "https://"
 }
 
+variable "ip_nodo" {
+  type        = string
+  description = "Nodo pagamenti ip"
+}
+
 # nodo dei pagamenti - test
 variable "nodo_pagamenti_test_enabled" {
   type        = bool
