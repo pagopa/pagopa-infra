@@ -134,40 +134,6 @@ resource "azurerm_monitor_autoscale_setting" "buyerbanks_function" {
   }
 }
 
-# Availability: Alerting Action
-resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_availability" {
-  count = var.env_short == "p" ? 1 : 0
-
-  name                = format("%s-%s-availability-alert", local.project, module.buyerbanks_function.name)
-  resource_group_name = azurerm_resource_group.buyerbanks_rg.name
-  location            = var.location
-
-  action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = azurerm_application_insights.application_insights.id
-  description    = "Availability greater than or equal 99%"
-  enabled        = true
-  query = format(<<-QUERY
-  requests
-    | where cloud_RoleName == '%s'
-    | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,15m)
-    | extend Availability=((Success*1.0)/Total)*100
-    | where toint(Availability) < 99
-
-  QUERY
-  , format("%s-fn-%s", local.project, module.buyerbanks_function.name))
-  severity    = 1
-  frequency   = 45
-  time_window = 45
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 3
-  }
-}
-
 resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -188,7 +154,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
     | where cloud_RoleName == '%s'
     | where name contains "UpdateBuyerBanks"
     | summarize Sucess=count(success == true) by length=bin(timestamp,24h)
-    | where toint(Sucess) >= 1
+    | where toint(Sucess) < 1
 
   QUERY
   , format("%s-fn-%s", local.project, module.buyerbanks_function.name))
