@@ -150,7 +150,7 @@ variable "api_config_size" {
 variable "api_config_always_on" {
   type        = bool
   description = "Api Config always on property"
-  default     = false
+  default     = true
 }
 
 variable "db_port" {
