@@ -150,7 +150,7 @@ variable "api_config_size" {
 variable "api_config_always_on" {
   type        = bool
   description = "Api Config always on property"
-  default     = false
+  default     = true
 }
 
 variable "db_port" {
@@ -218,6 +218,11 @@ variable "nodo_pagamenti_url" {
   type        = string
   description = "Nodo pagamenti url"
   default     = "https://"
+}
+
+variable "ip_nodo" {
+  type        = string
+  description = "Nodo pagamenti ip"
 }
 
 # nodo dei pagamenti - test
