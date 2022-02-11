@@ -150,7 +150,7 @@ variable "api_config_size" {
 variable "api_config_always_on" {
   type        = bool
   description = "Api Config always on property"
-  default     = false
+  default     = true
 }
 
 variable "db_port" {
@@ -168,6 +168,18 @@ variable "db_service_name" {
 variable "xsd_ica" {
   type        = string
   description = "XML Schema of Informatica Conto Accredito"
+}
+
+variable "xsd_counterpart" {
+  type        = string
+  description = "XML Schema of Tabelle delle Controparti"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/TabellaDelleControparti_1_0_8.xsd"
+}
+
+variable "xsd_cdi" {
+  type        = string
+  description = "XML Schema of Catalogo Dati Informativi"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/CatalogoDatiInformativiPSP.xsd"
 }
 
 
@@ -206,6 +218,11 @@ variable "nodo_pagamenti_url" {
   type        = string
   description = "Nodo pagamenti url"
   default     = "https://"
+}
+
+variable "ip_nodo" {
+  type        = string
+  description = "Nodo pagamenti ip"
 }
 
 # nodo dei pagamenti - test

@@ -40,17 +40,6 @@
                </claim>
            </required-claims>
         </validate-jwt>
-
-        <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
-        <set-variable name="isPost" value="@(context.Request.Method.Equals("POST"))" />
-        <set-variable name="isXsd" value="@(context.Request.Url.Path.Contains("xsd"))" />
-        <choose>
-            <when condition="@(!(context.Variables.GetValueOrDefault<bool>("isPost") && context.Variables.GetValueOrDefault<bool>("isXsd")) && !context.Variables.GetValueOrDefault<bool>("isGet"))">
-                <return-response>
-                    <set-status code="403" reason="Unauthorized, you have read-only access" />
-                </return-response>
-            </when>
-        </choose>
 </inbound>
 <outbound>
 <base />
