@@ -966,28 +966,25 @@ variable "reporting_batch_function_always_on" {
   default     = false
 }
 
-variable "paa_id_intermediario" {
-  type    = string
-  default = null
-}
-
-variable "paa_id_stazione" {
-  type    = string
-  default = null
-}
-
-variable "paa_password" {
-  type    = string
-  default = null
-}
-
 variable "cidr_subnet_reporting_service" {
   type        = list(string)
   description = "Address prefixes subnet reporting_service function"
   default     = null
 }
 
+variable "cidr_subnet_reporting_analysis" {
+  type        = list(string)
+  description = "Address prefixes subnet reporting_analysis function"
+  default     = null
+}
+
 variable "reporting_service_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "reporting_analysis_function_kind" {
   type        = string
   description = "App service plan kind"
   default     = null
@@ -999,7 +996,19 @@ variable "reporting_service_function_sku_tier" {
   default     = null
 }
 
+variable "reporting_analysis_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
 variable "reporting_service_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "reporting_analysis_function_sku_size" {
   type        = string
   description = "App service plan sku size"
   default     = null
@@ -1027,4 +1036,28 @@ variable "reporting_service_function_always_on" {
   type        = bool
   description = "Always on property"
   default     = false
+}
+
+variable "reporting_analysis_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "reporting_analysis_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+variable "reporting_analysis_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "reporting_analysis_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
 }
