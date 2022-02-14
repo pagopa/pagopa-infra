@@ -70,69 +70,6 @@ module "reporting_batch_function" {
   ]
 }
 
-# autoscaling
-resource "azurerm_monitor_autoscale_setting" "reporting_batch_function" {
-  name                = format("%s-%s-autoscale", local.project, module.reporting_batch_function.name)
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  location            = var.location
-  target_resource_id  = module.reporting_batch_function.app_service_plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = var.reporting_batch_function_autoscale_default
-      minimum = var.reporting_batch_function_autoscale_minimum
-      maximum = var.reporting_batch_function_autoscale_maximum
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_batch_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 4000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_batch_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 3000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-  }
-}
-
-
 ## Function reporting_service
 module "reporting_service_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
@@ -188,69 +125,6 @@ module "reporting_service_function" {
   ]
 }
 
-# autoscaling
-resource "azurerm_monitor_autoscale_setting" "reporting_service_function" {
-  name                = format("%s-%s-autoscale", local.project, module.reporting_service_function.name)
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  location            = var.location
-  target_resource_id  = module.reporting_service_function.app_service_plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = var.reporting_service_function_autoscale_default
-      minimum = var.reporting_service_function_autoscale_minimum
-      maximum = var.reporting_service_function_autoscale_maximum
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_service_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 4000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_service_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 3000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-  }
-}
-
-
 ## Function reporting_analysis
 module "reporting_analysis_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
@@ -304,24 +178,112 @@ module "reporting_analysis_function" {
 }
 
 # autoscaling
-resource "azurerm_monitor_autoscale_setting" "reporting_analysis_function" {
-  name                = format("%s-%s-autoscale", local.project, module.reporting_analysis_function.name)
+resource "azurerm_monitor_autoscale_setting" "reporting_function" {
+  name                = format("%s-%s-autoscale", local.project, module.reporting_batch_function.name)
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
-  target_resource_id  = module.reporting_analysis_function.app_service_plan_id
+  target_resource_id  = azurerm_app_service_plan.gpd_service_plan.id
 
   profile {
     name = "default"
 
     capacity {
-      default = var.reporting_analysis_function_autoscale_default
-      minimum = var.reporting_analysis_function_autoscale_minimum
-      maximum = var.reporting_analysis_function_autoscale_maximum
+      default = var.reporting_function_autoscale_default
+      minimum = var.reporting_function_autoscale_minimum
+      maximum = var.reporting_function_autoscale_maximum
     }
 
     rule {
       metric_trigger {
-        metric_name              = "Requests"
+        metric_name              = "Batch Requests"
+        metric_resource_id       = module.reporting_batch_function.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 4000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Batch Requests"
+        metric_resource_id       = module.reporting_batch_function.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 3000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Service Requests"
+        metric_resource_id       = module.reporting_service_function.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 4000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Service Requests"
+        metric_resource_id       = module.reporting_service_function.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 3000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Analysis Requests"
         metric_resource_id       = module.reporting_analysis_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -343,7 +305,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_analysis_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Requests"
+        metric_name              = "Analysis Requests"
         metric_resource_id       = module.reporting_analysis_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
