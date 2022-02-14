@@ -1,9 +1,9 @@
 # Subnet to host reporting_batch function
-module "reporting_batch_function_snet" {
-  count                                          = var.cidr_subnet_reporting_batch != null ? 1 : 0
+module "reporting_function_snet" {
+  count                                          = var.cidr_subnet_reporting_common != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-reporting-batch-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_reporting_batch
+  address_prefixes                               = var.cidr_subnet_reporting_common
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
   enforce_private_link_endpoint_network_policies = true
@@ -25,7 +25,7 @@ module "reporting_batch_function" {
   name                                     = "gpdrbatch"
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_id                                = module.reporting_batch_function_snet[0].id
+  subnet_id                                = module.reporting_function_snet[0].id
   runtime_version                          = "~3"
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -133,25 +133,6 @@ resource "azurerm_monitor_autoscale_setting" "reporting_batch_function" {
 }
 
 
-# Subnet to host reporting_service function
-module "reporting_service_function_snet" {
-  count                                          = var.cidr_subnet_reporting_service != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-reporting-service-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_reporting_service
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
 ## Function reporting_service
 module "reporting_service_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
@@ -160,7 +141,7 @@ module "reporting_service_function" {
   name                                     = "gpdrservice"
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_id                                = module.reporting_service_function_snet[0].id
+  subnet_id                                = module.reporting_function_snet[0].id
   runtime_version                          = "~3"
   always_on                                = var.reporting_service_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -270,25 +251,6 @@ resource "azurerm_monitor_autoscale_setting" "reporting_service_function" {
 }
 
 
-# Subnet to host reporting_analysis function
-module "reporting_analysis_function_snet" {
-  count                                          = var.cidr_subnet_reporting_analysis != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-reporting-analysis-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_reporting_analysis
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
 ## Function reporting_analysis
 module "reporting_analysis_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
@@ -297,7 +259,7 @@ module "reporting_analysis_function" {
   name                                     = "gpdranalysis"
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_id                                = module.reporting_analysis_function_snet[0].id
+  subnet_id                                = module.reporting_function_snet[0].id
   runtime_version                          = "~3"
   always_on                                = var.reporting_analysis_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
