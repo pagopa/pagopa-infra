@@ -307,3 +307,18 @@ reporting_fdr_function_sku_size = "P1v3"
 gpd_plan_kind     = "Linux"
 gpd_plan_sku_tier = "PremiumV3"
 gpd_plan_sku_size = "P1v3"
+
+reporting_batch_function_always_on         = true
+reporting_batch_function_autoscale_minimum = 1
+reporting_batch_function_autoscale_maximum = 3
+reporting_batch_function_autoscale_default = 1
+
+reporting_service_function_always_on         = true
+reporting_service_function_autoscale_minimum = 1
+reporting_service_function_autoscale_maximum = 3
+reporting_service_function_autoscale_default = 1
+
+reporting_analysis_function_always_on         = true
+reporting_analysis_function_autoscale_minimum = 1
+reporting_analysis_function_autoscale_maximum = 3
+reporting_analysis_function_autoscale_default = 1
