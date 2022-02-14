@@ -302,3 +302,8 @@ fdr_delete_retention_days       = 30
 reporting_fdr_function_kind     = "Linux"
 reporting_fdr_function_sku_tier = "PremiumV3"
 reporting_fdr_function_sku_size = "P1v3"
+
+# gpd
+gpd_plan_kind     = "Linux"
+gpd_plan_sku_tier = "PremiumV3"
+gpd_plan_sku_size = "P1v3"

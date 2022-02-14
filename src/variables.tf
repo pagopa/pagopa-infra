@@ -916,3 +916,22 @@ variable "reporting_fdr_function_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
+
+#  gestione posizioni debitorie
+variable "gpd_plan_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "gpd_plan_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "gpd_plan_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
