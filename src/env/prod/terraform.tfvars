@@ -28,10 +28,6 @@ cidr_subnet_buyerbanks   = ["10.1.134.0/24"]
 
 cidr_subnet_reporting_fdr = ["10.1.135.0/24"]
 
-cidr_subnet_reporting_batch    = ["10.1.136.0/24"]
-cidr_subnet_reporting_service  = ["10.1.137.0/24"]
-cidr_subnet_reporting_analysis = ["10.1.138.0/24"]
-
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration = ["10.230.10.0/24"] # ask to SIA
