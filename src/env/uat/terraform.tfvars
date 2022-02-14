@@ -29,7 +29,7 @@ cidr_subnet_buyerbanks   = ["10.1.240.32/29"]
 
 cidr_subnet_reporting_fdr = ["10.1.240.40/29"]
 
-cidr_subnet_reporting_common    = ["10.1.240.48/29"]
+cidr_subnet_reporting_common = ["10.1.240.48/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -315,6 +315,6 @@ reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
 reporting_function_autoscale_default = 1
 
-reporting_batch_function_always_on         = true
-reporting_service_function_always_on         = true
-reporting_analysis_function_always_on         = true
+reporting_batch_function_always_on    = true
+reporting_service_function_always_on  = true
+reporting_analysis_function_always_on = true
