@@ -29,6 +29,10 @@ cidr_subnet_pagopa_proxy = ["10.1.240.32/29"]
 
 cidr_subnet_reporting_fdr = ["10.1.240.40/29"]
 
+cidr_subnet_reporting_batch = ["10.1.240.48/29"]
+cidr_subnet_reporting_service = ["10.1.240.56/29"]
+cidr_subnet_reporting_analysis = ["10.1.240.64/29"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration  = ["10.230.8.0/24"] # ask to SIA
