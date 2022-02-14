@@ -917,28 +917,29 @@ variable "reporting_fdr_function_autoscale_default" {
   default     = 1
 }
 
-# Rendicontazione gestione posizioni debitorie
-variable "cidr_subnet_reporting_batch" {
-  type        = list(string)
-  description = "Address prefixes subnet reporting_batch function"
-  default     = null
-}
-
-variable "reporting_batch_function_kind" {
+#  gestione posizioni debitorie
+variable "gpd_plan_kind" {
   type        = string
   description = "App service plan kind"
   default     = null
 }
 
-variable "reporting_batch_function_sku_tier" {
+variable "gpd_plan_sku_tier" {
   type        = string
   description = "App service plan sku tier"
   default     = null
 }
 
-variable "reporting_batch_function_sku_size" {
+variable "gpd_plan_sku_size" {
   type        = string
   description = "App service plan sku size"
+  default     = null
+}
+
+
+variable "cidr_subnet_reporting_batch" {
+  type        = list(string)
+  description = "Address prefixes subnet reporting_batch function"
   default     = null
 }
 
@@ -975,42 +976,6 @@ variable "cidr_subnet_reporting_service" {
 variable "cidr_subnet_reporting_analysis" {
   type        = list(string)
   description = "Address prefixes subnet reporting_analysis function"
-  default     = null
-}
-
-variable "reporting_service_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "reporting_analysis_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "reporting_service_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "reporting_analysis_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "reporting_service_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "reporting_analysis_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
   default     = null
 }
 
@@ -1060,4 +1025,16 @@ variable "reporting_analysis_function_autoscale_maximum" {
   type        = number
   description = "The maximum number of instances for this resource."
   default     = 3
+}
+
+variable "gdp_reporting_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "gdp_reporting_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
 }

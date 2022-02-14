@@ -315,24 +315,19 @@ reporting_fdr_function_kind     = "Linux"
 reporting_fdr_function_sku_tier = "Standard"
 reporting_fdr_function_sku_size = "S1"
 
-# rendicontaione gpd
-reporting_batch_function_kind              = "Linux"
-reporting_batch_function_sku_tier          = "Standard"
-reporting_batch_function_sku_size          = "S1"
+# gpd
+gpd_plan_kind     = "Linux"
+gpd_plan_sku_tier = "Standard"
+gpd_plan_sku_size = "S1"
+
 reporting_batch_function_autoscale_minimum = 1
 reporting_batch_function_autoscale_maximum = 3
 reporting_batch_function_autoscale_default = 1
 
-reporting_service_function_kind              = "Linux"
-reporting_service_function_sku_tier          = "Standard"
-reporting_service_function_sku_size          = "S1"
 reporting_service_function_autoscale_minimum = 1
 reporting_service_function_autoscale_maximum = 3
 reporting_service_function_autoscale_default = 1
 
-reporting_analysis_function_kind              = "Linux"
-reporting_analysis_function_sku_tier          = "Standard"
-reporting_analysis_function_sku_size          = "S1"
 reporting_analysis_function_autoscale_minimum = 1
 reporting_analysis_function_autoscale_maximum = 3
 reporting_analysis_function_autoscale_default = 1
