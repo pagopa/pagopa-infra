@@ -1,10 +1,3 @@
-resource "azurerm_resource_group" "reporting_rg" {
-  name     = format("%s-reporting-rg", local.project)
-  location = var.location
-
-  tags = var.tags
-}
-
 # Subnet to host reporting_batch function
 module "reporting_batch_function_snet" {
   count                                          = var.cidr_subnet_reporting_batch != null ? 1 : 0
@@ -26,29 +19,19 @@ module "reporting_batch_function_snet" {
 
 ## Function reporting_batch
 module "reporting_batch_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
-  resource_group_name                      = azurerm_resource_group.reporting_rg.name
-  prefix                                   = var.prefix
-  env_short                                = var.env_short
+  resource_group_name                      = azurerm_resource_group.gpd_rg.name
   name                                     = "gpdrbatch"
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_out_id                            = module.reporting_batch_function_snet[0].id
+  subnet_id                                = module.reporting_batch_function_snet[0].id
   runtime_version                          = "~3"
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
   # worker_runtime                           = "java"
   # linux_fx_version  =  format("DOCKER|%s/reporting-batch:%s", module.acr[0].login_server, "latest")
-
-
-  app_service_plan_info = {
-    kind                         = var.reporting_batch_function_kind
-    sku_tier                     = var.reporting_batch_function_sku_tier
-    sku_size                     = var.reporting_batch_function_sku_size
-    maximum_elastic_worker_count = 0
-  }
-
   app_settings = {
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -59,7 +42,7 @@ module "reporting_batch_function" {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    FLOW_SA_CONNECTION_STRING = azurerm_storage_account.flows.primary_connection_string
+    FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
     FLOWS_TABLE               = azurerm_storage_table.flow.name
     FLOWS_QUEUE               = azurerm_storage_queue.flow.name
     ORGANIZATIONS_QUEUE       = azurerm_storage_queue.organization.name
@@ -81,12 +64,16 @@ module "reporting_batch_function" {
   allowed_ips = []
 
   tags = var.tags
+
+  depends_on = [
+    azurerm_app_service_plan.gpd_service_plan
+  ]
 }
 
 # autoscaling
 resource "azurerm_monitor_autoscale_setting" "reporting_batch_function" {
   name                = format("%s-%s-autoscale", local.project, module.reporting_batch_function.name)
-  resource_group_name = azurerm_resource_group.reporting_rg.name
+  resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
   target_resource_id  = module.reporting_batch_function.app_service_plan_id
 
@@ -167,29 +154,19 @@ module "reporting_service_function_snet" {
 
 ## Function reporting_service
 module "reporting_service_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
-  resource_group_name                      = azurerm_resource_group.reporting_rg.name
-  prefix                                   = var.prefix
-  env_short                                = var.env_short
+  resource_group_name                      = azurerm_resource_group.gpd_rg.name
   name                                     = "gpdrservice"
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_out_id                            = module.reporting_service_function_snet[0].id
+  subnet_id                                = module.reporting_service_function_snet[0].id
   runtime_version                          = "~3"
   always_on                                = var.reporting_service_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
   # worker_runtime                           = "java"
   # linux_fx_version  =  format("DOCKER|%s/reporting-service:%s", module.acr[0].login_server, "latest")
-
-
-  app_service_plan_info = {
-    kind                         = var.reporting_service_function_kind
-    sku_tier                     = var.reporting_service_function_sku_tier
-    sku_size                     = var.reporting_service_function_sku_size
-    maximum_elastic_worker_count = 0
-  }
-
   app_settings = {
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -200,7 +177,7 @@ module "reporting_service_function" {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    FLOW_SA_CONNECTION_STRING = azurerm_storage_account.flows.primary_connection_string
+    FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
     FLOWS_QUEUE               = azurerm_storage_queue.flow.name
     OPTIONS_QUEUE             = azurerm_storage_queue.option.name
     FLOWS_XML_BLOB            = azurerm_storage_container.flow.name
@@ -224,12 +201,16 @@ module "reporting_service_function" {
   allowed_ips = []
 
   tags = var.tags
+
+  depends_on = [
+    azurerm_app_service_plan.gpd_service_plan
+  ]
 }
 
 # autoscaling
 resource "azurerm_monitor_autoscale_setting" "reporting_service_function" {
   name                = format("%s-%s-autoscale", local.project, module.reporting_service_function.name)
-  resource_group_name = azurerm_resource_group.reporting_rg.name
+  resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
   target_resource_id  = module.reporting_service_function.app_service_plan_id
 
@@ -310,29 +291,19 @@ module "reporting_analysis_function_snet" {
 
 ## Function reporting_analysis
 module "reporting_analysis_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
-  resource_group_name                      = azurerm_resource_group.reporting_rg.name
-  prefix                                   = var.prefix
-  env_short                                = var.env_short
+  resource_group_name                      = azurerm_resource_group.gpd_rg.name
   name                                     = "gpdranalysis"
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_out_id                            = module.reporting_analysis_function_snet[0].id
+  subnet_id                                = module.reporting_analysis_function_snet[0].id
   runtime_version                          = "~3"
   always_on                                = var.reporting_analysis_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
   # worker_runtime                           = "java"
   # linux_fx_version  =  format("DOCKER|%s/reporting-service:%s", module.acr[0].login_server, "latest")
-
-
-  app_service_plan_info = {
-    kind                         = var.reporting_analysis_function_kind
-    sku_tier                     = var.reporting_analysis_function_sku_tier
-    sku_size                     = var.reporting_analysis_function_sku_size
-    maximum_elastic_worker_count = 0
-  }
-
   app_settings = {
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -343,7 +314,7 @@ module "reporting_analysis_function" {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    FLOW_SA_CONNECTION_STRING = azurerm_storage_account.flows.primary_connection_string
+    FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
     FLOWS_TABLE               = azurerm_storage_table.flow.name
     FLOWS_CONTAINER           = azurerm_storage_container.flow.name
 
@@ -364,12 +335,16 @@ module "reporting_analysis_function" {
   allowed_ips = []
 
   tags = var.tags
+
+  depends_on = [
+    azurerm_app_service_plan.gpd_service_plan
+  ]
 }
 
 # autoscaling
 resource "azurerm_monitor_autoscale_setting" "reporting_analysis_function" {
   name                = format("%s-%s-autoscale", local.project, module.reporting_analysis_function.name)
-  resource_group_name = azurerm_resource_group.reporting_rg.name
+  resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
   target_resource_id  = module.reporting_analysis_function.app_service_plan_id
 
@@ -428,17 +403,22 @@ resource "azurerm_monitor_autoscale_setting" "reporting_analysis_function" {
   }
 }
 
+module "flows" {
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
 
-## Storage Account
-resource "azurerm_storage_account" "flows" {
-  name                      = replace(format("%s-flow-sa", local.project), "-", "")
-  resource_group_name       = azurerm_resource_group.reporting_rg.name
-  location                  = var.location
-  enable_https_traffic_only = true
-  min_tls_version           = "TLS1_2"
-  account_tier              = "Standard"
+  name                       = replace(format("%s-flow-sa", local.project), "-", "")
+  account_kind               = "StorageV2"
+  account_tier               = "Standard"
+  account_replication_type   = "LRS"
+  access_tier                = "Hot"
+  versioning_name            = "versioning"
+  enable_versioning          = var.fdr_enable_versioning
+  resource_group_name        = azurerm_resource_group.gpd_rg.name
+  location                   = var.location
+  advanced_threat_protection = var.gdp_reporting_advanced_threat_protection
+  allow_blob_public_access   = false
 
-  account_replication_type = "LRS"
+  blob_properties_delete_retention_policy_days = var.gdp_reporting_delete_retention_days
 
   tags = var.tags
 }
@@ -446,31 +426,31 @@ resource "azurerm_storage_account" "flows" {
 
 ## table storage
 resource "azurerm_storage_table" "flow" {
-  name                 = format("%stable", azurerm_storage_account.flows.name)
-  storage_account_name = azurerm_storage_account.flows.name
+  name                 = format("%stable", module.flows.name)
+  storage_account_name = module.flows.name
 }
 
 ## queue storage flows
 resource "azurerm_storage_queue" "flow" {
-  name                 = format("%squeue", azurerm_storage_account.flows.name)
-  storage_account_name = azurerm_storage_account.flows.name
+  name                 = format("%squeue", module.flows.name)
+  storage_account_name = module.flows.name
 }
 
 ## queue storage organization
 resource "azurerm_storage_queue" "organization" {
-  name                 = format("%squeue", azurerm_storage_account.flows.name)
-  storage_account_name = azurerm_storage_account.flows.name
+  name                 = format("%squeue", module.flows.name)
+  storage_account_name = module.flows.name
 }
 
 ## queue storage flows
 resource "azurerm_storage_queue" "option" {
-  name                 = format("%squeue", azurerm_storage_account.flows.name)
-  storage_account_name = azurerm_storage_account.flows.name
+  name                 = format("%squeue", module.flows.name)
+  storage_account_name = module.flows.name
 }
 
 ## blob container flows
 resource "azurerm_storage_container" "flow" {
-  name                  = format("%sflowscontainer", azurerm_storage_account.flows.name)
-  storage_account_name  = azurerm_storage_account.flows.name
+  name                  = format("%sflowscontainer", module.flows.name)
+  storage_account_name  = module.flows.name
   container_access_type = "private"
 }
