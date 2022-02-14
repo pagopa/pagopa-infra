@@ -28,8 +28,8 @@ cidr_subnet_buyerbanks   = ["10.1.134.0/24"]
 
 cidr_subnet_reporting_fdr = ["10.1.135.0/24"]
 
-cidr_subnet_reporting_batch = ["10.1.136.0/24"]
-cidr_subnet_reporting_service = ["10.1.137.0/24"]
+cidr_subnet_reporting_batch    = ["10.1.136.0/24"]
+cidr_subnet_reporting_service  = ["10.1.137.0/24"]
 cidr_subnet_reporting_analysis = ["10.1.138.0/24"]
 
 # integration vnet
