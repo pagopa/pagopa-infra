@@ -562,7 +562,7 @@ module "apim_pmclient_iobpd_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/io-bpd/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s/pagopa/api/v1", local.apim_pmclient_iobpd_api.io_bpd_hostname)
+    endpoint = format("https://%s/pagopa/api/v1", local.apim_pmclient_iobpd_api.io_bpd_hostname)
   })
 }
 
@@ -612,7 +612,7 @@ module "apim_pm_paypalpsp_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/paypal-psp/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s", var.paytipper_hostname)
+    endpoint = format("https://%s", var.paytipper_hostname)
   })
 }
 
@@ -662,7 +662,7 @@ module "apim_pm_xpay_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/xpay/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s", var.xpay_hostname)
+    endpoint = format("https://%s", var.xpay_hostname)
   })
 }
 
@@ -712,7 +712,7 @@ module "apim_pm_bpd_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/bpd/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s", var.bpd_hostname)
+    endpoint = format("https://%s", var.bpd_hostname)
   })
 }
 
@@ -762,7 +762,7 @@ module "apim_pm_cobadge_api_v4" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/cobadge/v4/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s/api/pagopa/banking/v4.0", var.cobadge_hostname)
+    endpoint = format("https://%s/api/pagopa/banking/v4.0", var.cobadge_hostname)
   })
 }
 
@@ -813,6 +813,6 @@ module "apim_pm_fesp_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/fesp/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s", var.fesp_hostname)
+    endpoint = format("https://%s", var.fesp_hostname)
   })
 }
