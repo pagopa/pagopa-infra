@@ -336,7 +336,7 @@ module "flows" {
   account_replication_type   = "LRS"
   access_tier                = "Hot"
   versioning_name            = "versioning"
-  enable_versioning          = var.fdr_enable_versioning
+  enable_versioning          = var.gdp_enable_versioning
   resource_group_name        = azurerm_resource_group.gpd_rg.name
   location                   = var.location
   advanced_threat_protection = var.gdp_reporting_advanced_threat_protection

@@ -378,6 +378,7 @@
 | <a name="input_fdr_delete_retention_days"></a> [fdr\_delete\_retention\_days](#input\_fdr\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_fdr_enable_versioning"></a> [fdr\_enable\_versioning](#input\_fdr\_enable\_versioning) | Enable sa versioning | `bool` | `false` | no |
 | <a name="input_fesp_hostname"></a> [fesp\_hostname](#input\_fesp\_hostname) | Fesp hostname | `string` | `""` | no |
+| <a name="input_gdp_enable_versioning"></a> [gdp\_enable\_versioning](#input\_gdp\_enable\_versioning) | Enable sa versioning | `bool` | `false` | no |
 | <a name="input_gdp_reporting_advanced_threat_protection"></a> [gdp\_reporting\_advanced\_threat\_protection](#input\_gdp\_reporting\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
 | <a name="input_gdp_reporting_delete_retention_days"></a> [gdp\_reporting\_delete\_retention\_days](#input\_gdp\_reporting\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_gpd_plan_kind"></a> [gpd\_plan\_kind](#input\_gpd\_plan\_kind) | App service plan kind | `string` | `null` | no |
