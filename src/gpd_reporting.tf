@@ -43,9 +43,9 @@ module "reporting_batch_function" {
 
     # custom configuration
     FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
-    FLOWS_TABLE               = azurerm_storage_table.flow.name
-    FLOWS_QUEUE               = azurerm_storage_queue.flow.name
-    ORGANIZATIONS_QUEUE       = azurerm_storage_queue.organization.name
+    FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
+    FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
+    ORGANIZATIONS_QUEUE       = azurerm_storage_queue.reporting_organizations_queue.name
 
     GPD_HOST  = "TODO" # azurerm_api_management_api.gpd_api_v1.service_url
     NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
@@ -96,9 +96,9 @@ module "reporting_service_function" {
 
     # custom configuration
     FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
-    FLOWS_QUEUE               = azurerm_storage_queue.flow.name
-    OPTIONS_QUEUE             = azurerm_storage_queue.option.name
-    FLOWS_XML_BLOB            = azurerm_storage_container.flow.name
+    FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
+    OPTIONS_QUEUE             = azurerm_storage_queue.reporting_options_queue.name
+    FLOWS_XML_BLOB            = azurerm_storage_container.reporting_flows_container.name
 
     GPD_HOST  = "TODO" # azurerm_api_management_api.gpd_api_v1.service_url
     NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
@@ -151,8 +151,8 @@ module "reporting_analysis_function" {
 
     # custom configuration
     FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
-    FLOWS_TABLE               = azurerm_storage_table.flow.name
-    FLOWS_CONTAINER           = azurerm_storage_container.flow.name
+    FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
+    FLOWS_CONTAINER           = azurerm_storage_container.reporting_flows_container.name
 
     GPD_HOST  = "TODO" # azurerm_api_management_api.gpd_api_v1.service_url
     NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
