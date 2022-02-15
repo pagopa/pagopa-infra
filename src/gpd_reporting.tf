@@ -22,7 +22,7 @@ module "reporting_batch_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = "gpdrbatch"
+  name                                     = replace(format("%sgpdrbatch", local.project), "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet[0].id
@@ -75,7 +75,7 @@ module "reporting_service_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = "gpdrservice"
+  name                                     = replace(format("%sgpdrservice", local.project), "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet[0].id
@@ -130,7 +130,7 @@ module "reporting_analysis_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = "gpdranalysis"
+  name                                     = replace(format("%sgpdranalysis", local.project), "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet[0].id
