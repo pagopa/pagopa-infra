@@ -22,7 +22,7 @@ module "reporting_batch_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = "gpdrbatch"
+  name                                     = replace(format("%sgpdrbatch", local.project), "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet[0].id
@@ -43,9 +43,9 @@ module "reporting_batch_function" {
 
     # custom configuration
     FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
-    FLOWS_TABLE               = azurerm_storage_table.flow.name
-    FLOWS_QUEUE               = azurerm_storage_queue.flow.name
-    ORGANIZATIONS_QUEUE       = azurerm_storage_queue.organization.name
+    FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
+    FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
+    ORGANIZATIONS_QUEUE       = azurerm_storage_queue.reporting_organizations_queue.name
 
     GPD_HOST  = "TODO" # azurerm_api_management_api.gpd_api_v1.service_url
     NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
@@ -75,7 +75,7 @@ module "reporting_service_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = "gpdrservice"
+  name                                     = replace(format("%sgpdrservice", local.project), "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet[0].id
@@ -96,9 +96,9 @@ module "reporting_service_function" {
 
     # custom configuration
     FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
-    FLOWS_QUEUE               = azurerm_storage_queue.flow.name
-    OPTIONS_QUEUE             = azurerm_storage_queue.option.name
-    FLOWS_XML_BLOB            = azurerm_storage_container.flow.name
+    FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
+    OPTIONS_QUEUE             = azurerm_storage_queue.reporting_options_queue.name
+    FLOWS_XML_BLOB            = azurerm_storage_container.reporting_flows_container.name
 
     GPD_HOST  = "TODO" # azurerm_api_management_api.gpd_api_v1.service_url
     NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
@@ -130,7 +130,7 @@ module "reporting_analysis_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = "gpdranalysis"
+  name                                     = replace(format("%sgpdranalysis", local.project), "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet[0].id
@@ -151,8 +151,8 @@ module "reporting_analysis_function" {
 
     # custom configuration
     FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
-    FLOWS_TABLE               = azurerm_storage_table.flow.name
-    FLOWS_CONTAINER           = azurerm_storage_container.flow.name
+    FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
+    FLOWS_CONTAINER           = azurerm_storage_container.reporting_flows_container.name
 
     GPD_HOST  = "TODO" # azurerm_api_management_api.gpd_api_v1.service_url
     NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
@@ -195,7 +195,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Batch Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_batch_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -217,7 +217,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Batch Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_batch_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -239,7 +239,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Service Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_service_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -261,7 +261,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Service Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_service_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -283,7 +283,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Analysis Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_analysis_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -305,7 +305,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Analysis Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_analysis_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -336,7 +336,7 @@ module "flows" {
   account_replication_type   = "LRS"
   access_tier                = "Hot"
   versioning_name            = "versioning"
-  enable_versioning          = var.fdr_enable_versioning
+  enable_versioning          = var.gdp_enable_versioning
   resource_group_name        = azurerm_resource_group.gpd_rg.name
   location                   = var.location
   advanced_threat_protection = var.gdp_reporting_advanced_threat_protection
@@ -349,31 +349,31 @@ module "flows" {
 
 
 ## table storage
-resource "azurerm_storage_table" "flow" {
+resource "azurerm_storage_table" "reporting_flows_table" {
   name                 = format("%stable", module.flows.name)
   storage_account_name = module.flows.name
 }
 
 ## queue storage flows
-resource "azurerm_storage_queue" "flow" {
-  name                 = format("%squeue", module.flows.name)
+resource "azurerm_storage_queue" "reporting_flows_queue" {
+  name                 = format("%squeueflows", module.flows.name)
   storage_account_name = module.flows.name
 }
 
 ## queue storage organization
-resource "azurerm_storage_queue" "organization" {
-  name                 = format("%squeue", module.flows.name)
+resource "azurerm_storage_queue" "reporting_organizations_queue" {
+  name                 = format("%squeueorg", module.flows.name)
   storage_account_name = module.flows.name
 }
 
 ## queue storage flows
-resource "azurerm_storage_queue" "option" {
-  name                 = format("%squeue", module.flows.name)
+resource "azurerm_storage_queue" "reporting_options_queue" {
+  name                 = format("%squeueopt", module.flows.name)
   storage_account_name = module.flows.name
 }
 
 ## blob container flows
-resource "azurerm_storage_container" "flow" {
+resource "azurerm_storage_container" "reporting_flows_container" {
   name                  = format("%sflowscontainer", module.flows.name)
   storage_account_name  = module.flows.name
   container_access_type = "private"

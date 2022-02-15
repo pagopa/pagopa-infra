@@ -239,11 +239,11 @@
 | [azurerm_role_assignment.data_contributor_role](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/role_assignment) | resource |
 | [azurerm_storage_container.banks](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.fdr_rend_flow](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_container.flow](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_queue.flow](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_queue) | resource |
-| [azurerm_storage_queue.option](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_queue) | resource |
-| [azurerm_storage_queue.organization](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_queue) | resource |
-| [azurerm_storage_table.flow](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_table) | resource |
+| [azurerm_storage_container.reporting_flows_container](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
+| [azurerm_storage_queue.reporting_flows_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_queue) | resource |
+| [azurerm_storage_queue.reporting_options_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_queue) | resource |
+| [azurerm_storage_queue.reporting_organizations_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_queue) | resource |
+| [azurerm_storage_table.reporting_flows_table](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_table) | resource |
 | [azurerm_user_assigned_identity.appgateway](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/user_assigned_identity) | resource |
 | [null_resource.change_auth_fdr_blob_container](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azuread_application.apiconfig-be](https://registry.terraform.io/providers/hashicorp/azuread/2.6.0/docs/data-sources/application) | data source |
@@ -378,6 +378,7 @@
 | <a name="input_fdr_delete_retention_days"></a> [fdr\_delete\_retention\_days](#input\_fdr\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_fdr_enable_versioning"></a> [fdr\_enable\_versioning](#input\_fdr\_enable\_versioning) | Enable sa versioning | `bool` | `false` | no |
 | <a name="input_fesp_hostname"></a> [fesp\_hostname](#input\_fesp\_hostname) | Fesp hostname | `string` | `""` | no |
+| <a name="input_gdp_enable_versioning"></a> [gdp\_enable\_versioning](#input\_gdp\_enable\_versioning) | Enable sa versioning | `bool` | `false` | no |
 | <a name="input_gdp_reporting_advanced_threat_protection"></a> [gdp\_reporting\_advanced\_threat\_protection](#input\_gdp\_reporting\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
 | <a name="input_gdp_reporting_delete_retention_days"></a> [gdp\_reporting\_delete\_retention\_days](#input\_gdp\_reporting\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_gpd_plan_kind"></a> [gpd\_plan\_kind](#input\_gpd\_plan\_kind) | App service plan kind | `string` | `null` | no |
