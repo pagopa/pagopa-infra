@@ -236,7 +236,7 @@ locals {
     # params for all api versions
     display_name          = "Payment Manager restapi RTD API"
     description           = "API to support 'Registro Transazioni Digitali'"
-    path                  = "payment-manager/restapi-rtd"
+    path                  = "payment-manager/pp-restapi-rtd"
     subscription_required = false
     service_url           = null
   }
@@ -279,9 +279,7 @@ module "apim_pm_restapirtd_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-rtd/v1/_base_policy.xml.tpl", {
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
-  })
+  xml_content = file("./api/payment_manager_api/restapi-rtd/v1/_base_policy.xml.tpl")
 }
 
 module "apim_pm_restapirtd_api_v2" {
@@ -307,9 +305,7 @@ module "apim_pm_restapirtd_api_v2" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-rtd/v2/_base_policy.xml.tpl", {
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
-  })
+  xml_content = file("./api/payment_manager_api/restapi-rtd/v2/_base_policy.xml.tpl")
 }
 
 #####################################
@@ -362,9 +358,7 @@ module "apim_pm_logging_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/logging/v1/_base_policy.xml.tpl", {
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
-  })
+  xml_content = file("./api/payment_manager_api/logging/v1/_base_policy.xml.tpl")
 }
 
 ############################
@@ -568,8 +562,7 @@ module "apim_pmclient_iobpd_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/io-bpd/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s/pagopa/api/v1", local.apim_pmclient_iobpd_api.io_bpd_hostname)
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
+    endpoint = format("https://%s/pagopa/api/v1", local.apim_pmclient_iobpd_api.io_bpd_hostname)
   })
 }
 
@@ -619,8 +612,7 @@ module "apim_pm_paypalpsp_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/paypal-psp/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s", var.paytipper_hostname)
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
+    endpoint = format("https://%s", var.paytipper_hostname)
   })
 }
 
@@ -670,8 +662,7 @@ module "apim_pm_xpay_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/xpay/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s", var.xpay_hostname)
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
+    endpoint = format("https://%s", var.xpay_hostname)
   })
 }
 
@@ -721,8 +712,7 @@ module "apim_pm_bpd_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/bpd/v1/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s", var.bpd_hostname)
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
+    endpoint = format("https://%s", var.bpd_hostname)
   })
 }
 
@@ -772,8 +762,7 @@ module "apim_pm_cobadge_api_v4" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/cobadge/v4/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s/api/pagopa/banking/v4.0", var.cobadge_hostname)
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
+    endpoint = format("https://%s/api/pagopa/banking/v4.0", var.cobadge_hostname)
   })
 }
 
@@ -824,7 +813,6 @@ module "apim_pm_fesp_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/fesp/_base_policy.xml.tpl", {
-    endpoint          = format("https://%s", var.fesp_hostname)
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
+    endpoint = format("https://%s", var.fesp_hostname)
   })
 }
