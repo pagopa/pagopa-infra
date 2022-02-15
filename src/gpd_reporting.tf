@@ -195,7 +195,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Batch Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_batch_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -217,7 +217,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Batch Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_batch_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -239,7 +239,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Service Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_service_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -261,7 +261,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Service Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_service_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -283,7 +283,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Analysis Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_analysis_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
@@ -305,7 +305,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Analysis Requests"
+        metric_name              = "Requests"
         metric_resource_id       = module.reporting_analysis_function.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
