@@ -989,3 +989,9 @@ variable "gdp_reporting_delete_retention_days" {
   description = "Number of days to retain deleted."
   default     = 30
 }
+
+variable "gdp_enable_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
