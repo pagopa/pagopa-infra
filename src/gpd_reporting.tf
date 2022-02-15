@@ -349,31 +349,31 @@ module "flows" {
 
 
 ## table storage
-resource "azurerm_storage_table" "flow" {
+resource "azurerm_storage_table" "reporting_flows_table" {
   name                 = format("%stable", module.flows.name)
   storage_account_name = module.flows.name
 }
 
 ## queue storage flows
-resource "azurerm_storage_queue" "flow" {
-  name                 = format("%squeue", module.flows.name)
+resource "azurerm_storage_queue" "reporting_flows_queue" {
+  name                 = format("%squeueflows", module.flows.name)
   storage_account_name = module.flows.name
 }
 
 ## queue storage organization
-resource "azurerm_storage_queue" "organization" {
-  name                 = format("%squeue", module.flows.name)
+resource "azurerm_storage_queue" "reporting_organizations_queue" {
+  name                 = format("%squeueorg", module.flows.name)
   storage_account_name = module.flows.name
 }
 
 ## queue storage flows
-resource "azurerm_storage_queue" "option" {
-  name                 = format("%squeue", module.flows.name)
+resource "azurerm_storage_queue" "reporting_options_queue" {
+  name                 = format("%squeueopt", module.flows.name)
   storage_account_name = module.flows.name
 }
 
 ## blob container flows
-resource "azurerm_storage_container" "flow" {
+resource "azurerm_storage_container" "reporting_flows_container" {
   name                  = format("%sflowscontainer", module.flows.name)
   storage_account_name  = module.flows.name
   container_access_type = "private"
