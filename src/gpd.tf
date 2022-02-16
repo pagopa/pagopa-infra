@@ -24,6 +24,8 @@ module "gpd_snet" {
   }
 }
 
+
+
 module "gpd_app_service" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
 
@@ -31,13 +33,12 @@ module "gpd_app_service" {
   plan_type           = "external"
   plan_id             = azurerm_app_service_plan.gpd_service_plan.id
 
-  # App service plan
+  # App service
   name                = format("%s-app-gpd", local.project)
   client_cert_enabled = false
   always_on           = var.gpd_always_on
   linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
   health_check_path   = "/gpd/api/v1/info"
-
 
   app_settings = {
     # Monitoring
@@ -57,6 +58,7 @@ module "gpd_app_service" {
     TIMEOUT_DELAY                                   = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_DNS_SERVER = "168.63.129.16"
+
     # Spring Environment
     SPRING_DATASOURCE_USERNAME              = var.gpd_dbms_admin_username
     SPRING_DATASOURCE_PASSWORD              = var.gpd_dbms_admin_password
