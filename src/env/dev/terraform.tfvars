@@ -29,6 +29,8 @@ cidr_subnet_pagopa_proxy = ["10.1.240.32/29"]
 
 cidr_subnet_reporting_fdr = ["10.1.240.40/29"]
 
+cidr_subnet_reporting_common = ["10.1.240.48/29"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration  = ["10.230.8.0/24"] # ask to SIA
@@ -315,3 +317,7 @@ reporting_fdr_function_sku_size = "S1"
 gpd_plan_kind     = "Linux"
 gpd_plan_sku_tier = "Standard"
 gpd_plan_sku_size = "S1"
+
+reporting_function_autoscale_minimum = 1
+reporting_function_autoscale_maximum = 3
+reporting_function_autoscale_default = 1

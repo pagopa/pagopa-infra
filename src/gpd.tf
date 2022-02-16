@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "gpd_rg" {
   tags = var.tags
 }
 
-# gpd service plan
+#gpd service plan
 
 resource "azurerm_app_service_plan" "gpd_service_plan" {
   name                = format("%s-plan-gpd", local.project)

@@ -28,6 +28,8 @@ cidr_subnet_buyerbanks   = ["10.1.134.0/24"]
 
 cidr_subnet_reporting_fdr = ["10.1.135.0/24"]
 
+cidr_subnet_reporting_common = ["10.1.136.0/24"]
+
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
 cidr_vnet_integration = ["10.230.10.0/24"] # ask to SIA
@@ -307,3 +309,18 @@ reporting_fdr_function_sku_size = "P1v3"
 gpd_plan_kind     = "Linux"
 gpd_plan_sku_tier = "PremiumV3"
 gpd_plan_sku_size = "P1v3"
+
+reporting_batch_function_always_on         = true
+reporting_batch_function_autoscale_minimum = 1
+reporting_batch_function_autoscale_maximum = 3
+reporting_batch_function_autoscale_default = 1
+
+reporting_service_function_always_on         = true
+reporting_service_function_autoscale_minimum = 1
+reporting_service_function_autoscale_maximum = 3
+reporting_service_function_autoscale_default = 1
+
+reporting_analysis_function_always_on         = true
+reporting_analysis_function_autoscale_minimum = 1
+reporting_analysis_function_autoscale_maximum = 3
+reporting_analysis_function_autoscale_default = 1
