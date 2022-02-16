@@ -978,20 +978,32 @@ variable "reporting_analysis_function_always_on" {
   default     = false
 }
 
-variable "gdp_reporting_advanced_threat_protection" {
+variable "gpd_reporting_advanced_threat_protection" {
   type        = bool
   description = "Enable contract threat advanced protection"
   default     = false
 }
 
-variable "gdp_reporting_delete_retention_days" {
+variable "gpd_reporting_delete_retention_days" {
   type        = number
   description = "Number of days to retain deleted."
   default     = 30
 }
 
-variable "gdp_enable_versioning" {
+variable "gpd_enable_versioning" {
   type        = bool
   description = "Enable sa versioning"
   default     = false
+}
+
+variable "gpd_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "cidr_subnet_gpd" {
+  type        = list(string)
+  description = "Address prefixes subnet gpd service"
+  default     = null
 }
