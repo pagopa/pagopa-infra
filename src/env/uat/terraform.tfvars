@@ -301,10 +301,11 @@ cobadge_hostname   = "portal.test.pagopa.gov.it"
 fesp_hostname      = "portal.test.pagopa.gov.it"
 
 # fdr
-fdr_delete_retention_days       = 30
-reporting_fdr_function_kind     = "Linux"
-reporting_fdr_function_sku_tier = "Standard"
-reporting_fdr_function_sku_size = "S1"
+fdr_delete_retention_days        = 30
+reporting_fdr_function_kind      = "Linux"
+reporting_fdr_function_sku_tier  = "Standard"
+reporting_fdr_function_sku_size  = "S1"
+reporting_fdr_function_always_on = true
 
 # gpd
 gpd_plan_kind     = "Linux"
