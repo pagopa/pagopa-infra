@@ -34,7 +34,7 @@ module "buyerbanks_function" {
   health_check_path                        = "info"
   subnet_out_id                            = module.buyerbanks_function_snet.id
   runtime_version                          = "~3"
-  always_on                                = var.env_short == "p" ? true : false
+  always_on                                = true
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
