@@ -1007,3 +1007,39 @@ variable "cidr_subnet_gpd" {
   description = "Address prefixes subnet gpd service"
   default     = null
 }
+
+variable "gpd_db_name" {
+  type        = string
+  description = "Name of the DB to connect to"
+  default     = null
+}
+
+variable "gpd_dbms_name" {
+  type        = string
+  description = "Name of the Postgres DBMS to host the DB"
+  default     = null
+}
+
+variable "gpd_dbms_admin_username" {
+  type        = string
+  description = "Username of DBMS admin"
+  default     = null
+}
+
+variable "gpd_dbms_admin_password" {
+  type        = string
+  description = "Password of DBMS admin"
+  default     = null
+}
+
+variable "gpd_dbms_hostname" {
+  type        = string
+  description = "Hostname of the DBMS"
+  default     = null
+}
+
+variable "gpd_dbms_port" {
+  type        = number
+  description = "Port number of the DBMS"
+  default     = 5432
+}

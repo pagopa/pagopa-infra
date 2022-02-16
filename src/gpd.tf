@@ -58,10 +58,14 @@ module "gpd_app_service" {
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_DNS_SERVER = "168.63.129.16"
     # Spring Environment
-    SPRING_DATASOURCE_USERNAME = data.azurerm_key_vault_secret.db_nodo_usr.value
-    SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.db_nodo_pwd.value
-    SPRING_DATASOURCE_URL      = var.db_service_name == null ? null : format("jdbc:oracle:thin:@%s.%s:%s/%s", azurerm_private_dns_a_record.private_dns_a_record_db_nodo.name, azurerm_private_dns_zone.db_nodo_dns_zone.name, var.db_port, var.db_service_name)
-    CORS_CONFIGURATION         = jsonencode(local.gpd_cors_configuration)
+    SPRING_DATASOURCE_USERNAME              = var.gpd_dbms_admin_username
+    SPRING_DATASOURCE_PASSWORD              = var.gpd_dbms_admin_password
+    SPRING_DATASOURCE_URL                   = var.gpd_dbms_name == null ? null : format("jdbc:postgresql://%s.%s:%s/%s?user=%s@%s&password=%s&sslmode=require", var.gpd_dbms_name, var.gpd_dbms_hostname, var.gpd_dbms_port, var.gpd_db_name, var.gpd_dbms_admin_username, var.gpd_dbms_name, var.gpd_dbms_admin_password)
+    SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
+    CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
+    CRON_JOB_SCHEDULE_ENABLED               = true
+    CRON_JOB_SCHEDULE_EXPRESSION_TO_VALID   = "*/35 * * * * *"
+    CRON_JOB_SCHEDULE_EXPRESSION_TO_EXPIRED = "*/55 * * * * *"
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
