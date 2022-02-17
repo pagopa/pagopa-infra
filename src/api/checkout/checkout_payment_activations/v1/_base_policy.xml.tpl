@@ -25,6 +25,33 @@
         <set-header name="cache-control" exists-action="override">
             <value>no-store</value>
         </set-header>
+        <set-variable name="body" value="@(context.Response.Body.As<JObject>())" />
+        <choose>
+            <when condition="@( (context.Response.StatusCode == 500 || context.Response.StatusCode == 424) && ((JObject) context.Variables["body"])["detail_v2"] != null )">
+                <return-response>
+                    <set-status code="400" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+                    return new JObject(
+                            new JProperty("status", 400),
+                            new JProperty("detail", ((JObject) context.Variables["body"])["detail_v2"]),
+                            new JProperty("title", ((JObject) context.Variables["body"])["title"])
+                           ).ToString();
+             }</set-body>
+                </return-response>
+            </when>
+            <otherwise>
+              <return-response>
+                    <set-status code="@(context.Response.StatusCode)" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@(((JObject) context.Variables["body"]).ToString())</set-body>
+                </return-response>
+            </otherwise>
+        </choose>
         <base />
     </outbound>
     <backend>
