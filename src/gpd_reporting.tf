@@ -1,8 +1,7 @@
 # Subnet to host reporting_batch function
 module "reporting_function_snet" {
-  count                                          = var.cidr_subnet_reporting_common != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-reporting-batch-snet", local.project)
+  name                                           = format("%s-reporting-snet", local.project)
   address_prefixes                               = var.cidr_subnet_reporting_common
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
@@ -22,10 +21,10 @@ module "reporting_batch_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = replace(format("%sgpdrbatch", local.project), "-", "")
+  name                                     = format("%s-fn-gpd-batch", local.project)
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet[0].id
+  subnet_id                                = module.reporting_function_snet.id
   runtime_version                          = "~3"
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -75,10 +74,10 @@ module "reporting_service_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = replace(format("%sgpdrservice", local.project), "-", "")
+  name                                     = format("%s-fn-gpd-service", local.project)
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet[0].id
+  subnet_id                                = module.reporting_function_snet.id
   runtime_version                          = "~3"
   always_on                                = var.reporting_service_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -130,10 +129,10 @@ module "reporting_analysis_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = replace(format("%sgpdranalysis", local.project), "-", "")
+  name                                     = format("%s-fn-gpd-analysis", local.project)
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet[0].id
+  subnet_id                                = module.reporting_function_snet.id
   runtime_version                          = "~3"
   always_on                                = var.reporting_analysis_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -193,137 +192,178 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
       maximum = var.reporting_function_autoscale_maximum
     }
 
+
     rule {
       metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_batch_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 4000
-        divide_by_instance_count = false
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_app_service_plan.gpd_service_plan.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT1M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThan"
+        threshold          = 75
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
+        value     = "1"
         cooldown  = "PT5M"
       }
     }
 
     rule {
       metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_batch_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 3000
-        divide_by_instance_count = false
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_app_service_plan.gpd_service_plan.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 25
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_service_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 4000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
         cooldown  = "PT5M"
       }
     }
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_service_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 3000
-        divide_by_instance_count = false
-      }
+    # rule {
+    #   metric_trigger {
+    #     metric_name              = "Requests"
+    #     metric_resource_id       = module.reporting_batch_function.id
+    #     metric_namespace         = "microsoft.web/sites"
+    #     time_grain               = "PT1M"
+    #     statistic                = "Average"
+    #     time_window              = "PT5M"
+    #     time_aggregation         = "Average"
+    #     operator                 = "GreaterThan"
+    #     threshold                = 4000
+    #     divide_by_instance_count = false
+    #   }
 
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
+    #   scale_action {
+    #     direction = "Increase"
+    #     type      = "ChangeCount"
+    #     value     = "2"
+    #     cooldown  = "PT5M"
+    #   }
+    # }
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_analysis_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 4000
-        divide_by_instance_count = false
-      }
+    # rule {
+    #   metric_trigger {
+    #     metric_name              = "Requests"
+    #     metric_resource_id       = module.reporting_batch_function.id
+    #     metric_namespace         = "microsoft.web/sites"
+    #     time_grain               = "PT1M"
+    #     statistic                = "Average"
+    #     time_window              = "PT5M"
+    #     time_aggregation         = "Average"
+    #     operator                 = "LessThan"
+    #     threshold                = 3000
+    #     divide_by_instance_count = false
+    #   }
 
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
+    #   scale_action {
+    #     direction = "Decrease"
+    #     type      = "ChangeCount"
+    #     value     = "1"
+    #     cooldown  = "PT20M"
+    #   }
+    # }
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.reporting_analysis_function.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 3000
-        divide_by_instance_count = false
-      }
+    # rule {
+    #   metric_trigger {
+    #     metric_name              = "Requests"
+    #     metric_resource_id       = module.reporting_service_function.id
+    #     metric_namespace         = "microsoft.web/sites"
+    #     time_grain               = "PT1M"
+    #     statistic                = "Average"
+    #     time_window              = "PT5M"
+    #     time_aggregation         = "Average"
+    #     operator                 = "GreaterThan"
+    #     threshold                = 4000
+    #     divide_by_instance_count = false
+    #   }
 
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
+    #   scale_action {
+    #     direction = "Increase"
+    #     type      = "ChangeCount"
+    #     value     = "2"
+    #     cooldown  = "PT5M"
+    #   }
+    # }
+
+    # rule {
+    #   metric_trigger {
+    #     metric_name              = "Requests"
+    #     metric_resource_id       = module.reporting_service_function.id
+    #     metric_namespace         = "microsoft.web/sites"
+    #     time_grain               = "PT1M"
+    #     statistic                = "Average"
+    #     time_window              = "PT5M"
+    #     time_aggregation         = "Average"
+    #     operator                 = "LessThan"
+    #     threshold                = 3000
+    #     divide_by_instance_count = false
+    #   }
+
+    #   scale_action {
+    #     direction = "Decrease"
+    #     type      = "ChangeCount"
+    #     value     = "1"
+    #     cooldown  = "PT20M"
+    #   }
+    # }
+
+    # rule {
+    #   metric_trigger {
+    #     metric_name              = "Requests"
+    #     metric_resource_id       = module.reporting_analysis_function.id
+    #     metric_namespace         = "microsoft.web/sites"
+    #     time_grain               = "PT1M"
+    #     statistic                = "Average"
+    #     time_window              = "PT5M"
+    #     time_aggregation         = "Average"
+    #     operator                 = "GreaterThan"
+    #     threshold                = 4000
+    #     divide_by_instance_count = false
+    #   }
+
+    #   scale_action {
+    #     direction = "Increase"
+    #     type      = "ChangeCount"
+    #     value     = "2"
+    #     cooldown  = "PT5M"
+    #   }
+    # }
+
+    # rule {
+    #   metric_trigger {
+    #     metric_name              = "Requests"
+    #     metric_resource_id       = module.reporting_analysis_function.id
+    #     metric_namespace         = "microsoft.web/sites"
+    #     time_grain               = "PT1M"
+    #     statistic                = "Average"
+    #     time_window              = "PT5M"
+    #     time_aggregation         = "Average"
+    #     operator                 = "LessThan"
+    #     threshold                = 3000
+    #     divide_by_instance_count = false
+    #   }
+
+    #   scale_action {
+    #     direction = "Decrease"
+    #     type      = "ChangeCount"
+    #     value     = "1"
+    #     cooldown  = "PT20M"
+    #   }
+    # }
   }
 }
 
