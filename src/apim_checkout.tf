@@ -149,6 +149,15 @@ resource "azurerm_api_management_api_operation_policy" "get_activation_status_ap
   xml_content = file("./api/checkout/checkout_payment_activations/v1/_idpayment_check.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "activate_payment_api" {
+  api_name            = format("%s-checkout-payment-activations-api-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "activatePayment"
+
+  xml_content = file("./api/checkout/checkout_payment_activations/v1/_recaptcha_check.xml.tpl")
+}
+
 # Payment activation authenticated APIs
 resource "azurerm_api_management_api_version_set" "checkout_payment_activations_auth_api" {
   name                = format("%s-checkout-payment-activations-auth-api", local.project)
