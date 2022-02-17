@@ -169,6 +169,20 @@ resource "azurerm_api_management_group" "readonly" {
   display_name        = "Read Only"
 }
 
+resource "azurerm_api_management_group" "checkout_rate_no_limit" {
+  name                = "checkout-rate-no-limit"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Checkout rate no limit"
+}
+
+resource "azurerm_api_management_group" "checkout_rate_limit_300" {
+  name                = "checkout-rate-limit-300"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Checkout rate limit 300"
+}
+
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   count               = var.checkout_enabled ? 1 : 0
   name                = "pagopa-fn-checkout-url"
