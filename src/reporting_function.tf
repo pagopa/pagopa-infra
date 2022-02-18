@@ -26,16 +26,16 @@ module "reporting_fdr_function_snet" {
 }
 
 module "reporting_fdr_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
-  resource_group_name                      = azurerm_resource_group.reporting_fdr_rg.name
-  prefix                                   = var.prefix
-  env_short                                = var.env_short
-  name                                     = "reportingfdr"
-  location                                 = var.location
-  health_check_path                        = "info"
-  subnet_out_id                            = module.reporting_fdr_function_snet[0].id
-  runtime_version                          = "~3"
+  resource_group_name = azurerm_resource_group.reporting_fdr_rg.name
+  name                = format("%s-fn-reportingfdr", local.project)
+  location            = var.location
+  health_check_path   = "info"
+  subnet_id           = module.reporting_fdr_function_snet[0].id
+  runtime_version     = "~3"
+  os_type             = "linux"
+
   always_on                                = var.reporting_fdr_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
