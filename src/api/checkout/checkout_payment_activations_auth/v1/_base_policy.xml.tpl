@@ -15,6 +15,9 @@
       </cors>
       <base />
       <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
+      <ip-filter action="allow">
+        <address>io-backend</address> <!-- TODO-->
+      </ip-filter>
       <when condition="@(context.User.Groups.All(g =&gt; g.Name != &quot;checkout-rate-no-limit&quot;))">
         <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
       </when>
