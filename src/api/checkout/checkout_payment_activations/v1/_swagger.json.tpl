@@ -23,6 +23,12 @@
         "parameters": [
           {
             "$ref": "#/parameters/RptId"
+          },
+          {
+            "in": "query",
+            "name": "recaptchaResponse",
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
