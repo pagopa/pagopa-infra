@@ -40,13 +40,13 @@
         <choose>
             <when condition="@( (context.Response.StatusCode == 500 || context.Response.StatusCode == 424) && ((JObject) context.Variables["body"])["detail_v2"] != null )">
                 <return-response>
-                    <set-status code="500" />
+                    <set-status code="424" />
                     <set-header name="Content-Type" exists-action="override">
                         <value>application/json</value>
                     </set-header>
                     <set-body>@{
                     return new JObject(
-                            new JProperty("status", 500),
+                            new JProperty("status", 424),
                             new JProperty("detail", ((JObject) context.Variables["body"])["detail_v2"]),
                             new JProperty("title", ((JObject) context.Variables["body"])["title"])
                            ).ToString();

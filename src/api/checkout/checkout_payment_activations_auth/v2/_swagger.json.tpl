@@ -1,15 +1,15 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
-    "title": "Checkout API",
+    "version": "2.0.0",
+    "title": "Checkout authenticated API",
     "contact": {
       "name": "pagoPA team",
     },
-    "description": "Documentation of the Checkout Function API here.\n"
+    "description": "Documentation of the Checkout authenticated API here.\n"
   },
   "host": "${host}",
-  "basePath": "/api/v1",
+  "basePath": "/api/v2",
   "schemes": [
     "https"
   ],
