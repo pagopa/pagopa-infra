@@ -24,17 +24,16 @@ module "buyerbanks_function_snet" {
 }
 
 module "buyerbanks_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.buyerbanks_rg.name
-  prefix                                   = var.prefix
-  env_short                                = var.env_short
-  name                                     = "buyerbanks"
+  name                                     = format("%s-fn-buyerbanks", local.project)
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_out_id                            = module.buyerbanks_function_snet.id
+  subnet_id                                = module.buyerbanks_function_snet.id
   runtime_version                          = "~3"
   always_on                                = true
+  os_type                                  = "linux"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
