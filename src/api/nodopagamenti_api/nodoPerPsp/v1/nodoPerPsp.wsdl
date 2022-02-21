@@ -1117,6 +1117,25 @@
 				</xsd:complexContent>
 			</xsd:complexType>
 
+      <xsd:complexType name="nodoChiediElencoQuadraturePSP">
+				<xsd:sequence>
+					<xsd:element name="identificativoPSP" type="ppt:stText35" />
+					<xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" />
+					<xsd:element name="identificativoCanale" type="ppt:stText35" />
+					<xsd:element name="password" type="ppt:stPassword" />
+					<xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="nodoChiediElencoQuadraturePSPRisposta">
+				<xsd:complexContent>
+					<xsd:extension base="ppt:risposta">
+						<xsd:sequence>
+							<xsd:element name="listaQuadrature" type="ppt:tipoListaQuadrature" minOccurs="0" />
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+
       <xsd:complexType name="nodoInviaFlussoRendicontazione">
 				<xsd:sequence>
 					<xsd:element name="identificativoPSP" type="ppt:stText35" />
@@ -1155,6 +1174,9 @@
 
       <xsd:element name="nodoChiediTemplateInformativaPSP" type="ppt:nodoChiediTemplateInformativaPSP" />
 			<xsd:element name="nodoChiediTemplateInformativaPSPRisposta" type="ppt:nodoChiediTemplateInformativaPSPRisposta" />
+
+			<xsd:element name="nodoChiediElencoQuadraturePSP" type="ppt:nodoChiediElencoQuadraturePSP" />
+			<xsd:element name="nodoChiediElencoQuadraturePSPRisposta" type="ppt:nodoChiediElencoQuadraturePSPRisposta" />
 
       <xsd:element name="nodoInviaFlussoRendicontazione" type="ppt:nodoInviaFlussoRendicontazione" />
       <xsd:element name="nodoInviaFlussoRendicontazioneRisposta" type="ppt:nodoInviaFlussoRendicontazioneRisposta" />
@@ -1201,6 +1223,13 @@
 		<wsdl:part name="bodyrisposta" element="ppt:nodoChiediTemplateInformativaPSPRisposta" />
 	</wsdl:message>
 
+  <wsdl:message name="nodoChiediElencoQuadraturePSP">
+		<wsdl:part name="bodyrichiesta" element="ppt:nodoChiediElencoQuadraturePSP" />
+	</wsdl:message>
+	<wsdl:message name="nodoChiediElencoQuadraturePSPResponse">
+		<wsdl:part name="bodyrisposta" element="ppt:nodoChiediElencoQuadraturePSPRisposta" />
+	</wsdl:message>
+
   <wsdl:message name="nodoInviaFlussoRendicontazione">
     <wsdl:part name="bodyrichiesta" element="ppt:nodoInviaFlussoRendicontazione" />
   </wsdl:message>
@@ -1230,6 +1259,10 @@
     <wsdl:operation name="nodoChiediTemplateInformativaPSP">
 			<wsdl:input message="tns:nodoChiediTemplateInformativaPSP" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediTemplateInformativaPSPRichiesta" />
 			<wsdl:output message="tns:nodoChiediTemplateInformativaPSPResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediTemplateInformativaPSPRisposta" />
+		</wsdl:operation>
+    <wsdl:operation name="nodoChiediElencoQuadraturePSP">
+			<wsdl:input message="tns:nodoChiediElencoQuadraturePSP" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePSPRichiesta" />
+			<wsdl:output message="tns:nodoChiediElencoQuadraturePSPResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePSPRisposta" />
 		</wsdl:operation>
     <wsdl:operation name="nodoInviaFlussoRendicontazione">
       <wsdl:input message="tns:nodoInviaFlussoRendicontazione" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaFlussoRendicontazioneRichiesta" />
@@ -1279,6 +1312,15 @@
 		</wsdl:operation>
     <wsdl:operation name="nodoChiediTemplateInformativaPSP">
 			<soap:operation soapAction="nodoChiediTemplateInformativaPSP" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+    <wsdl:operation name="nodoChiediElencoQuadraturePSP">
+			<soap:operation soapAction="nodoChiediElencoQuadraturePSP" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
