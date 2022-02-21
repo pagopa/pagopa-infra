@@ -1149,7 +1149,7 @@
 
       <xsd:element name="nodoInviaRT" type="ppt:nodoInviaRT" />
 			<xsd:element name="nodoInviaRTRisposta" type="ppt:nodoInviaRTRisposta" />
-      
+
 			<xsd:element name="nodoChiediInformativaPA" type="ppt:nodoChiediInformativaPA" />
 			<xsd:element name="nodoChiediInformativaPARisposta" type="ppt:nodoChiediInformativaPARisposta" />
 
