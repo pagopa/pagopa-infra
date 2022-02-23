@@ -77,7 +77,7 @@ module "reporting_fdr_function" {
 
 resource "azurerm_monitor_autoscale_setting" "reporting_fdr_function" {
 
-  name                = format("%s-%s-autoscale", local.project, module.reporting_fdr_function.name)
+  name                = format("%s-autoscale", module.reporting_fdr_function.name)
   resource_group_name = azurerm_resource_group.reporting_fdr_rg.name
   location            = var.location
   target_resource_id  = module.reporting_fdr_function.app_service_plan_id
