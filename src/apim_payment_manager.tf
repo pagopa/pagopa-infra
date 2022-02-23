@@ -135,7 +135,7 @@ locals {
     # params for all api versions
     display_name          = "Payment Manager restapi CD API"
     description           = "API to support payment trasactions for app IO"
-    path                  = "payment-manager/pp-restapi-CD"
+    path                  = "pp-restapi-CD"
     subscription_required = false
     service_url           = null
   }
