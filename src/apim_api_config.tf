@@ -37,6 +37,7 @@ resource "azurerm_api_management_api_version_set" "api_config_api" {
 locals {
   pagopa_tenant_id       = data.azurerm_client_config.current.tenant_id
   apiconfig_be_client_id = data.azuread_application.apiconfig-be.application_id
+  apiconfig_fe_client_id = data.azuread_application.apiconfig-fe.application_id
 }
 
 module "apim_api_config_api" {
@@ -71,6 +72,7 @@ module "apim_api_config_api" {
     origin                 = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
     pagopa_tenant_id       = local.pagopa_tenant_id
     apiconfig_be_client_id = local.apiconfig_be_client_id
+    apiconfig_fe_client_id = local.apiconfig_fe_client_id
   })
 }
 
