@@ -28,26 +28,73 @@
             </allowed-headers>
         </cors>
         <base />
-        <rate-limit-by-key calls="60"
-            renewal-period="60"
-            counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization","").AsJwt()?.Subject)" />
-
-        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
-           <openid-config url="https://login.microsoftonline.com/${pagopa_tenant_id}/v2.0/.well-known/openid-configuration" />
-           <required-claims>
-               <claim name="aud">
-                    <value>${apiconfig_be_client_id}</value>
-               </claim>
-           </required-claims>
-        </validate-jwt>
-</inbound>
-<outbound>
-<base />
-</outbound>
-<backend>
-<base />
-</backend>
-<on-error>
-<base />
-</on-error>
+        <rate-limit-by-key calls="60" renewal-period="60" counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization","").AsJwt()?.Subject)" />
+        <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
+        <set-variable name="isPost" value="@(context.Request.Method.Equals("POST"))" />
+        <set-variable name="isXsd" value="@(context.Request.Url.Path.Contains("xsd"))" />
+        <set-variable name="aud" value="@{
+            string aud = "";
+            string authHeader = context.Request.Headers.GetValueOrDefault("Authorization", "");
+            if (authHeader?.Length > 0)
+            {
+                string[] authHeaderParts = authHeader.Split(' ');
+                if (authHeaderParts?.Length == 2 && authHeaderParts[0].Equals("Bearer", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Jwt jwt;
+                    if (authHeaderParts[1].TryParseJwt(out jwt))
+                    {
+                        aud = jwt.Claims.GetValueOrDefault("aud", "");
+                    }
+                }
+            }
+            return aud;
+        }" />
+        <choose>
+            <!-- Postman Token-->
+            <when condition="@(context.Variables.GetValueOrDefault<string>("aud").Contains("${apiconfig_be_client_id}"))">
+                <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+                    <openid-config url="https://login.microsoftonline.com/${pagopa_tenant_id} /v2.0/.well-known/openid-configuration" />
+                    <required-claims>
+                        <claim name="aud">
+                            <value>${apiconfig_be_client_id}</value>
+                        </claim>
+                    </required-claims>
+                </validate-jwt>
+            </when>
+            <!-- FE Token Writer -->
+            <when condition="@(context.Variables.GetValueOrDefault<string>("aud").Contains("${apiconfig_fe_client_id}") && !context.Variables.GetValueOrDefault<bool>("isGet"))">
+                <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+                    <openid-config url="https://login.microsoftonline.com/${pagopa_tenant_id}/v2.0/.well-known/openid-configuration" />
+                    <required-claims>
+                        <claim name="aud">
+                            <value>${apiconfig_fe_client_id}</value>
+                        </claim>
+                        <claim name="groups" match="any">
+                            <value>writer</value>
+                        </claim>
+                    </required-claims>
+                </validate-jwt>
+            </when>
+            <!-- FE Token Reader -->
+            <otherwise>
+                <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+                    <openid-config url="https://login.microsoftonline.com/${pagopa_tenant_id}/v2.0/.well-known/openid-configuration" />
+                    <required-claims>
+                        <claim name="aud">
+                            <value>${apiconfig_fe_client_id}</value>
+                        </claim>
+                    </required-claims>
+                </validate-jwt>
+            </otherwise>
+        </choose>
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
 </policies>
