@@ -40,13 +40,15 @@ module "checkout_function" {
   always_on                                = var.checkout_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
-
+  app_service_plan_name = format("%s-plan-fncheckout", local.project)
   app_service_plan_info = {
     kind                         = var.checkout_function_kind
     sku_tier                     = var.checkout_function_sku_tier
     sku_size                     = var.checkout_function_sku_size
     maximum_elastic_worker_count = 0
   }
+
+  storage_account_name = replace(format("%s-st-fncheckout", local.project), "-", "")
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
@@ -83,7 +85,7 @@ module "checkout_function" {
 resource "azurerm_monitor_autoscale_setting" "checkout_function" {
   count = var.checkout_enabled && var.env_short != "d" ? 1 : 0
 
-  name                = format("%s-%s-autoscale", local.project, module.checkout_function[0].name)
+  name                = format("%s-autoscale", module.checkout_function[0].name)
   resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   location            = var.location
   target_resource_id  = module.checkout_function[0].app_service_plan_id
@@ -147,7 +149,7 @@ resource "azurerm_monitor_autoscale_setting" "checkout_function" {
 resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   count = var.checkout_enabled && var.env_short == "p" ? 1 : 0
 
-  name                = format("%s-%s-availability-alert", local.project, module.checkout_function[0].name)
+  name                = format("%s-availability-alert", module.checkout_function[0].name)
   resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   location            = var.location
 

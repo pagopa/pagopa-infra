@@ -36,12 +36,15 @@ module "buyerbanks_function" {
   os_type                                  = "linux"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
+  app_service_plan_name = format("%s-plan-fnbuyerbanks", local.project)
   app_service_plan_info = {
     kind                         = var.buyerbanks_function_kind
     sku_tier                     = var.buyerbanks_function_sku_tier
     sku_size                     = var.buyerbanks_function_sku_size
     maximum_elastic_worker_count = 0
   }
+
+  storage_account_name = replace(format("%s-st-fnbuyerbanks", local.project), "-", "")
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME          = "node"
@@ -73,7 +76,7 @@ module "buyerbanks_function" {
 
 resource "azurerm_monitor_autoscale_setting" "buyerbanks_function" {
 
-  name                = format("%s-%s-autoscale", local.project, module.buyerbanks_function.name)
+  name                = format("%s-autoscale", module.buyerbanks_function.name)
   resource_group_name = azurerm_resource_group.buyerbanks_rg.name
   location            = var.location
   target_resource_id  = module.buyerbanks_function.app_service_plan_id
@@ -136,7 +139,7 @@ resource "azurerm_monitor_autoscale_setting" "buyerbanks_function" {
 resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = format("%s-%s-availability-alert", local.project, module.buyerbanks_function.name)
+  name                = format("%s-availability-alert", module.buyerbanks_function.name)
   resource_group_name = azurerm_resource_group.buyerbanks_rg.name
   location            = var.location
 
@@ -243,7 +246,7 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint_peer" {
  */
 resource "azurerm_key_vault_certificate" "buyerbanks_cert" {
 
-  name         = format("%s-%s-cert", local.project, module.buyerbanks_function.name)
+  name         = format("%s-cert", module.buyerbanks_function.name)
   key_vault_id = module.key_vault.id
 
   certificate_policy {

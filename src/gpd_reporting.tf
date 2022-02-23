@@ -183,7 +183,7 @@ module "reporting_analysis_function" {
 
 # autoscaling
 resource "azurerm_monitor_autoscale_setting" "reporting_function" {
-  name                = format("%s-%s-autoscale", local.project, module.reporting_batch_function.name)
+  name                = format("%s-autoscale", module.reporting_batch_function.name)
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
   target_resource_id  = azurerm_app_service_plan.gpd_service_plan.id
