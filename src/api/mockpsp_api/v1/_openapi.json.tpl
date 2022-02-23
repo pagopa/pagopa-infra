@@ -158,7 +158,7 @@
       }
     },
     "/bpay": {
-      "posta": {
+      "post": {
         "operationId": "bpayRequestAuthPOST",
         "description": "Payment authorization request to BPAY",
         "responses": {
