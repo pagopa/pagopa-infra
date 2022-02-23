@@ -224,6 +224,70 @@
           }
         ]
       }
+    },
+    "paths": {
+      "/webview/*": {
+        "get": {
+          "operationId": "staticResourcesWebviewGet",
+          "description": "static resources of Webview - GET",
+          "responses": {
+            "200": {
+              "description": "static resource"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "generic error"
+            }
+          }
+        },
+        "post": {
+          "operationId": "staticResourcesWebviewPost",
+          "description": "static resources of Webview - POST",
+          "responses": {
+            "200": {
+              "description": "static resource"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "generic error"
+            }
+          }
+        },
+        "options": {
+          "operationId": "staticResourcesWebviewOptions",
+          "description": "static resources of Webview - Options",
+          "responses": {
+            "200": {
+              "description": "static resource"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "generic error"
+            }
+          }
+        },
+        "head": {
+          "operationId": "staticResourcesWebviewHead",
+          "description": "static resources of Webview - Head",
+          "responses": {
+            "200": {
+              "description": "static resource"
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "generic error"
+            }
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {
