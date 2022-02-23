@@ -1,22 +1,10 @@
 <policies>
     <inbound>
-      <cors>
-        <allowed-origins>
-          <origin>${origin}</origin>
-        </allowed-origins>
-        <allowed-methods>
-          <method>POST</method>
-          <method>GET</method>
-          <method>OPTIONS</method>
-        </allowed-methods>
-        <allowed-headers>
-          <header>Content-Type</header>
-        </allowed-headers>
-      </cors>
       <base />
       <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
       <ip-filter action="allow">
-        <address>io-backend</address> <!-- TODO-->
+        <address>${ip_allowed_1}</address>
+        <address>${ip_allowed_2}</address>
       </ip-filter>
       <when condition="@(context.User.Groups.All(g =&gt; g.Name != &quot;checkout-rate-no-limit&quot;))">
         <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
@@ -52,7 +40,8 @@
                     <set-body>@{
                     return new JObject(
                             new JProperty("status", 500),
-                            new JProperty("detail", ((JObject) context.Variables["body"])["detail_v2"]),
+                            new JProperty("detail_v2", ((JObject) context.Variables["body"])["detail_v2"]),
+                            new JProperty("detail", ((JObject) context.Variables["body"])["detail"]),
                             new JProperty("title", ((JObject) context.Variables["body"])["title"])
                            ).ToString();
              }</set-body>
