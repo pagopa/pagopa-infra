@@ -553,6 +553,30 @@
 
       <!-- Wrapper Elements -->
 
+      <xsd:element name="nodoChiediCopiaRT" type="ppt:nodoChiediCopiaRT" />
+      <xsd:element name="nodoChiediCopiaRTRisposta" type="ppt:nodoChiediCopiaRTRisposta" />
+
+      <xsd:element name="nodoInviaRPT" type="ppt:nodoInviaRPT" />
+      <xsd:element name="nodoInviaRPTRisposta" type="ppt:nodoInviaRPTRisposta" />
+
+      <xsd:element name="nodoInviaCarrelloRPT" type="ppt:nodoInviaCarrelloRPT" />
+      <xsd:element name="nodoInviaCarrelloRPTRisposta" type="ppt:nodoInviaCarrelloRPTRisposta" />
+
+      <xsd:element name="nodoChiediInformativaPSP" type="ppt:nodoChiediInformativaPSP" />
+      <xsd:element name="nodoChiediInformativaPSPRisposta" type="ppt:nodoChiediInformativaPSPRisposta" />
+
+      <xsd:element name="nodoPAChiediInformativaPA" type="ppt:nodoPAChiediInformativaPA" />
+      <xsd:element name="nodoPAChiediInformativaPARisposta" type="ppt:nodoPAChiediInformativaPARisposta" />
+
+      <xsd:element name="nodoChiediElencoQuadraturePA" type="ppt:nodoChiediElencoQuadraturePA" />
+      <xsd:element name="nodoChiediElencoQuadraturePARisposta" type="ppt:nodoChiediElencoQuadraturePARisposta" />
+
+      <xsd:element name="nodoChiediStatoRPT" type="ppt:nodoChiediStatoRPT" />
+      <xsd:element name="nodoChiediStatoRPTRisposta" type="ppt:nodoChiediStatoRPTRisposta" />
+
+      <xsd:element name="nodoChiediListaPendentiRPT" type="ppt:nodoChiediListaPendentiRPT" />
+      <xsd:element name="nodoChiediListaPendentiRPTRisposta" type="ppt:nodoChiediListaPendentiRPTRisposta" />
+
       <xsd:element name="nodoChiediElencoFlussiRendicontazione" type="ppt:nodoChiediElencoFlussiRendicontazione" />
       <xsd:element name="nodoChiediElencoFlussiRendicontazioneRisposta" type="ppt:nodoChiediElencoFlussiRendicontazioneRisposta" />
 
@@ -561,6 +585,69 @@
   </wsdl:types>
 
   <!-- wsdl messages -->
+
+  <wsdl:message name="nodoChiediStatoRPT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediStatoRPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediStatoRPTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediStatoRPTRisposta"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="nodoChiediCopiaRT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediCopiaRT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediCopiaRTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediCopiaRTRisposta"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="nodoInviaRPT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoInviaRPT"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazionePPT"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="nodoInviaRPTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoInviaRPTRisposta"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="nodoInviaCarrelloRPT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoInviaCarrelloRPT"></wsdl:part>
+    <wsdl:part name="header" element="ppthead:intestazioneCarrelloPPT"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="nodoInviaCarrelloRPTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoInviaCarrelloRPTRisposta"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="nodoChiediListaPendentiRPT">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediListaPendentiRPT"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="nodoChiediListaPendentiRPTResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediListaPendentiRPTRisposta"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="nodoChiediInformativaPSP">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediInformativaPSP" />
+  </wsdl:message>
+
+  <wsdl:message name="nodoChiediInformativaPSPResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediInformativaPSPRisposta" />
+  </wsdl:message>
+
+  <wsdl:message name="nodoPAChiediInformativaPA">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoPAChiediInformativaPA"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="nodoPAChiediInformativaPAResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoPAChiediInformativaPARisposta"></wsdl:part>
+  </wsdl:message>
+
+  <wsdl:message name="nodoChiediElencoQuadraturePA">
+    <wsdl:part name="bodyrichiesta" element="ppt:nodoChiediElencoQuadraturePA" />
+  </wsdl:message>
+
+  <wsdl:message name="nodoChiediElencoQuadraturePAResponse">
+    <wsdl:part name="bodyrisposta" element="ppt:nodoChiediElencoQuadraturePARisposta" />
+  </wsdl:message>
 
   <wsdl:message name="nodoChiediElencoFlussiRendicontazione">
     <wsdl:part name="parameters" element="ppt:nodoChiediElencoFlussiRendicontazione" />
@@ -579,6 +666,44 @@
   <!-- wsdl operation -->
 
   <wsdl:portType name="PagamentiTelematiciRPT">
+
+    <wsdl:operation name="nodoChiediStatoRPT">
+      <wsdl:input name="nodoChiediStatoRPT" message="tns:nodoChiediStatoRPT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediStatoRPTRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediStatoRPTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoChiediStatoRPTResponse" message="tns:nodoChiediStatoRPTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediStatoRPTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediStatoRPTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediListaPendentiRPT">
+      <wsdl:input name="nodoChiediListaPendentiRPT" message="tns:nodoChiediListaPendentiRPT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediListaPendentiRPT" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediListaPendentiRPTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoChiediListaPendentiRPTResponse" message="tns:nodoChiediListaPendentiRPTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediListaPendentiRPTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediListaPendentiRPTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaRPT">
+      <wsdl:input name="nodoInviaRPT" message="tns:nodoInviaRPT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRPTRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRPTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoInviaRPTResponse" message="tns:nodoInviaRPTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRPTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaRPTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaCarrelloRPT">
+      <wsdl:input name="nodoInviaCarrelloRPT" message="tns:nodoInviaCarrelloRPT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaCarrelloRPTRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaCarrelloRPTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoInviaCarrelloRPTResponse" message="tns:nodoInviaCarrelloRPTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaCarrelloRPTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoInviaCarrelloRPTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediCopiaRT">
+      <wsdl:input name="nodoChiediCopiaRT" message="tns:nodoChiediCopiaRT" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediCopiaRTRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediCopiaRTRichiesta"></wsdl:input>
+      <wsdl:output name="nodoChiediCopiaRTResponse" message="tns:nodoChiediCopiaRTResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediCopiaRTRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediCopiaRTRisposta"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediInformativaPSP">
+      <wsdl:input name="nodoChiediInformativaPSP" message="tns:nodoChiediInformativaPSP" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediInformativaPSPRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediInformativaPSPRichiesta" />
+      <wsdl:output name="nodoChiediInformativaPSPResponse" message="tns:nodoChiediInformativaPSPResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediInformativaPSPRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediInformativaPSPRisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="nodoPAChiediInformativaPA">
+      <wsdl:input name="nodoPAChiediInformativaPA" message="tns:nodoPAChiediInformativaPA" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoPAChiediInformativaPARichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoPAChiediInformativaPARichiesta" />
+      <wsdl:output name="nodoPAChiediInformativaPAResponse" message="tns:nodoPAChiediInformativaPAResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoPAChiediInformativaPARisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoPAChiediInformativaPARisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediElencoQuadraturePA">
+      <wsdl:input name="nodoChiediElencoQuadraturePA" message="tns:nodoChiediElencoQuadraturePA" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARichiesta" />
+      <wsdl:output name="nodoChiediElencoQuadraturePAResponse" message="tns:nodoChiediElencoQuadraturePAResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARisposta" />
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediQuadraturaPA">
+      <wsdl:input name="nodoChiediQuadraturaPA" message="tns:nodoChiediQuadraturaPA" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARichiesta" />
+      <wsdl:output name="nodoChiediQuadraturaPAResponse" message="tns:nodoChiediQuadraturaPAResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARisposta" />
+    </wsdl:operation>
+
     <wsdl:operation name="nodoChiediElencoFlussiRendicontazione">
       <wsdl:input name="nodoChiediElencoFlussiRendicontazione" message="tns:nodoChiediElencoFlussiRendicontazione" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRichiesta" />
       <wsdl:output name="nodoChiediElencoFlussiRendicontazioneResponse" message="tns:nodoChiediElencoFlussiRendicontazioneResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRisposta" />
@@ -593,6 +718,81 @@
 
   <wsdl:binding name="PagamentiTelematiciRPTbinding" type="tns:PagamentiTelematiciRPT">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+    <wsdl:operation name="nodoChiediStatoRPT">
+      <soap:operation soapAction="nodoChiediStatoRPT" style="document" />
+      <wsdl:input name="nodoChiediStatoRPT">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nodoChiediStatoRPTResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediListaPendentiRPT">
+      <soap:operation soapAction="nodoChiediListaPendentiRPT" style="document" />
+      <wsdl:input name="nodoChiediListaPendentiRPT">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nodoChiediListaPendentiRPTResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaRPT">
+      <soap:operation soapAction="nodoInviaRPT" style="document" />
+      <wsdl:input name="nodoInviaRPT">
+        <soap:header message="tns:nodoInviaRPT" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nodoInviaRPTResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoInviaCarrelloRPT">
+      <soap:operation soapAction="nodoInviaCarrelloRPT" style="document" />
+      <wsdl:input name="nodoInviaCarrelloRPT">
+        <soap:header message="tns:nodoInviaCarrelloRPT" part="header" use="literal"></soap:header>
+        <soap:body parts="bodyrichiesta" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nodoInviaCarrelloRPTResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediCopiaRT">
+      <soap:operation soapAction="nodoChiediCopiaRT" style="document" />
+      <wsdl:input name="nodoChiediCopiaRT">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nodoChiediCopiaRTResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediInformativaPSP">
+      <soap:operation soapAction="nodoChiediInformativaPSP" style="document" />
+      <wsdl:input name="nodoChiediInformativaPSP">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nodoChiediInformativaPSPResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoPAChiediInformativaPA">
+      <soap:operation soapAction="nodoPAChiediInformativaPA" style="document" />
+      <wsdl:input name="nodoPAChiediInformativaPA">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nodoPAChiediInformativaPAResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="nodoChiediElencoQuadraturePA">
+      <soap:operation soapAction="nodoChiediElencoQuadraturePA" style="document" />
+      <wsdl:input name="nodoChiediElencoQuadraturePA">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nodoChiediElencoQuadraturePAResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
 
     <wsdl:operation name="nodoChiediElencoFlussiRendicontazione">
       <soap:operation soapAction="nodoChiediElencoFlussiRendicontazione"  />
