@@ -159,7 +159,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
     | where toint(Sucess) < 1
 
   QUERY
-  , format("%s-fn-%s", local.project, module.buyerbanks_function.name))
+  , format("%s", module.buyerbanks_function.name))
   severity    = 1
   frequency   = 60
   time_window = 1440
