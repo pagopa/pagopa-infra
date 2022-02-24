@@ -10,7 +10,6 @@
 		xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
 		xmlns:tns="http://PuntoAccessoPSP.spcoop.gov.it/servizi/RichiestaAvvisi"
-		xmlns:pay_i="http://www.digitpa.gov.it/schemas/2011/Pagamenti/"
 		targetNamespace="http://PuntoAccessoPSP.spcoop.gov.it/servizi/RichiestaAvvisi">
 
 	<wsdl:types>
@@ -189,12 +188,12 @@
 		<!-- Dominio -->
 		<xsd:complexType name="ctDominio">
 			<xsd:sequence>
-				<xsd:element name="identificativoDominio" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo alfanumerico contenente il codice fiscale della struttura che invia la richiesta di pagamento.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="identificativoStazioneRichiedente" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="identificativoStazioneRichiedente" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Identifica la stazione richiedente il pagamento. Nella fattispecie assume il codice del PdA richiedente o quello del Portale del ministero.</xsd:documentation>
 					</xsd:annotation>
@@ -204,17 +203,17 @@
 
 		<xsd:complexType name="ctDatiMarcaBolloDigitale">
 			<xsd:sequence>
-				<xsd:element name="tipoBollo" type="pay_i:stTipoBollo" minOccurs="1">
+				<xsd:element name="tipoBollo" type="ppt:stTipoBollo" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Contiene la tipologia di Bollo Digitale.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="hashDocumento" type="pay_i:stText70" minOccurs="1">
+				<xsd:element name="hashDocumento" type="ppt:stText70" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Contiene l’impronta informatica (digest), rappresentata in “base 64 binary”, del documento informatico o della segnatura di protocollo cui è associata la marca da bollo digitale</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="provinciaResidenza" type="pay_i:stNazioneProvincia" minOccurs="1">
+				<xsd:element name="provinciaResidenza" type="ppt:stNazioneProvincia" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Sigla automobilistica della provincia di residenza del soggetto pagatore.</xsd:documentation>
 					</xsd:annotation>
@@ -224,12 +223,12 @@
 
 		<xsd:complexType name="ctAllegatoRicevuta">
 			<xsd:sequence>
-				<xsd:element name="tipoAllegatoRicevuta" type="pay_i:stTipoAllegatoRicevuta" minOccurs="1">
+				<xsd:element name="tipoAllegatoRicevuta" type="ppt:stTipoAllegatoRicevuta" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Identifica il tipo di allegato trasportato con la RT.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="testoAllegato" type="pay_i:stBase64" minOccurs="1">
+				<xsd:element name="testoAllegato" type="ppt:stBase64" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Contiene l’allegato vero e proprio, il cui significato è indicato dal dato tipoAllegatoRicevuta.</xsd:documentation>
 					</xsd:annotation>
@@ -240,7 +239,7 @@
 		<!-- **** BEGIN: Identificativi univoci dei soggetti -->
 		<xsd:complexType name="ctIdentificativoUnivoco">
 			<xsd:sequence>
-				<xsd:element name="tipoIdentificativoUnivoco" type="pay_i:stTipoIdentificativoUnivoco" minOccurs="1">
+				<xsd:element name="tipoIdentificativoUnivoco" type="ppt:stTipoIdentificativoUnivoco" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo alfanumerico che indica la natura del soggetto,  può assumere i seguenti valori:</xsd:documentation>
 						<xsd:documentation>G - Persona Giuridica</xsd:documentation>
@@ -248,7 +247,7 @@
 						<xsd:documentation>B - Codice BIC</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="codiceIdentificativoUnivoco" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="codiceIdentificativoUnivoco" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo alfanumerico che può contenere il codice fiscale o la partita IVA del soggetto o il codice ABI o il codice BIC</xsd:documentation>
 					</xsd:annotation>
@@ -258,14 +257,14 @@
 
 		<xsd:complexType name="ctIdentificativoUnivocoPersonaFG">
 			<xsd:sequence>
-				<xsd:element name="tipoIdentificativoUnivoco" type="pay_i:stTipoIdentificativoUnivocoPersFG" minOccurs="1">
+				<xsd:element name="tipoIdentificativoUnivoco" type="ppt:stTipoIdentificativoUnivocoPersFG" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo alfanumerico che indica la natura del soggetto,  può assumere i seguenti valori:</xsd:documentation>
 						<xsd:documentation>F - Persona Fisica</xsd:documentation>
 						<xsd:documentation>G - Persona Giuridica</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="codiceIdentificativoUnivoco" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="codiceIdentificativoUnivoco" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo alfanumerico che può contenere il codice fiscale o, in alternativa, la partita IVA del soggetto.</xsd:documentation>
 					</xsd:annotation>
@@ -275,13 +274,13 @@
 
 		<xsd:complexType name="ctIdentificativoUnivocoPersonaG">
 			<xsd:sequence>
-				<xsd:element name="tipoIdentificativoUnivoco" type="pay_i:stTipoIdentificativoUnivocoPersG" minOccurs="1">
+				<xsd:element name="tipoIdentificativoUnivoco" type="ppt:stTipoIdentificativoUnivocoPersG" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo alfanumerico che indica la natura del soggetto,  può assumere i seguenti valori:</xsd:documentation>
 						<xsd:documentation>G - Persona Giuridica</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="codiceIdentificativoUnivoco" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="codiceIdentificativoUnivoco" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo alfanumerico che può contenere il codice fiscale o, in alternativa, la partita IVA del soggetto.</xsd:documentation>
 					</xsd:annotation>
@@ -294,47 +293,47 @@
 		<!-- Soggetto Versante-->
 		<xsd:complexType name="ctSoggettoVersante">
 			<xsd:sequence>
-				<xsd:element name="identificativoUnivocoVersante" type="pay_i:ctIdentificativoUnivocoPersonaFG" minOccurs="1">
+				<xsd:element name="identificativoUnivocoVersante" type="ppt:ctIdentificativoUnivocoPersonaFG" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione che riporta le informazioni concernenti l’identificazione fiscale del versante.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="anagraficaVersante" type="pay_i:stText70" minOccurs="1">
+				<xsd:element name="anagraficaVersante" type="ppt:stText70" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Indica il nominativo o la ragione sociale del versante.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="indirizzoVersante" type="pay_i:stText70" minOccurs="0">
+				<xsd:element name="indirizzoVersante" type="ppt:stText70" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica l’indirizzo del versante.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="civicoVersante" type="pay_i:stText16" minOccurs="0">
+				<xsd:element name="civicoVersante" type="ppt:stText16" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il numero civico del versante.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="capVersante" type="pay_i:stText16" minOccurs="0">
+				<xsd:element name="capVersante" type="ppt:stText16" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il CAP del versante.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="localitaVersante" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="localitaVersante" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica la località del versante.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="provinciaVersante" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="provinciaVersante" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica la provincia del versante.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="nazioneVersante" type="pay_i:stNazioneProvincia" minOccurs="0">
+				<xsd:element name="nazioneVersante" type="ppt:stNazioneProvincia" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il codice nazione del versante secondo lo standard ISO 3166.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="e-mailVersante" type="pay_i:stEMail" minOccurs="0">
+				<xsd:element name="e-mailVersante" type="ppt:stEMail" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indirizzo di posta elettronica del versante.</xsd:documentation>
 					</xsd:annotation>
@@ -345,47 +344,47 @@
 		<!-- Soggetto Pagatore-->
 		<xsd:complexType name="ctSoggettoPagatore">
 			<xsd:sequence>
-				<xsd:element name="identificativoUnivocoPagatore" type="pay_i:ctIdentificativoUnivocoPersonaFG" minOccurs="1">
+				<xsd:element name="identificativoUnivocoPagatore" type="ppt:ctIdentificativoUnivocoPersonaFG" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione che riporta le informazioni concernenti l’identificazione fiscale del pagatore.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="anagraficaPagatore" type="pay_i:stText70" minOccurs="1">
+				<xsd:element name="anagraficaPagatore" type="ppt:stText70" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Indica il nominativo o la ragione sociale del pagatore.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="indirizzoPagatore" type="pay_i:stText70" minOccurs="0">
+				<xsd:element name="indirizzoPagatore" type="ppt:stText70" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica l’indirizzo del pagatore.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="civicoPagatore" type="pay_i:stText16" minOccurs="0">
+				<xsd:element name="civicoPagatore" type="ppt:stText16" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il numero civico del pagatore.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="capPagatore" type="pay_i:stText16" minOccurs="0">
+				<xsd:element name="capPagatore" type="ppt:stText16" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il CAP del pagatore.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="localitaPagatore" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="localitaPagatore" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica la località del pagatore.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="provinciaPagatore" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="provinciaPagatore" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica la provincia del pagatore.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="nazionePagatore" type="pay_i:stNazioneProvincia" minOccurs="0">
+				<xsd:element name="nazionePagatore" type="ppt:stNazioneProvincia" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il codice nazione del pagatore secondo lo standard ISO 3166.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="e-mailPagatore" type="pay_i:stEMail" minOccurs="0">
+				<xsd:element name="e-mailPagatore" type="ppt:stEMail" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indirizzo di posta elettronica del pagatore.</xsd:documentation>
 					</xsd:annotation>
@@ -396,59 +395,59 @@
 		<!-- Ente Beneficiario-->
 		<xsd:complexType name="ctEnteBeneficiario">
 			<xsd:sequence>
-				<xsd:element name="identificativoUnivocoBeneficiario" type="pay_i:ctIdentificativoUnivocoPersonaG" minOccurs="1">
+				<xsd:element name="identificativoUnivocoBeneficiario" type="ppt:ctIdentificativoUnivocoPersonaG" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione che riporta le informazioni concernenti l’identificazione fiscale dell’ente beneficiario.</xsd:documentation>
 						<xsd:documentation>tipo_identificativo_univoco - se presente deve assumere il valore ‘G’, Persona Giuridica.</xsd:documentation>
 						<xsd:documentation>codice_identificativo_univoco - contenente il codice fiscale dell’amministrazione destinataria del pagamento.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="denominazioneBeneficiario" type="pay_i:stText70" minOccurs="1">
+				<xsd:element name="denominazioneBeneficiario" type="ppt:stText70" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Contiene la denominazione della PA.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="codiceUnitOperBeneficiario" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="codiceUnitOperBeneficiario" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il codice dell’unità operativa destinataria.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="denomUnitOperBeneficiario" type="pay_i:stText70" minOccurs="0">
+				<xsd:element name="denomUnitOperBeneficiario" type="ppt:stText70" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Contiene la denominazione dell’unità operativa destinataria.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="indirizzoBeneficiario" type="pay_i:stText70" minOccurs="0">
+				<xsd:element name="indirizzoBeneficiario" type="ppt:stText70" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica l’indirizzo dell’ente beneficiario.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa destinataria.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="civicoBeneficiario" type="pay_i:stText16" minOccurs="0">
+				<xsd:element name="civicoBeneficiario" type="ppt:stText16" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il numero civico del beneficiario.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa destinataria.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="capBeneficiario" type="pay_i:stText16" minOccurs="0">
+				<xsd:element name="capBeneficiario" type="ppt:stText16" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il CAP dell’ente beneficiario.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa destinataria.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="localitaBeneficiario" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="localitaBeneficiario" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica la località dell’ente beneficiario.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa destinataria.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="provinciaBeneficiario" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="provinciaBeneficiario" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica la provincia del beneficiario.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa destinataria.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="nazioneBeneficiario" type="pay_i:stNazioneProvincia" minOccurs="0">
+				<xsd:element name="nazioneBeneficiario" type="ppt:stNazioneProvincia" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il codice nazione dell’ente beneficiario secondo lo standard ISO 3166.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa destinataria.</xsd:documentation>
@@ -460,59 +459,59 @@
 		<!-- Istituto Attestante-->
 		<xsd:complexType name="ctIstitutoAttestante">
 			<xsd:sequence>
-				<xsd:element name="identificativoUnivocoAttestante" type="pay_i:ctIdentificativoUnivoco" minOccurs="1">
+				<xsd:element name="identificativoUnivocoAttestante" type="ppt:ctIdentificativoUnivoco" minOccurs="1">
 				<xsd:annotation>
 						<xsd:documentation>Aggregazione che riporta le informazioni concernenti l’identificazione fiscale dell’Istituto attestante il pagamento.</xsd:documentation>
 						<xsd:documentation>tipo_identificativo_univoco - deve assumere il valore ‘G’, Persona Giuridica.</xsd:documentation>
 						<xsd:documentation>codice_identificativo_univoco - Campo alfanumerico che può contenere il codice fiscale o, in alternativa, la partita IVA dell’Istituto attestante il pagamento.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="denominazioneAttestante" type="pay_i:stText70" minOccurs="1">
+				<xsd:element name="denominazioneAttestante" type="ppt:stText70" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Contiene la denominazione dell’Istituto  finanziario  che emette il documento di attestazione dell’avvenuto versamento.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="codiceUnitOperAttestante" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="codiceUnitOperAttestante" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il codice dell’unità operativa che rilascia la quietanza.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="denomUnitOperAttestante" type="pay_i:stText70" minOccurs="0">
+				<xsd:element name="denomUnitOperAttestante" type="ppt:stText70" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Contiene la denominazione dell’unità operativa attestante.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="indirizzoAttestante" type="pay_i:stText70" minOccurs="0">
+				<xsd:element name="indirizzoAttestante" type="ppt:stText70" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica l’indirizzo dell’attestante.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa che rilascia la ricevuta</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="civicoAttestante" type="pay_i:stText16" minOccurs="0">
+				<xsd:element name="civicoAttestante" type="ppt:stText16" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il numero civico dell'attestante.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa che rilascia la ricevuta</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="capAttestante" type="pay_i:stText16" minOccurs="0">
+				<xsd:element name="capAttestante" type="ppt:stText16" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il CAP dell’attestante.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa che rilascia la ricevuta</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="localitaAttestante" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="localitaAttestante" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica la località dell’attestante.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa che rilascia la ricevuta</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="provinciaAttestante" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="provinciaAttestante" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica la provincia dell’attestante.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa che rilascia la ricevuta</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="nazioneAttestante" type="pay_i:stNazioneProvincia" minOccurs="0">
+				<xsd:element name="nazioneAttestante" type="ppt:stNazioneProvincia" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Indica il codice nazione dell’attestante secondo lo standard ISO 3166.</xsd:documentation>
 						<xsd:documentation>Può coincidere con quello dell’unità operativa che rilascia la ricevuta</xsd:documentation>
@@ -525,47 +524,47 @@
 		<!-- Dati singolo versamento della Richiesta Pagamento Telematico (RPT) -->
 		<xsd:complexType name="ctDatiSingoloVersamentoRPT">
 			<xsd:sequence>
-				<xsd:element name="importoSingoloVersamento" type="pay_i:stImporto" minOccurs="1">
+				<xsd:element name="importoSingoloVersamento" type="ppt:stImporto" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo numerico (due cifre per la parte decimale, il separatore dei centesimi è il punto “.”), indicante l’importo relativo alla somma da versare. Deve essere diverso da “0.00”.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="commissioneCaricoPA" type="pay_i:stImporto" minOccurs="0">
+				<xsd:element name="commissioneCaricoPA" type="ppt:stImporto" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Campo numerico (due cifre per la parte decimale, il separatore dei centesimi è il punto “.”), indicante l’importo relativo alla somma da versare. Il data è riportato a solo titolo indicativo e non comporta attività a carico del PSP. Se presente deve essere diverso da “0.00”.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="ibanAccredito" type="pay_i:stIBANIdentifier" minOccurs="0">
+				<xsd:element name="ibanAccredito" type="ppt:stIBANIdentifier" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Identifica l’International Bank Account Number, definito secondo lo standard ISO 13616, del conto da accreditare presso la Banca di accredito indicata dall’ente creditore, di norma la Banca Tesoriera. </xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="bicAccredito" type="pay_i:stBICIdentifier" minOccurs="0">
+				<xsd:element name="bicAccredito" type="ppt:stBICIdentifier" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Bank Identifier Code definito secondo lo standard ISO 9362.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="ibanAppoggio" type="pay_i:stIBANIdentifier" minOccurs="0">
+				<xsd:element name="ibanAppoggio" type="ppt:stIBANIdentifier" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Identifica l’International Bank Account Number,, definito secondo lo standard ISO 13616, del conto da accreditare presso un PSP che provvederà a trasferire, nei tempi previsti dal DM, i fondi incassati sul conto indicato nell’elemento ibanAccredito.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="bicAppoggio" type="pay_i:stBICIdentifier" minOccurs="0">
+				<xsd:element name="bicAppoggio" type="ppt:stBICIdentifier" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Bank Identifier Code definito secondo lo standard ISO 9362 dell’elemento ibanAppoggio</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="credenzialiPagatore" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="credenzialiPagatore" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Eventuali credenziali richieste dal Prestatore di servizi di Pagamento necessarie per completare l’operazione (ad esempio: un codice bilaterale utilizzabile una sola volta).</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="causaleVersamento" type="pay_i:stText140" minOccurs="1">
+				<xsd:element name="causaleVersamento" type="ppt:stText140" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Rappresenta la descrizione estesa della causale del versamento. Può assumere i seguenti valori:</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="datiSpecificiRiscossione" type="pay_i:stDatiSpecificiRiscossione" minOccurs="1">
+				<xsd:element name="datiSpecificiRiscossione" type="ppt:stDatiSpecificiRiscossione" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Rappresenta l’indicazione dell’imputazione della specifica entrata ed è così articolato:</xsd:documentation>
 						<xsd:documentation>"tipo contabilità"/"codice contabilità", dove "tipo contabilità" può assumere i seguenti valori :</xsd:documentation>
@@ -576,7 +575,7 @@
 						<xsd:documentation>Esempio: 0/3321.00 per indicare il Contributo Unificato delle spese di giustizia</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="datiMarcaBolloDigitale" type="pay_i:ctDatiMarcaBolloDigitale" minOccurs="0">
+				<xsd:element name="datiMarcaBolloDigitale" type="ppt:ctDatiMarcaBolloDigitale" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione che contiene le informazioni necessarie al PSP per generare la marca da bollo digitale.</xsd:documentation>
 					</xsd:annotation>
@@ -587,19 +586,19 @@
 		<!-- Dati versamento della Richiesta Pagamento Telematico (RPT) -->
 		<xsd:complexType name="ctDatiVersamentoRPT">
 			<xsd:sequence>
-				<xsd:element name="dataEsecuzionePagamento" type="pay_i:stISODate" minOccurs="1">
+				<xsd:element name="dataEsecuzionePagamento" type="ppt:stISODate" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Indica la data in cui si richiede che venga effettuato il pagamento secondo il formato ISO 8601 [YYYY]-[MM]-[DD].</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="importoTotaleDaVersare" type="pay_i:stImporto" minOccurs="1">
+				<xsd:element name="importoTotaleDaVersare" type="ppt:stImporto" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo numerico (due cifre per la parte decimale, il separatore dei centesimi è il punto “.”), indicante l’importo totale della somma da versare.</xsd:documentation>
 						<xsd:documentation>Deve essere diverso da “0.00”.</xsd:documentation>
 						<xsd:documentation>Deve uguale alla somma delle varie occorrenze (da 1 a 5) del dato importoSingoloVersamento presente nella struttura DatiSingoloVersamento</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="tipoVersamento" type="pay_i:stTipoVersamento" minOccurs="1">
+				<xsd:element name="tipoVersamento" type="ppt:stTipoVersamento" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Forma tecnica di versamento delle somme dovute presso la Tesoreria Statale. Può assumere i seguenti valori:</xsd:documentation>
 						<xsd:documentation>- BBT - Bonifico Bancario di Tesoreria.</xsd:documentation>
@@ -609,27 +608,27 @@
 						<xsd:documentation>- PO  - Pagamento attivato presso PSP.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="identificativoUnivocoVersamento" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Riferimento univoco assegnato al versamento dall’ente beneficiario, utilizzato ai fini specifici della rendicontazione e riconciliazione eseguita sui conti di tesoreria.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="codiceContestoPagamento" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="codiceContestoPagamento" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Codice univoco necessario a definire il contesto nel quale viene effettuato il versamento.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="ibanAddebito" type="pay_i:stIBANIdentifier" minOccurs="0">
+				<xsd:element name="ibanAddebito" type="ppt:stIBANIdentifier" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Identifica l’International Bank Account Number del conto da addebitare riferito al soggetto pagatore, definito secondo lo standard ISO 13616.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="bicAddebito" type="pay_i:stBICIdentifier" minOccurs="0">
+				<xsd:element name="bicAddebito" type="ppt:stBICIdentifier" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Bank Identifier Code della banca ordinante, definito secondo lo standard ISO 9362.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="firmaRicevuta" type="pay_i:stFirmaRicevuta" minOccurs="1">
+				<xsd:element name="firmaRicevuta" type="ppt:stFirmaRicevuta" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Codice del tipo di firma digitale  o elettronica qualificata  o elettronica avanzata cui deve essere sottoposto il messaggio di Ricevuta Telematica, secondo le tipologie di firma previste dalle Regole Tecniche sulla firma digitale.</xsd:documentation>
 						<xsd:documentation>0  Firma non richiesta</xsd:documentation>
@@ -638,7 +637,7 @@
 						<xsd:documentation>4  Elettronica avanzata </xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="datiSingoloVersamento" type="pay_i:ctDatiSingoloVersamentoRPT" minOccurs="1" maxOccurs="5">
+				<xsd:element name="datiSingoloVersamento" type="ppt:ctDatiSingoloVersamentoRPT" minOccurs="1" maxOccurs="5">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione “dati dei singoli versamenti”, da un minimo di uno ad un massimo di 5 occorrenze di versamento, facenti capo ad un unico identificativoUnivocoVersamento.</xsd:documentation>
 					</xsd:annotation>
@@ -649,44 +648,44 @@
 		<!-- Dati singoli pagamenti della Ricevuta Telematica (RT)-->
 		<xsd:complexType name="ctDatiSingoloPagamentoRT">
 			<xsd:sequence>
-				<xsd:element name="singoloImportoPagato" type="pay_i:stImporto" minOccurs="1">
+				<xsd:element name="singoloImportoPagato" type="ppt:stImporto" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo numerico (due cifre per la parte decimale, il separatore dei centesimi è il punto “.”), indicante l’importo relativo alla somma versata.</xsd:documentation>
 						<xsd:documentation>Se il singolo versamento non è stato effettuato l’importo deve essere impostato a 0.00.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="esitoSingoloPagamento" type="pay_i:stText35" minOccurs="0">
+				<xsd:element name="esitoSingoloPagamento" type="ppt:stText35" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Contiene la descrizione in formato testo dell’esito del singolo pagamento.</xsd:documentation>
 						<xsd:documentation>Obbligatorio nel caso che l’elemento singoloImportoVersato sia 0.00.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="dataEsitoSingoloPagamento" type="pay_i:stISODate" minOccurs="1">
+				<xsd:element name="dataEsitoSingoloPagamento" type="ppt:stISODate" minOccurs="1">
 					<xsd:annotation>
 					<xsd:documentation>Indica la data di esecuzione o di rifiuto del pagamento, nel formato iso 8601 [YYYY]-[MM]-[DD].</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="identificativoUnivocoRiscossione" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="identificativoUnivocoRiscossione" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Riferimento univoco dell’operazione assegnato al versamento dal Prestatore dei servizi di Pagamento. Può coincidere con il CRO nel caso di Bonifico Bancario o con il CODELINE nel caso di bollettino postale.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="causaleVersamento" type="pay_i:stText140" minOccurs="1">
+				<xsd:element name="causaleVersamento" type="ppt:stText140" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Il dato deve essere riportato invariato, a cura del PSP, così come presente nella Richiesta di Pagamento Telematico (RPT) cui si riferisce il messaggio di Ricevuta Telematica.</xsd:documentation>
 						</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="datiSpecificiRiscossione" type="pay_i:stDatiSpecificiRiscossione" minOccurs="1">
+				<xsd:element name="datiSpecificiRiscossione" type="ppt:stDatiSpecificiRiscossione" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Il dato, se presente, deve essere riportato invariato, a cura del Psp, così come presente nella Richiesta di Pagamento Telematico (RPT) cui si riferisce il messaggio di Ricevuta Telematica.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="commissioniApplicatePSP" type="pay_i:stImporto" minOccurs="0">
+				<xsd:element name="commissioniApplicatePSP" type="ppt:stImporto" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Campo numerico (due cifre per la parte decimale, il separatore dei centesimi è il punto “.”), indicante l’importo della commissione applicata dal PSP al proprio cliente (soggetto versante o soggetto pagatore).</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="allegatoRicevuta" type="pay_i:ctAllegatoRicevuta" minOccurs="0">
+				<xsd:element name="allegatoRicevuta" type="ppt:ctAllegatoRicevuta" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione contenente l'allegato al singolo pagamento.</xsd:documentation>
 					</xsd:annotation>
@@ -697,7 +696,7 @@
 		<!-- Dati versamento della Ricevuta Telematica (RT)-->
 		<xsd:complexType name="ctDatiVersamentoRT">
 			<xsd:sequence>
-				<xsd:element name="codiceEsitoPagamento" type="pay_i:stCodiceEsitoPagamento" minOccurs="1">
+				<xsd:element name="codiceEsitoPagamento" type="ppt:stCodiceEsitoPagamento" minOccurs="1">
 					<xsd:annotation>
 					<xsd:documentation>Campo numerico indicante l’esito del pagamento.</xsd:documentation>
 					<xsd:documentation>Può assumere i seguenti valori:</xsd:documentation>
@@ -708,24 +707,24 @@
 					<xsd:documentation>4 - Decorrenza termini parziale</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="importoTotalePagato" type="pay_i:stImporto" minOccurs="1">
+				<xsd:element name="importoTotalePagato" type="ppt:stImporto" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Campo numerico (due cifre per la parte decimale, il separatore dei centesimi è il punto “.”), indicante l’importo relativo alla somma versata.</xsd:documentation>
 						<xsd:documentation>Deve essere uguale alla somma delle varie occorrenze (da 1 a 5) dell’informazione singoloImportoVersato presente nella struttura DatiSingoloPagamento.</xsd:documentation>
 						<xsd:documentation>Se il versamento non è stato effettuato l’importo deve essere impostato a 0.00</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="identificativoUnivocoVersamento" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Il dato deve essere riportato invariato, a cura del prestatore di servizi di pagamento, così come presente nella Richiesta di Pagamento Telematico (RPT) cui si riferisce il messaggio di Ricevuta Telematica.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="CodiceContestoPagamento" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="CodiceContestoPagamento" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Il dato deve essere riportato invariato, a cura del prestatore di servizi di pagamento, così come presente nella Richiesta di Pagamento Telematico (RPT) cui si riferisce il messaggio di Ricevuta Telematica.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="datiSingoloPagamento" type="pay_i:ctDatiSingoloPagamentoRT" minOccurs="0" maxOccurs="5">
+				<xsd:element name="datiSingoloPagamento" type="ppt:ctDatiSingoloPagamentoRT" minOccurs="0" maxOccurs="5">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione “dati dei singoli versamenti”, da un minimo di uno ad un massimo di 5 occorrenze di versamento, facenti capo ad un unico identificativoUnivocoVersamento.</xsd:documentation>
 						<xsd:documentation>Obbligatorio nel caso che l’elemento codiceEsitoPagamento sia 0 o 2 </xsd:documentation>
@@ -737,50 +736,50 @@
 		<!-- Richiesta Pagamento Telematico (RPT)-->
 		<xsd:complexType name="ctRichiestaPagamentoTelematico">
 			<xsd:sequence>
-				<xsd:element name="versioneOggetto" type="pay_i:stText16" minOccurs="1">
+				<xsd:element name="versioneOggetto" type="ppt:stText16" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Versione che identifica l’oggetto scambiato.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="dominio" type="pay_i:ctDominio" minOccurs="1">
+				<xsd:element name="dominio" type="ppt:ctDominio" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione “dominio” che riporta le informazioni che consentono di individuare univocamente l’ambito di applicazione della richiesta.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="identificativoMessaggioRichiesta" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="identificativoMessaggioRichiesta" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Identificativo legato alla trasmissione della richiesta di pagamento.</xsd:documentation>
 						<xsd:documentation>Deve essere univoco nell’ambito della stessa data definita da Data_Ora_ messaggio_richiesta.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="dataOraMessaggioRichiesta" type="pay_i:stISODateTime" minOccurs="1">
+				<xsd:element name="dataOraMessaggioRichiesta" type="ppt:stISODateTime" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Indica la data e l’ora di generazione del messaggio di richiesta di pagamento secondo il formato ISO 8601</xsd:documentation>
 						<xsd:documentation>[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss]</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="autenticazioneSoggetto" type="pay_i:stAutenticazioneSoggetto" minOccurs="1">
+				<xsd:element name="autenticazioneSoggetto" type="ppt:stAutenticazioneSoggetto" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Contiene la modalità di identificazione  applicata  al soggetto che deve essere addebitato per il pagamento</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="soggettoVersante" type="pay_i:ctSoggettoVersante" minOccurs="0">
+				<xsd:element name="soggettoVersante" type="ppt:ctSoggettoVersante" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione “versante” che riporta le informazioni concernenti il soggetto che effettua il pagamento per conto del soggetto Pagatore.</xsd:documentation>
 						<xsd:documentation>Se coincide con il soggetto Pagatore deve essere omesso.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="soggettoPagatore" type="pay_i:ctSoggettoPagatore" minOccurs="1">
+				<xsd:element name="soggettoPagatore" type="ppt:ctSoggettoPagatore" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione “soggetto pagatore” che riporta le informazioni concernenti il soggetto che effettua il pagamento.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="enteBeneficiario" type="pay_i:ctEnteBeneficiario" minOccurs="1">
+				<xsd:element name="enteBeneficiario" type="ppt:ctEnteBeneficiario" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione “ente beneficiario” creditore di somme nei confronti del soggetto pagatore.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="datiVersamento" type="pay_i:ctDatiVersamentoRPT" minOccurs="1">
+				<xsd:element name="datiVersamento" type="ppt:ctDatiVersamentoRPT" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione “dati del versamento”.</xsd:documentation>
 					</xsd:annotation>
@@ -791,60 +790,60 @@
 		<!-- Ricevuta Telematica (RT)-->
 		<xsd:complexType name="ctRicevutaTelematica">
 			<xsd:sequence>
-				<xsd:element name="versioneOggetto" type="pay_i:stText16" minOccurs="1">
+				<xsd:element name="versioneOggetto" type="ppt:stText16" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Riporta la stessa informazione presente  nel dato  “versioneOggetto” della Richiesta di Pagamento Telematico (RPT).</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="dominio" type="pay_i:ctDominio" minOccurs="1">
+				<xsd:element name="dominio" type="ppt:ctDominio" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Riporta le stesse informazioni presenti nel blocco “Dominio” della Richiesta di Pagamento Telematico (RPT)</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="identificativoMessaggioRicevuta" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="identificativoMessaggioRicevuta" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Identificativo legato alla trasmissione della quietanza telematica.</xsd:documentation>
 						<xsd:documentation>Deve essere univoco nell’ambito della stessa data riferita all’elemento dataMessaggioRicevuta.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="dataOraMessaggioRicevuta" type="pay_i:stISODateTime" minOccurs="1">
+				<xsd:element name="dataOraMessaggioRicevuta" type="ppt:stISODateTime" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Indica la data del messaggio di quietanza, secondo il formato ISO 8601</xsd:documentation>
 						<xsd:documentation>[YYYY]-[MM]-[DD]T[hh]:[mm]:[ss]</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="riferimentoMessaggioRichiesta" type="pay_i:stText35" minOccurs="1">
+				<xsd:element name="riferimentoMessaggioRichiesta" type="ppt:stText35" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Con riferimento al messaggio di Ricevuta Telematica (RT) l’elemento contiene il dato identificativoMessaggioRichiesta legato alla trasmissione della Richiesta di Pagamento Telematico (RPT).</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="riferimentoDataRichiesta" type="pay_i:stISODate" minOccurs="1">
+				<xsd:element name="riferimentoDataRichiesta" type="ppt:stISODate" minOccurs="1">
 					<xsd:annotation>
 					<xsd:documentation>Indica la data secondo il formato ISO 8601 [YYYY]-[MM]-[DD] cui si riferisce la generazione del dato riferimentoMessaggioRichiesta.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="istitutoAttestante" type="pay_i:ctIstitutoAttestante" minOccurs="1">
+				<xsd:element name="istitutoAttestante" type="ppt:ctIstitutoAttestante" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Aggregazione relativa al soggetto Prestatore dei servizi di Pagamento che emette il documento di attestazione dell’avvenuto versamento. </xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="enteBeneficiario" type="pay_i:ctEnteBeneficiario" minOccurs="1">
+				<xsd:element name="enteBeneficiario" type="ppt:ctEnteBeneficiario" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Riporta le stesse informazioni presenti nel blocco “Ente Beneficiario” della Richiesta di Pagamento Telematico (RPT) cui si riferisce il messaggio di Ricevuta Telematica.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="soggettoVersante" type="pay_i:ctSoggettoVersante" minOccurs="0">
+				<xsd:element name="soggettoVersante" type="ppt:ctSoggettoVersante" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>Riporta le stesse informazioni presenti nel blocco “Soggetto Versante” della Richiesta di Pagamento Telematico (RPT) cui si riferisce il messaggio di Ricevuta Telematica.</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="soggettoPagatore" type="pay_i:ctSoggettoPagatore" minOccurs="1">
+				<xsd:element name="soggettoPagatore" type="ppt:ctSoggettoPagatore" minOccurs="1">
 					<xsd:annotation>
 						<xsd:documentation>Riporta le stesse informazioni presenti nel blocco “Soggetto Pagatore” della Richiesta di Pagamento Telematico (RPT) cui si riferisce il messaggio di Ricevuta Telematica.</xsd:documentation>
 						</xsd:annotation>
 				</xsd:element>
-				<xsd:element name="datiPagamento" type="pay_i:ctDatiVersamentoRT" minOccurs="1">
-					<xsd:annotation xml:base="pay_i:stImporto">
+				<xsd:element name="datiPagamento" type="ppt:ctDatiVersamentoRT" minOccurs="1">
+					<xsd:annotation xml:base="ppt:stImporto">
 						<xsd:documentation>Aggregazione “dati del versamento”</xsd:documentation>
 					</xsd:annotation>
 				</xsd:element>
@@ -855,13 +854,13 @@
 
 
 		<!-- **** BEGIN: elementi  ****-->
-		<xsd:element name="RPT" type="pay_i:ctRichiestaPagamentoTelematico">
+		<xsd:element name="RPT" type="ppt:ctRichiestaPagamentoTelematico">
 			<xsd:annotation>
 				<xsd:documentation>Richiesta Pagamento Telematico (RPT)</xsd:documentation>
 			</xsd:annotation>
 		</xsd:element>
 
-		<xsd:element name="RT" type="pay_i:ctRicevutaTelematica">
+		<xsd:element name="RT" type="ppt:ctRicevutaTelematica">
 			<xsd:annotation>
 				<xsd:documentation>Ricevuta Telematica (RT)</xsd:documentation>
 			</xsd:annotation>
@@ -927,7 +926,7 @@
 			<xsd:complexType name="ctSpezzoniCausaleVersamento">
 				<xsd:sequence minOccurs="1" maxOccurs="6">
 					<xsd:choice>
-						<xsd:element type="pay_i:stText35" name="spezzoneCausaleVersamento" minOccurs="1"/>
+						<xsd:element type="ppt:stText35" name="spezzoneCausaleVersamento" minOccurs="1"/>
 						<xsd:element type="ppt:ctSpezzoneStrutturatoCausaleVersamento" name="spezzoneStrutturatoCausaleVersamento" minOccurs="1"/>
 					</xsd:choice>
 				</xsd:sequence>
@@ -943,17 +942,17 @@
 			<xsd:complexType name="ctSpezzoneStrutturatoCausaleVersamento">
 				<xsd:sequence>
 					<xsd:element type="ppt:stText25" name="causaleSpezzone" minOccurs="1"/>
-					<xsd:element type="pay_i:stImporto" name="importoSpezzone" minOccurs="1"/>
+					<xsd:element type="ppt:stImporto" name="importoSpezzone" minOccurs="1"/>
 				</xsd:sequence>
 			</xsd:complexType>
 
 			<xsd:complexType name="ctDatiPagamentoPA">
 				<xsd:sequence>
-					<xsd:element name="importoSingoloVersamento" type="pay_i:stImporto" minOccurs="1" />
-					<xsd:element name="ibanAccredito" type="pay_i:stIBANIdentifier" minOccurs="1" />
-					<xsd:element name="bicAccredito" type="pay_i:stBICIdentifier" minOccurs="0" />
-					<xsd:element name="enteBeneficiario" type="pay_i:ctEnteBeneficiario" minOccurs="0"/>
-					<xsd:element name="credenzialiPagatore" type="pay_i:stText35" minOccurs="0" />
+					<xsd:element name="importoSingoloVersamento" type="ppt:stImporto" minOccurs="1" />
+					<xsd:element name="ibanAccredito" type="ppt:stIBANIdentifier" minOccurs="1" />
+					<xsd:element name="bicAccredito" type="ppt:stBICIdentifier" minOccurs="0" />
+					<xsd:element name="enteBeneficiario" type="ppt:ctEnteBeneficiario" minOccurs="0"/>
+					<xsd:element name="credenzialiPagatore" type="ppt:stText35" minOccurs="0" />
 					<xsd:choice>
 						<xsd:element name="causaleVersamento" type="ppt:stCausaleVersamento" />
 						<xsd:element name="spezzoniCausaleVersamento" type="ppt:ctSpezzoniCausaleVersamento" />
@@ -982,7 +981,7 @@
 					<xsd:extension base="ppt:ctRisposta">
 						<xsd:sequence>
 							<xsd:element name="esito" type="xsd:string" minOccurs="1" />
-							<xsd:element name="identificativoDominio" type="pay_i:stText35" minOccurs="0" />
+							<xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
 							<xsd:element name="numeroAvviso" type="ppt:ctNumeroAvviso" minOccurs="0" />
 							<xsd:element name="datiPagamentoPA" type="ppt:ctDatiPagamentoPA" minOccurs="0" />
 						</xsd:sequence>
@@ -992,12 +991,12 @@
 
 			<xsd:complexType name="nodoChiediNumeroAvviso">
 				<xsd:sequence>
-					<xsd:element name="identificativoPSP" type="pay_i:stText35" minOccurs="1" />
-					<xsd:element name="identificativoIntermediarioPSP" type="pay_i:stText35" minOccurs="1" />
-					<xsd:element name="identificativoCanale" type="pay_i:stText35" minOccurs="1" />
+					<xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="1" />
+					<xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" minOccurs="1" />
+					<xsd:element name="identificativoCanale" type="ppt:stText35" minOccurs="1" />
 					<xsd:element name="password" type="ppt:stPassword" minOccurs="1" />
 					<xsd:element name="idServizio" type="ppt:stIdentificativoServizio" minOccurs="1" />
-					<xsd:element name="idDominioErogatoreServizio" type="pay_i:stText35" minOccurs="1" />
+					<xsd:element name="idDominioErogatoreServizio" type="ppt:stText35" minOccurs="1" />
 					<xsd:element name="datiSpecificiServizio" type="xsd:base64Binary" minOccurs="1" />
 				</xsd:sequence>
 			</xsd:complexType>
@@ -1010,11 +1009,11 @@
 
 			<xsd:complexType name="nodoChiediCatalogoServizi">
 				<xsd:sequence>
-					<xsd:element name="identificativoPSP" type="pay_i:stText35" minOccurs="1" />
-					<xsd:element name="identificativoIntermediarioPSP" type="pay_i:stText35" minOccurs="1" />
-					<xsd:element name="identificativoCanale" type="pay_i:stText35" minOccurs="1" />
+					<xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="1" />
+					<xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" minOccurs="1" />
+					<xsd:element name="identificativoCanale" type="ppt:stText35" minOccurs="1" />
 					<xsd:element name="password" type="ppt:stPassword" minOccurs="1" />
-					<xsd:element name="identificativoDominio" type="pay_i:stText35" minOccurs="0" />
+					<xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
 				</xsd:sequence>
 			</xsd:complexType>
 

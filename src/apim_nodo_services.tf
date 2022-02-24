@@ -226,7 +226,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi_policy" {
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1.name
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
