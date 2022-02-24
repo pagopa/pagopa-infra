@@ -2,10 +2,10 @@
     <inbound>
       <base />
       <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
-      <ip-filter action="allow">
-        <address>${ip_allowed_1}</address>
-        <address>${ip_allowed_2}</address>
-      </ip-filter>
+      <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
+        <value>${ip_allowed_1}</value>
+        <value>${ip_allowed_2}</value>
+      </check-header>
       <choose>
         <when condition="@(context.User.Groups.All(g =&gt; g.Name != &quot;checkout-rate-no-limit&quot;))">
           <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
