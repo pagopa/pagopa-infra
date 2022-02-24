@@ -74,7 +74,7 @@
 				<xsd:enumeration value="4"/><!-- Decorrenza termini parziale -->
 			</xsd:restriction>
 		</xsd:simpleType>
-		
+
 		<xsd:simpleType name="stImporto">
 			<xsd:restriction base="xsd:decimal">
 				<xsd:minInclusive value="0.00"/>
@@ -102,7 +102,7 @@
 				<xsd:maxLength value="4"/>
 			</xsd:restriction>
 		</xsd:simpleType>
-		
+
 		<xsd:simpleType name="stDatiSpecificiRiscossione">
 			<xsd:restriction base="xsd:string">
 				<xsd:pattern value="[0129]{1}/\S{3,138}"/>
@@ -124,7 +124,7 @@
 				<xsd:length value="1"/>
 			</xsd:restriction>
 		</xsd:simpleType>
-		
+
 		<xsd:simpleType name="stTipoIdentificativoUnivoco">
 			<xsd:restriction base="xsd:string">
 				<xsd:enumeration value="G"/><!-- Persona Giuridica -->
@@ -133,7 +133,7 @@
 				<xsd:length value="1"/>
 			</xsd:restriction>
 		</xsd:simpleType>
-		
+
 		<xsd:simpleType name="stTipoIdentificativoUnivocoPersFG">
 			<xsd:restriction base="xsd:string">
 				<xsd:enumeration value="F"/><!-- Persona Fisica -->
@@ -141,7 +141,7 @@
 				<xsd:length value="1"/>
 			</xsd:restriction>
 		</xsd:simpleType>
-		
+
 		<xsd:simpleType name="stTipoIdentificativoUnivocoPersG">
 			<xsd:restriction base="xsd:string">
 				<xsd:enumeration value="G"/><!-- Persona Giuridica -->
@@ -161,14 +161,14 @@
 				<xsd:maxLength value="256"/>
 			</xsd:restriction>
 		</xsd:simpleType>
-		
+
 		<xsd:simpleType name="stTipoBollo">
 			<xsd:restriction base="xsd:string">
 				<xsd:enumeration value="01"/><!-- Imposta di bollo -->
 				<xsd:length value="2"/>
 			</xsd:restriction>
 		</xsd:simpleType>
-		
+
 		<xsd:simpleType name="stTipoAllegatoRicevuta">
 			<xsd:restriction base="xsd:string">
 				<xsd:enumeration value="ES"/><!-- Esito originario pagamento (come ricevuto da PSP) -->
@@ -176,7 +176,7 @@
 				<xsd:length value="2"/>
 			</xsd:restriction>
 		</xsd:simpleType>
-		
+
 		<xsd:simpleType name="stBase64">
 			<xsd:restriction base="xsd:base64Binary">
 			</xsd:restriction>
@@ -201,7 +201,7 @@
 				</xsd:element>
 			</xsd:sequence>
 		</xsd:complexType>
-		
+
 		<xsd:complexType name="ctDatiMarcaBolloDigitale">
 			<xsd:sequence>
 				<xsd:element name="tipoBollo" type="pay_i:stTipoBollo" minOccurs="1">
@@ -255,7 +255,7 @@
 				</xsd:element>
 			</xsd:sequence>
 		</xsd:complexType>
-		
+
 		<xsd:complexType name="ctIdentificativoUnivocoPersonaFG">
 			<xsd:sequence>
 				<xsd:element name="tipoIdentificativoUnivoco" type="pay_i:stTipoIdentificativoUnivocoPersFG" minOccurs="1">
@@ -521,7 +521,7 @@
 			</xsd:sequence>
 		</xsd:complexType>
 		<!-- **** END: Soggetti -->
-		
+
 		<!-- Dati singolo versamento della Richiesta Pagamento Telematico (RPT) -->
 		<xsd:complexType name="ctDatiSingoloVersamentoRPT">
 			<xsd:sequence>
