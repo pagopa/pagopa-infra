@@ -1143,6 +1143,13 @@
 				</xsd:sequence>
 			</xsd:complexType>
 
+      <xsd:complexType name="tipoIdQuadratura">
+				<xsd:sequence>
+					<xsd:element name="identificativoFlusso" type="xsd:string" />
+					<xsd:element name="dataOraFlusso" type="xsd:dateTime" />
+				</xsd:sequence>
+			</xsd:complexType>
+      
       <xsd:complexType name="nodoInviaFlussoRendicontazione">
 				<xsd:sequence>
 					<xsd:element name="identificativoPSP" type="ppt:stText35" />
