@@ -6,9 +6,11 @@
         <address>${ip_allowed_1}</address>
         <address>${ip_allowed_2}</address>
       </ip-filter>
-      <when condition="@(context.User.Groups.All(g =&gt; g.Name != &quot;checkout-rate-no-limit&quot;))">
-        <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
-      </when>
+      <choose>
+        <when condition="@(context.User.Groups.All(g =&gt; g.Name != &quot;checkout-rate-no-limit&quot;))">
+          <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+        </when>
+      </choose>
       <!-- Handle X-Client-Id - pagopa-proxy multi channel - START -->
       <set-variable name="ioBackendSubKey" value="{{io-backend-subscription-key}}" />
       <choose>
