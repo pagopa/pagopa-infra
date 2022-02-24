@@ -26,6 +26,7 @@ module "reporting_batch_function" {
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet.id
   runtime_version                          = "~3"
+  os_type                                  = "linux"
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
@@ -73,12 +74,14 @@ module "reporting_batch_function" {
 module "reporting_service_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
-  resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-service", local.project)
-  location                                 = var.location
-  health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet.id
-  runtime_version                          = "~3"
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  name                = format("%s-fn-gpd-service", local.project)
+  location            = var.location
+  health_check_path   = "info"
+  subnet_id           = module.reporting_function_snet.id
+  runtime_version     = "~3"
+  os_type             = "linux"
+
   always_on                                = var.reporting_service_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
@@ -128,12 +131,14 @@ module "reporting_service_function" {
 module "reporting_analysis_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
-  resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-analysis", local.project)
-  location                                 = var.location
-  health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet.id
-  runtime_version                          = "~3"
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  name                = format("%s-fn-gpd-analysis", local.project)
+  location            = var.location
+  health_check_path   = "info"
+  subnet_id           = module.reporting_function_snet.id
+  runtime_version     = "~3"
+  os_type             = "linux"
+
   always_on                                = var.reporting_analysis_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
@@ -178,7 +183,7 @@ module "reporting_analysis_function" {
 
 # autoscaling
 resource "azurerm_monitor_autoscale_setting" "reporting_function" {
-  name                = format("%s-%s-autoscale", local.project, module.reporting_batch_function.name)
+  name                = format("%s-autoscale", module.reporting_batch_function.name)
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
   target_resource_id  = azurerm_app_service_plan.gpd_service_plan.id
