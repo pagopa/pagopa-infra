@@ -70,7 +70,7 @@
                             <value>${apiconfig_fe_client_id}</value>
                         </claim>
                         <claim name="groups" match="any">
-                            <value>writer</value>
+                            <value>2675c3eb-bd2f-4d8a-a498-a27aeb7949ad</value>
                         </claim>
                     </required-claims>
                 </validate-jwt>
