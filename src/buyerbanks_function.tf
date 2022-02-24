@@ -246,7 +246,8 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint_peer" {
  */
 resource "azurerm_key_vault_certificate" "buyerbanks_cert" {
 
-  name         = format("%s-cert", module.buyerbanks_function.name)
+  name = format("%s-buyerbanks-cert", local.project) # module.buyerbanks_function.name
+
   key_vault_id = module.key_vault.id
 
   certificate_policy {
