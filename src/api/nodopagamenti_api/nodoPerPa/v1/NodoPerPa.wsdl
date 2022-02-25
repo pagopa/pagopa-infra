@@ -571,6 +571,9 @@
       <xsd:element name="nodoChiediElencoQuadraturePA" type="ppt:nodoChiediElencoQuadraturePA" />
       <xsd:element name="nodoChiediElencoQuadraturePARisposta" type="ppt:nodoChiediElencoQuadraturePARisposta" />
 
+      <xsd:element name="nodoChiediQuadraturaPA" type="ppt:nodoChiediQuadraturaPA" />
+      <xsd:element name="nodoChiediQuadraturaPARisposta" type="ppt:nodoChiediQuadraturaPARisposta" />
+
       <xsd:element name="nodoChiediStatoRPT" type="ppt:nodoChiediStatoRPT" />
       <xsd:element name="nodoChiediStatoRPTRisposta" type="ppt:nodoChiediStatoRPTRisposta" />
 
@@ -649,6 +652,13 @@
     <wsdl:part name="bodyrisposta" element="ppt:nodoChiediElencoQuadraturePARisposta" />
   </wsdl:message>
 
+  <wsdl:message name="nodoChiediQuadraturaPA">
+    <wsdl:part name="parameters" element="ppt:nodoChiediQuadraturaPA" />
+  </wsdl:message>
+  <wsdl:message name="nodoChiediQuadraturaPAResponse">
+    <wsdl:part name="parameters" element="ppt:nodoChiediQuadraturaPARisposta" />
+  </wsdl:message>
+
   <wsdl:message name="nodoChiediElencoFlussiRendicontazione">
     <wsdl:part name="parameters" element="ppt:nodoChiediElencoFlussiRendicontazione" />
   </wsdl:message>
@@ -699,6 +709,7 @@
       <wsdl:input name="nodoChiediElencoQuadraturePA" message="tns:nodoChiediElencoQuadraturePA" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARichiesta" />
       <wsdl:output name="nodoChiediElencoQuadraturePAResponse" message="tns:nodoChiediElencoQuadraturePAResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoQuadraturePARisposta" />
     </wsdl:operation>
+
     <wsdl:operation name="nodoChiediQuadraturaPA">
       <wsdl:input name="nodoChiediQuadraturaPA" message="tns:nodoChiediQuadraturaPA" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARichiesta" />
       <wsdl:output name="nodoChiediQuadraturaPAResponse" message="tns:nodoChiediQuadraturaPAResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediQuadraturaPARisposta" />
@@ -708,6 +719,7 @@
       <wsdl:input name="nodoChiediElencoFlussiRendicontazione" message="tns:nodoChiediElencoFlussiRendicontazione" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRichiesta" />
       <wsdl:output name="nodoChiediElencoFlussiRendicontazioneResponse" message="tns:nodoChiediElencoFlussiRendicontazioneResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediElencoFlussiRendicontazioneRisposta" />
     </wsdl:operation>
+
     <wsdl:operation name="nodoChiediFlussoRendicontazione">
       <wsdl:input name="nodoChiediFlussoRendicontazione" message="tns:nodoChiediFlussoRendicontazione" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediFlussoRendicontazioneRichiesta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediFlussoRendicontazioneRichiesta" />
       <wsdl:output name="nodoChiediFlussoRendicontazioneResponse" message="tns:nodoChiediFlussoRendicontazioneResponse" wsam:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediFlussoRendicontazioneRisposta" wsaw:Action="http://ws.pagamenti.telematici.gov/PPT/nodoChiediFlussoRendicontazioneRisposta" />
@@ -790,6 +802,16 @@
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="nodoChiediElencoQuadraturePAResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+
+    <wsdl:operation name="nodoChiediQuadraturaPA">
+      <soap:operation soapAction="nodoChiediQuadraturaPA" style="document" />
+      <wsdl:input name="nodoChiediQuadraturaPA">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="nodoChiediQuadraturaPAResponse">
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
