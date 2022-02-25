@@ -169,8 +169,8 @@ ehns_metric_alerts = {
 eventhubs = [
   {
     name              = "nodo-dei-pagamenti-log"
-    partitions        = 32 # in PROD shall be changed
-    message_retention = 7  # in PROD shall be changed
+    partitions        = 32
+    message_retention = 7
     consumers         = ["logstash-pdnd", "logstash-oper", "logstash-tech"]
     keys = [
       {
@@ -202,8 +202,8 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-re"
-    partitions        = 32 # in PROD shall be changed
-    message_retention = 7  # in PROD shall be changed
+    partitions        = 30
+    message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
     keys = [
       {
@@ -228,8 +228,8 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-fdr"
-    partitions        = 32 # in PROD shall be changed
-    message_retention = 7  # in PROD shall be changed
+    partitions        = 32
+    message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
     keys = [
       {
