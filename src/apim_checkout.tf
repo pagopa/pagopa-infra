@@ -47,6 +47,7 @@ locals {
     path                  = "checkout/auth/payments"
     subscription_required = true
     service_url           = null
+    ip_allowed            = ["20.67.51.184", "20.67.51.210"]
   }
 }
 
@@ -190,7 +191,8 @@ module "apim_checkout_payment_activations_api_auth_v1" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_payment_activations_auth/v1/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+    ip_allowed_1 = local.apim_checkout_payment_activations_auth_api.ip_allowed[0]
+    ip_allowed_2 = local.apim_checkout_payment_activations_auth_api.ip_allowed[1]
   })
 }
 
@@ -227,7 +229,8 @@ module "apim_checkout_payment_activations_api_auth_v2" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_payment_activations_auth/v2/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+    ip_allowed_1 = local.apim_checkout_payment_activations_auth_api.ip_allowed[0]
+    ip_allowed_2 = local.apim_checkout_payment_activations_auth_api.ip_allowed[1]
   })
 }
 
