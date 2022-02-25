@@ -13,31 +13,30 @@ lock_enable = true
 
 # networking
 # main vnet
-cidr_vnet                      = ["10.1.0.0/16"]
+cidr_vnet = ["10.1.0.0/16"]
+
+# common
 cidr_subnet_appgateway         = ["10.1.128.0/24"]
 cidr_subnet_postgresql         = ["10.1.129.0/24"]
 cidr_subnet_azdoa              = ["10.1.130.0/24"]
 cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
+cidr_subnet_checkout_be        = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
+cidr_subnet_reporting_common   = ["10.1.136.0/24"]
+# specific
+cidr_subnet_mock_ec  = ["10.1.137.0/29"]
+cidr_subnet_mock_psp = ["10.1.137.8/29"]
 
-# dev/uat only
-cidr_subnet_mock_ec  = ["10.1.240.0/29"]
-cidr_subnet_mock_psp = ["10.1.240.8/29"]
-
-cidr_subnet_checkout_be  = ["10.1.240.16/29"]
-cidr_subnet_pagopa_proxy = ["10.1.240.24/29"]
-cidr_subnet_buyerbanks   = ["10.1.240.32/29"]
-
-cidr_subnet_reporting_fdr = ["10.1.240.40/29"]
-
-cidr_subnet_reporting_common = ["10.1.240.48/29"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
-cidr_vnet_integration  = ["10.230.9.0/24"] # ask to SIA
-cidr_subnet_apim       = ["10.230.9.0/26"]
-cidr_subnet_api_config = ["10.230.9.128/29"]
-cidr_subnet_eventhub   = ["10.230.9.64/26"]
+cidr_vnet_integration = ["10.230.9.0/24"] # ask to SIA
 
+cidr_subnet_apim       = ["10.230.9.0/26"]
+cidr_subnet_eventhub   = ["10.230.9.64/26"]
+cidr_subnet_api_config = ["10.230.9.128/29"]
 
 # dns
 external_domain   = "pagopa.it"

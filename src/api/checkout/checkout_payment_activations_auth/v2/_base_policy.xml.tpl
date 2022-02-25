@@ -1,21 +1,16 @@
 <policies>
     <inbound>
-      <cors>
-        <allowed-origins>
-          <origin>${origin}</origin>
-        </allowed-origins>
-        <allowed-methods>
-          <method>POST</method>
-          <method>GET</method>
-          <method>OPTIONS</method>
-        </allowed-methods>
-        <allowed-headers>
-          <header>Content-Type</header>
-        </allowed-headers>
-      </cors>
       <base />
       <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
-      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+      <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
+        <value>${ip_allowed_1}</value>
+        <value>${ip_allowed_2}</value>
+      </check-header>
+      <choose>
+        <when condition="@(context.User.Groups.All(g =&gt; g.Name != &quot;checkout-rate-no-limit&quot;))">
+          <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+        </when>
+      </choose>
       <!-- Handle X-Client-Id - pagopa-proxy multi channel - START -->
       <set-variable name="ioBackendSubKey" value="{{io-backend-subscription-key}}" />
       <choose>
@@ -47,7 +42,8 @@
                     <set-body>@{
                     return new JObject(
                             new JProperty("status", 424),
-                            new JProperty("detail", ((JObject) context.Variables["body"])["detail_v2"]),
+                            new JProperty("detail_v2", ((JObject) context.Variables["body"])["detail_v2"]),
+                            new JProperty("detail", ((JObject) context.Variables["body"])["detail"]),
                             new JProperty("title", ((JObject) context.Variables["body"])["title"])
                            ).ToString();
              }</set-body>
