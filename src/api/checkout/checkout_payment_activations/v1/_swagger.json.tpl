@@ -23,6 +23,12 @@
         "parameters": [
           {
             "$ref": "#/parameters/RptId"
+          },
+          {
+            "in": "query",
+            "name": "recaptchaResponse",
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
@@ -80,6 +86,12 @@
                 "codiceContestoPagamento": "ABC123"
               }
             }
+          },
+          {
+            "in": "query",
+            "name": "recaptchaResponse",
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {

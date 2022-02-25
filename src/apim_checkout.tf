@@ -47,6 +47,7 @@ locals {
     path                  = "checkout/auth/payments"
     subscription_required = true
     service_url           = null
+    ip_allowed            = ["20.67.51.184", "20.67.51.210"]
   }
 }
 
@@ -149,6 +150,15 @@ resource "azurerm_api_management_api_operation_policy" "get_activation_status_ap
   xml_content = file("./api/checkout/checkout_payment_activations/v1/_idpayment_check.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "activate_payment_api" {
+  api_name            = format("%s-checkout-payment-activations-api-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "activatePayment"
+
+  xml_content = file("./api/checkout/checkout_payment_activations/v1/_recaptcha_check.xml.tpl")
+}
+
 # Payment activation authenticated APIs
 resource "azurerm_api_management_api_version_set" "checkout_payment_activations_auth_api" {
   name                = format("%s-checkout-payment-activations-auth-api", local.project)
@@ -181,7 +191,8 @@ module "apim_checkout_payment_activations_api_auth_v1" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_payment_activations_auth/v1/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+    ip_allowed_1 = local.apim_checkout_payment_activations_auth_api.ip_allowed[0]
+    ip_allowed_2 = local.apim_checkout_payment_activations_auth_api.ip_allowed[1]
   })
 }
 
@@ -218,7 +229,8 @@ module "apim_checkout_payment_activations_api_auth_v2" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_payment_activations_auth/v2/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+    ip_allowed_1 = local.apim_checkout_payment_activations_auth_api.ip_allowed[0]
+    ip_allowed_2 = local.apim_checkout_payment_activations_auth_api.ip_allowed[1]
   })
 }
 
