@@ -169,7 +169,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payment_activations_
 }
 
 module "apim_checkout_payment_activations_api_auth_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.23"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = format("%s-checkout-payment-activations-auth-api", local.project)
   api_management_name   = module.apim.name
@@ -207,7 +207,7 @@ resource "azurerm_api_management_api_operation_policy" "get_activation_status_au
 
 # Payment activation v2 authenticated APIs
 module "apim_checkout_payment_activations_api_auth_v2" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.23"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = format("%s-checkout-payment-activations-auth-api", local.project)
   api_management_name   = module.apim.name
