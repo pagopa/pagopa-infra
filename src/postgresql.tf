@@ -68,6 +68,32 @@ module "postgresql" {
   alerts_enabled = var.postgresql_alerts_enabled
   lock_enable    = var.lock_enable
 
+  replica_network_rules                 = var.db_replica_network_rules
+  configuration_replica                 = var.postgresql_configuration
+  monitor_metric_alert_criteria         = var.db_metric_alerts
+  replica_monitor_metric_alert_criteria = var.db_metric_alerts
+
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    }
+  ]
+  replica_action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    }
+  ]
+
   tags = var.tags
 }
 

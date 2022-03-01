@@ -483,6 +483,26 @@ variable "postgresql_network_rules" {
     allow_access_to_azure_services = false
   }
 }
+
+variable "db_enable_replica" {
+  type        = bool
+  default     = false
+  description = "Create a PostgreSQL Server Replica."
+}
+
+variable "db_replica_network_rules" {
+  type = object({
+    ip_rules                       = list(string)
+    allow_access_to_azure_services = bool
+  })
+  default = {
+    ip_rules = []
+    # dblink
+    allow_access_to_azure_services = true
+  }
+  description = "Database network rules"
+}
+
 variable "postgresql_name" {
   type    = string
   default = null
@@ -496,6 +516,37 @@ variable "postgresql_connection_limit" {
 variable "prostgresql_db_mockpsp" {
   type    = string
   default = null
+}
+
+variable "db_metric_alerts" {
+  default = {}
+
+  description = <<EOD
+Map of name = criteria objects, see these docs for options
+https://docs.microsoft.com/en-us/azure/azure-monitor/platform/metrics-supported#microsoftdbforpostgresqlservers
+https://docs.microsoft.com/en-us/azure/postgresql/concepts-limits#maximum-connections
+EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    metric_name = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+
+    dimension = list(object(
+      {
+        name     = string
+        operator = string
+        values   = list(string)
+      }
+    ))
+  }))
 }
 
 # eventhub
