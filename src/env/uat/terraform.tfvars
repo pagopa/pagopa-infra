@@ -125,6 +125,9 @@ buyerbanks_function_autoscale_default = 1
 buyerbanks_delete_retention_days      = 30
 
 ehns_sku_name = "Standard"
+# to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
+ehns_auto_inflate_enabled     = true
+ehns_maximum_throughput_units = 5
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
@@ -178,8 +181,8 @@ ehns_metric_alerts = {
 eventhubs = [
   {
     name              = "nodo-dei-pagamenti-log"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
+    partitions        = 32
+    message_retention = 7
     consumers         = ["logstash-pdnd", "logstash-oper", "logstash-tech"]
     keys = [
       {
@@ -211,8 +214,8 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-re"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
+    partitions        = 30
+    message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
     keys = [
       {
@@ -237,8 +240,8 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-fdr"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
+    partitions        = 32
+    message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
     keys = [
       {

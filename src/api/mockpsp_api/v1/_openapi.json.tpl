@@ -156,6 +156,23 @@
           }
         }
       }
+    },
+    "/bpay": {
+      "post": {
+        "operationId": "bpayRequestAuthPOST",
+        "description": "Payment authorization request to BPAY",
+        "responses": {
+          "200": {
+            "description": "Authorization response"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      }
     }
   },
   "components": {

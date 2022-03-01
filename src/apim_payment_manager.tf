@@ -135,7 +135,7 @@ locals {
     # params for all api versions
     display_name          = "Payment Manager restapi CD API"
     description           = "API to support payment trasactions for app IO"
-    path                  = "payment-manager/pp-restapi-CD"
+    path                  = "pp-restapi-CD"
     subscription_required = false
     service_url           = null
   }
@@ -326,15 +326,6 @@ data "azurerm_key_vault_secret" "pm_logging_ip" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_api_management_api_version_set" "pm_logging_api" {
-
-  name                = format("%s-pm-logging-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
-  display_name        = local.apim_pm_logging_api.display_name
-  versioning_scheme   = "Segment"
-}
-
 module "apim_pm_logging_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
@@ -344,8 +335,6 @@ module "apim_pm_logging_api_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_logging_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pm_logging_api.id
-  api_version           = "v1"
   service_url           = local.apim_pm_logging_api.service_url
 
   description  = local.apim_pm_logging_api.description
@@ -359,59 +348,6 @@ module "apim_pm_logging_api_v1" {
   })
 
   xml_content = file("./api/payment_manager_api/logging/v1/_base_policy.xml.tpl")
-}
-
-############################
-## API webview-cd         ##
-############################
-locals {
-  apim_pm_webview_api = {
-    display_name          = "Payment Manager CD webview"
-    description           = "Webview to support app IO payments"
-    path                  = "payment-manager/webview-cd"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-data "azurerm_key_vault_secret" "pm_webview_ip" {
-  name         = "pm-webview-ip"
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_api_management_api_version_set" "pm_webview_api" {
-
-  name                = format("%s-pm-webview-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
-  display_name        = local.apim_pm_webview_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_pm_webview_api_v3" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
-
-  name                  = format("%s-pm-webview-api", local.project)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pm_webview_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pm_webview_api.id
-  api_version           = "v3"
-  service_url           = local.apim_pm_webview_api.service_url
-
-  description  = local.apim_pm_webview_api.description
-  display_name = local.apim_pm_webview_api.display_name
-  path         = local.apim_pm_webview_api.path
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/webview-cd/v3/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
-
-  xml_content = file("./api/payment_manager_api/webview-cd/v3/_base_policy.xml.tpl")
 }
 
 ############################
@@ -501,9 +437,7 @@ module "apim_pm_wisp_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/wisp/_base_policy.xml.tpl", {
-    origin = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
-  })
+  xml_content = file("./api/payment_manager_api/wisp/_base_policy.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {

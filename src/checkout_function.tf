@@ -16,6 +16,10 @@ module "checkout_function_snet" {
   virtual_network_name                           = module.vnet.name
   enforce_private_link_endpoint_network_policies = true
 
+  service_endpoints = [
+    "Microsoft.Web",
+  ]
+
   delegation = {
     name = "default"
     service_delegation = {

@@ -1,31 +1,35 @@
 <policies>
     <inbound>
-      <base />
-      <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
-      <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-        <value>${ip_allowed_1}</value>
-        <value>${ip_allowed_2}</value>
-      </check-header>
-      <choose>
-        <when condition="@(context.User.Groups.All(g =&gt; g.Name != &quot;checkout-rate-no-limit&quot;))">
-          <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
-        </when>
-      </choose>
-      <!-- Handle X-Client-Id - pagopa-proxy multi channel - START -->
-      <set-variable name="ioBackendSubKey" value="{{io-backend-subscription-key}}" />
-      <choose>
-        <when condition="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key","").Equals( (string) context.Variables["ioBackendSubKey"] ) )">
-          <set-header name="X-Client-Id" exists-action="override">
-            <value>CLIENT_IO</value>
-          </set-header>
-        </when>
-        <otherwise>
-          <return-response>
-            <set-status code="401" reason="Unauthorized" />
-          </return-response>
-        </otherwise>
-      </choose>
-      <!-- Handle X-Client-Id - pagopa-proxy multi channel - END -->
+        <base />
+        <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
+        <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
+            <value>${ip_allowed_1}</value>
+            <value>${ip_allowed_2}</value>
+        </check-header>
+        <choose>
+            <when condition="@(context.User.Groups.Select(g => g.Id).Contains("checkout-rate-no-limit"))" />
+            <when condition="@(context.User.Groups.Select(g => g.Id).Contains("checkout-rate-limit-300"))">
+                <rate-limit-by-key calls="300" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after" />
+            </when>
+            <otherwise>
+                <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after" />
+            </otherwise>
+        </choose>
+        <!-- Handle X-Client-Id - pagopa-proxy multi channel - START -->
+        <set-header name="X-Client-Id" exists-action="delete" />
+        <choose>
+            <when condition="@(context.User.Groups.Select(g => g.Id).Contains("client-io"))">
+                <set-header name="X-Client-Id" exists-action="override">
+                    <value>CLIENT_IO</value>
+                </set-header>
+            </when>
+            <otherwise>
+                <return-response>
+                    <set-status code="401" reason="Unauthorized X-Client-Id" />
+                </return-response>
+            </otherwise>
+        </choose>
+        <!-- Handle X-Client-Id - pagopa-proxy multi channel - END -->
     </inbound>
     <outbound>
         <set-header name="cache-control" exists-action="override">
