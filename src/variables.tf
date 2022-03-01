@@ -1043,3 +1043,44 @@ variable "gpd_dbms_port" {
   description = "Port number of the DBMS"
   default     = 5432
 }
+
+variable "paa_id_intermediario" {
+  type        = string
+  description = "GDP paa_id_intermediario config on nodo-dei-pagamenti"
+  default     = null
+}
+
+variable "paa_id_stazione" {
+  type        = string
+  description = "GDP paa_id_stazione config on nodo-dei-pagamenti"
+  default     = null
+}
+
+variable "paa_password" {
+  type        = string
+  description = "GDP paa_password config on nodo-dei-pagamenti"
+  default     = null
+}
+variable "gpd_reporting_schedule_batch" {
+  type        = string
+  description = "Cron scheduling (NCRPN example '*/45 * * * * *')"
+  default     = null
+}
+
+variable "gpd_cron_job_enable" {
+  type        = bool
+  description = "GPD cron job enable"
+  default     = false
+}
+
+variable "gpd_cron_schedule_valid_to" {
+  type        = string
+  description = "GPD cron scheduling (NCRPN example '*/35 * * * * *')"
+  default     = null
+}
+
+variable "gpd_cron_schedule_expired_to" {
+  type        = string
+  description = "GDP cron scheduling (NCRPN example '*/55 * * * * *')"
+  default     = null
+}
