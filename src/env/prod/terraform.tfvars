@@ -327,3 +327,8 @@ reporting_analysis_function_always_on         = true
 reporting_analysis_function_autoscale_minimum = 1
 reporting_analysis_function_autoscale_maximum = 3
 reporting_analysis_function_autoscale_default = 1
+
+// GPD Payments
+payments_always_on            = true
+payments_paa_id_intermediario = "77777777777"   // TODO
+payments_paa_stazione_int     = "77777777777_1" // TODO
