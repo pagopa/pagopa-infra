@@ -1029,20 +1029,109 @@ variable "reporting_analysis_function_always_on" {
   default     = false
 }
 
-variable "gdp_reporting_advanced_threat_protection" {
+variable "gpd_reporting_advanced_threat_protection" {
   type        = bool
   description = "Enable contract threat advanced protection"
   default     = false
 }
 
-variable "gdp_reporting_delete_retention_days" {
+variable "gpd_reporting_delete_retention_days" {
   type        = number
   description = "Number of days to retain deleted."
   default     = 30
 }
 
-variable "gdp_enable_versioning" {
+variable "gpd_enable_versioning" {
   type        = bool
   description = "Enable sa versioning"
   default     = false
+}
+
+variable "gpd_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "cidr_subnet_gpd" {
+  type        = list(string)
+  description = "Address prefixes subnet gpd service"
+  default     = null
+}
+
+variable "gpd_db_name" {
+  type        = string
+  description = "Name of the DB to connect to"
+  default     = null
+}
+
+variable "gpd_dbms_name" {
+  type        = string
+  description = "Name of the Postgres DBMS to host the DB"
+  default     = null
+}
+
+variable "gpd_dbms_admin_username" {
+  type        = string
+  description = "Username of DBMS admin"
+  default     = null
+}
+
+variable "gpd_dbms_admin_password" {
+  type        = string
+  description = "Password of DBMS admin"
+  default     = null
+}
+
+variable "gpd_dbms_hostname" {
+  type        = string
+  description = "Hostname of the DBMS"
+  default     = null
+}
+
+variable "gpd_dbms_port" {
+  type        = number
+  description = "Port number of the DBMS"
+  default     = 5432
+}
+
+variable "paa_id_intermediario" {
+  type        = string
+  description = "GDP paa_id_intermediario config on nodo-dei-pagamenti"
+  default     = null
+}
+
+variable "paa_id_stazione" {
+  type        = string
+  description = "GDP paa_id_stazione config on nodo-dei-pagamenti"
+  default     = null
+}
+
+variable "paa_password" {
+  type        = string
+  description = "GDP paa_password config on nodo-dei-pagamenti"
+  default     = null
+}
+variable "gpd_reporting_schedule_batch" {
+  type        = string
+  description = "Cron scheduling (NCRPN example '*/45 * * * * *')"
+  default     = null
+}
+
+variable "gpd_cron_job_enable" {
+  type        = bool
+  description = "GPD cron job enable"
+  default     = false
+}
+
+variable "gpd_cron_schedule_valid_to" {
+  type        = string
+  description = "GPD cron scheduling (NCRPN example '*/35 * * * * *')"
+  default     = null
+}
+
+variable "gpd_cron_schedule_expired_to" {
+  type        = string
+  description = "GDP cron scheduling (NCRPN example '*/55 * * * * *')"
+  default     = null
 }

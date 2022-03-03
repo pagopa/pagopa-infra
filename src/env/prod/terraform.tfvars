@@ -25,6 +25,7 @@ cidr_subnet_checkout_be        = ["10.1.133.0/24"]
 cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
 cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
 cidr_subnet_reporting_common   = ["10.1.136.0/24"]
+cidr_subnet_gpd                = ["10.1.138.0/24"]
 # specific
 cidr_subnet_redis = ["10.1.132.0/24"]
 

@@ -46,9 +46,13 @@ module "reporting_batch_function" {
     FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
     FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
     ORGANIZATIONS_QUEUE       = azurerm_storage_queue.reporting_organizations_queue.name
-
-    GPD_HOST  = "TODO" # azurerm_api_management_api.gpd_api_v1.service_url
-    NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
+    ORGANIZATIONS_TABLE       = azurerm_storage_table.reporting_organizations_table.name
+    GPD_HOST                  = module.apim_api_gpd_api.name
+    NODO_HOST                 = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
+    PAA_ID_INTERMEDIARIO      = var.paa_id_intermediario
+    PAA_STAZIONE_INT          = var.paa_id_stazione
+    PAA_PASSWORD              = var.paa_password
+    NCRON_SCHEDULE_BATCH      = var.gpd_reporting_schedule_batch
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
@@ -381,37 +385,44 @@ module "flows" {
   account_replication_type   = "LRS"
   access_tier                = "Hot"
   versioning_name            = "versioning"
-  enable_versioning          = var.gdp_enable_versioning
+  enable_versioning          = var.gpd_enable_versioning
   resource_group_name        = azurerm_resource_group.gpd_rg.name
   location                   = var.location
-  advanced_threat_protection = var.gdp_reporting_advanced_threat_protection
+  advanced_threat_protection = var.gpd_reporting_advanced_threat_protection
   allow_blob_public_access   = false
 
-  blob_properties_delete_retention_policy_days = var.gdp_reporting_delete_retention_days
+  blob_properties_delete_retention_policy_days = var.gpd_reporting_delete_retention_days
 
   tags = var.tags
 }
 
 
-## table storage
+## table#1 storage
+resource "azurerm_storage_table" "reporting_organizations_table" {
+  name                 = format("%sorgstable", module.flows.name)
+  storage_account_name = module.flows.name
+}
+
+## table#2 storage
 resource "azurerm_storage_table" "reporting_flows_table" {
   name                 = format("%stable", module.flows.name)
   storage_account_name = module.flows.name
 }
 
-## queue storage flows
+
+## queue#1 storage flows
 resource "azurerm_storage_queue" "reporting_flows_queue" {
   name                 = format("%squeueflows", module.flows.name)
   storage_account_name = module.flows.name
 }
 
-## queue storage organization
+## queue#2 storage organization
 resource "azurerm_storage_queue" "reporting_organizations_queue" {
   name                 = format("%squeueorg", module.flows.name)
   storage_account_name = module.flows.name
 }
 
-## queue storage flows
+## queue#3 storage flows
 resource "azurerm_storage_queue" "reporting_options_queue" {
   name                 = format("%squeueopt", module.flows.name)
   storage_account_name = module.flows.name
