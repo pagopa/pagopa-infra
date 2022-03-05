@@ -844,6 +844,12 @@ variable "cobadge_hostname" {
   default     = ""
 }
 
+variable "satispay_hostname" {
+  type        = string
+  description = "Satispay hostname"
+  default     = ""
+}
+
 variable "fesp_hostname" {
   type        = string
   description = "Fesp hostname"
