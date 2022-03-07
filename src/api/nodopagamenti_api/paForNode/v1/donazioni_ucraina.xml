@@ -13,12 +13,13 @@
                 JObject json = JObject.Parse(donazioniucraina);
                 foreach (var item1 in json["data"])
                 {
+                    ((JObject) item1).Remove("iban"); // del property
                     foreach (var item2 in ((JObject) item1)["slices"])
                     {
                         var iuv = DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
                         var nav = (string)context.Variables["auxdigit"]+(string)context.Variables["applicationcode"]+((JObject) item2)["idDonation"]+iuv;
 
-                        ((JObject) item2).Add(new JProperty("nav",nav));
+                        ((JObject) item2).Add(new JProperty("nav",nav)); // add property
                         // ((JObject) item2).Add("nav", JObject.Parse(@"{""colour"":""yellow"",""size"":""medium""}"));
                     }
                 }
