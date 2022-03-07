@@ -1,0 +1,114 @@
+<policies>
+    <inbound>
+        <set-variable name="donazioniucraina" value="{{donazioni-ucraina}}" />
+        <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
+        <set-variable name="fiscalCode" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"fiscalCode"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var fiscalCode = result[1].Substring(1,result[1].Length-3);
+            return fiscalCode;
+        }" />
+        <set-variable name="noticeNumber" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"noticeNumber"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var noticeNumber = result[1].Substring(1,result[1].Length-3);
+            return noticeNumber;
+        }" />
+        <set-variable name="dueDate" value="@(DateTime.Now.ToString("yyyy-MM-dd"))" />
+        <set-variable name="amount" value="@{
+            var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+            JObject json = JObject.Parse(donazioniucraina);
+
+            foreach (var item1 in json["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item2)["amount"];
+                    }
+                }
+            }
+
+            return "0";
+        }" />
+        <set-variable name="companyName" value="@{
+            var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+            JObject json = JObject.Parse(donazioniucraina);
+
+            foreach (var item1 in json["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["companyName"];
+                    }
+                }
+            }
+
+            return "0";
+        }" />
+        <set-variable name="officeName" value="@{
+            var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+            JObject json = JObject.Parse(donazioniucraina);
+
+            foreach (var item1 in json["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["officeName"];
+                    }
+                }
+            }
+
+            return "0";
+        }" />
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/xml</value>
+            </set-header>
+            <set-body template="liquid">
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:paf="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd">
+					<soapenv:Header />
+					<soapenv:Body>
+						<paf:paVerifyPaymentNoticeRes>
+							<outcome>OK</outcome>
+							<paymentList>
+								<paymentOptionDescription>
+									<amount>{{context.Variables["amount"]}}</amount>
+									<options>EQ</options>
+									<dueDate>{{context.Variables["dueDate"]}}</dueDate>
+									<detailDescription>Donazione Ucraina</detailDescription>
+									<allCCP>false</allCCP>
+								</paymentOptionDescription>
+							</paymentList>
+							<paymentDescription>payment</paymentDescription>
+							<fiscalCodePA>{{context.Variables["fiscalCode"]}}</fiscalCodePA>
+							<companyName>{{context.Variables["companyName"]}}</companyName>
+							<officeName>{{context.Variables["officeName"]}}</officeName>
+						</paf:paVerifyPaymentNoticeRes>
+					</soapenv:Body>
+				</soapenv:Envelope>
+			</set-body>
+        </return-response>
+        <base />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
