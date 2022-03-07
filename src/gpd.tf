@@ -80,7 +80,7 @@ module "gpd_app_service" {
 
   }
 
-  allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id]
+  allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id]
   allowed_ips     = []
 
   subnet_id = module.gpd_snet[0].id
