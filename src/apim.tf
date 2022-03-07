@@ -311,6 +311,21 @@ resource "azurerm_api_management_named_value" "io_backend_subscription_key" {
   secret              = true
 }
 
+data "azurerm_key_vault_secret" "mock_services_api_key" {
+  name         = "mock-services-api-key"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "pagopa_mock_services_api_key" {
+  count               = var.checkout_enabled ? 1 : 0
+  name                = "pagopa-mock-services-api-key"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pagopa-mock-services-api-key"
+  value               = data.azurerm_key_vault_secret.mock_services_api_key.value
+  secret              = true
+}
+
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 

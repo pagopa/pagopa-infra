@@ -127,7 +127,7 @@ module "apim_checkout_payment_activations_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/checkout/checkout_payment_activations/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile(var.env_short == "d" ? "./api/checkout/checkout_payment_activations/v1/_base_policy_dev.xml.tpl" : "./api/checkout/checkout_payment_activations/v1/_base_policy.xml.tpl", {
     origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
   })
 }
