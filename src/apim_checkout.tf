@@ -92,7 +92,8 @@ module "apim_checkout_payments_api_v1" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_payments/v1/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+    origin                 = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+    additional_origin_tags = var.env_short == "u" ? format("<origin>https://dev.checkout.%s/</origin>", var.external_domain) : ""
   })
 }
 
@@ -128,7 +129,8 @@ module "apim_checkout_payment_activations_api_v1" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_payment_activations/v1/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+    origin                 = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
+    additional_origin_tags = var.env_short == "u" ? format("<origin>https://dev.checkout.%s/</origin>", var.external_domain) : ""
   })
 }
 

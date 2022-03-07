@@ -3,6 +3,7 @@
       <cors>
         <allowed-origins>
           <origin>${origin}</origin>
+          ${additional_origin_tags}
         </allowed-origins>
         <allowed-methods>
           <method>POST</method>
