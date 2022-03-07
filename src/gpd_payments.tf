@@ -1,6 +1,5 @@
 # Subnet to host the api config
 module "payments_snet" {
-  count                                          = var.cidr_subnet_payments != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-payments-snet", local.project)
   address_prefixes                               = var.cidr_subnet_payments
@@ -70,7 +69,7 @@ module "payments_app_service" {
   allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id]
   allowed_ips     = []
 
-  subnet_id = module.payments_snet[0].id
+  subnet_id = module.payments_snet.id
 
   tags = var.tags
 
