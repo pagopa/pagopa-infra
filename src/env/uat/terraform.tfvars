@@ -26,6 +26,7 @@ cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
 cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
 cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
+cidr_subnet_payments           = ["10.1.140.0/24"]
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
 cidr_subnet_mock_psp = ["10.1.137.8/29"]
