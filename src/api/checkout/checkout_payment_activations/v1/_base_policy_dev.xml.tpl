@@ -16,7 +16,7 @@
       <base />
       <rate-limit-by-key calls="50" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
       <choose>
-          <when condition="@( context.Request.Url.Path.Contains("payment-requests") || context.Request.Url.Path.Contains("payment-activations?"))">
+          <when condition="@( context.Request.Url.Path.Contains("payment-requests") || context.Request.Url.Path.Contains("payment-activations") && context.Operation.Method.Equals("POST") )">
             <return-response>
               <set-status code="200" />
               <set-header name="Content-Type" exists-action="override">
@@ -37,7 +37,7 @@
              }</set-body>
             </return-response>
           </when>
-          <when condition="@( context.Request.Url.Path.Contains("payment-activations/") )">
+          <when condition="@( context.Request.Url.Path.Contains("payment-activations") && context.Operation.Method.Equals("GET") )">
             <send-request ignore-error="true" timeout="10" response-variable-name="response" mode="new">
                 <set-url>https://portal.test.pagopa.gov.it/pmmockserviceapiauth/nodo/sit/send/rpt</set-url>
                 <set-method>PATCH</set-method>
