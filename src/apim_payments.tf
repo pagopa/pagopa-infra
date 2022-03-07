@@ -24,7 +24,6 @@ module "apim_gpd_payments_product" {
 ##############
 
 resource "azurerm_api_management_api_version_set" "api_gpd_payments_api" {
-
   name                = format("%s-api-gpd-payments-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -52,7 +51,7 @@ resource "azurerm_api_management_api" "apim_api_gpd_payments_api" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/gdp_api/payments/v1/paForNodo.wsdl")
+    content_value  = file("./api/gpd_api/payments/v1/paForNode.wsdl")
     wsdl_selector {
       service_name  = "paForNode_Service"
       endpoint_name = "paForNode_Port"
