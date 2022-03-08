@@ -535,6 +535,56 @@ resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
   xml_content = templatefile("./api/payment_manager_api/wisp/_spid_metadata_policy.xml.tpl", { metadata = data.azurerm_key_vault_secret.pm_wisp_metadata.value })
 }
 
+
+##############################################
+## API pagopa-payment-transactions-gateway  ##
+##############################################
+locals {
+  apim_pm_ptg_api = {
+    # params for all api versions
+    display_name          = "Payment Manager - payment transactions gateway API"
+    description           = "API to support payment transactions gateway"
+    path                  = "payment-manager/payment-gateway"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "pm_ptg_api" {
+
+  name                = format("%s-pm-ptg-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_ptg_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_ptg_api_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-ptg-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_ptg_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pm_restapirtd_api.id
+  api_version           = "v1"
+  service_url           = local.apim_pm_ptg_api.service_url
+
+  description  = local.apim_pm_ptg_api.description
+  display_name = local.apim_pm_ptg_api.display_name
+  path         = local.apim_pm_ptg_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/payment-transactions-gateway/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/payment-transactions-gateway/v1/_base_policy.xml.tpl")
+}
+
 ########################
 ## client IO bpd API  ##
 ########################
