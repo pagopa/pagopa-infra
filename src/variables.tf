@@ -1110,3 +1110,75 @@ variable "payments_paa_stazione_int" {
   description = "PagoPA Station ID"
   default     = false
 }
+
+# canone unico
+variable "canoneunico_plan_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "canoneunico_plan_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "canoneunico_plan_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "cidr_subnet_canoneunico_common" {
+  type        = list(string)
+  description = "Address prefixes subnet canoneunico_common function"
+  default     = null
+}
+variable "canoneunico_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "canoneunico_enable_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "canoneunico_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "canoneunico_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
+variable "canoneunico_schedule_batch" {
+  type        = string
+  description = "Cron scheduling (NCRPN example '*/45 * * * * *')"
+  default     = null
+}
+
+variable "canoneunico_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "canoneunico_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "canoneunico_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}

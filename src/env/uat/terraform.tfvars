@@ -324,7 +324,16 @@ reporting_batch_function_always_on    = true
 reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
-
 // GPD Payments
 payments_paa_id_intermediario = "77777777777"   // TODO
 payments_paa_stazione_int     = "77777777777_1" // TODO
+
+# canone unico
+canoneunico_plan_kind     = "Linux"
+canoneunico_plan_sku_tier = "Standard"
+canoneunico_plan_sku_size = "S1"
+
+canoneunico_function_always_on    = true
+canoneunico_function_autoscale_minimum = 1
+canoneunico_function_autoscale_maximum = 3
+canoneunico_function_autoscale_default = 1
