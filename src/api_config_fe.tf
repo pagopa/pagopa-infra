@@ -74,8 +74,8 @@ module "api_config_fe_cdn" {
       {
         action = "Overwrite"
         name   = "Content-Security-Policy-Report-Only"
-        value = format("default-src 'self'; connect-src 'self' https://api.%s.%s/; "
-        , var.dns_zone_prefix, var.external_domain)
+        value = format("object-src 'none'; connect-src 'self' https://api.%s.%s/; script-src https://api.%s.%s/"
+        , var.dns_zone_prefix, var.external_domain, var.dns_zone_prefix, var.external_domain)
       }
     ]
   }
