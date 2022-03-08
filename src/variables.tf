@@ -1090,3 +1090,29 @@ variable "gpd_cron_schedule_expired_to" {
   description = "GDP cron scheduling (NCRPN example '*/55 * * * * *')"
   default     = null
 }
+
+// GPD Payments
+
+variable "cidr_subnet_payments" {
+  type        = list(string)
+  description = "Address prefixes subnet payments service"
+  default     = null
+}
+
+variable "payments_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = true
+}
+
+variable "payments_paa_id_intermediario" {
+  type        = string
+  description = "PagoPA Broker ID"
+  default     = false
+}
+
+variable "payments_paa_stazione_int" {
+  type        = string
+  description = "PagoPA Station ID"
+  default     = false
+}

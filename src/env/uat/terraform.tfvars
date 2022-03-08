@@ -26,6 +26,7 @@ cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
 cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
 cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
+cidr_subnet_payments           = ["10.1.139.0/24"]
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
 cidr_subnet_mock_psp = ["10.1.137.8/29"]
@@ -323,3 +324,8 @@ reporting_function_autoscale_default = 1
 reporting_batch_function_always_on    = true
 reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
+
+
+// GPD Payments
+payments_paa_id_intermediario = "77777777777"   // TODO
+payments_paa_stazione_int     = "77777777777_1" // TODO
