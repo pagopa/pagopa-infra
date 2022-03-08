@@ -1096,7 +1096,7 @@ variable "cidr_subnet_payments" {
 variable "payments_always_on" {
   type        = bool
   description = "Always on property"
-  default     = false
+  default     = true
 }
 
 variable "payments_paa_id_intermediario" {
