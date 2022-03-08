@@ -336,8 +336,7 @@ canoneunico_plan_kind     = "Linux"
 canoneunico_plan_sku_tier = "PremiumV3"
 canoneunico_plan_sku_size = "P1v3"
 
-canoneunico_function_always_on    = true
+canoneunico_function_always_on         = true
 canoneunico_function_autoscale_minimum = 1
 canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
-

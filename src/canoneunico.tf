@@ -67,16 +67,16 @@ module "canoneunico_function" {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    CU_SA_CONNECTION_STRING   = module.cu_sa.primary_connection_string
-    DEBT_POSITIONS_TABLE      = azurerm_storage_table.cu_debtposition_table.name
-    ORGANIZATIONS_CONFIG_TABLE= azurerm_storage_table.cu_ecconfig_table.name
+    CU_SA_CONNECTION_STRING    = module.cu_sa.primary_connection_string
+    DEBT_POSITIONS_TABLE       = azurerm_storage_table.cu_debtposition_table.name
+    ORGANIZATIONS_CONFIG_TABLE = azurerm_storage_table.cu_ecconfig_table.name
     IUVS_TABLE                 = azurerm_storage_table.cu_iuvs_table.name
-    DEBT_POSITIONS_QUEUE      = azurerm_storage_queue.cu_debtposition_queue.name
-    INPUT_CSV_BLOB            = azurerm_storage_container.in_csv_blob_container.name
+    DEBT_POSITIONS_QUEUE       = azurerm_storage_queue.cu_debtposition_queue.name
+    INPUT_CSV_BLOB             = azurerm_storage_container.in_csv_blob_container.name
     OUTPUT_CSV_BLOB            = azurerm_storage_container.out_csv_blob_container.name
-    ERROR_CSV_BLOB            = azurerm_storage_container.err_csv_blob_container.name
-    GPD_HOST                  = module.apim_api_gpd_api.name
-    NCRON_SCHEDULE_BATCH      = var.canoneunico_schedule_batch
+    ERROR_CSV_BLOB             = azurerm_storage_container.err_csv_blob_container.name
+    GPD_HOST                   = module.apim_api_gpd_api.name
+    NCRON_SCHEDULE_BATCH       = var.canoneunico_schedule_batch
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
