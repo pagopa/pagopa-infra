@@ -72,7 +72,7 @@ resource "azurerm_api_management_api_operation_policy" "donazioni_verify_policy"
   api_name            = resource.azurerm_api_management_api.apim_api_donazioni_ucraina_api.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = var.env_short == "d" ? "62288e2395aa0302946b0816" : var.env_short == "u" ? "6228a009e0f4ba13a4784890" : "6228a009e0f4ba13a4784890"
+  operation_id        = var.env_short == "d" ? "62288e2395aa0302946b0816" : var.env_short == "u" ? "6228a009e0f4ba13a4784890" : "6228bea3ea7c4a1b8c3fcf54"
 
   xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_verify.xml")
 }
@@ -82,7 +82,7 @@ resource "azurerm_api_management_api_operation_policy" "donazioni_activate_polic
   api_name            = resource.azurerm_api_management_api.apim_api_donazioni_ucraina_api.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = var.env_short == "d" ? "62288e2395aa0302946b0817" : var.env_short == "u" ? "6228a009e0f4ba13a4784891" : "6228a009e0f4ba13a4784891"
+  operation_id        = var.env_short == "d" ? "62288e2395aa0302946b0817" : var.env_short == "u" ? "6228a009e0f4ba13a4784891" : "6228bea3ea7c4a1b8c3fcf55"
 
   xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_activate.xml")
 }
@@ -92,7 +92,7 @@ resource "azurerm_api_management_api_operation_policy" "donazioni_sendrt_policy"
   api_name            = resource.azurerm_api_management_api.apim_api_donazioni_ucraina_api.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = var.env_short == "d" ? "62288e2395aa0302946b0818" : var.env_short == "u" ? "6228a009e0f4ba13a4784892" : "6228a009e0f4ba13a4784892"
+  operation_id        = var.env_short == "d" ? "62288e2395aa0302946b0818" : var.env_short == "u" ? "6228a009e0f4ba13a4784892" : "6228bea3ea7c4a1b8c3fcf56"
 
   xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_sendrt.xml")
 }
