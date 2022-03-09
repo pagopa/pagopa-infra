@@ -1,7 +1,7 @@
 {
   "debtorFullName": "",
-  "debtorEntityUniqueIdentifierType" : "F",
-  "debtorEntityUniqueIdentifierValue" : "anonimo",
+  "debtorEntityUniqueIdentifierType": "F",
+  "debtorEntityUniqueIdentifierValue": "anonimo",
   "data": [
     {
       "name": "Croce Rossa Italiana",
@@ -13,6 +13,8 @@
       "paymentDescription": "desc11111111111",
       "companyName": "company Croce Rossa Italiana",
       "officeName": "office Croce Rossa Italiana ",
+      "auxdigit": "3",
+      "segregationcode": "00",
       "slices": [
         {
           "idDonation": "00",
@@ -50,6 +52,8 @@
       "paymentDescription": "desc222222",
       "companyName": "company Basilica minore di Santa maria in Sofia",
       "officeName": "office Basilica minore di Santa maria in Sofia ",
+      "auxdigit": "3",
+      "segregationcode": "00",
       "slices": [
         {
           "idDonation": "06",
