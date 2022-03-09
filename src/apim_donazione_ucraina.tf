@@ -67,34 +67,32 @@ resource "azurerm_api_management_api_policy" "apim_node_for_donazioni_policy" {
   xml_content = file("./api/nodopagamenti_api/paForNode/v1/_base_policy.xml")
 }
 
-## TODO to enable after apply
+resource "azurerm_api_management_api_operation_policy" "donazioni_verify_policy" {
 
-# resource "azurerm_api_management_api_operation_policy" "donazioni_verify_policy" {
+  api_name            = resource.azurerm_api_management_api.apim_api_donazioni_ucraina_api.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "62288e2395aa0302946b0816" : var.env_short == "u" ? "6228a009e0f4ba13a4784890" : "6228a009e0f4ba13a4784890"
 
-#   api_name            = resource.azurerm_api_management_api.apim_api_donazioni_ucraina_api.name
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = var.env_short == "d" ? "61d70973b78e982064458676" : var.env_short == "u" ? "61dedb1872975e13800fd7ff" : "61dedafc2a92e81a0c7a58fc"
+  xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_verify.xml")
+}
 
-#   xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_verify.xml")
-# }
+resource "azurerm_api_management_api_operation_policy" "donazioni_activate_policy" {
 
-# resource "azurerm_api_management_api_operation_policy" "donazioni_activate_policy" {
+  api_name            = resource.azurerm_api_management_api.apim_api_donazioni_ucraina_api.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "62288e2395aa0302946b0817" : var.env_short == "u" ? "6228a009e0f4ba13a4784891" : "6228a009e0f4ba13a4784891"
 
-#   api_name            = resource.azurerm_api_management_api.apim_api_donazioni_ucraina_api.name
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = var.env_short == "d" ? "61d70973b78e982064458676" : var.env_short == "u" ? "61dedb1872975e13800fd7ff" : "61dedafc2a92e81a0c7a58fc"
+  xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_activate.xml")
+}
 
-#   xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_activate.xml")
-# }
+resource "azurerm_api_management_api_operation_policy" "donazioni_sendrt_policy" {
 
-# resource "azurerm_api_management_api_operation_policy" "donazioni_sendrt_policy" {
+  api_name            = resource.azurerm_api_management_api.apim_api_donazioni_ucraina_api.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "62288e2395aa0302946b0818" : var.env_short == "u" ? "6228a009e0f4ba13a4784892" : "6228a009e0f4ba13a4784892"
 
-#   api_name            = resource.azurerm_api_management_api.apim_api_donazioni_ucraina_api.name
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = var.env_short == "d" ? "61d70973b78e982064458676" : var.env_short == "u" ? "61dedb1872975e13800fd7ff" : "61dedafc2a92e81a0c7a58fc"
-
-#   xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_sendrt.xml")
-# }
+  xml_content = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina_sendrt.xml")
+}
