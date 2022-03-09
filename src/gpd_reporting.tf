@@ -53,6 +53,9 @@ module "reporting_batch_function" {
     PAA_STAZIONE_INT          = var.paa_id_stazione
     PAA_PASSWORD              = var.paa_password
     NCRON_SCHEDULE_BATCH      = var.gpd_reporting_schedule_batch
+    MAX_RETRY_QUEUING         = var.gpd_max_retry_queuing
+    QUEUE_RETENTION_SEC       = var.gpd_queue_retention_sec
+    QUEUE_DELAY_SEC           = var.gpd_queue_delay_sec
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
@@ -105,11 +108,15 @@ module "reporting_service_function" {
     FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
     OPTIONS_QUEUE             = azurerm_storage_queue.reporting_options_queue.name
     FLOWS_XML_BLOB            = azurerm_storage_container.reporting_flows_container.name
+    PAA_ID_INTERMEDIARIO      = var.paa_id_intermediario
+    PAA_STAZIONE_INT          = var.paa_id_stazione
+    PAA_PASSWORD              = var.paa_password
+    MAX_RETRY_QUEUING         = var.gpd_max_retry_queuing
+    QUEUE_RETENTION_SEC       = var.gpd_queue_retention_sec
+    QUEUE_DELAY_SEC           = var.gpd_queue_delay_sec
 
-    GPD_HOST  = "TODO" # azurerm_api_management_api.gpd_api_v1.service_url
+    GPD_HOST  = module.apim_api_gpd_api.name
     NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
-
-    AUX_DIGIT = 3
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
