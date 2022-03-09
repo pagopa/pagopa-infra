@@ -228,6 +228,92 @@ module "apim_pm_restapicd_api_v3" {
   xml_content = file("./api/payment_manager_api/restapi-cd/v3/_base_policy.xml.tpl")
 }
 
+##########################################
+## API static resources for restapi-cd  ##
+##########################################
+locals {
+  apim_pm_restapicd_assets_api = {
+    display_name          = "Payment Manager - restapi-cd static resources"
+    description           = "Static resources to support PM webviews"
+    path                  = "pp-restapi-CD/assets"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+module "apim_pm_restapi_cd_assets" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-cd-assets-restapi", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_restapicd_assets_api.subscription_required
+  service_url           = local.apim_pm_restapicd_assets_api.service_url
+
+  description  = local.apim_pm_restapicd_assets_api.description
+  display_name = local.apim_pm_restapicd_assets_api.display_name
+  path         = local.apim_pm_restapicd_assets_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/payment_manager_api/restapi-cd-assets/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/restapi-cd-assets/_base_policy.xml.tpl")
+}
+
+############################
+## API restapi-server     ##
+############################
+locals {
+  apim_pm_restapi_server_api = {
+    # params for all api versions
+    display_name          = "Payment Manager restapi server API"
+    description           = "API to support payment trasactions monitoring"
+    path                  = "payment-manager/pp-restapi-server"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "pm_restapi_server_api" {
+
+  name                = format("%s-pm-restapi-server-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_restapi_server_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_restapi_server_api_v4" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-restapi-server-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_restapi_server_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pm_restapi_server_api.id
+  api_version           = "v4"
+  service_url           = local.apim_pm_restapi_server_api.service_url
+
+  description  = local.apim_pm_restapi_server_api.description
+  display_name = local.apim_pm_restapi_server_api.display_name
+  path         = local.apim_pm_restapi_server_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/payment_manager_api/restapi-server/v4/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/restapi-server/v4/_base_policy.xml.tpl")
+}
+
 #####################################
 ## API restapi RTD                  ##
 #####################################
@@ -447,6 +533,56 @@ resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
   operation_id        = "GETSpidMetadata"
 
   xml_content = templatefile("./api/payment_manager_api/wisp/_spid_metadata_policy.xml.tpl", { metadata = data.azurerm_key_vault_secret.pm_wisp_metadata.value })
+}
+
+
+##############################################
+## API pagopa-payment-transactions-gateway  ##
+##############################################
+locals {
+  apim_pm_ptg_api = {
+    # params for all api versions
+    display_name          = "Payment Manager - payment transactions gateway API"
+    description           = "API to support payment transactions gateway"
+    path                  = "payment-manager/payment-gateway"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "pm_ptg_api" {
+
+  name                = format("%s-pm-ptg-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_ptg_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_ptg_api_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-ptg-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_ptg_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pm_restapirtd_api.id
+  api_version           = "v1"
+  service_url           = local.apim_pm_ptg_api.service_url
+
+  description  = local.apim_pm_ptg_api.description
+  display_name = local.apim_pm_ptg_api.display_name
+  path         = local.apim_pm_ptg_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/payment-transactions-gateway/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/payment-transactions-gateway/v1/_base_policy.xml.tpl")
 }
 
 ########################
@@ -696,10 +832,59 @@ module "apim_pm_cobadge_api_v4" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/cobadge/v4/_base_policy.xml.tpl", {
-    endpoint = format("https://%s/api/pagopa/banking/v4.0", var.cobadge_hostname)
+    endpoint = format("https://%s/cobadge/api/pagopa/banking/v4.0", var.cobadge_hostname)
   })
 }
 
+###########################
+## API SATISPAY          ##
+###########################
+locals {
+  apim_pm_satispay_api = {
+    display_name          = "Payment Manager - satispay API"
+    description           = "API to support satispay payments"
+    path                  = "payment-manager/clients/satispay"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "apim_pm_satispay_api" {
+
+  name                = format("%s-pm-satispay-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_satispay_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_satispay_api_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-satispay-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_satispay_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.apim_pm_satispay_api.id
+  api_version           = "v1"
+  service_url           = local.apim_pm_satispay_api.service_url
+
+  description  = local.apim_pm_satispay_api.description
+  display_name = local.apim_pm_satispay_api.display_name
+  path         = local.apim_pm_satispay_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/payment_manager_api/clients/satispay/v1/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/payment_manager_api/clients/satispay/v1/_base_policy.xml.tpl", {
+    endpoint = format("https://%s/satispay/v1", var.satispay_hostname)
+  })
+}
 
 #########################
 ## API FESP            ##

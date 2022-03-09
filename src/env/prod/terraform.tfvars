@@ -26,6 +26,7 @@ cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
 cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
 cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
+cidr_subnet_payments           = ["10.1.139.0/24"]
 # specific
 cidr_subnet_redis = ["10.1.132.0/24"]
 
@@ -299,6 +300,7 @@ paytipper_hostname = "st.paytipper.com"
 bpd_hostname       = "api.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
 fesp_hostname      = "portal.test.pagopa.gov.it"
+satispay_hostname  = "mock-ppt-lmi-npa-sit.ocp-tst-npaspc.sia.eu/satispay/v1/consumers"
 
 # fdr
 fdr_delete_retention_days        = 30
@@ -313,17 +315,15 @@ gpd_plan_kind     = "Linux"
 gpd_plan_sku_tier = "PremiumV3"
 gpd_plan_sku_size = "P1v3"
 
-reporting_batch_function_always_on         = true
-reporting_batch_function_autoscale_minimum = 1
-reporting_batch_function_autoscale_maximum = 3
-reporting_batch_function_autoscale_default = 1
+reporting_function_autoscale_minimum = 1
+reporting_function_autoscale_maximum = 3
+reporting_function_autoscale_default = 1
 
-reporting_service_function_always_on         = true
-reporting_service_function_autoscale_minimum = 1
-reporting_service_function_autoscale_maximum = 3
-reporting_service_function_autoscale_default = 1
+reporting_batch_function_always_on    = true
+reporting_service_function_always_on  = true
+reporting_analysis_function_always_on = true
 
-reporting_analysis_function_always_on         = true
-reporting_analysis_function_autoscale_minimum = 1
-reporting_analysis_function_autoscale_maximum = 3
-reporting_analysis_function_autoscale_default = 1
+
+// GPD Payments
+payments_paa_id_intermediario = "77777777777"   // TODO
+payments_paa_stazione_int     = "77777777777_1" // TODO
