@@ -59,5 +59,26 @@ module "api_config_fe_cdn" {
     }
   }]
 
+  global_delivery_rule = {
+    cache_expiration_action       = []
+    cache_key_query_string_action = []
+    modify_request_header_action  = []
+
+    # HSTS
+    modify_response_header_action = [{
+      action = "Overwrite"
+      name   = "Strict-Transport-Security"
+      value  = "max-age=31536000"
+      },
+      # Content-Security-Policy (in Report mode)
+      {
+        action = "Overwrite"
+        name   = "Content-Security-Policy-Report-Only"
+        value = format("object-src 'none'; connect-src 'self' https://api.%s.%s/; script-src https://api.%s.%s/"
+        , var.dns_zone_prefix, var.external_domain, var.dns_zone_prefix, var.external_domain)
+      }
+    ]
+  }
+
   tags = var.tags
 }
