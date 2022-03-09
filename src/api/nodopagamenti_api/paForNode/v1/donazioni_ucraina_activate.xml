@@ -33,7 +33,7 @@
                     var idDonation = (string)((JObject) item2)["idDonation"];
                     var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
                     if (idDonation == indexIuv ) {
-                        return ((JObject) item2)["amount"];
+                        return (int) (((JObject) item2)["amount"])/100;
                     }
                 }
             }
@@ -108,7 +108,7 @@
                             <outcome>OK</outcome>
                             <data>
                                 <creditorReferenceId>{{context.Variables["creditorReferenceId"]}}</creditorReferenceId>
-                                <paymentAmount>{{context.Variables["amount"]}}</paymentAmount>
+                                <paymentAmount>{{context.Variables["amount"]}}.00</paymentAmount>
                                 <dueDate>{{context.Variables["dueDate"]}}</dueDate>
                                 <retentionDate>2022-12-31T23:59:59</retentionDate>
                                 <lastPayment>0</lastPayment>
@@ -125,7 +125,7 @@
                                 <transferList>
                                     <transfer>
                                         <idTransfer>1</idTransfer>
-                                        <transferAmount>{{context.Variables["amount"]}}</transferAmount>
+                                        <transferAmount>{{context.Variables["amount"]}}.00</transferAmount>
                                         <fiscalCodePA>{{context.Variables["fiscalCode"]}}</fiscalCodePA>
                                         <IBAN>{{context.Variables["iban"]}}</IBAN>
                                         <remittanceInformation>Donazione Ucraina</remittanceInformation>
