@@ -334,7 +334,6 @@ payments_paa_id_intermediario = "77777777777"   // TODO
 payments_paa_stazione_int     = "77777777777_1" // TODO
 
 # canone unico
-canoneunico_plan_kind     = "Linux"
 canoneunico_plan_sku_tier = "PremiumV3"
 canoneunico_plan_sku_size = "P1v3"
 

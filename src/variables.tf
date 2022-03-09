@@ -1115,7 +1115,7 @@ variable "payments_paa_stazione_int" {
 variable "canoneunico_plan_kind" {
   type        = string
   description = "App service plan kind"
-  default     = null
+  default     = "Linux"
 }
 
 variable "canoneunico_plan_sku_tier" {
