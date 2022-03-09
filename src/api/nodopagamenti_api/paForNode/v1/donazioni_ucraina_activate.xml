@@ -94,6 +94,24 @@
 
             return "0";
         }" />
+        <set-variable name="transferCategory" value="@{
+            var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+            JObject json = JObject.Parse(donazioniucraina);
+
+            foreach (var item1 in json["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["transferCategory"];
+                    }
+                }
+            }
+
+            return "0";
+        }" />
         <return-response>
             <set-status code="200" reason="OK" />
             <set-header name="Content-Type" exists-action="override">
@@ -129,6 +147,7 @@
                                         <fiscalCodePA>{{context.Variables["fiscalCode"]}}</fiscalCodePA>
                                         <IBAN>{{context.Variables["iban"]}}</IBAN>
                                         <remittanceInformation>Donazione Ucraina</remittanceInformation>
+                                        <transferCategory>{{context.Variables["transferCategory"]}}</transferCategory>
                                     </transfer>
                                 </transferList>
                             </data>
