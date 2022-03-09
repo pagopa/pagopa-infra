@@ -1092,19 +1092,19 @@ variable "gpd_cron_schedule_expired_to" {
 }
 
 variable "gpd_max_retry_queuing" {
-  type        = string
+  type        = number
   description = "Max retry queuing when the node calling fails."
   default     = 5
 }
 
 variable "gpd_queue_retention_sec" {
-  type        = string
+  type        = number
   description = "The maximum time to allow the message to be in the queue."
   default     = 86400
 }
 
 variable "gpd_queue_delay_sec" {
-  type        = string
+  type        = number
   description = "The length of time during which the message will be invisible, starting when it is added to the queue."
   default     = 3600
 }
