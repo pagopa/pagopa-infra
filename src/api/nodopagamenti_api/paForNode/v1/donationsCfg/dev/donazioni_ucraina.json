@@ -15,6 +15,7 @@
       "officeName": "office Croce Rossa Italiana ",
       "auxdigit": "3",
       "segregationcode": "00",
+      "transferCategory": "0101002IM",
       "slices": [
         {
           "idDonation": "00",
@@ -54,6 +55,7 @@
       "officeName": "office Basilica minore di Santa maria in Sofia ",
       "auxdigit": "3",
       "segregationcode": "00",
+      "transferCategory": "0101002IM",
       "slices": [
         {
           "idDonation": "06",
