@@ -25,7 +25,7 @@ module "apim_donations_product" {
 
 resource "azurerm_api_management_api_version_set" "api_donations_api" {
 
-  name                = format("%s-api-donations-api", var.env_short)
+  name                = format("%s-api-donations-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = "Donations"
@@ -36,7 +36,7 @@ resource "azurerm_api_management_api_version_set" "api_donations_api" {
 module "apim_api_donations_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
-  name                  = format("%s-api-donations-api", var.env_short)
+  name                  = format("%s-api-donations-api", local.project)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_donations_product.product_id]
@@ -62,7 +62,7 @@ module "apim_api_donations_api" {
 
 
 resource "azurerm_api_management_api_operation_policy" "get_donations" {
-  api_name            = format("%s-get-donations-api-v1", local.project)
+  api_name            = format("%s-api-donations-api-v1", local.project)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getavailabledonations"
