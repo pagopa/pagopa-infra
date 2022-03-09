@@ -311,6 +311,15 @@ resource "azurerm_api_management_named_value" "io_backend_subscription_key" {
   secret              = true
 }
 
+# donazioni
+resource "azurerm_api_management_named_value" "donazioni_config_name" {
+  name                = "donazioni-ucraina"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "donazioni-ucraina"
+  value               = file("./api/nodopagamenti_api/paForNode/v1/donazioni_ucraina.json")
+}
+
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 

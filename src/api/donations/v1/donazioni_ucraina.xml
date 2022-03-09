@@ -1,0 +1,53 @@
+<policies>
+    <inbound>
+        <cors>
+            <allowed-origins>
+                <origin>*</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>*</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+            <expose-headers>
+                <header>*</header>
+            </expose-headers>
+        </cors>
+        <set-variable name="donazioniucraina" value="{{donazioni-ucraina}}" />
+        <set-variable name="auxdigit" value="3" />
+        <set-variable name="applicationcode" value="00" />
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>@{
+                var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+                JObject json = JObject.Parse(donazioniucraina);
+                foreach (var item1 in json["data"])
+                {
+                    ((JObject) item1).Remove("iban"); // del property
+                    foreach (var item2 in ((JObject) item1)["slices"])
+                    {
+                        var iuv = DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+                        var nav = (string)context.Variables["auxdigit"]+(string)context.Variables["applicationcode"]+((JObject) item2)["idDonation"]+iuv;
+
+                        ((JObject) item2).Add(new JProperty("nav",nav)); // add property
+                        // ((JObject) item2).Add("nav", JObject.Parse(@"{""colour"":""yellow"",""size"":""medium""}"));
+                    }
+                }
+                return json["data"].ToString();
+
+             }</set-body>
+        </return-response>
+        <base />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound />
+    <on-error>
+        <base />
+    </on-error>
+</policies>

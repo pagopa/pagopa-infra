@@ -6,7 +6,6 @@
     "description": "Codbage privative\n"
   },
   "host": "${host}",
-  "basePath": "/utils/payment-instruments/",
   "schemes": [
     "https"
   ],
@@ -16,7 +15,7 @@
     }
   ],
   "paths": {
-    "/{searchRequestId}": {
+    "/utils/payment-instruments/{searchRequestId}": {
       "get": {
         "summary": "getCobadgeByRequestId",
         "operationId": "getCobadgeByRequestIdUsingGET",
@@ -53,7 +52,7 @@
         ]
       }
     },
-    "/search": {
+    "/utils/payment-instruments/search": {
       "post": {
         "summary": "postCobadge",
         "operationId": "cobadgeUsingPost",

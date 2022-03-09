@@ -308,9 +308,9 @@ io_bpd_hostname    = "portal.test.pagopa.gov.it"
 xpay_hostname      = "int-ecommerce.nexi.it"
 paytipper_hostname = "st.paytipper.com"
 bpd_hostname       = "api.dev.cstar.pagopa.it"
-cobadge_hostname   = "portal.test.pagopa.gov.it"
+cobadge_hostname   = "portal.test.pagopa.gov.it/pmmockserviceapi"
 fesp_hostname      = "portal.test.pagopa.gov.it"
-
+satispay_hostname  = "portal.test.pagopa.gov.it/pmmockserviceapi"
 # fdr
 fdr_delete_retention_days       = 30
 reporting_fdr_function_kind     = "Linux"
