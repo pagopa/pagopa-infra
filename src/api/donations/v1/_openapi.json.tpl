@@ -11,7 +11,7 @@
       }
     ],
     "paths": {
-      "/getavailabledonations": {
+      "/availabledonations": {
         "get": {
           "summary": "GET avalable iuvs for Ukraine donations",
           "operationId": "getavailabledonations",
