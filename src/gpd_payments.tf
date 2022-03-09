@@ -1,16 +1,8 @@
-locals {
-  gpd_cors_configuration = {
-    origins = ["*"]
-    methods = ["*"]
-  }
-}
-
 # Subnet to host the api config
-module "gpd_snet" {
-  count                                          = var.cidr_subnet_gpd != null ? 1 : 0
+module "payments_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-gpd-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_gpd
+  name                                           = format("%s-payments-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_payments
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
   enforce_private_link_endpoint_network_policies = true
@@ -26,7 +18,7 @@ module "gpd_snet" {
 
 
 
-module "gpd_app_service" {
+module "payments_app_service" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
 
   resource_group_name = azurerm_resource_group.gpd_rg.name
@@ -34,11 +26,11 @@ module "gpd_app_service" {
   plan_id             = azurerm_app_service_plan.gpd_service_plan.id
 
   # App service
-  name                = format("%s-app-gpd", local.project)
+  name                = format("%s-app-payments", local.project)
   client_cert_enabled = false
-  always_on           = var.gpd_always_on
-  linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
-  health_check_path   = "/gpd/api/v1/info"
+  always_on           = var.payments_always_on
+  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
+  health_check_path   = "/payments/info"
 
   app_settings = {
     # Monitoring
@@ -60,30 +52,24 @@ module "gpd_app_service" {
     WEBSITE_DNS_SERVER = "168.63.129.16"
 
     # Spring Environment
-    SPRING_DATASOURCE_USERNAME              = var.gpd_dbms_admin_username
-    SPRING_DATASOURCE_PASSWORD              = var.gpd_dbms_admin_password
-    SPRING_DATASOURCE_URL                   = var.gpd_dbms_name == null ? null : format("jdbc:postgresql://%s.%s:%s/%s?user=%s@%s&password=%s&sslmode=require", var.gpd_dbms_name, var.gpd_dbms_hostname, var.gpd_dbms_port, var.gpd_db_name, var.gpd_dbms_admin_username, var.gpd_dbms_name, var.gpd_dbms_admin_password)
-    SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
-    CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
-    SCHEMA_NAME                             = "gpd"
-    CRON_JOB_SCHEDULE_ENABLED               = var.gpd_cron_job_enable
-    CRON_JOB_SCHEDULE_EXPRESSION_TO_VALID   = var.gpd_cron_schedule_valid_to
-    CRON_JOB_SCHEDULE_EXPRESSION_TO_EXPIRED = var.gpd_cron_schedule_expired_to
+    PAA_ID_INTERMEDIARIO = var.payments_paa_id_intermediario
+    PAA_STAZIONE_INT     = var.payments_paa_stazione_int
+    GPD_HOST             = format("https://%s", module.gpd_app_service.default_site_hostname)
+
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
-    # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
-    # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
+
     DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
 
   }
 
-  allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id]
+  allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id]
   allowed_ips     = []
 
-  subnet_id = module.gpd_snet[0].id
+  subnet_id = module.payments_snet.id
 
   tags = var.tags
 
