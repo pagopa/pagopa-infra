@@ -1185,8 +1185,8 @@ variable "canoneunico_delete_retention_days" {
 
 variable "canoneunico_schedule_batch" {
   type        = string
-  description = "Cron scheduling (NCRPN example '*/45 * * * * *')"
-  default     = null
+  description = "Cron scheduling (NCRON) default : every day at 01:00:00"
+  default     = "0 0 1 * * *"
 }
 
 variable "canoneunico_function_autoscale_minimum" {
