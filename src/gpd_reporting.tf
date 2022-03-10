@@ -30,9 +30,8 @@ module "reporting_batch_function" {
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
-  # worker_runtime                           = "java"
-  # linux_fx_version  =  format("DOCKER|%s/reporting-batch:%s", module.acr[0].login_server, "latest")
   app_settings = {
+    FUNCTIONS_WORKER_RUNTIME = "java"
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
@@ -93,9 +92,8 @@ module "reporting_service_function" {
   always_on                                = var.reporting_service_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
-  # worker_runtime                           = "java"
-  # linux_fx_version  =  format("DOCKER|%s/reporting-service:%s", module.acr[0].login_server, "latest")
   app_settings = {
+    FUNCTIONS_WORKER_RUNTIME = "java"
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
@@ -155,9 +153,8 @@ module "reporting_analysis_function" {
   always_on                                = var.reporting_analysis_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
-  # worker_runtime                           = "java"
-  # linux_fx_version  =  format("DOCKER|%s/reporting-service:%s", module.acr[0].login_server, "latest")
   app_settings = {
+    FUNCTIONS_WORKER_RUNTIME = "java"
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"

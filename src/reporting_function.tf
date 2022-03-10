@@ -47,6 +47,8 @@ module "reporting_fdr_function" {
   }
 
   app_settings = {
+    FUNCTIONS_WORKER_RUNTIME = "java"
+
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
