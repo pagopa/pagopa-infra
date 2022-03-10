@@ -47,15 +47,16 @@ module "reporting_batch_function" {
     FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
     ORGANIZATIONS_QUEUE       = azurerm_storage_queue.reporting_organizations_queue.name
     ORGANIZATIONS_TABLE       = azurerm_storage_table.reporting_organizations_table.name
-    GPD_HOST                  = module.apim_api_gpd_api.name
-    NODO_HOST                 = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
-    PAA_ID_INTERMEDIARIO      = var.paa_id_intermediario
-    PAA_STAZIONE_INT          = var.paa_id_stazione
-    PAA_PASSWORD              = var.paa_password
-    NCRON_SCHEDULE_BATCH      = var.gpd_reporting_schedule_batch
-    MAX_RETRY_QUEUING         = var.gpd_max_retry_queuing
-    QUEUE_RETENTION_SEC       = var.gpd_queue_retention_sec
-    QUEUE_DELAY_SEC           = var.gpd_queue_delay_sec
+    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
+    GPD_HOST             = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    NODO_HOST            = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, azurerm_api_management_api.apim_nodo_per_pa_api_v1.path, azurerm_api_management_api.apim_nodo_per_pa_api_v1.version)
+    PAA_ID_INTERMEDIARIO = var.paa_id_intermediario
+    PAA_STAZIONE_INT     = var.paa_id_stazione
+    PAA_PASSWORD         = var.paa_password
+    NCRON_SCHEDULE_BATCH = var.gpd_reporting_schedule_batch
+    MAX_RETRY_QUEUING    = var.gpd_max_retry_queuing
+    QUEUE_RETENTION_SEC  = var.gpd_queue_retention_sec
+    QUEUE_DELAY_SEC      = var.gpd_queue_delay_sec
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
@@ -115,8 +116,9 @@ module "reporting_service_function" {
     QUEUE_RETENTION_SEC       = var.gpd_queue_retention_sec
     QUEUE_DELAY_SEC           = var.gpd_queue_delay_sec
 
-    GPD_HOST  = module.apim_api_gpd_api.name
-    NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
+    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
+    GPD_HOST  = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    NODO_HOST = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, azurerm_api_management_api.apim_nodo_per_pa_api_v1.path, azurerm_api_management_api.apim_nodo_per_pa_api_v1.version)
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
@@ -169,8 +171,8 @@ module "reporting_analysis_function" {
     FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
     FLOWS_CONTAINER           = azurerm_storage_container.reporting_flows_container.name
 
-    GPD_HOST  = "TODO" # azurerm_api_management_api.gpd_api_v1.service_url
-    NODO_HOST = azurerm_api_management_api.apim_nodo_per_pa_api_v1.service_url
+    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
+    GPD_HOST = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
