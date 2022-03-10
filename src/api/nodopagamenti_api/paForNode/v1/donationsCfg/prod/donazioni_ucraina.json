@@ -1,0 +1,87 @@
+{
+  "debtorFullName": "",
+  "debtorEntityUniqueIdentifierType": "F",
+  "debtorEntityUniqueIdentifierValue": "anonimo",
+  "data": [
+    {
+      "name": "Croce Rossa Italiana",
+      "reason": "Donazione Emergenza Ucraina",
+      "web_site": "https://cri.it/emergenzaucraina/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "11111111111",
+      "iban": "222222222222",
+      "paymentDescription": "desc11111111111",
+      "companyName": "company Croce Rossa Italiana",
+      "officeName": "office Croce Rossa Italiana ",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0101002IM",
+      "slices": [
+        {
+          "idDonation": "00",
+          "amount": 500
+        },
+        {
+          "idDonation": "01",
+          "amount": 1000
+        },
+        {
+          "idDonation": "02",
+          "amount": 2000
+        },
+        {
+          "idDonation": "03",
+          "amount": 5000
+        },
+        {
+          "idDonation": "04",
+          "amount": 10000
+        },
+        {
+          "idDonation": "05",
+          "amount": 20000
+        }
+      ]
+    },
+    {
+      "name": "Basilica minore di Santa maria in Sofia",
+      "reason": "Donazione sostenio Ucraina",
+      "web_site": "https://bmsms.it/sostegnoucraina/",
+      "base64Logo": "/9j/4AAQSkZJR",
+      "cf": "22222222222",
+      "iban": "33333333333",
+      "paymentDescription": "desc222222",
+      "companyName": "company Basilica minore di Santa maria in Sofia",
+      "officeName": "office Basilica minore di Santa maria in Sofia ",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0101002IM",
+      "slices": [
+        {
+          "idDonation": "06",
+          "amount": 500
+        },
+        {
+          "idDonation": "07",
+          "amount": 1000
+        },
+        {
+          "idDonation": "08",
+          "amount": 2000
+        },
+        {
+          "idDonation": "09",
+          "amount": 5000
+        },
+        {
+          "idDonation": "10",
+          "amount": 10000
+        },
+        {
+          "idDonation": "11",
+          "amount": 20000
+        }
+      ]
+    }
+  ]
+}
