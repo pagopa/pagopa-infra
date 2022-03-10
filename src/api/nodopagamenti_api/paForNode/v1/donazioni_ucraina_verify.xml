@@ -28,7 +28,7 @@
                     var idDonation = (string)((JObject) item2)["idDonation"];
                     var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
                     if (idDonation == indexIuv ) {
-                        return ((JObject) item2)["amount"];
+                        return (int) (((JObject) item2)["amount"])/100;
                     }
                 }
             }
@@ -84,7 +84,7 @@
 							<outcome>OK</outcome>
 							<paymentList>
 								<paymentOptionDescription>
-									<amount>{{context.Variables["amount"]}}</amount>
+									<amount>{{context.Variables["amount"]}}.00</amount>
 									<options>EQ</options>
 									<dueDate>{{context.Variables["dueDate"]}}</dueDate>
 									<detailDescription>Donazione Ucraina</detailDescription>
