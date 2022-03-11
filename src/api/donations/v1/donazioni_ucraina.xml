@@ -15,6 +15,8 @@
             </expose-headers>
         </cors>
         <set-variable name="donazioniucraina" value="{{donazioni-ucraina}}" />
+        <set-variable name="logo1" value="${logo_1}" />
+        <set-variable name="logo2" value="${logo_2}" />
         <return-response>
             <set-status code="200" reason="OK" />
             <set-header name="Content-Type" exists-action="override">
@@ -23,6 +25,7 @@
             <set-body>@{
                 var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
                 JObject json = JObject.Parse(donazioniucraina);
+                var idx=1;
                 foreach (var item1 in json["data"])
                 {
                     var auxdigit = (string)((JObject) item1)["auxdigit"];
@@ -31,6 +34,8 @@
                     ((JObject) item1).Remove("iban"); // del property
                     ((JObject) item1).Remove("auxdigit"); // del property
                     ((JObject) item1).Remove("segregationcode"); // del property
+                    ((JObject) item1)["base64Logo"]=(string) context.Variables["logo"+idx];
+                    idx++;
 
                     foreach (var item2 in ((JObject) item1)["slices"])
                     {
