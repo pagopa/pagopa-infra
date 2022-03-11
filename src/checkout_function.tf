@@ -72,9 +72,9 @@ module "checkout_function" {
     PAGOPA_BASE_PATH = "/pagopa/api/v1"
 
 
-    IO_PAY_CHALLENGE_RESUME_URL = format("https://%s.%s/payment/response?id=idTransaction", var.dns_zone_checkout, var.external_domain)
+    IO_PAY_CHALLENGE_RESUME_URL = format("https://%s.%s/%s?id=idTransaction", var.env_short == "d" ? "payment/response" : "p/response.html", var.dns_zone_checkout, var.external_domain)
     IO_PAY_ORIGIN               = format("https://%s.%s", var.dns_zone_checkout, var.external_domain)
-    IO_PAY_XPAY_REDIRECT        = format("https://%s.%s/payment/response?id=_id_&resumeType=_resumeType_&_queryParams_", var.dns_zone_checkout, var.external_domain)
+    IO_PAY_XPAY_REDIRECT        = format("https://%s.%s/%s?id=_id_&resumeType=_resumeType_&_queryParams_", var.env_short == "d" ? "payment/response" : "p/response.html", var.dns_zone_checkout, var.external_domain)
 
     PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret.value
   }
