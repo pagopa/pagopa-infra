@@ -326,6 +326,15 @@ resource "azurerm_api_management_named_value" "pagopa_mock_services_api_key" {
   secret              = true
 }
 
+# donazioni
+resource "azurerm_api_management_named_value" "donazioni_config_name" {
+  name                = "donazioni-ucraina"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "donazioni-ucraina"
+  value               = file(format("./api/nodopagamenti_api/paForNode/v1/donationsCfg/%s/donazioni_ucraina.json", var.env_short == "d" ? "dev" : var.env_short == "u" ? "uat" : "prod"))
+}
+
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 

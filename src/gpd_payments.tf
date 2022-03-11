@@ -54,8 +54,8 @@ module "payments_app_service" {
     # Spring Environment
     PAA_ID_INTERMEDIARIO = var.payments_paa_id_intermediario
     PAA_STAZIONE_INT     = var.payments_paa_stazione_int
-    GPD_HOST             = format("https://%s", module.gpd_app_service.default_site_hostname)
-
+    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
+    GPD_HOST = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
