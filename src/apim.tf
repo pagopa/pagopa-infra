@@ -317,7 +317,7 @@ data "azurerm_key_vault_secret" "mock_services_api_key" {
 }
 
 resource "azurerm_api_management_named_value" "pagopa_mock_services_api_key" {
-  count               = var.checkout_enabled ? 1 : 0
+  count               = var.env_short == "d" ? 1 : 0
   name                = "pagopa-mock-services-api-key"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
