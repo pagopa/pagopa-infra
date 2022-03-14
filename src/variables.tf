@@ -1084,18 +1084,6 @@ variable "gpd_dbms_port" {
   default     = 5432
 }
 
-variable "paa_id_intermediario" {
-  type        = string
-  description = "GDP paa_id_intermediario config on nodo-dei-pagamenti"
-  default     = null
-}
-
-variable "paa_id_stazione" {
-  type        = string
-  description = "GDP paa_id_stazione config on nodo-dei-pagamenti"
-  default     = null
-}
-
 variable "paa_password" {
   type        = string
   description = "GDP paa_password config on nodo-dei-pagamenti"
@@ -1103,8 +1091,8 @@ variable "paa_password" {
 }
 variable "gpd_reporting_schedule_batch" {
   type        = string
-  description = "Cron scheduling (NCRPN example '*/45 * * * * *')"
-  default     = null
+  description = "Cron scheduling (NCRON example '*/45 * * * * *')"
+  default     = "0 0 1 * * *"
 }
 
 variable "gpd_cron_job_enable" {
@@ -1115,13 +1103,13 @@ variable "gpd_cron_job_enable" {
 
 variable "gpd_cron_schedule_valid_to" {
   type        = string
-  description = "GPD cron scheduling (NCRPN example '*/35 * * * * *')"
+  description = "GPD cron scheduling (NCRON example '*/35 * * * * *')"
   default     = null
 }
 
 variable "gpd_cron_schedule_expired_to" {
   type        = string
-  description = "GDP cron scheduling (NCRPN example '*/55 * * * * *')"
+  description = "GDP cron scheduling (NCRON example '*/55 * * * * *')"
   default     = null
 }
 
@@ -1157,13 +1145,13 @@ variable "payments_always_on" {
   default     = true
 }
 
-variable "payments_paa_id_intermediario" {
+variable "gpd_paa_id_intermediario" {
   type        = string
   description = "PagoPA Broker ID"
   default     = false
 }
 
-variable "payments_paa_stazione_int" {
+variable "gpd_paa_stazione_int" {
   type        = string
   description = "PagoPA Station ID"
   default     = false

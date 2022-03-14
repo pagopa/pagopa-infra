@@ -343,8 +343,8 @@ reporting_analysis_function_autoscale_maximum = 3
 reporting_analysis_function_autoscale_default = 1
 
 // GPD Payments
-payments_paa_id_intermediario = "77777777777"   // TODO
-payments_paa_stazione_int     = "77777777777_1" // TODO
+gpd_paa_id_intermediario = "77777777777"   // TODO
+gpd_paa_stazione_int     = "77777777777_1" // TODO
 
 # canone unico
 canoneunico_plan_sku_tier = "PremiumV3"
