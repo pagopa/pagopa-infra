@@ -3,6 +3,7 @@ locals {
     origins = ["*"]
     methods = ["*"]
   }
+  gpd_hostname = var.env_short == "d" ? module.postgresql[0].fqdn : null// TODO
 }
 
 # Subnet to host the api config
@@ -60,9 +61,9 @@ module "gpd_app_service" {
     WEBSITE_DNS_SERVER = "168.63.129.16"
 
     # Spring Environment
-    SPRING_DATASOURCE_USERNAME              = var.gpd_dbms_admin_username
-    SPRING_DATASOURCE_PASSWORD              = var.gpd_dbms_admin_password
-    SPRING_DATASOURCE_URL                   = var.gpd_dbms_name == null ? null : format("jdbc:postgresql://%s.%s:%s/%s?user=%s@%s&password=%s&sslmode=require", var.gpd_dbms_name, var.gpd_dbms_hostname, var.gpd_dbms_port, var.gpd_db_name, var.gpd_dbms_admin_username, var.gpd_dbms_name, var.gpd_dbms_admin_password)
+    SPRING_DATASOURCE_USERNAME              = data.azurerm_key_vault_secret.gpd_db_usr.value
+    SPRING_DATASOURCE_PASSWORD              = data.azurerm_key_vault_secret.gpd_db_pwd.value
+    SPRING_DATASOURCE_URL                   = var.gpd_dbms_name == null ? null : format("jdbc:postgresql://%s:%s/%s?sslmode=require", local.gpd_hostname, var.gpd_dbms_port, var.gpd_db_name)
     SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
     SCHEMA_NAME                             = "gpd"

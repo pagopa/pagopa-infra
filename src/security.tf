@@ -228,3 +228,14 @@ data "azurerm_key_vault_secret" "apiconfig-client-secret" {
   name         = "apiconfig-client-secret"
   key_vault_id = module.key_vault.id
 }
+
+
+data "azurerm_key_vault_secret" "gpd_db_usr" {
+  name         = "db-apd-user-name"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "gpd_db_pwd" {
+  name         = "db-apd-user-password"
+  key_vault_id = module.key_vault.id
+}
