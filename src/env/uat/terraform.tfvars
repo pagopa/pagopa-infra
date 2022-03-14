@@ -327,6 +327,11 @@ reporting_batch_function_always_on    = true
 reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
+# datasource
+gpd_dbms_admin_username = "" // TODO
+gpd_dbms_admin_password = "" // TODO
+gpd_dbms_name           = "" // TODO
+
 // GPD Payments
 gpd_paa_id_intermediario = "77777777777"   // TODO
 gpd_paa_stazione_int     = "77777777777_1" // TODO
