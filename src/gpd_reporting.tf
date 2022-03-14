@@ -51,7 +51,7 @@ module "reporting_batch_function" {
     NODO_HOST            = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, azurerm_api_management_api.apim_nodo_per_pa_api_v1.path, azurerm_api_management_api.apim_nodo_per_pa_api_v1.version)
     PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
     PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
-    PAA_PASSWORD         = var.paa_password
+    PAA_PASSWORD         = var.gpd_paa_password
     NCRON_SCHEDULE_BATCH = var.gpd_reporting_schedule_batch
     MAX_RETRY_QUEUING    = var.gpd_max_retry_queuing
     QUEUE_RETENTION_SEC  = var.gpd_queue_retention_sec
@@ -109,7 +109,7 @@ module "reporting_service_function" {
     FLOWS_XML_BLOB            = azurerm_storage_container.reporting_flows_container.name
     PAA_ID_INTERMEDIARIO      = var.gpd_paa_id_intermediario
     PAA_STAZIONE_INT          = var.gpd_paa_stazione_int
-    PAA_PASSWORD              = var.paa_password
+    PAA_PASSWORD              = var.gpd_paa_password
     MAX_RETRY_QUEUING         = var.gpd_max_retry_queuing
     QUEUE_RETENTION_SEC       = var.gpd_queue_retention_sec
     QUEUE_DELAY_SEC           = var.gpd_queue_delay_sec
