@@ -3,7 +3,7 @@ locals {
     origins = ["*"]
     methods = ["*"]
   }
-  gpd_hostname = var.env_short == "d" ? module.postgresql[0].fqdn : null// TODO
+  gpd_hostname = var.env_short == "d" ? module.postgresql[0].fqdn : null // TODO
 }
 
 # Subnet to host the api config

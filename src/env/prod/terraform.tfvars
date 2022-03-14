@@ -95,7 +95,7 @@ nat_gateway_public_ips = 2
 # redis_family   = "P"
 
 # postgresql
-postgresql_enabled                      = false
+postgresql_enabled                       = false
 postgresql_sku_name                      = "GP_Gen5_2" # todo change before launch
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = false
