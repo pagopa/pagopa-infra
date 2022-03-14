@@ -460,7 +460,7 @@ variable "postgresql_public_network_access_enabled" {
   description = "database public"
 }
 
-variable "prostgresql_enabled" {
+variable "postgresql_enabled" {
   type        = bool
   default     = false
   description = "Mock postegres database enable?"
@@ -1014,42 +1014,6 @@ variable "cidr_subnet_gpd" {
   default     = null
 }
 
-variable "gpd_db_name" {
-  type        = string
-  description = "Name of the DB to connect to"
-  default     = null
-}
-
-variable "gpd_dbms_name" {
-  type        = string
-  description = "Name of the Postgres DBMS to host the DB"
-  default     = null
-}
-
-variable "gpd_dbms_admin_username" {
-  type        = string
-  description = "Username of DBMS admin"
-  default     = null
-}
-
-variable "gpd_dbms_admin_password" {
-  type        = string
-  description = "Password of DBMS admin"
-  default     = null
-}
-
-variable "gpd_dbms_hostname" {
-  type        = string
-  description = "Hostname of the DBMS"
-  default     = null
-}
-
-variable "gpd_dbms_port" {
-  type        = number
-  description = "Port number of the DBMS"
-  default     = 5432
-}
-
 variable "gpd_paa_password" {
   type        = string
   description = "GDP paa_password config on nodo-dei-pagamenti"
@@ -1193,4 +1157,75 @@ variable "canoneunico_function_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
+}
+
+// gpd Database
+
+variable "gpd_db_name" {
+  type        = string
+  description = "Name of the DB to connect to"
+  default     = "apd"
+}
+
+variable "gpd_dbms_name" {
+  type        = string
+  description = "Name of the Postgres DBMS to host the DB"
+  default     = null
+}
+
+variable "gpd_schema_name" {
+  type        = string
+  description = "Name of the schema of the DB"
+  default     = null
+}
+
+variable "gpd_dbms_admin_username" {
+  type        = string
+  description = "Username of DBMS admin"
+  default     = null
+}
+
+variable "gpd_dbms_admin_password" {
+  type        = string
+  description = "Password of DBMS admin"
+  default     = null
+}
+
+variable "gpd_dbms_hostname" {
+  type        = string
+  description = "Hostname of the DBMS"
+  default     = null
+}
+
+variable "gpd_dbms_port" {
+  type        = number
+  description = "Port number of the DBMS"
+  default     = 5432
+}
+
+
+
+
+variable "psql_username" {
+  type    = string
+  default = null
+}
+
+variable "psql_password" {
+  type    = string
+  default = null
+}
+
+variable "users" {
+  description = "List of psql users with grants."
+  type = list(object({
+    name = string
+    grants = list(object({
+      object_type = string
+      database    = string
+      schema      = string
+      privileges  = list(string)
+    }))
+  }))
+  default = []
 }

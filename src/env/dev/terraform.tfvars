@@ -73,7 +73,7 @@ app_gateway_deny_paths = [
 ]
 
 # postgresql
-prostgresql_enabled                      = true
+postgresql_enabled                      = true
 postgresql_sku_name                      = "B_Gen5_1" # todo fixme verify
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = true
@@ -330,6 +330,23 @@ reporting_function_autoscale_default = 1
 gpd_dbms_admin_username = "" // TODO
 gpd_dbms_admin_password = "" // TODO
 gpd_dbms_name           = "" // TODO
+
+users = [
+  {
+    name = "APD_USER"
+    grants = [
+      {
+        object_type = "schema"
+        database    = "apd"
+        schema      = "apd"
+        privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE"]
+      }
+    ]
+  }
+]
+
+gpd_db_name = "apd"
+gpd_schema_name = "apd"
 
 // GPD Payments
 payments_always_on       = false
