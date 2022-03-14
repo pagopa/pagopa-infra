@@ -75,7 +75,7 @@ module "canoneunico_function" {
     INPUT_CSV_BLOB             = azurerm_storage_container.in_csv_blob_container.name
     OUTPUT_CSV_BLOB            = azurerm_storage_container.out_csv_blob_container.name
     ERROR_CSV_BLOB             = azurerm_storage_container.err_csv_blob_container.name
-    GPD_HOST                   = module.apim_api_gpd_api.name
+    GPD_HOST                   = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
     NCRON_SCHEDULE_BATCH       = var.canoneunico_schedule_batch
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
