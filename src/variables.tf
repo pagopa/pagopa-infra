@@ -1084,10 +1084,10 @@ variable "gpd_dbms_port" {
   default     = 5432
 }
 
-variable "paa_password" {
+variable "gpd_paa_password" {
   type        = string
   description = "GDP paa_password config on nodo-dei-pagamenti"
-  default     = null
+  default     = "TBD" // TODO
 }
 variable "gpd_reporting_schedule_batch" {
   type        = string
