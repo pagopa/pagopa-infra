@@ -1051,7 +1051,7 @@ variable "cidr_subnet_gpd" {
 variable "gpd_paa_password" {
   type        = string
   description = "GDP paa_password config on nodo-dei-pagamenti"
-  default     = "TBD" // TODO
+  default     = null
 }
 variable "gpd_reporting_schedule_batch" {
   type        = string
