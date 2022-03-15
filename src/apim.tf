@@ -31,7 +31,7 @@ locals {
 ###########################
 
 module "apim" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.5.0"
 
   subnet_id            = module.apim_snet.id
   location             = azurerm_resource_group.rg_api.location
@@ -63,6 +63,8 @@ module "apim" {
     management-api-domain = local.management_domain
     apim-name             = format("%s-apim", local.project)
   })
+
+  autoscale = var.apim_autoscale
 
   alerts_enabled = var.apim_alerts_enabled
 
