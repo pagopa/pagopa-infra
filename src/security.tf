@@ -239,3 +239,8 @@ data "azurerm_key_vault_secret" "gpd_db_pwd" {
   name         = "db-apd-user-password"
   key_vault_id = module.key_vault.id
 }
+
+data "azurerm_key_vault_secret" "gpd_paa_pwd" {
+  name         = "gpd-paa-password"
+  key_vault_id = module.key_vault.id
+}
