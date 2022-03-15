@@ -1048,11 +1048,6 @@ variable "cidr_subnet_gpd" {
   default     = null
 }
 
-variable "gpd_paa_password" {
-  type        = string
-  description = "GDP paa_password config on nodo-dei-pagamenti"
-  default     = null
-}
 variable "gpd_reporting_schedule_batch" {
   type        = string
   description = "Cron scheduling (NCRON example '*/45 * * * * *')"
