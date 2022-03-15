@@ -39,7 +39,7 @@ module "gpd_app_service" {
   client_cert_enabled = false
   always_on           = var.gpd_always_on
   linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
-  health_check_path   = "/gpd/api/v1/info"
+  health_check_path   = "/info"
 
   app_settings = {
     # Monitoring
