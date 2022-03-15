@@ -66,7 +66,8 @@ module "gpd_app_service" {
     SPRING_DATASOURCE_URL                   = var.gpd_dbms_name == null ? null : format("jdbc:postgresql://%s:%s/%s?sslmode=require", local.gpd_hostname, var.gpd_dbms_port, var.gpd_db_name)
     SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
-    SCHEMA_NAME                             = "gpd"
+    SCHEMA_NAME                             = "apd"
+    LOG_LEVEL                               = "INFO"
     CRON_JOB_SCHEDULE_ENABLED               = var.gpd_cron_job_enable
     CRON_JOB_SCHEDULE_EXPRESSION_TO_VALID   = var.gpd_cron_schedule_valid_to
     CRON_JOB_SCHEDULE_EXPRESSION_TO_EXPIRED = var.gpd_cron_schedule_expired_to

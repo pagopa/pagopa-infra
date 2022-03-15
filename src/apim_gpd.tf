@@ -43,7 +43,7 @@ module "apim_api_gpd_api" {
   subscription_required = false
   api_version           = "v1"
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_api.id
-  service_url           = format("https://%s/gpd/api/v1", module.gpd_app_service.default_site_hostname)
+  service_url           = format("https://%s", module.gpd_app_service.default_site_hostname)
 
 
   description  = "Api Gestione Posizione Debitorie"
