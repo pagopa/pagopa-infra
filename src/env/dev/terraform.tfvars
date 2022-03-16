@@ -339,9 +339,6 @@ users = [
   }
 ]
 
-gpd_db_name     = "apd"
-gpd_schema_name = "apd"
-
 // GPD Payments
 payments_always_on       = false
 gpd_paa_id_intermediario = "77777777777"   // TODO

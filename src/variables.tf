@@ -1190,16 +1190,10 @@ variable "gpd_db_name" {
   default     = "apd"
 }
 
-variable "gpd_dbms_name" {
-  type        = string
-  description = "Name of the Postgres DBMS to host the DB"
-  default     = null
-}
-
 variable "gpd_schema_name" {
   type        = string
   description = "Name of the schema of the DB"
-  default     = null
+  default     = "apd"
 }
 
 variable "gpd_dbms_port" {
