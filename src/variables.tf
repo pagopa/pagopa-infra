@@ -494,12 +494,6 @@ variable "postgresql_public_network_access_enabled" {
   description = "database public"
 }
 
-variable "postgresql_enabled" {
-  type        = bool
-  default     = false
-  description = "Mock postegres database enable?"
-}
-
 variable "postgres_private_endpoint_enabled" {
   type        = bool
   default     = false

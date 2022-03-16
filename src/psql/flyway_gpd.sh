@@ -58,7 +58,7 @@ export FLYWAY_SCHEMAS="${SCHEMA}"
 export APD_DB_USER="${apd_user}"
 export APD_DB_PASS="${apd_user_password}"
 
-printf "user %s pwd %s" "${APD_DB_USER}" "${APD_DB_PASS}"
+printf "user [%s] pwd [%s] schema [%s]\n" "${APD_DB_USER}" "${APD_DB_PASS}" "${FLYWAY_SCHEMAS}"
 
 docker run --rm -it --network=host -v "${WORKDIR}/migrations/${SUBSCRIPTION}/${DATABASE}":/flyway/sql \
   flyway/flyway:"${FLYWAY_DOCKER_TAG}" \
