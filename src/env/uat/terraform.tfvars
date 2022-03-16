@@ -75,7 +75,6 @@ app_gateway_deny_paths = [
 nat_gateway_enabled = true
 
 # postgresql
-postgresql_enabled                       = false
 postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = true

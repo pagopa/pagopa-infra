@@ -8,10 +8,6 @@ terraform {
       source  = "hashicorp/azuread"
       version = "= 2.6.0"
     }
-    postgresql = {
-      source  = "cyrilgdn/postgresql"
-      version = "1.13.0"
-    }
   }
 
   backend "azurerm" {}
