@@ -1202,31 +1202,11 @@ variable "gpd_schema_name" {
   default     = null
 }
 
-variable "gpd_dbms_admin_username" {
-  type        = string
-  description = "Username of DBMS admin"
-  default     = null
-}
-
-variable "gpd_dbms_admin_password" {
-  type        = string
-  description = "Password of DBMS admin"
-  default     = null
-}
-
-variable "gpd_dbms_hostname" {
-  type        = string
-  description = "Hostname of the DBMS"
-  default     = null
-}
-
 variable "gpd_dbms_port" {
   type        = number
   description = "Port number of the DBMS"
   default     = 5432
 }
-
-
 
 
 variable "psql_username" {

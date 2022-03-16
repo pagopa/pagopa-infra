@@ -325,11 +325,6 @@ reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
 reporting_function_autoscale_default = 1
 
-# datasource
-gpd_dbms_admin_username = "" // TODO
-gpd_dbms_admin_password = "" // TODO
-gpd_dbms_name           = "" // TODO
-
 users = [
   {
     name = "APD_USER"
