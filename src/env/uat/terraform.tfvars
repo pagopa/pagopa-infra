@@ -68,7 +68,8 @@ app_gateway_deny_paths = [
   "/nodo/*",
   "/payment-manager/clients/*",
   "/payment-manager/restapi-rtd/*",
-  "/payment-manager/db-logging/*"
+  "/payment-manager/db-logging/*",
+  "/checkout/io-for-node/*"
 ]
 
 # nat_gateway
