@@ -52,8 +52,8 @@ module "payments_app_service" {
     WEBSITE_DNS_SERVER = "168.63.129.16"
 
     # Spring Environment
-    PAA_ID_INTERMEDIARIO = var.payments_paa_id_intermediario
-    PAA_STAZIONE_INT     = var.payments_paa_stazione_int
+    PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
+    PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
     GPD_HOST = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
 

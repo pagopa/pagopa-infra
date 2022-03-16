@@ -73,7 +73,6 @@ app_gateway_deny_paths = [
 ]
 
 # postgresql
-prostgresql_enabled                      = true
 postgresql_sku_name                      = "B_Gen5_1" # todo fixme verify
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = true
@@ -326,10 +325,27 @@ reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
 reporting_function_autoscale_default = 1
 
+users = [
+  {
+    name = "APD_USER"
+    grants = [
+      {
+        object_type = "schema"
+        database    = "apd"
+        schema      = "apd"
+        privileges  = ["SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE"]
+      }
+    ]
+  }
+]
+
+gpd_db_name     = "apd"
+gpd_schema_name = "apd"
+
 // GPD Payments
-payments_always_on            = false
-payments_paa_id_intermediario = "77777777777"   // TODO
-payments_paa_stazione_int     = "77777777777_1" // TODO
+payments_always_on       = false
+gpd_paa_id_intermediario = "77777777777"   // TODO
+gpd_paa_stazione_int     = "77777777777_1" // TODO
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"

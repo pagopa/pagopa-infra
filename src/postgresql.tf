@@ -9,13 +9,13 @@ module "postgresql_snet" {
 }
 
 data "azurerm_key_vault_secret" "db_administrator_login" {
-  count        = var.prostgresql_enabled ? 1 : 0
+  count        = var.env_short == "d" ? 1 : 0
   name         = "db-administrator-login"
   key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "db_administrator_login_password" {
-  count        = var.prostgresql_enabled ? 1 : 0
+  count        = var.env_short == "d" ? 1 : 0
   name         = "db-administrator-login-password"
   key_vault_id = module.key_vault.id
 }
@@ -41,7 +41,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_d
 
 #tfsec:ignore:azure-database-no-public-access
 module "postgresql" {
-  count  = var.prostgresql_enabled ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.0.5"
 
   name                = format("%s-postgresql", local.project)
@@ -72,10 +72,19 @@ module "postgresql" {
 }
 
 resource "azurerm_postgresql_database" "this" {
-  count               = var.prostgresql_enabled ? 1 : 0
+  count               = var.env_short == "d" ? 1 : 0
   name                = "mock_psp"
   resource_group_name = azurerm_resource_group.data.name
   server_name         = module.postgresql[0].name
   charset             = "UTF8"
   collation           = "English_United States.1252"
+}
+
+resource "azurerm_postgresql_database" "apd_db" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = var.gpd_db_name
+  resource_group_name = azurerm_resource_group.data.name
+  server_name         = module.postgresql[0].name
+  charset             = "UTF8"
+  collation           = "Italian_Italy.1252"
 }

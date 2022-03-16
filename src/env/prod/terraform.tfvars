@@ -54,6 +54,20 @@ enable_iac_pipeline      = true
 apim_publisher_name = "pagoPA Platform PROD"
 apim_sku            = "Premium_1"
 apim_alerts_enabled = true
+apim_autoscale = {
+  enabled                       = true
+  default_instances             = 1
+  minimum_instances             = 1
+  maximum_instances             = 5
+  scale_out_capacity_percentage = 60
+  scale_out_time_window         = "PT10M"
+  scale_out_value               = "2"
+  scale_out_cooldown            = "PT45M"
+  scale_in_capacity_percentage  = 30
+  scale_in_time_window          = "PT30M"
+  scale_in_value                = "1"
+  scale_in_cooldown             = "PT30M"
+}
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
@@ -81,7 +95,6 @@ nat_gateway_public_ips = 2
 # redis_family   = "P"
 
 # postgresql
-prostgresql_enabled                      = false
 postgresql_sku_name                      = "GP_Gen5_2" # todo change before launch
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = false
@@ -286,7 +299,6 @@ buyerbanks_function_autoscale_default = 1
 buyerbanks_delete_retention_days      = 30
 
 # pagopa-proxy app service
-pagopa_proxy_enabled        = false
 pagopa_proxy_redis_capacity = 0
 pagopa_proxy_redis_sku_name = "Standard"
 pagopa_proxy_redis_family   = "C"
@@ -330,8 +342,8 @@ reporting_analysis_function_autoscale_maximum = 3
 reporting_analysis_function_autoscale_default = 1
 
 // GPD Payments
-payments_paa_id_intermediario = "77777777777"   // TODO
-payments_paa_stazione_int     = "77777777777_1" // TODO
+gpd_paa_id_intermediario = "77777777777"   // TODO
+gpd_paa_stazione_int     = "77777777777_1" // TODO
 
 # canone unico
 canoneunico_plan_sku_tier = "PremiumV3"

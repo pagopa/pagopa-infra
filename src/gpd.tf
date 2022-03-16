@@ -3,6 +3,7 @@ locals {
     origins = ["*"]
     methods = ["*"]
   }
+  gpd_hostname = var.env_short == "d" ? module.postgresql[0].fqdn : null // TODO in dev/uat Flexible Server instance
 }
 
 # Subnet to host the api config
@@ -38,7 +39,7 @@ module "gpd_app_service" {
   client_cert_enabled = false
   always_on           = var.gpd_always_on
   linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
-  health_check_path   = "/gpd/api/v1/info"
+  health_check_path   = "/info"
 
   app_settings = {
     # Monitoring
@@ -60,12 +61,13 @@ module "gpd_app_service" {
     WEBSITE_DNS_SERVER = "168.63.129.16"
 
     # Spring Environment
-    SPRING_DATASOURCE_USERNAME              = var.gpd_dbms_admin_username
-    SPRING_DATASOURCE_PASSWORD              = var.gpd_dbms_admin_password
-    SPRING_DATASOURCE_URL                   = var.gpd_dbms_name == null ? null : format("jdbc:postgresql://%s.%s:%s/%s?user=%s@%s&password=%s&sslmode=require", var.gpd_dbms_name, var.gpd_dbms_hostname, var.gpd_dbms_port, var.gpd_db_name, var.gpd_dbms_admin_username, var.gpd_dbms_name, var.gpd_dbms_admin_password)
+    SPRING_DATASOURCE_USERNAME              = format("%s@pagopa-%s-postgresql", data.azurerm_key_vault_secret.gpd_db_usr.value, var.env_short)
+    SPRING_DATASOURCE_PASSWORD              = data.azurerm_key_vault_secret.gpd_db_pwd.value
+    SPRING_DATASOURCE_URL                   = var.gpd_dbms_name == null ? null : format("jdbc:postgresql://%s:%s/%s?sslmode=require", local.gpd_hostname, var.gpd_dbms_port, var.gpd_db_name)
     SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
-    SCHEMA_NAME                             = "gpd"
+    SCHEMA_NAME                             = "apd"
+    LOG_LEVEL                               = "INFO"
     CRON_JOB_SCHEDULE_ENABLED               = var.gpd_cron_job_enable
     CRON_JOB_SCHEDULE_EXPRESSION_TO_VALID   = var.gpd_cron_schedule_valid_to
     CRON_JOB_SCHEDULE_EXPRESSION_TO_EXPIRED = var.gpd_cron_schedule_expired_to
