@@ -30,7 +30,7 @@ module "payments_app_service" {
   client_cert_enabled = false
   always_on           = var.payments_always_on
   linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
-  health_check_path   = "/payments/info"
+  health_check_path   = "/info"
 
   app_settings = {
     # Monitoring
