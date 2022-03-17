@@ -42,7 +42,7 @@ module "apim_api_gpd_reporting_analysis_api" {
   product_ids           = [module.apim_gpd_reporting_analysis_product.product_id]
   subscription_required = false
   api_version           = "v1"
-  version_set_id        = azurerm_api_management_api_version_set.api_gpd_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_gpd_reporting_analysis_api.id
   service_url           = format("https://%s", module.gpd_app_service.default_site_hostname)
 
   description  = "Api GPD Reporting Analysis"
