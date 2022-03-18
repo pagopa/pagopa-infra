@@ -10,7 +10,7 @@
     }
   ],
   "paths": {
-    "/api/organizations/{organizationId}/reportings": {
+    "/organizations/{organizationId}/reportings": {
       "get": {
         "tags": [
           "Organization Requests"
@@ -47,7 +47,7 @@
         }
       }
     },
-    "/api/organizations/{organizationId}/reportings/{flowId}/date/{date}": {
+    "/organizations/{organizationId}/reportings/{flowId}/date/{date}": {
       "get": {
         "tags": [
           "Organization Requests"

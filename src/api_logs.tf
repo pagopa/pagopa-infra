@@ -9,7 +9,7 @@ locals {
     azurerm_api_management_api.apim_node_for_io_api_v1.name,
     azurerm_api_management_api.apim_psp_for_node_api_v1.name,
     azurerm_api_management_api.apim_nodo_per_pa_api_v1.name,
-    azurerm_api_management_api.apim_nodo_per_psp_api_v1.name,
+    azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1.name,
     azurerm_api_management_api.apim_cd_info_wisp_v1.name,
     module.apim_checkout_payment_activations_api_auth_v1.name,
     module.apim_checkout_payment_activations_api_auth_v2.name,
