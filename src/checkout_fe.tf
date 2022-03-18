@@ -81,6 +81,25 @@ module "checkout_cdn" {
     ]
   }
 
+  delivery_rule_rewrite = [{
+    name  = "RewriteRules"
+    order = 2
+
+    conditions = [{
+      condition_type   = "url_path_condition"
+      operator         = "EndsWith"
+      match_values     = ["/dona", "/dona/"]
+      transforms       = []
+      negate_condition = false
+    }]
+
+    url_rewrite_action = {
+      source_pattern          = "/"
+      destination             = "/dona.html"
+      preserve_unmatched_path = false
+    }
+  }]
+
   tags = var.tags
 }
 
