@@ -88,7 +88,7 @@ module "checkout_cdn" {
     conditions = [{
       condition_type   = "url_path_condition"
       operator         = "EndsWith"
-      match_values     = ["dona"]
+      match_values     = ["/dona", "/dona/"]
       transforms       = []
       negate_condition = false
     }]
