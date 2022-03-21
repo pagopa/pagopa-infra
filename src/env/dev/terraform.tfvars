@@ -28,6 +28,8 @@ cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
 cidr_subnet_payments           = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common = ["10.1.140.0/24"]
+cidr_subnet_flex_dbms          = ["10.1.141.0/24"]
+
 
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
@@ -353,3 +355,19 @@ canoneunico_plan_sku_size = "S1"
 canoneunico_function_autoscale_minimum = 1
 canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
+
+# Postgres Flexible
+pgres_flex_params = {
+
+  enabled    = true
+  sku_name   = "B_Standard_B1ms"
+  db_version = "13"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                   = 32768
+  zone                         = 1
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
+  create_mode                  = "Default"
+
+}
