@@ -1,36 +1,5 @@
-# Subnet to host the api config
-module "payments_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-payments-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_payments
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
-module "payments_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
-
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  plan_type           = "external"
-  plan_id             = azurerm_app_service_plan.gpd_service_plan.id
-
-  # App service
-  name                = format("%s-app-payments", local.project)
-  client_cert_enabled = false
-  always_on           = var.payments_always_on
-  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
-  health_check_path   = "/info"
-
-  app_settings = {
+locals {
+  gpd_payments_app_settings = {
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
     APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
@@ -67,7 +36,43 @@ module "payments_app_service" {
 
   }
 
-  allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id]
+  gpd_payments_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id]
+}
+# Subnet to host the api config
+module "payments_snet" {
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  name                                           = format("%s-payments-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_payments
+  resource_group_name                            = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = module.vnet.name
+  enforce_private_link_endpoint_network_policies = true
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
+module "payments_app_service" {
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
+
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  plan_type           = "external"
+  plan_id             = azurerm_app_service_plan.gpd_service_plan.id
+
+  # App service
+  name                = format("%s-app-payments", local.project)
+  client_cert_enabled = false
+  always_on           = var.payments_always_on
+  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
+  health_check_path   = "/info"
+
+  app_settings = local.gpd_payments_app_settings
+
+  allowed_subnets = local.gpd_payments_allowed_subnets
   allowed_ips     = []
 
   subnet_id = module.payments_snet.id
@@ -77,7 +82,7 @@ module "payments_app_service" {
 }
 
 module "gpd_payments_app_service_slot_staging" {
-  count = var.env_short == "p" ? 1 : 0
+//  count = var.env_short == "p" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
 
@@ -92,13 +97,13 @@ module "gpd_payments_app_service_slot_staging" {
   location            = azurerm_resource_group.gpd_rg.location
 
   always_on         = true
-  linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
+  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
   health_check_path   = "/info"
 
   # App settings
-  app_settings = module.payments_app_service.app_settings
+  app_settings = local.gpd_payments_app_settings
 
-  allowed_subnets = module.payments_app_service.allowed_subnets
+  allowed_subnets = local.gpd_payments_allowed_subnets
   allowed_ips     = []
   subnet_id       = module.gpd_snet[0].id
 
