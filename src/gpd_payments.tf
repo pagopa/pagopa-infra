@@ -16,8 +16,6 @@ module "payments_snet" {
   }
 }
 
-
-
 module "payments_app_service" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
 
@@ -76,4 +74,33 @@ module "payments_app_service" {
 
   tags = var.tags
 
+}
+
+module "gpd_payments_app_service_slot_staging" {
+  count = var.env_short == "p" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
+
+  # App service plan
+  app_service_plan_id = module.payments_app_service.plan_id
+  app_service_id      = module.payments_app_service.id
+  app_service_name    = module.payments_app_service.name
+
+  # App service
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = azurerm_resource_group.gpd_rg.location
+
+  always_on         = true
+  linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
+  health_check_path   = "/info"
+
+  # App settings
+  app_settings = module.payments_app_service.app_settings
+
+  allowed_subnets = module.payments_app_service.allowed_subnets
+  allowed_ips     = []
+  subnet_id       = module.gpd_snet[0].id
+
+  tags = var.tags
 }
