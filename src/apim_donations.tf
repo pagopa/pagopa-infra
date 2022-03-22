@@ -71,6 +71,7 @@ resource "azurerm_api_management_api_operation_policy" "get_donations" {
 
   xml_content = templatefile("./api/donations/v1/donazioni_ucraina.xml", {
     logo_1 = file("./api/donations/v1/logos/logo1")
+    logo_2 = file("./api/donations/v1/logos/logo2")
   })
 
 }
