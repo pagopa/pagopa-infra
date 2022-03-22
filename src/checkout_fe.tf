@@ -56,12 +56,12 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = " https://acardste.vaservices.eu https://cdn.cookielaw.org https://privacyportal-de.onetrust.com;"
+        value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
       },
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com;"
+        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com;"
       },
       {
         action = "Append"
