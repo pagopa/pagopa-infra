@@ -37,7 +37,7 @@ resource "azurerm_api_management_api" "apim_api_gpd_payments_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = false
-  service_url           = format("https://%s/gpd-payments/api/v1", module.payments_app_service.default_site_hostname)
+  service_url           = format("https://%s/partner", module.payments_app_service.default_site_hostname)
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_payments_api.id
   version               = "v1"
   revision              = "1"

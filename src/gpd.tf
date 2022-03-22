@@ -58,12 +58,15 @@ module "gpd_app_service" {
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
     TIMEOUT_DELAY                                   = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
+    WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
+    WEBSITE_RUN_FROM_PACKAGE = "1"
+    WEBSITE_VNET_ROUTE_ALL = "1"
     WEBSITE_DNS_SERVER = "168.63.129.16"
 
     # Spring Environment
     SPRING_DATASOURCE_USERNAME              = format("%s@pagopa-%s-postgresql", data.azurerm_key_vault_secret.gpd_db_usr.value, var.env_short)
     SPRING_DATASOURCE_PASSWORD              = data.azurerm_key_vault_secret.gpd_db_pwd.value
-    SPRING_DATASOURCE_URL                   = var.gpd_dbms_name == null ? null : format("jdbc:postgresql://%s:%s/%s?sslmode=require", local.gpd_hostname, var.gpd_dbms_port, var.gpd_db_name)
+    SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require", local.gpd_hostname, var.gpd_dbms_port, var.gpd_db_name) : "")
     SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
     SCHEMA_NAME                             = "apd"
