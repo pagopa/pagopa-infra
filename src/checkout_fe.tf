@@ -76,7 +76,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "style-src 'self'  'unsafe-inline'; worker-src 'none';"
+        value  = "style-src 'self'  'unsafe-inline'; worker-src blob:;"
       }
     ]
   }
