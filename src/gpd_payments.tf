@@ -17,9 +17,9 @@ locals {
     TIMEOUT_DELAY                                   = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
-    WEBSITE_RUN_FROM_PACKAGE = "1"
-    WEBSITE_VNET_ROUTE_ALL = "1"
-    WEBSITE_DNS_SERVER = "168.63.129.16"
+    WEBSITE_RUN_FROM_PACKAGE                        = "1"
+    WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
     # Spring Environment
     PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
@@ -36,7 +36,7 @@ locals {
 
   }
 
-  gpd_payments_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id]
+  gpd_payments_allowed_subnets = [module.apim_snet.id]
 }
 # Subnet to host the api config
 module "payments_snet" {
@@ -81,10 +81,10 @@ module "payments_app_service" {
 
 }
 
-module "gpd_payments_app_service_slot_staging" {
-//  count = var.env_short == "p" ? 1 : 0
+module "payments_app_service_slot_staging" {
+  //  count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.2.0"
 
   # App service plan
   app_service_plan_id = module.payments_app_service.plan_id
@@ -97,8 +97,8 @@ module "gpd_payments_app_service_slot_staging" {
   location            = azurerm_resource_group.gpd_rg.location
 
   always_on         = true
-  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
-  health_check_path   = "/info"
+  linux_fx_version  = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
+  health_check_path = "/info"
 
   # App settings
   app_settings = local.gpd_payments_app_settings
