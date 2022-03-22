@@ -82,7 +82,7 @@ module "checkout_cdn" {
   }
 
   delivery_rule_rewrite = [{
-    name  = "RewriteRules"
+    name  = "DonationRewriteRules"
     order = 2
 
     conditions = [{
@@ -98,7 +98,26 @@ module "checkout_cdn" {
       destination             = "/dona.html"
       preserve_unmatched_path = false
     }
-  }]
+    },
+    {
+      name  = "ResponsePageRewriteRules"
+      order = 3
+
+      conditions = [{
+        condition_type   = "url_path_condition"
+        operator         = "EndsWith"
+        match_values     = ["/response.html"]
+        transforms       = []
+        negate_condition = false
+      }]
+
+      url_rewrite_action = {
+        source_pattern          = "/"
+        destination             = "/payment/response"
+        preserve_unmatched_path = false
+      }
+    }
+  ]
 
   tags = var.tags
 }
