@@ -46,7 +46,7 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
   }
   gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id]
-  gpd_hostname = var.env_short == "d" ? module.postgresql[0].fqdn : null // TODO in dev/uat Flexible Server instance
+  gpd_hostname        = var.env_short == "d" ? module.postgresql[0].fqdn : null // TODO in dev/uat Flexible Server instance
 }
 
 # Subnet to host the api config
@@ -84,7 +84,7 @@ module "gpd_app_service" {
   linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
   health_check_path   = "/info"
 
-  app_settings =  local.gpd_app_settings
+  app_settings = local.gpd_app_settings
 
   allowed_subnets = local.gpd_allowed_subnets
 
@@ -97,9 +97,9 @@ module "gpd_app_service" {
 }
 
 module "gpd_app_service_slot_staging" {
-  count = var.env_short == "p" ? 1 : 0
+  //  count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.2.0"
 
   # App service plan
   app_service_plan_id = module.gpd_app_service.plan_id
@@ -112,8 +112,8 @@ module "gpd_app_service_slot_staging" {
   location            = azurerm_resource_group.gpd_rg.location
 
   always_on         = true
-  linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
-  health_check_path   = "/info"
+  linux_fx_version  = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
+  health_check_path = "/info"
 
   # App settings
   app_settings = local.gpd_app_settings
