@@ -455,3 +455,61 @@ module "apim_nodo_per_pm_api_v1" {
     restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
   })
 }
+
+############################
+## Nodo on CLoud AllInOne ##
+############################
+
+module "apim_nodo_oncloud_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+
+  product_id   = "product-nodo-oncloud"
+  display_name = "product-nodo-oncloud"
+  description  = "product-nodo-oncloud"
+
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  published             = true
+  subscription_required = false
+  approval_required     = false
+
+  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+}
+
+resource "azurerm_api_management_api_version_set" "nodo_oncloud_api" {
+
+  name                = format("%s-nodo-oncloud-api", var.env_short)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Nodo OnCloud"
+  versioning_scheme   = "Segment"
+}
+
+module "apim_nodo_oncloud_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-nodo-oncloud-api", var.env_short)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_nodo_oncloud_product.product_id]
+  subscription_required = false
+
+  version_set_id = azurerm_api_management_api_version_set.nodo_oncloud_api.id
+  api_version    = "v1"
+
+  description  = "NodeDeiPagamenti (oncloud)"
+  display_name = "NodeDeiPagamenti (oncloud)"
+  path         = "nodo-pagamenti/api"
+  protocols    = ["https"]
+
+  service_url = null
+
+  content_format = "openapi"
+  content_value = templatefile("./api/nodopagamenti_api/nodoServices/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/nodopagamenti_api/nodoServices/v1/_base_policy.xml")
+
+}
