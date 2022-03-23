@@ -985,13 +985,13 @@ variable "reporting_function_autoscale_minimum" {
 variable "reporting_function_autoscale_maximum" {
   type        = number
   description = "The maximum number of instances for this resource."
-  default     = 3
+  default     = 10
 }
 
 variable "reporting_function_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
+  default     = 5
 }
 
 variable "reporting_batch_function_always_on" {
@@ -1108,6 +1108,24 @@ variable "gpd_paa_stazione_int" {
   type        = string
   description = "PagoPA Station ID"
   default     = false
+}
+
+variable "gpd_payments_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "gpd_payments_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 10
+}
+
+variable "gpd_payments_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 5
 }
 
 # canone unico
