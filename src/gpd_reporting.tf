@@ -29,7 +29,7 @@ module "reporting_batch_function" {
   os_type                                  = "linux"
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-  app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "java"
     // Keepalive fields are all optionals
@@ -73,7 +73,7 @@ module "reporting_batch_function" {
   tags = var.tags
 
   depends_on = [
-    azurerm_app_service_plan.gpd_service_plan
+    azurerm_app_service_plan.gpd_reporting_service_plan
   ]
 }
 
@@ -91,7 +91,7 @@ module "reporting_service_function" {
 
   always_on                                = var.reporting_service_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-  app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "java"
     // Keepalive fields are all optionals
@@ -134,7 +134,7 @@ module "reporting_service_function" {
   tags = var.tags
 
   depends_on = [
-    azurerm_app_service_plan.gpd_service_plan
+    azurerm_app_service_plan.gpd_reporting_service_plan
   ]
 }
 
@@ -152,7 +152,7 @@ module "reporting_analysis_function" {
 
   always_on                                = var.reporting_analysis_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-  app_service_plan_id                      = azurerm_app_service_plan.gpd_service_plan.id
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "java"
     // Keepalive fields are all optionals
@@ -187,7 +187,7 @@ module "reporting_analysis_function" {
   tags = var.tags
 
   depends_on = [
-    azurerm_app_service_plan.gpd_service_plan
+    azurerm_app_service_plan.gpd_reporting_service_plan
   ]
 }
 
@@ -196,7 +196,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
   name                = format("%s-autoscale", module.reporting_batch_function.name)
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
-  target_resource_id  = azurerm_app_service_plan.gpd_service_plan.id
+  target_resource_id  = azurerm_app_service_plan.gpd_reporting_service_plan.id
 
   profile {
     name = "default"
@@ -211,7 +211,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
     rule {
       metric_trigger {
         metric_name        = "CpuPercentage"
-        metric_resource_id = azurerm_app_service_plan.gpd_service_plan.id
+        metric_resource_id = azurerm_app_service_plan.gpd_reporting_service_plan.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT1M"
@@ -231,7 +231,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
     rule {
       metric_trigger {
         metric_name        = "CpuPercentage"
-        metric_resource_id = azurerm_app_service_plan.gpd_service_plan.id
+        metric_resource_id = azurerm_app_service_plan.gpd_reporting_service_plan.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
