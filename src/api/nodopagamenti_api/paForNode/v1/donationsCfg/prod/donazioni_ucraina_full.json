@@ -164,15 +164,15 @@
       ]
     },
     {
-      "name": "Soleterrre Onlus",
+      "name": "Soleterre",
       "reason": "Donazione Emergenza Ucraina",
       "web_site": "https://soleterre.org/ucraina/",
       "base64Logo": "/9j/4AAQSk",
       "cf": "97329310151",
       "iban": "IT11A11111111111111111111115",
       "paymentDescription": "Donazione Emergenza Ucraina",
-      "companyName": "Soleterrre Onlus",
-      "officeName": "Soleterrre Onlus",
+      "companyName": "Soleterre",
+      "officeName": "Soleterre",
       "auxdigit": "3",
       "segregationcode": "00",
       "transferCategory": "0804101AP",
