@@ -4,58 +4,18 @@
   "debtorEntityUniqueIdentifierValue": "anonimo",
   "data": [
     {
-      "name": "Croce Rossa Italiana",
-      "reason": "Donazione Emergenza Ucraina",
-      "web_site": "https://cri.it/emergenzaucraina/",
+      "name": "Save The Children",
+      "reason": "Emergenza Ucraina",
+      "web_site": "https://www.savethechildren.it/cosa-facciamo/risposta-alle-emergenze/emergenza-ucraina",
       "base64Logo": "/9j/4AAQSk",
-      "cf": "11111111110",
-      "iban": "IT11A11111111111111111111111",
-      "paymentDescription": "Donazione Emergenza Ucraina",
-      "companyName": "Croce Rossa Italiana",
-      "officeName": "Croce Rossa Italiana ",
+      "cf": "97227450158",
+      "iban": "IT71P0501803200000011184009",
+      "paymentDescription": "Emergenza Ucraina",
+      "companyName": "Save The Children",
+      "officeName": "Save The Children",
       "auxdigit": "3",
       "segregationcode": "00",
-      "transferCategory": "0101002IM",
-      "slices": [
-        {
-          "idDonation": "00",
-          "amount": 500
-        },
-        {
-          "idDonation": "01",
-          "amount": 1000
-        },
-        {
-          "idDonation": "02",
-          "amount": 2000
-        },
-        {
-          "idDonation": "03",
-          "amount": 5000
-        },
-        {
-          "idDonation": "04",
-          "amount": 10000
-        },
-        {
-          "idDonation": "05",
-          "amount": 20000
-        }
-      ]
-    },
-    {
-      "name": "Basilica minore di Santa maria in Sofia",
-      "reason": "Donazione sostegno Ucraina",
-      "web_site": "https://bmsms.it/sostegnoucraina/",
-      "base64Logo": "/9j/4AAQSkZJR",
-      "cf": "22222222220",
-      "iban": "IT22A22222222222222222222222",
-      "paymentDescription": "Donazione sostegno Ucraina",
-      "companyName": "Basilica minore di Santa maria in Sofia",
-      "officeName": "Basilica minore di Santa maria in Sofia ",
-      "auxdigit": "3",
-      "segregationcode": "00",
-      "transferCategory": "0101002IM",
+      "transferCategory": "0804101AP",
       "slices": [
         {
           "idDonation": "06",
@@ -79,6 +39,46 @@
         },
         {
           "idDonation": "11",
+          "amount": 20000
+        }
+      ]
+    },
+    {
+      "name": "Fondazione AVSI",
+      "reason": "Emergenza Ucraina #HelpUkraine",
+      "web_site": "https://www.avsi.org/it/campaign/emergenza-ucraina-helpukraine/88/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "81017180407",
+      "iban": "IT22T0200801603000102945081",
+      "paymentDescription": "Emergenza Ucraina #HelpUkraine",
+      "companyName": "Fondazione AVSI",
+      "officeName": "Fondazione AVSI",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        {
+          "idDonation": "18",
+          "amount": 500
+        },
+        {
+          "idDonation": "19",
+          "amount": 1000
+        },
+        {
+          "idDonation": "20",
+          "amount": 2000
+        },
+        {
+          "idDonation": "21",
+          "amount": 5000
+        },
+        {
+          "idDonation": "22",
+          "amount": 10000
+        },
+        {
+          "idDonation": "23",
           "amount": 20000
         }
       ]
