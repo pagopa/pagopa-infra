@@ -225,6 +225,12 @@ variable "ip_nodo" {
   description = "Nodo pagamenti ip"
 }
 
+variable "nodo_pagamenti_oncloud_url" {
+  type        = string
+  description = "Nodo pagamenti url oncloud"
+  default     = "http://"
+}
+
 # nodo dei pagamenti - test
 variable "nodo_pagamenti_test_enabled" {
   type        = bool
