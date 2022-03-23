@@ -55,6 +55,13 @@ module "route_table_peering_sia" {
 
   routes = [
     {
+      # dev aks nodo oncloud
+      name                   = "to-aksingress-outbound-sia-dev-subnet"
+      address_prefix         = "10.70.66.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10"
+    },
+    {
       # dev
       name                   = "to-pm-appservice-inbound-sia-dev-subnet"
       address_prefix         = "10.70.70.0/24"
