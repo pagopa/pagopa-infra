@@ -82,7 +82,7 @@ module "payments_app_service" {
 }
 
 module "payments_app_service_slot_staging" {
-  //  count = var.env_short == "p" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.2.0"
 
