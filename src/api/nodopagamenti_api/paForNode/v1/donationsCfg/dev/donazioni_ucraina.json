@@ -4,9 +4,49 @@
   "debtorEntityUniqueIdentifierValue": "anonimo",
   "data": [
     {
+      "name": "Croce Rossa Italiana",
+      "reason": "Emergenza Ucraina",
+      "web_site": "https://cri.it/emergenzaucraina/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "13669721006",
+      "iban": "IT93H0200803284000105889169",
+      "paymentDescription": "Emergenza Ucraina",
+      "companyName": "Croce Rossa Italiana",
+      "officeName": "Croce Rossa Italiana",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        {
+          "idDonation": "00",
+          "amount": 500
+        },
+        {
+          "idDonation": "01",
+          "amount": 1000
+        },
+        {
+          "idDonation": "02",
+          "amount": 2000
+        },
+        {
+          "idDonation": "03",
+          "amount": 5000
+        },
+        {
+          "idDonation": "04",
+          "amount": 10000
+        },
+        {
+          "idDonation": "05",
+          "amount": 20000
+        }
+      ]
+    },
+    {
       "name": "Save The Children",
       "reason": "Emergenza Ucraina",
-      "web_site": "https://www.savethechildren.it/cosa-facciamo/risposta-alle-emergenze/emergenza-ucraina",
+      "web_site": "https://www.savethechildren.it/cosa-facciamo/risposta-alle-emergenze/emergenza-ucraina?utm_source=pagopa&utm_medium=app&utm_campaign=rf-ef-ucraina&utm_content=crowd&utm_term=txt&causale=21882",
       "base64Logo": "/9j/4AAQSk",
       "cf": "97227450158",
       "iban": "IT71P0501803200000011184009",
@@ -119,46 +159,6 @@
         },
         {
           "idDonation": "29",
-          "amount": 20000
-        }
-      ]
-    },
-    {
-      "name": "Croce Rossa Italiana",
-      "reason": "Emergenza Ucraina",
-      "web_site": "https://cri.it/emergenzaucraina/",
-      "base64Logo": "/9j/4AAQSk",
-      "cf": "13669721006",
-      "iban": "IT93H0200803284000105889169",
-      "paymentDescription": "Emergenza Ucraina",
-      "companyName": "Croce Rossa Italiana",
-      "officeName": "Croce Rossa Italiana",
-      "auxdigit": "3",
-      "segregationcode": "00",
-      "transferCategory": "0804101AP",
-      "slices": [
-        {
-          "idDonation": "00",
-          "amount": 500
-        },
-        {
-          "idDonation": "01",
-          "amount": 1000
-        },
-        {
-          "idDonation": "02",
-          "amount": 2000
-        },
-        {
-          "idDonation": "03",
-          "amount": 5000
-        },
-        {
-          "idDonation": "04",
-          "amount": 10000
-        },
-        {
-          "idDonation": "05",
           "amount": 20000
         }
       ]
