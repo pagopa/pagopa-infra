@@ -71,7 +71,7 @@ module "gpd_snet" {
 
 
 module "gpd_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.7.0"
 
   resource_group_name = azurerm_resource_group.gpd_rg.name
   plan_type           = "external"
@@ -99,7 +99,7 @@ module "gpd_app_service" {
 module "gpd_app_service_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.7.0"
 
   # App service plan
   app_service_plan_id = module.gpd_app_service.plan_id

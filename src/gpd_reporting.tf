@@ -18,7 +18,7 @@ module "reporting_function_snet" {
 
 ## Function reporting_batch
 module "reporting_batch_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.7.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   name                                     = format("%s-fn-gpd-batch", local.project)
@@ -79,7 +79,7 @@ module "reporting_batch_function" {
 
 ## Function reporting_service
 module "reporting_service_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.7.0"
 
   resource_group_name = azurerm_resource_group.gpd_rg.name
   name                = format("%s-fn-gpd-service", local.project)
@@ -140,7 +140,7 @@ module "reporting_service_function" {
 
 ## Function reporting_analysis
 module "reporting_analysis_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.7.0"
 
   resource_group_name = azurerm_resource_group.gpd_rg.name
   name                = format("%s-fn-gpd-analysis", local.project)
@@ -383,7 +383,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 }
 
 module "flows" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
 
   name                       = replace(format("%s-flow-sa", local.project), "-", "")
   account_kind               = "StorageV2"
