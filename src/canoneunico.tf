@@ -56,6 +56,8 @@ module "canoneunico_function" {
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.canoneunico_service_plan.id
   app_settings = {
+    APPINSIGHTS_SAMPLING_PERCENTAGE = 100
+
     FUNCTIONS_WORKER_RUNTIME = "java"
 
     // Keepalive fields are all optionals
