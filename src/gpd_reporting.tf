@@ -32,7 +32,7 @@ module "reporting_batch_function" {
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings = {
     APPINSIGHTS_SAMPLING_PERCENTAGE = 100
-    FUNCTIONS_WORKER_RUNTIME = "java"
+    FUNCTIONS_WORKER_RUNTIME        = "java"
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
@@ -95,7 +95,7 @@ module "reporting_service_function" {
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings = {
     APPINSIGHTS_SAMPLING_PERCENTAGE = 100
-    FUNCTIONS_WORKER_RUNTIME = "java"
+    FUNCTIONS_WORKER_RUNTIME        = "java"
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
@@ -157,7 +157,7 @@ module "reporting_analysis_function" {
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings = {
     APPINSIGHTS_SAMPLING_PERCENTAGE = 100
-    FUNCTIONS_WORKER_RUNTIME = "java"
+    FUNCTIONS_WORKER_RUNTIME        = "java"
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
