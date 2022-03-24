@@ -1119,7 +1119,7 @@ variable "gpd_paa_stazione_int" {
 variable "gpd_payments_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
-  default     = 1
+  default     = 3
 }
 
 variable "gpd_payments_autoscale_maximum" {
