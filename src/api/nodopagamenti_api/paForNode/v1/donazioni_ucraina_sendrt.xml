@@ -6,14 +6,12 @@
                 <value>application/xml</value>
             </set-header>
             <set-body template="liquid">
-                <soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl"
-                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd"
-                    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"  xmlns:paf="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd">
+                    <soapenv:Header />
                     <soapenv:Body>
-                        <nfpsp:sendPaymentOutcomeRes>
+                        <paf:paSendRTRes>
                             <outcome>OK</outcome>
-                        </nfpsp:sendPaymentOutcomeRes>
+                        </paf:paSendRTRes>
                     </soapenv:Body>
                 </soapenv:Envelope>
             </set-body>
