@@ -17,6 +17,7 @@
         <set-variable name="donazioniucraina" value="{{donazioni-ucraina}}" />
         <set-variable name="logo1" value="${logo_1}" />
         <set-variable name="logo2" value="${logo_2}" />
+        <set-variable name="logo3" value="${logo_3}" />
         <return-response>
             <set-status code="200" reason="OK" />
             <set-header name="Content-Type" exists-action="override">

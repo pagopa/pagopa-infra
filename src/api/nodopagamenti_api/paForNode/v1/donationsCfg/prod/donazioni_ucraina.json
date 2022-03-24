@@ -82,6 +82,46 @@
           "amount": 20000
         }
       ]
+    },
+    {
+      "name": "Soleterre",
+      "reason": "Emergenza Ucraina",
+      "web_site": "https://soleterre.org/ucraina/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "97329310151",
+      "iban": "IT88Q0503401699000000013880",
+      "paymentDescription": "Emergenza Ucraina",
+      "companyName": "Soleterre",
+      "officeName": "Soleterre",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        {
+          "idDonation": "24",
+          "amount": 500
+        },
+        {
+          "idDonation": "25",
+          "amount": 1000
+        },
+        {
+          "idDonation": "26",
+          "amount": 2000
+        },
+        {
+          "idDonation": "27",
+          "amount": 5000
+        },
+        {
+          "idDonation": "28",
+          "amount": 10000
+        },
+        {
+          "idDonation": "29",
+          "amount": 20000
+        }
+      ]
     }
   ]
 }
