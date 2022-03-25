@@ -16,21 +16,8 @@ module "reporting_function_snet" {
   }
 }
 
-## Function reporting_batch
-module "reporting_batch_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
-
-  resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-batch", local.project)
-  location                                 = var.location
-  health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet.id
-  runtime_version                          = "~3"
-  os_type                                  = "linux"
-  always_on                                = var.reporting_batch_function_always_on
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
-  app_settings = {
+locals {
+  function_batch_app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "java"
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -66,33 +53,7 @@ module "reporting_batch_function" {
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
   }
 
-  allowed_subnets = [module.apim_snet.id]
-
-  allowed_ips = []
-
-  tags = var.tags
-
-  depends_on = [
-    azurerm_app_service_plan.gpd_reporting_service_plan
-  ]
-}
-
-## Function reporting_service
-module "reporting_service_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
-
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  name                = format("%s-fn-gpd-service", local.project)
-  location            = var.location
-  health_check_path   = "info"
-  subnet_id           = module.reporting_function_snet.id
-  runtime_version     = "~3"
-  os_type             = "linux"
-
-  always_on                                = var.reporting_service_function_always_on
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
-  app_settings = {
+  function_service_app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "java"
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -127,33 +88,7 @@ module "reporting_service_function" {
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
   }
 
-  allowed_subnets = [module.apim_snet.id]
-
-  allowed_ips = []
-
-  tags = var.tags
-
-  depends_on = [
-    azurerm_app_service_plan.gpd_reporting_service_plan
-  ]
-}
-
-## Function reporting_analysis
-module "reporting_analysis_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
-
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  name                = format("%s-fn-gpd-analysis", local.project)
-  location            = var.location
-  health_check_path   = "info"
-  subnet_id           = module.reporting_function_snet.id
-  runtime_version     = "~3"
-  os_type             = "linux"
-
-  always_on                                = var.reporting_analysis_function_always_on
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
-  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
-  app_settings = {
+  function_analysis_app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "java"
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -179,10 +114,26 @@ module "reporting_analysis_function" {
     DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
   }
+}
+
+## Function reporting_batch
+module "reporting_batch_function" {
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+
+  resource_group_name                      = azurerm_resource_group.gpd_rg.name
+  name                                     = format("%s-fn-gpd-batch", local.project)
+  location                                 = var.location
+  health_check_path                        = "info"
+  subnet_id                                = module.reporting_function_snet.id
+  runtime_version                          = "~3"
+  os_type                                  = "linux"
+  always_on                                = var.reporting_batch_function_always_on
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
+  app_settings                             = local.function_batch_app_settings
 
   allowed_subnets = [module.apim_snet.id]
-
-  allowed_ips = []
+  allowed_ips     = []
 
   tags = var.tags
 
@@ -190,6 +141,147 @@ module "reporting_analysis_function" {
     azurerm_app_service_plan.gpd_reporting_service_plan
   ]
 }
+
+module "reporting_batch_function_slot_staging" {
+  count = var.env_short == "p" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.2.0"
+
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
+  function_app_name                        = module.reporting_batch_function.name
+  function_app_id                          = module.reporting_batch_function.id
+  storage_account_name                     = module.reporting_batch_function.storage_account_name
+  storage_account_access_key               = module.reporting_batch_function.storage_account.primary_access_key
+  os_type                                  = "linux"
+  name                                     = "staging"
+  resource_group_name                      = azurerm_resource_group.gpd_rg.name
+  location                                 = var.location
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  always_on                                = var.reporting_batch_function_always_on
+  health_check_path                        = "info"
+
+  # App settings
+  app_settings = local.function_batch_app_settings
+
+  allowed_subnets = [module.apim_snet.id]
+  allowed_ips     = []
+  subnet_id       = module.reporting_function_snet.id
+
+  tags = var.tags
+}
+
+
+## Function reporting_service
+module "reporting_service_function" {
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+
+  resource_group_name                      = azurerm_resource_group.gpd_rg.name
+  name                                     = format("%s-fn-gpd-service", local.project)
+  location                                 = var.location
+  health_check_path                        = "info"
+  subnet_id                                = module.reporting_function_snet.id
+  runtime_version                          = "~3"
+  os_type                                  = "linux"
+  always_on                                = var.reporting_service_function_always_on
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
+  app_settings                             = local.function_service_app_settings
+
+  allowed_subnets = [module.apim_snet.id]
+  allowed_ips     = []
+
+  tags = var.tags
+
+  depends_on = [
+    azurerm_app_service_plan.gpd_reporting_service_plan
+  ]
+}
+
+
+module "reporting_service_function_slot_staging" {
+  count = var.env_short == "p" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.2.0"
+
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
+  function_app_name                        = module.reporting_service_function.name
+  function_app_id                          = module.reporting_service_function.id
+  storage_account_name                     = module.reporting_service_function.storage_account_name
+  storage_account_access_key               = module.reporting_service_function.storage_account.primary_access_key
+  os_type                                  = "linux"
+  name                                     = "staging"
+  resource_group_name                      = azurerm_resource_group.gpd_rg.name
+  location                                 = var.location
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  always_on                                = var.reporting_service_function_always_on
+  health_check_path                        = "info"
+
+  # App settings
+  app_settings = local.function_service_app_settings
+
+  allowed_subnets = [module.apim_snet.id]
+  allowed_ips     = []
+  subnet_id       = module.reporting_function_snet.id
+
+  tags = var.tags
+}
+
+
+## Function reporting_analysis
+module "reporting_analysis_function" {
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+
+  resource_group_name                      = azurerm_resource_group.gpd_rg.name
+  name                                     = format("%s-fn-gpd-analysis", local.project)
+  location                                 = var.location
+  health_check_path                        = "info"
+  subnet_id                                = module.reporting_function_snet.id
+  runtime_version                          = "~3"
+  os_type                                  = "linux"
+  always_on                                = var.reporting_analysis_function_always_on
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
+  app_settings                             = local.function_analysis_app_settings
+
+  allowed_subnets = [module.apim_snet.id]
+  allowed_ips     = []
+
+  tags = var.tags
+
+  depends_on = [
+    azurerm_app_service_plan.gpd_reporting_service_plan
+  ]
+}
+
+module "reporting_analysis_function_slot_staging" {
+  count = var.env_short == "p" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.2.0"
+
+  app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
+  function_app_name                        = module.reporting_analysis_function.name
+  function_app_id                          = module.reporting_analysis_function.id
+  storage_account_name                     = module.reporting_analysis_function.storage_account_name
+  storage_account_access_key               = module.reporting_analysis_function.storage_account.primary_access_key
+  os_type                                  = "linux"
+  name                                     = "staging"
+  resource_group_name                      = azurerm_resource_group.gpd_rg.name
+  location                                 = var.location
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+
+  always_on         = var.reporting_analysis_function_always_on
+  health_check_path = "info"
+
+  # App settings
+  app_settings = local.function_service_app_settings
+
+  allowed_subnets = [module.apim_snet.id]
+  allowed_ips     = []
+  subnet_id       = module.reporting_function_snet.id
+
+  tags = var.tags
+}
+
 
 # autoscaling
 resource "azurerm_monitor_autoscale_setting" "reporting_function" {
