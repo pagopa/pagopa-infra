@@ -460,6 +460,71 @@
         }
       }
     },
+    "/inoltroEsito/paypal": {
+      "post": {
+        "tags": [
+          "Nodo"
+        ],
+        "summary": "nodoInoltraEsitoPagamentoPayPal",
+        "description": "La primitiva si prefigge lo scopo di consentire al Payment Manager di trasmettere al Nodo dei Pagamenti l’esito dell’operazione di pagamento, mediante PayPal.",
+        "operationId": "nodoInoltraEsitoPagamentoPayPal",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "esitoPagamentoPayPal",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EsitoPagamentoPayPal"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SimpleSuccess"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "412": {
+            "description": "Precondition failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Unprocessable entry",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/notificaAnnullamento": {
       "get": {
         "tags": [
@@ -914,6 +979,51 @@
         }
       }
     },
+    "EsitoPagamentoPayPal": {
+      "type": "object",
+      "required": [
+        "idPagamento",
+        "idTransazione",
+        "idTransazionePsp",
+        "identificativoPsp",
+        "identificativoIntermediario",
+        "identificativoCanale",
+        "importoTotalePagato",
+        "timestampOperazione"
+      ],
+      "properties": {
+        "idPagamento": {
+          "$ref": "#/definitions/IdPagamento"
+        },
+        "idTransazione": {
+          "type": "number",
+          "description": "Identificativo univoco di una transazione"
+        },
+        "idTransazionePsp": {
+          "$ref": "#/definitions/IdTransazionePsp"
+        },
+        "identificativoPsp": {
+          "$ref": "#/definitions/IdentificativoPsp"
+        },
+        "identificativoIntermediario": {
+          "$ref": "#/definitions/IdentificativoIntermediario"
+        },
+        "identificativoCanale": {
+          "$ref": "#/definitions/IdentificativoCanale"
+        },
+        "importoTotalePagato": {
+          "type": "number",
+          "description": "Importo Totale Pagato",
+          "minimum": 0,
+          "example": "20.10"
+        },
+        "timestampOperazione": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2012-04-23T18:25:43Z"
+        }
+      }
+    },
     "Modello1": {
       "type": "object",
       "required": [
@@ -1008,6 +1118,11 @@
       "type": "string",
       "description": "Identificativo univoco di un pagamento",
       "example": "24e1aaf4-9f44-497c-ab97-4669e4efa20"
+    },
+    "IdTransazionePsp": {
+      "type": "string",
+      "description": "Identificativo univoco di una transazione lato PSP",
+      "example": "123abc567"
     },
     "IdentificativoPsp": {
       "type": "string",

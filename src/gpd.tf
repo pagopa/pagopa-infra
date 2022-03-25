@@ -3,7 +3,50 @@ locals {
     origins = ["*"]
     methods = ["*"]
   }
-  gpd_hostname = var.env_short == "d" ? module.postgresql[0].fqdn : null // TODO in dev/uat Flexible Server instance
+  gpd_app_settings = {
+    # Monitoring
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+    APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
+    APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
+    APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
+    ApplicationInsightsAgent_EXTENSION_VERSION      = "~3"
+    DiagnosticServices_EXTENSION_VERSION            = "~3"
+    InstrumentationEngine_EXTENSION_VERSION         = "disabled"
+    SnapshotDebugger_EXTENSION_VERSION              = "disabled"
+    XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
+    XDT_MicrosoftApplicationInsights_Mode           = "recommended"
+    XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
+    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
+    TIMEOUT_DELAY                                   = 300
+    # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
+    WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
+    WEBSITE_RUN_FROM_PACKAGE                        = "1"
+    WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_DNS_SERVER                              = "168.63.129.16"
+
+    # Spring Environment
+    SPRING_DATASOURCE_USERNAME              = format("%s@pagopa-%s-postgresql", data.azurerm_key_vault_secret.gpd_db_usr.value, var.env_short)
+    SPRING_DATASOURCE_PASSWORD              = data.azurerm_key_vault_secret.gpd_db_pwd.value
+    SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require", local.gpd_hostname, var.gpd_dbms_port, var.gpd_db_name) : "")
+    SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
+    CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
+    SCHEMA_NAME                             = "apd"
+    LOG_LEVEL                               = "INFO"
+    CRON_JOB_SCHEDULE_ENABLED               = var.gpd_cron_job_enable
+    CRON_JOB_SCHEDULE_EXPRESSION_TO_VALID   = var.gpd_cron_schedule_valid_to
+    CRON_JOB_SCHEDULE_EXPRESSION_TO_EXPIRED = var.gpd_cron_schedule_expired_to
+
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    WEBSITES_PORT                       = 8080
+    # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
+    # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
+    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
+  }
+  gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id]
+  gpd_hostname        = var.env_short == "d" ? module.postgresql[0].fqdn : null // TODO in dev/uat Flexible Server instance
 }
 
 # Subnet to host the api config
@@ -41,51 +84,9 @@ module "gpd_app_service" {
   linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
   health_check_path   = "/info"
 
-  app_settings = {
-    # Monitoring
-    APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
-    APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
-    APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
-    APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
-    ApplicationInsightsAgent_EXTENSION_VERSION      = "~3"
-    DiagnosticServices_EXTENSION_VERSION            = "~3"
-    InstrumentationEngine_EXTENSION_VERSION         = "disabled"
-    SnapshotDebugger_EXTENSION_VERSION              = "disabled"
-    XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
-    XDT_MicrosoftApplicationInsights_Mode           = "recommended"
-    XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
-    TIMEOUT_DELAY                                   = 300
-    # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
-    WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
-    WEBSITE_RUN_FROM_PACKAGE = "1"
-    WEBSITE_VNET_ROUTE_ALL = "1"
-    WEBSITE_DNS_SERVER = "168.63.129.16"
+  app_settings = local.gpd_app_settings
 
-    # Spring Environment
-    SPRING_DATASOURCE_USERNAME              = format("%s@pagopa-%s-postgresql", data.azurerm_key_vault_secret.gpd_db_usr.value, var.env_short)
-    SPRING_DATASOURCE_PASSWORD              = data.azurerm_key_vault_secret.gpd_db_pwd.value
-    SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require", local.gpd_hostname, var.gpd_dbms_port, var.gpd_db_name) : "")
-    SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
-    CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
-    SCHEMA_NAME                             = "apd"
-    LOG_LEVEL                               = "INFO"
-    CRON_JOB_SCHEDULE_ENABLED               = var.gpd_cron_job_enable
-    CRON_JOB_SCHEDULE_EXPRESSION_TO_VALID   = var.gpd_cron_schedule_valid_to
-    CRON_JOB_SCHEDULE_EXPRESSION_TO_EXPIRED = var.gpd_cron_schedule_expired_to
-
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    WEBSITES_PORT                       = 8080
-    # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
-    # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
-
-  }
-
-  allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id]
+  allowed_subnets = local.gpd_allowed_subnets
 
   allowed_ips = []
 
@@ -93,4 +94,33 @@ module "gpd_app_service" {
 
   tags = var.tags
 
+}
+
+module "gpd_app_service_slot_staging" {
+  count = var.env_short == "p" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.2.0"
+
+  # App service plan
+  app_service_plan_id = module.gpd_app_service.plan_id
+  app_service_id      = module.gpd_app_service.id
+  app_service_name    = module.gpd_app_service.name
+
+  # App service
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = azurerm_resource_group.gpd_rg.location
+
+  always_on         = true
+  linux_fx_version  = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
+  health_check_path = "/info"
+
+  # App settings
+  app_settings = local.gpd_app_settings
+
+  allowed_subnets = local.gpd_allowed_subnets
+  allowed_ips     = []
+  subnet_id       = module.gpd_snet[0].id
+
+  tags = var.tags
 }

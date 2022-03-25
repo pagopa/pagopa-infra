@@ -67,5 +67,13 @@ resource "azurerm_api_management_api_operation_policy" "get_donations" {
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "getavailabledonations"
 
-  xml_content = file("./api/donations/v1/donazioni_ucraina.xml")
+  # xml_content = file("./api/donations/v1/donazioni_ucraina.xml")
+
+  xml_content = templatefile("./api/donations/v1/donazioni_ucraina.xml", {
+    logo_1 = file("./api/donations/v1/logos/logo1")
+    logo_2 = file("./api/donations/v1/logos/logo2")
+    logo_3 = file("./api/donations/v1/logos/logo3")
+    logo_4 = file("./api/donations/v1/logos/logo4")
+  })
+
 }
