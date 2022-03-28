@@ -208,10 +208,10 @@ resource "azurerm_storage_container" "banks" {
 
 ## blob lifecycle policy
 resource "azurerm_storage_management_policy" "buyerbanks_storage_lifeclycle_policies" {
-  storage_account_id = buyerbanks_storage.id
+  storage_account_id = module.buyerbanks_storage.id
 
   rule {
-    name    = "retention_rule"
+    name    = "BlobRetentionRule"
     enabled = true
     filters {
       prefix_match = ["banks/"]
