@@ -199,6 +199,28 @@ resource "azurerm_storage_container" "banks" {
   container_access_type = "private"
 }
 
+## blob lifecycle policy
+resource "azurerm_storage_management_policy" "buyerbanks_storage_lifeclycle_policies" {
+  storage_account_id = buyerbanks_storage.id
+
+  rule {
+    name    = "retention_rule"
+    enabled = true
+    filters {
+      prefix_match = ["banks/"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_modification_greater_than = 30
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = 30
+      }
+    }
+  }
+}
+
 /*
  * KEY cert - buyerbanks functions
  */
