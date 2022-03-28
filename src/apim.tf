@@ -241,12 +241,28 @@ resource "azurerm_api_management_named_value" "ip_nodo_value" {
   value               = var.ip_nodo
 }
 
-resource "azurerm_api_management_named_value" "urlnodo_oncloud_value" {
-  name                = "urlnodocloud"
+resource "azurerm_api_management_named_value" "aks_lb_nexi" {
+  name                = "aks-lb-nexi"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "urlnodocloud"
-  value               = var.nodo_pagamenti_oncloud_url
+  display_name        = "aks-lb-nexi"
+  value               = var.lb_aks
+}
+
+resource "azurerm_api_management_named_value" "base_path_nodo_oncloud" {
+  name                = "base-path-nodo-oncloud"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-nodo-oncloud"
+  value               = var.base_path_nodo_oncloud
+}
+
+resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi" {
+  name                = "base-path-ppt-lmi"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-ppt-lmi"
+  value               = var.base_path_nodo_ppt_lmi
 }
 
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {

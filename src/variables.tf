@@ -225,11 +225,24 @@ variable "ip_nodo" {
   description = "Nodo pagamenti ip"
 }
 
-variable "nodo_pagamenti_oncloud_url" {
+variable "lb_aks" {
   type        = string
-  description = "Nodo pagamenti url oncloud"
+  description = "Load balancer AKS Nexi/SIA"
   default     = "http://"
 }
+
+variable "base_path_nodo_oncloud" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/nodo-sit"
+}
+
+variable "base_path_nodo_ppt_lmi" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/ppt-lmi-sit/"
+}
+
 
 # nodo dei pagamenti - test
 variable "nodo_pagamenti_test_enabled" {
