@@ -47,7 +47,7 @@ locals {
   }
   gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id]
   gpd_hostname        = var.env_short == "d" ? module.postgresql[0].fqdn : module.postgres_flexible_server[0].fqdn
-  gpd_dbmsport       = var.env_short == "d" ? var.gpd_dbms_port : module.postgres_flexible_server[0].port_pgbouncer # PgBouncer
+  gpd_dbmsport        = var.env_short == "d" ? var.gpd_dbms_port : module.postgres_flexible_server[0].port_pgbouncer # PgBouncer
 }
 
 # Subnet to host the api config
