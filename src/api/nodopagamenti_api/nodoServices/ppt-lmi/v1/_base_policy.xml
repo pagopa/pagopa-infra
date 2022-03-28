@@ -1,0 +1,80 @@
+<!--
+    IMPORTANT:
+    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
+    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
+    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.
+    - To add a policy, place the cursor at the desired insertion point and select a policy from the sidebar.
+    - To remove a policy, delete the corresponding policy statement from the policy document.
+    - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.
+    - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.
+    - Policies are applied in the order of their appearance, from the top down.
+    - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
+-->
+<policies>
+    <inbound>
+        <cors>
+            <allowed-origins>
+                <origin>*</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>*</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+            <expose-headers>
+                <header>*</header>
+            </expose-headers>
+        </cors>
+        <base />
+        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-ppt-lmi}}" />
+        <set-variable name="pathchiamato" value="@(context.Request.OriginalUrl.Path)" />
+        <set-variable name="contextpath" value="/ppt-lmi/api/v1/" />
+        <choose>
+            <when condition="@(Regex.IsMatch((string)context.Variables["pathchiamato"], @"^\/ppt-lmi/api/v1$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
+                <return-response>
+                    <set-status code="301" reason="See Other" />
+                    <set-header name="Location" exists-action="override">
+                        <value>@{
+                            return "https://"+context.Request.OriginalUrl.Host+(string)context.Variables["contextpath"];
+                        }</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+        <!--
+Path    "/ppt-lmi/api/v1/"
+Host    "api.dev.platform.pagopa.it"
+-->
+        <find-and-replace from="src=&quot;/" to="@{
+      string str = "src=\"";
+      return str+=(string)context.Variables["contextpath"];
+     }" />
+        <find-and-replace from="href=&quot;/" to="@{
+      string str = "href=\"";
+      return str+=(string)context.Variables["contextpath"];
+     }" />
+        <find-and-replace from="action=&quot;/" to="@{
+      string str = "action=\"";
+      return str+=(string)context.Variables["contextpath"];
+     }" />
+        <find-and-replace from="http://10.70.66.200" to="@{
+      string str = "https://";
+      return str+=context.Request.OriginalUrl.Host+"/"+(string)context.Variables["contextpath"];
+     }" />
+        <set-header name="location" exists-action="override">
+            <value>@{
+                return context.Response.Headers.GetValueOrDefault("location","").Replace(context.Request.Url.Host, context.Request.OriginalUrl+"/"+(string)context.Variables["contextpath"]).Replace("http:","https:");
+            }</value>
+        </set-header>
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
