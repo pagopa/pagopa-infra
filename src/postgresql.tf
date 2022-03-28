@@ -126,7 +126,7 @@ resource "azurerm_postgresql_database" "apd_db" {
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server" {
   count  = var.env_short != "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.5.0"
+  source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.7.1"
 
   name                = format("%s-flexible-postgresql", local.project)
   location            = azurerm_resource_group.flex_data.location
