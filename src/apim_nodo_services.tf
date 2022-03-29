@@ -431,7 +431,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api" {
 
 module "apim_nodo_per_pm_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = format("%s-nodo-per-pm-api", local.project)
   api_management_name   = module.apim.name
