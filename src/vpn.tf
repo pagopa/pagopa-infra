@@ -1,5 +1,6 @@
 ## VPN subnet
 module "vpn_snet" {
+  count                                          = var.env_short != "d" ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.58"
   name                                           = "GatewaySubnet"
   address_prefixes                               = var.cidr_subnet_vpn
@@ -14,6 +15,7 @@ data "azuread_application" "vpn_app" {
 }
 
 module "vpn" {
+  count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//vpn_gateway?ref=v2.0.11"
 
   name                = format("%s-vpn", local.project)
@@ -21,7 +23,7 @@ module "vpn" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   sku                 = var.vpn_sku
   pip_sku             = var.vpn_pip_sku
-  subnet_id           = module.vpn_snet.id
+  subnet_id           = module.vpn_snet[0].id
 
   vpn_client_configuration = [
     {
@@ -46,7 +48,9 @@ module "vpn" {
 
 ## DNS Forwarder
 module "dns_forwarder_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.3"
+  count  = var.env_short != "d" ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.3"
+
   name                                           = format("%s-dns-forwarder-snet", local.project)
   address_prefixes                               = var.cidr_subnet_dns_forwarder
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -63,11 +67,13 @@ module "dns_forwarder_snet" {
 }
 
 module "dns_forwarder" {
-  source              = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.8"
+  count  = var.env_short != "d" ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.8"
+
   name                = format("%s-dns-forwarder", local.project)
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
-  subnet_id           = module.dns_forwarder_snet.id
+  subnet_id           = module.dns_forwarder_snet[0].id
 
   tags = var.tags
 }

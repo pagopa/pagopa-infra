@@ -10,7 +10,9 @@ module "postgresql_snet" {
 
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.1.13"
+  count  = var.env_short != "d" ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.1.13"
+
   name                                           = format("%s-pgres-flexible-snet", local.project)
   address_prefixes                               = var.cidr_subnet_flex_dbms
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -128,16 +130,17 @@ module "postgres_flexible_server" {
   count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.7.1"
 
-  name                = format("%s-flexible-postgresql", local.project)
-  location            = azurerm_resource_group.flex_data.location
-  resource_group_name = azurerm_resource_group.flex_data.name
+  name = format("%s-gpd-pgflex", local.project)
+
+  location            = azurerm_resource_group.flex_data[0].location
+  resource_group_name = azurerm_resource_group.flex_data[0].name
 
   private_endpoint = {
     enabled   = true
-    subnet_id = module.postgres_flexible_snet.id
+    subnet_id = module.postgres_flexible_snet[0].id
     private_dns_zone = {
-      id   = azurerm_private_dns_zone.postgres.id
-      name = azurerm_private_dns_zone.postgres.name
+      id   = azurerm_private_dns_zone.postgres[0].id
+      name = azurerm_private_dns_zone.postgres[0].name
       rg   = azurerm_resource_group.rg_vnet.name
     }
   }
@@ -155,6 +158,6 @@ module "postgres_flexible_server" {
 
   tags = var.tags
 
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.postgres_vnet]
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.postgres_vnet[0]]
 
 }
