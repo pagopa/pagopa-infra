@@ -2,7 +2,9 @@
 ## Nodo on PPT LMI        ##
 ############################
 
+
 module "apim_nodo_ppt_lmi_product" {
+  count = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
   product_id   = "product-nodo-ppt-lmi"
@@ -20,6 +22,7 @@ module "apim_nodo_ppt_lmi_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_api" {
+  count = var.env_short == "d" ? 1 : 0
 
   name                = format("%s-nodo-ppt-lmi-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -29,15 +32,16 @@ resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_api" {
 }
 
 module "apim_nodo_ppt_lmi_api" {
+  count = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
   name                  = format("%s-nodo-ppt-lmi-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_ppt_lmi_product.product_id]
+  product_ids           = [module.apim_nodo_ppt_lmi_product[0].product_id]
   subscription_required = false
 
-  version_set_id = azurerm_api_management_api_version_set.nodo_ppt_lmi_api.id
+  version_set_id = azurerm_api_management_api_version_set.nodo_ppt_lmi_api[0].id
   api_version    = "v1"
 
   description  = "NodeDeiPagamenti (ppt-lmi)"
@@ -52,6 +56,9 @@ module "apim_nodo_ppt_lmi_api" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/nodopagamenti_api/nodoServices/ppt-lmi/v1/_base_policy.xml")
+  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/ppt-lmi/v1/_base_policy.xml", {
+    dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
+    apim_base_path = "/ppt-lmi/api/v1"
+  })
 
 }
