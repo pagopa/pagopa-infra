@@ -7,6 +7,8 @@ resource "azurerm_resource_group" "data" {
 
 
 resource "azurerm_resource_group" "flex_data" {
+  count = var.env_short != "d" ? 1 : 0
+
   name     = format("%s-flex-data-rg", local.project)
   location = var.location
 
