@@ -13,6 +13,8 @@ locals {
     azurerm_api_management_api.apim_cd_info_wisp_v1.name,
     module.apim_checkout_payment_activations_api_auth_v1.name,
     module.apim_checkout_payment_activations_api_auth_v2.name,
+    module.apim_checkout_payment_activations_api_v1.name,
+    module.apim_nodo_per_pm_api_v1.name,
   ]
 
 }
