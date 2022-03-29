@@ -243,6 +243,30 @@ variable "base_path_nodo_ppt_lmi" {
   default     = "/ppt-lmi-sit/"
 }
 
+variable "base_path_nodo_sync" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/sync-cron-sit/syncWisp"
+}
+
+variable "base_path_nodo_wfesp" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/wfesp-sit"
+}
+
+variable "base_path_nodo_fatturazione" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/fatturazione-sit"
+}
+
+variable "base_path_nodo_web_bo" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/web-bo-sit"
+}
+
 
 # nodo dei pagamenti - test
 variable "nodo_pagamenti_test_enabled" {
