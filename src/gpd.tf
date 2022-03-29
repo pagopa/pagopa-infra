@@ -30,6 +30,7 @@ locals {
     SPRING_DATASOURCE_PASSWORD              = data.azurerm_key_vault_secret.gpd_db_pwd.value
     SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name) : "")
     SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
+    SPRING_DATASOURCE_TYPE                  = var.env_short == "d" ? "com.zaxxer.hikari.HikariDataSource" : "org.springframework.jdbc.datasource.SimpleDriverDataSource" # disable hikari pull in UAT and PROD
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
     SCHEMA_NAME                             = "apd"
     LOG_LEVEL                               = "INFO"
