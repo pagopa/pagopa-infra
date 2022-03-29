@@ -265,6 +265,36 @@ resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi" {
   value               = var.base_path_nodo_ppt_lmi
 }
 
+resource "azurerm_api_management_named_value" "base_path_nodo_sync" {
+  name                = "base-path-sync"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-sync"
+  value               = var.base_path_nodo_sync
+}
+
+resource "azurerm_api_management_named_value" "base_path_nodo_wfesp" {
+  name                = "base-path-wfesp"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-wfesp"
+  value               = var.base_path_nodo_wfesp
+}
+
+resource "azurerm_api_management_named_value" "base_path_nodo_fatturazione" {
+  name                = "base-path-fatturazione"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-fatturazione"
+  value               = var.base_path_nodo_fatturazione
+}
+resource "azurerm_api_management_named_value" "base_path_nodo_web_bo" {
+  name                = "base-path-web-bo"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-web-bo"
+  value               = var.base_path_nodo_web_bo
+}
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {
   count               = var.checkout_enabled ? 1 : 0
   name                = "pagopa-fn-checkout-key"
