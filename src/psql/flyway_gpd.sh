@@ -46,8 +46,8 @@ if [ $SUBSCRIPTION == "DEV-pagoPA" ]; then
     psql_server_private_fqdn=$(az postgres server list -o tsv --query "[?contains(name,'postgresql')].{Name:fullyQualifiedDomainName}" | head -1)
 else
     # flexible-server
-    psql_server_name=$(az postgres flexible-server list -o tsv --query "[?contains(name,'postgresql')].{Name:name}" | head -1)
-    psql_server_private_fqdn=$(az postgres flexible-server list -o tsv --query "[?contains(name,'postgresql')].{Name:fullyQualifiedDomainName}" | head -1)
+    psql_server_name=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:name}" | head -1)
+    psql_server_private_fqdn=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:fullyQualifiedDomainName}" | head -1)
 fi
 
 # kv
@@ -69,7 +69,8 @@ apd_user=$(az keyvault secret show --name db-apd-user-name --vault-name "${keyva
 
 export ADMIN_USER="${administrator_login}"
 export FLYWAY_URL="jdbc:postgresql://${psql_server_private_fqdn}:5432/${DATABASE}?sslmode=require"
-export FLYWAY_USER="${administrator_login}@${psql_server_name}"
+#export FLYWAY_USER="${administrator_login}@${psql_server_name}"
+export FLYWAY_USER="${administrator_login}"
 export FLYWAY_PASSWORD="${administrator_login_password}"
 export SERVER_NAME="${psql_server_name}"
 export FLYWAY_DOCKER_TAG="7.11.1-alpine"

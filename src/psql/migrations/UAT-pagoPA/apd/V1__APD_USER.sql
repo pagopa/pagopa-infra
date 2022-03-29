@@ -1,9 +1,11 @@
 -- DROP OWNED BY ${db_user};
--- DROP ROLE ${db_uxser};
+-- DROP ROLE ${db_user};
 CREATE ROLE ${db_user};
 ALTER ROLE ${db_user} WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS;
 
 ALTER USER ${db_user} WITH PASSWORD '${db_user_password}';
+
+ALTER ROLE ${db_user}  WITH LOGIN;
 
 GRANT USAGE, CREATE ON SCHEMA ${db_schema} TO ${db_user};
 
