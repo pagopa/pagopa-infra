@@ -228,7 +228,7 @@ variable "ip_nodo" {
 variable "lb_aks" {
   type        = string
   description = "IP load balancer AKS Nexi/SIA"
-  default     = ""
+  default     = "0.0.0.0"
 }
 
 variable "base_path_nodo_oncloud" {
