@@ -1195,6 +1195,24 @@ variable "gpd_payments_autoscale_default" {
   default     = 5
 }
 
+variable "gpd_payments_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "gpd_payments_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
+variable "gpd_payments_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
 # canone unico
 variable "canoneunico_plan_kind" {
   type        = string

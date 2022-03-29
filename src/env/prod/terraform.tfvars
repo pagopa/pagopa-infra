@@ -359,6 +359,9 @@ canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
 
 # Postgres Flexible
+# https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
+# https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server#geo_redundant_backup_enabled
 pgres_flex_params = {
 
   enabled    = false
@@ -368,7 +371,7 @@ pgres_flex_params = {
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                   = 32768
   zone                         = 1
-  backup_retention_days        = 7
+  backup_retention_days        = 15
   geo_redundant_backup_enabled = false
   create_mode                  = "Default"
 

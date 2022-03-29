@@ -25,7 +25,10 @@ locals {
     PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
     PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    GPD_HOST                      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    PAYMENTS_SA_CONNECTION_STRING = module.payments_receipt.primary_connection_string
+    RECEIPTS_TABLE                = azurerm_storage_table.payments_receipts_table.name
+
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
@@ -169,4 +172,32 @@ resource "azurerm_monitor_autoscale_setting" "payments_app_service_autoscale" {
       }
     }
   }
+}
+
+# storage
+module "payments_receipt" {
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
+
+  name                       = replace(format("%s-payments-sa", local.project), "-", "")
+  account_kind               = "StorageV2"
+  account_tier               = "Standard"
+  account_replication_type   = "LRS"
+  access_tier                = "Hot"
+  versioning_name            = "versioning"
+  enable_versioning          = var.gpd_payments_versioning
+  resource_group_name        = azurerm_resource_group.gpd_rg.name
+  location                   = var.location
+  advanced_threat_protection = var.gpd_payments_advanced_threat_protection
+  allow_blob_public_access   = false
+
+  blob_properties_delete_retention_policy_days = var.gpd_payments_delete_retention_days
+
+  tags = var.tags
+}
+
+
+## table receipts storage
+resource "azurerm_storage_table" "payments_receipts_table" {
+  name                 = format("%sreceiptstable", module.payments_receipt.name)
+  storage_account_name = module.payments_receipt.name
 }
