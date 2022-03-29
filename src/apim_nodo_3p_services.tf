@@ -4,7 +4,7 @@
 
 
 module "apim_nodo_ppt_lmi_product" {
-  count = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
   product_id   = "product-nodo-ppt-lmi"
@@ -32,7 +32,7 @@ resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_api" {
 }
 
 module "apim_nodo_ppt_lmi_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
   name                  = format("%s-nodo-ppt-lmi-api", var.env_short)
@@ -58,7 +58,7 @@ module "apim_nodo_ppt_lmi_api" {
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/ppt-lmi/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path = "/ppt-lmi/api/v1"
+    apim_base_path      = "/ppt-lmi/api/v1"
   })
 
 }
