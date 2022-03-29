@@ -28,15 +28,21 @@
         </cors>
         <base />
         <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-ppt-lmi}}" />
-        <set-variable name="pathchiamato" value="@(context.Request.OriginalUrl.Path)" />
-        <set-variable name="contextpath" value="/ppt-lmi/api/v1/" />
+        <set-variable name="external-scheme" value="https" />
+        <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.dev.platform.pagopa.it -->
+        <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /ppt-lmi/api/v1 -->
         <choose>
-            <when condition="@(Regex.IsMatch((string)context.Variables["pathchiamato"], @"^\/ppt-lmi/api/v1$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
+            <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\${apim_base_path}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
                 <return-response>
                     <set-status code="301" reason="See Other" />
                     <set-header name="Location" exists-action="override">
                         <value>@{
-                            return "https://"+context.Request.OriginalUrl.Host+(string)context.Variables["contextpath"];
+                            string str = (string)context.Variables["external-scheme"];
+                            str += "://";
+                            str += (string)context.Variables["external-host"];
+                            str += (string)context.Variables["external-context-path"];
+                            str += "/";
+                            return str;
                         }</value>
                     </set-header>
                 </return-response>
@@ -48,30 +54,40 @@
     </backend>
     <outbound>
         <base />
-        <!--
-Path    "/ppt-lmi/api/v1/"
-Host    "api.dev.platform.pagopa.it"
--->
         <find-and-replace from="src=&quot;/" to="@{
-      string str = "src=\"";
-      return str+=(string)context.Variables["contextpath"];
-     }" />
+            string str = "src=\"";
+            str += (string)context.Variables["external-context-path"];
+            str += "/";
+            return str;
+        }" />
         <find-and-replace from="href=&quot;/" to="@{
-      string str = "href=\"";
-      return str+=(string)context.Variables["contextpath"];
-     }" />
+            string str = "href=\"";
+            str += (string)context.Variables["external-context-path"];
+            str += "/";
+            return str;
+        }" />
         <find-and-replace from="action=&quot;/" to="@{
-      string str = "action=\"";
-      return str+=(string)context.Variables["contextpath"];
-     }" />
-        <find-and-replace from="http://10.70.66.200" to="@{
-      string str = "https://";
-      return str+=context.Request.OriginalUrl.Host+"/"+(string)context.Variables["contextpath"];
-     }" />
+            string str = "action=\"";
+            str += (string)context.Variables["external-context-path"];
+            str += "/";
+            return str;
+        }" />
+        <find-and-replace from="@{
+            string str = context.Request.Url.Scheme;
+            str += "://";
+            str += context.Request.Url.Host;
+            str += "/";
+            return str;
+        }" to="@{
+            string str = (string)context.Variables["external-scheme"];
+            str += "://";
+            str += (string)context.Variables["external-host"];
+            str += (string)context.Variables["external-context-path"];
+            str += "/";
+            return str;
+        }" />
         <set-header name="location" exists-action="override">
-            <value>@{
-                return context.Response.Headers.GetValueOrDefault("location","").Replace(context.Request.Url.Host, context.Request.OriginalUrl+"/"+(string)context.Variables["contextpath"]).Replace("http:","https:");
-            }</value>
+            <value>@(context.Response.Headers.GetValueOrDefault("location","").Replace(context.Request.Url.Scheme + "://" + context.Request.Url.Host + "/", (string)context.Variables["external-scheme"] + "://" + (string)context.Variables["external-host"] + (string)context.Variables["external-context-path"] + "/"))</value>
         </set-header>
     </outbound>
     <on-error>
