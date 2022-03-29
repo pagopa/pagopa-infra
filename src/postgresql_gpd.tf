@@ -81,3 +81,11 @@ module "postgres_flexible_server" {
   depends_on = [azurerm_private_dns_zone_virtual_network_link.postgres_vnet[0]]
 
 }
+
+resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
+  count     = var.env_short != "d" ? 1 : 0
+  name      = var.gpd_db_name
+  server_id = module.postgres_flexible_server[0].id
+  collation = "en_US.utf8"
+  charset   = "utf8"
+}
