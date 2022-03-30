@@ -331,9 +331,10 @@ reporting_batch_function_always_on    = true
 reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
-// GPD Payments
-gpd_paa_id_intermediario = "77777777777"   // TODO
-gpd_paa_stazione_int     = "77777777777_1" // TODO
+# GPD Payments
+# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
+gpd_paa_id_intermediario = "15376371009"
+gpd_paa_stazione_int     = "15376371009_01"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"
@@ -347,9 +348,9 @@ canoneunico_function_autoscale_default = 1
 # Postgres Flexible
 pgres_flex_params = {
 
-  enabled    = true
-  sku_name   = "GP_Standard_D2s_v3"
-  db_version = "13"
+  private_endpoint_enabled = true
+  sku_name                 = "GP_Standard_D2s_v3"
+  db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                   = 32768
@@ -357,5 +358,8 @@ pgres_flex_params = {
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
   create_mode                  = "Default"
+  high_availability_enabled    = true
+  standby_availability_zone    = 2
+  pgbouncer_enabled            = true
 
 }

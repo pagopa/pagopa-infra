@@ -6,6 +6,7 @@
 # Usage:
 #  ./flyway_gpd.sh info|validate|migrate DEV-pagoPA apd APD_USER -schemas=apd
 #  ./flyway_gpd.sh info DEV-pagoPA apd apd -schemas=apd
+#  ./flyway_gpd.sh info UAT-pagoPA apd apd -schemas=apd
 
 
 BASHDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"

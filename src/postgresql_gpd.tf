@@ -46,25 +46,21 @@ data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
 }
 
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
-module "postgres_flexible_server" {
+module "postgres_flexible_server_private" {
   count  = var.env_short != "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.7.1"
+  source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.8.0"
 
   name = format("%s-gpd-pgflex", local.project)
 
   location            = azurerm_resource_group.flex_data[0].location
   resource_group_name = azurerm_resource_group.flex_data[0].name
 
-  private_endpoint = {
-    enabled   = true
-    subnet_id = module.postgres_flexible_snet[0].id
-    private_dns_zone = {
-      id   = azurerm_private_dns_zone.postgres[0].id
-      name = azurerm_private_dns_zone.postgres[0].name
-      rg   = azurerm_resource_group.rg_vnet.name
-    }
-  }
+  ### Network
+  private_endpoint_enabled = var.pgres_flex_params.private_endpoint_enabled
+  private_dns_zone_id      = azurerm_private_dns_zone.postgres[0].id
+  delegated_subnet_id      = module.postgres_flexible_snet[0].id
 
+  ### admin credentials
   administrator_login    = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
   administrator_password = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value
 
@@ -74,12 +70,10 @@ module "postgres_flexible_server" {
   zone                         = var.pgres_flex_params.zone
   backup_retention_days        = var.pgres_flex_params.backup_retention_days
   geo_redundant_backup_enabled = var.pgres_flex_params.geo_redundant_backup_enabled
-  create_mode                  = var.pgres_flex_params.create_mode
 
-  # high_availability = {
-  #   mode                      = "ZoneRedundant"
-  #   standby_availability_zone = "2"
-  # }
+  high_availability_enabled = var.pgres_flex_params.high_availability_enabled
+  standby_availability_zone = var.pgres_flex_params.standby_availability_zone
+  pgbouncer_enabled         = var.pgres_flex_params.pgbouncer_enabled
 
   tags = var.tags
 
@@ -90,7 +84,20 @@ module "postgres_flexible_server" {
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
   count     = var.env_short != "d" ? 1 : 0
   name      = var.gpd_db_name
-  server_id = module.postgres_flexible_server[0].id
+  server_id = module.postgres_flexible_server_private[0].id
   collation = "en_US.utf8"
   charset   = "utf8"
+}
+
+# Message    : FATAL: unsupported startup parameter: extra_float_digits
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_startup_parameters" {
+  name      = "pgbouncer.ignore_startup_parameters"
+  server_id = module.postgres_flexible_server_private[0].id
+  value     = "extra_float_digits"
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_pool_size" {
+  name      = "pgbouncer.min_pool_size"
+  server_id = module.postgres_flexible_server_private[0].id
+  value     = 10
 }
