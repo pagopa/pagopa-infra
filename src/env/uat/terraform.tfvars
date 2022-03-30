@@ -69,6 +69,7 @@ app_gateway_deny_paths = [
   "/payment-manager/clients/*",
   "/payment-manager/restapi-rtd/*",
   "/payment-manager/db-logging/*",
+  "/payment-manager/payment-gateway/*",
   "/checkout/io-for-node/*"
 ]
 
