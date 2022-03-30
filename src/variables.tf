@@ -1333,14 +1333,16 @@ variable "users" {
 # Postgres Flexible
 variable "pgres_flex_params" {
   type = object({
-    enabled                      = bool
+    private_endpoint_enabled     = bool
     sku_name                     = string
     db_version                   = string
     storage_mb                   = string
     zone                         = number
     backup_retention_days        = number
     geo_redundant_backup_enabled = bool
-    create_mode                  = string
+    high_availability_enabled    = bool
+    standby_availability_zone    = number
+    pgbouncer_enabled            = bool
   })
 
 }

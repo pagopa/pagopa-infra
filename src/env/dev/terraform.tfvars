@@ -344,10 +344,11 @@ users = [
   }
 ]
 
-// GPD Payments
+# GPD Payments
+# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
 payments_always_on       = false
-gpd_paa_id_intermediario = "77777777777"   // TODO
-gpd_paa_stazione_int     = "77777777777_1" // TODO
+gpd_paa_id_intermediario = "15376371009"
+gpd_paa_stazione_int     = "15376371009_01"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"
