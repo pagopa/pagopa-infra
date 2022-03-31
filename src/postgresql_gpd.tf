@@ -5,7 +5,7 @@
 resource "azurerm_resource_group" "flex_data" {
   count = var.env_short != "d" ? 1 : 0
 
-  name     = format("%s-flex-data-rg", local.project)
+  name     = format("%s-pgres-flex-rg", local.project)
   location = var.location
 
   tags = var.tags
@@ -17,7 +17,7 @@ module "postgres_flexible_snet" {
   source = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.1.13"
 
   name                                           = format("%s-pgres-flexible-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_flex_dbms
+  address_prefixes                               = var.cidr_subnet_pg_flex_dbms
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
   service_endpoints                              = ["Microsoft.Storage"]
