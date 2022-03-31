@@ -162,6 +162,46 @@
 "amount":20000
 }
 ]
+},
+{
+"name":"UNHCR, Agenzia ONU per i Rifugiati",
+"reason":"Emergenza Ucraina",
+"web_site":"https://www.unhcr.org/it/cosa-facciamo/emergenze/ucraina/",
+"base64Logo":"/9j/4AAQSk",
+"cf":"80233930587",
+"iban":"IT84R0100503231000000211000",
+"paymentDescription":"Emergenza Ucraina",
+"companyName":"UNHCR, Agenzia ONU per i Rifugiati",
+"officeName":"UNHCR, Agenzia ONU per i Rifugiati",
+"auxdigit":"3",
+"segregationcode":"00",
+"transferCategory":"0804101AP",
+"slices":[
+{
+"idDonation":"36",
+"amount":500
+},
+{
+"idDonation":"37",
+"amount":1000
+},
+{
+"idDonation":"38",
+"amount":2000
+},
+{
+"idDonation":"39",
+"amount":5000
+},
+{
+"idDonation":"40",
+"amount":10000
+},
+{
+"idDonation":"41",
+"amount":20000
 }
 ]
 }
+]
+}   
