@@ -62,6 +62,7 @@ module "payments_snet" {
 module "payments_app_service" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
 
+  vnet_integration    = true
   resource_group_name = azurerm_resource_group.gpd_rg.name
   plan_type           = "external"
   plan_id             = azurerm_app_service_plan.gpd_service_plan.id
