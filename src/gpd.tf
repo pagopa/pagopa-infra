@@ -74,8 +74,10 @@ module "gpd_snet" {
 
 
 module "gpd_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
+  # source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
 
+  vnet_integration    = true
   resource_group_name = azurerm_resource_group.gpd_rg.name
   plan_type           = "external"
   plan_id             = azurerm_app_service_plan.gpd_service_plan.id
@@ -98,6 +100,7 @@ module "gpd_app_service" {
   tags = var.tags
 
 }
+
 
 module "gpd_app_service_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
