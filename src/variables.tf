@@ -1100,7 +1100,7 @@ variable "gpd_enable_versioning" {
 variable "gpd_always_on" {
   type        = bool
   description = "Always on property"
-  default     = false
+  default     = true
 }
 
 variable "cidr_subnet_gpd" {
