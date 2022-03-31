@@ -188,6 +188,13 @@ module "buyerbanks_storage" {
 
   blob_properties_delete_retention_policy_days = var.buyerbanks_delete_retention_days
 
+  network_rules = {
+    default_action             = "Deny"
+    ip_rules                   = ["0.0.0.0/0"]
+    bypass                     = [ "AzureServices" ]
+    virtual_network_subnet_ids = [module.buyerbanks_function_snet.id]
+  }
+
   tags = var.tags
 }
 
@@ -197,6 +204,28 @@ resource "azurerm_storage_container" "banks" {
   name                  = "banks"
   storage_account_name  = module.buyerbanks_storage.name
   container_access_type = "private"
+}
+
+## blob lifecycle policy
+resource "azurerm_storage_management_policy" "buyerbanks_storage_lifeclycle_policies" {
+  storage_account_id = module.buyerbanks_storage.id
+
+  rule {
+    name    = "BlobRetentionRule"
+    enabled = true
+    filters {
+      prefix_match = ["banks/"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_modification_greater_than = 30
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = 30
+      }
+    }
+  }
 }
 
 /*
