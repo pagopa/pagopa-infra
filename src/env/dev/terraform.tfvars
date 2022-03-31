@@ -325,6 +325,7 @@ reporting_fdr_function_sku_size = "S1"
 gpd_plan_kind     = "Linux"
 gpd_plan_sku_tier = "Standard"
 gpd_plan_sku_size = "S1"
+gpd_always_on     = false
 
 reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3

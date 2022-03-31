@@ -47,7 +47,7 @@ locals {
     DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
   }
-  gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id, module.postgres_flexible_snet.id]
+  gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id]
   gpd_hostname        = var.env_short == "d" ? module.postgresql[0].fqdn : module.postgres_flexible_server_private[0].fqdn
   gpd_dbmsport        = var.env_short == "d" ? var.gpd_dbms_port : module.postgres_flexible_server_private[0].connection_port # PgBouncer
 }
