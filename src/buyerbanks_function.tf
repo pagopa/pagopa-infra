@@ -21,6 +21,11 @@ module "buyerbanks_function_snet" {
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.Storage",
+  ]
 }
 
 module "buyerbanks_function" {
@@ -190,8 +195,8 @@ module "buyerbanks_storage" {
 
   network_rules = {
     default_action             = "Deny"
-    ip_rules                   = ["0.0.0.0/0"]
-    bypass                     = [ "AzureServices" ]
+    ip_rules                   = []
+    bypass                     = ["AzureServices"]
     virtual_network_subnet_ids = [module.buyerbanks_function_snet.id]
   }
 
