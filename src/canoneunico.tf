@@ -81,8 +81,8 @@ module "canoneunico_function" {
     CU_SEGREGATION_CODE        = "47"
     CU_AUX_DIGIT               = "3"
     MAX_ATTEMPTS               = 3
-    QUEUE_TIME_TO_LIVE         = 7200 // 2h
-    QUEUE_DELAY                = 3600 // 1h
+    QUEUE_TIME_TO_LIVE         = 7200                                // 2h
+    QUEUE_DELAY                = var.canoneunico_queue_message_delay // 2m
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true

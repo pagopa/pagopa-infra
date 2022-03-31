@@ -359,6 +359,8 @@ canoneunico_function_autoscale_minimum = 1
 canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
 
+canoneunico_queue_message_delay = 3600 // in seconds = 1h
+
 # Postgres Flexible
 # https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
 # https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
