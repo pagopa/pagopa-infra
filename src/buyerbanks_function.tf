@@ -192,7 +192,6 @@ module "buyerbanks_storage" {
   allow_blob_public_access   = false
 
   blob_properties_delete_retention_policy_days = var.buyerbanks_delete_retention_days
-
   network_rules = {
     default_action             = "Deny"
     ip_rules                   = []

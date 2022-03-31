@@ -91,12 +91,14 @@ resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
 
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_startup_parameters" {
+  count     = var.env_short != "d" ? 1 : 0
   name      = "pgbouncer.ignore_startup_parameters"
   server_id = module.postgres_flexible_server_private[0].id
   value     = "extra_float_digits"
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_pool_size" {
+  count     = var.env_short != "d" ? 1 : 0
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_flexible_server_private[0].id
   value     = 10
