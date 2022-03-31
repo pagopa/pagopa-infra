@@ -1352,7 +1352,7 @@ variable "pgres_flex_params" {
   })
 
 }
-variable "cidr_subnet_flex_dbms" {
+variable "cidr_subnet_pg_flex_dbms" {
   type        = list(string)
   description = "Postgres Flexible Server network address space."
 }

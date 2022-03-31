@@ -28,7 +28,7 @@ cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
 cidr_subnet_payments           = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common = ["10.1.140.0/24"]
-cidr_subnet_flex_dbms          = ["10.1.141.0/24"]
+cidr_subnet_pg_flex_dbms       = ["10.1.141.0/24"]
 cidr_subnet_vpn                = ["10.1.142.0/24"]
 cidr_subnet_dns_forwarder      = ["10.1.143.0/29"]
 
