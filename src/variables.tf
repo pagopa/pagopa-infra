@@ -1285,6 +1285,12 @@ variable "canoneunico_function_autoscale_default" {
   default     = 1
 }
 
+variable "canoneunico_queue_message_delay" {
+  type        = number
+  description = "Queue message delay"
+  default     = 120 // in seconds = 2 minutes
+}
+
 // gpd Database
 
 variable "gpd_db_name" {
