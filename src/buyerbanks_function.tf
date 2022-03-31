@@ -188,6 +188,13 @@ module "buyerbanks_storage" {
 
   blob_properties_delete_retention_policy_days = var.buyerbanks_delete_retention_days
 
+  network_rules = {
+    default_action             = "Deny"
+    ip_rules                   = ["0.0.0.0/0"]
+    bypass                     = [ "AzureServices" ]
+    virtual_network_subnet_ids = [module.buyerbanks_function_snet.id]
+  }
+
   tags = var.tags
 }
 
