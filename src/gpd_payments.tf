@@ -28,7 +28,9 @@ locals {
     GPD_HOST                      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
     PAYMENTS_SA_CONNECTION_STRING = module.payments_receipt.primary_connection_string
     RECEIPTS_TABLE                = azurerm_storage_table.payments_receipts_table.name
-
+    CONNECTION_TIMEOUT            = 3000
+    RETRY_MAX_ATTEMPTS            = 1
+    RETRY_MAX_DELAY               = 2000
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
