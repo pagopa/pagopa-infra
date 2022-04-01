@@ -347,6 +347,9 @@ canoneunico_function_autoscale_minimum = 1
 canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
 
+# each 15 minutes
+canoneunico_schedule_batch = "0 */15 * * * *"
+
 # Postgres Flexible
 pgres_flex_params = {
 
