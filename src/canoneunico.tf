@@ -380,9 +380,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s"
+    | order by timestamp desc
     | where message contains "CuCreateDebtPositionFunction"
     | where message contains "Update entity with ERROR status"
-  QUERY, module.canoneunico_function.name
+  QUERY
+  , module.canoneunico_function.name
   )
   severity    = 2
   frequency   = 5
