@@ -1351,6 +1351,7 @@ variable "pgres_flex_params" {
     pgbouncer_enabled            = bool
   })
 
+  default = null
 }
 variable "cidr_subnet_pg_flex_dbms" {
   type        = list(string)
