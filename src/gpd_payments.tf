@@ -60,7 +60,7 @@ module "payments_snet" {
 }
 
 module "payments_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
 
   # vnet_integration    = true
   resource_group_name = azurerm_resource_group.gpd_rg.name
@@ -177,7 +177,7 @@ resource "azurerm_monitor_autoscale_setting" "payments_app_service_autoscale" {
 
 # storage
 module "payments_receipt" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.8.0"
 
   name                       = replace(format("%s-payments-sa", local.project), "-", "")
   account_kind               = "StorageV2"

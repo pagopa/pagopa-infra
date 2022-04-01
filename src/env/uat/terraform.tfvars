@@ -358,7 +358,7 @@ pgres_flex_params = {
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
   create_mode                  = "Default"
-  high_availability_enabled    = true
+  high_availability_enabled    = false
   standby_availability_zone    = 2
   pgbouncer_enabled            = true
 
