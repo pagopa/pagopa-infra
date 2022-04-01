@@ -322,6 +322,8 @@ reporting_fdr_function_always_on = true
 gpd_plan_kind     = "Linux"
 gpd_plan_sku_tier = "Standard"
 gpd_plan_sku_size = "S1"
+gpd_cron_schedule_valid_to = "0 */30 * * * *"
+gpd_cron_schedule_expired_to = "0 */40 * * * *"
 
 reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
