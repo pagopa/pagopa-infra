@@ -177,7 +177,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
 #tfsec:ignore:azure-storage-default-action-deny
 module "buyerbanks_storage" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.9.0"
 
   name                       = replace(format("%s-buyerbanks-storage", local.project), "-", "")
   account_kind               = "StorageV2"

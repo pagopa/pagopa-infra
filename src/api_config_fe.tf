@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "api_config_fe_rg" {
  * CDN
  */
 module "api_config_fe_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.9.0"
 
   count               = var.api_config_fe_enabled ? 1 : 0
   name                = "api-config-fe"

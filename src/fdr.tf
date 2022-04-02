@@ -2,7 +2,7 @@
 
 ## Storage Account
 module "fdr_flows_sa" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.9.0"
 
   name                       = replace(format("%s-fdr-flows-sa", local.project), "-", "")
   account_kind               = "StorageV2"

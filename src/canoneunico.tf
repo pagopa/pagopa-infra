@@ -296,7 +296,7 @@ resource "azurerm_monitor_autoscale_setting" "canoneunico_function" {
 }
 
 module "cu_sa" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.9.0"
 
   name                       = replace(format("%s-canoneunico-sa", local.project), "-", "")
   account_kind               = "StorageV2"
