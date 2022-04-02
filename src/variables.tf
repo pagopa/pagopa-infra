@@ -225,11 +225,48 @@ variable "ip_nodo" {
   description = "Nodo pagamenti ip"
 }
 
-variable "nodo_pagamenti_oncloud_url" {
+variable "lb_aks" {
   type        = string
-  description = "Nodo pagamenti url oncloud"
-  default     = "http://"
+  description = "IP load balancer AKS Nexi/SIA"
+  default     = "0.0.0.0"
 }
+
+variable "base_path_nodo_oncloud" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/nodo-sit"
+}
+
+variable "base_path_nodo_ppt_lmi" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/ppt-lmi-sit/"
+}
+
+variable "base_path_nodo_sync" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/sync-cron-sit/syncWisp"
+}
+
+variable "base_path_nodo_wfesp" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/wfesp-sit"
+}
+
+variable "base_path_nodo_fatturazione" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/fatturazione-sit"
+}
+
+variable "base_path_nodo_web_bo" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/web-bo-sit"
+}
+
 
 # nodo dei pagamenti - test
 variable "nodo_pagamenti_test_enabled" {
@@ -296,6 +333,30 @@ variable "dns_zone_checkout" {
   type        = string
   default     = null
   description = "The checkout dns subdomain."
+}
+
+# vpn
+
+variable "cidr_subnet_vpn" {
+  type        = list(string)
+  description = "VPN network address space."
+}
+
+variable "vpn_sku" {
+  type        = string
+  default     = "VpnGw1"
+  description = "VPN Gateway SKU"
+}
+
+variable "vpn_pip_sku" {
+  type        = string
+  default     = "Basic"
+  description = "VPN GW PIP SKU"
+}
+
+variable "cidr_subnet_dns_forwarder" {
+  type        = list(string)
+  description = "DNS Forwarder network address space."
 }
 
 # apim
@@ -1039,7 +1100,7 @@ variable "gpd_enable_versioning" {
 variable "gpd_always_on" {
   type        = bool
   description = "Always on property"
-  default     = false
+  default     = true
 }
 
 variable "cidr_subnet_gpd" {
@@ -1134,6 +1195,24 @@ variable "gpd_payments_autoscale_default" {
   default     = 5
 }
 
+variable "gpd_payments_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "gpd_payments_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
+variable "gpd_payments_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
 # canone unico
 variable "canoneunico_plan_kind" {
   type        = string
@@ -1206,6 +1285,12 @@ variable "canoneunico_function_autoscale_default" {
   default     = 1
 }
 
+variable "canoneunico_queue_message_delay" {
+  type        = number
+  description = "Queue message delay"
+  default     = 120 // in seconds = 2 minutes
+}
+
 // gpd Database
 
 variable "gpd_db_name" {
@@ -1249,4 +1334,26 @@ variable "users" {
     }))
   }))
   default = []
+}
+
+# Postgres Flexible
+variable "pgres_flex_params" {
+  type = object({
+    private_endpoint_enabled     = bool
+    sku_name                     = string
+    db_version                   = string
+    storage_mb                   = string
+    zone                         = number
+    backup_retention_days        = number
+    geo_redundant_backup_enabled = bool
+    high_availability_enabled    = bool
+    standby_availability_zone    = number
+    pgbouncer_enabled            = bool
+  })
+
+  default = null
+}
+variable "cidr_subnet_pg_flex_dbms" {
+  type        = list(string)
+  description = "Postgres Flexible Server network address space."
 }

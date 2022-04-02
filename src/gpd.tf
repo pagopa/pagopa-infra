@@ -26,9 +26,11 @@ locals {
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
     # Spring Environment
-    SPRING_DATASOURCE_USERNAME              = format("%s@pagopa-%s-postgresql", data.azurerm_key_vault_secret.gpd_db_usr.value, var.env_short)
-    SPRING_DATASOURCE_PASSWORD              = data.azurerm_key_vault_secret.gpd_db_pwd.value
-    SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require", local.gpd_hostname, var.gpd_dbms_port, var.gpd_db_name) : "")
+    SPRING_DATASOURCE_USERNAME = var.env_short == "d" ? format("%s@pagopa-%s-postgresql", data.azurerm_key_vault_secret.gpd_db_usr.value, var.env_short) : data.azurerm_key_vault_secret.gpd_db_usr.value
+    SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.gpd_db_pwd.value
+    # Deactivation prepareThreshold=0 https://jdbc.postgresql.org/documentation/head/server-prepare.html
+    SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name, (var.env_short != "d" ? "&prepareThreshold=0" : "")) : "")
+    SPRING_DATASOURCE_TYPE                  = var.env_short == "d" ? "com.zaxxer.hikari.HikariDataSource" : "org.springframework.jdbc.datasource.SimpleDriverDataSource" # disable hikari pull in UAT and PROD
     SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
     SCHEMA_NAME                             = "apd"
@@ -46,7 +48,8 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
   }
   gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id]
-  gpd_hostname        = var.env_short == "d" ? module.postgresql[0].fqdn : null // TODO in dev/uat Flexible Server instance
+  gpd_hostname        = var.env_short == "d" ? module.postgresql[0].fqdn : module.postgres_flexible_server_private[0].fqdn
+  gpd_dbmsport        = var.env_short == "d" ? var.gpd_dbms_port : module.postgres_flexible_server_private[0].connection_port # PgBouncer
 }
 
 # Subnet to host the api config
@@ -71,8 +74,9 @@ module "gpd_snet" {
 
 
 module "gpd_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
+  vnet_integration    = true
   resource_group_name = azurerm_resource_group.gpd_rg.name
   plan_type           = "external"
   plan_id             = azurerm_app_service_plan.gpd_service_plan.id
@@ -96,10 +100,11 @@ module "gpd_app_service" {
 
 }
 
+
 module "gpd_app_service_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.0"
 
   # App service plan
   app_service_plan_id = module.gpd_app_service.plan_id

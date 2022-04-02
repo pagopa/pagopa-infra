@@ -45,13 +45,14 @@ module "mock_ec" {
   always_on           = var.mock_ec_always_on
   linux_fx_version    = "NODE|12-lts"
   app_command_line    = "node /home/site/wwwroot/dist/index.js"
-  health_check_path   = "/mockEcService/info"
+  health_check_path   = "/mock-ec/info"
 
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
     NODE_ENV                     = "production"
     PORT                         = "8080"
+    PPT_NODO                     = "/mock-ec"
 
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key

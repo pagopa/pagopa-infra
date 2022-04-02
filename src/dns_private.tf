@@ -77,3 +77,21 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
 
   tags = var.tags
 }
+
+# Private DNS Zone for Postgres Databases
+
+resource "azurerm_private_dns_zone" "postgres" {
+  count = var.env_short != "d" ? 1 : 0
+
+  name                = "private.postgres.database.azure.com"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "postgres_vnet" {
+  count = var.env_short != "d" ? 1 : 0
+
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.postgres[0].name
+  virtual_network_id    = module.vnet.id
+}

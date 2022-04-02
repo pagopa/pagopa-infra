@@ -28,6 +28,9 @@ cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
 cidr_subnet_payments           = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common = ["10.1.140.0/24"]
+cidr_subnet_pg_flex_dbms       = ["10.1.141.0/24"]
+cidr_subnet_vpn                = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder      = ["10.1.143.0/29"]
 
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
@@ -69,6 +72,7 @@ app_gateway_deny_paths = [
   "/payment-manager/clients/*",
   "/payment-manager/restapi-rtd/*",
   "/payment-manager/db-logging/*",
+  "/payment-manager/payment-gateway/*",
   "/checkout/io-for-node/*"
 ]
 
@@ -327,9 +331,10 @@ reporting_batch_function_always_on    = true
 reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
-// GPD Payments
-gpd_paa_id_intermediario = "77777777777"   // TODO
-gpd_paa_stazione_int     = "77777777777_1" // TODO
+# GPD Payments
+# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
+gpd_paa_id_intermediario = "15376371009"
+gpd_paa_stazione_int     = "15376371009_01"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"
@@ -339,3 +344,22 @@ canoneunico_function_always_on         = true
 canoneunico_function_autoscale_minimum = 1
 canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
+
+# Postgres Flexible
+pgres_flex_params = {
+
+  private_endpoint_enabled = true
+  sku_name                 = "GP_Standard_D2s_v3"
+  db_version               = "13"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                   = 32768
+  zone                         = 1
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
+  create_mode                  = "Default"
+  high_availability_enabled    = false
+  standby_availability_zone    = 2
+  pgbouncer_enabled            = true
+
+}

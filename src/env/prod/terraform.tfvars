@@ -28,7 +28,9 @@ cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
 cidr_subnet_payments           = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common = ["10.1.140.0/24"]
-
+cidr_subnet_pg_flex_dbms       = ["10.1.141.0/24"]
+cidr_subnet_vpn                = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder      = ["10.1.143.0/29"]
 # specific
 cidr_subnet_redis = ["10.1.132.0/24"]
 
@@ -84,6 +86,7 @@ app_gateway_deny_paths = [
   "/payment-manager/clients/*",
   "/payment-manager/restapi-rtd/*",
   "/payment-manager/db-logging/*",
+  "/payment-manager/payment-gateway/*",
   "/checkout/io-for-node/*"
 ]
 
@@ -342,9 +345,10 @@ reporting_analysis_function_autoscale_minimum = 1
 reporting_analysis_function_autoscale_maximum = 3
 reporting_analysis_function_autoscale_default = 1
 
-// GPD Payments
-gpd_paa_id_intermediario = "77777777777"   // TODO
-gpd_paa_stazione_int     = "77777777777_1" // TODO
+# GPD Payments
+# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
+gpd_paa_id_intermediario = "15376371009"
+gpd_paa_stazione_int     = "15376371009_01"
 
 # canone unico
 canoneunico_plan_sku_tier = "PremiumV3"
@@ -354,3 +358,27 @@ canoneunico_function_always_on         = true
 canoneunico_function_autoscale_minimum = 1
 canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
+
+canoneunico_queue_message_delay = 3600 // in seconds = 1h
+
+# Postgres Flexible
+# https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
+# https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server#geo_redundant_backup_enabled
+pgres_flex_params = {
+
+  private_endpoint_enabled = true
+  sku_name                 = "GP_Standard_D2ds_v4"
+  db_version               = "13"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                   = 32768
+  zone                         = 1
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = true
+  create_mode                  = "Default"
+  high_availability_enabled    = true
+  standby_availability_zone    = 2
+  pgbouncer_enabled            = true
+
+}

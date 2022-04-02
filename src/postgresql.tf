@@ -8,6 +8,7 @@ module "postgresql_snet" {
   enforce_private_link_endpoint_network_policies = true
 }
 
+# KV secrets single server
 data "azurerm_key_vault_secret" "db_administrator_login" {
   count        = var.env_short == "d" ? 1 : 0
   name         = "db-administrator-login"
@@ -20,6 +21,7 @@ data "azurerm_key_vault_secret" "db_administrator_login_password" {
   key_vault_id = module.key_vault.id
 }
 
+# DNS private single server
 resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
   count               = var.postgres_private_endpoint_enabled ? 1 : 0
   name                = "privatelink.postgres.database.azure.com"

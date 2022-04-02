@@ -28,6 +28,9 @@ cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
 cidr_subnet_payments           = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common = ["10.1.140.0/24"]
+cidr_subnet_pg_flex_dbms       = ["10.1.141.0/24"]
+cidr_subnet_vpn                = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder      = ["10.1.143.0/29"]
 
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
@@ -101,7 +104,7 @@ nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,001031
 nodo_pagamenti_url     = "https://10.79.20.32/sit/webservices/input"
 ip_nodo                = "10.79.20.32"
 
-nodo_pagamenti_oncloud_url = "10.70.66.200:80/nodo-sit" # for soap services add /webservices/input
+lb_aks = "10.70.66.200" # for soap services add /webservices/input
 
 # eventhub
 eventhub_enabled = true
@@ -322,6 +325,7 @@ reporting_fdr_function_sku_size = "S1"
 gpd_plan_kind     = "Linux"
 gpd_plan_sku_tier = "Standard"
 gpd_plan_sku_size = "S1"
+gpd_always_on     = false
 
 reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
@@ -341,10 +345,11 @@ users = [
   }
 ]
 
-// GPD Payments
+# GPD Payments
+# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
 payments_always_on       = false
-gpd_paa_id_intermediario = "77777777777"   // TODO
-gpd_paa_stazione_int     = "77777777777_1" // TODO
+gpd_paa_id_intermediario = "15376371009"
+gpd_paa_stazione_int     = "15376371009_01"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"
@@ -353,3 +358,22 @@ canoneunico_plan_sku_size = "S1"
 canoneunico_function_autoscale_minimum = 1
 canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
+
+# Postgres Flexible
+# pgres_flex_params = {
+
+#   private_endpoint_enabled = true
+#   sku_name                 = "B_Standard_B1ms"
+#   db_version               = "13"
+#   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+#   # 2097152, 4194304, 8388608, 16777216, and 33554432.
+#   storage_mb                   = 32768
+#   zone                         = 1
+#   backup_retention_days        = 7
+#   geo_redundant_backup_enabled = false
+#   create_mode                  = "Default"
+#   high_availability_enabled    = false
+#   standby_availability_zone    = 2
+#   pgbouncer_enabled            = false
+
+# }
