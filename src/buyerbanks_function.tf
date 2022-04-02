@@ -29,7 +29,7 @@ module "buyerbanks_function_snet" {
 }
 
 module "buyerbanks_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name                      = azurerm_resource_group.buyerbanks_rg.name
   name                                     = format("%s-fn-buyerbanks", local.project)

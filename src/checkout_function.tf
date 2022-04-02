@@ -31,7 +31,7 @@ module "checkout_function_snet" {
 
 module "checkout_function" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   name                = format("%s-fn-checkout", local.project)

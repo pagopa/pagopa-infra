@@ -27,7 +27,7 @@ module "mock_ec_snet" {
 
 module "mock_ec" {
   count  = var.mock_ec_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   resource_group_name = azurerm_resource_group.mock_ec_rg[0].name
   location            = var.location

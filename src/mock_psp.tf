@@ -27,7 +27,7 @@ module "mock_psp_snet" {
 
 module "mock_psp" {
   count  = var.mock_psp_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   resource_group_name = azurerm_resource_group.mock_psp_rg[0].name
   location            = var.location

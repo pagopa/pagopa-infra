@@ -34,7 +34,7 @@ module "api_config_snet" {
 
 module "api_config_app_service" {
   count  = var.api_config_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   resource_group_name = azurerm_resource_group.api_config_rg[0].name
   location            = var.location
