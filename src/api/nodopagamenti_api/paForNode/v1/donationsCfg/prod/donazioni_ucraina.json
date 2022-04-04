@@ -4,6 +4,46 @@
 "debtorEntityUniqueIdentifierValue":"anonimo",
 "data":[
 {
+"name":"CESVI Fondazione",
+"reason":"Emergenza Ucraina: la popolazione ha urgente bisogno di aiuto",
+"web_site":"https://www.cesvi.org/emergenzaucraina/",
+"base64Logo":"/9j/4AAQSkZJR",
+"cf":"95008730160",
+"iban":"IT54W0306911166100000005791",
+"paymentDescription":"Emergenza Ucraina: la popolazione ha urgente bisogno di aiuto",
+"companyName":"CESVI Fondazione",
+"officeName":"CESVI Fondazione",
+"auxdigit":"3",
+"segregationcode":"00",
+"transferCategory":"0101002IM",
+"slices":[
+{
+"idDonation":"12",
+"amount":500
+},
+{
+"idDonation":"13",
+"amount":1000
+},
+{
+"idDonation":"14",
+"amount":2000
+},
+{
+"idDonation":"15",
+"amount":5000
+},
+{
+"idDonation":"16",
+"amount":10000
+},
+{
+"idDonation":"17",
+"amount":20000
+}
+]
+},
+{
 "name":"Croce Rossa Italiana",
 "reason":"Emergenza Ucraina",
 "web_site":"https://cri.it/emergenzaucraina/",
@@ -205,3 +245,4 @@
 }
 ]
 }
+    
