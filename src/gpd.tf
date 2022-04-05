@@ -32,6 +32,7 @@ locals {
     SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name, (var.env_short != "d" ? "&prepareThreshold=0" : "")) : "")
     SPRING_DATASOURCE_TYPE                  = var.env_short == "d" ? "com.zaxxer.hikari.HikariDataSource" : "org.springframework.jdbc.datasource.SimpleDriverDataSource" # disable hikari pull in UAT and PROD
     SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
+    SPRING_JPA_HIBERNATE_SHOW_SQL           = "false"
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
     SCHEMA_NAME                             = "apd"
     LOG_LEVEL                               = "INFO"
@@ -74,7 +75,6 @@ module "gpd_snet" {
 
 
 module "gpd_app_service" {
-  # source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.0"
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
 
   vnet_integration    = true
