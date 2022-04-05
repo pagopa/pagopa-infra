@@ -384,7 +384,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
     | where message contains "CuCreateDebtPositionFunction"
     | where message contains "Update entity with ERROR status"
   QUERY
-  , module.canoneunico_function.name
+    , module.canoneunico_function.name
   )
   severity    = 2
   frequency   = 5
