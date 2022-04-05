@@ -20,6 +20,7 @@
         <set-variable name="logo3" value="${logo_3}" />
         <set-variable name="logo4" value="${logo_4}" />
         <set-variable name="logo5" value="${logo_5}" />
+        <set-variable name="logo6" value="${logo_6}" />
         <return-response>
             <set-status code="200" reason="OK" />
             <set-header name="Content-Type" exists-action="override">

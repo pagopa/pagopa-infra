@@ -75,6 +75,7 @@ resource "azurerm_api_management_api_operation_policy" "get_donations" {
     logo_3 = file("./api/donations/v1/logos/logo3")
     logo_4 = file("./api/donations/v1/logos/logo4")
     logo_5 = file("./api/donations/v1/logos/logo5")
+    logo_6 = file("./api/donations/v1/logos/logo6")
   })
 
 }
