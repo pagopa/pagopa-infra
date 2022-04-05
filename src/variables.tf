@@ -1165,6 +1165,12 @@ variable "payments_always_on" {
   default     = true
 }
 
+variable "payments_logging_level" {
+  type        = string
+  description = "Log level of Payments"
+  default     = "INFO"
+}
+
 variable "gpd_paa_id_intermediario" {
   type        = string
   description = "PagoPA Broker ID"
