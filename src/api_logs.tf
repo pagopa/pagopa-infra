@@ -15,6 +15,7 @@ locals {
     module.apim_checkout_payment_activations_api_auth_v2.name,
     module.apim_checkout_payment_activations_api_v1.name,
     module.apim_nodo_per_pm_api_v1.name,
+    azurerm_api_management_api.apim_api_gpd_payments_api.name
   ]
 
 }
