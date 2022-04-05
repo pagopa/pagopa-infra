@@ -360,3 +360,37 @@ resource "azurerm_storage_container" "err_csv_blob_container" {
   storage_account_name  = module.cu_sa.name
   container_access_type = "private"
 }
+
+##Alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
+  count = var.env_short != "d" ? 1 : 0
+
+  name                = format("%s-gpd-problem-alert", module.canoneunico_function.name)
+  resource_group_name = azurerm_resource_group.canoneunico_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "Problem with GPD"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "CuCreateDebtPositionFunction"
+    | where message contains "Update entity with ERROR status"
+  QUERY
+  , module.canoneunico_function.name
+  )
+  severity    = 2
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
