@@ -76,8 +76,10 @@ locals {
     QUEUE_DELAY_SEC           = var.gpd_queue_delay_sec
 
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST  = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
-    NODO_HOST = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, azurerm_api_management_api.apim_nodo_per_pa_api_v1.path, azurerm_api_management_api.apim_nodo_per_pa_api_v1.version)
+    GPD_HOST      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    NODO_HOST     = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, azurerm_api_management_api.apim_nodo_per_pa_api_v1.path, azurerm_api_management_api.apim_nodo_per_pa_api_v1.version)
+    MAX_ATTEMPTS  = 3
+    DELAY_ATTEMPS = 5000 // milliseconds = 5 seconds
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true

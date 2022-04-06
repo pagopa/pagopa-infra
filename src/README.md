@@ -117,7 +117,6 @@
 | <a name="module_payments_app_service"></a> [payments\_app\_service](#module\_payments\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service | v2.8.0 |
 | <a name="module_payments_app_service_slot_staging"></a> [payments\_app\_service\_slot\_staging](#module\_payments\_app\_service\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot | v2.2.0 |
 | <a name="module_payments_receipt"></a> [payments\_receipt](#module\_payments\_receipt) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.8.0 |
-| <a name="module_payments_snet"></a> [payments\_snet](#module\_payments\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
 | <a name="module_postgres_flexible_server_private"></a> [postgres\_flexible\_server\_private](#module\_postgres\_flexible\_server\_private) | git::https://github.com/pagopa/azurerm.git//postgres_flexible_server | v2.8.1 |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.1.13 |
 | <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | git::https://github.com/pagopa/azurerm.git//postgresql_server | v2.0.5 |
@@ -483,7 +482,6 @@
 | <a name="input_cidr_subnet_mock_psp"></a> [cidr\_subnet\_mock\_psp](#input\_cidr\_subnet\_mock\_psp) | Address prefixes subnet mock psp | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pagopa_proxy"></a> [cidr\_subnet\_pagopa\_proxy](#input\_cidr\_subnet\_pagopa\_proxy) | Address prefixes subnet proxy | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pagopa_proxy_redis"></a> [cidr\_subnet\_pagopa\_proxy\_redis](#input\_cidr\_subnet\_pagopa\_proxy\_redis) | Address prefixes subnet redis for pagopa proxy | `list(string)` | `null` | no |
-| <a name="input_cidr_subnet_payments"></a> [cidr\_subnet\_payments](#input\_cidr\_subnet\_payments) | Address prefixes subnet payments service | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_postgresql"></a> [cidr\_subnet\_postgresql](#input\_cidr\_subnet\_postgresql) | Address prefixes subnet postgresql | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_redis"></a> [cidr\_subnet\_redis](#input\_cidr\_subnet\_redis) | Redis network address space. | `list(string)` | `[]` | no |
 | <a name="input_cidr_subnet_reporting_common"></a> [cidr\_subnet\_reporting\_common](#input\_cidr\_subnet\_reporting\_common) | Address prefixes subnet reporting\_common function | `list(string)` | `null` | no |
