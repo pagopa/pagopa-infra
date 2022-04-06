@@ -556,7 +556,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_fdr_update_err
     | order by timestamp desc
     | where message contains "[UpdateOptionFunction Error] can't update"
   QUERY
-    , module.api_config_app_service[0].name
+    , module.reporting_service_function.name
   )
   severity    = 1
   frequency   = 45
