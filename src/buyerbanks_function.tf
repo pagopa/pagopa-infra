@@ -29,7 +29,7 @@ module "buyerbanks_function_snet" {
 }
 
 module "buyerbanks_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name                      = azurerm_resource_group.buyerbanks_rg.name
   name                                     = format("%s-fn-buyerbanks", local.project)
@@ -177,7 +177,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
 #tfsec:ignore:azure-storage-default-action-deny
 module "buyerbanks_storage" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.9.0"
 
   name                       = replace(format("%s-buyerbanks-storage", local.project), "-", "")
   account_kind               = "StorageV2"

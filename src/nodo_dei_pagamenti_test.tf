@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "nodo_pagamenti_test_rg" {
 * STORAGE
 */
 module "nodo_test_storage" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.9.0"
   count  = var.nodo_pagamenti_test_enabled ? 1 : 0
 
   name                     = replace(format("%s-nodotestsa", local.project), "-", "")

@@ -118,7 +118,7 @@ locals {
 
 ## Function reporting_batch
 module "reporting_batch_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   name                                     = format("%s-fn-gpd-batch", local.project)
@@ -145,7 +145,7 @@ module "reporting_batch_function" {
 module "reporting_batch_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.0"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_name                        = module.reporting_batch_function.name
@@ -173,7 +173,7 @@ module "reporting_batch_function_slot_staging" {
 
 ## Function reporting_service
 module "reporting_service_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   name                                     = format("%s-fn-gpd-service", local.project)
@@ -201,7 +201,7 @@ module "reporting_service_function" {
 module "reporting_service_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.0"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_name                        = module.reporting_service_function.name
@@ -229,7 +229,7 @@ module "reporting_service_function_slot_staging" {
 
 ## Function reporting_analysis
 module "reporting_analysis_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   name                                     = format("%s-fn-gpd-analysis", local.project)
@@ -256,7 +256,7 @@ module "reporting_analysis_function" {
 module "reporting_analysis_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.0"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_name                        = module.reporting_analysis_function.name
@@ -475,7 +475,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 }
 
 module "flows" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.9.0"
 
   name                       = replace(format("%s-flow-sa", local.project), "-", "")
   account_kind               = "StorageV2"

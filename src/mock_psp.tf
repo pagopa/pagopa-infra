@@ -27,7 +27,7 @@ module "mock_psp_snet" {
 
 module "mock_psp" {
   count  = var.mock_psp_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   resource_group_name = azurerm_resource_group.mock_psp_rg[0].name
   location            = var.location
@@ -55,9 +55,7 @@ module "mock_psp" {
 
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
-
-  subnet_name = module.mock_psp_snet[0].name
-  subnet_id   = module.mock_psp_snet[0].id
+  subnet_id       = module.mock_psp_snet[0].id
 
   tags = var.tags
 }

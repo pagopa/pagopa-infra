@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
  * CDN
  */
 module "checkout_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.9.0"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"
