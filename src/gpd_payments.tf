@@ -28,7 +28,10 @@ locals {
     GPD_HOST                      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
     PAYMENTS_SA_CONNECTION_STRING = module.payments_receipt.primary_connection_string
     RECEIPTS_TABLE                = azurerm_storage_table.payments_receipts_table.name
-
+    CONNECTION_TIMEOUT            = 3000
+    RETRY_MAX_ATTEMPTS            = 1
+    RETRY_MAX_DELAY               = 2000
+    LOGGING_LEVEL                 = var.payments_logging_level
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
@@ -41,28 +44,28 @@ locals {
 
   gpd_payments_allowed_subnets = [module.apim_snet.id]
 }
-# Subnet to host the api config
-module "payments_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-payments-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_payments
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+# Subnet
+# module "payments_snet" {
+#   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+#   name                                           = format("%s-payments-snet", local.project)
+#   address_prefixes                               = var.cidr_subnet_payments
+#   resource_group_name                            = azurerm_resource_group.rg_vnet.name
+#   virtual_network_name                           = module.vnet.name
+#   enforce_private_link_endpoint_network_policies = true
 
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
+#   delegation = {
+#     name = "default"
+#     service_delegation = {
+#       name    = "Microsoft.Web/serverFarms"
+#       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+#     }
+#   }
+# }
 
 module "payments_app_service" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
-  # vnet_integration    = true
+  vnet_integration    = true
   resource_group_name = azurerm_resource_group.gpd_rg.name
   plan_type           = "external"
   plan_id             = azurerm_app_service_plan.gpd_service_plan.id
@@ -79,7 +82,7 @@ module "payments_app_service" {
   allowed_subnets = local.gpd_payments_allowed_subnets
   allowed_ips     = []
 
-  subnet_id = module.payments_snet.id
+  subnet_id = module.gpd_snet[0].id # shared plan
 
   tags = var.tags
 

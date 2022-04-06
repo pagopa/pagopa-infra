@@ -32,6 +32,7 @@ locals {
     SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name, (var.env_short != "d" ? "&prepareThreshold=0" : "")) : "")
     SPRING_DATASOURCE_TYPE                  = var.env_short == "d" ? "com.zaxxer.hikari.HikariDataSource" : "org.springframework.jdbc.datasource.SimpleDriverDataSource" # disable hikari pull in UAT and PROD
     SPRING_JPA_HIBERNATE_DDL_AUTO           = "validate"
+    SPRING_JPA_HIBERNATE_SHOW_SQL           = "false"
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
     SCHEMA_NAME                             = "apd"
     LOG_LEVEL                               = "INFO"
@@ -47,7 +48,8 @@ locals {
     DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
   }
-  gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id]
+  # gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id]
+  gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.canoneunico_function_snet.id]
   gpd_hostname        = var.env_short == "d" ? module.postgresql[0].fqdn : module.postgres_flexible_server_private[0].fqdn
   gpd_dbmsport        = var.env_short == "d" ? var.gpd_dbms_port : module.postgres_flexible_server_private[0].connection_port # PgBouncer
 }
