@@ -534,3 +534,35 @@ resource "azurerm_storage_container" "reporting_flows_container" {
   storage_account_name  = module.flows.name
   container_access_type = "private"
 }
+
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_fdr_update_error" {
+
+  name                = format("%s-%s", module.reporting_service_function.name, "reporting-fdr-update-error")
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "An error occurred while updating the FDR on GPD"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "[UpdateOptionFunction Error] can't update"
+  QUERY
+    , module.api_config_app_service[0].name
+  )
+  severity    = 1
+  frequency   = 45
+  time_window = 45
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
+}
