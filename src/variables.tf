@@ -1153,16 +1153,22 @@ variable "gpd_queue_delay_sec" {
 
 // GPD Payments
 
-variable "cidr_subnet_payments" {
-  type        = list(string)
-  description = "Address prefixes subnet payments service"
-  default     = null
-}
+# variable "cidr_subnet_payments" {
+#   type        = list(string)
+#   description = "Address prefixes subnet payments service"
+#   default     = null
+# }
 
 variable "payments_always_on" {
   type        = bool
   description = "Always on property"
   default     = true
+}
+
+variable "payments_logging_level" {
+  type        = string
+  description = "Log level of Payments"
+  default     = "INFO"
 }
 
 variable "gpd_paa_id_intermediario" {
