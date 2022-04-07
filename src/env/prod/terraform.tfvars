@@ -87,7 +87,10 @@ app_gateway_deny_paths = [
   "/payment-manager/restapi-rtd/*",
   "/payment-manager/db-logging/*",
   "/payment-manager/payment-gateway/*",
-  "/checkout/io-for-node/*"
+  "/checkout/io-for-node/*",
+  "/gpd/*",
+  "/gpd-payments/*",
+  "/gpd-reporting/*"
 ]
 
 # nat_gateway
