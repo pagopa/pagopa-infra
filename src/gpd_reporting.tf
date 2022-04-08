@@ -538,6 +538,7 @@ resource "azurerm_storage_container" "reporting_flows_container" {
 
 # monitoring alert messages
 resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_elenco_flussi_rendicontazione_error" {
+  count = var.env_short != "d" ? 1 : 0
 
   name                = format("%s-%s", module.reporting_service_function.name, "reporting-nodo-chiedi-elenco-flussi-rendicontazione-error")
   resource_group_name = azurerm_resource_group.gpd_rg.name
@@ -569,6 +570,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_el
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_flusso_rendicontazione_error" {
+  count = var.env_short != "d" ? 1 : 0
 
   name                = format("%s-%s", module.reporting_service_function.name, "reporting-nodo-chiedi-flusso-rendicontazione-error")
   resource_group_name = azurerm_resource_group.gpd_rg.name
@@ -600,6 +602,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_fl
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_fdr_update_option_error" {
+  count = var.env_short != "d" ? 1 : 0
 
   name                = format("%s-%s", module.reporting_service_function.name, "reporting-fdr-update-option-error")
   resource_group_name = azurerm_resource_group.gpd_rg.name
