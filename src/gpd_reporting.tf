@@ -546,7 +546,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_el
 
   action {
     action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
+    email_subject          = "[GPD Reporting] Problem with nodoChiediElencoFlussiRendicontazione"
     custom_webhook_payload = "{}"
   }
   data_source_id = azurerm_application_insights.application_insights.id
@@ -578,7 +578,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_fl
 
   action {
     action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
+    email_subject          = "[GPD Reporting] Problem with nodoChiediFlussoRendicontazione"
     custom_webhook_payload = "{}"
   }
   data_source_id = azurerm_application_insights.application_insights.id
@@ -610,7 +610,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_update_option_
 
   action {
     action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
+    email_subject          = "[GPD Reporting] Problem with Payment Option"
     custom_webhook_payload = "{}"
   }
   data_source_id = azurerm_application_insights.application_insights.id
