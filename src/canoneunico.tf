@@ -371,7 +371,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
 
   action {
     action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
+    email_subject          = "[CU] GPD Error"
     custom_webhook_payload = "{}"
   }
   data_source_id = azurerm_application_insights.application_insights.id
@@ -405,7 +405,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_parsing_csv_
 
   action {
     action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
+    email_subject          = "[CU] CSV Parsing Error"
     custom_webhook_payload = "{}"
   }
   data_source_id = azurerm_application_insights.application_insights.id
@@ -420,8 +420,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_parsing_csv_
     , module.canoneunico_function.name
   )
   severity    = 2
-  frequency   = 5
-  time_window = 5
+  frequency   = 15
+  time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
