@@ -363,7 +363,7 @@ resource "azurerm_storage_container" "err_csv_blob_container" {
 
 ##Alert
 resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = format("%s-gpd-problem-alert", module.canoneunico_function.name)
   resource_group_name = azurerm_resource_group.canoneunico_rg.name
@@ -387,8 +387,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
     , module.canoneunico_function.name
   )
   severity    = 2
-  frequency   = 5
-  time_window = 5
+  frequency   = 30
+  time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
@@ -397,7 +397,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
 
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_parsing_csv_error" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = format("%s-cu-csv-parsing-alert", module.canoneunico_function.name)
   resource_group_name = azurerm_resource_group.canoneunico_rg.name
