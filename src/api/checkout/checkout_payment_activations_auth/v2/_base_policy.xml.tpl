@@ -37,15 +37,15 @@
         </set-header>
           <set-variable name="body" value="@(context.Response.Body.As<JObject>())" />
         <choose>
-            <when condition="@( (context.Response.StatusCode == 500 || context.Response.StatusCode == 424) && ((JObject) context.Variables["body"])["detail_v2"] != null )">
+            <when condition="@( (context.Response.StatusCode == 500 || context.Response.StatusCode == 502) && ((JObject) context.Variables["body"])["detail_v2"] != null )">
                 <return-response>
-                    <set-status code="424" />
+                    <set-status code="502" />
                     <set-header name="Content-Type" exists-action="override">
                         <value>application/json</value>
                     </set-header>
                     <set-body>@{
                     return new JObject(
-                            new JProperty("status", 424),
+                            new JProperty("status", 502),
                             new JProperty("detail_v2", ((JObject) context.Variables["body"])["detail_v2"]),
                             new JProperty("detail", ((JObject) context.Variables["body"])["detail"]),
                             new JProperty("title", ((JObject) context.Variables["body"])["title"])
