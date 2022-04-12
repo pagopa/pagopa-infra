@@ -120,178 +120,89 @@ resource "azurerm_monitor_autoscale_setting" "canoneunico_function" {
       maximum = var.canoneunico_function_autoscale_maximum
     }
 
-
     rule {
       metric_trigger {
-        metric_name        = "CpuPercentage"
-        metric_resource_id = azurerm_app_service_plan.canoneunico_service_plan.id
+        metric_name        = "ApproximateMessageCount"
+        metric_resource_id = join("/", ["${module.cu_sa.id}", "services/queue/queues", "${azurerm_storage_queue.cu_debtposition_queue.name}"])
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT1M"
         time_aggregation   = "Average"
-        operator           = "GreaterThan"
-        threshold          = 75
+        operator           = "GreaterThanOrEqual"
+        threshold          = 10
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
+
     }
 
     rule {
       metric_trigger {
-        metric_name        = "CpuPercentage"
-        metric_resource_id = azurerm_app_service_plan.canoneunico_service_plan.id
+        metric_name        = "ApproximateMessageCount"
+        metric_resource_id = join("/", ["${module.cu_sa.id}", "services/queue/queues", "${azurerm_storage_queue.cu_debtposition_queue.name}"])
         time_grain         = "PT1M"
         statistic          = "Average"
-        time_window        = "PT5M"
+        time_window        = "PT1M"
         time_aggregation   = "Average"
         operator           = "LessThan"
-        threshold          = 25
+        threshold          = 10
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
+
+
     }
 
     # rule {
     #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_batch_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "GreaterThan"
-    #     threshold                = 4000
-    #     divide_by_instance_count = false
+    #     metric_name        = "CpuPercentage"
+    #     metric_resource_id = azurerm_app_service_plan.canoneunico_service_plan.id
+    #     time_grain         = "PT1M"
+    #     statistic          = "Average"
+    #     time_window        = "PT1M"
+    #     time_aggregation   = "Average"
+    #     operator           = "GreaterThan"
+    #     threshold          = 75
     #   }
 
     #   scale_action {
     #     direction = "Increase"
     #     type      = "ChangeCount"
-    #     value     = "2"
+    #     value     = "1"
     #     cooldown  = "PT5M"
     #   }
     # }
 
     # rule {
     #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_batch_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "LessThan"
-    #     threshold                = 3000
-    #     divide_by_instance_count = false
+    #     metric_name        = "CpuPercentage"
+    #     metric_resource_id = azurerm_app_service_plan.canoneunico_service_plan.id
+    #     time_grain         = "PT1M"
+    #     statistic          = "Average"
+    #     time_window        = "PT5M"
+    #     time_aggregation   = "Average"
+    #     operator           = "LessThan"
+    #     threshold          = 25
     #   }
 
     #   scale_action {
     #     direction = "Decrease"
     #     type      = "ChangeCount"
     #     value     = "1"
-    #     cooldown  = "PT20M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_service_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "GreaterThan"
-    #     threshold                = 4000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "2"
     #     cooldown  = "PT5M"
     #   }
     # }
 
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_service_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "LessThan"
-    #     threshold                = 3000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT20M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_analysis_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "GreaterThan"
-    #     threshold                = 4000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "2"
-    #     cooldown  = "PT5M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_analysis_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "LessThan"
-    #     threshold                = 3000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT20M"
-    #   }
-    # }
   }
 }
 
