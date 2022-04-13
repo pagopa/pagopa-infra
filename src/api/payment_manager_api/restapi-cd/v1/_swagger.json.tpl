@@ -1055,6 +1055,56 @@
         ]
       }
     },
+    "/transactions/update-status/{id}": {
+      "patch": {
+        "tags": [
+          "transaction-controller"
+        ],
+        "summary": "updateTransactionStatus",
+        "operationId": "updateTransactionStatusUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "transactionUpdateStatusRequest",
+            "in": "body",
+            "description": "transactionUpdateStatusRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TransactionUpdateStatusRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/users": {
       "get": {
         "tags": [
@@ -2350,26 +2400,26 @@
       "properties": {
         "avgFee": {
           "type": "number",
-          "format": "double",
+          "format": "double"
         },
         "codiceAbi": {
-          "type": "string",
+          "type": "string"
         },
         "idPsp": {
-          "type": "string",
+          "type": "string"
         },
         "maxFee": {
-          "type": "integer",
+          "type": "integer"
         },
         "onboard": {
           "type": "boolean",
-          "example": false,
+          "example": false
         },
         "privacyUrl": {
-          "type": "string",
+          "type": "string"
         },
         "ragioneSociale": {
-          "type": "string",
+          "type": "string"
         }
       },
       "title": "PayPalPsp"
@@ -2674,33 +2724,34 @@
         "defaultPsp",
         "fee",
         "idPsp",
+        "id",
         "onboard",
         "privacyUrl",
         "ragioneSociale"
       ],
       "properties": {
         "codiceAbi": {
-          "type": "string",
+          "type": "string"
         },
         "defaultPsp": {
           "type": "boolean",
-          "example": false,
+          "example": false
         },
         "fee": {
-          "type": "integer",
+          "type": "integer"
         },
         "idPsp": {
-          "type": "string",
+          "type": "string"
         },
         "onboard": {
           "type": "boolean",
-          "example": false,
+          "example": false
         },
         "privacyUrl": {
-          "type": "string",
+          "type": "string"
         },
         "ragioneSociale": {
-          "type": "string",
+          "type": "string"
         }
       },
       "title": "PspData"
@@ -3050,6 +3101,35 @@
         }
       },
       "title": "TransactionResponse"
+    },
+    "TransactionUpdateStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "authCode": {
+          "type": "string"
+        },
+        "accountingStatus": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "TransactionUpdateStatus"
+    },
+    "TransactionUpdateStatusRequest": {
+      "type": "object",
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/TransactionUpdateStatus"
+        }
+      },
+      "title": "TransactionUpdateStatusRequest"
     },
     "User": {
       "type": "object",
