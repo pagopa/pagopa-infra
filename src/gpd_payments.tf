@@ -121,7 +121,7 @@ resource "azurerm_monitor_autoscale_setting" "payments_app_service_autoscale" {
   name                = format("%s-autoscale-payments", local.project)
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = azurerm_resource_group.gpd_rg.location
-  target_resource_id  = module.payments_app_service.plan_id
+  target_resource_id  = module.payments_app_service.id
 
   profile {
     name = "default"
@@ -172,7 +172,7 @@ resource "azurerm_monitor_autoscale_setting" "payments_app_service_autoscale" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT5M"
       }
     }
   }
