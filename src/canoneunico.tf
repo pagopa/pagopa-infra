@@ -84,6 +84,9 @@ module "canoneunico_function" {
     QUEUE_TIME_TO_LIVE         = 7200                                // 2h
     QUEUE_DELAY                = var.canoneunico_queue_message_delay // 2m
 
+    BATCH_SIZE_DEBT_POS_QUEUE  = var.canoneunico_batch_size_debt_pos_queue
+    BATCH_SIZE_DEBT_POS_TABLE  = var.canoneunico_batch_size_debt_pos_table
+
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
