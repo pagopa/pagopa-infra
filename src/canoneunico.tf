@@ -84,8 +84,8 @@ module "canoneunico_function" {
     QUEUE_TIME_TO_LIVE         = 7200                                // 2h
     QUEUE_DELAY                = var.canoneunico_queue_message_delay // 2m
 
-    BATCH_SIZE_DEBT_POS_QUEUE  = var.canoneunico_batch_size_debt_pos_queue
-    BATCH_SIZE_DEBT_POS_TABLE  = var.canoneunico_batch_size_debt_pos_table
+    BATCH_SIZE_DEBT_POS_QUEUE = var.canoneunico_batch_size_debt_pos_queue
+    BATCH_SIZE_DEBT_POS_TABLE = var.canoneunico_batch_size_debt_pos_table
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
@@ -165,46 +165,6 @@ resource "azurerm_monitor_autoscale_setting" "canoneunico_function" {
 
 
     }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name        = "CpuPercentage"
-    #     metric_resource_id = azurerm_app_service_plan.canoneunico_service_plan.id
-    #     time_grain         = "PT1M"
-    #     statistic          = "Average"
-    #     time_window        = "PT1M"
-    #     time_aggregation   = "Average"
-    #     operator           = "GreaterThan"
-    #     threshold          = 75
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT5M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name        = "CpuPercentage"
-    #     metric_resource_id = azurerm_app_service_plan.canoneunico_service_plan.id
-    #     time_grain         = "PT1M"
-    #     statistic          = "Average"
-    #     time_window        = "PT5M"
-    #     time_aggregation   = "Average"
-    #     operator           = "LessThan"
-    #     threshold          = 25
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT5M"
-    #   }
-    # }
 
   }
 }
