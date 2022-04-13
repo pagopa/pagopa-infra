@@ -44,6 +44,11 @@ locals {
 
   gpd_payments_allowed_subnets = [module.apim_snet.id]
 }
+
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/467435830/App+service#pricing-e-reservation
+# Quando si raggruppano app service o function nello stesso app service plan
+# è possibile associare una sola subnet all’app service plan.
+
 # Subnet
 # module "payments_snet" {
 #   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
@@ -68,7 +73,8 @@ module "payments_app_service" {
   vnet_integration    = true
   resource_group_name = azurerm_resource_group.gpd_rg.name
   plan_type           = "external"
-  plan_id             = azurerm_app_service_plan.gpd_service_plan.id
+  # plan condiviso con GPD
+  plan_id = azurerm_app_service_plan.gpd_service_plan.id
 
   # App service
   name                = format("%s-app-payments", local.project)
