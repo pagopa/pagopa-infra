@@ -97,6 +97,46 @@
         ]
       }
     },
+    "/pp-restapi-CD/v2/payments/send-payment-result": {
+      "post": {
+        "tags": [
+          "payments-v-2-controller"
+        ],
+        "summary": "sendPaymentResult",
+        "description": "Call from Nodo (receipt generated)",
+        "operationId": "sendPaymentResult",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SendPaymentRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SendPaymentResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "408": {
+            "description": "Request Timeout"
+          },
+          "422": {
+            "description": "Unprocessable entity"
+          }
+        }
+      }
+    },
     "/wallet": {
       "get": {
         "tags": [
@@ -1295,6 +1335,50 @@
         }
       },
       "title": "WalletV2Response"
+    },
+    "SendPaymentRequest": {
+      "type": "object",
+      "required": [
+        "paymentTokens",
+        "outcome",
+        "pspTransactionId"
+      ],
+      "properties": {
+        "paymentTokens": {
+          "description": "Array composto da un solo elemento, contenente il token di pagamento staccato dal Nodo a seguito della activatePaymentNotice",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outcome": {
+          "description": "Esito del pagamento",
+          "type": "string",
+          "enum": [
+            "OK",
+            "KO"
+          ]
+        },
+        "pspTransactionId": {
+          "description": "Identificativo lato PSP della transazione",
+          "type": "string"
+        }
+      }
+    },
+    "SendPaymentResponse": {
+      "type": "object",
+      "required": [
+        "esito"
+      ],
+      "properties": {
+        "esito": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "KO"
+          ]
+        }
+      }
     }
   }
 }

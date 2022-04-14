@@ -1055,6 +1055,56 @@
         ]
       }
     },
+        "/transactions/update-status/{id}": {
+      "patch": {
+        "tags": [
+          "transaction-controller"
+        ],
+        "summary": "updateTransactionStatus",
+        "operationId": "updateTransactionStatusUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "transactionUpdateStatusRequest",
+            "in": "body",
+            "description": "transactionUpdateStatusRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TransactionUpdateStatusRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/users": {
       "get": {
         "tags": [
@@ -3050,6 +3100,35 @@
         }
       },
       "title": "TransactionResponse"
+    },
+    "TransactionUpdateStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "authCode": {
+          "type": "string"
+        },
+        "accountingStatus": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "TransactionUpdateStatus"
+    },
+    "TransactionUpdateStatusRequest": {
+      "type": "object",
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/TransactionUpdateStatus"
+        }
+      },
+      "title": "TransactionUpdateStatusRequest"
     },
     "User": {
       "type": "object",
