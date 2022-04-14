@@ -138,6 +138,71 @@
           }
         }
       }
+    },
+    "/bpayweb/change/client": {
+      "post": {
+        "operationId": "bpayChangeClientPOST",
+        "description": "Change client for BPAY",
+        "requestBody": {
+          "description": "bpayChangeClientRequest",
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Client changed"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      }
+    },
+    "/bpayweb/change/outcome": {
+      "post": {
+        "operationId": "bpayChangeOutcomePOST",
+        "description": "Change Outcome for BPAY",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "description": "code",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeoutMs",
+            "description": "timeout Ms",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Outcome changed"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "generic error"
+          }
+        }
+      }
     }
   }
 }
