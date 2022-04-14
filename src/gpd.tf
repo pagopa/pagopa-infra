@@ -36,7 +36,7 @@ locals {
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
     SCHEMA_NAME                             = "apd"
     LOG_LEVEL                               = "INFO"
-    CRON_JOB_SCHEDULE_ENABLED               = var.gpd_cron_job_enable
+    CRON_JOB_SCHEDULE_ENABLED               = var.gpd_cron_job_enable # default disable
     CRON_JOB_SCHEDULE_EXPRESSION_TO_VALID   = var.gpd_cron_schedule_valid_to
     CRON_JOB_SCHEDULE_EXPRESSION_TO_EXPIRED = var.gpd_cron_schedule_expired_to
 
@@ -157,7 +157,7 @@ resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 130
+        threshold                = 250
         divide_by_instance_count = false
       }
 
@@ -179,7 +179,7 @@ resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 100
+        threshold                = 250
         divide_by_instance_count = false
       }
 
