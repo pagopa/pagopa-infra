@@ -97,7 +97,7 @@
         ]
       }
     },
-    "/pp-restapi-CD/v2/payments/send-payment-result": {
+    "/payments/send-payment-result": {
       "post": {
         "tags": [
           "payments-v-2-controller"
