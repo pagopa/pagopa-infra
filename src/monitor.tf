@@ -74,7 +74,8 @@ locals {
       path = "/ServiceStatus",
     },
     {
-      host = join(".",
+      # TEMP disable check config.platform.pagopa.it doesn't exist
+      host = var.env_short == "p" ? null : join(".",
       compact(["config", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
     },
