@@ -44,6 +44,11 @@ locals {
 
   gpd_payments_allowed_subnets = [module.apim_snet.id]
 }
+
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/467435830/App+service#pricing-e-reservation
+# Quando si raggruppano app service o function nello stesso app service plan
+# è possibile associare una sola subnet all’app service plan.
+
 # Subnet
 # module "payments_snet" {
 #   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
@@ -68,7 +73,8 @@ module "payments_app_service" {
   vnet_integration    = true
   resource_group_name = azurerm_resource_group.gpd_rg.name
   plan_type           = "external"
-  plan_id             = azurerm_app_service_plan.gpd_service_plan.id
+  # plan condiviso con GPD
+  plan_id = azurerm_app_service_plan.gpd_service_plan.id
 
   # App service
   name                = format("%s-app-payments", local.project)
@@ -117,66 +123,66 @@ module "payments_app_service_slot_staging" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "payments_app_service_autoscale" {
-  name                = format("%s-autoscale-payments", local.project)
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  location            = azurerm_resource_group.gpd_rg.location
-  target_resource_id  = module.payments_app_service.plan_id
+# resource "azurerm_monitor_autoscale_setting" "payments_app_service_autoscale" {
+#   name                = format("%s-autoscale-payments", local.project)
+#   resource_group_name = azurerm_resource_group.gpd_rg.name
+#   location            = azurerm_resource_group.gpd_rg.location
+#   target_resource_id  = module.payments_app_service.id
 
-  profile {
-    name = "default"
+#   profile {
+#     name = "default"
 
-    capacity {
-      default = var.gpd_payments_autoscale_default
-      minimum = var.gpd_payments_autoscale_minimum
-      maximum = var.gpd_payments_autoscale_maximum
-    }
+#     capacity {
+#       default = var.gpd_payments_autoscale_default
+#       minimum = var.gpd_payments_autoscale_minimum
+#       maximum = var.gpd_payments_autoscale_maximum
+#     }
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.payments_app_service.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = false
-      }
+#     rule {
+#       metric_trigger {
+#         metric_name              = "Requests"
+#         metric_resource_id       = module.payments_app_service.id
+#         metric_namespace         = "microsoft.web/sites"
+#         time_grain               = "PT1M"
+#         statistic                = "Average"
+#         time_window              = "PT5M"
+#         time_aggregation         = "Average"
+#         operator                 = "GreaterThan"
+#         threshold                = 3000
+#         divide_by_instance_count = false
+#       }
 
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
+#       scale_action {
+#         direction = "Increase"
+#         type      = "ChangeCount"
+#         value     = "2"
+#         cooldown  = "PT5M"
+#       }
+#     }
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.payments_app_service.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 2500
-        divide_by_instance_count = false
-      }
+#     rule {
+#       metric_trigger {
+#         metric_name              = "Requests"
+#         metric_resource_id       = module.payments_app_service.id
+#         metric_namespace         = "microsoft.web/sites"
+#         time_grain               = "PT1M"
+#         statistic                = "Average"
+#         time_window              = "PT5M"
+#         time_aggregation         = "Average"
+#         operator                 = "LessThan"
+#         threshold                = 2500
+#         divide_by_instance_count = false
+#       }
 
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-  }
-}
+#       scale_action {
+#         direction = "Decrease"
+#         type      = "ChangeCount"
+#         value     = "1"
+#         cooldown  = "PT5M"
+#       }
+#     }
+#   }
+# }
 
 # storage
 module "payments_receipt" {

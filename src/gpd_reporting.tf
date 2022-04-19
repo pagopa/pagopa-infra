@@ -65,6 +65,7 @@ locals {
 
     # custom configuration
     FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
+    FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
     FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
     OPTIONS_QUEUE             = azurerm_storage_queue.reporting_options_queue.name
     FLOWS_XML_BLOB            = azurerm_storage_container.reporting_flows_container.name
@@ -76,8 +77,10 @@ locals {
     QUEUE_DELAY_SEC           = var.gpd_queue_delay_sec
 
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST  = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
-    NODO_HOST = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, azurerm_api_management_api.apim_nodo_per_pa_api_v1.path, azurerm_api_management_api.apim_nodo_per_pa_api_v1.version)
+    GPD_HOST      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    NODO_HOST     = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, azurerm_api_management_api.apim_nodo_per_pa_api_v1.path, azurerm_api_management_api.apim_nodo_per_pa_api_v1.version)
+    MAX_ATTEMPTS  = 3
+    DELAY_ATTEMPS = 5 // 5 seconds
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
@@ -531,4 +534,101 @@ resource "azurerm_storage_container" "reporting_flows_container" {
   name                  = format("%sflowscontainer", module.flows.name)
   storage_account_name  = module.flows.name
   container_access_type = "private"
+}
+
+# monitoring alert messages
+resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_elenco_flussi_rendicontazione_error" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-%s", module.reporting_service_function.name, "reporting-nodo-chiedi-elenco-flussi-rendicontazione-error")
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "[GPD Reporting] Problem with nodoChiediElencoFlussiRendicontazione"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "An error occurred while call nodoChiediElencoFlussiRendicontazione"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "[NODO Connection down]  Max retry exceeded"
+  QUERY
+    , module.reporting_batch_function.name
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_flusso_rendicontazione_error" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-%s", module.reporting_service_function.name, "reporting-nodo-chiedi-flusso-rendicontazione-error")
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "[GPD Reporting] Problem with nodoChiediFlussoRendicontazione"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "An error occurred while call nodoChiediFlussoRendicontazione"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "[NODO Connection down]  Max retry exceeded"
+  QUERY
+    , module.reporting_service_function.name
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_update_option_error" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-%s", module.reporting_service_function.name, "reporting-update-option-error")
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "[GPD Reporting] Problem with Payment Option"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "An error occurred while updating the Payment Option To Reported on GPD"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "[UpdateOptionFunction Error] can't update"
+  QUERY
+    , module.reporting_service_function.name
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
 }

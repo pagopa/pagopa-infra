@@ -87,7 +87,7 @@ locals {
 }
 
 module "web_test_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.18"
+  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.12.2"
 
   for_each = { for v in local.test_urls : v.host => v if v != null }
 
