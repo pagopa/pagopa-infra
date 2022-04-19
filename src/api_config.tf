@@ -114,7 +114,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
 
   action {
     action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
+    email_subject          = "DB Nodo Healthcheck"
     custom_webhook_payload = "{}"
   }
   data_source_id = azurerm_application_insights.application_insights.id
