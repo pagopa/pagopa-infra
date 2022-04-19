@@ -345,7 +345,7 @@ canoneunico_plan_sku_size = "S1"
 
 canoneunico_function_always_on         = true
 canoneunico_function_autoscale_minimum = 1
-canoneunico_function_autoscale_maximum = 3
+canoneunico_function_autoscale_maximum = 5
 canoneunico_function_autoscale_default = 1
 
 # each 15 minutes

@@ -84,6 +84,9 @@ module "canoneunico_function" {
     QUEUE_TIME_TO_LIVE         = 7200                                // 2h
     QUEUE_DELAY                = var.canoneunico_queue_message_delay // 2m
 
+    BATCH_SIZE_DEBT_POS_QUEUE = var.canoneunico_batch_size_debt_pos_queue
+    BATCH_SIZE_DEBT_POS_TABLE = var.canoneunico_batch_size_debt_pos_table
+
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
@@ -120,178 +123,49 @@ resource "azurerm_monitor_autoscale_setting" "canoneunico_function" {
       maximum = var.canoneunico_function_autoscale_maximum
     }
 
-
     rule {
       metric_trigger {
-        metric_name        = "CpuPercentage"
-        metric_resource_id = azurerm_app_service_plan.canoneunico_service_plan.id
+        metric_name        = "ApproximateMessageCount"
+        metric_resource_id = join("/", ["${module.cu_sa.id}", "services/queue/queues", "${azurerm_storage_queue.cu_debtposition_queue.name}"])
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT1M"
         time_aggregation   = "Average"
-        operator           = "GreaterThan"
-        threshold          = 75
+        operator           = "GreaterThanOrEqual"
+        threshold          = 10
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
+
     }
 
     rule {
       metric_trigger {
-        metric_name        = "CpuPercentage"
-        metric_resource_id = azurerm_app_service_plan.canoneunico_service_plan.id
+        metric_name        = "ApproximateMessageCount"
+        metric_resource_id = join("/", ["${module.cu_sa.id}", "services/queue/queues", "${azurerm_storage_queue.cu_debtposition_queue.name}"])
         time_grain         = "PT1M"
         statistic          = "Average"
-        time_window        = "PT5M"
+        time_window        = "PT1M"
         time_aggregation   = "Average"
         operator           = "LessThan"
-        threshold          = 25
+        threshold          = 10
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
+
+
     }
 
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_batch_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "GreaterThan"
-    #     threshold                = 4000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "2"
-    #     cooldown  = "PT5M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_batch_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "LessThan"
-    #     threshold                = 3000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT20M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_service_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "GreaterThan"
-    #     threshold                = 4000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "2"
-    #     cooldown  = "PT5M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_service_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "LessThan"
-    #     threshold                = 3000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT20M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_analysis_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "GreaterThan"
-    #     threshold                = 4000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "2"
-    #     cooldown  = "PT5M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_analysis_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "LessThan"
-    #     threshold                = 3000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT20M"
-    #   }
-    # }
   }
 }
 
@@ -363,7 +237,7 @@ resource "azurerm_storage_container" "err_csv_blob_container" {
 
 ##Alert
 resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = format("%s-gpd-problem-alert", module.canoneunico_function.name)
   resource_group_name = azurerm_resource_group.canoneunico_rg.name
@@ -371,11 +245,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
 
   action {
     action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
+    email_subject          = "[CU] GPD Error"
     custom_webhook_payload = "{}"
   }
   data_source_id = azurerm_application_insights.application_insights.id
-  description    = "Problem with GPD"
+  description    = "CU Problem with GPD"
   enabled        = true
   query = format(<<-QUERY
   traces
@@ -387,8 +261,41 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
     , module.canoneunico_function.name
   )
   severity    = 2
-  frequency   = 5
-  time_window = 5
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_parsing_csv_error" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-cu-csv-parsing-alert", module.canoneunico_function.name)
+  resource_group_name = azurerm_resource_group.canoneunico_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "[CU] CSV Parsing Error"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "CU CSV parsing problem"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "[CuCsvParsingFunction Error] Validation Error"
+  QUERY
+    , module.canoneunico_function.name
+  )
+  severity    = 2
+  frequency   = 15
+  time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
