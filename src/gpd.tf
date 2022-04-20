@@ -147,6 +147,7 @@ resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
       maximum = var.gpd_autoscale_maximum
     }
 
+    # gpd rules
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -190,5 +191,7 @@ resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
         cooldown  = "PT5M"
       }
     }
+
+
   }
 }
