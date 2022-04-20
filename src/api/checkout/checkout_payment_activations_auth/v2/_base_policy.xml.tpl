@@ -5,6 +5,7 @@
         <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
             <value>${ip_allowed_1}</value>
             <value>${ip_allowed_2}</value>
+            <value>${ip_allowed_3}</value>
         </check-header>
         <choose>
             <when condition="@(context.User.Groups.Select(g => g.Id).Contains("checkout-rate-no-limit"))" />
@@ -22,6 +23,11 @@
                 <set-header name="X-Client-Id" exists-action="override">
                     <value>CLIENT_IO</value>
                 </set-header>
+            </when>
+            <when condition="@(context.User.Groups.Select(g => g.Id).Contains("piattaforma-notifiche"))" >
+              <set-header name="X-Client-Id" exists-action="override">
+                <value>CLIENT_PN</value>
+              </set-header>
             </when>
             <otherwise>
                 <return-response>
