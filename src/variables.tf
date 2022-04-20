@@ -1299,7 +1299,7 @@ variable "canoneunico_delete_retention_days" {
 
 variable "canoneunico_schedule_batch" {
   type        = string
-  description = "Cron scheduling (NCRON) default : Una volta ogni ora"
+  description = "Cron scheduling (NCRON) default : every hour"
   default     = "0 0 */1 * * *"
 }
 
