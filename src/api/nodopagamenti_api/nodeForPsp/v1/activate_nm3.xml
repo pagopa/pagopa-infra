@@ -79,7 +79,7 @@
         if attvazionePrenotata then sent PPT_ATTIVAZIONE_IN_CORSO
         else store PPT_ATTIVAZIONE_IN_CORSO in attvazionePrenotata for fiscalCode and noticeNumber
         -->
-        <cache-lookup-value key="@((string) context.Variables["fiscalCode"]+"-"+(string) context.Variables["noticeNumber"])" variable-name="attvazionePrenotata" caching-type="internal" />
+        <cache-lookup-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" variable-name="attvazionePrenotata" caching-type="internal" />
         <choose>
             <when condition="@(context.Variables.ContainsKey("attvazionePrenotata"))">
                 <return-response>
@@ -104,7 +104,7 @@
                 </return-response>
             </when>
             <otherwise>
-                <cache-store-value key="@((string) context.Variables["fiscalCode"]+"-"+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="60" caching-type="internal" />
+                <cache-store-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="60" caching-type="internal" />
                 <!-- verificatore -->
                 <choose>
                     <when condition="@(context.Variables["idempotencyKey"] != null)">
@@ -561,7 +561,7 @@
     </backend>
     <outbound>
         <!-- on activatePaymentNotice response delete cache attvazionePrenotata -->
-        <cache-remove-value key="@((string) context.Variables["fiscalCode"]+"-"+(string) context.Variables["noticeNumber"])" caching-type="internal" />
+        <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
         <base />
     </outbound>
     <on-error>
