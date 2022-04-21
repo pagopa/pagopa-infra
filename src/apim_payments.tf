@@ -74,8 +74,8 @@ module "apim_gpd_payments_rest_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
-  approval_required     = false
+  subscription_required = true
+  approval_required     = true
 
   policy_xml = file("./api_product/gpd/payments/rest/_base_policy.xml")
 }
@@ -99,7 +99,7 @@ module "apim_api_gpd_payments_rest_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_gpd_payments_rest_product.product_id]
-  subscription_required = false
+  subscription_required = true
   api_version           = "v1"
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_payments_rest_api.id
   service_url           = format("https://%s", module.payments_app_service.default_site_hostname)
