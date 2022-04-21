@@ -27,6 +27,24 @@
         "description": "Return OK if application is started",
         "operationId": "healthCheck",
         "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppInfo"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Service unavailable",
             "headers": {
@@ -59,24 +77,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppInfo"
                 }
               }
             }
@@ -186,20 +186,13 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Obtained all organization payment positions.",
+          "401": {
+            "description": "Wrong or missing function key.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReceiptsInfo"
                 }
               }
             }
@@ -240,13 +233,20 @@
               }
             }
           },
-          "401": {
-            "description": "Wrong or missing function key.",
+          "200": {
+            "description": "Obtained all organization payment positions.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptsInfo"
                 }
               }
             }
@@ -318,29 +318,6 @@
           }
         ],
         "responses": {
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Wrong or missing function key.",
             "headers": {
@@ -352,8 +329,8 @@
               }
             }
           },
-          "404": {
-            "description": "No receipt found.",
+          "422": {
+            "description": "Unable to process the request.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -363,29 +340,11 @@
               }
             },
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              },
               "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
                 }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
@@ -407,6 +366,47 @@
               "application/xml": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No receipt found.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -435,6 +435,28 @@
   },
   "components": {
     "schemas": {
+      "ProblemJson": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          },
+          "status": {
+            "maximum": 600,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 200
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem.",
+            "example": "There was an error processing the request"
+          }
+        }
+      },
       "PageInfo": {
         "required": [
           "items_found",
@@ -494,28 +516,6 @@
           },
           "page_info": {
             "$ref": "#/components/schemas/PageInfo"
-          }
-        }
-      },
-      "ProblemJson": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
           }
         }
       },
