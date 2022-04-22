@@ -47,7 +47,7 @@ locals {
     path                  = "checkout/auth/payments"
     subscription_required = true
     service_url           = null
-    ip_allowed            = ["20.67.51.184", "20.67.51.210", "x.x.x.x"] # TODO: Update with real PN IP address 
+    ip_allowed            = ["20.67.51.184", "20.67.51.210", "x.x.x.x"] # TODO: Update with real PN IP address
   }
 }
 
