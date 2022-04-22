@@ -93,9 +93,9 @@
 									<outcome>KO</outcome>
 									<fault>
 										<faultCode>PPT_ATTIVAZIONE_IN_CORSO</faultCode>
-										<faultString>PPT_ATTIVAZIONE_IN_CORSO</faultString>
+										<faultString>E' in corso un'altra attivazione per lo stesso avviso</faultString>
 										<id>NodoDeiPagamentiSPC</id>
-										<description>PPT_ATTIVAZIONE_IN_CORSO</description>
+										<description>E' in corso un'altra attivazione per lo stesso avviso</description>
 									</fault>
 								</nfpsp:activatePaymentNoticeRes>
 							</soapenv:Body>
