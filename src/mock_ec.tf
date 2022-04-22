@@ -68,7 +68,15 @@ module "mock_ec" {
     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
-    TIMEOUT_DELAY                                   = 300
+
+    # custom
+    CC_POST_PRIMARY_EC   = "IT57N0760114800000011050036"
+    CC_BANK_PRIMARY_EC   = "IT30N0103076271000001823603"
+    CC_POST_SECONDARY_EC = "IT21Q0760101600000000546200"
+    CC_BANK_SECONDARY_EC = "IT15V0306901783100000300001"
+    CC_BANK_THIRD_EC     = "IT80E0306904013100000046039"
+    TIMEOUT_DELAY        = 500000
+
   }
 
   allowed_subnets = [module.apim_snet.id]
