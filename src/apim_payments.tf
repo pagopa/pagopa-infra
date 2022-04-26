@@ -76,6 +76,7 @@ module "apim_gpd_payments_rest_product" {
   published             = true
   subscription_required = true
   approval_required     = true
+  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/gpd/payments/rest/_base_policy.xml")
 }
