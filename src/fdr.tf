@@ -29,6 +29,14 @@ resource "azurerm_storage_container" "fdr_rend_flow" {
 }
 
 
+## blob container flows OUTPUT
+resource "azurerm_storage_container" "fdr_rend_flow_out" {
+  name                  = format("%sxmlfdrflowout", module.fdr_flows_sa.name)
+  storage_account_name  = module.fdr_flows_sa.name
+  container_access_type = "private"
+}
+
+
 # https://medium.com/marcus-tee-anytime/secure-azure-blob-storage-with-azure-api-management-managed-identities-b0b82b53533c
 
 # 1 - add Blob Data Contributor to apim for Fdr blob storage
