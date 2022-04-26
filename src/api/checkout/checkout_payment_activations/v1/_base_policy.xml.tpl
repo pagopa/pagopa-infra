@@ -27,7 +27,7 @@
         </set-header>
         <set-variable name="body" value="@(context.Response.Body.As<JObject>())" />
         <choose>
-            <when condition="@( (context.Response.StatusCode == 500 || context.Response.StatusCode == 502 || context.Response.StatusCode == 503 || context.Response.StatusCode == 504 || context.Response.StatusCode == 598) && ((JObject) context.Variables["body"])["detail_v2"] != null )">
+            <when condition="@( (context.Response.StatusCode == 500 || context.Response.StatusCode == 409 || context.Response.StatusCode == 424 || context.Response.StatusCode == 502 || context.Response.StatusCode == 503 || context.Response.StatusCode == 504) && ((JObject) context.Variables["body"])["detail_v2"] != null )">
                 <return-response>
                     <set-status code="400" />
                     <set-header name="Content-Type" exists-action="override">
