@@ -358,6 +358,9 @@ payments_logging_level   = "DEBUG"
 canoneunico_plan_sku_tier = "Standard"
 canoneunico_plan_sku_size = "S1"
 
+# each 15 minutes
+canoneunico_schedule_batch = "0 */15 * * * *"
+
 canoneunico_function_autoscale_minimum = 1
 canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
