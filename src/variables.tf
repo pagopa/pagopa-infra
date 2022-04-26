@@ -951,6 +951,16 @@ variable "fesp_hostname" {
   default     = ""
 }
 
+variable "cstar_ip_1" {
+  type        = string
+  description = "CSTAR ip 1"
+}
+
+variable "cstar_ip_2" {
+  type        = string
+  description = "CSTAR ip 2"
+}
+
 # fdr
 variable "fdr_enable_versioning" {
   type        = bool

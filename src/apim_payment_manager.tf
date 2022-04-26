@@ -631,7 +631,10 @@ module "apim_tkm_consent_manager_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/tkm-ms-consent-manager/v1/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/tkm-ms-consent-manager/v1/_base_policy.xml.tpl", {
+    cstar_ip_1 = var.cstar_ip_1
+    cstar_ip_2 = var.cstar_ip_2
+  })
 }
 
 ########################
