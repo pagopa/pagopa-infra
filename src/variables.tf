@@ -1151,6 +1151,24 @@ variable "gpd_queue_delay_sec" {
   default     = 3600
 }
 
+variable "gpd_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 3
+}
+
+variable "gpd_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 10
+}
+
+variable "gpd_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 3
+}
+
 // GPD Payments
 
 # variable "cidr_subnet_payments" {
@@ -1238,6 +1256,18 @@ variable "canoneunico_plan_sku_size" {
   default     = null
 }
 
+variable "canoneunico_batch_size_debt_pos_queue" {
+  type        = number
+  description = "Batch size Debt Position queue"
+  default     = 25
+}
+
+variable "canoneunico_batch_size_debt_pos_table" {
+  type        = number
+  description = "Batch size Debt Position table"
+  default     = 25
+}
+
 variable "cidr_subnet_canoneunico_common" {
   type        = list(string)
   description = "Address prefixes subnet canoneunico_common function"
@@ -1269,8 +1299,8 @@ variable "canoneunico_delete_retention_days" {
 
 variable "canoneunico_schedule_batch" {
   type        = string
-  description = "Cron scheduling (NCRON) default : every day at 01:00:00"
-  default     = "0 0 1 * * *"
+  description = "Cron scheduling (NCRON) default : every hour"
+  default     = "0 0 */1 * * *"
 }
 
 variable "canoneunico_function_autoscale_minimum" {

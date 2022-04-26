@@ -1,31 +1,11 @@
 repos:
-  ## general
-  - repo: git://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
-    hooks:
-      # Common errors
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-        args: [--markdown-linebreak-ext=md]
-      - id: check-yaml
-      - id: check-executables-have-shebangs
-      # Cross platform
-      - id: check-case-conflict
-      - id: mixed-line-ending
-        args: [--fix=lf]
-      # Security
-      - id: detect-aws-credentials
-        args: ['--allow-missing-credentials']
-      - id: detect-private-key
   ## terraform
-  - repo: git://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.50.0
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.68.1
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
-        args:
-          - tfvars hcl --output-file terraform.tfvars.model .
-      # - id: terraform_tflint
-      #   args: ['--args=--config=__GIT_WORKING_DIR__/.tflint.hcl']
-      - id: terraform_tfsec
+      # - id: terraform_tfsec
+      #   args:
+      #     - --args=--exclude-downloaded-modules
       - id: terraform_validate

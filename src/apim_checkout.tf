@@ -47,7 +47,7 @@ locals {
     path                  = "checkout/auth/payments"
     subscription_required = true
     service_url           = null
-    ip_allowed            = ["20.67.51.184", "20.67.51.210"]
+    ip_allowed            = ["20.67.51.184", "20.67.51.210", "x.x.x.x"] # TODO: Update with real PN IP address
   }
 }
 
@@ -228,9 +228,10 @@ module "apim_checkout_payment_activations_api_auth_v2" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/checkout/checkout_payment_activations_auth/v2/_base_policy.xml.tpl", {
+  xml_content = templatefile(var.env_short == "d" ? "./api/checkout/checkout_payment_activations_auth/v2/_base_policy_dev.xml.tpl" : "./api/checkout/checkout_payment_activations_auth/v2/_base_policy.xml.tpl", {
     ip_allowed_1 = local.apim_checkout_payment_activations_auth_api.ip_allowed[0]
     ip_allowed_2 = local.apim_checkout_payment_activations_auth_api.ip_allowed[1]
+    ip_allowed_3 = local.apim_checkout_payment_activations_auth_api.ip_allowed[2]
   })
 }
 
