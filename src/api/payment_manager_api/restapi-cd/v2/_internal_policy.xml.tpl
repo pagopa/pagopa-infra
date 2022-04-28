@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="{{pm-onprem-hostname}}/pp-restapi-CD/v2" />
+      <set-backend-service base-url="{{pm-gtw-hostname}}/pp-restapi-CD/v2" />
     </inbound>
     <outbound>
       <base />

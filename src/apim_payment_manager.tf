@@ -24,11 +24,6 @@ data "azurerm_key_vault_secret" "pm_gtw_hostname" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "pm_onprem_hostname" {
-  name         = "pm-onprem-hostname"
-  key_vault_id = module.key_vault.id
-}
-
 data "azurerm_key_vault_secret" "pm_restapi_ip" {
   name         = "pm-restapi-ip"
   key_vault_id = module.key_vault.id
