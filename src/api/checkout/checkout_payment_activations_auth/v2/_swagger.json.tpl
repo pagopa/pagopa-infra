@@ -39,9 +39,21 @@
             }
           },
           "400": {
+            "description": "Formally invalid input",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "404": {
             "description": "Invalid input",
             "schema": {
               "$ref": "#/definitions/ValidationFaultPaymentProblemJson"
+            }
+          },
+          "409": {
+            "description": "Conflict on payment status",
+            "schema": {
+              "$ref": "#/definitions/PaymentStatusFaultPaymentProblemJson"
             }
           },
           "502": {
@@ -60,12 +72,6 @@
             "description": "Timeout from PagoPA services",
             "schema": {
               "$ref": "#/definitions/PartyTimeoutFaultPaymentProblemJson"
-            }
-          },
-          "598": {
-            "description": "Service connection error while connecting to PagoPA services",
-            "schema": {
-              "$ref": "#/definitions/PartyConnectionFaultPaymentProblemJson"
             }
           }
         }
@@ -107,9 +113,21 @@
             }
           },
           "400": {
+            "description": "Formally invalid input",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "404": {
             "description": "Invalid input",
             "schema": {
               "$ref": "#/definitions/ValidationFaultPaymentProblemJson"
+            }
+          },
+          "409": {
+            "description": "Conflict on payment status",
+            "schema": {
+              "$ref": "#/definitions/PaymentStatusFaultPaymentProblemJson"
             }
           },
           "502": {
@@ -128,12 +146,6 @@
             "description": "Timeout from PagoPA services",
             "schema": {
               "$ref": "#/definitions/PartyTimeoutFaultPaymentProblemJson"
-            }
-          },
-          "598": {
-            "description": "Service connection error while connecting to PagoPA services",
-            "schema": {
-              "$ref": "#/definitions/PartyConnectionFaultPaymentProblemJson"
             }
           }
         }
@@ -165,13 +177,13 @@
           "400": {
             "description": "Invalid input",
             "schema": {
-              "$ref": "#/definitions/ValidationFaultPaymentProblemJson"
+              "$ref": "#/definitions/ProblemJson"
             }
           },
           "404": {
             "description": "Activation status not found",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationFaultPaymentProblemJson"
             }
           },
           "502": {
@@ -266,6 +278,45 @@
         "detail_v2"
       ]
     },
+    "PaymentStatusFaultPaymentProblemJson": {
+      "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors related to payment status conflicts.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "format": "uri",
+          "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
+          "default": "about:blank",
+          "example": "https://example.com/problem/constraint-violation"
+        },
+        "title": {
+          "type": "string",
+          "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 100,
+          "maximum": 600,
+          "exclusiveMaximum": true
+        },
+        "detail": {
+          "$ref": "#/definitions/PaymentFault"
+        },
+        "detail_v2": {
+          "$ref": "#/definitions/PaymentStatusFault"
+        },
+        "instance": {
+          "type": "string",
+          "format": "uri",
+          "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
+        }
+      },
+      "required": [
+        "detail",
+        "detail_v2"
+      ]
+    },
     "GatewayFaultPaymentProblemJson": {
       "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors.",
       "type": "object",
@@ -332,45 +383,6 @@
         },
         "detail_v2": {
           "$ref": "#/definitions/PartyConfigurationFault"
-        },
-        "instance": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
-        }
-      },
-      "required": [
-        "detail",
-        "detail_v2"
-      ]
-    },
-    "PartyConnectionFaultPaymentProblemJson": {
-      "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to connection errors towards ECs.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
-          "default": "about:blank",
-          "example": "https://example.com/problem/constraint-violation"
-        },
-        "title": {
-          "type": "string",
-          "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32",
-          "minimum": 100,
-          "maximum": 600,
-          "exclusiveMaximum": true
-        },
-        "detail": {
-          "$ref": "#/definitions/PaymentFault"
-        },
-        "detail_v2": {
-          "$ref": "#/definitions/PartyConnectionFault"
         },
         "instance": {
           "type": "string",
@@ -641,8 +653,18 @@
         "GENERIC_ERROR"
       ]
     },
+    "PaymentStatusFault": {
+      "description": "Fault codes for errors related to payment attempts that cause conflict with the current payment status,\nsuch as a duplicated payment attempt or a payment attempt made while another attempt is still being processed.\nShould be mapped to 409 HTTP status code.",
+      "type": "string",
+      "x-extensible-enum": [
+        "PPT_PAGAMENTO_IN_CORSO",
+        "PAA_PAGAMENTO_IN_CORSO",
+        "PPT_PAGAMENTO_DUPLICATO",
+        "PAA_PAGAMENTO_DUPLICATO"
+      ]
+    },
     "ValidationFault": {
-      "description": "Fault codes for validation/syntactical errors, should be mapped to 400 HTTP status code.",
+      "description": "Fault codes for errors related to well-formed requests to ECs not present inside Nodo, should be mapped to 404 HTTP status code.\nMost of the time these are generated when users input a wrong fiscal code or notice number.",
       "type": "string",
       "x-extensible-enum": [
         "PPT_DOMINIO_SCONOSCIUTO",
@@ -655,8 +677,6 @@
       "type": "string",
       "x-extensible-enum": [
         "GENERIC_ERROR",
-        "PPT_PAGAMENTO_IN_CORSO",
-        "PPT_PAGAMENTO_DUPLICATO",
         "PPT_SINTASSI_EXTRAXSD",
         "PPT_SINTASSI_XSD",
         "PPT_PSP_SCONOSCIUTO",
@@ -684,19 +704,13 @@
         "PPT_IBAN_NON_CENSITO"
       ]
     },
-    "PartyConnectionFault": {
-      "description": "Fault codes for connection errors to ECs, should be mapped to 598 HTTP status code.",
-      "type": "string",
-      "x-extensible-enum": [
-        "PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE",
-        "PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO"
-      ]
-    },
     "PartyTimeoutFault": {
       "description": "Fault codes for timeout errors, should be mapped to 504 HTTP status code.",
       "type": "string",
       "x-extensible-enum": [
         "PPT_STAZIONE_INT_PA_TIMEOUT",
+        "PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE",
+        "PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO",
         "GENERIC_ERROR"
       ]
     },
