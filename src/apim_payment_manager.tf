@@ -176,6 +176,15 @@ module "apim_pm_restapicd_api_v1" {
   xml_content = file("./api/payment_manager_api/restapi-cd/v1/_base_policy.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "updata_status_api" {
+  api_name            = format("%s-pm-restapicd-api-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "updateTransactionStatusUsingPATCH"
+
+  xml_content = file("./api/payment_manager_api/restapi-cd/v1/_internal_policy.xml.tpl")
+}
+
 module "apim_pm_restapicd_api_v2" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
@@ -200,6 +209,15 @@ module "apim_pm_restapicd_api_v2" {
   })
 
   xml_content = file("./api/payment_manager_api/restapi-cd/v2/_base_policy.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "send_payment_result_api" {
+  api_name            = format("%s-pm-restapicd-api-v2", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "sendPaymentResult"
+
+  xml_content = file("./api/payment_manager_api/restapi-cd/v2/_internal_policy.xml.tpl")
 }
 
 module "apim_pm_restapicd_api_v3" {
