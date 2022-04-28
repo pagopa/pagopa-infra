@@ -33,39 +33,21 @@
             },
             "examples": {
               "application/json": {
-                "importoSingoloVersamento": "200,",
+                "importoSingoloVersamento": "200",
                 "codiceContestoPagamento": "ABC123"
               }
             }
           },
           "400": {
-            "description": "Invalid input",
+            "description": "Invalid input or PagoPA response",
             "schema": {
-              "$ref": "#/definitions/ValidationFaultPaymentProblemJson"
+              "$ref": "#/definitions/PaymentProblemJson"
             }
           },
-          "502": {
+          "500": {
             "description": "PagoPA services are not available or request is rejected by PagoPa",
             "schema": {
-              "$ref": "#/definitions/GatewayFaultPaymentProblemJson"
-            }
-          },
-          "503": {
-            "description": "EC services are not available",
-            "schema": {
-              "$ref": "#/definitions/PartyConfigurationFaultPaymentProblemJson"
-            }
-          },
-          "504": {
-            "description": "Timeout from PagoPA services",
-            "schema": {
-              "$ref": "#/definitions/PartyTimeoutFaultPaymentProblemJson"
-            }
-          },
-          "598": {
-            "description": "Service connection error while connecting to PagoPA services",
-            "schema": {
-              "$ref": "#/definitions/PartyConnectionFaultPaymentProblemJson"
+              "$ref": "#/definitions/ProblemJson"
             }
           }
         }
@@ -107,33 +89,15 @@
             }
           },
           "400": {
-            "description": "Invalid input",
+            "description": "Invalid input or PagoPA response",
             "schema": {
-              "$ref": "#/definitions/ValidationFaultPaymentProblemJson"
+              "$ref": "#/definitions/PaymentProblemJson"
             }
           },
-          "502": {
-            "description": "PagoPA services are not available or request is rejected by PagoPa",
+          "500": {
+            "description": "PagoPA services are not available",
             "schema": {
-              "$ref": "#/definitions/GatewayFaultPaymentProblemJson"
-            }
-          },
-          "503": {
-            "description": "EC services are not available",
-            "schema": {
-              "$ref": "#/definitions/PartyConfigurationFaultPaymentProblemJson"
-            }
-          },
-          "504": {
-            "description": "Timeout from PagoPA services",
-            "schema": {
-              "$ref": "#/definitions/PartyTimeoutFaultPaymentProblemJson"
-            }
-          },
-          "598": {
-            "description": "Service connection error while connecting to PagoPA services",
-            "schema": {
-              "$ref": "#/definitions/PartyConnectionFaultPaymentProblemJson"
+              "$ref": "#/definitions/ProblemJson"
             }
           }
         }
@@ -165,7 +129,7 @@
           "400": {
             "description": "Invalid input",
             "schema": {
-              "$ref": "#/definitions/ValidationFaultPaymentProblemJson"
+              "$ref": "#/definitions/PaymentProblemJson"
             }
           },
           "404": {
@@ -174,10 +138,10 @@
               "$ref": "#/definitions/ProblemJson"
             }
           },
-          "502": {
-            "description": "PagoPA services are not available or request is rejected by PagoPa",
+          "500": {
+            "description": "Service unavailable",
             "schema": {
-              "$ref": "#/definitions/GatewayFaultPaymentProblemJson"
+              "$ref": "#/definitions/ProblemJson"
             }
           }
         }
@@ -215,201 +179,6 @@
         },
         "detail_v2": {
           "$ref": "#/definitions/PaymentFaultV2"
-        },
-        "instance": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
-        }
-      },
-      "required": [
-        "detail",
-        "detail_v2"
-      ]
-    },
-    "ValidationFaultPaymentProblemJson": {
-      "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
-          "default": "about:blank",
-          "example": "https://example.com/problem/constraint-violation"
-        },
-        "title": {
-          "type": "string",
-          "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32",
-          "minimum": 100,
-          "maximum": 600,
-          "exclusiveMaximum": true
-        },
-        "detail": {
-          "$ref": "#/definitions/PaymentFault"
-        },
-        "detail_v2": {
-          "$ref": "#/definitions/ValidationFault"
-        },
-        "instance": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
-        }
-      },
-      "required": [
-        "detail",
-        "detail_v2"
-      ]
-    },
-    "GatewayFaultPaymentProblemJson": {
-      "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to Nodo errors.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
-          "default": "about:blank",
-          "example": "https://example.com/problem/constraint-violation"
-        },
-        "title": {
-          "type": "string",
-          "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32",
-          "minimum": 100,
-          "maximum": 600,
-          "exclusiveMaximum": true
-        },
-        "detail": {
-          "$ref": "#/definitions/PaymentFault"
-        },
-        "detail_v2": {
-          "$ref": "#/definitions/GatewayFault"
-        },
-        "instance": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
-        }
-      },
-      "required": [
-        "detail",
-        "detail_v2"
-      ]
-    },
-    "PartyConfigurationFaultPaymentProblemJson": {
-      "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to EC fatal errors.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
-          "default": "about:blank",
-          "example": "https://example.com/problem/constraint-violation"
-        },
-        "title": {
-          "type": "string",
-          "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32",
-          "minimum": 100,
-          "maximum": 600,
-          "exclusiveMaximum": true
-        },
-        "detail": {
-          "$ref": "#/definitions/PaymentFault"
-        },
-        "detail_v2": {
-          "$ref": "#/definitions/PartyConfigurationFault"
-        },
-        "instance": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
-        }
-      },
-      "required": [
-        "detail",
-        "detail_v2"
-      ]
-    },
-    "PartyConnectionFaultPaymentProblemJson": {
-      "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to connection errors towards ECs.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
-          "default": "about:blank",
-          "example": "https://example.com/problem/constraint-violation"
-        },
-        "title": {
-          "type": "string",
-          "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32",
-          "minimum": 100,
-          "maximum": 600,
-          "exclusiveMaximum": true
-        },
-        "detail": {
-          "$ref": "#/definitions/PaymentFault"
-        },
-        "detail_v2": {
-          "$ref": "#/definitions/PartyConnectionFault"
-        },
-        "instance": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
-        }
-      },
-      "required": [
-        "detail",
-        "detail_v2"
-      ]
-    },
-    "PartyTimeoutFaultPaymentProblemJson": {
-      "description": "A PaymentProblemJson-like type specific for the GetPayment and ActivatePayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to EC timeouts.",
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "format": "uri",
-          "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
-          "default": "about:blank",
-          "example": "https://example.com/problem/constraint-violation"
-        },
-        "title": {
-          "type": "string",
-          "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int32",
-          "minimum": 100,
-          "maximum": 600,
-          "exclusiveMaximum": true
-        },
-        "detail": {
-          "$ref": "#/definitions/PaymentFault"
-        },
-        "detail_v2": {
-          "$ref": "#/definitions/PartyTimeoutFault"
         },
         "instance": {
           "type": "string",
@@ -638,65 +407,6 @@
         "PAYMENT_UNKNOWN",
         "DOMAIN_UNKNOWN",
         "PPT_MULTI_BENEFICIARIO",
-        "GENERIC_ERROR"
-      ]
-    },
-    "ValidationFault": {
-      "description": "Fault codes for validation/syntactical errors, should be mapped to 400 HTTP status code.",
-      "type": "string",
-      "x-extensible-enum": [
-        "PPT_DOMINIO_SCONOSCIUTO",
-        "PPT_INTERMEDIARIO_PA_SCONOSCIUTO",
-        "PPT_STAZIONE_INT_PA_SCONOSCIUTA"
-      ]
-    },
-    "GatewayFault": {
-      "description": "Fault codes for generic downstream services errors, should be mapped to 502 HTTP status code.",
-      "type": "string",
-      "x-extensible-enum": [
-        "GENERIC_ERROR",
-        "PPT_PAGAMENTO_IN_CORSO",
-        "PPT_PAGAMENTO_DUPLICATO",
-        "PPT_SINTASSI_EXTRAXSD",
-        "PPT_SINTASSI_XSD",
-        "PPT_PSP_SCONOSCIUTO",
-        "PPT_PSP_DISABILITATO",
-        "PPT_INTERMEDIARIO_PSP_SCONOSCIUTO",
-        "PPT_INTERMEDIARIO_PSP_DISABILITATO",
-        "PPT_CANALE_SCONOSCIUTO",
-        "PPT_CANALE_DISABILITATO",
-        "PPT_AUTENTICAZIONE",
-        "PPT_AUTORIZZAZIONE",
-        "PPT_CODIFICA_PSP_SCONOSCIUTA",
-        "PPT_SEMANTICA",
-        "PPT_SYSTEM_ERROR"
-      ]
-    },
-    "PartyConfigurationFault": {
-      "description": "Fault codes for fatal errors from ECs, should be mapped to 503 HTTP status code.",
-      "type": "string",
-      "x-extensible-enum": [
-        "PPT_DOMINIO_DISABILITATO",
-        "PPT_INTERMEDIARIO_PA_DISABILITATO",
-        "PPT_STAZIONE_INT_PA_DISABILITATA",
-        "PPT_ERRORE_EMESSO_DA_PAA",
-        "PPT_STAZIONE_INT_PA_ERRORE_RESPONSE",
-        "PPT_IBAN_NON_CENSITO"
-      ]
-    },
-    "PartyConnectionFault": {
-      "description": "Fault codes for connection errors to ECs, should be mapped to 598 HTTP status code.",
-      "type": "string",
-      "x-extensible-enum": [
-        "PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE",
-        "PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO"
-      ]
-    },
-    "PartyTimeoutFault": {
-      "description": "Fault codes for timeout errors, should be mapped to 504 HTTP status code.",
-      "type": "string",
-      "x-extensible-enum": [
-        "PPT_STAZIONE_INT_PA_TIMEOUT",
         "GENERIC_ERROR"
       ]
     },
