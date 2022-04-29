@@ -45,7 +45,7 @@
             }
           },
           "404": {
-            "description": "Invalid input",
+            "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
             "schema": {
               "$ref": "#/definitions/ValidationFaultPaymentProblemJson"
             }
@@ -119,7 +119,7 @@
             }
           },
           "404": {
-            "description": "Invalid input",
+            "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
             "schema": {
               "$ref": "#/definitions/ValidationFaultPaymentProblemJson"
             }
