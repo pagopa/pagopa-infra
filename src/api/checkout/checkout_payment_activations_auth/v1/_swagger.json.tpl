@@ -47,7 +47,7 @@
           "500": {
             "description": "PagoPA services are not available or request is rejected by PagoPa",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/PaymentProblemJson"
             }
           }
         }
@@ -97,7 +97,7 @@
           "500": {
             "description": "PagoPA services are not available",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/PaymentProblemJson"
             }
           }
         }
