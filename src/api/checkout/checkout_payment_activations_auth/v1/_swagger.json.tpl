@@ -41,7 +41,7 @@
           "400": {
             "description": "Invalid input or PagoPA response",
             "schema": {
-              "$ref": "#/definitions/PaymentProblemJson"
+              "$ref": "#/definitions/ProblemJson"
             }
           },
           "500": {
@@ -91,7 +91,7 @@
           "400": {
             "description": "Invalid input or PagoPA response",
             "schema": {
-              "$ref": "#/definitions/PaymentProblemJson"
+              "$ref": "#/definitions/ProblemJson"
             }
           },
           "500": {
@@ -129,7 +129,7 @@
           "400": {
             "description": "Invalid input",
             "schema": {
-              "$ref": "#/definitions/PaymentProblemJson"
+              "$ref": "#/definitions/ProblemJson"
             }
           },
           "404": {
