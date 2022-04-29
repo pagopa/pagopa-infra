@@ -41,34 +41,6 @@
         <set-header name="cache-control" exists-action="override">
             <value>no-store</value>
         </set-header>
-          <set-variable name="body" value="@(context.Response.Body.As<JObject>())" />
-        <choose>
-            <when condition="@( (context.Response.StatusCode == 500 || context.Response.StatusCode == 409 || context.Response.StatusCode == 424 || context.Response.StatusCode == 502 || context.Response.StatusCode == 503 || context.Response.StatusCode == 504) && ((JObject) context.Variables["body"])["detail_v2"] != null )">
-                <return-response>
-                    <set-status code="502" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>application/json</value>
-                    </set-header>
-                    <set-body>@{
-                    return new JObject(
-                            new JProperty("status", 502),
-                            new JProperty("detail_v2", ((JObject) context.Variables["body"])["detail_v2"]),
-                            new JProperty("detail", ((JObject) context.Variables["body"])["detail"]),
-                            new JProperty("title", ((JObject) context.Variables["body"])["title"])
-                           ).ToString();
-             }</set-body>
-                </return-response>
-            </when>
-            <otherwise>
-              <return-response>
-                    <set-status code="@(context.Response.StatusCode)" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>application/json</value>
-                    </set-header>
-                    <set-body>@(((JObject) context.Variables["body"]).ToString())</set-body>
-                </return-response>
-            </otherwise>
-        </choose>
         <base />
     </outbound>
     <backend>
