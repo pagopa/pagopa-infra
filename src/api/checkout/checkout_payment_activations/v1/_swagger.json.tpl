@@ -147,7 +147,7 @@
           "404": {
             "description": "Activation status not found",
             "schema": {
-              "$ref": "#/definitions/PaymentProblemJson"
+              "$ref": "#/definitions/ProblemJson"
             }
           },
           "500": {
