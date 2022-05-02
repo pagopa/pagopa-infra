@@ -92,7 +92,8 @@ app_gateway_deny_paths = [
   "/checkout/io-for-node/*",
   "/gpd/*",
   "/gpd-payments/*",
-  "/gpd-reporting/*"
+  "/gpd-reporting/*",
+  "tkm/tkmcardmanager/*"
 ]
 
 # nat_gateway
