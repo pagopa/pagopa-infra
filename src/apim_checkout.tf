@@ -139,15 +139,6 @@ module "apim_checkout_payment_activations_api_auth_v1" {
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_activation_status_auth_api" {
-  api_name            = format("%s-checkout-payment-activations-auth-api-v1", local.project)
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "getActivationStatus"
-
-  xml_content = file("./api/checkout/checkout_payment_activations_auth/v1/_idpayment_check.xml.tpl")
-}
-
 # Payment activation v2 authenticated APIs
 module "apim_checkout_payment_activations_api_auth_v2" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
@@ -176,15 +167,6 @@ module "apim_checkout_payment_activations_api_auth_v2" {
     ip_allowed_2 = local.apim_checkout_payment_activations_auth_api.ip_allowed[1]
     ip_allowed_3 = local.apim_checkout_payment_activations_auth_api.ip_allowed[2]
   })
-}
-
-resource "azurerm_api_management_api_operation_policy" "get_activation_status_auth_api_v2" {
-  api_name            = format("%s-checkout-payment-activations-auth-api-v2", local.project)
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "getActivationStatus"
-
-  xml_content = file("./api/checkout/checkout_payment_activations_auth/v2/_idpayment_check.xml.tpl")
 }
 
 # pagopa-proxy SOAP web service FespCdService
