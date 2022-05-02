@@ -93,15 +93,6 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
   xml_content = file("./api/checkout/checkout_payment_activations/v1/_recaptcha_check.xml.tpl")
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_activation_status_api" {
-  api_name            = format("%s-checkout-payment-activations-api-v1", local.project)
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "getActivationStatus"
-
-  xml_content = file("./api/checkout/checkout_payment_activations/v1/_idpayment_check.xml.tpl")
-}
-
 resource "azurerm_api_management_api_operation_policy" "activate_payment_api" {
   api_name            = format("%s-checkout-payment-activations-api-v1", local.project)
   api_management_name = module.apim.name
