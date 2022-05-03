@@ -124,7 +124,7 @@
         </choose>
         <return-response>
             <set-header name="Content-Type" exists-action="override">
-                <value>application/xml</value>
+                <value>text/xml</value>
             </set-header>
             <set-body>@((string)context.Variables["originalrsp"])</set-body>
         </return-response>
