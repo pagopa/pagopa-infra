@@ -665,7 +665,7 @@ locals {
     display_name          = "Payment Manager - tkm-ms-card-manager"
     description           = "RESTful API provided for parless cards retrieval"
     path                  = "tkm/tkmcardmanager"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
@@ -714,7 +714,7 @@ locals {
     display_name          = "Payment Manager - tkm-ms-acquirer-manager"
     description           = "RESTful APIs provided to acquirers"
     path                  = "tkm/tkmacquirermanager"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }

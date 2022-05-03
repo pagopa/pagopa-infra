@@ -202,13 +202,13 @@
         }
       }
     },
-    "/update-consent": {
+    "/consent-update": {
       "put": {
         "tags": [
           "restricted"
         ],
         "summary": "Writes a message on write queue on consent changes",
-        "operationId": "updateConsent",
+        "operationId": "consentUpdate",
         "requestBody": {
           "content": {
             "application/json": {
