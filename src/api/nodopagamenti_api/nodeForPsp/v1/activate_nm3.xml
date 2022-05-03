@@ -104,7 +104,7 @@
                 </return-response>
             </when>
             <otherwise>
-                <cache-store-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="60" caching-type="internal" />
+                <cache-store-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="30" caching-type="internal" />
                 <!-- verificatore -->
                 <choose>
                     <when condition="@(context.Variables["idempotencyKey"] != null)">
@@ -144,11 +144,6 @@
                             <set-header name="Content-Type" exists-action="override">
                                 <value>application/xml</value>
                             </set-header>
-                            <!--
-                    <set-header name="Host" exists-action="override">
-                        <value>soap-input-uat-npa-nodopagamenti.ocp-tst-npaspc.sia.eu</value>
-                    </set-header>
-                    -->
                             <set-header name="SOAPAction" exists-action="override">
                                 <value>verifyPaymentNotice</value>
                             </set-header>
@@ -203,11 +198,6 @@
                                 <set-header name="Content-Type" exists-action="override">
                                     <value>application/xml</value>
                                 </set-header>
-                                <!--
-                        <set-header name="Host" exists-action="override">
-                            <value>soap-input-uat-npa-nodopagamenti.ocp-tst-npaspc.sia.eu</value>
-                        </set-header>
-                        -->
                                 <set-header name="SOAPAction" exists-action="override">
                                     <value>activatePaymentNotice</value>
                                 </set-header>
@@ -310,7 +300,6 @@
 										</set-body>
                                     </when>
                                 </choose>
-                                <!-- <set-backend-service base-url="{{urlnodo}}" /> -->
                             </when>
                             <otherwise>
                                 <set-variable name="faultCode" value="@{
@@ -376,6 +365,10 @@
                             }
 
                         }" />
+
+                                <!-- on KO response custoim delete cache attvazionePrenotata #1 -->
+                                <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
+
                                 <choose>
                                     <when condition="@("".Equals((string)context.Variables["originalFaultCode"]))">
                                         <return-response>
@@ -424,6 +417,7 @@
 											</set-body>
                                         </return-response>
                                     </otherwise>
+
                                 </choose>
                             </otherwise>
                         </choose>
@@ -441,11 +435,6 @@
                         <set-header name="Content-Type" exists-action="override">
                             <value>application/xml</value>
                         </set-header>
-                        <!--
-                <set-header name="Host" exists-action="override">
-                    <value>soap-input-uat-npa-nodopagamenti.ocp-tst-npaspc.sia.eu</value>
-                </set-header>
-                -->
                         <set-header name="SOAPAction" exists-action="override">
                             <value>activatePaymentNotice</value>
                         </set-header>
@@ -548,7 +537,6 @@
 								</set-body>
                             </when>
                         </choose>
-                        <!-- <set-backend-service base-url="{{urlnodo}}" /> -->
                     </otherwise>
                 </choose>
             </otherwise>
@@ -560,7 +548,7 @@
         <base />
     </backend>
     <outbound>
-        <!-- on activatePaymentNotice response delete cache attvazionePrenotata -->
+        <!-- on activatePaymentNotice response delete cache attvazionePrenotata #2 -->
         <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
         <base />
     </outbound>
