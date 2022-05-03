@@ -4,7 +4,20 @@
         <rate-limit-by-key calls="50" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
         <choose>
             <when condition="@( context.Request.Url.Path.Contains("payment-requests") && context.Request.Url.Path.Contains("999"))">
-                <return-response />
+                <return-response>
+                    <set-status code="409" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+                    return new JObject(
+                            new JProperty("status", 409),
+                            new JProperty("detail_v2", "PAA_PAGAMENTO_DUPLICATO"),
+                            new JProperty("detail", "PAYMENT_DUPLICATED"),
+                            new JProperty("title", "pagoPA service error")
+                           ).ToString();
+                 }</set-body>
+                </return-response>
             </when>
             <when condition="@( context.Request.Url.Path.Contains("payment-requests") && context.Request.Url.Path.Contains("421"))">
                 <return-response>
