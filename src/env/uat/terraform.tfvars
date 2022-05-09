@@ -313,7 +313,8 @@ dns_a_reconds_dbnodo_ips           = ["10.101.35.39", "10.101.35.40", "10.101.35
 private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
 # API Config
-xsd_ica = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
+xsd_ica                 = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
+apiconfig_logging_level = "DEBUG"
 
 # API Config FE
 api_config_fe_enabled = true
