@@ -12,14 +12,14 @@ module "container_registry" {
   resource_group_name           = azurerm_resource_group.container_registry_rg.name
   admin_enabled                 = false
   anonymous_pull_enabled        = false
-  zone_redundancy_enabled       = true
+  zone_redundancy_enabled       = var.env_short == "p" ? true : false
   public_network_access_enabled = false
   location                      = var.location
 
   private_endpoint = {
     enabled              = var.env_short == "p" ? true : false
     private_dns_zone_ids =  var.env_short == "p" ?  [azurerm_private_dns_zone.privatelink_azurecr_pagopa.id] : false
- // subnet_id            = 
+ // subnet_id            =
     virtual_network_id   = azurerm_resource_group.rg_vnet.name
   }
 
