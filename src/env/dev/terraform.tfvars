@@ -272,7 +272,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pagopa-biz-evt-rx"]
+    consumers         = ["pagopa-biz-evt-rx", "nodo-dei-pagamenti-pdnd"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -282,6 +282,12 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd"
         listen = true
         send   = false
         manage = false
