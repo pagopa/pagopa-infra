@@ -69,6 +69,9 @@ module "reporting_fdr_function" {
     DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
 
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
+
   }
 
   allowed_subnets = [module.apim_snet.id]

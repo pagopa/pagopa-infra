@@ -165,6 +165,12 @@ variable "db_service_name" {
   default     = null
 }
 
+variable "apiconfig_logging_level" {
+  type        = string
+  description = "Logging level of Api Config"
+  default     = "INFO"
+}
+
 variable "xsd_ica" {
   type        = string
   description = "XML Schema of Informatica Conto Accredito"
