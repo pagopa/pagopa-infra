@@ -84,6 +84,7 @@ module "api_config_app_service" {
     XSD_ICA                    = var.xsd_ica
     XSD_COUNTERPART            = var.xsd_counterpart
     XSD_CDI                    = var.xsd_cdi
+    LOGGING_LEVEL              = var.apiconfig_logging_level
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080

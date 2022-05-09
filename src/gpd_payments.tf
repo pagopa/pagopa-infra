@@ -32,6 +32,8 @@ locals {
     RETRY_MAX_ATTEMPTS            = 1
     RETRY_MAX_DELAY               = 2000
     LOGGING_LEVEL                 = var.payments_logging_level
+    CACHE_SIZE                    = 1000
+    CACHE_EXPIRATION_TIME         = "1d" # 1 day
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
