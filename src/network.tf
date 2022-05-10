@@ -110,12 +110,4 @@ module "common_private_endpoint_snet" {
   virtual_network_name = module.vnet.name
 
   enforce_private_link_endpoint_network_policies = true
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
 }
