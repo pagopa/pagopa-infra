@@ -12,7 +12,7 @@ locals {
   ]
 
   monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "EmailPagoPA"
+  monitor_action_group_email_name = "PagoPA"
 
   vnet_name                = "${local.project}-vnet"
   vnet_resource_group_name = "${local.project}-vnet-rg"
