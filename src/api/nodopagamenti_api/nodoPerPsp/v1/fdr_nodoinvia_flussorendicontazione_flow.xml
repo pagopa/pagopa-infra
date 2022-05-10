@@ -123,9 +123,9 @@
             </when>
         </choose>
         <return-response>
-            <!-- <set-header name="Content-Type" exists-action="override">
+            <set-header name="Content-Type" exists-action="override">
                 <value>text/xml</value>
-            </set-header> -->
+            </set-header>
             <set-body>@((string)context.Variables["originalrsp"])</set-body>
         </return-response>
         <base />

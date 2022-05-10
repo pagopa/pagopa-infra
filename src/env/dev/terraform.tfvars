@@ -268,6 +268,32 @@ eventhubs = [
       }
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["pagopa-biz-evt-rx", "nodo-dei-pagamenti-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
 
 # acr
@@ -280,8 +306,9 @@ dns_a_reconds_dbnodo_ips           = ["10.8.3.228"]
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
 
 # API Config
-xsd_ica              = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
-api_config_always_on = false
+xsd_ica                 = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
+api_config_always_on    = false
+apiconfig_logging_level = "DEBUG"
 
 # API Config FE
 api_config_fe_enabled = true
