@@ -100,3 +100,22 @@ module "route_table_peering_sia" {
 
   tags = var.tags
 }
+
+# subnet acr
+module "common_private_endpoint_snet" {
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.19"
+  name                 = format("%s-common-private-endpoint-snet", local.project)
+  address_prefixes     = var.cidr_common_private_endpoint_snet
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = module.vnet.name
+
+  enforce_private_link_endpoint_network_policies = true
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
