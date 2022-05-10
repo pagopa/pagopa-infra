@@ -14,8 +14,8 @@ locals {
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
 
-  vnet_name                = "${local.project}-vnet"
-  vnet_resource_group_name = "${local.project}-vnet-rg"
+  vnet_name                = "${local.product}-vnet"
+  vnet_resource_group_name = "${local.product}-vnet-rg"
 
   acr_name                = replace(format("%s-common-acr", local.product), "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
