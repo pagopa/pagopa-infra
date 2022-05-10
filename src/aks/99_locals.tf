@@ -16,7 +16,7 @@ locals {
 
   vnet_name                = "${local.project}-vnet"
   vnet_resource_group_name = "${local.project}-vnet-rg"
-                            
+
   acr_name                = replace(format("%s-common-acr", local.product), "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 

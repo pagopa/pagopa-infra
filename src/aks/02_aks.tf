@@ -56,7 +56,7 @@ module "aks" {
 
   outbound_ip_address_ids = azurerm_public_ip.aks_outbound.*.id
   private_cluster_enabled = true
-  network_profile = { // TODO maybe wrong
+  network_profile = {
     docker_bridge_cidr = "172.17.0.1/16"
     dns_service_ip     = "10.2.0.10"
     network_plugin     = "azure"
@@ -67,7 +67,7 @@ module "aks" {
   # end network
 
   rbac_enabled        = true
-  aad_admin_group_ids = [data.azuread_group.adgroup_admin.object_id]
+  aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id]
 
   addon_azure_policy_enabled                     = true
   addon_azure_key_vault_secrets_provider_enabled = true
