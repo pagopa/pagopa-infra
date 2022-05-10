@@ -44,9 +44,9 @@ locals {
     WEBSITES_PORT                       = 8080
     # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
     # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
   }
   # gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.payments_snet.id, module.canoneunico_function_snet.id]
   gpd_allowed_subnets = [module.apim_snet.id, module.reporting_function_snet.id, module.canoneunico_function_snet.id]
@@ -87,7 +87,7 @@ module "gpd_app_service" {
   name                = format("%s-app-gpd", local.project)
   client_cert_enabled = false
   always_on           = var.gpd_always_on
-  linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.container_registry.login_server, "latest")
+  linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
   health_check_path   = "/info"
 
   app_settings = local.gpd_app_settings
@@ -119,7 +119,7 @@ module "gpd_app_service_slot_staging" {
   location            = azurerm_resource_group.gpd_rg.location
 
   always_on         = true
-  linux_fx_version  = format("DOCKER|%s/api-gpd-backend:%s", module.container_registry.login_server, "latest")
+  linux_fx_version  = format("DOCKER|%s/api-gpd-backend:%s", module.acr[0].login_server, "latest")
   health_check_path = "/info"
 
   # App settings
