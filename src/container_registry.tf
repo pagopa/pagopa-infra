@@ -13,7 +13,7 @@ module "container_registry" {
   admin_enabled                 = false
   anonymous_pull_enabled        = false
   zone_redundancy_enabled       = var.env_short == "p" ? true : false
-  public_network_access_enabled = false
+  public_network_access_enabled = var.env_short == "p" ? true : false
   location                      = var.location
 
   private_endpoint = {
