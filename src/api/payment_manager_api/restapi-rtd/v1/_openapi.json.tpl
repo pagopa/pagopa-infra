@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Registro Transazioni Digitali v1",
-    "description": "RESTful API provided by the \"Payment Manager\" system to the \"Registro Transazioni Digitali\" system v1",
+    "title": "Registro Transazioni Digitali",
+    "description": "RESTful API provided by the \"Payment Manager\" system to the \"Registro Transazioni Digitali\" system",
     "version": "1.0"
   },
   "servers": [
@@ -96,9 +96,7 @@
             "content": {}
           }
         }
-      }
-    },
-    "/wallets/np-wallets/{hpan}": {
+      },
       "delete": {
         "tags": [
           "np-wallets"
@@ -107,21 +105,21 @@
         "operationId": "deleteWalletNP",
         "parameters": [
           {
-            "in": "path",
-            "name": "hpan",
-            "description": "wallet's hpan",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "in": "header",
             "name": "FiscalCode",
             "schema": {
               "type": "string"
             },
             "required": true
+          },
+          {
+            "in": "header",
+            "name": "PanCode",
+            "description": "pgp encrypted pan",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -414,23 +412,6 @@
           }
         }
       },
-      "SecretKey": {
-        "type": "object",
-        "properties": {
-          "algorithm": {
-            "type": "string"
-          },
-          "format": {
-            "type": "string"
-          },
-          "encoded": {
-            "type": "string"
-          },
-          "destroyed": {
-            "type": "string"
-          }
-        }
-      },
       "WalletNPResponse": {
         "type": "object",
         "properties": {
@@ -470,11 +451,8 @@
               }
             }
           },
-          "hsmEnabledHashEncryptionKey": {
+          "s4sHashEncryptionKey": {
             "type": "string"
-          },
-          "hsmDisabledEncryptionKey": {
-            "$ref": "#/components/schemas/SecretKey"
           },
           "hashCode": {
             "type": "string"
