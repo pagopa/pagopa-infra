@@ -27,11 +27,11 @@ cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
 cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
 # cidr_subnet_payments           = ["10.1.139.0/24"]
-cidr_subnet_canoneunico_common = ["10.1.140.0/24"]
-cidr_subnet_pg_flex_dbms       = ["10.1.141.0/24"]
-cidr_subnet_vpn                = ["10.1.142.0/24"]
-cidr_subnet_dns_forwarder      = ["10.1.143.0/29"]
-
+cidr_subnet_canoneunico_common    = ["10.1.140.0/24"]
+cidr_subnet_pg_flex_dbms          = ["10.1.141.0/24"]
+cidr_subnet_vpn                   = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
+cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
 cidr_subnet_mock_psp = ["10.1.137.8/29"]
@@ -268,6 +268,32 @@ eventhubs = [
       }
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["pagopa-biz-evt-rx", "nodo-dei-pagamenti-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
 
 # acr
@@ -280,8 +306,9 @@ dns_a_reconds_dbnodo_ips           = ["10.8.3.228"]
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
 
 # API Config
-xsd_ica              = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
-api_config_always_on = false
+xsd_ica                 = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
+api_config_always_on    = false
+apiconfig_logging_level = "DEBUG"
 
 # API Config FE
 api_config_fe_enabled = true

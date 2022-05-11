@@ -165,6 +165,12 @@ variable "db_service_name" {
   default     = null
 }
 
+variable "apiconfig_logging_level" {
+  type        = string
+  description = "Logging level of Api Config"
+  default     = "INFO"
+}
+
 variable "xsd_ica" {
   type        = string
   description = "XML Schema of Informatica Conto Accredito"
@@ -358,6 +364,12 @@ variable "cidr_subnet_dns_forwarder" {
   type        = list(string)
   description = "DNS Forwarder network address space."
 }
+
+variable "cidr_common_private_endpoint_snet" {
+  type        = list(string)
+  description = "Common Private Endpoint network address space."
+}
+
 
 # apim
 variable "apim_publisher_name" {
