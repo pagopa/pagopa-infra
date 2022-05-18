@@ -16,17 +16,17 @@ lock_enable = true
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway         = ["10.1.128.0/24"]
-cidr_subnet_postgresql         = ["10.1.129.0/24"]
-cidr_subnet_azdoa              = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
-cidr_subnet_checkout_be        = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
-cidr_subnet_reporting_common   = ["10.1.136.0/24"]
-cidr_subnet_gpd                = ["10.1.138.0/24"]
-# cidr_subnet_payments           = ["10.1.139.0/24"]
+cidr_subnet_appgateway            = ["10.1.128.0/24"]
+cidr_subnet_postgresql            = ["10.1.129.0/24"]
+cidr_subnet_azdoa                 = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis    = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy          = ["10.1.132.0/24"]
+cidr_subnet_checkout_be           = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks            = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr         = ["10.1.135.0/24"]
+cidr_subnet_reporting_common      = ["10.1.136.0/24"]
+cidr_subnet_gpd                   = ["10.1.138.0/24"]
+cidr_subnet_cosmosdb_mongodb      = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common    = ["10.1.140.0/24"]
 cidr_subnet_pg_flex_dbms          = ["10.1.141.0/24"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
@@ -426,3 +426,15 @@ pgres_flex_params = {
   pgbouncer_enabled            = true
 
 }
+
+# CosmosDb MongoDb
+cosmosdb_mongodb_extra_capabilities = []
+cosmosdb_mongodb_enable_autoscaling = true
+# cosmosdb_mongodb_max_throughput TODO define before launch
+cosmosdb_mongodb_enable_free_tier                 = true
+cosmosdb_mongodb_main_geo_location_zone_redundant = false
+cosmosdb_mongodb_additional_geo_locations = [{
+  location          = "northeurope"
+  failover_priority = 1
+  zone_redundant    = false
+}]
