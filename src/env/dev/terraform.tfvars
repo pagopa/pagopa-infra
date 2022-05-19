@@ -423,5 +423,6 @@ canoneunico_function_autoscale_default = 1
 advanced_fees_management_cosmosdb_public_network_access_enabled = true
 
 # CosmosDb MongoDb
+cosmosdb_mongodb_private_endpoint_enabled         = false
 cosmosdb_mongodb_extra_capabilities               = ["EnableServerless"]
 cosmosdb_mongodb_main_geo_location_zone_redundant = false

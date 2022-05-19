@@ -115,6 +115,8 @@ resource "azurerm_private_dns_zone" "privatelink_afm_cosmos_azure_com" {
 
 # MongoDB
 resource "azurerm_private_dns_zone" "privatelink_mongo_cosmos_azure_com" {
+  count = var.cosmosdb_mongodb_private_endpoint_enabled ? 1 : 0
+
   name                = "privatelink.mongo.cosmos.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
@@ -132,6 +134,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_afm_cosmos
 
   tags = var.tags
 }
+
 resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
   name                = "internal.${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = azurerm_resource_group.rg_vnet.name
