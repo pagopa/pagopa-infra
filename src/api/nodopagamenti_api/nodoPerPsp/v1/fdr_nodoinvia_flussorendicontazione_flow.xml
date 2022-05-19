@@ -6,49 +6,49 @@
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoPSP"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoPSP = result[1].Substring(1,result[1].Length-3);
+            var identificativoPSP = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
             return identificativoPSP;
         }" />
         <set-variable name="identificativoIntermediarioPSP" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoIntermediarioPSP"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoIntermediarioPSP = result[1].Substring(1,result[1].Length-3);
+            var identificativoIntermediarioPSP = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
             return identificativoIntermediarioPSP;
         }" />
         <set-variable name="identificativoCanale" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoCanale"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoCanale = result[1].Substring(1,result[1].Length-3);
+            var identificativoCanale = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
             return identificativoCanale;
         }" />
         <set-variable name="identificativoDominio" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoDominio"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoDominio = result[1].Substring(1,result[1].Length-3);
+            var identificativoDominio = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
             return identificativoDominio;
         }" />
         <set-variable name="identificativoFlusso" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoFlusso"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoFlusso = result[1].Substring(1,result[1].Length-3);
+            var identificativoFlusso = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
             return identificativoFlusso;
         }" />
         <set-variable name="dataOraFlusso" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"dataOraFlusso"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var dataOraFlusso = result[1].Substring(1,result[1].Length-3);
+            var dataOraFlusso = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
             return dataOraFlusso;
         }" />
         <set-variable name="xmlRendicontazione" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"xmlRendicontazione"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var xmlRendicontazione = result[1].Substring(1,result[1].Length-3);
+            var xmlRendicontazione = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
             return xmlRendicontazione;
         }" />
         <cache-store-value key="@{
