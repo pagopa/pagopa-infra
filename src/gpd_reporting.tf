@@ -286,7 +286,7 @@ module "reporting_analysis_function_slot_staging" {
 }
 
 
-# autoscaling
+# autoscaling - reporting_batch & reporting_service & reporting_analysis ( shared service plan )
 resource "azurerm_monitor_autoscale_setting" "reporting_function" {
   name                = format("%s-autoscale", module.reporting_batch_function.name)
   resource_group_name = azurerm_resource_group.gpd_rg.name
@@ -302,17 +302,110 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
       maximum = var.reporting_function_autoscale_maximum
     }
 
-
+    # reporting_batch on queue size reporting_organizations_queue
     rule {
       metric_trigger {
-        metric_name        = "CpuPercentage"
-        metric_resource_id = azurerm_app_service_plan.gpd_reporting_service_plan.id
+        metric_name = "ApproximateMessageCount"
+
+        metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_organizations_queue.name}"])
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT1M"
         time_aggregation   = "Average"
-        operator           = "GreaterThan"
-        threshold          = 75
+        operator           = "GreaterThanOrEqual"
+        threshold          = 10
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "ApproximateMessageCount"
+        metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_organizations_queue.name}"])
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT1M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 10
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+
+
+    }
+
+    # reporting_service on queue size reporting_flows_queue
+    rule {
+      metric_trigger {
+        metric_name = "ApproximateMessageCount"
+
+        metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_flows_queue.name}"])
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT1M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThanOrEqual"
+        threshold          = 10
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "ApproximateMessageCount"
+        metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_flows_queue.name}"])
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT1M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 10
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+
+
+    }
+
+    # reporting_analysis on http requests
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.reporting_analysis_function.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 250
+        divide_by_instance_count = false
       }
 
       scale_action {
@@ -325,14 +418,16 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
     rule {
       metric_trigger {
-        metric_name        = "CpuPercentage"
-        metric_resource_id = azurerm_app_service_plan.gpd_reporting_service_plan.id
-        time_grain         = "PT1M"
-        statistic          = "Average"
-        time_window        = "PT5M"
-        time_aggregation   = "Average"
-        operator           = "LessThan"
-        threshold          = 25
+        metric_name              = "Requests"
+        metric_resource_id       = module.reporting_analysis_function.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 250
+        divide_by_instance_count = false
       }
 
       scale_action {
@@ -343,139 +438,9 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
       }
     }
 
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_batch_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "GreaterThan"
-    #     threshold                = 4000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "2"
-    #     cooldown  = "PT5M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_batch_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "LessThan"
-    #     threshold                = 3000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT20M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_service_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "GreaterThan"
-    #     threshold                = 4000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "2"
-    #     cooldown  = "PT5M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_service_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "LessThan"
-    #     threshold                = 3000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT20M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_analysis_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "GreaterThan"
-    #     threshold                = 4000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "2"
-    #     cooldown  = "PT5M"
-    #   }
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name              = "Requests"
-    #     metric_resource_id       = module.reporting_analysis_function.id
-    #     metric_namespace         = "microsoft.web/sites"
-    #     time_grain               = "PT1M"
-    #     statistic                = "Average"
-    #     time_window              = "PT5M"
-    #     time_aggregation         = "Average"
-    #     operator                 = "LessThan"
-    #     threshold                = 3000
-    #     divide_by_instance_count = false
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT20M"
-    #   }
-    # }
   }
 }
+
 
 module "flows" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
@@ -496,7 +461,6 @@ module "flows" {
 
   tags = var.tags
 }
-
 
 ## table#1 storage
 resource "azurerm_storage_table" "reporting_organizations_table" {
