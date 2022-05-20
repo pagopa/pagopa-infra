@@ -8,7 +8,7 @@
     },
     "servers": [
         {
-            "host": "${host}",
+            "url": "${host}/apiconfig/api/v1",
             "description": "Generated server url"
         }
     ],
