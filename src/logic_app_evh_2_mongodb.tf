@@ -42,7 +42,7 @@ module "logic_app_biz_evt_sa" {
 resource "azurerm_app_service_plan" "logic_app_biz_evt_service_plan" {
   name                = format("%s-plan-logic-app-biz-evt", local.project)
   location            = var.location
-  resource_group_name = azurerm_resource_group.gpd_rg.name
+  resource_group_name = azurerm_resource_group.pagopa_logic_app.name
 
 
   kind     = var.logic_app_biz_evt_plan_kind
