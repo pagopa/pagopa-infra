@@ -92,9 +92,9 @@ variable "log_analytics_workspace_resource_group_name" {
 ### Aks
 
 variable "aks_private_cluster_is_enabled" {
-  type = bool
+  type        = bool
   description = "Allow to configure the AKS, to be setup as a private cluster. To reach it, you need to use an internal VM or VPN"
-  default = true
+  default     = true
 }
 
 variable "k8s_kube_config_path_prefix" {

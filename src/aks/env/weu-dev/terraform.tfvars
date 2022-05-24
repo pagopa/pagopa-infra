@@ -29,7 +29,7 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
 ### Aks
 
-aks_sku_tier = "Free"
+aks_sku_tier                   = "Free"
 aks_private_cluster_is_enabled = false
 
 aks_system_node_pool = {
