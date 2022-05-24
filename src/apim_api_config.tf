@@ -175,7 +175,7 @@ module "apim_api_config_checkout_api" {
   })
 
   xml_content = templatefile("./api/apiconfig_api/checkout/v1/_base_policy.xml.tpl", {
-    origin                 = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
+    origin                 = "*"
     pagopa_tenant_id       = local.pagopa_tenant_id
     apiconfig_be_client_id = local.apiconfig_be_client_id
   })
