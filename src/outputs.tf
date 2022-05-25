@@ -50,3 +50,13 @@ output "nodo_test_sa_blob_connection_string" {
   value     = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_blob_connection_string : null
   sensitive = true
 }
+
+output "sec_workspace_id" {
+  value     = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  sensitive = true
+}
+
+output "sec_storage_id" {
+  value     = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
+  sensitive = true
+}
