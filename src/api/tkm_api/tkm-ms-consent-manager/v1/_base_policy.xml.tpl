@@ -3,8 +3,8 @@
       <base />
       <set-backend-service base-url="http://{{aks-lb-nexi}}:80/tkmconsentmanager" />
       <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-        <value>${cstar_ip_1}</value>
-        <value>${cstar_ip_2}</value>
+        <value>${cstar_outbound_ip_1}</value>
+        <value>${cstar_outbound_ip_2}</value>
       </check-header>
     </inbound>
     <outbound>

@@ -360,8 +360,9 @@ bpd_hostname       = "api.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "mock-ppt-lmi-npa-sit.ocp-tst-npaspc.sia.eu/satispay/v1/consumers"
-cstar_ip_1         = "20.86.161.243"
-cstar_ip_2         = "20.101.29.160"
+
+cstar_outbound_ip_1 = "20.86.161.243"
+cstar_outbound_ip_2 = "20.101.29.160"
 
 # fdr
 fdr_delete_retention_days        = 30

@@ -348,8 +348,9 @@ bpd_hostname       = "api.uat.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it"
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "mock-ppt-lmi-npa-sit.ocp-tst-npaspc.sia.eu/satispay/v1/consumers"
-cstar_ip_1         = "20.93.160.60"
-cstar_ip_2         = "20.76.182.7"
+
+cstar_outbound_ip_1 = "20.93.160.60"
+cstar_outbound_ip_2 = "20.76.182.7"
 
 # fdr
 fdr_delete_retention_days        = 30

@@ -348,8 +348,9 @@ bpd_hostname       = "api.dev.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it/pmmockserviceapi"
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "portal.test.pagopa.gov.it/pmmockserviceapi"
-cstar_ip_1         = "20.105.180.187"
-cstar_ip_2         = "20.76.239.212"
+
+cstar_outbound_ip_1 = "20.105.180.187"
+cstar_outbound_ip_2 = "20.76.239.212"
 
 # fdr
 fdr_delete_retention_days       = 30

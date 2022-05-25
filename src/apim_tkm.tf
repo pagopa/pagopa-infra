@@ -66,8 +66,8 @@ module "apim_tkm_consent_manager_api_v1" {
   })
 
   xml_content = templatefile("./api/tkm_api/tkm-ms-consent-manager/v1/_base_policy.xml.tpl", {
-    cstar_ip_1 = var.cstar_ip_1
-    cstar_ip_2 = var.cstar_ip_2
+    cstar_outbound_ip_1 = var.cstar_outbound_ip_1
+    cstar_outbound_ip_2 = var.cstar_outbound_ip_2
   })
 }
 
