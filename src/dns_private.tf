@@ -102,3 +102,21 @@ resource "azurerm_private_dns_zone" "privatelink_azurecr_pagopa" {
 
   tags = var.tags
 }
+
+
+resource "azurerm_private_dns_zone" "internal_ecommerce_pagopa_it" {
+  name                = join(".", ["internal.ecommerce", var.external_domain])
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "internal_ecommerce_pagopa_it_private_vnet_common" {
+  name                  = format("%s-private-vnet-common", local.project)
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.internal_ecommerce_pagopa_it[0].name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
