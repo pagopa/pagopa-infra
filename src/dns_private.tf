@@ -112,10 +112,10 @@ resource "azurerm_private_dns_zone" "internal_ecommerce_pagopa_it" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "internal_ecommerce_pagopa_it_private_vnet_common" {
-  name                  = format("%s-private-vnet-common", local.project)
+  name                  = module.vnet_integration.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.internal_ecommerce_pagopa_it.name
-  virtual_network_id    = module.vnet.id
+  virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
   tags = var.tags
