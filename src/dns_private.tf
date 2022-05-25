@@ -103,7 +103,7 @@ resource "azurerm_private_dns_zone" "privatelink_azurecr_pagopa" {
   tags = var.tags
 }
 
-
+# Internal DNS usad by ecommerce aks domain
 resource "azurerm_private_dns_zone" "internal_ecommerce_pagopa_it" {
   name                = join(".", ["internal.ecommerce", var.external_domain])
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -111,7 +111,7 @@ resource "azurerm_private_dns_zone" "internal_ecommerce_pagopa_it" {
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "internal_ecommerce_pagopa_it_private_vnet_common" {
+resource "azurerm_private_dns_zone_virtual_network_link" "internal_ecommerce_pagopa_it_private_vnet" {
   name                  = module.vnet_integration.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.internal_ecommerce_pagopa_it.name
