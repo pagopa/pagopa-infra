@@ -152,10 +152,10 @@ module "apim_api_config_checkout_api" {
   count  = var.api_config_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12"
 
-  name                  = format("%s-api-config-checkout-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_api_config_checkout_product[0].product_id]
+  name                = format("%s-api-config-checkout-api", var.env_short)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  product_ids         = [module.apim_api_config_checkout_product[0].product_id]
 
   subscription_required = true
 
