@@ -15,6 +15,7 @@ module "apim_tkm_product" {
   published             = true
   subscription_required = true
   approval_required     = true
+  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/tkm_api/_base_policy.xml")
 }
