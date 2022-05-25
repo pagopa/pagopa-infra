@@ -3,7 +3,7 @@
 ##############
 
 module "apim_tkm_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
 
   product_id   = "tkm"
   display_name = "Token Manager pagoPA"
