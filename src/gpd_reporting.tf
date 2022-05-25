@@ -302,95 +302,97 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
       maximum = var.reporting_function_autoscale_maximum
     }
 
-    # reporting_batch on queue size reporting_organizations_queue
-    rule {
-      metric_trigger {
-        metric_name = "ApproximateMessageCount"
+    # disable rules for batch and service
 
-        metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_organizations_queue.name}"])
-        time_grain         = "PT1M"
-        statistic          = "Average"
-        time_window        = "PT1M"
-        time_aggregation   = "Average"
-        operator           = "GreaterThanOrEqual"
-        threshold          = 10
-      }
+    # # reporting_batch on queue size reporting_organizations_queue
+    # rule {
+    #   metric_trigger {
+    #     metric_name = "ApproximateMessageCount"
 
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
+    #     metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_organizations_queue.name}"])
+    #     time_grain         = "PT1M"
+    #     statistic          = "Average"
+    #     time_window        = "PT1M"
+    #     time_aggregation   = "Average"
+    #     operator           = "GreaterThanOrEqual"
+    #     threshold          = 10
+    #   }
 
-    }
+    #   scale_action {
+    #     direction = "Increase"
+    #     type      = "ChangeCount"
+    #     value     = "1"
+    #     cooldown  = "PT1M"
+    #   }
 
-    rule {
-      metric_trigger {
-        metric_name        = "ApproximateMessageCount"
-        metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_organizations_queue.name}"])
-        time_grain         = "PT1M"
-        statistic          = "Average"
-        time_window        = "PT1M"
-        time_aggregation   = "Average"
-        operator           = "LessThan"
-        threshold          = 10
-      }
+    # }
 
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
+    # rule {
+    #   metric_trigger {
+    #     metric_name        = "ApproximateMessageCount"
+    #     metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_organizations_queue.name}"])
+    #     time_grain         = "PT1M"
+    #     statistic          = "Average"
+    #     time_window        = "PT1M"
+    #     time_aggregation   = "Average"
+    #     operator           = "LessThan"
+    #     threshold          = 10
+    #   }
 
-
-    }
-
-    # reporting_service on queue size reporting_flows_queue
-    rule {
-      metric_trigger {
-        metric_name = "ApproximateMessageCount"
-
-        metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_flows_queue.name}"])
-        time_grain         = "PT1M"
-        statistic          = "Average"
-        time_window        = "PT1M"
-        time_aggregation   = "Average"
-        operator           = "GreaterThanOrEqual"
-        threshold          = 10
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-
-    }
-
-    rule {
-      metric_trigger {
-        metric_name        = "ApproximateMessageCount"
-        metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_flows_queue.name}"])
-        time_grain         = "PT1M"
-        statistic          = "Average"
-        time_window        = "PT1M"
-        time_aggregation   = "Average"
-        operator           = "LessThan"
-        threshold          = 10
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
+    #   scale_action {
+    #     direction = "Decrease"
+    #     type      = "ChangeCount"
+    #     value     = "1"
+    #     cooldown  = "PT1M"
+    #   }
 
 
-    }
+    # }
+
+    # # reporting_service on queue size reporting_flows_queue
+    # rule {
+    #   metric_trigger {
+    #     metric_name = "ApproximateMessageCount"
+
+    #     metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_flows_queue.name}"])
+    #     time_grain         = "PT1M"
+    #     statistic          = "Average"
+    #     time_window        = "PT1M"
+    #     time_aggregation   = "Average"
+    #     operator           = "GreaterThanOrEqual"
+    #     threshold          = 10
+    #   }
+
+    #   scale_action {
+    #     direction = "Increase"
+    #     type      = "ChangeCount"
+    #     value     = "1"
+    #     cooldown  = "PT1M"
+    #   }
+
+    # }
+
+    # rule {
+    #   metric_trigger {
+    #     metric_name        = "ApproximateMessageCount"
+    #     metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_flows_queue.name}"])
+    #     time_grain         = "PT1M"
+    #     statistic          = "Average"
+    #     time_window        = "PT1M"
+    #     time_aggregation   = "Average"
+    #     operator           = "LessThan"
+    #     threshold          = 10
+    #   }
+
+    #   scale_action {
+    #     direction = "Decrease"
+    #     type      = "ChangeCount"
+    #     value     = "1"
+    #     cooldown  = "PT1M"
+    #   }
+
+
+    # }
 
     # reporting_analysis on http requests
 
