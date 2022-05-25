@@ -26,7 +26,7 @@ cidr_subnet_buyerbanks            = ["10.1.134.0/24"]
 cidr_subnet_reporting_fdr         = ["10.1.135.0/24"]
 cidr_subnet_reporting_common      = ["10.1.136.0/24"]
 cidr_subnet_gpd                   = ["10.1.138.0/24"]
-cidr_subnet_cosmosdb_mongodb      = ["10.1.139.0/24"]
+cidr_subnet_cosmosdb_paymentsdb   = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common    = ["10.1.140.0/24"]
 cidr_subnet_pg_flex_dbms          = ["10.1.141.0/24"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
@@ -406,6 +406,6 @@ pgres_flex_params = {
 
 }
 
-# CosmosDb MongoDb
-cosmosdb_mongodb_extra_capabilities               = ["EnableServerless"]
-cosmosdb_mongodb_main_geo_location_zone_redundant = false
+# CosmosDb 
+cosmosdb_paymentsdb_extra_capabilities               = ["EnableServerless"]
+cosmosdb_paymentsdb_main_geo_location_zone_redundant = false

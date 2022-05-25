@@ -113,11 +113,10 @@ resource "azurerm_private_dns_zone" "privatelink_afm_cosmos_azure_com" {
   tags = var.tags
 }
 
-# MongoDB
-resource "azurerm_private_dns_zone" "privatelink_mongo_cosmos_azure_com" {
-  count = var.cosmosdb_mongodb_private_endpoint_enabled ? 1 : 0
+# Cosmos DocumentDB payments btz event
+resource "azurerm_private_dns_zone" "privatelink_payments_cosmos_azure_com" {
 
-  name                = "privatelink.mongo.cosmos.azure.com"
+  name                = "privatelink.payments.cosmos.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
   tags = var.tags
