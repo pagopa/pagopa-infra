@@ -192,12 +192,20 @@ resource "azurerm_api_management_group" "client_io" {
   display_name        = "Client IO"
 }
 
+resource "azurerm_api_management_group" "centro_stella" {
+  name                = "centro-stella"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Centro Stella"
+}
+
 resource "azurerm_api_management_group" "piattaforma_notifiche" {
   name                = "piattaforma-notifiche"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = "Piattaforma notifiche"
 }
+
 resource "azurerm_api_management_group" "pda" {
   name                = "client-pda"
   resource_group_name = azurerm_resource_group.rg_api.name
