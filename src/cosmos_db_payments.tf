@@ -30,6 +30,7 @@ module "cosmos_payments" {
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
 
+  public_network_access_enabled    = var.cosmosdb_paymentsdb_public_network_access_enabled
   main_geo_location_zone_redundant = false
 
   enable_free_tier          = false
@@ -83,7 +84,7 @@ module "payments_cosmos_db" {
 locals {
   payments_cosmosdb_containers = [
 
-
+    # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/497746877/Design+Review+-+Evento+di+pagamento#Struttura-JSON-evento-business
     {
       name               = "payments-events"
       partition_key_path = "/idPA"
@@ -107,6 +108,5 @@ module "payments_cosmosdb_containers" {
   throughput          = lookup(each.value, "throughput", null)
 
   autoscale_settings = lookup(each.value, "autoscale_settings", null)
-
 
 }
