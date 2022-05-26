@@ -173,6 +173,62 @@
           }
         }
       }
+    },
+    "/postepay/api/v1/payment/create": {
+      "post": {
+        "operationId": "createPayment",
+        "tags": [
+          "Payment Manager Controller"
+        ],
+        "summary": "Inzializzazione della transazione di pagamento",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "required": [
+                    "paymentID",
+                    "userRedirectURL"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "paymentID": {
+                      "description": "identificativo della transazione di pagamento assegnato da PosteItaliane",
+                      "type": "string"
+                    },
+                    "userRedirectURL": {
+                      "description": "URL verso cui redirigere l'utente per portare a compimento la transazione",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Errore",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -225,6 +281,133 @@
             ]
           },
           "err_desc": {
+            "type": "string"
+          }
+        }
+      },
+      "PostePayError": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "description": "Codice di errore",
+            "type": "string"
+          },
+          "description": {
+            "description": "Descrizione tecnica dell'errore",
+            "type": "string"
+          },
+          "message": {
+            "description": "Messaggio utente",
+            "type": "string"
+          }
+        }
+      },
+      "AuthorizationType": {
+        "enum": [
+          "IMMEDIATA",
+          "DIFFERITA"
+        ],
+        "type": "string"
+      },
+      "CreatePaymentRequest": {
+        "description": "",
+        "required": [
+          "shopId",
+          "shopTransactionId",
+          "amount",
+          "currency",
+          "paymentChannel",
+          "authType",
+          "responseURLs"
+        ],
+        "type": "object",
+        "properties": {
+          "shopId": {
+            "description": "identificativo del negozio",
+            "type": "string"
+          },
+          "shopTransactionId": {
+            "description": "identificativo della transazione lato merchant",
+            "type": "string"
+          },
+          "amount": {
+            "description": "importo",
+            "type": "string"
+          },
+          "description": {
+            "description": "descrizione della transazione presentata al cliente",
+            "type": "string"
+          },
+          "currency": {
+            "description": "valuta in codice ISO (EUR = 978)",
+            "type": "string"
+          },
+          "buyerName": {
+            "description": "nome del cliente",
+            "type": "string"
+          },
+          "buyerEmail": {
+            "description": "indirizzo email del cliente",
+            "type": "string"
+          },
+          "paymentChannel": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaymentChannel"
+              },
+              {
+                "description": "canale di pagamento, puo essere valorizzato con APP/WEB"
+              }
+            ]
+          },
+          "authType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AuthorizationType"
+              },
+              {
+                "description": "tipo di autorizzazione, puo essere valorizzato con IMMEDIATA/DIFFERITA"
+              }
+            ]
+          },
+          "responseURLs": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseURLs"
+              },
+              {
+                "description": "URL di ritorno"
+              }
+            ]
+          }
+        }
+      },
+      "PaymentChannel": {
+        "enum": [
+          "WEB",
+          "APP"
+        ],
+        "type": "string"
+      },
+      "ResponseURLs": {
+        "description": "",
+        "required": [
+          "responseUrlOk",
+          "responseUrlKo",
+          "serverNotificationUrl"
+        ],
+        "type": "object",
+        "properties": {
+          "responseUrlOk": {
+            "description": "URL di redirect dell'utente per transazione OK completa di eventuali parametri da passare",
+            "type": "string"
+          },
+          "responseUrlKo": {
+            "description": "URL di redirect dell'utente per transazione KO completa di eventuali parametri da passare",
+            "type": "string"
+          },
+          "serverNotificationUrl": {
+            "description": "URL presso la quale sarà eseguita la chiamata di conferma del pagamento solo per i casi OK",
             "type": "string"
           }
         }
