@@ -118,7 +118,7 @@ mock_ec_enabled  = false
 mock_psp_enabled = false
 
 # api_config
-api_config_enabled = false
+api_config_enabled = true
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
