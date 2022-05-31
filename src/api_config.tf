@@ -1,5 +1,4 @@
 resource "azurerm_resource_group" "api_config_rg" {
-  count    = var.api_config_enabled ? 1 : 0
   name     = format("%s-api-config-rg", local.project)
   location = var.location
 
@@ -15,7 +14,7 @@ locals {
 
 # Subnet to host the api config
 module "api_config_snet" {
-  count                                          = var.api_config_enabled && var.cidr_subnet_api_config != null ? 1 : 0
+  count                                          = var.cidr_subnet_api_config != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-api-config-snet", local.project)
   address_prefixes                               = var.cidr_subnet_api_config
@@ -33,10 +32,9 @@ module "api_config_snet" {
 }
 
 module "api_config_app_service" {
-  count  = var.api_config_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.93"
 
-  resource_group_name = azurerm_resource_group.api_config_rg[0].name
+  resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
 
   # App service plan vars
@@ -107,10 +105,8 @@ module "api_config_app_service" {
 
 # Node database availability: Alerting Action
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck" {
-  count = var.api_config_enabled ? 1 : 0
-
-  name                = format("%s-%s", module.api_config_app_service[0].name, "db-healthcheck")
-  resource_group_name = azurerm_resource_group.api_config_rg[0].name
+  name                = format("%s-%s", module.api_config_app_service.name, "db-healthcheck")
+  resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
 
   action {
@@ -129,7 +125,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
-    , module.api_config_app_service[0].name
+    , module.api_config_app_service.name
   )
   severity    = 1
   frequency   = 45
@@ -140,66 +136,66 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
   }
 }
 
-resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
-  name                = format("%s-autoscale-apiconfig", local.project)
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  location            = azurerm_resource_group.gpd_rg.location
-  target_resource_id  = module.api_config_app_service.plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = 3
-      minimum = 3
-      maximum = 10
-    }
-
-    # gpd rules
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.api_config_app_service.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 250
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.api_config_app_service.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 250
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT5M"
-      }
-    }
-
-
-  }
-}
+#resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
+#  name                = format("%s-autoscale-apiconfig", local.project)
+#  resource_group_name = azurerm_resource_group.gpd_rg.name
+#  location            = azurerm_resource_group.gpd_rg.location
+#  target_resource_id  = module.api_config_app_service.plan_id
+#
+#  profile {
+#    name = "default"
+#
+#    capacity {
+#      default = 3
+#      minimum = 3
+#      maximum = 10
+#    }
+#
+#    # gpd rules
+#    rule {
+#      metric_trigger {
+#        metric_name              = "Requests"
+#        metric_resource_id       = module.api_config_app_service.id
+#        metric_namespace         = "microsoft.web/sites"
+#        time_grain               = "PT1M"
+#        statistic                = "Average"
+#        time_window              = "PT5M"
+#        time_aggregation         = "Average"
+#        operator                 = "GreaterThan"
+#        threshold                = 250
+#        divide_by_instance_count = false
+#      }
+#
+#      scale_action {
+#        direction = "Increase"
+#        type      = "ChangeCount"
+#        value     = "1"
+#        cooldown  = "PT5M"
+#      }
+#    }
+#
+#    rule {
+#      metric_trigger {
+#        metric_name              = "Requests"
+#        metric_resource_id       = module.api_config_app_service.id
+#        metric_namespace         = "microsoft.web/sites"
+#        time_grain               = "PT1M"
+#        statistic                = "Average"
+#        time_window              = "PT5M"
+#        time_aggregation         = "Average"
+#        operator                 = "LessThan"
+#        threshold                = 250
+#        divide_by_instance_count = false
+#      }
+#
+#      scale_action {
+#        direction = "Decrease"
+#        type      = "ChangeCount"
+#        value     = "1"
+#        cooldown  = "PT5M"
+#      }
+#    }
+#
+#
+#  }
+#}
