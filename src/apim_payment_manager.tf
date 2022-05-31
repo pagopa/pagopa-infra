@@ -586,7 +586,7 @@ module "apim_pm_ptg_api_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_ptg_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pm_restapirtd_api.id
+  version_set_id        = azurerm_api_management_api_version_set.pm_ptg_api.id
   api_version           = "v1"
   service_url           = local.apim_pm_ptg_api.service_url
 
