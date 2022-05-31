@@ -136,66 +136,66 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
   }
 }
 
-#resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
-#  name                = format("%s-autoscale-apiconfig", local.project)
-#  resource_group_name = azurerm_resource_group.gpd_rg.name
-#  location            = azurerm_resource_group.gpd_rg.location
-#  target_resource_id  = module.api_config_app_service.plan_id
-#
-#  profile {
-#    name = "default"
-#
-#    capacity {
-#      default = 3
-#      minimum = 3
-#      maximum = 10
-#    }
-#
-#    # gpd rules
-#    rule {
-#      metric_trigger {
-#        metric_name              = "Requests"
-#        metric_resource_id       = module.api_config_app_service.id
-#        metric_namespace         = "microsoft.web/sites"
-#        time_grain               = "PT1M"
-#        statistic                = "Average"
-#        time_window              = "PT5M"
-#        time_aggregation         = "Average"
-#        operator                 = "GreaterThan"
-#        threshold                = 250
-#        divide_by_instance_count = false
-#      }
-#
-#      scale_action {
-#        direction = "Increase"
-#        type      = "ChangeCount"
-#        value     = "1"
-#        cooldown  = "PT5M"
-#      }
-#    }
-#
-#    rule {
-#      metric_trigger {
-#        metric_name              = "Requests"
-#        metric_resource_id       = module.api_config_app_service.id
-#        metric_namespace         = "microsoft.web/sites"
-#        time_grain               = "PT1M"
-#        statistic                = "Average"
-#        time_window              = "PT5M"
-#        time_aggregation         = "Average"
-#        operator                 = "LessThan"
-#        threshold                = 250
-#        divide_by_instance_count = false
-#      }
-#
-#      scale_action {
-#        direction = "Decrease"
-#        type      = "ChangeCount"
-#        value     = "1"
-#        cooldown  = "PT5M"
-#      }
-#    }
-#
-#
-#  }
-#}
+resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
+  name                = format("%s-autoscale-apiconfig", local.project)
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = azurerm_resource_group.gpd_rg.location
+  target_resource_id  = module.api_config_app_service.plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = 3
+      minimum = 3
+      maximum = 10
+    }
+
+    # gpd rules
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.api_config_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 250
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.api_config_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 250
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+
+
+  }
+}
