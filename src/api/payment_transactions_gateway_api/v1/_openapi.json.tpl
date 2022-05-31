@@ -10,7 +10,7 @@
     }
   ],
   "paths": {
-    "/request-payments/postepay{requestId}": {
+    "/request-payments/postepay/{requestId}": {
       "get": {
         "summary": "PGS webview polling call",
         "tags": [

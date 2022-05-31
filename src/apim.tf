@@ -206,6 +206,20 @@ resource "azurerm_api_management_group" "piattaforma_notifiche" {
   display_name        = "Piattaforma notifiche"
 }
 
+resource "azurerm_api_management_group" "payment_manager" {
+  name                = "payment-manager"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Payment Manager"
+}
+
+resource "azurerm_api_management_group" "ecommerce" {
+  name                = "ecommerce"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Ecommerce pagoPA"
+}
+
 resource "azurerm_api_management_group" "pda" {
   name                = "client-pda"
   resource_group_name = azurerm_resource_group.rg_api.name
