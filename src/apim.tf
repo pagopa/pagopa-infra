@@ -362,6 +362,15 @@ resource "azurerm_api_management_named_value" "pm_gtw_hostname" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "pm_onprem_hostname" {
+  name                = "pm-onprem-hostname"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pm-onprem-hostname"
+  value               = data.azurerm_key_vault_secret.pm_onprem_hostname.value
+  secret              = true
+}
+
 # fdr
 resource "azurerm_api_management_named_value" "fdrsaname" {
   name                = "fdrsaname"
