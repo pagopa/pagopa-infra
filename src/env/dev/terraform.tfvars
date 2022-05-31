@@ -94,8 +94,6 @@ prostgresql_db_mockpsp = "mock-psp"
 mock_ec_enabled  = true
 mock_psp_enabled = true
 
-# api_config
-api_config_enabled = true
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
@@ -104,7 +102,7 @@ nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,001031
 nodo_pagamenti_url     = "https://10.79.20.32/sit/webservices/input"
 ip_nodo                = "10.79.20.32"
 
-lb_aks = "10.70.66.200" # for soap services add /webservices/input
+lb_aks = "10.70.66.200" #for soap services add /webservices/input
 
 # eventhub
 eventhub_enabled = true
