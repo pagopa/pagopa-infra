@@ -123,12 +123,6 @@ variable "cidr_subnet_mock_psp" {
 
 # api_config
 
-variable "api_config_enabled" {
-  type        = bool
-  description = "Api Config enabled"
-  default     = false
-}
-
 variable "cidr_subnet_api_config" {
   type        = list(string)
   description = "Address prefixes subnet api config"
