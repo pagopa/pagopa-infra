@@ -34,6 +34,7 @@ module "api_config_snet" {
 module "api_config_app_service" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
 
+  vnet_integration    = true
   resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
 
@@ -97,7 +98,6 @@ module "api_config_app_service" {
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
 
-  # subnet_name = module.api_config_snet[0].name
   subnet_id = module.api_config_snet[0].id
 
   tags = var.tags
