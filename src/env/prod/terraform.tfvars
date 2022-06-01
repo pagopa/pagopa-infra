@@ -412,7 +412,7 @@ canoneunico_queue_message_delay = 3600 // in seconds = 1h
 pgres_flex_params = {
 
   private_endpoint_enabled = true
-  sku_name                 = "GP_Standard_D4ds_v3"
+  sku_name                 = "GP_Standard_D4s_v3"
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
