@@ -34,11 +34,11 @@ module "pod_identity" {
   tenant_id           = data.azurerm_subscription.current.tenant_id
   cluster_name        = local.aks_name
 
-  identity_name = "${local.project}-pod-identity"
+  identity_name = "${kubernetes_namespace.namespace.metadata[0].name}-pod-identity" // TODO add env in name
   namespace     = kubernetes_namespace.namespace.metadata[0].name
   key_vault     = data.azurerm_key_vault.kv
 
-  secret_permissions = ["get"]
+  secret_permissions = ["Get"]
 }
 
 resource "helm_release" "reloader" {
