@@ -94,7 +94,9 @@ app_gateway_deny_paths = [
   "/checkout/io-for-node/*",
   "/gpd/*",
   "/gpd-payments/*",
-  "/gpd-reporting/*"
+  "/gpd-reporting/*",
+  "/tkm/tkmcardmanager/*",
+  "/tkm/tkmacquirermanager/*"
 ]
 
 # nat_gateway
@@ -115,8 +117,6 @@ postgres_private_endpoint_enabled        = false
 mock_ec_enabled  = false
 mock_psp_enabled = false
 
-# api_config
-api_config_enabled = false
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
@@ -358,6 +358,9 @@ bpd_hostname       = "api.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "mock-ppt-lmi-npa-sit.ocp-tst-npaspc.sia.eu/satispay/v1/consumers"
+
+cstar_outbound_ip_1 = "20.86.161.243"
+cstar_outbound_ip_2 = "20.101.29.160"
 
 # fdr
 fdr_delete_retention_days        = 30

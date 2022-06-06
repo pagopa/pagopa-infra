@@ -76,7 +76,9 @@ app_gateway_deny_paths = [
   "/payment-manager/payment-gateway/*",
   "/pp-restapi-CD/v2/payments/send-payment-*",
   "/pp-restapi-CD/v1/transactions/update-status/*",
-  "/checkout/io-for-node/*"
+  "/checkout/io-for-node/*",
+  "/tkm/tkmcardmanager/*",
+  "/tkm/tkmacquirermanager/*"
 ]
 
 # nat_gateway
@@ -102,8 +104,6 @@ mock_ec_enabled   = true
 mock_ec_always_on = true
 mock_psp_enabled  = false
 
-# api_config
-api_config_enabled = true
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
@@ -347,6 +347,9 @@ bpd_hostname       = "api.uat.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it"
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "mock-ppt-lmi-npa-sit.ocp-tst-npaspc.sia.eu/satispay/v1/consumers"
+
+cstar_outbound_ip_1 = "20.93.160.60"
+cstar_outbound_ip_2 = "20.76.182.7"
 
 # fdr
 fdr_delete_retention_days        = 30

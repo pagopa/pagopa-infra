@@ -123,12 +123,6 @@ variable "cidr_subnet_mock_psp" {
 
 # api_config
 
-variable "api_config_enabled" {
-  type        = bool
-  description = "Api Config enabled"
-  default     = false
-}
-
 variable "cidr_subnet_api_config" {
   type        = list(string)
   description = "Address prefixes subnet api config"
@@ -961,6 +955,16 @@ variable "fesp_hostname" {
   type        = string
   description = "Fesp hostname"
   default     = ""
+}
+
+variable "cstar_outbound_ip_1" {
+  type        = string
+  description = "CSTAR ip 1"
+}
+
+variable "cstar_outbound_ip_2" {
+  type        = string
+  description = "CSTAR ip 2"
 }
 
 # fdr
