@@ -244,3 +244,18 @@ data "azurerm_key_vault_secret" "gpd_paa_pwd" {
   name         = "gpd-paa-password"
   key_vault_id = module.key_vault.id
 }
+
+data "azurerm_key_vault_secret" "db_nodo_usr" {
+  name         = "db-nodo-usr"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "afm_cosmos_key1" {
+  name         = "afm-cosmos-key1"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "afm_cosmos_key2" {
+  name         = "afm-cosmos-key2"
+  key_vault_id = module.key_vault.id
+}
