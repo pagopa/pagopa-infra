@@ -1409,3 +1409,42 @@ variable "cidr_subnet_pg_flex_dbms" {
   type        = list(string)
   description = "Postgres Flexible Server network address space."
 }
+
+# advanced fees management
+
+variable "advanced_fees_management_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable advanced fees management"
+}
+
+variable "cidr_subnet_advanced_fees_management" {
+  type        = list(string)
+  description = "Address prefixes subnet for advanced fees management"
+  default     = null
+}
+
+variable "advanced_fees_management_tier" {
+  type        = string
+  description = "advanced fees management plan tier"
+  default     = "Standard"
+}
+
+variable "advanced_fees_management_size" {
+  type        = string
+  description = "advanced fees management plan size"
+  default     = "S1"
+}
+
+variable "advanced_fees_management_cosmosdb_extra_capabilities" {
+  type        = list(string)
+  default     = []
+  description = "Enable cosmosdb extra capabilities"
+}
+
+variable "advanced_fees_management_cosmosdb_public_network_access_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable public access for afm-cosmosdb"
+}
+
