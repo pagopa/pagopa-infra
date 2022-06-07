@@ -39,7 +39,7 @@ locals {
     path                  = "checkout/auth/payments"
     subscription_required = true
     service_url           = null
-  }  
+  }
 }
 
 
