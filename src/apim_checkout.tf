@@ -40,6 +40,7 @@ locals {
     subscription_required = true
     service_url           = null
     ip_allowed            = ["20.67.51.184", "20.67.51.210"] 
+  }  
 }
 
 
