@@ -21,6 +21,9 @@ locals {
   internal_dns_zone_name                = format("%s.%s", var.dns_zone_internal_prefix, var.external_domain)
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
+  mongodb_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"
+  mongodb_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
