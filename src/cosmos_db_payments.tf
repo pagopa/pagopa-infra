@@ -55,12 +55,12 @@ module "cosmos_payments" {
 
   backup_continuous_enabled = true
 
-  is_virtual_network_filter_enabled = false
+  is_virtual_network_filter_enabled = true
 
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  # allowed_virtual_network_subnet_ids = []
+  allowed_virtual_network_subnet_ids = [module.logic_app_biz_evt_snet.id]
 
   # private endpoint
   private_endpoint_name    = format("%s-cosmos-payments-sql-endpoint", local.project)
