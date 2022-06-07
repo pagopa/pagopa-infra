@@ -1518,3 +1518,29 @@ variable "cosmosdb_paymentsdb_extra_capabilities" {
   default     = []
   description = "Enable cosmosdb extra capabilities"
 }
+
+# Logic App pagopa biz event
+
+variable "logic_app_biz_evt_plan_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = "Linux"
+}
+
+variable "logic_app_biz_evt_plan_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = "WorkflowStandard"
+}
+
+variable "logic_app_biz_evt_plan_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = "WS1"
+}
+
+variable "cidr_subnet_logicapp_biz_evt" {
+  type        = list(string)
+  description = "Address prefixes subnet logic app"
+  default     = null
+}
