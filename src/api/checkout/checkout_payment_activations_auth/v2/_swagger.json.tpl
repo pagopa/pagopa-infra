@@ -257,6 +257,9 @@
           "maximum": 600,
           "exclusiveMaximum": true
         },
+        "category": {
+          "$ref": "#/definitions/FaultCategory"
+        },
         "detail": {
           "$ref": "#/definitions/PaymentFault"
         },
@@ -270,6 +273,7 @@
         }
       },
       "required": [
+        "category",
         "detail",
         "detail_v2"
       ]
@@ -296,6 +300,9 @@
           "maximum": 600,
           "exclusiveMaximum": true
         },
+        "category": {
+          "$ref": "#/definitions/FaultCategory"
+        },
         "detail": {
           "$ref": "#/definitions/PaymentFault"
         },
@@ -309,6 +316,7 @@
         }
       },
       "required": [
+        "category",
         "detail",
         "detail_v2"
       ]
@@ -335,6 +343,9 @@
           "maximum": 600,
           "exclusiveMaximum": true
         },
+        "category": {
+          "$ref": "#/definitions/FaultCategory"
+        },
         "detail": {
           "$ref": "#/definitions/PaymentFault"
         },
@@ -348,6 +359,7 @@
         }
       },
       "required": [
+        "category",
         "detail",
         "detail_v2"
       ]
@@ -374,6 +386,9 @@
           "maximum": 600,
           "exclusiveMaximum": true
         },
+        "category": {
+          "$ref": "#/definitions/FaultCategory"
+        },
         "detail": {
           "$ref": "#/definitions/PaymentFault"
         },
@@ -387,6 +402,7 @@
         }
       },
       "required": [
+        "category",
         "detail",
         "detail_v2"
       ]
@@ -413,6 +429,9 @@
           "maximum": 600,
           "exclusiveMaximum": true
         },
+        "category": {
+          "$ref": "#/definitions/FaultCategory"
+        },
         "detail": {
           "$ref": "#/definitions/PaymentFault"
         },
@@ -426,6 +445,7 @@
         }
       },
       "required": [
+        "category",
         "detail",
         "detail_v2"
       ]
@@ -452,6 +472,9 @@
           "maximum": 600,
           "exclusiveMaximum": true
         },
+        "category": {
+          "$ref": "#/definitions/FaultCategory"
+        },
         "detail": {
           "$ref": "#/definitions/PaymentFault"
         },
@@ -465,6 +488,7 @@
         }
       },
       "required": [
+        "category",
         "detail",
         "detail_v2"
       ]
@@ -674,7 +698,7 @@
       }
     },
     "PaymentFault": {
-      "description": "DEPRECATED. Fault codes for the PagoPA Verifica and Attiva operations.\nPossible fault codes are:\n- `PAYMENT_DUPLICATED`\n- `INVALID_AMOUNT`\n- `PAYMENT_ONGOING`\n- `PAYMENT_EXPIRED`\n- `PAYMENT_UNAVAILABLE`\n- `PAYMENT_UNKNOWN`\n- `DOMAIN_UNKNOWN`\n- `PPT_MULTI_BENEFICIARIO`\n- `GENERIC_ERROR`",
+      "description": "DEPRECATED: Use `FaultCategory` instead.\nFault codes for the PagoPA Verifica and Attiva operations.\nPossible fault codes are:\n- `PAYMENT_DUPLICATED`\n- `INVALID_AMOUNT`\n- `PAYMENT_ONGOING`\n- `PAYMENT_EXPIRED`\n- `PAYMENT_UNAVAILABLE`\n- `PAYMENT_UNKNOWN`\n- `DOMAIN_UNKNOWN`\n- `PPT_MULTI_BENEFICIARIO`\n- `GENERIC_ERROR`",
       "type": "string",
       "x-extensible-enum": [
         "PAYMENT_DUPLICATED",
@@ -685,6 +709,20 @@
         "PAYMENT_UNKNOWN",
         "DOMAIN_UNKNOWN",
         "PPT_MULTI_BENEFICIARIO",
+        "GENERIC_ERROR"
+      ]
+    },
+    "FaultCategory": {
+      "description": "Fault code categorization for the PagoPA Verifica and Attiva operations.\nPossible categories are:\n- `PAYMENT_DUPLICATED`\n- `PAYMENT_ONGOING`\n- `PAYMENT_EXPIRED`\n- `PAYMENT_UNAVAILABLE`\n- `PAYMENT_UNKNOWN`\n- `DOMAIN_UNKNOWN`\n- `PAYMENT_CANCELED`\n- `GENERIC_ERROR`",
+      "type": "string",
+      "x-extensible-enum": [
+        "PAYMENT_DUPLICATED",
+        "PAYMENT_ONGOING",
+        "PAYMENT_EXPIRED",
+        "PAYMENT_UNAVAILABLE",
+        "PAYMENT_UNKNOWN",
+        "DOMAIN_UNKNOWN",
+        "PAYMENT_CANCELED",
         "GENERIC_ERROR"
       ]
     },
@@ -699,7 +737,7 @@
       ]
     },
     "ValidationFault": {
-      "description": "Fault codes for errors related to well-formed requests to ECs not present inside Nodo, should be mapped to 404 HTTP status code.\nMost of the time these are generated when users input a wrong fiscal code or notice number.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code\nPossible fault codes are:\n- `PPT_DOMINIO_SCONOSCIUTO`\n- `PPT_INTERMEDIARIO_PA_SCONOSCIUTO`\n- `PPT_STAZIONE_INT_PA_SCONOSCIUTA`",
+      "description": "Fault codes for errors related to well-formed requests to ECs not present inside Nodo, should be mapped to 404 HTTP status code.\nMost of the time these are generated when users input a wrong fiscal code or notice number.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_DOMINIO_SCONOSCIUTO`\n- `PPT_INTERMEDIARIO_PA_SCONOSCIUTO`\n- `PPT_STAZIONE_INT_PA_SCONOSCIUTA`",
       "type": "string",
       "x-extensible-enum": [
         "PPT_DOMINIO_SCONOSCIUTO",
