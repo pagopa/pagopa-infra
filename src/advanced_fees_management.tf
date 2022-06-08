@@ -12,12 +12,33 @@ locals {
     origins = ["*"]
     methods = ["*"]
   },
-  advanced_fees_management_cosmosdb_enable_serverless = contains(var.advanced_fees_management_cosmosdb_extra_capabilities, "EnableServerless")
+
+  advanced_fees_management_cosmosdb_enable_serverless = contains(var.advanced_fees_management_cosmosdb_extra_capabilities, "EnableServerless"),
+
+  advanced_fees_management_cosmosdb_containers = [
+    {
+      name = "bundle",
+      partition_key_path = "/idPSP",
+    },
+    {
+      name = "cibundle",
+      partition_key_path = "/ciFiscalCode",
+    },
+    {
+      name = "bundlerequest",
+      partition_key_path = "/idPSP",
+    },
+    {
+      name = "bundleoffer",
+      partition_key_path = "/ciFiscalCode",
+    },
+  ]
 }
 
 # subnet
 module "advanced_fees_management_snet" {
   count                                          = var.advanced_fees_management_enabled && var.cidr_subnet_advanced_fees_management != null ? 1 : 0
+
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-afm-snet", local.project)
   address_prefixes                               = var.cidr_subnet_advanced_fees_management
@@ -115,7 +136,7 @@ module "advanced_fees_management_cosmosdb_account" {
   count  = var.advanced_fees_management_enabled ? 1 : 0
 
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-afm-cosmos", local.project)
+  name     = format("%s-afm-cosmos-account", local.project)
   location = var.location
 
   resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
@@ -151,12 +172,12 @@ module "advanced_fees_management_cosmosdb_account" {
   # for the PoC we are not interested to backup
   backup_continuous_enabled = false
 
-  is_virtual_network_filter_enabled = false
+  is_virtual_network_filter_enabled = true
 
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  # allowed_virtual_network_subnet_ids = []
+  allowed_virtual_network_subnet_ids = [module.advanced_fees_management_snet[0].id]
 
   # private endpoint
   private_endpoint_name    = format("%s-afm-cosmosdb-sql-endpoint", local.project)
@@ -175,4 +196,21 @@ module "advanced_fees_management_cosmosdb_database" {
   name                = "db"
   resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
   account_name        = module.advanced_fees_management_cosmosdb_account[0].name
+}
+
+# cosmosdb container
+module "advanced_fees_management_cosmosdb_containers" {
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
+  for_each = { for c in local.advanced_fees_management_cosmosdb_containers : c.name => c }
+
+  name                = each.value.name
+  resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
+  account_name        = module.advanced_fees_management_cosmosdb_account[0].name
+  database_name       = module.advanced_fees_management_cosmosdb_database[0].name
+  partition_key_path  = each.value.partition_key_path
+  partition_key_version  = 2
+  throughput          = lookup(each.value, "throughput", null)
+
+  autoscale_settings = lookup(each.value, "autoscale_settings", null)
+
 }
