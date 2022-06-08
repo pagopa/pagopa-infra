@@ -55,7 +55,5 @@ module "apim_api_afm_marketplace_api" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/afm_api/marketplace/v1/_base_policy.xml", {
-    origin = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
-  })
+  xml_content = templatefile("./api/afm_api/marketplace/v1/_base_policy.xml.tpl", {})
 }
