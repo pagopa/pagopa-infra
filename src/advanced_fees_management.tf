@@ -11,9 +11,9 @@ locals {
   advanced_fees_management_cors_configuration = {
     origins = ["*"]
     methods = ["*"]
-  },
+  }
 
-  advanced_fees_management_cosmosdb_enable_serverless = contains(var.advanced_fees_management_cosmosdb_extra_capabilities, "EnableServerless"),
+  advanced_fees_management_cosmosdb_enable_serverless = contains(var.advanced_fees_management_cosmosdb_extra_capabilities, "EnableServerless")
 
   advanced_fees_management_cosmosdb_containers = [
     {
@@ -83,7 +83,6 @@ module "advanced_fees_management_app_service" {
   linux_fx_version  = format("DOCKER|%s/api-afm-backend:%s", module.acr[0].login_server, "latest")
   health_check_path = "/api/v1/info"
 
-
   app_settings = {
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
@@ -107,9 +106,8 @@ module "advanced_fees_management_app_service" {
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
     # Spring Environment
-    COSMOS_KEY1 = data.azurerm_key_vault_secret.afm_cosmos_key1.value
-    COSMOS_KEY2 = data.azurerm_key_vault_secret.afm_cosmos_key2.value
-    COSMOS_URI  = null
+    COSMOS_KEY = module.advanced_fees_management_cosmosdb_account[0].primary_key
+    COSMOS_URI  = module.advanced_fees_management_cosmosdb_account[0].connection_strings[0]
 
     CORS_CONFIGURATION         = jsonencode(local.advanced_fees_management_cors_configuration)
 
@@ -144,7 +142,6 @@ module "advanced_fees_management_cosmosdb_account" {
   kind                = "GlobalDocumentDB"
 
   public_network_access_enabled    = var.advanced_fees_management_cosmosdb_public_network_access_enabled
-  main_geo_location_zone_redundant = false
 
   enable_free_tier          = false
   enable_automatic_failover = true
@@ -182,7 +179,7 @@ module "advanced_fees_management_cosmosdb_account" {
   # private endpoint
   private_endpoint_name    = format("%s-afm-cosmosdb-sql-endpoint", local.project)
   private_endpoint_enabled = true
-  subnet_id                = module.advanced_fees_management_snet.id
+  subnet_id                = module.advanced_fees_management_snet[0].id
   private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_afm_cosmos_azure_com.id]
 
   tags = var.tags
@@ -208,9 +205,7 @@ module "advanced_fees_management_cosmosdb_containers" {
   account_name        = module.advanced_fees_management_cosmosdb_account[0].name
   database_name       = module.advanced_fees_management_cosmosdb_database[0].name
   partition_key_path  = each.value.partition_key_path
-  partition_key_version  = 2
   throughput          = lookup(each.value, "throughput", null)
 
   autoscale_settings = lookup(each.value, "autoscale_settings", null)
-
 }
