@@ -21,9 +21,9 @@ module "cosmosdb_paymentsdb_snet" {
 }
 
 
-module "cosmos_payments" {
+module "cosmos_payments_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-cosmos-payments", local.project)
+  name     = format("%s-payments-cosmos-account", local.project)
   location = var.location
 
   resource_group_name = azurerm_resource_group.cosmosdb_rg.name
@@ -77,7 +77,7 @@ module "payments_cosmos_db" {
   source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
   name                = "db"
   resource_group_name = azurerm_resource_group.cosmosdb_rg.name
-  account_name        = module.cosmos_payments.name
+  account_name        = module.cosmos_payments_account.name
 }
 
 ### Containers
@@ -102,7 +102,7 @@ module "payments_cosmosdb_containers" {
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.cosmosdb_rg.name
-  account_name        = module.cosmos_payments.name
+  account_name        = module.cosmos_payments_account.name
   database_name       = module.payments_cosmos_db.name
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
