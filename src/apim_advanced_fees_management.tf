@@ -25,7 +25,7 @@ module "apim_advanced_fees_management_product" {
 ##############
 
 resource "azurerm_api_management_api_version_set" "api_afm_marketplace_api" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
 
   name                = format("%s-api-afm-marketplace-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -35,7 +35,7 @@ resource "azurerm_api_management_api_version_set" "api_afm_marketplace_api" {
 }
 
 module "apim_api_afm_marketplace_api" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
