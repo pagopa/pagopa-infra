@@ -1411,13 +1411,6 @@ variable "cidr_subnet_pg_flex_dbms" {
 }
 
 # advanced fees management
-
-variable "advanced_fees_management_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable advanced fees management"
-}
-
 variable "cidr_subnet_advanced_fees_management" {
   type        = list(string)
   description = "Address prefixes subnet for advanced fees management"
