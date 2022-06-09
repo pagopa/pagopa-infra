@@ -17,19 +17,19 @@ locals {
 
   advanced_fees_management_cosmosdb_containers = [
     {
-      name = "bundles",
+      name               = "bundles",
       partition_key_path = "/idPSP",
     },
     {
-      name = "cibundles",
+      name               = "cibundles",
       partition_key_path = "/ciFiscalCode",
     },
     {
-      name = "bundlerequests",
+      name               = "bundlerequests",
       partition_key_path = "/idPSP",
     },
     {
-      name = "bundleoffers",
+      name               = "bundleoffers",
       partition_key_path = "/ciFiscalCode",
     },
   ]
@@ -37,7 +37,7 @@ locals {
 
 # subnet
 module "advanced_fees_management_snet" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
 
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-afm-snet", local.project)
@@ -111,9 +111,9 @@ module "advanced_fees_management_app_service" {
 
     # Spring Environment
     COSMOS_KEY = module.advanced_fees_management_cosmosdb_account[0].primary_key
-    COSMOS_URI  = module.advanced_fees_management_cosmosdb_account[0].connection_strings[0]
+    COSMOS_URI = module.advanced_fees_management_cosmosdb_account[0].connection_strings[0]
 
-    CORS_CONFIGURATION         = jsonencode(local.advanced_fees_management_cors_configuration)
+    CORS_CONFIGURATION = jsonencode(local.advanced_fees_management_cors_configuration)
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
@@ -135,7 +135,7 @@ module "advanced_fees_management_app_service" {
 
 # cosmosdb account
 module "advanced_fees_management_cosmosdb_account" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
 
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
   name     = format("%s-afm-cosmosdb-account", local.project)
@@ -145,7 +145,7 @@ module "advanced_fees_management_cosmosdb_account" {
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
 
-  public_network_access_enabled    = var.advanced_fees_management_cosmosdb_public_network_access_enabled
+  public_network_access_enabled = var.advanced_fees_management_cosmosdb_public_network_access_enabled
 
   enable_free_tier          = false
   enable_automatic_failover = true
@@ -162,13 +162,13 @@ module "advanced_fees_management_cosmosdb_account" {
   main_geo_location_zone_redundant = false
 
   # for the PoC we are not interested to redundancy
-#  additional_geo_locations = [
-#    {
-#      location          = "northeurope"
-#      failover_priority = 1
-#      zone_redundant    = true
-#    }
-#  ]
+  #  additional_geo_locations = [
+  #    {
+  #      location          = "northeurope"
+  #      failover_priority = 1
+  #      zone_redundant    = true
+  #    }
+  #  ]
 
   # for the PoC we are not interested to backup
   backup_continuous_enabled = false
@@ -191,7 +191,7 @@ module "advanced_fees_management_cosmosdb_account" {
 
 # cosmosdb database
 module "advanced_fees_management_cosmosdb_database" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
 
   source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
   name                = "db"
