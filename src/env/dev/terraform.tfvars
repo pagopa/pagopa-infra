@@ -32,7 +32,7 @@ cidr_subnet_pg_flex_dbms          = ["10.1.141.0/24"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
-cidr_subnet_advanced_fees_management = ["10.1.145.0/24"]
+cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
 cidr_subnet_mock_psp = ["10.1.137.8/29"]
@@ -421,5 +421,4 @@ canoneunico_function_autoscale_default = 1
 # }
 
 # advanced fees management
-advanced_fees_management_enabled = true
 advanced_fees_management_cosmosdb_public_network_access_enabled = true

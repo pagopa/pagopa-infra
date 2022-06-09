@@ -17,19 +17,19 @@ locals {
 
   advanced_fees_management_cosmosdb_containers = [
     {
-      name = "bundle",
+      name = "bundles",
       partition_key_path = "/idPSP",
     },
     {
-      name = "cibundle",
+      name = "cibundles",
       partition_key_path = "/ciFiscalCode",
     },
     {
-      name = "bundlerequest",
+      name = "bundlerequests",
       partition_key_path = "/idPSP",
     },
     {
-      name = "bundleoffer",
+      name = "bundleoffers",
       partition_key_path = "/ciFiscalCode",
     },
   ]
@@ -37,7 +37,7 @@ locals {
 
 # subnet
 module "advanced_fees_management_snet" {
-  count                                          = var.advanced_fees_management_enabled && var.cidr_subnet_advanced_fees_management != null ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
 
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-afm-snet", local.project)
@@ -46,7 +46,11 @@ module "advanced_fees_management_snet" {
   virtual_network_name                           = module.vnet.name
   enforce_private_link_endpoint_network_policies = true
 
-#  service_endpoints                              = ["Microsoft.Web"]
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
 
   delegation = {
     name = "default"
@@ -61,7 +65,7 @@ module "advanced_fees_management_snet" {
 
 # app service: this is used only for PoC
 module "advanced_fees_management_app_service" {
-  count  = var.advanced_fees_management_enabled ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
 
   vnet_integration    = false
@@ -131,10 +135,10 @@ module "advanced_fees_management_app_service" {
 
 # cosmosdb account
 module "advanced_fees_management_cosmosdb_account" {
-  count  = var.advanced_fees_management_enabled ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
 
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-afm-cosmos-account", local.project)
+  name     = format("%s-afm-cosmosdb-account", local.project)
   location = var.location
 
   resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
@@ -155,7 +159,7 @@ module "advanced_fees_management_cosmosdb_account" {
   main_geo_location_location = "westeurope"
 
   # in order to disable redundancy in dev
-  main_geo_location_zone_redundant = var.advanced_fees_management_enabled
+  main_geo_location_zone_redundant = false
 
   # for the PoC we are not interested to redundancy
 #  additional_geo_locations = [
@@ -187,7 +191,7 @@ module "advanced_fees_management_cosmosdb_account" {
 
 # cosmosdb database
 module "advanced_fees_management_cosmosdb_database" {
-  count  = var.advanced_fees_management_enabled ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
 
   source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
   name                = "db"
