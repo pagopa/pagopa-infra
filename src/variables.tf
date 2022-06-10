@@ -1410,45 +1410,27 @@ variable "cidr_subnet_pg_flex_dbms" {
   description = "Postgres Flexible Server network address space."
 }
 
-# advanced fees management
-variable "cidr_subnet_advanced_fees_management" {
-  type        = list(string)
-  description = "Address prefixes subnet for advanced fees management"
-  default     = null
-}
+# ####################
+# CosmosDb 
+# ####################
 
-variable "advanced_fees_management_tier" {
-  type        = string
-  description = "advanced fees management plan tier"
-  default     = "Standard"
-}
+# ####################
+# Afm account ########
 
-variable "advanced_fees_management_size" {
-  type        = string
-  description = "advanced fees management plan size"
-  default     = "S1"
-}
-
-variable "advanced_fees_management_cosmosdb_extra_capabilities" {
-  type        = list(string)
-  default     = []
-  description = "Enable cosmosdb extra capabilities"
-}
-
-variable "advanced_fees_management_cosmosdb_public_network_access_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable public access for afm-cosmosdb"
-}
-
-
-# CosmosDb Payments
+# ####################
+# Payments account ###
 variable "cidr_subnet_cosmosdb_paymentsdb" {
   type        = list(string)
   description = "Cosmos DB address space."
 }
 
-
+# ####################
+# GPS account ########
+variable "cidr_subnet_gps_cosmosdb" {
+  type        = list(string)
+  description = "Address prefixes subnet for GPS CosmosDB"
+  default     = null
+}
 variable "cosmos_document_db_params" {
   type = object({
     kind           = string
@@ -1500,3 +1482,6 @@ variable "cidr_subnet_logicapp_biz_evt" {
   description = "Address prefixes subnet logic app"
   default     = null
 }
+
+
+

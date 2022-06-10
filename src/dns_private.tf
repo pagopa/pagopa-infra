@@ -104,18 +104,7 @@ resource "azurerm_private_dns_zone" "privatelink_azurecr_pagopa" {
 }
 
 # Private DNS Zone for CosmosDB
-
-# advanced fees management
-resource "azurerm_private_dns_zone" "privatelink_afm_cosmos_azure_com" {
-  count = var.env_short == "d" ? 1 : 0
-
-  name                = "privatelink.afm.cosmos.azure.com"
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-
-  tags = var.tags
-}
-
-# Cosmos DocumentDB payments btz event
+# https://docs.microsoft.com/it-it/azure/cosmos-db/how-to-configure-private-endpoints
 resource "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   name                = "privatelink.documents.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
