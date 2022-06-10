@@ -202,7 +202,7 @@ module "advanced_fees_management_cosmosdb_database" {
 # cosmosdb container
 module "advanced_fees_management_cosmosdb_containers" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
-  for_each = { for c in local.advanced_fees_management_cosmosdb_containers : c.name => c }
+  for_each = { for c in local.advanced_fees_management_cosmosdb_containers : c.name => c if var.env_short == "d"}
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
