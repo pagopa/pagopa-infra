@@ -52,14 +52,8 @@ module "advanced_fees_management_snet" {
     "Microsoft.Storage",
   ]
 
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
 }
+
 
 # afm app configuration
 
@@ -184,7 +178,7 @@ module "advanced_fees_management_cosmosdb_account" {
   private_endpoint_name    = format("%s-afm-cosmosdb-sql-endpoint", local.project)
   private_endpoint_enabled = true
   subnet_id                = module.advanced_fees_management_snet[0].id
-  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_afm_cosmos_azure_com.id]
+  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_afm_cosmos_azure_com[0].id]
 
   tags = var.tags
 }
@@ -202,7 +196,7 @@ module "advanced_fees_management_cosmosdb_database" {
 # cosmosdb container
 module "advanced_fees_management_cosmosdb_containers" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
-  for_each = { for c in local.advanced_fees_management_cosmosdb_containers : c.name => c if var.env_short == "d"}
+  for_each = { for c in local.advanced_fees_management_cosmosdb_containers : c.name => c if var.env_short == "d" }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
