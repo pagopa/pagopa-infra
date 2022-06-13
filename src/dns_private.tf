@@ -103,7 +103,31 @@ resource "azurerm_private_dns_zone" "privatelink_azurecr_pagopa" {
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
+# Private DNS Zone for CosmosDB
+
+# advanced fees management
+resource "azurerm_private_dns_zone" "privatelink_afm_cosmos_azure_com" {
+  count = var.env_short == "d" ? 1 : 0
+
+  name                = "privatelink.afm.cosmos.azure.com"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_afm_cosmos_azure_com_vnet" {
+  count = var.env_short == "d" ? 1 : 0
+
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_afm_cosmos_azure_com[0].name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+    resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
   name                = format("internal.%s.%s", var.dns_zone_prefix, var.external_domain)
   resource_group_name = azurerm_resource_group.rg_vnet.name
 

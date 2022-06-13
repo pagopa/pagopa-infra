@@ -2,10 +2,6 @@
     <inbound>
         <base />
         <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
-        <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-            <value>${ip_allowed_1}</value>
-            <value>${ip_allowed_2}</value>
-        </check-header>
         <choose>
             <when condition="@(context.User.Groups.Select(g => g.Id).Contains("checkout-rate-no-limit"))" />
             <when condition="@(context.User.Groups.Select(g => g.Id).Contains("checkout-rate-limit-300"))">

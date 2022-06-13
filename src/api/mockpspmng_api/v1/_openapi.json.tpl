@@ -203,6 +203,35 @@
           }
         }
       }
+    },
+    "/postepayweb/change/outcome": {
+      "post": {
+        "operationId": "changeOutcomePostePay",
+        "tags": [
+          "Payment Manager Controller"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "paymentOutcome",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeoutMs",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   }
 }
