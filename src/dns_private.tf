@@ -127,7 +127,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_afm_cosmos
   tags = var.tags
 }
 
-    resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
+resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
   name                = format("internal.%s.%s", var.dns_zone_prefix, var.external_domain)
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
