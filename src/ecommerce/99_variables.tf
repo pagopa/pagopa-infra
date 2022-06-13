@@ -100,19 +100,3 @@ variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
 }
-
-variable "ingress_load_balancer_ip" {
-  type = string
-}
-
-variable "external_domain" {
-  type        = string
-  default     = null
-  description = "Domain for delegation"
-}
-
-variable "dns_zone_internal_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain."
-}
