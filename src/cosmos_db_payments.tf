@@ -87,7 +87,7 @@ locals {
     # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/497746877/Design+Review+-+Evento+di+pagamento#Struttura-JSON-evento-business
     {
       name               = "payments-events"
-      partition_key_path = "/idPA"
+      partition_key_path = "/creditor/idPA"
       autoscale_settings = {
         max_throughput = 6000
       },
