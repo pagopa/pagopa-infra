@@ -43,7 +43,7 @@ module "cosmos_payments_account" {
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = [module.logic_app_biz_evt_snet.id]
+  allowed_virtual_network_subnet_ids = var.cosmos_document_db_params.public_network_access_enabled ? [] : [module.logic_app_biz_evt_snet.id]
 
   # private endpoint
   private_endpoint_name    = format("%s-cosmos-payments-sql-endpoint", local.project)
@@ -66,14 +66,11 @@ module "payments_cosmos_db" {
 ### Containers
 locals {
   payments_cosmosdb_containers = [
-
     # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/497746877/Design+Review+-+Evento+di+pagamento#Struttura-JSON-evento-business
     {
       name               = "payments-events"
       partition_key_path = "/creditor/idPA"
-      autoscale_settings = {
-        max_throughput = 6000
-      },
+      autoscale_settings = { max_throughput = 6000 }
     },
 
   ]
@@ -90,6 +87,5 @@ module "payments_cosmosdb_containers" {
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
 
-  autoscale_settings = lookup(each.value, "autoscale_settings", null)
-
+  autoscale_settings = contains(var.cosmos_document_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
