@@ -5,10 +5,6 @@ resource "azurerm_resource_group" "cosmosdb_rg" {
   tags = var.tags
 }
 
-locals {
-  cosmosdb_paymentsdb_enable_serverless = contains(var.cosmosdb_paymentsdb_extra_capabilities, "EnableServerless")
-}
-
 module "cosmosdb_paymentsdb_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.15.1"
   name                 = format("%s-cosmosb-paymentsdb-snet", local.project)
@@ -20,42 +16,29 @@ module "cosmosdb_paymentsdb_snet" {
   service_endpoints                              = ["Microsoft.Web"]
 }
 
-
 module "cosmos_payments_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
   name     = format("%s-payments-cosmos-account", local.project)
   location = var.location
 
   resource_group_name = azurerm_resource_group.cosmosdb_rg.name
-  offer_type          = "Standard"
-  kind                = "GlobalDocumentDB"
+  offer_type          = var.cosmos_document_db_params.offer_type
+  kind                = var.cosmos_document_db_params.kind
 
-  public_network_access_enabled    = var.cosmosdb_paymentsdb_public_network_access_enabled
-  main_geo_location_zone_redundant = false
+  public_network_access_enabled    = var.cosmos_document_db_params.public_network_access_enabled
+  main_geo_location_zone_redundant = var.cosmos_document_db_params.main_geo_location_zone_redundant
 
-  enable_free_tier          = false
+  enable_free_tier          = var.cosmos_document_db_params.enable_free_tier
   enable_automatic_failover = true
 
+  capabilities       = var.cosmos_document_db_params.capabilities
+  consistency_policy = var.cosmos_document_db_params.consistency_policy
 
-  consistency_policy = {
-    consistency_level       = "Strong"
-    max_interval_in_seconds = null
-    max_staleness_prefix    = null
-  }
+  main_geo_location_location = var.location
+  additional_geo_locations   = var.cosmos_document_db_params.additional_geo_locations
+  backup_continuous_enabled  = var.cosmos_document_db_params.backup_continuous_enabled
 
-  main_geo_location_location = "westeurope"
-
-  additional_geo_locations = [
-    {
-      location          = "northeurope"
-      failover_priority = 1
-      zone_redundant    = true
-    }
-  ]
-
-  backup_continuous_enabled = true
-
-  is_virtual_network_filter_enabled = true
+  is_virtual_network_filter_enabled = var.cosmos_document_db_params.is_virtual_network_filter_enabled
 
   ip_range = ""
 
@@ -64,9 +47,9 @@ module "cosmos_payments_account" {
 
   # private endpoint
   private_endpoint_name    = format("%s-cosmos-payments-sql-endpoint", local.project)
-  private_endpoint_enabled = true
+  private_endpoint_enabled = var.cosmos_document_db_params.private_endpoint_enabled
   subnet_id                = module.cosmosdb_paymentsdb_snet.id
-  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_payments_cosmos_azure_com.id]
+  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents_azure_com.id]
 
   tags = var.tags
 

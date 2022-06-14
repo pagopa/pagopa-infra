@@ -155,15 +155,6 @@ module "advanced_fees_management_cosmosdb_account" {
   # in order to disable redundancy in dev
   main_geo_location_zone_redundant = false
 
-  # for the PoC we are not interested to redundancy
-  #  additional_geo_locations = [
-  #    {
-  #      location          = "northeurope"
-  #      failover_priority = 1
-  #      zone_redundant    = true
-  #    }
-  #  ]
-
   # for the PoC we are not interested to backup
   backup_continuous_enabled = false
 
@@ -178,7 +169,7 @@ module "advanced_fees_management_cosmosdb_account" {
   private_endpoint_name    = format("%s-afm-cosmosdb-sql-endpoint", local.project)
   private_endpoint_enabled = true
   subnet_id                = module.advanced_fees_management_snet[0].id
-  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_afm_cosmos_azure_com[0].id]
+  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents_azure_com.id]
 
   tags = var.tags
 }

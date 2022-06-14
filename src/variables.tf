@@ -1442,81 +1442,37 @@ variable "advanced_fees_management_cosmosdb_public_network_access_enabled" {
 }
 
 
-# CosmosDb 
+# CosmosDb Payments
 variable "cidr_subnet_cosmosdb_paymentsdb" {
   type        = list(string)
   description = "Cosmos DB address space."
 }
 
-variable "cosmosdb_paymentsdb_offer_type" {
-  type        = string
-  description = "Specifies the Offer Type to use for this CosmosDB Account - currently this can only be set to Standard"
-  default     = "Standard"
-}
 
-variable "cosmosdb_paymentsdb_enable_free_tier" {
-  type        = bool
-  description = "Enable Free Tier pricing option for this Cosmos DB account"
-  default     = true
-}
-
-variable "cosmosdb_paymentsdb_public_network_access_enabled" {
-  type        = bool
-  description = "Whether or not public network access is allowed for this CosmosDB account"
-  default     = false
-}
-
-variable "cosmosdb_paymentsdb_consistency_policy" {
+variable "cosmos_document_db_params" {
   type = object({
-    consistency_level       = string
-    max_interval_in_seconds = number
-    max_staleness_prefix    = number
+    kind           = string
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
   })
-
-  default = {
-    consistency_level       = "Session"
-    max_interval_in_seconds = null
-    max_staleness_prefix    = null
-  }
-}
-
-variable "cosmosdb_paymentsdb_main_geo_location_zone_redundant" {
-  type        = bool
-  description = "Enable zone redundant Comsmos DB"
-}
-
-variable "cosmosdb_paymentsdb_additional_geo_locations" {
-  type = list(object({
-    location          = string
-    failover_priority = number
-    zone_redundant    = bool
-  }))
-  description = "The name of the Azure region to host replicated data and the priority to apply starting from 1. Not used when cosmosdb_paymentsdb_enable_serverless"
-  default     = []
-}
-
-variable "cosmosdb_paymentsdb_throughput" {
-  type        = number
-  description = "The throughput of the DocumentDB database (RU/s). Must be set in increments of 100. The minimum value is 400. This must be set upon database creation otherwise it cannot be updated without a manual terraform destroy-apply."
-  default     = 400
-}
-
-variable "cosmosdb_paymentsdb_enable_autoscaling" {
-  type        = bool
-  description = "It will enable autoscaling mode. If true, cosmosdb_paymentsdb_throughput must be unset"
-  default     = false
-}
-
-variable "cosmosdb_paymentsdb_max_throughput" {
-  type        = number
-  description = "The maximum throughput of the DocumentDB database (RU/s). Must be between 4,000 and 1,000,000. Must be set in increments of 1,000. Conflicts with throughput"
-  default     = 4000
-}
-
-variable "cosmosdb_paymentsdb_extra_capabilities" {
-  type        = list(string)
-  default     = []
-  description = "Enable cosmosdb extra capabilities"
 }
 
 # Logic App pagopa biz event
