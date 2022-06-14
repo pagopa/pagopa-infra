@@ -94,7 +94,9 @@ app_gateway_deny_paths = [
   "/checkout/io-for-node/*",
   "/gpd/*",
   "/gpd-payments/*",
-  "/gpd-reporting/*"
+  "/gpd-reporting/*",
+  "/tkm/tkmcardmanager/*",
+  "/tkm/tkmacquirermanager/*"
 ]
 
 # nat_gateway
@@ -115,12 +117,10 @@ postgres_private_endpoint_enabled        = false
 mock_ec_enabled  = false
 mock_psp_enabled = false
 
-# api_config
-api_config_enabled = false
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "97249640588,08658331007,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002"
+nodo_pagamenti_psp     = "97249640588,08658331007,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec      = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
 nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
 ip_nodo                = "10.79.20.34"
@@ -320,7 +320,7 @@ acr_enabled = true
 # db nodo dei pagamenti
 db_port                            = 1521
 db_service_name                    = "NDPSPCP_PP_NODO4_CFG" # TODO chiedere a SIA
-dns_a_reconds_dbnodo_ips           = ["10.102.35.61", "10.102.35.62", "10.102.35.63"]
+dns_a_reconds_dbnodo_ips           = ["10.102.35.61", "10.102.35.62", "10.102.35.63", "10.102.35.60", "10.102.35.59", "10.102.35.58", "10.102.35.57"]
 private_dns_zone_db_nodo_pagamenti = "p.db-nodo-pagamenti.com"
 
 # API Config
@@ -358,6 +358,9 @@ bpd_hostname       = "api.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "mock-ppt-lmi-npa-sit.ocp-tst-npaspc.sia.eu/satispay/v1/consumers"
+
+cstar_outbound_ip_1 = "20.86.161.243"
+cstar_outbound_ip_2 = "20.101.29.160"
 
 # fdr
 fdr_delete_retention_days        = 30
@@ -409,7 +412,7 @@ canoneunico_queue_message_delay = 3600 // in seconds = 1h
 pgres_flex_params = {
 
   private_endpoint_enabled = true
-  sku_name                 = "GP_Standard_D8s_v3"
+  sku_name                 = "GP_Standard_D4s_v3"
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.

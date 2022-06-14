@@ -123,12 +123,6 @@ variable "cidr_subnet_mock_psp" {
 
 # api_config
 
-variable "api_config_enabled" {
-  type        = bool
-  description = "Api Config enabled"
-  default     = false
-}
-
 variable "cidr_subnet_api_config" {
   type        = list(string)
   description = "Address prefixes subnet api config"
@@ -963,6 +957,16 @@ variable "fesp_hostname" {
   default     = ""
 }
 
+variable "cstar_outbound_ip_1" {
+  type        = string
+  description = "CSTAR ip 1"
+}
+
+variable "cstar_outbound_ip_2" {
+  type        = string
+  description = "CSTAR ip 2"
+}
+
 # fdr
 variable "fdr_enable_versioning" {
   type        = bool
@@ -1405,3 +1409,35 @@ variable "cidr_subnet_pg_flex_dbms" {
   type        = list(string)
   description = "Postgres Flexible Server network address space."
 }
+
+# advanced fees management
+variable "cidr_subnet_advanced_fees_management" {
+  type        = list(string)
+  description = "Address prefixes subnet for advanced fees management"
+  default     = null
+}
+
+variable "advanced_fees_management_tier" {
+  type        = string
+  description = "advanced fees management plan tier"
+  default     = "Standard"
+}
+
+variable "advanced_fees_management_size" {
+  type        = string
+  description = "advanced fees management plan size"
+  default     = "S1"
+}
+
+variable "advanced_fees_management_cosmosdb_extra_capabilities" {
+  type        = list(string)
+  default     = []
+  description = "Enable cosmosdb extra capabilities"
+}
+
+variable "advanced_fees_management_cosmosdb_public_network_access_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable public access for afm-cosmosdb"
+}
+

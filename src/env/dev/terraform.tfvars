@@ -27,11 +27,12 @@ cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
 cidr_subnet_reporting_common   = ["10.1.136.0/24"]
 cidr_subnet_gpd                = ["10.1.138.0/24"]
 # cidr_subnet_payments           = ["10.1.139.0/24"]
-cidr_subnet_canoneunico_common    = ["10.1.140.0/24"]
-cidr_subnet_pg_flex_dbms          = ["10.1.141.0/24"]
-cidr_subnet_vpn                   = ["10.1.142.0/24"]
-cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
-cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
+cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
+cidr_subnet_pg_flex_dbms             = ["10.1.141.0/24"]
+cidr_subnet_vpn                      = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder            = ["10.1.143.0/29"]
+cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
+cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
 cidr_subnet_mock_psp = ["10.1.137.8/29"]
@@ -94,8 +95,6 @@ prostgresql_db_mockpsp = "mock-psp"
 mock_ec_enabled  = true
 mock_psp_enabled = true
 
-# api_config
-api_config_enabled = true
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
@@ -104,7 +103,7 @@ nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,001031
 nodo_pagamenti_url     = "https://10.79.20.32/sit/webservices/input"
 ip_nodo                = "10.79.20.32"
 
-lb_aks = "10.70.66.200" # for soap services add /webservices/input
+lb_aks = "10.70.66.200" #for soap services add /webservices/input
 
 # eventhub
 eventhub_enabled = true
@@ -348,6 +347,10 @@ bpd_hostname       = "api.dev.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it/pmmockserviceapi"
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "portal.test.pagopa.gov.it/pmmockserviceapi"
+
+cstar_outbound_ip_1 = "20.105.180.187"
+cstar_outbound_ip_2 = "20.76.239.212"
+
 # fdr
 fdr_delete_retention_days       = 30
 reporting_fdr_function_kind     = "Linux"
@@ -416,3 +419,6 @@ canoneunico_function_autoscale_default = 1
 #   pgbouncer_enabled            = false
 
 # }
+
+# advanced fees management
+advanced_fees_management_cosmosdb_public_network_access_enabled = true

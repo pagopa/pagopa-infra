@@ -28,7 +28,7 @@
             </allowed-headers>
         </cors>
         <base />
-        <rate-limit-by-key calls="60" renewal-period="60" counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization","").AsJwt()?.Subject)" />
+        <rate-limit-by-key calls="300" renewal-period="60" counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization","").AsJwt()?.Subject)" />
         <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
         <set-variable name="isPost" value="@(context.Request.Method.Equals("POST"))" />
         <set-variable name="isXsd" value="@(context.Request.Url.Path.Contains("xsd"))" />

@@ -3,7 +3,6 @@
 ##############
 
 module "apim_api_config_product" {
-  count  = var.api_config_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
 
   product_id   = "product-api-config"
@@ -25,7 +24,6 @@ module "apim_api_config_product" {
 ##############
 
 resource "azurerm_api_management_api_version_set" "api_config_api" {
-  count = var.api_config_enabled ? 1 : 0
 
   name                = format("%s-api-config-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -41,19 +39,18 @@ locals {
 }
 
 module "apim_api_config_api" {
-  count  = var.api_config_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12"
 
   name                  = format("%s-api-config-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_api_config_product[0].product_id]
+  product_ids           = [module.apim_api_config_product.product_id]
   subscription_required = false
   oauth2_authorization = {
     authorization_server_name = "apiconfig-oauth2"
   }
 
-  version_set_id = azurerm_api_management_api_version_set.api_config_api[0].id
+  version_set_id = azurerm_api_management_api_version_set.api_config_api.id
   api_version    = "v1"
 
   description  = "Api configuration for Nodo dei Pagamenti"
@@ -61,7 +58,7 @@ module "apim_api_config_api" {
   path         = "apiconfig/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service[0].default_site_hostname)
+  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
@@ -110,4 +107,70 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   bearer_token_sending_methods = ["authorizationHeader"]
   client_authentication_method = ["Body"]
 
+}
+
+###########################
+## Products for Checkout ##
+###########################
+
+module "apim_api_config_checkout_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+
+  product_id   = "product-api-config-checkout"
+  display_name = "ApiConfig for Checkout"
+  description  = "Product for API Configuration of the Node for Checkout"
+
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+
+  policy_xml = file("./api_product/apiconfig_api/_base_policy_checkout.xml")
+}
+
+########################
+##  API for Checkout  ##
+########################
+
+resource "azurerm_api_management_api_version_set" "api_config_checkout_api" {
+
+  name                = format("%s-api-config-checkout-api", var.env_short)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "ApiConfig for Checkout"
+  versioning_scheme   = "Segment"
+}
+
+module "apim_api_config_checkout_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12"
+
+  name                = format("%s-api-config-checkout-api", var.env_short)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  product_ids         = [module.apim_api_config_checkout_product.product_id]
+
+  subscription_required = true
+
+  version_set_id = azurerm_api_management_api_version_set.api_config_checkout_api.id
+  api_version    = "v1"
+
+  description  = "Api configuration for Checkout"
+  display_name = "ApiConfig for Checkout"
+  path         = "apiconfig/checkout/api"
+  protocols    = ["https"]
+
+  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+
+  content_format = "openapi"
+  content_value = templatefile("./api/apiconfig_api/checkout/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/apiconfig_api/checkout/v1/_base_policy.xml.tpl", {
+    origin                 = "*"
+    pagopa_tenant_id       = local.pagopa_tenant_id
+    apiconfig_be_client_id = local.apiconfig_be_client_id
+  })
 }
