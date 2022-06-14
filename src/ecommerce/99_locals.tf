@@ -24,5 +24,5 @@ locals {
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 
   ingress_hostname       = "${var.location_short}${var.instance}.${var.domain}"
-  internal_dns_zone_name = format("%s.%s", var.dns_zone_internal_prefix, var.external_domain)
+  internal_dns_zone_name = "${var.dns_zone_internal_prefix}.${var.external_domain}"
 }
