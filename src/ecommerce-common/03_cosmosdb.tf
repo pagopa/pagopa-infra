@@ -21,19 +21,21 @@ module "cosmosdb_account_mongodb" {
 
   source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
 
-  name                 = format("%s-cosmos-account", local.project)
-  location             = var.location
-  resource_group_name  = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+  name                = format("%s-cosmos-account", local.project)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+
   offer_type           = var.cosmos_mongo_db_params.offer_type
   kind                 = var.cosmos_mongo_db_params.kind
   capabilities         = var.cosmos_mongo_db_params.capabilities
   mongo_server_version = var.cosmos_mongo_db_params.server_version
 
-  public_network_access_enabled     = var.cosmos_mongo_db_params.public_network_access_enabled
-  private_endpoint_enabled          = var.cosmos_mongo_db_params.private_endpoint_enabled
-  subnet_id                         = module.cosmosdb_ecommerce_snet.id
-  private_dns_zone_ids              = [data.azurerm_private_dns_zone.mongodb.id]
-  is_virtual_network_filter_enabled = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
+  public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
+  private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
+  subnet_id                          = module.cosmosdb_ecommerce_snet.id
+  private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
+  is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
+  allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
   main_geo_location_location       = azurerm_resource_group.cosmosdb_ecommerce_rg.location
