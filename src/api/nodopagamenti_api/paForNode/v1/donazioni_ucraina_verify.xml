@@ -71,6 +71,24 @@
 
             return "0";
         }" />
+        <set-variable name="paymentDescription" value="@{
+            var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+            JObject json = JObject.Parse(donazioniucraina);
+
+            foreach (var item1 in json["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["paymentDescription"];
+                    }
+                }
+            }
+
+            return "0";
+        }" />        
         <return-response>
             <set-status code="200" reason="OK" />
             <set-header name="Content-Type" exists-action="override">
@@ -87,11 +105,11 @@
 									<amount>{{context.Variables["amount"]}}.00</amount>
 									<options>EQ</options>
 									<dueDate>{{context.Variables["dueDate"]}}</dueDate>
-									<detailDescription>Donazione Ucraina</detailDescription>
+									<detailDescription>{{context.Variables["paymentDescription"]}}</detailDescription>
 									<allCCP>false</allCCP>
 								</paymentOptionDescription>
 							</paymentList>
-							<paymentDescription>payment</paymentDescription>
+							<paymentDescription>{{context.Variables["paymentDescription"]}}</paymentDescription>
 							<fiscalCodePA>{{context.Variables["fiscalCode"]}}</fiscalCodePA>
 							<companyName>{{context.Variables["companyName"]}}</companyName>
 							<officeName>{{context.Variables["officeName"]}}</officeName>
