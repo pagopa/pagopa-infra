@@ -112,3 +112,9 @@ variable "dns_zone_internal_prefix" {
   default     = null
   description = "The dns subdomain."
 }
+
+variable "apim_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for apim."
+}
