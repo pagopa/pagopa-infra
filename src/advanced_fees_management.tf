@@ -78,7 +78,7 @@ module "advanced_fees_management_app_service" {
   client_cert_enabled = false
   always_on           = false
   # linux_fx_version    = "JAVA|11-java11"
-  linux_fx_version  = format("DOCKER|%s/api-afm-backend:%s", module.acr[0].login_server, "latest")
+  linux_fx_version  = format("DOCKER|%s/api-afm-backend:%s", module.container_registry.login_server, "latest")
   health_check_path = "/api/v1/info"
 
   app_settings = {
@@ -112,9 +112,9 @@ module "advanced_fees_management_app_service" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
   }
 
   allowed_subnets = [module.apim_snet.id]

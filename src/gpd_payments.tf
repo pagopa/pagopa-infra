@@ -38,9 +38,9 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
 
   }
 
@@ -82,7 +82,7 @@ module "payments_app_service" {
   name                = format("%s-app-payments", local.project)
   client_cert_enabled = false
   always_on           = var.payments_always_on
-  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
+  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.container_registry.login_server, "latest")
   health_check_path   = "/info"
 
   app_settings = local.gpd_payments_app_settings
@@ -112,7 +112,7 @@ module "payments_app_service_slot_staging" {
   location            = azurerm_resource_group.gpd_rg.location
 
   always_on         = true
-  linux_fx_version  = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
+  linux_fx_version  = format("DOCKER|%s/api-payments-backend:%s", module.container_registry.login_server, "latest")
   health_check_path = "/info"
 
   # App settings
