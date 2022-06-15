@@ -23,4 +23,7 @@ locals {
   ingress_hostname                      = "${var.location_short}${var.instance}.${var.domain}"
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+
+  cosmos_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"
+  cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 }
