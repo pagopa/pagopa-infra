@@ -17,11 +17,17 @@ module "container_registry" {
   location                      = var.location
 
   private_endpoint = {
-    enabled              = var.env_short != "d" ? true : false
-    private_dns_zone_ids = var.env_short != "d" ? [azurerm_private_dns_zone.privatelink_azurecr_pagopa.id] : []
-    subnet_id            = module.common_private_endpoint_snet.id
-    virtual_network_id   = module.vnet.id
+    enabled              = false
+    private_dns_zone_ids = []
+    subnet_id            = null
+    virtual_network_id   = null
   }
+
+  network_rule_set = [{
+    default_action  = "Allow"
+    ip_rule         = []
+    virtual_network = []
+  }]
 
   tags = var.tags
 }
