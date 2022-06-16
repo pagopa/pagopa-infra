@@ -84,7 +84,7 @@
             <when condition="@(context.Variables.ContainsKey("attvazionePrenotata"))">
                 <return-response>
                     <set-header name="Content-Type" exists-action="override">
-                        <value>application/xml</value>
+                        <value>text/xml</value>
                     </set-header>
                     <set-body template="liquid">
 						<soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -142,7 +142,7 @@
                             <set-url>{{urlnodo}}</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
-                                <value>application/xml</value>
+                                <value>text/xml</value>
                             </set-header>
                             <set-header name="SOAPAction" exists-action="override">
                                 <value>verifyPaymentNotice</value>
@@ -196,7 +196,7 @@
                                     </when>
                                 </choose>
                                 <set-header name="Content-Type" exists-action="override">
-                                    <value>application/xml</value>
+                                    <value>text/xml</value>
                                 </set-header>
                                 <set-header name="SOAPAction" exists-action="override">
                                     <value>activatePaymentNotice</value>
@@ -373,7 +373,7 @@
                                     <when condition="@("".Equals((string)context.Variables["originalFaultCode"]))">
                                         <return-response>
                                             <set-header name="Content-Type" exists-action="override">
-                                                <value>application/xml</value>
+                                                <value>text/xml</value>
                                             </set-header>
                                             <set-body template="liquid">
 												<soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -395,7 +395,7 @@
                                     <otherwise>
                                         <return-response>
                                             <set-header name="Content-Type" exists-action="override">
-                                                <value>application/xml</value>
+                                                <value>text/xml</value>
                                             </set-header>
                                             <set-body template="liquid">
 												<soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -433,7 +433,7 @@
                 }" />
                         <set-method>POST</set-method>
                         <set-header name="Content-Type" exists-action="override">
-                            <value>application/xml</value>
+                            <value>text/xml</value>
                         </set-header>
                         <set-header name="SOAPAction" exists-action="override">
                             <value>activatePaymentNotice</value>

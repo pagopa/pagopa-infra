@@ -32,4 +32,12 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     resources  = ["deployments"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
+  rule {
+    api_groups = ["networking.k8s.io"]
+    resources  = ["ingresses"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+  depends_on = [
+    module.aks
+  ]
 }

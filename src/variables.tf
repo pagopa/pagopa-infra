@@ -1409,3 +1409,94 @@ variable "cidr_subnet_pg_flex_dbms" {
   type        = list(string)
   description = "Postgres Flexible Server network address space."
 }
+
+# advanced fees management
+variable "cidr_subnet_advanced_fees_management" {
+  type        = list(string)
+  description = "Address prefixes subnet for advanced fees management"
+  default     = null
+}
+
+variable "advanced_fees_management_tier" {
+  type        = string
+  description = "advanced fees management plan tier"
+  default     = "Standard"
+}
+
+variable "advanced_fees_management_size" {
+  type        = string
+  description = "advanced fees management plan size"
+  default     = "S1"
+}
+
+variable "advanced_fees_management_cosmosdb_extra_capabilities" {
+  type        = list(string)
+  default     = []
+  description = "Enable cosmosdb extra capabilities"
+}
+
+variable "advanced_fees_management_cosmosdb_public_network_access_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable public access for afm-cosmosdb"
+}
+
+
+# CosmosDb Payments
+variable "cidr_subnet_cosmosdb_paymentsdb" {
+  type        = list(string)
+  description = "Cosmos DB address space."
+}
+
+
+variable "cosmos_document_db_params" {
+  type = object({
+    kind           = string
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+  })
+}
+
+# Logic App pagopa biz event
+
+variable "logic_app_biz_evt_plan_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = "Linux"
+}
+
+variable "logic_app_biz_evt_plan_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = "WorkflowStandard"
+}
+
+variable "logic_app_biz_evt_plan_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = "WS1"
+}
+
+variable "cidr_subnet_logicapp_biz_evt" {
+  type        = list(string)
+  description = "Address prefixes subnet logic app"
+  default     = null
+}

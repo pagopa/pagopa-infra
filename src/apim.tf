@@ -206,6 +206,20 @@ resource "azurerm_api_management_group" "piattaforma_notifiche" {
   display_name        = "Piattaforma notifiche"
 }
 
+resource "azurerm_api_management_group" "payment_manager" {
+  name                = "payment-manager"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Payment Manager"
+}
+
+resource "azurerm_api_management_group" "ecommerce" {
+  name                = "ecommerce"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Ecommerce pagoPA"
+}
+
 resource "azurerm_api_management_group" "pda" {
   name                = "client-pda"
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -359,6 +373,15 @@ resource "azurerm_api_management_named_value" "pm_gtw_hostname" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "pm-gtw-hostname"
   value               = data.azurerm_key_vault_secret.pm_gtw_hostname.value
+  secret              = true
+}
+
+resource "azurerm_api_management_named_value" "pm_onprem_hostname" {
+  name                = "pm-onprem-hostname"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pm-onprem-hostname"
+  value               = data.azurerm_key_vault_secret.pm_onprem_hostname.value
   secret              = true
 }
 

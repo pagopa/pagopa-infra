@@ -45,7 +45,7 @@ data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
   key_vault_id = module.key_vault.id
 }
 
-# https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
+# https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private" {
   count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.8.1"

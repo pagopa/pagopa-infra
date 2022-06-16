@@ -16,22 +16,23 @@ lock_enable = true
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway         = ["10.1.128.0/24"]
-cidr_subnet_postgresql         = ["10.1.129.0/24"]
-cidr_subnet_azdoa              = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
-cidr_subnet_checkout_be        = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
-cidr_subnet_reporting_common   = ["10.1.136.0/24"]
-cidr_subnet_gpd                = ["10.1.138.0/24"]
-# cidr_subnet_payments           = ["10.1.139.0/24"]
+cidr_subnet_appgateway            = ["10.1.128.0/24"]
+cidr_subnet_postgresql            = ["10.1.129.0/24"]
+cidr_subnet_azdoa                 = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis    = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy          = ["10.1.132.0/24"]
+cidr_subnet_checkout_be           = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks            = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr         = ["10.1.135.0/24"]
+cidr_subnet_reporting_common      = ["10.1.136.0/24"]
+cidr_subnet_gpd                   = ["10.1.138.0/24"]
+cidr_subnet_cosmosdb_paymentsdb   = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common    = ["10.1.140.0/24"]
 cidr_subnet_pg_flex_dbms          = ["10.1.141.0/24"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
 cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
+cidr_subnet_logicapp_biz_evt      = ["10.1.146.0/24"]
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
 cidr_subnet_mock_psp = ["10.1.137.8/29"]
@@ -106,7 +107,7 @@ mock_psp_enabled  = false
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,08658331007,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002"
+nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,08658331007,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571,97086740582,80029030568,87007530170,92000530532,80023370168,01349510436,10718570012,01032450072,01248040998,00608810057,80094780378,82002730487,80016430045,03299640163,94032590278,01928010683,91007750937,80052310580,97169170822,80043570482,80011170505,94050080038,01013130073,09227921005,94055970480,01429910183,01013210073,80031650486,83002410260,00337870406,92001600524,80007270376,02928200241,80082160013,01242340998,83000730297,01266290996,80012150274,02508710585,01142420056,02438750586"
 nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input"
 ip_nodo                = "10.79.20.32"
@@ -404,4 +405,28 @@ pgres_flex_params = {
   standby_availability_zone    = 2
   pgbouncer_enabled            = true
 
+}
+
+# CosmosDb Payments
+cosmos_document_db_params = {
+  kind         = "GlobalDocumentDB"
+  capabilities = []
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = true
+
+  private_endpoint_enabled      = true
+  public_network_access_enabled = false
+
+  additional_geo_locations = []
+
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = false
 }
