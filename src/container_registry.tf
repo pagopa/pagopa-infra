@@ -13,15 +13,21 @@ module "container_registry" {
   admin_enabled                 = true # TODO to change ...
   anonymous_pull_enabled        = false
   zone_redundancy_enabled       = var.env_short == "p" ? true : false
-  public_network_access_enabled = var.env_short == "d" ? true : false
+  public_network_access_enabled = true
   location                      = var.location
 
   private_endpoint = {
-    enabled              = var.env_short != "d" ? true : false
-    private_dns_zone_ids = var.env_short != "d" ? [azurerm_private_dns_zone.privatelink_azurecr_pagopa.id] : []
-    subnet_id            = module.common_private_endpoint_snet.id
-    virtual_network_id   = module.vnet.id
+    enabled              = false
+    private_dns_zone_ids = []
+    subnet_id            = null
+    virtual_network_id   = null
   }
+
+  network_rule_set = [{
+    default_action  = "Allow"
+    ip_rule         = []
+    virtual_network = []
+  }]
 
   tags = var.tags
 }
