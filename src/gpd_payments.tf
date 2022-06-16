@@ -26,6 +26,7 @@ locals {
     PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
     GPD_HOST                      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    API_CONFIG_HOST               = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "apiconfig/api", "v1")
     PAYMENTS_SA_CONNECTION_STRING = module.payments_receipt.primary_connection_string
     RECEIPTS_TABLE                = azurerm_storage_table.payments_receipts_table.name
     CONNECTION_TIMEOUT            = 3000
