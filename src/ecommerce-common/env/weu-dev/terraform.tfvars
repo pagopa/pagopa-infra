@@ -19,7 +19,7 @@ lock_enable = true
 terraform_remote_state_core = {
   resource_group_name  = "io-infra-rg"
   storage_account_name = "pagopainfraterraformdev"
-  container_name       = "azurermstate"
+  container_name       = "azureadstate"
   key                  = "dev.terraform.tfstate"
 }
 
@@ -62,6 +62,7 @@ cosmos_mongo_db_params = {
 }
 
 cidr_subnet_cosmosdb_ecommerce = ["10.1.143.0/24"]
+cidr_subnet_redis_ecommerce    = ["10.1.148.0/24"]
 
 cosmos_mongo_db_ecommerce_params = {
   enable_serverless  = true
@@ -69,3 +70,9 @@ cosmos_mongo_db_ecommerce_params = {
   max_throughput     = 5000
   throughput         = 1000
 }
+
+redis_ecommerce_params = {
+  capacity = 0
+  sku_name = "Basic"
+  family   = "C"
+} 

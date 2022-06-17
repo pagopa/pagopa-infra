@@ -150,4 +150,18 @@ variable "cosmos_mongo_db_ecommerce_params" {
     throughput         = number
     max_throughput     = number
   })
-} 
+}
+
+# Redis 
+variable "cidr_subnet_redis_ecommerce" {
+  type        = list(string)
+  description = "Redis DB address space for ecommerce."
+}
+
+variable "redis_ecommerce_params" {
+  type = object({
+    capacity     = number
+    sku_name     = string
+    family = string
+  })
+}

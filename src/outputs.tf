@@ -2,6 +2,10 @@ output "vnet_name" {
   value = module.vnet.name
 }
 
+output "vnet_id" {
+  value = module.vnet.id
+}
+
 output "vnet_address_space" {
   value = module.vnet.address_space
 }
