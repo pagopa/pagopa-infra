@@ -26,7 +26,7 @@ module "gps_cosmosdb_account" {
   name     = format("%s-gps-cosmos-account", local.project)
   location = var.location
 
-  resource_group_name = azurerm_resource_group.cosmosdb_rg.name
+  resource_group_name = azurerm_resource_group.gps_rg.name
   offer_type          = var.cosmos_gps_db_params.offer_type
   kind                = var.cosmos_gps_db_params.kind
 
