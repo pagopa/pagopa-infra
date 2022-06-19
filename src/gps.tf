@@ -1,49 +1,8 @@
-# region
 resource "azurerm_resource_group" "gps_rg" {
   name     = format("%s-gps-rg", local.project)
   location = var.location
 
   tags = var.tags
-}
-
-# local variables
-locals {
-
-  gps_cosmosdb_containers = [
-    {
-      name               = "creditor_institutions",
-      partition_key_path = "/fiscalCode",
-    },
-    {
-      name               = "services",
-      partition_key_path = "/transferCategory",
-    },
-  ]
-}
-
-# subnet
-module "gps_app_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                 = format("%s-gps-app-snet", local.project)
-  address_prefixes     = var.cidr_subnet_gps_app
-  resource_group_name  = azurerm_resource_group.rg_vnet.name
-  virtual_network_name = module.vnet.name
-
-  enforce_private_link_endpoint_network_policies = true
-
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-    "Microsoft.Storage",
-  ]
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
 }
 
 module "gps_cosmosdb_snet" {
@@ -62,54 +21,40 @@ module "gps_cosmosdb_snet" {
   ]
 }
 
-# gps cosmosdb configuration
-
-# cosmosdb account
 module "gps_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-gps-cosmosdb-account", local.project)
+  name     = format("%s-gps-cosmos-account", local.project)
   location = var.location
 
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  offer_type          = "Standard"
-  kind                = "GlobalDocumentDB"
+  resource_group_name = azurerm_resource_group.cosmosdb_rg.name
+  offer_type          = var.cosmos_gps_db_params.offer_type
+  kind                = var.cosmos_gps_db_params.kind
 
-  public_network_access_enabled = var.gps_cosmosdb_public_network_access_enabled
+  public_network_access_enabled    = var.cosmos_gps_db_params.public_network_access_enabled
+  main_geo_location_zone_redundant = var.cosmos_gps_db_params.main_geo_location_zone_redundant
 
-  enable_free_tier          = false
+  enable_free_tier          = var.cosmos_gps_db_params.enable_free_tier
   enable_automatic_failover = true
 
-  consistency_policy = {
-    consistency_level       = "Strong"
-    max_interval_in_seconds = null
-    max_staleness_prefix    = null
-  }
+  capabilities       = var.cosmos_gps_db_params.capabilities
+  consistency_policy = var.cosmos_gps_db_params.consistency_policy
 
-  main_geo_location_zone_redundant = false
-  main_geo_location_location       = "westeurope"
+  main_geo_location_location = var.location
+  additional_geo_locations   = var.cosmos_gps_db_params.additional_geo_locations
+  backup_continuous_enabled  = var.cosmos_gps_db_params.backup_continuous_enabled
 
-  additional_geo_locations = [
-    {
-      location          = "northeurope"
-      failover_priority = 1
-      zone_redundant    = true
-    }
-  ]
-
-  backup_continuous_enabled = var.gps_cosmosdb_backup_continuous_enabled
-
-  is_virtual_network_filter_enabled = true
+  is_virtual_network_filter_enabled = var.cosmos_gps_db_params.is_virtual_network_filter_enabled
 
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = [module.gps_app_snet.id]
+  allowed_virtual_network_subnet_ids = var.cosmos_gps_db_params.public_network_access_enabled ? [] : []
 
   # private endpoint
-  private_endpoint_name    = format("%s-gps-cosmosdb-sql-endpoint", local.project)
-  private_endpoint_enabled = true
+  private_endpoint_name    = format("%s-cosmos-gps-sql-endpoint", local.project)
+  private_endpoint_enabled = var.cosmos_gps_db_params.private_endpoint_enabled
   subnet_id                = module.gps_cosmosdb_snet.id
-  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_gps_cosmos_azure_com.id]
+  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents_azure_com.id]
 
   tags = var.tags
 }
@@ -122,6 +67,23 @@ module "gps_cosmosdb_database" {
   account_name        = module.gps_cosmosdb_account.name
 }
 
+### Containers
+locals {
+
+  gps_cosmosdb_containers = [
+    {
+      name               = "creditor_institutions",
+      partition_key_path = "/fiscalCode",
+      autoscale_settings = { max_throughput = 6000 }
+    },
+    {
+      name               = "services",
+      partition_key_path = "/transferCategory",
+      autoscale_settings = { max_throughput = 6000 }
+    },
+  ]
+}
+
 # cosmosdb container
 module "gps_cosmosdb_containers" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
@@ -130,9 +92,9 @@ module "gps_cosmosdb_containers" {
   name                = each.value.name
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gps_cosmosdb_account.name
-  database_name       = module.gps_cosmosdb_database[0].name
+  database_name       = module.gps_cosmosdb_database.name
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
 
-  autoscale_settings = lookup(each.value, "autoscale_settings", null)
+  autoscale_settings = contains(var.cosmos_gps_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
