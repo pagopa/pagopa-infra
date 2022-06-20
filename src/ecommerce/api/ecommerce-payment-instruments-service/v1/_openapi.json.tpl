@@ -122,7 +122,7 @@
       },
       "get": {
         "operationId": "getPSPs",
-        "summary": "Retrieve payment instrument by ID",
+        "summary": "Retrieve Psp services by amount, lang and type code",
         "parameters": [
           {
             "in": "query",
