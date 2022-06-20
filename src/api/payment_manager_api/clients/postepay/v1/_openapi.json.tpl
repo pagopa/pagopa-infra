@@ -10,7 +10,7 @@
     }
   ],
   "paths": {
-    "/api/v1/payment/create": {
+    "/payment/create": {
       "post": {
         "tags": [
           "Payment Manager Controller"
@@ -75,7 +75,7 @@
         }
       }
     },
-    "/api/v1/payment/details": {
+    "/payment/details": {
       "post": {
         "tags": [
           "Payment Manager Controller"
@@ -207,7 +207,7 @@
         }
       }
     },
-    "/api/v1/payment/refund": {
+    "/payment/refund": {
       "post": {
         "tags": [
           "Payment Manager Controller"
@@ -273,7 +273,7 @@
         }
       }
     },
-    "/api/v1/payment/serverNotify": {
+    "/payment/serverNotify": {
       "post": {
         "tags": [
           "Payment Manager Controller"

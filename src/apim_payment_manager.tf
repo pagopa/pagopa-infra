@@ -959,7 +959,7 @@ module "apim_pm_fesp_api_v1" {
 #####################
 locals {
   apim_pm_postepay_api = {
-    display_name          = "Payment Manager - client postespay API"
+    display_name          = "Payment Manager - client postepay API"
     description           = "API postepay for Payment Manager"
     path                  = "payment-manager/clients/postepay"
     subscription_required = false
