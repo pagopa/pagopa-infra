@@ -1034,6 +1034,12 @@ variable "reporting_fdr_function_autoscale_default" {
   default     = 1
 }
 
+variable "reporting_fdr_blobs_retention_days" {
+  type        = number
+  description = "The number of day for storage_management_policy"
+  default     = 30
+}
+
 #  gestione posizioni debitorie
 variable "gpd_plan_kind" {
   type        = string

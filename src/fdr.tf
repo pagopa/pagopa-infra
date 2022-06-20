@@ -37,6 +37,35 @@ resource "azurerm_storage_container" "fdr_rend_flow_out" {
 }
 
 
+## blob lifecycle policy
+# https://azure.microsoft.com/it-it/blog/azure-blob-storage-lifecycle-management-now-generally-available/
+resource "azurerm_storage_management_policy" "storage_account_fdr_management_policy" {
+  storage_account_id = module.fdr_flows_sa.id
+
+  rule {
+    name    = "deleteafterdays"
+    enabled = true
+    filters {
+      prefix_match = [format("%s/", azurerm_storage_container.fdr_rend_flow_out.name)]
+      blob_types   = ["blockBlob"]
+    }
+
+    # https://docs.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview
+    actions {
+      # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy#delete_after_days_since_modification_greater_than
+      base_blob {
+        tier_to_cool_after_days_since_modification_greater_than    = 0
+        tier_to_archive_after_days_since_modification_greater_than = 0
+        delete_after_days_since_modification_greater_than          = var.reporting_fdr_blobs_retention_days
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = 30
+      }
+    }
+  }
+}
+
+
 # https://medium.com/marcus-tee-anytime/secure-azure-blob-storage-with-azure-api-management-managed-identities-b0b82b53533c
 
 # 1 - add Blob Data Contributor to apim for Fdr blob storage
