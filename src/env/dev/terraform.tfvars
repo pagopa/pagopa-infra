@@ -350,6 +350,7 @@ bpd_hostname       = "api.dev.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it/pmmockserviceapi"
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "portal.test.pagopa.gov.it/pmmockserviceapi"
+postepay_hostname  = "paymentmanagerppsvil.onmicrosoft.com"
 
 cstar_outbound_ip_1 = "20.105.180.187"
 cstar_outbound_ip_2 = "20.76.239.212"

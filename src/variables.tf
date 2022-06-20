@@ -957,6 +957,12 @@ variable "fesp_hostname" {
   default     = ""
 }
 
+variable "postepay_hostname" {
+  type        = string
+  description = "Postepay hostname"
+  default     = ""
+}
+
 variable "cstar_outbound_ip_1" {
   type        = string
   description = "CSTAR ip 1"
