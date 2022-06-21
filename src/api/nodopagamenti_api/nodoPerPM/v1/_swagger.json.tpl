@@ -658,6 +658,58 @@
           }
         }
       }
+    },
+    "/closepayment": {
+      "post": {
+        "tags": [
+          "nodo"
+        ],
+        "summary": "closePayment",
+        "description": "TBD",
+        "operationId": "closePayment",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClosePaymentRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ClosePaymentResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Unprocessable entry",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1248,6 +1300,115 @@
         "error": {
           "type": "string",
           "example": "error message"
+        }
+      }
+    },
+    "ClosePaymentRequest": {
+      "type": "object",
+      "required": [
+        "paymentTokens",
+        "outcome"
+      ],
+      "properties": {
+        "paymentTokens": {
+          "description": "Array composto da un solo elemento, contenente il token di pagamento staccato dal Nodo a seguito della activatePaymentNotice",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outcome": {
+          "description": "Esito del pagamento",
+          "type": "string",
+          "enum": [
+            "OK",
+            "KO"
+          ]
+        },
+        "identificativoPsp": {
+          "description": "Codice identificativo del PSP scelto per il riversamento",
+          "type": "string"
+        },
+        "tipoVersamento": {
+          "description": "Tipologia di versamento",
+          "type": "string",
+          "enum": [
+            "BP",
+            "BPAY",
+            "AD",
+            "PPAL",
+            "PO",
+            "CP",
+            "JIF",
+            "BBT",
+            "MYBK",
+            "OBEP"
+          ]
+        },
+        "identificativoIntermediario": {
+          "description": "Codice identificativo dell’intermediario del PSP",
+          "type": "string"
+        },
+        "identificativoCanale": {
+          "description": "Codice identificativo del canale del PSP usato per il pagamento",
+          "type": "string"
+        },
+        "pspTransactionId": {
+          "description": "Identificativo lato PSP della transazione",
+          "type": "string"
+        },
+        "totalAmount": {
+          "description": "Somma algebrica di importo e commissione",
+          "type": "number"
+        },
+        "fee": {
+          "description": "Ammonto della commissione",
+          "type": "number"
+        },
+        "timestampOperation": {
+          "description": "Timestamp del pagamento",
+          "type": "string",
+          "format": "date-time"
+        },
+        "additionalPaymentInformations": {
+          "$ref": "#/definitions/AdditionalPaymentInformations"
+        }
+      }
+    },
+    "AdditionalPaymentInformations": {
+      "type": "object",
+      "required": [
+        "transactionId",
+        "outcomePaymentGateway",
+        "authorizationCode"
+      ],
+      "properties": {
+        "transactionId": {
+          "description": "Identificativo della transazione lato PM",
+          "type": "string"
+        },
+        "outcomePaymentGateway": {
+          "description": "Codice di esito ricevuto dal payment gateway a fronte di un’autorizzazione",
+          "type": "string"
+        },
+        "authorizationCode": {
+          "description": "Codice autorizzativo ricevuto dal payment gateway",
+          "type": "string"
+        }
+      }
+    },
+    "ClosePaymentResponse": {
+      "type": "object",
+      "required": [
+        "esito"
+      ],
+      "properties": {
+        "esito": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "KO"
+          ]
         }
       }
     }
