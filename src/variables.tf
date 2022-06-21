@@ -1482,6 +1482,12 @@ variable "cosmos_afm_db_params" {
   })
 }
 
+variable "afm_marketplace_cname_record_name" {
+  type = string
+  description = "DNS canonical name"
+  default     = "marketplace"
+}
+
 # ####################
 # Payments account ###
 variable "cidr_subnet_cosmosdb_paymentsdb" {
