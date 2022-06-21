@@ -13,8 +13,6 @@ locals {
     methods = ["*"]
   }
 
-  advanced_fees_management_cosmosdb_enable_serverless = contains(var.advanced_fees_management_cosmosdb_extra_capabilities, "EnableServerless")
-
   advanced_fees_management_cosmosdb_containers = [
     {
       name               = "bundles",
@@ -78,7 +76,7 @@ module "advanced_fees_management_app_service" {
   client_cert_enabled = false
   always_on           = false
   # linux_fx_version    = "JAVA|11-java11"
-  linux_fx_version  = format("DOCKER|%s/api-afm-backend:%s", module.acr[0].login_server, "latest")
+  linux_fx_version  = format("DOCKER|%s/api-afm-backend:%s", module.container_registry.login_server, "latest")
   health_check_path = "/api/v1/info"
 
   app_settings = {
@@ -112,9 +110,9 @@ module "advanced_fees_management_app_service" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
   }
 
   allowed_subnets = [module.apim_snet.id]
@@ -128,6 +126,52 @@ module "advanced_fees_management_app_service" {
 # afm cosmos configuration
 
 # cosmosdb account
+# module "advanced_fees_management_cosmosdb_account" {
+#   count = var.env_short == "d" ? 1 : 0
+
+#   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
+#   name     = format("%s-afm-cosmosdb-account", local.project)
+#   location = var.location
+
+#   resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
+#   offer_type          = "Standard"
+#   kind                = "GlobalDocumentDB"
+
+#   public_network_access_enabled = var.advanced_fees_management_cosmosdb_public_network_access_enabled
+
+#   enable_free_tier          = false
+#   enable_automatic_failover = true
+
+#   consistency_policy = {
+#     consistency_level       = "Strong"
+#     max_interval_in_seconds = null
+#     max_staleness_prefix    = null
+#   }
+
+#   main_geo_location_location = "westeurope"
+
+#   # in order to disable redundancy in dev
+#   main_geo_location_zone_redundant = false
+
+#   # for the PoC we are not interested to backup
+#   backup_continuous_enabled = false
+
+#   is_virtual_network_filter_enabled = true
+
+#   ip_range = ""
+
+#   # add data.azurerm_subnet.<my_service>.id
+#   allowed_virtual_network_subnet_ids = [module.advanced_fees_management_snet[0].id]
+
+#   # private endpoint
+#   private_endpoint_name    = format("%s-afm-cosmosdb-sql-endpoint", local.project)
+#   private_endpoint_enabled = true
+#   subnet_id                = module.advanced_fees_management_snet[0].id
+#   private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+
+#   tags = var.tags
+# }
+
 module "advanced_fees_management_cosmosdb_account" {
   count = var.env_short == "d" ? 1 : 0
 
@@ -136,52 +180,38 @@ module "advanced_fees_management_cosmosdb_account" {
   location = var.location
 
   resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
-  offer_type          = "Standard"
-  kind                = "GlobalDocumentDB"
+  offer_type          = var.cosmos_afm_db_params.offer_type
+  kind                = var.cosmos_afm_db_params.kind
 
-  public_network_access_enabled = var.advanced_fees_management_cosmosdb_public_network_access_enabled
+  public_network_access_enabled    = var.cosmos_afm_db_params.public_network_access_enabled
+  main_geo_location_zone_redundant = var.cosmos_afm_db_params.main_geo_location_zone_redundant
 
-  enable_free_tier          = false
+  enable_free_tier          = var.cosmos_afm_db_params.enable_free_tier
   enable_automatic_failover = true
 
-  consistency_policy = {
-    consistency_level       = "Strong"
-    max_interval_in_seconds = null
-    max_staleness_prefix    = null
-  }
+  capabilities       = var.cosmos_afm_db_params.capabilities
+  consistency_policy = var.cosmos_afm_db_params.consistency_policy
 
-  main_geo_location_location = "westeurope"
+  main_geo_location_location = var.location
+  additional_geo_locations   = var.cosmos_afm_db_params.additional_geo_locations
+  backup_continuous_enabled  = var.cosmos_afm_db_params.backup_continuous_enabled
 
-  # in order to disable redundancy in dev
-  main_geo_location_zone_redundant = false
-
-  # for the PoC we are not interested to redundancy
-  #  additional_geo_locations = [
-  #    {
-  #      location          = "northeurope"
-  #      failover_priority = 1
-  #      zone_redundant    = true
-  #    }
-  #  ]
-
-  # for the PoC we are not interested to backup
-  backup_continuous_enabled = false
-
-  is_virtual_network_filter_enabled = true
+  is_virtual_network_filter_enabled = var.cosmos_afm_db_params.is_virtual_network_filter_enabled
 
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = [module.advanced_fees_management_snet[0].id]
+  allowed_virtual_network_subnet_ids = var.cosmos_afm_db_params.public_network_access_enabled ? [] : [module.advanced_fees_management_snet[0].id]
 
   # private endpoint
   private_endpoint_name    = format("%s-afm-cosmosdb-sql-endpoint", local.project)
-  private_endpoint_enabled = true
+  private_endpoint_enabled = var.cosmos_afm_db_params.private_endpoint_enabled
   subnet_id                = module.advanced_fees_management_snet[0].id
-  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_afm_cosmos_azure_com[0].id]
+  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents_azure_com.id]
 
   tags = var.tags
 }
+
 
 # cosmosdb database
 module "advanced_fees_management_cosmosdb_database" {

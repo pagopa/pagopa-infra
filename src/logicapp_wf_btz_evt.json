@@ -1,0 +1,40 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Create_or_update_document_(V3)": {
+                "inputs": {
+                    "body": "@triggerOutputs()?['body']?['contentData']",
+                    "host": {
+                        "connection": {
+                            "referenceName": "documentdb"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/cosmosdb/@{encodeURIComponent('AccountNameFromSettings')}/dbs/@{encodeURIComponent('db')}/colls/@{encodeURIComponent('payments-events')}/docs"
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "triggers": {
+            "When_events_are_available_in_Event_hub": {
+                "inputs": {
+                    "parameters": {
+                        "eventHubName": "nodo-dei-pagamenti-biz-evt"
+                    },
+                    "serviceProviderConfiguration": {
+                        "connectionName": "eventHub",
+                        "operationId": "receiveEvents",
+                        "serviceProviderId": "/serviceProviders/eventHub"
+                    }
+                },
+                "splitOn": "@triggerOutputs()?['body']",
+                "type": "ServiceProvider"
+            }
+        }
+    },
+    "kind": "Stateful"
+}
