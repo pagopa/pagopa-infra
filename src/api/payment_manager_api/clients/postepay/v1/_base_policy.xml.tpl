@@ -1,7 +1,6 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://${postepay_hostname}/paymentserver/api/v1" />
     </inbound>
     <outbound>
       <base />

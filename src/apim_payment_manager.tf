@@ -963,7 +963,7 @@ locals {
     description           = "API postepay for Payment Manager"
     path                  = "payment-manager/clients/postepay"
     subscription_required = false
-    service_url           = null
+    service_url           = "https://${var.postepay_hostname}/createPayment/api/v1"
   }
 }
 
@@ -999,7 +999,5 @@ module "apim_pm_postepay_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/clients/postepay/v1/_base_policy.xml.tpl", {
-    postepay_hostname = format("%s", var.postepay_hostname)
-  })
+  xml_content = file("./api/payment_manager_api/clients/postepay/v1/_base_policy.xml.tpl")
 }
