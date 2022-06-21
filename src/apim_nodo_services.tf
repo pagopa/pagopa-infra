@@ -447,13 +447,20 @@ module "apim_nodo_per_pm_api_v1" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/_swagger.json.tpl", {
+  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/_base_policy.xml.tpl", {
-    restapi-ip-filter = data.azurerm_key_vault_secret.pm_restapi_ip.value
-  })
+  xml_content = file("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
+  api_name            = format("%s-nodo-per-pm-api-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "closePayment"
+
+  xml_content = file("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl")
 }
 
 ############################
