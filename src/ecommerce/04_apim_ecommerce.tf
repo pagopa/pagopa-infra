@@ -61,10 +61,12 @@ module "apim_ecommerce_transactions_service_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/ecommerce-transactions-service/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    hostname = local.apim_hostname
   })
-  
-  xml_content = file("./api/ecommerce-transactions-service/v1/_base_policy.xml.tpl")
+
+  xml_content = templatefile("./api/ecommerce-transactions-service/v1/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
 }
 
 #####################################
@@ -108,10 +110,12 @@ module "apim_ecommerce_payment_instruments_service_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/ecommerce-payment-instruments-service/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    hostname = local.apim_hostname
   })
-  
-  xml_content = file("./api/ecommerce-payment-instruments-service/v1/_base_policy.xml.tpl")
+
+  xml_content = templatefile("./api/ecommerce-payment-instruments-service/v1/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
 }
 
 ##########################
@@ -155,8 +159,10 @@ module "apim_ecommerce_sessions_service_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/ecommerce-sessions-service/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    hostname = local.apim_hostname
   })
-  
-  xml_content = file("./api/ecommerce-sessions-service/v1/_base_policy.xml.tpl")
+
+  xml_content = templatefile("./api/ecommerce-sessions-service/v1/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
 }

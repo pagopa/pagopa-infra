@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://weudev.ecommerce.internal.dev.platform.pagopa.it/pagopa-ecommerce-payment-instruments-service" />
+      <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-payment-instruments-service" />
     </inbound>
     <outbound>
       <base />

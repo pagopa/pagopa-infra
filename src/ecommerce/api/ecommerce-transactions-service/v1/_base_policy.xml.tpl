@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="http://10.1.100.250" />
+      <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-transactions-service" />
     </inbound>
     <outbound>
       <base />
