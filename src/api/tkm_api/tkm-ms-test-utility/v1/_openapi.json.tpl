@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://${host}/tkm-ms-test-utility"
+      "url": "https://${host}/tkmtestutility"
     }
   ],
   "tags": [
