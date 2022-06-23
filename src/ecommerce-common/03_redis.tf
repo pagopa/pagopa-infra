@@ -27,9 +27,9 @@ module "pagopa_ecommerce_redis" {
 
   private_endpoint = {
     enabled              = true
-    virtual_network_id   = data.terraform_remote_state.core.outputs.vnet_id
+    virtual_network_id   = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-vnet-rg/providers/Microsoft.Network/virtualNetworks/pagopa-d-vnet"
     subnet_id            = module.pagopa_ecommerce_redis_snet.id
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_ecommerce_redis.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
   }
 
   // when azure can apply patch?

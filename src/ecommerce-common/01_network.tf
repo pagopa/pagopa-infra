@@ -27,9 +27,8 @@ data "azurerm_private_dns_zone" "cosmos" {
   resource_group_name = local.cosmos_dns_zone_resource_group_name
 }
 
-resource "azurerm_private_dns_zone" "privatelink_ecommerce_redis" {
-  name                = "privatelink.ecommerce.redis.azure.com"
-  resource_group_name = local.vnet_resource_group_name
 
-  tags = var.tags
+data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = local.vnet_resource_group_name
 }

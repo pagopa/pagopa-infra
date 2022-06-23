@@ -141,19 +141,19 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_platform_pago
 
 # Cosmos MongoDB for ecommerce - private dns zone
 
-resource "azurerm_private_dns_zone" "cosmos_ecommerce_private_dns" {
+resource "azurerm_private_dns_zone" "privatelink_mongo_cosmos_azure_com" {
 
-  name                = "privatelink.ecommerce.cosmos.azure.com"
+  name                = "privatelink.mongo.cosmos.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "cosmos_ecommerce_private_link" {
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_privatelink_mongo_cosmos_azure_com" {
 
   name                  = module.vnet.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
-  private_dns_zone_name = azurerm_private_dns_zone.cosmos_ecommerce_private_dns.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos_azure_com.name
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
