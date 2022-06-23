@@ -1483,7 +1483,7 @@ variable "cosmos_afm_db_params" {
 }
 
 variable "afm_marketplace_cname_record_name" {
-  type = string
+  type        = string
   description = "DNS canonical name"
   default     = "marketplace"
 }

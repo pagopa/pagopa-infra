@@ -273,7 +273,7 @@ module "advanced_fees_management_fe_cdn" {
       action = "Overwrite"
       name   = "Strict-Transport-Security"
       value  = "max-age=31536000"
-    },
+      },
       # Content-Security-Policy (in Report mode)
       {
         action = "Overwrite"
