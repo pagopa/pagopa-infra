@@ -26,10 +26,10 @@ module "apim_payment_transactions_gateway_product" {
 }
 
 ############################################
-## API payment-transactions-gateway-core  ##
+## API payment-transactions-gateway-internal  ##
 ############################################
 locals {
-  apim_payment_transactions_gateway_api = {
+  apim_payment_transactions_gateway_internal_api = {
     # params for all api versions
     display_name          = "Payment Transactions Gateway - payment-transactions-gateway"
     description           = "RESTful APIs provided to support payments with payment gateways"
@@ -44,81 +44,83 @@ resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_
   name                = format("%s-payment-transactions-gateway-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
-  display_name        = local.apim_payment_transactions_gateway_api.display_name
+  display_name        = local.apim_payment_transactions_gateway_internal_api.display_name
   versioning_scheme   = "Segment"
 }
 
-module "apim_payment_transactions_gateway_core_api_v1" {
+module "apim_payment_transactions_gateway_internal_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
-  name                  = format("%s-payment-transactions-gateway-core-api", local.project)
+  name                  = format("%s-payment-transactions-gateway-internal-api", local.project)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_transactions_gateway_product.product_id]
-  subscription_required = local.apim_payment_transactions_gateway_api.subscription_required
+  subscription_required = local.apim_payment_transactions_gateway_internal_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.payment_transactions_gateway_api.id
   api_version           = "v1"
-  service_url           = local.apim_payment_transactions_gateway_api.service_url
+  service_url           = local.apim_payment_transactions_gateway_internal_api.service_url
 
-  description  = local.apim_payment_transactions_gateway_api.description
-  display_name = local.apim_payment_transactions_gateway_api.display_name
-  path         = local.apim_payment_transactions_gateway_api.path
+  description  = local.apim_payment_transactions_gateway_internal_api.description
+  display_name = local.apim_payment_transactions_gateway_internal_api.display_name
+  path         = local.apim_payment_transactions_gateway_internal_api.path
   protocols    = ["https"]
 
   content_format = "openapi"
-  content_value = templatefile("./api/payment_transactions_gateway_api/core/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/payment_transactions_gateway_api/internal/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_transactions_gateway_api/core/v1/_base_policy.xml.tpl")
+  xml_content = file("./api/payment_transactions_gateway_api/internal/v1/_base_policy.xml.tpl")
 }
 
-############################################
-## API payment-transactions-gateway-check ##
-############################################
+###############################################
+## API payment-transactions-gateway-external ##
+###############################################
 locals {
-  apim_payment_transactions_gateway_check_api = {
+  apim_payment_transactions_gateway_external_api = {
     # params for all api versions
-    display_name          = "Payment Transactions Gateway - payment-transactions-gateway-check"
+    display_name          = "Payment Transactions Gateway - payment-transactions-gateway-external"
     description           = "RESTful APIs provided to support webview polling"
-    path                  = "payment-transactions-gateway-check"
+    path                  = "payment-transactions-gateway/external"
     subscription_required = false
     service_url           = null
   }
 }
 
-resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_check_api" {
+resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_external_api" {
 
-  name                = format("%s-payment-transactions-gateway-check-api", local.project)
+  name                = format("%s-payment-transactions-gateway-external-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
-  display_name        = local.apim_payment_transactions_gateway_check_api.display_name
+  display_name        = local.apim_payment_transactions_gateway_external_api.display_name
   versioning_scheme   = "Segment"
 }
 
-module "apim_payment_transactions_gateway_core_api_check_v1" {
+module "apim_payment_transactions_gateway_external_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
-  name                  = format("%s-payment-transactions-gateway-check-api", local.project)
+  name                  = format("%s-payment-transactions-gateway-external-api", local.project)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_transactions_gateway_product.product_id]
-  subscription_required = local.apim_payment_transactions_gateway_check_api.subscription_required
+  subscription_required = local.apim_payment_transactions_gateway_external_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.payment_transactions_gateway_api.id
   api_version           = "v1"
-  service_url           = local.apim_payment_transactions_gateway_check_api.service_url
+  service_url           = local.apim_payment_transactions_gateway_external_api.service_url
 
-  description  = local.apim_payment_transactions_gateway_check_api.description
-  display_name = local.apim_payment_transactions_gateway_check_api.display_name
-  path         = local.apim_payment_transactions_gateway_check_api.path
+  description  = local.apim_payment_transactions_gateway_external_api.description
+  display_name = local.apim_payment_transactions_gateway_external_api.display_name
+  path         = local.apim_payment_transactions_gateway_external_api.path
   protocols    = ["https"]
 
   content_format = "openapi"
-  content_value = templatefile("./api/payment_transactions_gateway_api/check/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/payment_transactions_gateway_api/external/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_transactions_gateway_api/check/v1/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_transactions_gateway_api/external/v1/_base_policy.xml.tpl", {
+    origin = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}/"
+  })
 }
