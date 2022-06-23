@@ -76,7 +76,7 @@ app_gateway_deny_paths = [
   "/payment-manager/restapi-rtd/*",
   "/payment-manager/db-logging/*",
   "/payment-manager/payment-gateway/*",
-  "/pp-restapi-CD/v2/payments/send-payment-*",
+  "/payment-manager/nodo-per-pm/*",
   "/pp-restapi-CD/v1/transactions/update-status/*",
   "/checkout/io-for-node/*",
   "/tkm/tkmcardmanager/*",
