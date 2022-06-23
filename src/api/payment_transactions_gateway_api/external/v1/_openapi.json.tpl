@@ -16,7 +16,7 @@
         "tags": [
           "payment-transactions-controller"
         ],
-        "operationId": "webview-polling",
+        "operationId": "webviewPolling",
         "parameters": [
           {
             "in": "path",
