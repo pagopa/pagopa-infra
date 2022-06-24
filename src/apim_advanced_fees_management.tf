@@ -57,7 +57,7 @@ module "apim_api_afm_marketplace_api" {
   //  content_value = templatefile("./api/afm_api/marketplace/v1/_openapi.json.tpl", {
   //    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   //  })
-  content_format = "openapi+json-link"
+  content_format = "openapi-link"
   content_value  = "https://raw.githubusercontent.com/pagopa/pagopa-afm-marketplace-be/main/openapi/openapi.json"
 
 
