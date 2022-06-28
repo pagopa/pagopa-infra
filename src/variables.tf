@@ -1176,7 +1176,7 @@ variable "gpd_queue_delay_sec" {
 variable "gpd_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
-  default     = 3
+  default     = 1
 }
 
 variable "gpd_autoscale_maximum" {
