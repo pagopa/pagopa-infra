@@ -953,3 +953,41 @@ module "apim_pm_fesp_api_v1" {
     endpoint = format("https://%s", var.fesp_hostname)
   })
 }
+
+
+#########################
+## Mock - services     ##
+#########################
+locals {
+  apim_pm_mock_services_fe_api = {
+    display_name          = "Payment Manager - mock-services FE"
+    description           = "Frontend for mock-services"
+    path                  = "pmmockserviceapi"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+module "apim_pm_mock_services_fe" {
+  count = var.env_short == "d" ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-mock-services-fe-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_mock_services_fe_api.subscription_required
+  service_url           = local.apim_pm_mock_services_fe_api.service_url
+
+  description  = local.apim_pm_mock_services_fe_api.description
+  display_name = local.apim_pm_mock_services_fe_api.display_name
+  path         = local.apim_pm_mock_services_fe_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/mock-services-fe/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/mock-services-fe/v1/_base_policy.xml.tpl")
+}
