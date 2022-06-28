@@ -4,14 +4,15 @@
         <allowed-origins>
           <origin>${origin}</origin>
         </allowed-origins>
-        <allowed-methods>
-          <method>POST</method>
-          <method>GET</method>
-          <method>OPTIONS</method>
+        <allowed-methods preflight-result-max-age="300">
+          <method>*</method>
         </allowed-methods>
         <allowed-headers>
-          <header>Content-Type</header>
+          <header>*</header>
         </allowed-headers>
+        <expose-headers>
+          <header>*</header>
+        </expose-headers>
       </cors>
       <base />
       <set-backend-service base-url="{{pm-onprem-hostname}}/payment-gateway" />
