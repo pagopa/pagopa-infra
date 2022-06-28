@@ -146,7 +146,7 @@ resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
     name = "default"
 
     capacity {
-      default = 2
+      default = 1
       minimum = 1
       maximum = 3
     }

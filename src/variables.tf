@@ -1182,13 +1182,13 @@ variable "gpd_autoscale_minimum" {
 variable "gpd_autoscale_maximum" {
   type        = number
   description = "The maximum number of instances for this resource."
-  default     = 10
+  default     = 3
 }
 
 variable "gpd_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 3
+  default     = 1
 }
 
 // GPD Payments
