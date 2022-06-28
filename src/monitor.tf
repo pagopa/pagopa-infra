@@ -57,7 +57,7 @@ resource "azurerm_monitor_action_group" "slack" {
   tags = var.tags
 }
 
-## web availabolity test
+## web availability test
 locals {
 
   test_urls = [
@@ -81,6 +81,10 @@ locals {
     {
       host = join(".",
       compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "checkout.pagopa.it"])),
+      path = "",
+    },
+    {
+      host = "status.pagopa.gov.it",
       path = "",
     },
   ]
