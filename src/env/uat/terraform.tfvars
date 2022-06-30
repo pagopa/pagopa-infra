@@ -80,7 +80,8 @@ app_gateway_deny_paths = [
   "/pp-restapi-CD/v1/transactions/update-status/*",
   "/checkout/io-for-node/*",
   "/tkm/tkmcardmanager/*",
-  "/tkm/tkmacquirermanager/*"
+  "/tkm/tkmacquirermanager/*",
+   "/payment-transactions-gateway/internal*"
 ]
 
 # nat_gateway
