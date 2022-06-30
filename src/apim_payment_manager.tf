@@ -1036,9 +1036,9 @@ module "apim_pm_mock_services_api_v1" {
   protocols    = ["https"]
 
   content_format = "openapi"
-  content_value = templatefile("./api/payment_manager_api/mock-services/v1/_swagger.json.tpl", {
+  content_value = templatefile("./api/payment_manager_api/mock-services-api/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/mock-services/v1/_base_policy.xml.tpl")
+  xml_content = file("./api/payment_manager_api/mock-services-api/v1/_base_policy.xml.tpl")
 }
