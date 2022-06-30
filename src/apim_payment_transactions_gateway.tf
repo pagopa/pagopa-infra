@@ -33,7 +33,7 @@ locals {
     # params for all api versions
     display_name          = "Payment Transactions Gateway - payment-transactions-gateway"
     description           = "RESTful APIs provided to support payments with payment gateways"
-    path                  = "payment-transactions-gateway"
+    path                  = "payment-transactions-gateway/internal"
     subscription_required = true
     service_url           = null
   }
