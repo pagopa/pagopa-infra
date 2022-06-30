@@ -41,7 +41,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_api" {
 
-  name                = format("%s-payment-transactions-gateway-api", local.project)
+  name                = format("%s-payment-transactions-gateway-internal-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_payment_transactions_gateway_internal_api.display_name
