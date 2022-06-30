@@ -106,7 +106,7 @@ module "apim_payment_transactions_gateway_external_api_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_transactions_gateway_product.product_id]
   subscription_required = local.apim_payment_transactions_gateway_external_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.payment_transactions_gateway_api.id
+  version_set_id        = azurerm_api_management_api_version_set.payment_transactions_gateway_external_api.id
   api_version           = "v1"
   service_url           = local.apim_payment_transactions_gateway_external_api.service_url
 
