@@ -291,6 +291,16 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy" {
   xml_content = file("./api/nodopagamenti_api/nodeForIO/v1/_base_policy.xml")
 }
 
+resource "azurerm_api_management_api_operation_policy" "activateIO_reservation_policy" {
+
+  api_name            = resource.azurerm_api_management_api.apim_node_for_io_api_v1.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "61dc5018b78e981290d7c176" : var.env_short == "u" ? "61dedb1e72975e13800fd80f" : "61dedb1eea7c4a07cc7d47b8"
+
+  #tfsec:ignore:GEN005
+  xml_content = file("./api/nodopagamenti_api/nodeForIO/v1/activateIO_reservation_nm3.xml")
+}
 
 ############################
 ## WS psp for node (NM3) ##

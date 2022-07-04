@@ -80,7 +80,8 @@ app_gateway_deny_paths = [
   "/pp-restapi-CD/v1/transactions/update-status/*",
   "/checkout/io-for-node/*",
   "/tkm/tkmcardmanager/*",
-  "/tkm/tkmacquirermanager/*"
+  "/tkm/tkmacquirermanager/*",
+   "/payment-transactions-gateway/internal*"
 ]
 
 # nat_gateway
@@ -387,7 +388,7 @@ canoneunico_plan_sku_size = "S1"
 
 canoneunico_function_always_on         = true
 canoneunico_function_autoscale_minimum = 1
-canoneunico_function_autoscale_maximum = 5
+canoneunico_function_autoscale_maximum = 3
 canoneunico_function_autoscale_default = 1
 
 # Postgres Flexible

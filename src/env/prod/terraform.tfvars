@@ -99,7 +99,8 @@ app_gateway_deny_paths = [
   "/gpd-payments/*",
   "/gpd-reporting/*",
   "/tkm/tkmcardmanager/*",
-  "/tkm/tkmacquirermanager/*"
+  "/tkm/tkmacquirermanager/*",
+  "/payment-transactions-gateway/internal*",
 ]
 
 # nat_gateway
