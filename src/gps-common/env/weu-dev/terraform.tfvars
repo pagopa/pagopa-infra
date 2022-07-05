@@ -31,13 +31,13 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
 ### Aks
 
-ingress_load_balancer_ip = "10.10.100.250"
+ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 
-# CosmosDb Payments
-cosmos_document_db_params = {
+# CosmosDb GPS
+cosmos_gps_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
   offer_type   = "Standard"
@@ -58,3 +58,5 @@ cosmos_document_db_params = {
   backup_continuous_enabled = false
 
 }
+
+cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
