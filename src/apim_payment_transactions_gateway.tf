@@ -25,9 +25,58 @@ module "apim_payment_transactions_gateway_product" {
   policy_xml = file("./api_product/payment_transactions_gateway_api/_base_policy.xml")
 }
 
-############################################
+#######################################
+## API payment-transactions-gateway  ##
+#######################################
+locals {
+  apim_payment_transactions_gateway_update_api = {
+    # params for all api versions
+    display_name          = "Payment Transactions Gateway - payment authorization status update"
+    description           = "RESTful APIs provided to enable payment authorization status update"
+    path                  = "payment-transactions-gateway/updates"
+    subscription_required = true
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_update_api" {
+
+  name                = format("%s-payment-transactions-gateway-update-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_payment_transactions_gateway_update_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_payment_transactions_gateway_update_api_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-payment-transactions-gateway-update-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_transactions_gateway_product.product_id]
+  subscription_required = local.apim_payment_transactions_gateway_update_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.payment_transactions_gateway_update_api.id
+  api_version           = "v1"
+  service_url           = local.apim_payment_transactions_gateway_update_api.service_url
+
+  description  = local.apim_payment_transactions_gateway_update_api.description
+  display_name = local.apim_payment_transactions_gateway_update_api.display_name
+  path         = local.apim_payment_transactions_gateway_update_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_transactions_gateway_api/update/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_transactions_gateway_api/update/v1/_base_policy.xml.tpl")
+}
+
+################################################
 ## API payment-transactions-gateway-internal  ##
-############################################
+################################################
 locals {
   apim_payment_transactions_gateway_internal_api = {
     # params for all api versions
