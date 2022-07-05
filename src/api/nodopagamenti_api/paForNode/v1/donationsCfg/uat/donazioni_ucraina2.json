@@ -26,70 +26,26 @@
       ]
     },
     {
-        "name": "Z2 Ente benefico 8",
-        "reason": "Emergenza Ucraina",
-        "web_site": "https://www.unhcr.org/it/cosa-facciamo/emergenze/ucraina/",
-        "base64Logo": "/9j/4AAQSk",
-        "cf": "80233930587",
-        "iban": "IT84R0100503231000000211000",
-        "paymentDescription": "Emergenza Ucraina",
-        "companyName": "Z2 Ente benefico 8 per Eucraina",
-        "officeName": "Z2 Ente benefico 8 per Eucraina",
-        "auxdigit": "3",
-        "segregationcode": "00",
-        "transferCategory": "0804101AP",
-        "slices": [
-          { "idDonation": "48", "amount": 500 },
-          { "idDonation": "49", "amount": 1000 },
-          { "idDonation": "50", "amount": 2000 },
-          { "idDonation": "51", "amount": 5000 },
-          { "idDonation": "52", "amount": 10000 },
-          { "idDonation": "53", "amount": 20000 }
-        ]
-      },    
-      {
-        "name": "Z3 Ente benefico 9",
-        "reason": "Emergenza Ucraina",
-        "web_site": "https://www.unhcr.org/it/cosa-facciamo/emergenze/ucraina/",
-        "base64Logo": "/9j/4AAQSk",
-        "cf": "80233930587",
-        "iban": "IT84R0100503231000000211000",
-        "paymentDescription": "Emergenza Ucraina",
-        "companyName": "Z3 Ente benefico 9 per Eucraina",
-        "officeName": "Z3 Ente benefico 9 per Eucraina",
-        "auxdigit": "3",
-        "segregationcode": "00",
-        "transferCategory": "0804101AP",
-        "slices": [
-          { "idDonation": "54", "amount": 500 },
-          { "idDonation": "55", "amount": 1000 },
-          { "idDonation": "56", "amount": 2000 },
-          { "idDonation": "57", "amount": 5000 },
-          { "idDonation": "58", "amount": 10000 },
-          { "idDonation": "59", "amount": 20000 }
-        ]
-      },
-      {
-        "name": "Z4 Ente benefico 10",
-        "reason": "Emergenza Ucraina",
-        "web_site": "https://www.unhcr.org/it/cosa-facciamo/emergenze/ucraina/",
-        "base64Logo": "/9j/4AAQSk",
-        "cf": "80233930587",
-        "iban": "IT84R0100503231000000211000",
-        "paymentDescription": "Emergenza Ucraina",
-        "companyName": "Z4 Ente benefico 10 per Eucraina",
-        "officeName": "Z4 Ente benefico 10 per Eucraina",
-        "auxdigit": "3",
-        "segregationcode": "00",
-        "transferCategory": "0804101AP",
-        "slices": [
-          { "idDonation": "60", "amount": 500 },
-          { "idDonation": "61", "amount": 1000 },
-          { "idDonation": "62", "amount": 2000 },
-          { "idDonation": "63", "amount": 5000 },
-          { "idDonation": "64", "amount": 10000 },
-          { "idDonation": "65", "amount": 20000 }
-        ]
-      }            
+      "name": "Z2 Ente benefico 8",
+      "reason": "Emergenza Ucraina",
+      "web_site": "https://www.unhcr.org/it/cosa-facciamo/emergenze/ucraina/",
+      "base64Logo": "/9j/4AAQSk",
+      "cf": "80233930587",
+      "iban": "IT84R0100503231000000211000",
+      "paymentDescription": "Emergenza Ucraina",
+      "companyName": "Z2 Ente benefico 8 per Eucraina",
+      "officeName": "Z2 Ente benefico 8 per Eucraina",
+      "auxdigit": "3",
+      "segregationcode": "00",
+      "transferCategory": "0804101AP",
+      "slices": [
+        { "idDonation": "48", "amount": 500 },
+        { "idDonation": "49", "amount": 1000 },
+        { "idDonation": "50", "amount": 2000 },
+        { "idDonation": "51", "amount": 5000 },
+        { "idDonation": "52", "amount": 10000 },
+        { "idDonation": "53", "amount": 20000 }
+      ]
+    }
   ]
 }
