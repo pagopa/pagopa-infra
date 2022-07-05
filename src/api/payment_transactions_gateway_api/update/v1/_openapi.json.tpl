@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI definition for internal payment-transactions-gateway",
+    "title": "OpenAPI definition for payment-transactions-gateway",
     "version": "v0"
   },
   "servers": [
@@ -11,40 +11,28 @@
   ],
   "paths": {
     "/request-payments/postepay": {
-      "post": {
-        "summary": "payment authorization request to PostePay",
+      "put": {
         "tags": [
           "payment-transactions-controller"
         ],
-        "operationId": "auth-request",
+        "summary": "authorization outcome response from PostePay",
+        "operationId": "auth-response",
         "parameters": [
           {
+            "name": "X-Correlation-ID",
             "in": "header",
-            "name": "clientId",
-            "description": "channel origin (APP/Web)",
-            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          },
-          {
-            "in": "header",
-            "name": "mdc_info",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
+            "required": true,
+            "description": "PostePay correlation ID",
             "schema": {
               "type": "string"
-            },
-            "required": false
+            }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PostePayAuthRequest"
+                "$ref": "#/components/schemas/AuthMessage"
               }
             }
           },
@@ -54,49 +42,59 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthResponseEntity"
+                  "$ref": "#/components/schemas/ACKMessage"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request - missing mandatory parameters",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthError"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
           },
           "401": {
-            "description": "transactionId already processed",
+            "description": "Unauthorized - idPostePay already processed",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthError"
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown idPostePay",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": "Generic Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthError"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
           },
           "504": {
-            "description": "Timeout",
+            "description": "Request timeout",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthError"
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
