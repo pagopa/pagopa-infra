@@ -1498,14 +1498,6 @@ variable "cosmos_document_db_params" {
   })
 }
 
-# ####################
-# GPS account ########
-variable "cidr_subnet_gps_cosmosdb" {
-  type        = list(string)
-  description = "Cosmos DB address space"
-  default     = null
-}
-
 # Logic App pagopa biz event
 
 variable "logic_app_biz_evt_plan_kind" {

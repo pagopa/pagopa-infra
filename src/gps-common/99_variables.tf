@@ -135,3 +135,9 @@ variable "cosmos_gps_db_params" {
     backup_continuous_enabled         = bool
   })
 }
+
+variable "cidr_subnet_gps_cosmosdb" {
+  type        = list(string)
+  description = "Cosmos DB address space"
+  default     = null
+}
