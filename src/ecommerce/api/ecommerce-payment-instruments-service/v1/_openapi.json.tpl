@@ -33,7 +33,18 @@
       },
       "get": {
         "operationId": "getAllPaymentInstruments",
-        "summary": "Retrive all Payment Instruments",
+        "summary": "Retrive all Payment Instruments (by filter)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "categoryId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Payment Instrument Category ID",
+            "required": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "Payment instrument successfully retrived",
@@ -236,10 +247,10 @@
         }
       }
     },
-    "/payment-instruments/categories": {
+    "/payment-instrument-categories": {
       "post": {
         "operationId": "addCategory",
-        "summary": "Update category list",
+        "summary": "Add new Payment Instrument Category",
         "requestBody": {
           "$ref": "#/components/requestBodies/CategoryRequest"
         },
@@ -258,7 +269,7 @@
       },
       "get": {
         "operationId": "getCategories",
-        "summary": "Retrieve categories",
+        "summary": "Retrieve Payment Instrument Categors",
         "responses": {
           "200": {
             "description": "Category list successfully retrieved",
@@ -273,9 +284,9 @@
         }
       }
     },
-    "/payment-instruments/categories/{id}": {
+    "/payment-instrument-categories/{id}": {
       "get": {
-        "operationId": "getCategory",
+        "operationId": "getCategoryByID",
         "summary": "Retrieve category by Id",
         "parameters": [
           {
@@ -353,14 +364,15 @@
               "INCOMING"
             ]
           },
-          "category": {
+          "categoryId": {
             "type": "string"
           }
         },
         "required": [
           "name",
           "description",
-          "status"
+          "status",
+          "categoryId"
         ]
       },
       "PatchPaymentInstrumentRequest": {
@@ -402,14 +414,15 @@
             ]
           },
           "category": {
-            "type": "string"
+            "$ref": "#/components/schemas/Category"
           }
         },
         "required": [
           "id",
           "name",
           "description",
-          "status"
+          "status",
+          "category"
         ]
       },
       "PSPsResponse": {
