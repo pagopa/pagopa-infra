@@ -19,7 +19,7 @@ locals {
       partition_key_path = "/idPSP",
     },
     {
-      name               = "archiviedbundles",
+      name               = "archivedbundles",
       partition_key_path = "/idPSP",
     },
     {
@@ -27,7 +27,7 @@ locals {
       partition_key_path = "/ciFiscalCode",
     },
     {
-      name               = "archiviedcibundles",
+      name               = "archivedcibundles",
       partition_key_path = "/ciFiscalCode",
     },
     {
@@ -35,7 +35,7 @@ locals {
       partition_key_path = "/idPSP",
     },
     {
-      name               = "archiviedbundlerequests",
+      name               = "archivedbundlerequests",
       partition_key_path = "/idPSP",
     },
     {
@@ -43,7 +43,7 @@ locals {
       partition_key_path = "/ciFiscalCode",
     },
     {
-      name               = "archiviedbundleoffers",
+      name               = "archivedbundleoffers",
       partition_key_path = "/ciFiscalCode",
     },
   ]
