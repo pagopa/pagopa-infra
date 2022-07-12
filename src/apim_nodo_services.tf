@@ -473,6 +473,31 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
   xml_content = file("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl")
 }
 
+module "apim_nodo_per_pm_api_v2" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+
+  name                  = format("%s-nodo-per-pm-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  subscription_required = local.apim_nodo_per_pm_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id
+  api_version           = "v2"
+  service_url           = local.apim_nodo_per_pm_api.service_url
+
+  description  = local.apim_nodo_per_pm_api.description
+  display_name = local.apim_nodo_per_pm_api.display_name
+  path         = local.apim_nodo_per_pm_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl")
+}
+
 ############################
 ## Nodo on CLoud AllInOne ##
 ############################
