@@ -68,6 +68,9 @@ module "advanced_fees_management_snet" {
 
 }
 
+#################
+##   BACKEND   ##
+#################
 
 # afm app configuration
 
@@ -142,52 +145,6 @@ module "advanced_fees_management_app_service" {
 # afm cosmos configuration
 
 # cosmosdb account
-# module "advanced_fees_management_cosmosdb_account" {
-#   count = var.env_short == "d" ? 1 : 0
-
-#   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-#   name     = format("%s-afm-cosmosdb-account", local.project)
-#   location = var.location
-
-#   resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
-#   offer_type          = "Standard"
-#   kind                = "GlobalDocumentDB"
-
-#   public_network_access_enabled = var.advanced_fees_management_cosmosdb_public_network_access_enabled
-
-#   enable_free_tier          = false
-#   enable_automatic_failover = true
-
-#   consistency_policy = {
-#     consistency_level       = "Strong"
-#     max_interval_in_seconds = null
-#     max_staleness_prefix    = null
-#   }
-
-#   main_geo_location_location = "westeurope"
-
-#   # in order to disable redundancy in dev
-#   main_geo_location_zone_redundant = false
-
-#   # for the PoC we are not interested to backup
-#   backup_continuous_enabled = false
-
-#   is_virtual_network_filter_enabled = true
-
-#   ip_range = ""
-
-#   # add data.azurerm_subnet.<my_service>.id
-#   allowed_virtual_network_subnet_ids = [module.advanced_fees_management_snet[0].id]
-
-#   # private endpoint
-#   private_endpoint_name    = format("%s-afm-cosmosdb-sql-endpoint", local.project)
-#   private_endpoint_enabled = true
-#   subnet_id                = module.advanced_fees_management_snet[0].id
-#   private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents_azure_com.id]
-
-#   tags = var.tags
-# }
-
 module "advanced_fees_management_cosmosdb_account" {
   count = var.env_short == "d" ? 1 : 0
 
@@ -228,7 +185,6 @@ module "advanced_fees_management_cosmosdb_account" {
   tags = var.tags
 }
 
-
 # cosmosdb database
 module "advanced_fees_management_cosmosdb_database" {
   count = var.env_short == "d" ? 1 : 0
@@ -252,4 +208,81 @@ module "advanced_fees_management_cosmosdb_containers" {
   throughput          = lookup(each.value, "throughput", null)
 
   autoscale_settings = lookup(each.value, "autoscale_settings", null)
+}
+
+##################
+##   FRONTEND   ##
+##################
+
+/** CDN **/
+module "advanced_fees_management_fe_cdn" {
+  count = var.env_short == "d" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18"
+
+  name                = "afm-fe"
+  prefix              = local.project
+  resource_group_name = azurerm_resource_group.advanced_fees_management_rg.name
+  location            = var.location
+
+  # should be something like that            marketplace              <dev|uat>.afm   .pagapa.it
+  hostname              = format("%s.%s.%s", var.afm_marketplace_cname_record_name, var.dns_zone_prefix, var.external_domain)
+  https_rewrite_enabled = true
+  lock_enabled          = var.lock_enable
+
+  index_document     = "index.html"
+  error_404_document = "not_found.html"
+
+  dns_zone_name                = azurerm_dns_zone.public[0].name
+  dns_zone_resource_group_name = azurerm_dns_zone.public[0].resource_group_name
+
+  keyvault_resource_group_name = module.key_vault.resource_group_name
+  keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
+  keyvault_vault_name          = module.key_vault.name
+
+  querystring_caching_behaviour = "BypassCaching"
+
+  // https://antbutcher.medium.com/hosting-a-react-js-app-on-azure-blob-storage-azure-cdn-for-ssl-and-routing-8fdf4a48feeb
+  // it is important to add base tag in index.html too (i.e. <base href="/">)
+  delivery_rule_rewrite = [{
+    name  = "RewriteRules"
+    order = 2
+
+    conditions = [{
+      condition_type   = "url_file_extension_condition"
+      operator         = "LessThan"
+      match_values     = ["1"]
+      transforms       = []
+      negate_condition = false
+    }]
+
+    url_rewrite_action = {
+      source_pattern          = "/"
+      destination             = "/index.html"
+      preserve_unmatched_path = false
+    }
+  }]
+
+  global_delivery_rule = {
+    cache_expiration_action       = []
+    cache_key_query_string_action = []
+    modify_request_header_action  = []
+
+    # HSTS
+    modify_response_header_action = [{
+      action = "Overwrite"
+      name   = "Strict-Transport-Security"
+      value  = "max-age=31536000"
+      },
+      # Content-Security-Policy (in Report mode)
+      {
+        action = "Overwrite"
+        name   = "Content-Security-Policy-Report-Only"
+        value = format("object-src 'none'; connect-src 'self' https://api.%s.%s/; script-src https://api.%s.%s/"
+        , var.dns_zone_prefix, var.external_domain, var.dns_zone_prefix, var.external_domain)
+      }
+    ]
+  }
+
+  tags = var.tags
 }
