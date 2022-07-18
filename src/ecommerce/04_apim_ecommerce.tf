@@ -69,14 +69,14 @@ module "apim_ecommerce_transactions_service_api_v1" {
   })
 }
 
-###################################################
-## API transaction auth requests update service ##
-###################################################
+###########################################
+## API transaction auth requests service ##
+###########################################
 locals {
   apim_ecommerce_transaction_auth_requests_service_api = {
-    display_name          = "ecommerce pagoPA - transaction auth requests update service API"
-    description           = "API to support transaction auth requests update service"
-    path                  = "ecommerce/transaction-auth-requests-update-service"
+    display_name          = "ecommerce pagoPA - transaction auth requests service API"
+    description           = "API to support transaction auth requests service"
+    path                  = "ecommerce/transaction-auth-requests-service"
     subscription_required = true
     service_url           = null
   }
@@ -118,44 +118,44 @@ module "apim_ecommerce_transaction_auth_requests_service_api_v1" {
   })
 }
 
-###################################################
+#####################################
 ## API transaction results service ##
-###################################################
+#####################################
 locals {
-  apim_ecommerce_transaction_results_update_service_api = {
-    display_name          = "ecommerce pagoPA - transaction results update service API"
+  apim_ecommerce_transaction_results_service_api = {
+    display_name          = "ecommerce pagoPA - transaction results service API"
     description           = "API to support Nodo.sendPaymentResult"
-    path                  = "ecommerce/transaction-results-update-service"
+    path                  = "ecommerce/transaction-results-service"
     subscription_required = true
     service_url           = null
   }
 }
 
-# Transaction results update service APIs
-resource "azurerm_api_management_api_version_set" "ecommerce_transaction_results_update_service_api" {
-  name                = format("%s-transaction-results-update-service-api", local.project)
+# Transaction results service APIs
+resource "azurerm_api_management_api_version_set" "ecommerce_transaction_results_service_api" {
+  name                = format("%s-transaction-results-service-api", local.project)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_ecommerce_transaction_results_update_service_api.display_name
+  display_name        = local.apim_ecommerce_transaction_results_service_api.display_name
   versioning_scheme   = "Segment"
 }
 
-module "apim_ecommerce_transaction_results_update_service_api_v1" {
+module "apim_ecommerce_transaction_results_service_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-transaction-results-update-service-api", local.project)
+  name                  = format("%s-transaction-results-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_ecommerce_product.product_id]
-  subscription_required = local.apim_ecommerce_transaction_results_update_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.ecommerce_transaction_results_update_service_api.id
+  subscription_required = local.apim_ecommerce_transaction_results_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_transaction_results_service_api.id
   api_version           = "v1"
 
-  description  = local.apim_ecommerce_transaction_results_update_service_api.description
-  display_name = local.apim_ecommerce_transaction_results_update_service_api.display_name
-  path         = local.apim_ecommerce_transaction_results_update_service_api.path
+  description  = local.apim_ecommerce_transaction_results_service_api.description
+  display_name = local.apim_ecommerce_transaction_results_service_api.display_name
+  path         = local.apim_ecommerce_transaction_results_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_ecommerce_transaction_results_update_service_api.service_url
+  service_url  = local.apim_ecommerce_transaction_results_service_api.service_url
 
   content_format = "openapi"
   content_value = templatefile("./api/ecommerce-transaction-results-service/v1/_openapi.json.tpl", {
