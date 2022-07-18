@@ -6,7 +6,7 @@ module "apim_afm_marketplace_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
   product_id   = "afm-marketplace"
-  display_name = "GEC pagoPA"
+  display_name = "GEC pagoPA - Marketplace"
   description  = "Prodotto Gestione Evoluta Commissioni"
 
   api_management_name = local.pagopa_apim_name
