@@ -186,7 +186,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "tkm_test_utility_api" {
-  count               = var.env_short == "d" ? 1 : 0 
+  count               = var.env_short == "d" ? 1 : 0
   name                = format("%s-tkm-ms-test-utility-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -195,7 +195,7 @@ resource "azurerm_api_management_api_version_set" "tkm_test_utility_api" {
 }
 
 module "apim_tkm_test_utility_api_v1" {
-  count  = var.env_short == "d" ? 1 : 0 
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
   name                  = format("%s-tkm-ms-test-utility-api", local.project)
