@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "gps_rg" {
-  name     = format("%s-gps-rg", local.project)
+  name     = format("%s-rg", local.project)
   location = var.location
 
   tags = var.tags
@@ -7,10 +7,10 @@ resource "azurerm_resource_group" "gps_rg" {
 
 module "gps_cosmosdb_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                 = format("%s-gps-cosmosdb-snet", local.project)
+  name                 = format("%s-cosmosdb-snet", local.project)
   address_prefixes     = var.cidr_subnet_gps_cosmosdb
-  resource_group_name  = azurerm_resource_group.rg_vnet.name
-  virtual_network_name = module.vnet.name
+  resource_group_name  = local.vnet_resource_group_name
+  virtual_network_name = local.vnet_name
 
   enforce_private_link_endpoint_network_policies = true
 
@@ -23,7 +23,7 @@ module "gps_cosmosdb_snet" {
 
 module "gps_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-gps-cosmos-account", local.project)
+  name     = format("%s-cosmos-account", local.project)
   location = var.location
 
   resource_group_name = azurerm_resource_group.gps_rg.name
@@ -48,13 +48,13 @@ module "gps_cosmosdb_account" {
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = var.cosmos_gps_db_params.public_network_access_enabled ? [] : []
+  allowed_virtual_network_subnet_ids = var.cosmos_gps_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = format("%s-cosmos-gps-sql-endpoint", local.project)
+  private_endpoint_name    = format("%s-cosmos-sql-endpoint", local.project)
   private_endpoint_enabled = var.cosmos_gps_db_params.private_endpoint_enabled
   subnet_id                = module.gps_cosmosdb_snet.id
-  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
 
   tags = var.tags
 }
