@@ -185,10 +185,15 @@
       "PostePayAuthResponseEntity": {
         "type": "object",
         "required": [
+          "requestId",
           "channel",
           "urlRedirect"
         ],
         "properties": {
+          "requestId": {
+            "type": "string",
+            "description": "request payment ID"
+          },
           "channel": {
             "type": "string",
             "description": "request payment channel (APP or WEB)",
