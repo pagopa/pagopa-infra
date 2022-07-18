@@ -51,7 +51,7 @@ module "afm_marketplace_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.afm_marketplace_cosmos_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = format("%s-cosmos-sql-endpoint", local.project)
+  private_endpoint_name    = format("%s-marketplace-cosmos-sql-endpoint", local.project)
   private_endpoint_enabled = var.afm_marketplace_cosmos_db_params.private_endpoint_enabled
   subnet_id                = module.afm_cosmosdb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
@@ -69,17 +69,38 @@ module "afm_marketplace_cosmosdb_database" {
 
 ### Containers
 locals {
-  // TODO
   afm_marketplace_cosmosdb_containers = [
     {
-      name               = "creditor_institutions",
-      partition_key_path = "/fiscalCode",
-      autoscale_settings = { max_throughput = 6000 }
+      name               = "bundles",
+      partition_key_path = "/idPSP",
     },
     {
-      name               = "services",
-      partition_key_path = "/transferCategory",
-      autoscale_settings = { max_throughput = 6000 }
+      name               = "archivedbundles",
+      partition_key_path = "/idPSP",
+    },
+    {
+      name               = "cibundles",
+      partition_key_path = "/ciFiscalCode",
+    },
+    {
+      name               = "archivedcibundles",
+      partition_key_path = "/ciFiscalCode",
+    },
+    {
+      name               = "bundlerequests",
+      partition_key_path = "/idPSP",
+    },
+    {
+      name               = "archivedbundlerequests",
+      partition_key_path = "/idPSP",
+    },
+    {
+      name               = "bundleoffers",
+      partition_key_path = "/ciFiscalCode",
+    },
+    {
+      name               = "archivedbundleoffers",
+      partition_key_path = "/ciFiscalCode",
     },
   ]
 }
