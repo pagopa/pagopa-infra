@@ -103,6 +103,77 @@
           }
         }
       }
+    },
+    "/request-payments/postepay/{requestId}": {
+      "delete": {
+        "summary": "refund PostePay requests",
+        "operationId": "refund-request",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "PGS-generated GUID of the request to retrieve",
+            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Generic Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Request timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -279,6 +350,29 @@
             "example": "error message"
           }
         }
+      },
+      "PostePayRefundResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "paymentId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "transactionId",
+          "paymentId",
+          "refundOutcome",
+          "error"
+        ]
       }
     }
   }
