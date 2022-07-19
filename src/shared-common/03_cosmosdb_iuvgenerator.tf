@@ -23,7 +23,7 @@ module "iuvgenerator_cosmosdb_snet" {
 
 module "iuvgenerator_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-iuv-generator-cosmos-account", local.project)
+  name     = format("%s-iuv-gen-cosmos-account", local.project)
   location = var.location
 
   resource_group_name = azurerm_resource_group.shared_rg.name
@@ -51,7 +51,7 @@ module "iuvgenerator_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.cosmos_iuvgenerator_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = format("%s-iuv-generator-cosmos-sql-endpoint", local.project)
+  private_endpoint_name    = format("%s-iuv-gen-cosmos-sql-endpoint", local.project)
   private_endpoint_enabled = var.cosmos_iuvgenerator_db_params.private_endpoint_enabled
   subnet_id                = module.iuvgenerator_cosmosdb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
