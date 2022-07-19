@@ -61,7 +61,7 @@ module "iuvgenerator_cosmosdb_account" {
 
 # cosmosdb table storage
 resource "azurerm_cosmosdb_table" "iuvgenerator_cosmosdb_tables" {
-  for_each = { for c in local.iuvgenerator_cosmosdb_tables : c => c }
+  for_each = { for c in local.iuvgenerator_cosmosdb_tables : c.name => c }
 
   name                = replace(format("%s-table", each.value.name), "-", "")
   resource_group_name = azurerm_resource_group.shared_rg.name
