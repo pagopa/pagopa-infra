@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://{{ip-nodo}}/v1" />
+      <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/v1" />
     </inbound>
     <outbound>
       <base />
