@@ -59,4 +59,4 @@ cosmos_iuvgenerator_db_params = {
 
 }
 
-cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
+cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
