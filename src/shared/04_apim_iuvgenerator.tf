@@ -13,9 +13,8 @@ module "apim_iuvgenerator_product" {
   resource_group_name = local.pagopa_apim_rg
 
   published             = true
-  subscription_required = false
-  approval_required     = false
-
+  subscription_required = true
+  approval_required     = true
 
   policy_xml = file("./api_product/_base_policy.xml")
 }
@@ -28,7 +27,7 @@ locals {
     display_name          = "IUV Generator pagoPA - API"
     description           = "API to support IUV generator service"
     path                  = "shared/iuv-generator-service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }

@@ -27,5 +27,12 @@ locals {
   cosmos_dns_zone_name                = "privatelink.documents.azure.com"
   cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
+  iuvgenerator_cosmosdb_tables        = [
+    {
+      name               = "iuvs",
+      throughput         = 400
+    },
+  ]
+
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 }

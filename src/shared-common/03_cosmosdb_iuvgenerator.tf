@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "gps_rg" {
+resource "azurerm_resource_group" "shared_rg" {
   name     = format("%s-rg", local.project)
   location = var.location
 
@@ -26,7 +26,7 @@ module "iuvgenerator_cosmosdb_account" {
   name     = format("%s-iuv-generator-cosmos-account", local.project)
   location = var.location
 
-  resource_group_name = azurerm_resource_group.gps_rg.name
+  resource_group_name = azurerm_resource_group.shared_rg.name
   offer_type          = var.cosmos_iuvgenerator_db_params.offer_type
   kind                = var.cosmos_iuvgenerator_db_params.kind
 
@@ -60,9 +60,11 @@ module "iuvgenerator_cosmosdb_account" {
 }
 
 # cosmosdb table storage
-resource "azurerm_cosmosdb_table" "example" {
-  name                = "iuvstable"
-  resource_group_name = azurerm_resource_group.gps_rg.name
+resource "azurerm_cosmosdb_table" "iuvgenerator_cosmosdb_tables" {
+  for_each = { for c in local.iuvgenerator_cosmosdb_tables : c => c }
+
+  name                = replace(format("%s-table", each.value.name), "-", "")
+  resource_group_name = azurerm_resource_group.shared_rg.name
   account_name        = module.iuvgenerator_cosmosdb_account.name
-  throughput          = 400
+  throughput          = each.value.throughput
 }
