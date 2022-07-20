@@ -1176,19 +1176,19 @@ variable "gpd_queue_delay_sec" {
 variable "gpd_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
-  default     = 3
+  default     = 1
 }
 
 variable "gpd_autoscale_maximum" {
   type        = number
   description = "The maximum number of instances for this resource."
-  default     = 10
+  default     = 3
 }
 
 variable "gpd_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 3
+  default     = 1
 }
 
 // GPD Payments
@@ -1473,40 +1473,6 @@ variable "cidr_subnet_cosmosdb_paymentsdb" {
 }
 
 variable "cosmos_document_db_params" {
-  type = object({
-    kind           = string
-    capabilities   = list(string)
-    offer_type     = string
-    server_version = string
-    consistency_policy = object({
-      consistency_level       = string
-      max_interval_in_seconds = number
-      max_staleness_prefix    = number
-    })
-    main_geo_location_zone_redundant = bool
-    enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
-    additional_geo_locations = list(object({
-      location          = string
-      failover_priority = number
-      zone_redundant    = bool
-    }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
-  })
-}
-
-# ####################
-# GPS account ########
-variable "cidr_subnet_gps_cosmosdb" {
-  type        = list(string)
-  description = "Cosmos DB address space"
-  default     = null
-}
-
-variable "cosmos_gps_db_params" {
   type = object({
     kind           = string
     capabilities   = list(string)
