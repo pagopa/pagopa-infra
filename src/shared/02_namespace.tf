@@ -26,9 +26,6 @@ resource "helm_release" "reloader" {
   version    = "v0.0.110"
   namespace  = kubernetes_namespace.namespace.metadata[0].name
 
-  # enabled it if you remove accidentally reloader
-  # force_update = true
-
   set {
     name  = "reloader.watchGlobally"
     value = "false"

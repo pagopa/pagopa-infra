@@ -53,10 +53,11 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   ]
 }
 
-
-resource "azurerm_key_vault_secret" "cosmos_gps_pkey" {
-  name         = format("cosmos-gps-%s-%s-pkey", var.location_short, var.env_short) # cosmos-gps-<REGION>-<ENV>-pkey
-  value        = module.gps_cosmosdb_account.primary_key
+resource "azurerm_key_vault_secret" "iuv_generator_cosmos_connection_string" {
+  name         = "iuv-generator-cosmos-primary-connection-string"
+  // the array is related to the input box in the following section https://portal.azure.com/#@pagopait.onmicrosoft.com/resource/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-shared-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-d-weu-shared-iuv-gen-cosmos-account/tableKeys
+  // the 4th input box is the PRIMARY CONNECTION STRING
+  value        = module.iuvgenerator_cosmosdb_account.connection_strings[4]
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

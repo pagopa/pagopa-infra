@@ -60,10 +60,10 @@ module "apim_api_config_api" {
 
   service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
 
-  content_format = "openapi"
-  content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
+  content_format = var.env_short == "p" ? "openapi" : "openapi-link"
+  content_value = var.env_short == "p" ? templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
+  }) : format("https://%s/v3/api-docs", module.api_config_app_service.default_site_hostname)
 
   xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
     origin                 = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)

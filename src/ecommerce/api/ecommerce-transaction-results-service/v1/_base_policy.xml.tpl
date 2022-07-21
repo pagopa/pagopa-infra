@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="${endpoint}/srvs/AI" />
+      <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-transactions-service" />
     </inbound>
     <outbound>
       <base />
