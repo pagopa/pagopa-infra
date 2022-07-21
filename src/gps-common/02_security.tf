@@ -52,3 +52,12 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
     "Delete", "Restore", "Purge", "Recover"
   ]
 }
+
+
+resource "azurerm_key_vault_secret" "cosmos_gps_pkey" {
+  name         = format("cosmos-gps-%s-%s-pkey", var.location_short, var.env_short) # cosmos-gps-<REGION>-<ENV>-pkey
+  value        = module.gps_cosmosdb_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
