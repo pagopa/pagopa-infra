@@ -114,18 +114,18 @@ resource "azurerm_storage_container" "donation_logo8" {
   storage_account_name  = module.logos_donation_flows_sa.name
   container_access_type = "private"
 }
-# ## blob container logo 9
-# resource "azurerm_storage_container" "donation_logo9" {
-#   name                  = format("%slogo9", module.logos_donation_flows_sa.name)
-#   storage_account_name  = module.logos_donation_flows_sa.name
-#   container_access_type = "private"
-# }
-# ## blob container logo 10
-# resource "azurerm_storage_container" "donation_logo10" {
-#   name                  = format("%slogo10", module.logos_donation_flows_sa.name)
-#   storage_account_name  = module.logos_donation_flows_sa.name
-#   container_access_type = "private"
-# }
+## blob container logo 9
+resource "azurerm_storage_container" "donation_logo9" {
+  name                  = format("%slogo9", module.logos_donation_flows_sa.name)
+  storage_account_name  = module.logos_donation_flows_sa.name
+  container_access_type = "private"
+}
+## blob container logo 10
+resource "azurerm_storage_container" "donation_logo10" {
+  name                  = format("%slogo10", module.logos_donation_flows_sa.name)
+  storage_account_name  = module.logos_donation_flows_sa.name
+  container_access_type = "private"
+}
 
 
 # https://medium.com/marcus-tee-anytime/secure-azure-blob-storage-with-azure-api-management-managed-identities-b0b82b53533c
@@ -184,44 +184,44 @@ resource "null_resource" "change_auth_donations_blob_container_logo8" {
   ]
 }
 
-# resource "null_resource" "change_auth_donations_blob_container_logo9" {
+resource "null_resource" "change_auth_donations_blob_container_logo9" {
 
-#   triggers = {
-#     apim_principal_id = module.apim.principal_id
-#   }
+  triggers = {
+    apim_principal_id = module.apim.principal_id
+  }
 
-#   provisioner "local-exec" {
-#     command = <<EOT
-#               az storage container set-permission \
-#                 --name ${azurerm_storage_container.donation_logo9.name} \
-#                 --account-name ${module.logos_donation_flows_sa.name} \
-#                 --account-key ${module.logos_donation_flows_sa.primary_access_key} \
-#                 --auth-mode login
-#           EOT
-#   }
+  provisioner "local-exec" {
+    command = <<EOT
+              az storage container set-permission \
+                --name ${azurerm_storage_container.donation_logo9.name} \
+                --account-name ${module.logos_donation_flows_sa.name} \
+                --account-key ${module.logos_donation_flows_sa.primary_access_key} \
+                --auth-mode login
+          EOT
+  }
 
-#   depends_on = [
-#     azurerm_storage_container.donation_logo9
-#   ]
-# }
+  depends_on = [
+    azurerm_storage_container.donation_logo9
+  ]
+}
 
-# resource "null_resource" "change_auth_donations_blob_container_logo10" {
+resource "null_resource" "change_auth_donations_blob_container_logo10" {
 
-#   triggers = {
-#     apim_principal_id = module.apim.principal_id
-#   }
+  triggers = {
+    apim_principal_id = module.apim.principal_id
+  }
 
-#   provisioner "local-exec" {
-#     command = <<EOT
-#               az storage container set-permission \
-#                 --name ${azurerm_storage_container.donation_logo10.name} \
-#                 --account-name ${module.logos_donation_flows_sa.name} \
-#                 --account-key ${module.logos_donation_flows_sa.primary_access_key} \
-#                 --auth-mode login
-#           EOT
-#   }
+  provisioner "local-exec" {
+    command = <<EOT
+              az storage container set-permission \
+                --name ${azurerm_storage_container.donation_logo10.name} \
+                --account-name ${module.logos_donation_flows_sa.name} \
+                --account-key ${module.logos_donation_flows_sa.primary_access_key} \
+                --auth-mode login
+          EOT
+  }
 
-#   depends_on = [
-#     azurerm_storage_container.donation_logo10
-#   ]
-# }
+  depends_on = [
+    azurerm_storage_container.donation_logo10
+  ]
+}
