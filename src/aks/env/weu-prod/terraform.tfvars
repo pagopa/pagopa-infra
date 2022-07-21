@@ -1,14 +1,14 @@
 # general
 prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "dev"
+env_short      = "p"
+env            = "prod"
+domain         = "prod"
 location       = "westeurope"
 location_short = "weu"
 
 tags = {
   CreatedBy   = "Terraform"
-  Environment = "Dev"
+  Environment = "Prod"
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
@@ -16,21 +16,21 @@ tags = {
 
 terraform_remote_state_core = {
   resource_group_name  = "io-infra-rg"
-  storage_account_name = "pagopainfraterraformdev"
+  storage_account_name = "pagopainfraterraformprod"
   container_name       = "azurermstate"
-  key                  = "dev.terraform.tfstate"
+  key                  = "prod.terraform.tfstate"
 }
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+monitor_resource_group_name                 = "pagopa-p-monitor-rg"
+log_analytics_workspace_name                = "pagopa-p-law"
+log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 ### Aks
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
 
-aks_sku_tier                   = "Free"
+aks_sku_tier                   = "Paid"
 aks_private_cluster_is_enabled = false
 
 aks_system_node_pool = {
@@ -51,7 +51,7 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Ephemeral"
   os_disk_size_gb = "300"
-  node_count_min  = "0" #TODO change to 2 or 3 in prod
+  node_count_min  = "2" #TODO change to 2 or 3 in prod
   node_count_max  = "3"
   node_labels     = { node_name : "aks-user-01", node_type : "user" },
   node_taints     = [],
