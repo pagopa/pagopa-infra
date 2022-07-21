@@ -39,7 +39,7 @@ dns_zone_internal_prefix = "internal.dev.platform"
 # CosmosDb IUV Generator
 cosmos_iuvgenerator_db_params = {
   kind         = "GlobalDocumentDB"
-  capabilities = ["EnableServerless"]
+  capabilities = ["EnableTable"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"

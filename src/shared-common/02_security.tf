@@ -52,3 +52,11 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
     "Delete", "Restore", "Purge", "Recover"
   ]
 }
+
+resource "azurerm_key_vault_secret" "iuv_generator_cosmos_connection_string" {
+  name         = "iuv-gen-cosmos-connection-string"
+  value        = module.iuvgenerator_cosmosdb_account.connection_strings[0]
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
