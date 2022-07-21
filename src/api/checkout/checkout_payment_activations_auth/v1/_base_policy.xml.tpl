@@ -2,10 +2,6 @@
     <inbound>
         <base />
         <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
-        <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-            <value>${ip_allowed_1}</value>
-            <value>${ip_allowed_2}</value>
-        </check-header>
         <choose>
             <when condition="@(context.User.Groups.Select(g => g.Id).Contains("checkout-rate-no-limit"))" />
             <when condition="@(context.User.Groups.Select(g => g.Id).Contains("checkout-rate-limit-300"))">
@@ -37,7 +33,7 @@
         </set-header>
         <set-variable name="body" value="@(context.Response.Body.As<JObject>())" />
         <choose>
-            <when condition="@( (context.Response.StatusCode == 500 || context.Response.StatusCode == 409 || context.Response.StatusCode == 424 || context.Response.StatusCode == 502 || context.Response.StatusCode == 503 || context.Response.StatusCode == 504) && ((JObject) context.Variables["body"])["detail_v2"] != null )">
+            <when condition="@( (context.Response.StatusCode == 500 || context.Response.StatusCode == 404 || context.Response.StatusCode == 409 || context.Response.StatusCode == 424 || context.Response.StatusCode == 502 || context.Response.StatusCode == 503 || context.Response.StatusCode == 504) && ((JObject) context.Variables["body"])["detail_v2"] != null )">
                 <return-response>
                     <set-status code="500" />
                     <set-header name="Content-Type" exists-action="override">

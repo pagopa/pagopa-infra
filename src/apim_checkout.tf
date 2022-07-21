@@ -4,7 +4,7 @@
 
 module "apim_checkout_product" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
 
   product_id   = "checkout"
   display_name = "checkout pagoPA"
@@ -14,8 +14,9 @@ module "apim_checkout_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
-  approval_required     = false
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/checkout/_base_policy.xml")
 }
@@ -38,7 +39,6 @@ locals {
     path                  = "checkout/auth/payments"
     subscription_required = true
     service_url           = null
-    ip_allowed            = ["20.67.51.184", "20.67.51.210", "x.x.x.x"] # TODO: Update with real PN IP address
   }
 }
 
@@ -133,10 +133,7 @@ module "apim_checkout_payment_activations_api_auth_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/checkout/checkout_payment_activations_auth/v1/_base_policy.xml.tpl", {
-    ip_allowed_1 = local.apim_checkout_payment_activations_auth_api.ip_allowed[0]
-    ip_allowed_2 = local.apim_checkout_payment_activations_auth_api.ip_allowed[1]
-  })
+  xml_content = file("./api/checkout/checkout_payment_activations_auth/v1/_base_policy.xml.tpl")
 }
 
 # Payment activation v2 authenticated APIs
@@ -162,11 +159,7 @@ module "apim_checkout_payment_activations_api_auth_v2" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile(var.env_short == "d" ? "./api/checkout/checkout_payment_activations_auth/v2/_base_policy_dev.xml.tpl" : "./api/checkout/checkout_payment_activations_auth/v2/_base_policy.xml.tpl", {
-    ip_allowed_1 = local.apim_checkout_payment_activations_auth_api.ip_allowed[0]
-    ip_allowed_2 = local.apim_checkout_payment_activations_auth_api.ip_allowed[1]
-    ip_allowed_3 = local.apim_checkout_payment_activations_auth_api.ip_allowed[2]
-  })
+  xml_content = file(var.env_short == "d" ? "./api/checkout/checkout_payment_activations_auth/v2/_base_policy_dev.xml.tpl" : "./api/checkout/checkout_payment_activations_auth/v2/_base_policy.xml.tpl")
 }
 
 # pagopa-proxy SOAP web service FespCdService

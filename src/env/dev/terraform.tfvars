@@ -16,22 +16,25 @@ lock_enable = false
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway         = ["10.1.128.0/24"]
-cidr_subnet_postgresql         = ["10.1.129.0/24"]
-cidr_subnet_azdoa              = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
-cidr_subnet_checkout_be        = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
-cidr_subnet_reporting_common   = ["10.1.136.0/24"]
-cidr_subnet_gpd                = ["10.1.138.0/24"]
-# cidr_subnet_payments           = ["10.1.139.0/24"]
-cidr_subnet_canoneunico_common    = ["10.1.140.0/24"]
-cidr_subnet_pg_flex_dbms          = ["10.1.141.0/24"]
-cidr_subnet_vpn                   = ["10.1.142.0/24"]
-cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
-cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
+cidr_subnet_appgateway               = ["10.1.128.0/24"]
+cidr_subnet_postgresql               = ["10.1.129.0/24"]
+cidr_subnet_azdoa                    = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis       = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
+cidr_subnet_checkout_be              = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
+cidr_subnet_reporting_common         = ["10.1.136.0/24"]
+cidr_subnet_gpd                      = ["10.1.138.0/24"]
+cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
+cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
+cidr_subnet_pg_flex_dbms             = ["10.1.141.0/24"]
+cidr_subnet_vpn                      = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder            = ["10.1.143.0/29"]
+cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
+cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
+cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
+
 # specific
 cidr_subnet_mock_ec  = ["10.1.137.0/29"]
 cidr_subnet_mock_psp = ["10.1.137.8/29"]
@@ -94,8 +97,6 @@ prostgresql_db_mockpsp = "mock-psp"
 mock_ec_enabled  = true
 mock_psp_enabled = true
 
-# api_config
-api_config_enabled = true
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
@@ -104,7 +105,7 @@ nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,001031
 nodo_pagamenti_url     = "https://10.79.20.32/sit/webservices/input"
 ip_nodo                = "10.79.20.32"
 
-lb_aks = "10.70.66.200" # for soap services add /webservices/input
+lb_aks = "10.70.66.200" #for soap services add /webservices/input
 
 # eventhub
 eventhub_enabled = true
@@ -272,7 +273,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "nodo-dei-pagamenti-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -287,7 +288,13 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "nodo-dei-pagamenti-pdnd"
+        name   = "pagopa-biz-evt-rx-io"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
         listen = true
         send   = false
         manage = false
@@ -342,6 +349,10 @@ bpd_hostname       = "api.dev.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it/pmmockserviceapi"
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "portal.test.pagopa.gov.it/pmmockserviceapi"
+
+cstar_outbound_ip_1 = "20.105.180.187"
+cstar_outbound_ip_2 = "20.76.239.212"
+
 # fdr
 fdr_delete_retention_days       = 30
 reporting_fdr_function_kind     = "Linux"
@@ -410,3 +421,49 @@ canoneunico_function_autoscale_default = 1
 #   pgbouncer_enabled            = false
 
 # }
+
+# CosmosDb Payments
+cosmos_document_db_params = {
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
+
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
+
+  backup_continuous_enabled = false
+
+}
+
+# CosmosDb AFM
+cosmos_afm_db_params = {
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
+
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
+
+  backup_continuous_enabled = false
+
+}

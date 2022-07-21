@@ -16,22 +16,25 @@ lock_enable = true
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway         = ["10.1.128.0/24"]
-cidr_subnet_postgresql         = ["10.1.129.0/24"]
-cidr_subnet_azdoa              = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
-cidr_subnet_checkout_be        = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
-cidr_subnet_reporting_common   = ["10.1.136.0/24"]
-cidr_subnet_gpd                = ["10.1.138.0/24"]
-# cidr_subnet_payments           = ["10.1.139.0/24"]
-cidr_subnet_canoneunico_common    = ["10.1.140.0/24"]
-cidr_subnet_pg_flex_dbms          = ["10.1.141.0/24"]
-cidr_subnet_vpn                   = ["10.1.142.0/24"]
-cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
-cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
+cidr_subnet_appgateway               = ["10.1.128.0/24"]
+cidr_subnet_postgresql               = ["10.1.129.0/24"]
+cidr_subnet_azdoa                    = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis       = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
+cidr_subnet_checkout_be              = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
+cidr_subnet_reporting_common         = ["10.1.136.0/24"]
+cidr_subnet_gpd                      = ["10.1.138.0/24"]
+cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
+cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
+cidr_subnet_pg_flex_dbms             = ["10.1.141.0/24"]
+cidr_subnet_vpn                      = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder            = ["10.1.143.0/29"]
+cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
+cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
+cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
+# cidr_subnet_gps_cosmosdb             = ["10.1.149.0/24"]
 
 # specific
 cidr_subnet_redis = ["10.1.132.0/24"]
@@ -94,7 +97,10 @@ app_gateway_deny_paths = [
   "/checkout/io-for-node/*",
   "/gpd/*",
   "/gpd-payments/*",
-  "/gpd-reporting/*"
+  "/gpd-reporting/*",
+  "/tkm/tkmcardmanager/*",
+  "/tkm/tkmacquirermanager/*",
+  "/payment-transactions-gateway/internal*",
 ]
 
 # nat_gateway
@@ -115,12 +121,10 @@ postgres_private_endpoint_enabled        = false
 mock_ec_enabled  = false
 mock_psp_enabled = false
 
-# api_config
-api_config_enabled = false
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "97249640588,08658331007,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002"
+nodo_pagamenti_psp     = "97249640588,08658331007,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec      = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
 nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
 ip_nodo                = "10.79.20.34"
@@ -284,7 +288,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 32
     message_retention = 7
-    consumers         = ["pagopa-biz-evt-rx", "nodo-dei-pagamenti-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -299,7 +303,13 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "nodo-dei-pagamenti-pdnd"
+        name   = "pagopa-biz-evt-rx-io"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
         listen = true
         send   = false
         manage = false
@@ -314,7 +324,7 @@ acr_enabled = true
 # db nodo dei pagamenti
 db_port                            = 1521
 db_service_name                    = "NDPSPCP_PP_NODO4_CFG" # TODO chiedere a SIA
-dns_a_reconds_dbnodo_ips           = ["10.102.35.61", "10.102.35.62", "10.102.35.63"]
+dns_a_reconds_dbnodo_ips           = ["10.102.35.61", "10.102.35.62", "10.102.35.63", "10.102.35.60", "10.102.35.59", "10.102.35.58", "10.102.35.57"]
 private_dns_zone_db_nodo_pagamenti = "p.db-nodo-pagamenti.com"
 
 # API Config
@@ -352,6 +362,9 @@ bpd_hostname       = "api.cstar.pagopa.it"
 cobadge_hostname   = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
 fesp_hostname      = "portal.test.pagopa.gov.it"
 satispay_hostname  = "mock-ppt-lmi-npa-sit.ocp-tst-npaspc.sia.eu/satispay/v1/consumers"
+
+cstar_outbound_ip_1 = "20.86.161.243"
+cstar_outbound_ip_2 = "20.101.29.160"
 
 # fdr
 fdr_delete_retention_days        = 30
@@ -403,7 +416,7 @@ canoneunico_queue_message_delay = 3600 // in seconds = 1h
 pgres_flex_params = {
 
   private_endpoint_enabled = true
-  sku_name                 = "GP_Standard_D8s_v3"
+  sku_name                 = "GP_Standard_D4s_v3"
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
@@ -417,3 +430,86 @@ pgres_flex_params = {
   pgbouncer_enabled            = true
 
 }
+
+
+# Cosmos AFM
+cosmos_afm_db_params = {
+  kind         = "GlobalDocumentDB"
+  capabilities = []
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = true
+
+  private_endpoint_enabled      = true
+  public_network_access_enabled = false
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = true
+}
+
+
+# CosmosDb Payments
+cosmos_document_db_params = {
+  kind         = "GlobalDocumentDB"
+  capabilities = []
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = true
+
+  private_endpoint_enabled      = true
+  public_network_access_enabled = false
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = true
+}
+
+# # CosmosDb GPS
+# cosmos_gps_db_params = {
+#   kind         = "GlobalDocumentDB"
+#   capabilities = []
+#   offer_type   = "Standard"
+#   consistency_policy = {
+#     consistency_level       = "BoundedStaleness"
+#     max_interval_in_seconds = 300
+#     max_staleness_prefix    = 100000
+#   }
+#   server_version                   = "4.0"
+#   main_geo_location_zone_redundant = false
+#   enable_free_tier                 = false
+
+#   private_endpoint_enabled      = true
+#   public_network_access_enabled = false
+#   additional_geo_locations = [{
+#     location          = "northeurope"
+#     failover_priority = 1
+#     zone_redundant    = false
+#   }]
+
+#   is_virtual_network_filter_enabled = true
+
+#   backup_continuous_enabled = true
+# }

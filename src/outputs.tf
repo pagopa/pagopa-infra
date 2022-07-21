@@ -20,15 +20,15 @@ output "nat_gw_outbound_ip_addresses" {
 
 ## Container registry ##
 output "container_registry_login_server" {
-  value = var.acr_enabled ? module.acr[0].login_server : null
+  value = var.acr_enabled ? module.container_registry.login_server : null
 }
 
 output "container_registry_admin_username" {
-  value = var.acr_enabled ? module.acr[0].admin_username : null
+  value = var.acr_enabled ? module.container_registry.admin_username : null
 }
 
 output "container_registry_admin_password" {
-  value     = var.acr_enabled ? module.acr[0].admin_password : null
+  value     = var.acr_enabled ? module.container_registry.admin_password : null
   sensitive = true
 }
 
@@ -48,5 +48,15 @@ output "nodo_test_sa_connection_string" {
 
 output "nodo_test_sa_blob_connection_string" {
   value     = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_blob_connection_string : null
+  sensitive = true
+}
+
+output "sec_workspace_id" {
+  value     = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  sensitive = true
+}
+
+output "sec_storage_id" {
+  value     = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
   sensitive = true
 }

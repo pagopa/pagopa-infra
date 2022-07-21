@@ -1,5 +1,4 @@
 resource "azurerm_resource_group" "api_config_rg" {
-  count    = var.api_config_enabled ? 1 : 0
   name     = format("%s-api-config-rg", local.project)
   location = var.location
 
@@ -15,7 +14,7 @@ locals {
 
 # Subnet to host the api config
 module "api_config_snet" {
-  count                                          = var.api_config_enabled && var.cidr_subnet_api_config != null ? 1 : 0
+  count                                          = var.cidr_subnet_api_config != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-api-config-snet", local.project)
   address_prefixes                               = var.cidr_subnet_api_config
@@ -33,10 +32,10 @@ module "api_config_snet" {
 }
 
 module "api_config_app_service" {
-  count  = var.api_config_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.93"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
 
-  resource_group_name = azurerm_resource_group.api_config_rg[0].name
+  vnet_integration    = true
+  resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
 
   # App service plan vars
@@ -51,7 +50,7 @@ module "api_config_app_service" {
   client_cert_enabled = false
   always_on           = var.api_config_always_on
   # linux_fx_version    = "JAVA|11-java11"
-  linux_fx_version  = format("DOCKER|%s/api-apiconfig-backend:%s", module.acr[0].login_server, "latest")
+  linux_fx_version  = format("DOCKER|%s/api-apiconfig-backend:%s", module.container_registry.login_server, "latest")
   health_check_path = "/apiconfig/api/v1/info"
 
 
@@ -90,27 +89,24 @@ module "api_config_app_service" {
     WEBSITES_PORT                       = 8080
     # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
     # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
 
   }
 
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
 
-  subnet_name = module.api_config_snet[0].name
-  subnet_id   = module.api_config_snet[0].id
+  subnet_id = module.api_config_snet[0].id
 
   tags = var.tags
 }
 
 # Node database availability: Alerting Action
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck" {
-  count = var.api_config_enabled ? 1 : 0
-
-  name                = format("%s-%s", module.api_config_app_service[0].name, "db-healthcheck")
-  resource_group_name = azurerm_resource_group.api_config_rg[0].name
+  name                = format("%s-%s", module.api_config_app_service.name, "db-healthcheck")
+  resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
 
   action {
@@ -129,7 +125,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
-    , module.api_config_app_service[0].name
+    , module.api_config_app_service.name
   )
   severity    = 1
   frequency   = 45
@@ -137,5 +133,69 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 3
+  }
+}
+
+resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
+  name                = format("%s-autoscale-apiconfig", local.project)
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = azurerm_resource_group.gpd_rg.location
+  target_resource_id  = module.api_config_app_service.plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = 1
+      minimum = 1
+      maximum = 3
+    }
+
+    # gpd rules
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.api_config_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 250
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.api_config_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 250
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+
+
   }
 }

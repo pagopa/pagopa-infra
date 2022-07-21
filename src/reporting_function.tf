@@ -65,9 +65,9 @@ module "reporting_fdr_function" {
     OUTPUT_BLOB                = azurerm_storage_container.fdr_rend_flow_out.name
 
     # acr
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true

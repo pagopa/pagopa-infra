@@ -26,6 +26,7 @@ locals {
     PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
     GPD_HOST                      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    API_CONFIG_HOST               = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "apiconfig/api", "v1")
     PAYMENTS_SA_CONNECTION_STRING = module.payments_receipt.primary_connection_string
     RECEIPTS_TABLE                = azurerm_storage_table.payments_receipts_table.name
     CONNECTION_TIMEOUT            = 3000
@@ -38,9 +39,9 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.acr[0].login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.acr[0].admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.acr[0].admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
 
   }
 
@@ -82,7 +83,7 @@ module "payments_app_service" {
   name                = format("%s-app-payments", local.project)
   client_cert_enabled = false
   always_on           = var.payments_always_on
-  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
+  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.container_registry.login_server, "latest")
   health_check_path   = "/info"
 
   app_settings = local.gpd_payments_app_settings
@@ -112,7 +113,7 @@ module "payments_app_service_slot_staging" {
   location            = azurerm_resource_group.gpd_rg.location
 
   always_on         = true
-  linux_fx_version  = format("DOCKER|%s/api-payments-backend:%s", module.acr[0].login_server, "latest")
+  linux_fx_version  = format("DOCKER|%s/api-payments-backend:%s", module.container_registry.login_server, "latest")
   health_check_path = "/info"
 
   # App settings
@@ -212,4 +213,37 @@ module "payments_receipt" {
 resource "azurerm_storage_table" "payments_receipts_table" {
   name                 = format("%sreceiptstable", module.payments_receipt.name)
   storage_account_name = module.payments_receipt.name
+}
+
+##Alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "payments_gpd_inconsistency_error" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-payments-api-alert", module.payments_app_service.name)
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "[Payments] call GPD payment position error"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "Payments API Call Warning"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "[getGPDCheckedReceiptsList] Non-blocking error"
+  QUERY
+    , module.payments_app_service.name
+  )
+  severity    = 1
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
 }
