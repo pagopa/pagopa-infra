@@ -166,9 +166,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   description    = "Availability greater than or equal 99%"
   enabled        = true
   query = (<<-QUERY
-  requests
-    | where url startswith 'https://api.platform.pagopa.it/checkout/payments/' or url startswith 'https://api.platform.pagopa.it/api/checkout/'
-    | summarize Total=count(), Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 ) by length=bin(timestamp,15m)
+requests
+    | where url startswith 'https://api.platform.pagopa.it/checkout/' or  url startswith 'https://api.platform.pagopa.it/api/checkout/'
+    | summarize Total=count(), Success=count( (toint(resultCode) >= 200 and toint(resultCode) < 500 or customDimensions['Response-Body'] contains 'detail_v2' ) and duration < 10000) by Time=bin(timestamp,15m)
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
