@@ -11,10 +11,23 @@
     }
   ],
   "paths": {
-    "/testing-sessions/:env": {
+    "/testing-sessions/{env}": {
       "post": {
         "summary": "API to get tokens for testing",
         "operationId": "new-testing-sessions",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "env",
+            "schema": {
+              "type": "string"
+              "enum": [
+                "uat"
+              ]
+            },
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "PM sessionToken e idPayment",
