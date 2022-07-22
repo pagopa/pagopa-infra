@@ -27,7 +27,7 @@
         <!-- logo7 start ActionAid -->
         <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
         <send-request mode="new" response-variable-name="logoresult" timeout="300" ignore-error="false">
-            <set-url>@(String.Format("https://pagopaulogosdonationsa.blob.core.windows.net/{0}/{1}", "pagopaulogosdonationsalogo7", "donatelogo7"))</set-url>
+            <set-url>@(String.Format("https://pagopaulogosdonationsa.blob.core.windows.net/{0}/{1}", "pagopaulogosdonationsalogo7", "logo7"))</set-url>
             <set-method>GET</set-method>
             <set-header name="Host" exists-action="override">
                 <value>pagopaulogosdonationsa.blob.core.windows.net</value>
@@ -63,7 +63,7 @@
         <!-- logo8 start INTERSOS -->
         <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
         <send-request mode="new" response-variable-name="logoresult" timeout="300" ignore-error="false">
-            <set-url>@(String.Format("https://pagopaulogosdonationsa.blob.core.windows.net/{0}/{1}", "pagopaulogosdonationsalogo8", "donatelogo8"))</set-url>
+            <set-url>@(String.Format("https://pagopaulogosdonationsa.blob.core.windows.net/{0}/{1}", "pagopaulogosdonationsalogo8", "logo8"))</set-url>
             <set-method>GET</set-method>
             <set-header name="Host" exists-action="override">
                 <value>pagopaulogosdonationsa.blob.core.windows.net</value>
@@ -99,7 +99,7 @@
         <!-- logo9 start MFS -->
         <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
         <send-request mode="new" response-variable-name="logoresult" timeout="300" ignore-error="false">
-            <set-url>@(String.Format("https://pagopaulogosdonationsa.blob.core.windows.net/{0}/{1}", "pagopaulogosdonationsalogo9", "donatelogo9"))</set-url>
+            <set-url>@(String.Format("https://pagopaulogosdonationsa.blob.core.windows.net/{0}/{1}", "pagopaulogosdonationsalogo9", "logo9"))</set-url>
             <set-method>GET</set-method>
             <set-header name="Host" exists-action="override">
                 <value>pagopaulogosdonationsa.blob.core.windows.net</value>
@@ -135,7 +135,7 @@
         <!-- logo10 start UNICEF -->
         <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
         <send-request mode="new" response-variable-name="logoresult" timeout="300" ignore-error="false">
-            <set-url>@(String.Format("https://pagopaulogosdonationsa.blob.core.windows.net/{0}/{1}", "pagopaulogosdonationsalogo10", "donatelogo10"))</set-url>
+            <set-url>@(String.Format("https://pagopaulogosdonationsa.blob.core.windows.net/{0}/{1}", "pagopaulogosdonationsalogo10", "logo10"))</set-url>
             <set-method>GET</set-method>
             <set-header name="Host" exists-action="override">
                 <value>pagopaulogosdonationsa.blob.core.windows.net</value>
