@@ -108,23 +108,54 @@ resource "azurerm_storage_container" "donation_logo7" {
   storage_account_name  = module.logos_donation_flows_sa.name
   container_access_type = "private"
 }
+resource "azurerm_storage_blob" "donation_logo7" {
+  name                   = "logo7"
+  storage_account_name   = module.logos_donation_flows_sa.name
+  storage_container_name = azurerm_storage_container.donation_logo7.name
+  type                   = "Block"
+  source                 = "./api/donations/v1/logos/logo7"
+}
+
 ## blob container logo 8
 resource "azurerm_storage_container" "donation_logo8" {
   name                  = format("%slogo8", module.logos_donation_flows_sa.name)
   storage_account_name  = module.logos_donation_flows_sa.name
   container_access_type = "private"
 }
+resource "azurerm_storage_blob" "donation_logo8" {
+  name                   = "logo8"
+  storage_account_name   = module.logos_donation_flows_sa.name
+  storage_container_name = azurerm_storage_container.donation_logo8.name
+  type                   = "Block"
+  source                 = "./api/donations/v1/logos/logo8"
+}
+
 ## blob container logo 9
 resource "azurerm_storage_container" "donation_logo9" {
   name                  = format("%slogo9", module.logos_donation_flows_sa.name)
   storage_account_name  = module.logos_donation_flows_sa.name
   container_access_type = "private"
 }
+resource "azurerm_storage_blob" "donation_logo9" {
+  name                   = "logo9"
+  storage_account_name   = module.logos_donation_flows_sa.name
+  storage_container_name = azurerm_storage_container.donation_logo9.name
+  type                   = "Block"
+  source                 = "./api/donations/v1/logos/logo9"
+}
+
 ## blob container logo 10
 resource "azurerm_storage_container" "donation_logo10" {
   name                  = format("%slogo10", module.logos_donation_flows_sa.name)
   storage_account_name  = module.logos_donation_flows_sa.name
   container_access_type = "private"
+}
+resource "azurerm_storage_blob" "donation_logo10" {
+  name                   = "logo10"
+  storage_account_name   = module.logos_donation_flows_sa.name
+  storage_container_name = azurerm_storage_container.donation_logo10.name
+  type                   = "Block"
+  source                 = "./api/donations/v1/logos/logo10"
 }
 
 
