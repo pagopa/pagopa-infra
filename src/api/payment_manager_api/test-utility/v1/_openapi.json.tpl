@@ -20,7 +20,7 @@
             "in": "path",
             "name": "env",
             "schema": {
-              "type": "string"
+              "type": "string",
               "enum": [
                 "uat"
               ]
