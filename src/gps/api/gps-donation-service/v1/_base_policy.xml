@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-gps-donation-service" />
+        <set-backend-service base-url="https://${hostname}/pagopa-gps-donation-service/api" />
     </inbound>
     <outbound>
         <base />
