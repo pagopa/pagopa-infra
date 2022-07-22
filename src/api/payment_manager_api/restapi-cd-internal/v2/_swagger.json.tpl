@@ -66,9 +66,8 @@
         "authCode": {
           "type": "string"
         },
-        "accountingStatus": {
-          "type": "integer",
-          "format": "int64"
+        "rrn": {
+          "type": "string"
         }
       },
       "title": "TransactionUpdateStatus"
