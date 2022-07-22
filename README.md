@@ -88,3 +88,9 @@ https://github.com/terraform-docs/terraform-docs#installation
 ```sh
 terraform-docs markdown . --sort-by required > README.md
 ```
+
+
+## Utils
+Extract cidr subnet from AZ vnet:
+
+`az network vnet subnet list -g pagopa-d-vnet-rg --vnet-name pagopa-d-vnet | grep "\"addressPrefix\""`
