@@ -12,7 +12,7 @@
   ],
   "paths": {
     "/testing-sessions/{env}": {
-      "post": {
+      "get": {
         "summary": "API to get tokens for testing",
         "operationId": "new-testing-sessions",
         "parameters": [
