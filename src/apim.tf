@@ -427,6 +427,38 @@ resource "azurerm_api_management_named_value" "pagopa_mock_services_api_key" {
   secret              = true
 }
 
+data "azurerm_key_vault_secret" "user_pm_test_key" {
+  count        = var.env_short == "d" ? 1 : 0
+  name         = "user-pm-test"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "user_pm_test" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = "user-pm-test"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "user-pm-test"
+  value               = data.azurerm_key_vault_secret.user_pm_test_key[0].value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "password_pm_test_key" {
+  count        = var.env_short == "d" ? 1 : 0
+  name         = "password-pm-test"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "password_pm_test" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = "password-pm-test"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "password-pm-test"
+  value               = data.azurerm_key_vault_secret.password_pm_test_key[0].value
+  secret              = true
+}
+
 # donazioni
 resource "azurerm_api_management_named_value" "donazioni_config_name" {
   name                = "donazioni-ucraina"
