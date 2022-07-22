@@ -39,10 +39,10 @@ dns_zone_internal_prefix = "internal.uat.platform"
 # CosmosDb GPS
 cosmos_gps_db_params = {
   kind         = "GlobalDocumentDB"
-  capabilities = ["EnableServerless"]
+  capabilities = []
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "Strong"
+    consistency_level       = "BoundedStaleness"
     max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
@@ -51,12 +51,13 @@ cosmos_gps_db_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
+  additional_geo_locations = []
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
