@@ -18,7 +18,7 @@
     }
   ],
   "paths": {
-    "/Donation": {
+    "/donations/paymentoptions": {
       "post": {
         "tags": [
           "Donation"
@@ -36,24 +36,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "headers": {
@@ -68,6 +50,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Output"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -164,7 +164,8 @@
         "properties": {
           "paymentOption": {
             "$ref": "#/components/schemas/PaymentOption"
-          }        }
+          }
+        }
       },
       "PaymentOption": {
         "type": "array",
@@ -202,7 +203,7 @@
         }
       },
       "Transfer": {
-        "type":"object",
+        "type": "object",
         "properties": {
           "amount": {
             "type": "integer",
