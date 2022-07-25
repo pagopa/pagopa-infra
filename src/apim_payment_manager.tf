@@ -176,15 +176,6 @@ module "apim_pm_restapicd_api_v1" {
   xml_content = file("./api/payment_manager_api/restapi-cd/v1/_base_policy.xml.tpl")
 }
 
-resource "azurerm_api_management_api_operation_policy" "updata_status_api" {
-  api_name            = format("%s-pm-restapicd-api-v1", local.project)
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "updateTransactionStatusUsingPATCH"
-
-  xml_content = file("./api/payment_manager_api/restapi-cd/v1/_internal_policy.xml.tpl")
-}
-
 module "apim_pm_restapicd_api_v2" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
@@ -272,6 +263,81 @@ module "apim_pm_restapi_cd_assets" {
   })
 
   xml_content = file("./api/payment_manager_api/restapi-cd-assets/_base_policy.xml.tpl")
+}
+
+#####################################
+## API restapi CD internal         ##
+#####################################
+locals {
+  apim_pm_restapicd_internal_api = {
+    # params for all api versions
+    display_name          = "Payment Manager internal restapi CD API"
+    description           = "API to support internal api exposed for payment transacions gateway"
+    path                  = "payment-manager/internal/pp-restapi-cd"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "pm_restapicd_internal_api" {
+
+  name                = format("%s-pm-restapicd-internal-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_restapicd_internal_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_restapicd_internal_api_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-restapicd-internal-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_restapicd_internal_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pm_restapicd_internal_api.id
+  api_version           = "v1"
+  service_url           = local.apim_pm_restapicd_internal_api.service_url
+
+  description  = local.apim_pm_restapicd_internal_api.description
+  display_name = local.apim_pm_restapicd_internal_api.display_name
+  path         = local.apim_pm_restapicd_internal_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/payment_manager_api/restapi-cd-internal/v1/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/restapi-cd-internal/v1/_base_policy.xml.tpl")
+}
+
+module "apim_pm_restapicd_internal_api_v2" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-restapicd-internal-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_restapicd_internal_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pm_restapicd_internal_api.id
+  api_version           = "v2"
+  service_url           = local.apim_pm_restapicd_internal_api.service_url
+
+  description  = local.apim_pm_restapicd_internal_api.description
+  display_name = local.apim_pm_restapicd_internal_api.display_name
+  path         = local.apim_pm_restapicd_internal_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/payment_manager_api/restapi-cd-internal/v2/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/restapi-cd-internal/v2/_base_policy.xml.tpl")
 }
 
 ############################
