@@ -202,15 +202,6 @@ module "apim_pm_restapicd_api_v2" {
   xml_content = file("./api/payment_manager_api/restapi-cd/v2/_base_policy.xml.tpl")
 }
 
-# resource "azurerm_api_management_api_operation_policy" "send_payment_result_api" {
-#   api_name            = format("%s-pm-restapicd-api-v2", local.project)
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = "sendPaymentResult"
-
-#   xml_content = file("./api/payment_manager_api/restapi-cd/v2/_internal_policy.xml.tpl")
-# }
-
 module "apim_pm_restapicd_api_v3" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
@@ -667,6 +658,55 @@ module "apim_pm_ptg_api_v1" {
   })
 
   xml_content = file("./api/payment_manager_api/payment-transactions-gateway/v1/_base_policy.xml.tpl")
+}
+
+######################
+## API PM per Nodo  ##
+######################
+locals {
+  apim_pm_per_nodo_api = {
+    # params for all api versions
+    display_name          = "Payment Manager - PM per Nodo API"
+    description           = "API PM for Nodo"
+    path                  = "payment-manager/nodo-per-pm"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "pm_per_nodo_api" {
+
+  name                = format("%s-pm-per-nodo-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_per_nodo_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_per_nodo_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-per-nodo-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_per_nodo_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pm_per_nodo_api.id
+  api_version           = "v1"
+  service_url           = local.apim_pm_per_nodo_api.service_url
+
+  description  = local.apim_pm_per_nodo_api.description
+  display_name = local.apim_pm_per_nodo_api.display_name
+  path         = local.apim_pm_per_nodo_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/payment_manager_api/pm-per-nodo/v1/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/pm-per-nodo/v1/_base_policy.xml.tpl")
 }
 
 ########################
