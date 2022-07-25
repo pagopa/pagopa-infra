@@ -81,6 +81,7 @@ app_gateway_deny_paths = [
   "/checkout/io-for-node/*",
   "/tkm/tkmcardmanager/*",
   "/tkm/tkmacquirermanager/*",
+  "/tkm/internal*",
   "/payment-transactions-gateway/internal*"
 ]
 
