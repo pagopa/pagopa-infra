@@ -461,7 +461,7 @@ module "apim_nodo_per_pm_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl",{
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
     base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}" : "https://{{ip-nodo}}"
   })
 }
@@ -472,7 +472,9 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "closePayment"
 
-  xml_content = file("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl")
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
+    base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/v1" : "https://{{ip-nodo}}/v1"
+  })
 }
 
 module "apim_nodo_per_pm_api_v2" {
@@ -497,7 +499,9 @@ module "apim_nodo_per_pm_api_v2" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
+    base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/v2" : "https://{{ip-nodo}}/v2"
+  })
 }
 
 ############################
