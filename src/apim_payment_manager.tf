@@ -1108,3 +1108,54 @@ module "apim_pm_mock_services_api_v1" {
 
   xml_content = file("./api/payment_manager_api/mock-services-api/v1/_base_policy.xml.tpl")
 }
+
+#########################
+## API test utility   ##
+#########################
+locals {
+  apim_pm_test_utility_api = {
+    display_name          = "Payment Manager test utility  API"
+    description           = "API to support testing"
+    path                  = "payment-manager/test-utility"
+    subscription_required = true
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "apim_pm_test_utility_api" {
+  count = var.env_short == "d" ? 1 : 0
+
+  name                = format("%s-pm-test-utility-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_test_utility_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_test_utility_api_v1" {
+
+  count = var.env_short == "d" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+
+  name                  = format("%s-pm-test-utility-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_test_utility_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.apim_pm_test_utility_api[0].id
+  api_version           = "v1"
+  service_url           = local.apim_pm_test_utility_api.service_url
+
+  description  = local.apim_pm_test_utility_api.description
+  display_name = local.apim_pm_test_utility_api.display_name
+  path         = local.apim_pm_test_utility_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/test-utility/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/test-utility/v1/_base_policy.xml.tpl")
+}
