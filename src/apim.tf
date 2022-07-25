@@ -459,6 +459,22 @@ resource "azurerm_api_management_named_value" "password_pm_test" {
   secret              = true
 }
 
+data "azurerm_key_vault_secret" "checkout_v2_test_key_secret" {
+  count        = var.env_short == "d" ? 1 : 0
+  name         = "checkout-v2-testing-api-key"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "checkout_v2_test_key" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = "checkout-v2-testing-api-key"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "checkout-v2-testing-api-key"
+  value               = data.azurerm_key_vault_secret.checkout_v2_test_key_secret[0].value
+  secret              = true
+}
+
 # donazioni
 resource "azurerm_api_management_named_value" "donazioni_config_name" {
   name                = "donazioni-ucraina"
