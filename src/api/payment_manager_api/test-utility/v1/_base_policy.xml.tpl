@@ -59,16 +59,62 @@
       <set-variable name="pmSessionTest" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
       <!-- Test Session PM END-->
       <!-- Test get idPayment START-->
-
-      <!-- Test get idPayment START-->
+      <set-variable name="noticeCode" value="@((string)(new Random(context.RequestId.GetHashCode()).Next(000000000, 999999999) ).ToString())" />
+      <set-variable name="cfPA" value="77777777777" />
+      <set-variable name="ccp" value="@(Guid.NewGuid().ToString().Replace("-",""))" />
+      <send-request ignore-error="true" timeout="10" response-variable-name="activate-body" mode="new">
+          <set-url>https://api.uat.platform.pagopa.it/checkout/auth/payments/v2/payment-activations</set-url>
+          <set-method>POST</set-method>
+          <set-header name="Content-Type" exists-action="override">
+             <value>application/json</value>
+          </set-header>
+          <set-header name="ocp-apim-subscription-key" exists-action="override">
+              <value>{{checkout-v2-testing-api-key}}</value>
+          </set-header>
+          <set-body>@{
+                      return new JObject(
+                              new JProperty("rptId", (string)context.Variables["cfPA"] + "302001000" +(string)context.Variables["noticeCode"]),
+                              new JProperty("importoSingoloVersamento", 120000),
+                              new JProperty("codiceContestoPagamento", (string)context.Variables["ccp"])
+                            ).ToString();
+                    }
+          </set-body>
+      </send-request>
+      <choose>
+        <when condition="@(((IResponse)context.Variables["activate-body"]).StatusCode != 200)">
+          <return-response>
+            <set-status code="502" reason="Bad Gateway" />
+          </return-response>
+        </when>
+      </choose>
+      <send-request ignore-error="true" timeout="10" response-variable-name="get-activate-body" mode="new">
+          <set-url>@($"https://api.uat.platform.pagopa.it/checkout/auth/payments/v2/payment-activations/{(string)context.Variables["ccp"]}")</set-url>
+          <set-method>GET</set-method>
+          <set-header name="ocp-apim-subscription-key" exists-action="override">
+              <value>{{checkout-v2-testing-api-key}}</value>
+          </set-header>
+      </send-request>
+       <choose>
+        <when condition="@(((IResponse)context.Variables["get-activate-body"]).StatusCode != 200)">
+          <return-response>
+            <set-status code="502" reason="Bad Gateway" />
+          </return-response>
+        </when>
+      </choose>
+      <set-variable name="get-activate-response" value="@(((IResponse)context.Variables["get-activate-body"]).Body.As<JObject>())" />
+      <!-- Test get idPayment END-->
       <return-response>
               <set-status code="200" />
               <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
               </set-header>
+              <set-header name="ocp-apim-subscription-key" exists-action="override">
+                <value>{{checkout-v2-testing-api-key}}</value>
+              </set-header>
               <set-body>@{
                   return new JObject(
-                          new JProperty("sessionToken", (string) ((JObject)((JObject) context.Variables["pmSessionTest"])["data"])["sessionToken"])
+                          new JProperty("sessionToken", (string) ((JObject)((JObject) context.Variables["pmSessionTest"])["data"])["sessionToken"]),
+                          new JProperty("idPayment", (string)((JObject) context.Variables["get-activate-response"])["idPagamento"])
                       ).ToString();
              }</set-body>
       </return-response>
