@@ -1,6 +1,7 @@
 <policies>
     <inbound>
         <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
+        <set-variable name="envshort" value="${env_short}" />
         <set-variable name="sub" value="@(context.Subscription.Name)" />
         <set-variable name="subid" value="@(context.Subscription.Id)" />
         <set-variable name="subkey" value="@(context.Subscription.Key)" />
@@ -8,9 +9,9 @@
             return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;
         }" />
         <base />
-        <!-- /organizations/{organizationFiscalCode} -->
-        <rewrite-uri template="@("/organizations/"+(string)context.Variables["organizationFiscalCode"]+"/"+(string)context.Variables["requestPath"])" copy-unmatched-params="true" />
-        <set-backend-service base-url="https://${hostname}/pagopa-spontaneous-payments-service" />
+        <!-- /payments/{organizationfiscalcode} -->
+        <rewrite-uri template="@("/payments/"+(string)context.Variables["organizationFiscalCode"]+"/"+(string)context.Variables["requestPath"])" copy-unmatched-params="true" />
+        <set-backend-service base-url="@(String.Format("https://pagopa-{0}-app-payments.azurewebsites.net", (string)context.Variables["envshort"]))" />
     </inbound>
     <outbound>
         <base />
