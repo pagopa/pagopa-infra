@@ -12,10 +12,10 @@ module "apim_gps_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
+  published             = false
+  subscription_required = false
+  approval_required     = false
+  # subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")
 }
@@ -28,7 +28,7 @@ locals {
     display_name          = "GPS pagoPA - spontaneous payments service API"
     description           = "API to support spontaneous payments service"
     path                  = "gps/spontaneous-payments-service"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
