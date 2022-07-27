@@ -668,7 +668,7 @@ locals {
     # params for all api versions
     display_name          = "Payment Manager - PM per Nodo API"
     description           = "API PM for Nodo"
-    path                  = "payment-manager/nodo-per-pm"
+    path                  = "payment-manager/pm-per-nodo"
     subscription_required = false
     service_url           = null
   }
