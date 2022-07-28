@@ -313,6 +313,13 @@ resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi" {
   display_name        = "base-path-ppt-lmi"
   value               = var.base_path_nodo_ppt_lmi
 }
+resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi_dev" {
+  name                = "base-path-ppt-lmi-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-ppt-lmi-dev"
+  value               = var.base_path_nodo_ppt_lmi_dev
+}
 
 resource "azurerm_api_management_named_value" "base_path_nodo_sync" {
   name                = "base-path-sync"
@@ -320,6 +327,13 @@ resource "azurerm_api_management_named_value" "base_path_nodo_sync" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "base-path-sync"
   value               = var.base_path_nodo_sync
+}
+resource "azurerm_api_management_named_value" "base_path_nodo_sync_dev" {
+  name                = "base-path-sync-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-sync-dev"
+  value               = var.base_path_nodo_sync_dev
 }
 
 resource "azurerm_api_management_named_value" "base_path_nodo_wfesp" {
