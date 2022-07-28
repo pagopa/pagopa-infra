@@ -111,7 +111,7 @@ module "apim_nodo_sync_dev_api" {
 
   description  = "NodeDeiPagamenti (sync) DEV"
   display_name = "NodeDeiPagamenti (sync) DEV "
-  path         = "sync/api"
+  path         = "sync-dev/api"
   protocols    = ["https"]
 
   service_url = null
@@ -123,7 +123,7 @@ module "apim_nodo_sync_dev_api" {
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/sync/v1/_base_policy_dev.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path      = "/sync/api/v1"
+    apim_base_path      = "/sync-dev/api/v1"
   })
 
 }
