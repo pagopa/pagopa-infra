@@ -248,11 +248,22 @@ variable "base_path_nodo_ppt_lmi" {
   description = "base nodo on cloud"
   default     = "/ppt-lmi-sit/"
 }
+variable "base_path_nodo_ppt_lmi_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/ppt-lmi-dev/"
+}
 
 variable "base_path_nodo_sync" {
   type        = string
   description = "base nodo on cloud"
   default     = "/sync-cron-sit/syncWisp"
+}
+
+variable "base_path_nodo_sync_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/sync-cron-dev/syncWisp"
 }
 
 variable "base_path_nodo_wfesp" {
