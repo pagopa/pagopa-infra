@@ -298,6 +298,14 @@ resource "azurerm_api_management_named_value" "base_path_nodo_oncloud" {
   value               = var.base_path_nodo_oncloud
 }
 
+resource "azurerm_api_management_named_value" "base_path_nodo_oncloud_dev" {
+  name                = "base-path-nodo-oncloud-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-nodo-oncloud-dev"
+  value               = var.base_path_nodo_oncloud_dev
+}
+
 resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi" {
   name                = "base-path-ppt-lmi"
   api_management_name = module.apim.name
