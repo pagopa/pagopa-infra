@@ -237,6 +237,12 @@ variable "base_path_nodo_oncloud" {
   default     = "/nodo-sit"
 }
 
+variable "base_path_nodo_oncloud_dev" {
+  type        = string
+  description = "base nodo on cloud (DEV)"
+  default     = "/nodo-dev"
+}
+
 variable "base_path_nodo_ppt_lmi" {
   type        = string
   description = "base nodo on cloud"
