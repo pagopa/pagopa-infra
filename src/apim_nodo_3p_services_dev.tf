@@ -52,11 +52,11 @@ module "apim_nodo_ppt_lmi_dev_api" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/ppt-lmi-dev/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./api/nodopagamenti_api/nodoServices/ppt-lmi/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/ppt-lmi-dev/v1/_base_policy.xml", {
+  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/ppt-lmi/v1/_base_policy_dev.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
     apim_base_path      = "/ppt-lmi-dev/api/v1"
   })
@@ -117,11 +117,11 @@ module "apim_nodo_sync_dev_api" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/sync-dev/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./api/nodopagamenti_api/nodoServices/sync/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/sync-dev/v1/_base_policy.xml", {
+  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/sync/v1/_base_policy_dev.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
     apim_base_path      = "/sync/api/v1"
   })
