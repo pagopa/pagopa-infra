@@ -607,7 +607,7 @@ module "apim_nodo_oncloud_dev_api" {
 
   description  = "NodeDeiPagamenti (oncloud) DEV"
   display_name = "NodeDeiPagamenti (oncloud) DEV"
-  path         = "nodo-pagamenti/api"
+  path         = "nodo-pagamenti-dev/api"
   protocols    = ["https"]
 
   service_url = null
