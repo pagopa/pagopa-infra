@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="paForNode"
-                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
-                  xmlns:pafn="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd"
-                  xmlns:tns="http://pagopa-api.pagopa.gov.it/pa/paForNode.wsdl"
-                  targetNamespace="http://pagopa-api.pagopa.gov.it/pa/paForNode.wsdl">
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+    xmlns:pafn="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd"
+    xmlns:tns="http://pagopa-api.pagopa.gov.it/pa/paForNode.wsdl" targetNamespace="http://pagopa-api.pagopa.gov.it/pa/paForNode.wsdl">
 
     <wsdl:types>
         <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                    xmlns:tns="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd"
-                    targetNamespace="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd">
+            xmlns:tns="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd" targetNamespace="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd">
 
             <!--Simple type-->
             <xsd:simpleType name="stIdentificativoServizio">
@@ -256,10 +254,10 @@
                 </xsd:annotation>
 
                 <xsd:restriction base="xsd:string">
-                    <xsd:enumeration value="EQ"></xsd:enumeration>          <!-- is equal to -->
-                    <xsd:enumeration value="LS"></xsd:enumeration>          <!-- is greater than -->
-                    <xsd:enumeration value="GT"></xsd:enumeration>          <!-- is less than -->
-                    <xsd:enumeration value="ANY"></xsd:enumeration>          <!-- -->
+                    <xsd:enumeration value="EQ"></xsd:enumeration>                    <!-- is equal to -->
+                    <xsd:enumeration value="LS"></xsd:enumeration>                    <!-- is greater than -->
+                    <xsd:enumeration value="GT"></xsd:enumeration>                    <!-- is less than -->
+                    <xsd:enumeration value="ANY"></xsd:enumeration>                    <!-- -->
                 </xsd:restriction>
             </xsd:simpleType>
 
@@ -532,10 +530,8 @@
                     <xsd:element name="idPA" type="tns:stText35"/>
                     <xsd:element name="idBrokerPA" type="tns:stText35"/>
                     <xsd:element name="idStation" type="tns:stText35"/>
-                    <xsd:element name="idServizio"
-                                 type="tns:stIdentificativoServizio" maxOccurs="1"/>
-                    <xsd:element name="datiSpecificiServizioRequest"
-                                 type="xsd:base64Binary" maxOccurs="1"/>
+                    <xsd:element name="idServizio" type="tns:stIdentificativoServizio" maxOccurs="1"/>
+                    <xsd:element name="datiSpecificiServizioRequest" type="xsd:base64Binary" maxOccurs="1"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -544,16 +540,11 @@
                     <xsd:extension base="tns:ctResponse">
                         <xsd:sequence>
                             <xsd:element name="qrCode" type="tns:ctQrCode" minOccurs="0"/>
-                            <xsd:element name="paymentList"
-                                         type="tns:ctPaymentOptionsDescriptionListPA" minOccurs="0" maxOccurs="1"/>
-                            <xsd:element name="paymentDescription"
-                                         type="tns:stText140" minOccurs="0"/>
-                            <xsd:element name="fiscalCodePA"
-                                         type="tns:stFiscalCodePA" minOccurs="0"/>
-                            <xsd:element name="companyName" type="tns:stText140"
-                                         minOccurs="0"/>
-                            <xsd:element name="officeName" type="tns:stText140"
-                                         minOccurs="0"/>
+                            <xsd:element name="paymentList" type="tns:ctPaymentOptionsDescriptionListPA" minOccurs="0" maxOccurs="1"/>
+                            <xsd:element name="paymentDescription" type="tns:stText140" minOccurs="0"/>
+                            <xsd:element name="fiscalCodePA" type="tns:stFiscalCodePA" minOccurs="0"/>
+                            <xsd:element name="companyName" type="tns:stText140" minOccurs="0"/>
+                            <xsd:element name="officeName" type="tns:stText140" minOccurs="0"/>
                         </xsd:sequence>
                     </xsd:extension>
                 </xsd:complexContent>
@@ -846,6 +837,13 @@
         <wsdl:part name="responseBody" element="pafn:paSendRTRes"/>
     </wsdl:message>
 
+    <wsdl:message name="paDemandPaymentNotice">
+        <wsdl:part name="requestBody" element="pafn:paDemandPaymentNoticeRequest" />
+    </wsdl:message>
+    <wsdl:message name="paDemandPaymentNoticeResponse">
+        <wsdl:part name="responseBody" element="pafn:paDemandPaymentNoticeResponse" />
+    </wsdl:message>
+
     <wsdl:portType name="paForNode_PortType">
         <wsdl:operation name="paVerifyPaymentNotice">
             <wsdl:documentation>
@@ -860,10 +858,8 @@
                 entering the correct expiry data for each of the options.
 
             </wsdl:documentation>
-            <wsdl:input message="tns:paVerifyPaymentNoticeReq"
-                        wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paVerifyPaymentNoticeReq"/>
-            <wsdl:output message="tns:paVerifyPaymentNoticeRes"
-                         wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paVerifyPaymentNoticeRes"/>
+            <wsdl:input message="tns:paVerifyPaymentNoticeReq" wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paVerifyPaymentNoticeReq"/>
+            <wsdl:output message="tns:paVerifyPaymentNoticeRes" wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paVerifyPaymentNoticeRes"/>
         </wsdl:operation>
         <wsdl:operation name="paGetPayment">
             <wsdl:documentation>
@@ -881,10 +877,8 @@
                 be authorized to manage
                 autonomously similar requests without necessarily contacting the PA.
             </wsdl:documentation>
-            <wsdl:input message="tns:paGetPaymentReq"
-                        wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paGetPaymentReq"/>
-            <wsdl:output message="tns:paGetPaymentRes"
-                         wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paGetPaymentRes"/>
+            <wsdl:input message="tns:paGetPaymentReq" wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paGetPaymentReq"/>
+            <wsdl:output message="tns:paGetPaymentRes" wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paGetPaymentRes"/>
         </wsdl:operation>
         <wsdl:operation name="paSendRT">
             <wsdl:documentation>
@@ -907,10 +901,12 @@
                 described and notify future accreditation operations. Any cancellations must be managed directly by the
                 EC.
             </wsdl:documentation>
-            <wsdl:input message="tns:paSendRTReq"
-                        wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paSendRTReq"/>
-            <wsdl:output message="tns:paSendRTRes"
-                         wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paSendRTRes"/>
+            <wsdl:input message="tns:paSendRTReq" wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paSendRTReq"/>
+            <wsdl:output message="tns:paSendRTRes" wsam:Action="http://pagopa-api.pagopa.gov.it/service/pa/paForNode/paSendRTRes"/>
+        </wsdl:operation>
+        <wsdl:operation name="paDemandPaymentNotice">
+            <wsdl:input message="tns:paDemandPaymentNotice"></wsdl:input>
+            <wsdl:output message="tns:paDemandPaymentNoticeResponse"></wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
 
@@ -937,6 +933,15 @@
         </wsdl:operation>
         <wsdl:operation name="paSendRT">
             <soap:operation soapAction="paSendRT"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="paDemandPaymentNotice">
+            <soap:operation soapAction="paDemandPaymentNotice" />
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
