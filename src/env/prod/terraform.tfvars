@@ -102,6 +102,12 @@ app_gateway_deny_paths = [
   "/tkm/tkmacquirermanager/*",
   "/tkm/internal*",
   "/payment-transactions-gateway/internal*",
+  "/nodo-pagamenti*",
+  "/ppt-lmi*",
+  "/sync-cron*",
+  "/wfesp/*",
+  "fatturazione/*",
+  "/web-bo/*"
 ]
 
 # nat_gateway
