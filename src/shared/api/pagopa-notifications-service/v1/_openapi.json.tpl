@@ -5,7 +5,7 @@
     "title": "Notification API",
     "description": "API to support notifications"
   },
-  "host": "https://${hostname}",
+  "host": "${hostname}",
   "basePath": "/notifications",
   "schemes": [
     "https"

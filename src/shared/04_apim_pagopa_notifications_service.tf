@@ -1,9 +1,9 @@
-module "apim_pagopa_commons_product" {
+module "apim_pagopa_notifications_service_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
   product_id   = "pagoPA"
-  display_name = "pagoPA Commons"
-  description  = "Product for pagoPA Commmons services"
+  display_name = "pagoPA Notifications Service"
+  description  = "API product for pagoPA Notifications Service"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -17,19 +17,19 @@ module "apim_pagopa_commons_product" {
 }
 
 ##############################
-## API transactions service ##
+## API notifications service ##
 ##############################
 locals {
   apim_pagopa_notifications_service_api = {
-    display_name          = "pagoPA Commons - notifications service API"
+    display_name          = "pagoPA Shared - notifications service API"
     description           = "API to support notifications service"
-    path                  = "commons/notifications-service"
+    path                  = "shared/notifications-service"
     subscription_required = false
     service_url           = null
   }
 }
 
-# Transactions service APIs
+# Notifications service APIs
 resource "azurerm_api_management_api_version_set" "pagopa_notifications_service_api" {
   name                = format("%s-notifications-service-api", local.project)
   resource_group_name = local.pagopa_apim_rg
@@ -44,7 +44,7 @@ module "apim_pagopa_notifications_service_api_v1" {
   name                  = format("%s-notifications-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_pagopa_commons_product.product_id]
+  product_ids           = [module.apim_pagopa_notifications_service_product.product_id]
   subscription_required = local.apim_pagopa_notifications_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pagopa_notifications_service_api.id
   api_version           = "v1"
@@ -61,6 +61,6 @@ module "apim_pagopa_notifications_service_api_v1" {
   })
 
   xml_content = templatefile("./api/pagopa-notifications-service/v1/_base_policy.xml.tpl", {
-    hostname = local.ecommerce_hostname
+    hostname = local.shared_hostname
   })
 }
