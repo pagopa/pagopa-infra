@@ -17,7 +17,7 @@ tags = {
 terraform_remote_state_core = {
   resource_group_name  = "io-infra-rg"
   storage_account_name = "pagopainfraterraformprod"
-  container_name       = "azurermstate"
+  container_name       = "azureadstate"
   key                  = "prod.terraform.tfstate"
 }
 
