@@ -1,0 +1,25 @@
+pool:
+  vmImage: "ubuntu-20.04"
+
+steps:
+  - task: AzureCLI@2
+    displayName: Run apim $(APIM_NAME) backup
+    inputs:
+      azureSubscription: PROD-PAGOPA-SERVICE-CONN
+      scriptType: bash
+      scriptLocation: inlineScript
+      failOnStandardError: false
+      inlineScript: |
+        set -e
+        key=$(az storage account keys list \
+        -g $(STORAGE_ACCOUNT_RG) \
+        -n $(STORAGE_ACCOUNT_NAME) \
+        --query [0].value -o tsv)
+
+        az apim backup \
+        --name $(APIM_NAME) \
+        -g $(APIM_RG) \
+        --backup-name $(BACKUP_NAME) \
+        --storage-account-name $(STORAGE_ACCOUNT_NAME) \
+        --storage-account-container $(STORAGE_ACCOUNT_CONTAINER) \
+        --storage-account-key $key
