@@ -17,7 +17,7 @@ tags = {
 terraform_remote_state_core = {
   resource_group_name  = "io-infra-rg"
   storage_account_name = "pagopainfraterraformprod"
-  container_name       = "azurermstate"
+  container_name       = "azureadstate"
   key                  = "prod.terraform.tfstate"
 }
 
@@ -31,14 +31,14 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
 
 aks_sku_tier                   = "Paid"
-aks_private_cluster_is_enabled = false
+aks_private_cluster_is_enabled = true
 
 aks_system_node_pool = {
   name                         = "system01"
   vm_size                      = "Standard_D2ds_v5"
   os_disk_type                 = "Ephemeral"
   os_disk_size_gb              = "75"
-  node_count_min               = "1" #TODO change to 2 or 3 in prod
+  node_count_min               = "2" #TODO change to 2 or 3 in prod
   node_count_max               = "3"
   only_critical_addons_enabled = true
   node_labels                  = { node_name : "aks-system-01", node_type : "system" },
