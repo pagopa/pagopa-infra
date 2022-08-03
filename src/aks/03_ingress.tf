@@ -39,6 +39,10 @@ module "nginx_ingress" {
     {
       name  = "controller.admissionWebhooks.patch.nodeSelector.beta\\.kubernetes\\.io/os"
       value = "linux"
+    },
+    {
+      name  = "controller.ingressClassResource.default"
+      value = "true"
     }
   ]
 }
