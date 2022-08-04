@@ -4,11 +4,11 @@
         "title": "PagoPA API Spontaneous Payment",
         "description": "Progetto Gestione Pagamenti Spontanei",
         "termsOfService": "https://www.pagopa.gov.it/",
-        "version": "0.0.1"
+    "version": "0.0.3-20"
     },
     "servers": [
         {
-            "url": "http://localhost:9090",
+      "url": "${host}/gps/spontaneous-payments-enrollments-service/v1",
             "description": "Generated server url"
         }
     ],
@@ -910,6 +910,8 @@
             "EnrollmentModelResponse": {
                 "required": [
                     "iban",
+          "remittanceInformation",
+          "segregationCode",
                     "serviceId"
                 ],
                 "type": "object",
@@ -922,6 +924,15 @@
                     },
                     "officeName": {
                         "type": "string"
+          },
+          "segregationCode": {
+            "type": "string"
+          },
+          "remittanceInformation": {
+            "type": "string"
+          },
+          "postalIban": {
+            "type": "string"
                     }
                 }
             },
@@ -955,6 +966,11 @@
                 }
             },
             "EnrollmentModel": {
+        "required": [
+          "iban",
+          "remittanceInformation",
+          "segregationCode"
+        ],
                 "type": "object",
                 "properties": {
                     "iban": {
@@ -962,12 +978,23 @@
                     },
                     "officeName": {
                         "type": "string"
-                    }
+                    },
+                     "segregationCode": {
+                                "type": "string"
+                              },
+                              "remittanceInformation": {
+                                "type": "string"
+                              },
+                              "postalIban": {
+                                "type": "string"
+                              }
                 }
             },
             "CreateEnrollmentModel": {
                 "required": [
                     "iban",
+          "remittanceInformation",
+          "segregationCode",
                     "serviceId"
                 ],
                 "type": "object",
@@ -980,6 +1007,15 @@
                     },
                     "officeName": {
                         "type": "string"
+          },
+          "segregationCode": {
+            "type": "string"
+          },
+          "remittanceInformation": {
+            "type": "string"
+          },
+          "postalIban": {
+            "type": "string"
                     }
                 }
             },
