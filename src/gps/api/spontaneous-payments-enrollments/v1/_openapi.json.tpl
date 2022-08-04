@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.1",
     "info": {
-        "title": "PagoPA API Spontaneous Payment",
+        "title": "PagoPA API Spontaneous Payment Enrollments",
         "description": "Progetto Gestione Pagamenti Spontanei",
         "termsOfService": "https://www.pagopa.gov.it/",
     "version": "0.0.3-20"
