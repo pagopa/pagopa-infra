@@ -63,7 +63,7 @@ module "apim_api_config_api" {
   content_format = var.env_short == "p" ? "openapi" : "openapi-link"
   content_value = var.env_short == "p" ? templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  }) : format("https://%s/v3/api-docs", module.api_config_app_service.default_site_hostname)
+  }) : format("https://%s/apiconfig/api/v1/v3/api-docs", module.api_config_app_service.default_site_hostname)
 
   xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
     origin                 = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
@@ -108,6 +108,74 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   client_authentication_method = ["Body"]
 
 }
+
+
+###########################
+## Products for Auth ##
+###########################
+
+module "apim_api_config_auth_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+
+  product_id   = "product-api-config-auth"
+  display_name = "ApiConfig for Auth"
+  description  = "Product for API Configuration of the Node for Auth"
+
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+
+  policy_xml = file("./api_product/apiconfig_api/_base_policy_auth.xml")
+}
+
+########################
+##  API for Subscribers  ##
+########################
+
+resource "azurerm_api_management_api_version_set" "api_config_auth_api" {
+
+  name                = format("%s-api-config-auth-api", var.env_short)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "ApiConfig for Auth"
+  versioning_scheme   = "Segment"
+}
+
+module "apim_api_config_auth_api" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12"
+
+  name                = format("%s-api-config-auth-api", var.env_short)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  product_ids         = [module.apim_api_config_auth_product.product_id]
+
+  subscription_required = true
+
+  version_set_id = azurerm_api_management_api_version_set.api_config_auth_api.id
+  api_version    = "v1"
+
+  description  = "Api configuration for Auth"
+  display_name = "ApiConfig for Auth"
+  path         = "apiconfig/auth/api"
+  protocols    = ["https"]
+
+  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+
+  content_format = var.env_short == "p" ? "openapi" : "openapi-link"
+  content_value = var.env_short == "p" ? templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  }) : format("https://%s/apiconfig/api/v1/v3/api-docs", module.api_config_app_service.default_site_hostname)
+
+  xml_content = templatefile("./api/apiconfig_api/auth/v1/_base_policy.xml.tpl", {
+    origin                 = "*"
+    pagopa_tenant_id       = local.pagopa_tenant_id
+    apiconfig_be_client_id = local.apiconfig_be_client_id
+  })
+}
+
 
 ###########################
 ## Products for Checkout ##
