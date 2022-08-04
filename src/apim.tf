@@ -226,6 +226,12 @@ resource "azurerm_api_management_group" "pda" {
   api_management_name = module.apim.name
   display_name        = "Client PDA"
 }
+resource "azurerm_api_management_group" "gps_grp" {
+  name                = "gps-spontaneous-payments"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "GPS Spontaneous Payments for ECs"
+}
 
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   count               = var.checkout_enabled ? 1 : 0
