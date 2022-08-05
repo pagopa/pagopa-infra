@@ -56,7 +56,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
+        value  = " https://acardste.vaservices.eu:* https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
       },
       {
         action = "Append"
@@ -66,12 +66,12 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it www.gstatic.com/recaptcha data:;"
+        value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it www.gstatic.com/recaptcha data:;"
       },
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/;"
+        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/;"
       },
       {
         action = "Append"
