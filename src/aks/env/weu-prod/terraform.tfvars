@@ -60,7 +60,8 @@ aks_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
-ingress_replica_count    = "2"
-ingress_load_balancer_ip = "10.1.100.250"
-nginx_helm_version       = "4.1.0"
-keda_helm_version        = "2.6.2"
+ingress_min_replica_count = "2"
+ingress_max_replica_count = "30"
+ingress_load_balancer_ip  = "10.1.100.250"
+nginx_helm_version        = "4.1.0"
+keda_helm_version         = "2.6.2"

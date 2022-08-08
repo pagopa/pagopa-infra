@@ -159,7 +159,11 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
-variable "ingress_replica_count" {
+variable "ingress_min_replica_count" {
+  type = string
+}
+
+variable "ingress_max_replica_count" {
   type = string
 }
 
