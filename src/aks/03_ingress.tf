@@ -20,14 +20,28 @@ module "nginx_ingress" {
   }
 
   values = [
-    "${templatefile("${path.module}/ingress/loadbalancer.yaml.tpl", { load_balancer_ip = var.ingress_load_balancer_ip })}"
+    "${templatefile("${path.module}/ingress/loadbalancer.yaml.tpl", { load_balancer_ip = var.ingress_load_balancer_ip })}",
+    templatefile(
+      "${path.module}/ingress/autoscaling.yaml.tpl",
+      {
+        min_replicas     = var.ingress_min_replica_count
+        max_replicas     = var.ingress_max_replica_count
+        polling_interval = 30  # seconds
+        cooldown_period  = 300 # seconds
+        triggers = [
+          {
+            type = "cpu"
+            metadata = {
+              type  = "Utilization"
+              value = "60"
+            }
+          }
+        ]
+      }
+    ),
   ]
 
   set = [
-    {
-      name  = "controller.replicaCount"
-      value = var.ingress_replica_count
-    },
     {
       name  = "controller.nodeSelector.beta\\.kubernetes\\.io/os"
       value = "linux"
