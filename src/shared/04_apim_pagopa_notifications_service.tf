@@ -23,7 +23,7 @@ locals {
   apim_pagopa_notifications_service_api = {
     display_name          = "pagoPA Shared - notifications service API"
     description           = "API to support notifications service"
-    path                  = "shared/notifications-service"
+    path                  = "notifications-service"
     subscription_required = true
     service_url           = null
   }
