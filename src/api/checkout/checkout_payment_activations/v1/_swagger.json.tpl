@@ -365,7 +365,7 @@
         },
         "dueDate": {
           "type": "string",
-          "format": "date",
+          "format": "date-time",
           "example": "2025-07-31T00:00:00.000Z"
         }
       },
