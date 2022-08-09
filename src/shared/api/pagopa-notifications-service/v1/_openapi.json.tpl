@@ -100,29 +100,30 @@
     "NotificationEmailRequest": {
       "type": "object",
       "properties": {
-        "from": {
-          "type": "string"
-        },
         "to": {
+          "type": "string",
+          "format": "email"
+        },
+        "subject": {
           "type": "string"
         },
         "templateId": {
           "type": "string"
         },
-        "pspName": {
-          "type": "string"
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
         },
-        "amount": {
-          "type": "integer"
+        "language": {
+          "type": "string",
+          "format": "iso639-1"
         }
       },
       "required": [
-        "from",
         "to",
+        "subject",
         "templateId",
-        "transactionId",
-        "pspName",
-        "amount"
+        "parameters"
       ]
     },
     "NotificationEmailResponse": {
