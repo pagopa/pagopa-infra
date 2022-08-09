@@ -24,7 +24,7 @@ locals {
     display_name          = "pagoPA Shared - notifications service API"
     description           = "API to support notifications service"
     path                  = "shared/notifications-service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
