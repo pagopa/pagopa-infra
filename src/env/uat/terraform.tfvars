@@ -91,7 +91,7 @@ app_gateway_deny_paths = [
   "/ppt-lmi*",
   "/sync-cron*",
   "/wfesp/*",
-  "fatturazione/*",
+  "/fatturazione/*",
   "/web-bo/*"
 ]
 
