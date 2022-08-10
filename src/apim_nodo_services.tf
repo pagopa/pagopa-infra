@@ -504,11 +504,16 @@ module "apim_nodo_per_pm_api_v2" {
   })
 }
 
-############################
+#####################################################################################################
+# The followig section define 2 products to define ALL-IN-ONE path to nodo onCloud NEXI SIT and DEV #
+#####################################################################################################
+
+################################
 ## Nodo on CLoud AllInOne SIT ##
-############################
+################################
 
 module "apim_nodo_oncloud_product" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
   product_id   = "product-nodo-oncloud"
@@ -526,6 +531,7 @@ module "apim_nodo_oncloud_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_oncloud_api" {
+  count = var.env_short == "d" ? 1 : 0
 
   name                = format("%s-nodo-oncloud-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -535,15 +541,16 @@ resource "azurerm_api_management_api_version_set" "nodo_oncloud_api" {
 }
 
 module "apim_nodo_oncloud_api" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
   name                  = format("%s-nodo-oncloud-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_oncloud_product.product_id]
+  product_ids           = [module.apim_nodo_oncloud_product[0].product_id]
   subscription_required = false
 
-  version_set_id = azurerm_api_management_api_version_set.nodo_oncloud_api.id
+  version_set_id = azurerm_api_management_api_version_set.nodo_oncloud_api[0].id
   api_version    = "v1"
 
   description  = "NodeDeiPagamenti (oncloud)"
@@ -563,11 +570,12 @@ module "apim_nodo_oncloud_api" {
 }
 
 
-############################
+################################
 ## Nodo on CLoud AllInOne DEV ##
-############################
+################################
 
 module "apim_nodo_oncloud_dev_product" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
   product_id   = "product-nodo-oncloud-dev"
@@ -585,7 +593,7 @@ module "apim_nodo_oncloud_dev_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_oncloud_dev_api" {
-
+  count               = var.env_short == "d" ? 1 : 0
   name                = format("%s-nodo-oncloud-dev-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -594,15 +602,16 @@ resource "azurerm_api_management_api_version_set" "nodo_oncloud_dev_api" {
 }
 
 module "apim_nodo_oncloud_dev_api" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
   name                  = format("%s-nodo-oncloud-dev-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_oncloud_dev_product.product_id]
+  product_ids           = [module.apim_nodo_oncloud_dev_product[0].product_id]
   subscription_required = false
 
-  version_set_id = azurerm_api_management_api_version_set.nodo_oncloud_dev_api.id
+  version_set_id = azurerm_api_management_api_version_set.nodo_oncloud_dev_api[0].id
   api_version    = "v1"
 
   description  = "NodeDeiPagamenti (oncloud) DEV"
