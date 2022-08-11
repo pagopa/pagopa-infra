@@ -62,7 +62,20 @@ aks_user_node_pool = {
 aks_cidr_subnet = ["10.1.0.0/17"]
 
 ingress_min_replica_count = "2"
-ingress_max_replica_count = "3"
+ingress_max_replica_count = "30"
 ingress_load_balancer_ip  = "10.1.100.250"
-nginx_helm_version        = "4.1.0"
-keda_helm_version         = "2.6.2"
+# ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
+# Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
+nginx_helm = {
+  version = "4.1.0"
+  controller = {
+    image = {
+      registry     = "k8s.gcr.io"
+      image        = "ingress-nginx/controller"
+      tag          = "v1.2.0"
+      digest       = "sha256:d8196e3bc1e72547c5dec66d6556c0ff92a23f6d0919b206be170bc90d5f9185"
+      digestchroot = "sha256:fb17f1700b77d4fcc52ca6f83ffc2821861ae887dbb87149cf5cbc52bea425e5"
+    }
+  }
+}
+keda_helm_version = "2.6.2"
