@@ -7,7 +7,7 @@ module "apim_afm_marketplace_product" {
 
   product_id   = "afm-marketplace"
   display_name = "GEC pagoPA - Marketplace"
-  description  = "Prodotto Gestione Evoluta Commissioni"
+  description  = "Prodotto Gestione Evoluta Commissioni - Gestione pacchetti"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg

@@ -136,7 +136,7 @@ variable "afm_marketplace_cosmos_db_params" {
   })
 }
 
-variable "cidr_subnet_afm_cosmosdb" {
+variable "cidr_subnet_afm_marketplace_cosmosdb" {
   type        = list(string)
   description = "Cosmos DB address space"
   default     = null

@@ -58,7 +58,7 @@ variable "instance" {
 variable "lock_enable" {
   type        = bool
   default     = false
-  description = "Apply locks to block accedentaly deletions."
+  description = "Apply locks to block accidentally deletions."
 }
 
 variable "tags" {
