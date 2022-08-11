@@ -5,10 +5,10 @@ resource "azurerm_resource_group" "afm_rg" {
   tags = var.tags
 }
 
-module "afm_cosmosdb_snet" {
+module "afm_marketplace_cosmosdb_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                 = format("%s-cosmosdb-snet", local.project)
-  address_prefixes     = var.cidr_subnet_afm_cosmosdb
+  name                 = format("%s-marketplace-cosmosdb-snet", local.project)
+  address_prefixes     = var.cidr_subnet_afm_marketplace_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
@@ -53,7 +53,7 @@ module "afm_marketplace_cosmosdb_account" {
   # private endpoint
   private_endpoint_name    = format("%s-marketplace-cosmos-sql-endpoint", local.project)
   private_endpoint_enabled = var.afm_marketplace_cosmos_db_params.private_endpoint_enabled
-  subnet_id                = module.afm_cosmosdb_snet.id
+  subnet_id                = module.afm_marketplace_cosmosdb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
 
   tags = var.tags
