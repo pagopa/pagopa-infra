@@ -52,48 +52,6 @@
           }
         }
       }
-    },
-    "/info": {
-      "x-swagger-router-controller": "infoController",
-      "get": {
-        "operationId": "getInfo",
-        "summary": "Get service information",
-        "responses": {
-          "200": {
-            "description": "Service information",
-            "schema": {
-              "$ref": "#/definitions/InfoResponse"
-            }
-          },
-          "500": {
-            "description": "Generic server error",
-            "schema": {
-              "$ref": "#/definitions/ProblemJson"
-            }
-          }
-        }
-      }
-    },
-    "/health": {
-      "x-swagger-router-controller": "healthController",
-      "get": {
-        "operationId": "getHealth",
-        "summary": "Get service health",
-        "responses": {
-          "200": {
-            "description": "The service is healthy",
-            "schema": {
-              "$ref": "#/definitions/HealthResponse"
-            }
-          },
-          "500": {
-            "description": "Service is unhealthy",
-            "schema": {
-              "$ref": "#/definitions/ProblemJson"
-            }
-          }
-        }
-      }
     }
   },
   "definitions": {
