@@ -54,10 +54,10 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
 }
 
 resource "azurerm_key_vault_secret" "afm_marketplace_cosmos_connection_string" {
-  name = "afm-marketplace-cosmos-primary-connection-string"
+  name = "afm-marketplace-cosmos-pkey"
   // the array is related to the input box in the following section https://portal.azure.com/#@pagopait.onmicrosoft.com/resource/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-afm-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-d-weu-afm-marketplace-cosmos-account/keys
-  // the 3th input box is the PRIMARY CONNECTION STRING
-  value        = module.afm_marketplace_cosmosdb_account.connection_strings[3]
+  // the 2nd input box is the PRIMARY KEY
+  value        = module.afm_marketplace_cosmosdb_account.connection_strings[1]
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
