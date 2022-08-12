@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://{{ip-nodo}}" />
+      <set-backend-service base-url="${base-url}" />
     </inbound>
     <outbound>
       <base />

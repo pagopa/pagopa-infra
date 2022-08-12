@@ -226,6 +226,12 @@ resource "azurerm_api_management_group" "pda" {
   api_management_name = module.apim.name
   display_name        = "Client PDA"
 }
+resource "azurerm_api_management_group" "gps_grp" {
+  name                = "gps-spontaneous-payments"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "GPS Spontaneous Payments for ECs"
+}
 
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   count               = var.checkout_enabled ? 1 : 0
@@ -292,12 +298,27 @@ resource "azurerm_api_management_named_value" "base_path_nodo_oncloud" {
   value               = var.base_path_nodo_oncloud
 }
 
+resource "azurerm_api_management_named_value" "base_path_nodo_oncloud_dev" {
+  name                = "base-path-nodo-oncloud-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-nodo-oncloud-dev"
+  value               = var.base_path_nodo_oncloud_dev
+}
+
 resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi" {
   name                = "base-path-ppt-lmi"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "base-path-ppt-lmi"
   value               = var.base_path_nodo_ppt_lmi
+}
+resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi_dev" {
+  name                = "base-path-ppt-lmi-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-ppt-lmi-dev"
+  value               = var.base_path_nodo_ppt_lmi_dev
 }
 
 resource "azurerm_api_management_named_value" "base_path_nodo_sync" {
@@ -306,6 +327,13 @@ resource "azurerm_api_management_named_value" "base_path_nodo_sync" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "base-path-sync"
   value               = var.base_path_nodo_sync
+}
+resource "azurerm_api_management_named_value" "base_path_nodo_sync_dev" {
+  name                = "base-path-sync-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-sync-dev"
+  value               = var.base_path_nodo_sync_dev
 }
 
 resource "azurerm_api_management_named_value" "base_path_nodo_wfesp" {
@@ -427,6 +455,54 @@ resource "azurerm_api_management_named_value" "pagopa_mock_services_api_key" {
   secret              = true
 }
 
+data "azurerm_key_vault_secret" "user_pm_test_key" {
+  count        = var.env_short == "d" ? 1 : 0
+  name         = "user-pm-test"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "user_pm_test" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = "user-pm-test"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "user-pm-test"
+  value               = data.azurerm_key_vault_secret.user_pm_test_key[0].value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "password_pm_test_key" {
+  count        = var.env_short == "d" ? 1 : 0
+  name         = "password-pm-test"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "password_pm_test" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = "password-pm-test"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "password-pm-test"
+  value               = data.azurerm_key_vault_secret.password_pm_test_key[0].value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "checkout_v2_test_key_secret" {
+  count        = var.env_short == "d" ? 1 : 0
+  name         = "checkout-v2-testing-api-key"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "checkout_v2_test_key" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = "checkout-v2-testing-api-key"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "checkout-v2-testing-api-key"
+  value               = data.azurerm_key_vault_secret.checkout_v2_test_key_secret[0].value
+  secret              = true
+}
+
 # donazioni
 resource "azurerm_api_management_named_value" "donazioni_config_name" {
   name                = "donazioni-ucraina"
@@ -434,6 +510,14 @@ resource "azurerm_api_management_named_value" "donazioni_config_name" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "donazioni-ucraina"
   value               = file(format("./api/nodopagamenti_api/paForNode/v1/donationsCfg/%s/donazioni_ucraina.json", var.env_short == "d" ? "dev" : var.env_short == "u" ? "uat" : "prod"))
+}
+
+resource "azurerm_api_management_named_value" "donazioni_config_name_2" {
+  name                = "donazioni-ucraina2"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "donazioni-ucraina2"
+  value               = file(format("./api/nodopagamenti_api/paForNode/v1/donationsCfg/%s/donazioni_ucraina2.json", var.env_short == "d" ? "dev" : var.env_short == "u" ? "uat" : "prod"))
 }
 
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {

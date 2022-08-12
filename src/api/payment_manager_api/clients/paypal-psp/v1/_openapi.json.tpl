@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/paypalpsp/api/pp_onboarding_back": {
+    "/api/pp_onboarding_back": {
       "post": {
         "summary": "server to server api used to start onboarding",
         "responses": {
@@ -40,7 +40,7 @@
         ]
       }
     },
-    "/paypalpsp/api/pp_pay_direct": {
+    "/api/pp_pay_direct": {
       "post": {
         "summary": "server to server api used to pay",
         "responses": {
@@ -55,7 +55,7 @@
         ]
       }
     },
-    "/paypalpsp/api/pp_refund_direct": {
+    "/api/pp_refund_direct": {
       "post": {
         "summary": "server to server api used to refund payment",
         "responses": {
@@ -70,7 +70,7 @@
         ]
       }
     },
-    "/paypalpsp/api/pp_bilagr_del": {
+    "/api/pp_bilagr_del": {
       "post": {
         "summary": "server to server api used to delete contract",
         "responses": {

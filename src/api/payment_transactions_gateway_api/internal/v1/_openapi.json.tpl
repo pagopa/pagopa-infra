@@ -102,71 +102,42 @@
             }
           }
         }
-      },
-      "put": {
-        "tags": [
-          "payment-transactions-controller"
-        ],
-        "summary": "authorization outcome response from PostePay",
-        "operationId": "auth-response",
+      }
+    },
+    "/request-payments/postepay/{requestId}": {
+      "delete": {
+        "summary": "refund PostePay requests",
+        "operationId": "refund-request",
         "parameters": [
           {
-            "name": "X-Correlation-ID",
-            "in": "header",
-            "required": true,
-            "description": "PostePay correlation ID",
+            "in": "path",
+            "name": "requestId",
             "schema": {
-              "type": "string"
-            }
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "PGS-generated GUID of the request to retrieve",
+            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuthMessage"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ACKMessage"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - idPostePay already processed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
                 }
               }
             }
           },
           "404": {
-            "description": "Unknown idPostePay",
+            "description": "Request doesn't exist",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
                 }
               }
             }
@@ -176,7 +147,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
                 }
               }
             }
@@ -186,7 +167,79 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "PGS webview polling call",
+        "tags": [
+          "payment-transactions-controller"
+        ],
+        "operationId": "webviewPolling",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "PGS-generated GUID of the request to get",
+            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PollingResponseEntity"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing mandatory parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PollingResponseEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "transactionId already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PollingResponseEntity"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PollingResponseEntity"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PollingResponseEntity"
                 }
               }
             }
@@ -275,10 +328,15 @@
       "PostePayAuthResponseEntity": {
         "type": "object",
         "required": [
+          "requestId",
           "channel",
           "urlRedirect"
         ],
         "properties": {
+          "requestId": {
+            "type": "string",
+            "description": "request payment ID"
+          },
           "channel": {
             "type": "string",
             "description": "request payment channel (APP or WEB)",
@@ -364,6 +422,29 @@
             "example": "error message"
           }
         }
+      },
+      "PostePayRefundResponse": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "paymentId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "transactionId",
+          "paymentId",
+          "refundOutcome",
+          "error"
+        ]
       }
     }
   }

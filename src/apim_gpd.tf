@@ -12,7 +12,7 @@ module "apim_gpd_product" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  published             = true
+  published             = false
   subscription_required = false
   approval_required     = false
 

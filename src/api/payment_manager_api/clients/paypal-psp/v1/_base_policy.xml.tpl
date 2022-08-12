@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="${endpoint}" />
+      <set-backend-service base-url="${endpoint}/srvs/AI" />
     </inbound>
     <outbound>
       <base />
