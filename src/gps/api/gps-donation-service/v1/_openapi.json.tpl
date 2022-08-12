@@ -145,19 +145,26 @@
           "properties": {
             "$ref": "#/components/schemas/Properties"
           }
-        }
+        },
+        "required": [
+          "properties"
+        ]
       },
       "Properties": {
         "type": "object",
         "properties": {
           "amount": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string",
+            "description": "Must be a positive number",
+            "example": "100"
           },
           "description": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "amount"
+        ]
       },
       "Output": {
         "type": "object",
