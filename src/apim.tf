@@ -226,6 +226,12 @@ resource "azurerm_api_management_group" "pda" {
   api_management_name = module.apim.name
   display_name        = "Client PDA"
 }
+resource "azurerm_api_management_group" "gps_grp" {
+  name                = "gps-spontaneous-payments"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "GPS Spontaneous Payments for ECs"
+}
 
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   count               = var.checkout_enabled ? 1 : 0
@@ -292,12 +298,27 @@ resource "azurerm_api_management_named_value" "base_path_nodo_oncloud" {
   value               = var.base_path_nodo_oncloud
 }
 
+resource "azurerm_api_management_named_value" "base_path_nodo_oncloud_dev" {
+  name                = "base-path-nodo-oncloud-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-nodo-oncloud-dev"
+  value               = var.base_path_nodo_oncloud_dev
+}
+
 resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi" {
   name                = "base-path-ppt-lmi"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "base-path-ppt-lmi"
   value               = var.base_path_nodo_ppt_lmi
+}
+resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi_dev" {
+  name                = "base-path-ppt-lmi-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-ppt-lmi-dev"
+  value               = var.base_path_nodo_ppt_lmi_dev
 }
 
 resource "azurerm_api_management_named_value" "base_path_nodo_sync" {
@@ -306,6 +327,13 @@ resource "azurerm_api_management_named_value" "base_path_nodo_sync" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "base-path-sync"
   value               = var.base_path_nodo_sync
+}
+resource "azurerm_api_management_named_value" "base_path_nodo_sync_dev" {
+  name                = "base-path-sync-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-sync-dev"
+  value               = var.base_path_nodo_sync_dev
 }
 
 resource "azurerm_api_management_named_value" "base_path_nodo_wfesp" {

@@ -82,7 +82,17 @@ app_gateway_deny_paths = [
   "/tkm/tkmcardmanager/*",
   "/tkm/tkmacquirermanager/*",
   "/tkm/internal*",
-  "/payment-transactions-gateway/internal*"
+  "/payment-transactions-gateway/internal*",
+  "/gps/donation-service/*",
+  "/shared/iuv-generator-service/*",
+  "/gpd/api/*",
+  "/gps/spontaneous-payments-service/*",
+  "/nodo-pagamenti*",
+  "/ppt-lmi*",
+  "/sync-cron*",
+  "/wfesp/*",
+  "/fatturazione/*",
+  "/web-bo/*"
 ]
 
 # nat_gateway

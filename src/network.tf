@@ -103,6 +103,13 @@ module "route_table_peering_sia" {
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.70.249.10"
     },
+    {
+      # prod
+      name                   = "to-pm-appservice-outbound-sia-prod-subnet"
+      address_prefix         = "10.70.136.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10"
+    },
   ]
 
   tags = var.tags

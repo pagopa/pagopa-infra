@@ -237,16 +237,33 @@ variable "base_path_nodo_oncloud" {
   default     = "/nodo-sit"
 }
 
+variable "base_path_nodo_oncloud_dev" {
+  type        = string
+  description = "base nodo on cloud (DEV)"
+  default     = "/nodo-dev"
+}
+
 variable "base_path_nodo_ppt_lmi" {
   type        = string
   description = "base nodo on cloud"
   default     = "/ppt-lmi-sit/"
+}
+variable "base_path_nodo_ppt_lmi_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/ppt-lmi-dev/"
 }
 
 variable "base_path_nodo_sync" {
   type        = string
   description = "base nodo on cloud"
   default     = "/sync-cron-sit/syncWisp"
+}
+
+variable "base_path_nodo_sync_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/sync-cron-dev/syncWisp"
 }
 
 variable "base_path_nodo_wfesp" {

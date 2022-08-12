@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "aks_rg" {
 }
 
 module "aks" {
-  source = "git::https://github.com/pagopa/azurerm.git//kubernetes_cluster?ref=v2.15.2"
+  source = "git::https://github.com/pagopa/azurerm.git//kubernetes_cluster?ref=v2.17.0"
 
   name                       = local.aks_name
   location                   = var.location
