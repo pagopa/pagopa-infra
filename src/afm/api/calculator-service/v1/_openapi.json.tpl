@@ -8,7 +8,7 @@
     },
     "servers": [
         {
-            "url": "${host}/afm-calculator/api/v1",
+            "url": "${host}",
             "description": "Generated server url"
         }
     ],

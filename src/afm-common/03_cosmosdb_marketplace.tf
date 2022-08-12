@@ -48,7 +48,8 @@ module "afm_marketplace_cosmosdb_account" {
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = [data.azurerm_subnet.aks_subnet.id]
+#  allowed_virtual_network_subnet_ids = [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = []
 
   # private endpoint
   private_endpoint_name    = format("%s-marketplace-cosmos-sql-endpoint", local.project)
