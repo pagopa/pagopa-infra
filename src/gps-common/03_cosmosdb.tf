@@ -48,7 +48,7 @@ module "gps_cosmosdb_account" {
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = var.cosmos_gps_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = var.cosmos_gps_db_params.public_network_access_enabled ? [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
   private_endpoint_name    = format("%s-cosmos-sql-endpoint", local.project)

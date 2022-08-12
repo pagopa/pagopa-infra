@@ -159,12 +159,28 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
-variable "ingress_replica_count" {
+variable "ingress_min_replica_count" {
   type = string
 }
 
-variable "nginx_helm_version" {
+variable "ingress_max_replica_count" {
   type = string
+}
+
+variable "nginx_helm" {
+  type = object({
+    version = string,
+    controller = object({
+      image = object({
+        registry     = string,
+        image        = string,
+        tag          = string,
+        digest       = string,
+        digestchroot = string,
+      })
+    })
+  })
+  description = "nginx ingress helm chart configuration"
 }
 
 variable "keda_helm_version" {
