@@ -77,6 +77,10 @@ module "nginx_ingress" {
     {
       name  = "controller.ingressClassResource.default"
       value = "true"
+    },
+    {
+      name = "controller.config.client-body-buffer-size"
+      value = var.nginx_helm.controller.config.client-body-buffer-size
     }
   ]
 }

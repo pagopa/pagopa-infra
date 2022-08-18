@@ -177,6 +177,9 @@ variable "nginx_helm" {
         tag          = string,
         digest       = string,
         digestchroot = string,
+      }),
+      config = object({
+        client-body-buffer-size: string
       })
     })
   })
