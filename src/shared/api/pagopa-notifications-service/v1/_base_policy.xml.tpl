@@ -9,7 +9,7 @@
                   <value>CLIENT_ECOMMERCE</value>
               </set-header>
           </when>
-          <when condition="@(context.User.Groups.Select(g => g.Id).Contains("payment-CLIENT_PAYMENT_MANAGER"))" >
+          <when condition="@(context.User.Groups.Select(g => g.Id).Contains("payment-manager"))" >
             <set-header name="X-Client-Id" exists-action="override">
               <value>CLIENT_PAYMENT_MANAGER</value>
             </set-header>
