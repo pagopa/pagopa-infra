@@ -212,7 +212,7 @@ module "app_gw" {
         },
         {
           name          = "http-deny-path2"
-          rule_sequence = 1
+          rule_sequence = 2
           condition = {
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths_2)
