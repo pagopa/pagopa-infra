@@ -108,7 +108,7 @@ app_gateway_deny_paths = [
   "/gps/spontaneous-payments-service/*"
 ]
 
-app_gateway_deny_paths2 = [
+app_gateway_deny_paths_2 = [
   "/nodo-pagamenti*",
   "/ppt-lmi*",
   "/sync-cron*",
