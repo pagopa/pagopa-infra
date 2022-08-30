@@ -520,7 +520,7 @@ variable "app_gateway_deny_paths" {
 }
 
 # needs to be less than 512 characters. For more details refer to the documentation here: https://aka.ms/appgwheadercrud."
-variable "app_gateway_deny_paths2" {
+variable "app_gateway_deny_paths_2" {
   type        = list(string)
   description = "Deny paths on app gateway"
   default     = []

@@ -215,7 +215,7 @@ module "app_gw" {
           rule_sequence = 1
           condition = {
             variable    = "var_uri_path"
-            pattern     = join("|", var.app_gateway_deny_paths2)
+            pattern     = join("|", var.app_gateway_deny_paths_2)
             ignore_case = true
             negate      = false
           }
