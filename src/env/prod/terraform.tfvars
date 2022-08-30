@@ -105,7 +105,10 @@ app_gateway_deny_paths = [
   "/gps/donation-service/*",
   "/shared/iuv-generator-service/*",
   "/gpd/api/*",
-  "/gps/spontaneous-payments-service/*",
+  "/gps/spontaneous-payments-service/*"
+]
+
+app_gateway_deny_paths2 = [
   "/nodo-pagamenti*",
   "/ppt-lmi*",
   "/sync-cron*",
@@ -113,6 +116,7 @@ app_gateway_deny_paths = [
   "/fatturazione/*",
   "/web-bo/*"
 ]
+
 
 # nat_gateway
 nat_gateway_enabled    = true
