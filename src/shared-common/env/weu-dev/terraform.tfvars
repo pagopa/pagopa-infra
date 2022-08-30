@@ -60,3 +60,10 @@ cosmos_iuvgenerator_db_params = {
 }
 
 cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
+
+cidr_subnet_notification_service_storage = ["10.1.151.0/24"]
+
+notifications_service_queue_params = {
+  enabled = true,
+  tier    = "Basic"
+}
