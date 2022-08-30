@@ -59,6 +59,47 @@
         ]
       }
     },
+    "/postepay/searchPSP": {
+      "get": {
+        "tags": [
+          "poste-pay-controller"
+        ],
+        "summary": "getPostePayPsps",
+        "operationId": "getPostePayPspsUsingGET",
+        "parameters": [
+          {
+            "name": "language",
+            "in": "query",
+            "description": "language",
+            "required": false,
+            "type": "string",
+            "default": "it"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PostePayPspListResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/wallet": {
       "get": {
         "tags": [
@@ -384,6 +425,59 @@
         }
       },
       "title": "PaypalPspListResponse"
+    },
+    "PostePayPsp": {
+      "type": "object",
+      "required": [
+        "avgFee",
+        "codiceAbi",
+        "idPsp",
+        "maxFee",
+        "onboard",
+        "privacyUrl",
+        "ragioneSociale"
+      ],
+      "properties": {
+        "avgFee": {
+          "type": "number",
+          "format": "double"
+        },
+        "codiceAbi": {
+          "type": "string"
+        },
+        "idPsp": {
+          "type": "string"
+        },
+        "maxFee": {
+          "type": "integer"
+        },
+        "onboard": {
+          "type": "boolean",
+          "example": false
+        },
+        "privacyUrl": {
+          "type": "string"
+        },
+        "ragioneSociale": {
+          "type": "string"
+        }
+      },
+      "title": "PostePayPsp"
+    },
+    "PostePayPspListResponse": {
+      "type": "object",
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PostePayPsp"
+          }
+        }
+      },
+      "title": "PostePayPspListResponse"
     },
     "WalletPaymentStatus": {
       "type": "object",
