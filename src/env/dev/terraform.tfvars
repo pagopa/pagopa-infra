@@ -77,6 +77,8 @@ app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
   "/notfound/*",
 ]
+app_gateway_deny_paths_2 = [
+]
 
 # postgresql
 postgresql_sku_name                      = "B_Gen5_1" # todo fixme verify
