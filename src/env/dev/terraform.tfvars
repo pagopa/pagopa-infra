@@ -78,6 +78,7 @@ app_gateway_deny_paths = [
   "/notfound/*",
 ]
 app_gateway_deny_paths_2 = [
+  "/notfound2/*",
 ]
 
 # postgresql
