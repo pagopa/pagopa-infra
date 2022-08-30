@@ -24,6 +24,12 @@
               "$ref": "#/definitions/NotificationEmailRequest"
             },
             "required": true
+          },
+          {
+            "in": "header",
+            "name": "ocp-apim-subscription-key",
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
@@ -100,25 +106,6 @@
       "maximum": 600,
       "exclusiveMaximum": true,
       "example": 200
-    },
-    "InfoResponse": {
-      "type": "object",
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "HealthResponse": {
-      "type": "object",
-      "properties": {
-        "sentLast24Hours": {
-          "type": "number"
-        }
-      }
     },
     "ProblemJson": {
       "type": "object",

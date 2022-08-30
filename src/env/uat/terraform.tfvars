@@ -86,7 +86,10 @@ app_gateway_deny_paths = [
   "/gps/donation-service/*",
   "/shared/iuv-generator-service/*",
   "/gpd/api/*",
-  "/gps/spontaneous-payments-service/*",
+  "/gps/spontaneous-payments-service/*"
+]
+
+app_gateway_deny_paths_2 = [
   "/nodo-pagamenti*",
   "/ppt-lmi*",
   "/sync-cron*",
