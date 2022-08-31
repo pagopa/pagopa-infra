@@ -78,6 +78,7 @@ app_gateway_deny_paths = [
   "/notfound/*",
 ]
 app_gateway_deny_paths_2 = [
+  "/notfound2/*",
 ]
 
 # postgresql
@@ -308,9 +309,9 @@ eventhubs = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1523
+db_port                            = 1522
 db_service_name                    = "NDPSPCT_PP_NODO4_CFG"
-dns_a_reconds_dbnodo_ips           = ["10.8.3.228"]
+dns_a_reconds_dbnodo_ips           = ["10.70.67.18"]
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
 
 # API Config
