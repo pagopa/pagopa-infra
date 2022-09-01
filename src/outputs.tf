@@ -2,6 +2,10 @@ output "vnet_name" {
   value = module.vnet.name
 }
 
+output "vnet_id" {
+  value = module.vnet.id
+}
+
 output "vnet_address_space" {
   value = module.vnet.address_space
 }
@@ -58,5 +62,10 @@ output "sec_workspace_id" {
 
 output "sec_storage_id" {
   value     = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
+  sensitive = true
+}
+
+output "application_insights_instrumentation_key" {
+  value     = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
   sensitive = true
 }
