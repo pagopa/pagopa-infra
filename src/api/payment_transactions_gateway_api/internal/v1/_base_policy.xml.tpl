@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="{{pm-gtw-hostname}}/payment-gateway" />
+      <set-backend-service base-url="${hostname}/payment-gateway" />
       <!-- Handle X-Client-ID - multi channel - START -->
         <set-header name="X-Client-ID" exists-action="delete" />
         <choose>

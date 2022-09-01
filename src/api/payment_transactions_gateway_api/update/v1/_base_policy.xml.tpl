@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="{{pm-gtw-hostname}}/payment-gateway" />
+      <set-backend-service base-url="${hostname}/payment-gateway" />
     </inbound>
     <outbound>
       <base />
