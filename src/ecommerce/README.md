@@ -25,6 +25,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_apim_ecommerce_payment_instruments_service_api_v1"></a> [apim\_ecommerce\_payment\_instruments\_service\_api\_v1](#module\_apim\_ecommerce\_payment\_instruments\_service\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
+| <a name="module_apim_ecommerce_payment_requests_service_api_v1"></a> [apim\_ecommerce\_payment\_requests\_service\_api\_v1](#module\_apim\_ecommerce\_payment\_requests\_service\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_ecommerce_product"></a> [apim\_ecommerce\_product](#module\_apim\_ecommerce\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_ecommerce_sessions_service_api_v1"></a> [apim\_ecommerce\_sessions\_service\_api\_v1](#module\_apim\_ecommerce\_sessions\_service\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_ecommerce_transaction_auth_requests_service_api_v1"></a> [apim\_ecommerce\_transaction\_auth\_requests\_service\_api\_v1](#module\_apim\_ecommerce\_transaction\_auth\_requests\_service\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
@@ -37,6 +38,7 @@
 | Name | Type |
 |------|------|
 | [azurerm_api_management_api_version_set.ecommerce_payment_instruments_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.ecommerce_payment_requests_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_sessions_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_transaction_auth_requests_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_transaction_results_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
