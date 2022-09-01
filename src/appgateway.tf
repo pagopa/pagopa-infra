@@ -210,6 +210,22 @@ module "app_gw" {
           response_header_configurations = []
           url                            = null
         },
+        {
+          name          = "http-deny-path2"
+          rule_sequence = 2
+          condition = {
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_deny_paths_2)
+            ignore_case = true
+            negate      = false
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+        },
       ]
     }
   ]
