@@ -179,7 +179,7 @@ variable "nginx_helm" {
         digestchroot = string,
       }),
       config = object({
-        client-body-buffer-size: string
+        proxy-body-size: string
       })
     })
   })
