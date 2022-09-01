@@ -79,8 +79,8 @@ module "nginx_ingress" {
       value = "true"
     },
     {
-      name = "controller.config.client-body-buffer-size"
-      value = var.nginx_helm.controller.config.client-body-buffer-size
+      name = "controller.config.proxy-body-size"
+      value = var.nginx_helm.controller.config.proxy-body-size
     }
   ]
 }

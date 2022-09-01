@@ -1,10 +1,10 @@
 {
     "openapi": "3.0.1",
     "info": {
-        "title": "PagoPA API Calculator Logic",
-        "description": "Calculator Logic microservice for pagoPA AFM",
+        "title": "PagoPA API Calculator Data",
+        "description": "Calculator Data microservice for pagoPA AFM",
         "termsOfService": "https://www.pagopa.gov.it/",
-        "version": "0.0.1-4"
+        "version": "0.0.1"
     },
     "servers": [
         {
@@ -13,10 +13,6 @@
         }
     ],
     "tags": [
-        {
-            "name": "Calculator",
-            "description": "Everything about Calculator business logic"
-        },
         {
             "name": "Configuration",
             "description": "Everything about Calculator Configuration"
@@ -109,49 +105,25 @@
                     }
                 }
             },
-            "parameters": [
-                {
-                    "name": "X-Request-Id",
-                    "in": "header",
-                    "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-                    "schema": {
-                        "type": "string"
-                    }
-                }
-            ]
-        },
-        "/fees": {
             "post": {
                 "tags": [
-                    "Calculator"
+                    "Configuration"
                 ],
-                "summary": "Get taxpayer fees of all or specified idPSP",
-                "operationId": "getFees",
-                "parameters": [
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "default": 10
-                        }
-                    }
-                ],
+                "summary": "Save calculator configuration",
+                "operationId": "configure",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PaymentOption"
+                                "$ref": "#/components/schemas/Configuration"
                             }
                         }
                     },
                     "required": true
                 },
                 "responses": {
-                    "200": {
-                        "description": "Ok",
+                    "201": {
+                        "description": "Created",
                         "headers": {
                             "X-Request-Id": {
                                 "description": "This header identifies the call",
@@ -163,7 +135,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "string"
+                                    "$ref": "#/components/schemas/Configuration"
                                 }
                             }
                         }
@@ -355,233 +327,10 @@
                     }
                 }
             ]
-        },
-        "/psps/{idPsp}/fees": {
-            "post": {
-                "tags": [
-                    "Calculator"
-                ],
-                "summary": "Get taxpayer fees of a specific idPSP",
-                "operationId": "getFeeByPsp",
-                "parameters": [
-                    {
-                        "name": "idPsp",
-                        "in": "path",
-                        "description": "PSP identifier",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "default": 10
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PaymentOption"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Ok",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "429": {
-                        "description": "Too many requests",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Service unavailable",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "parameters": [
-                {
-                    "name": "X-Request-Id",
-                    "in": "header",
-                    "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-                    "schema": {
-                        "type": "string"
-                    }
-                }
-            ]
         }
     },
     "components": {
         "schemas": {
-            "PaymentOption": {
-                "type": "object",
-                "properties": {
-                    "paymentAmount": {
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "primaryCreditorInstitution": {
-                        "type": "string"
-                    },
-                    "paymentMethod": {
-                        "type": "string",
-                        "enum": [
-                            "ANY",
-                            "PPAL",
-                            "BPAY",
-                            "PAYBP",
-                            "BBT",
-                            "AD",
-                            "CP",
-                            "PO",
-                            "JIF",
-                            "MYBK"
-                        ]
-                    },
-                    "touchpoint": {
-                        "type": "string",
-                        "enum": [
-                            "ANY",
-                            "IO",
-                            "WISP",
-                            "CHECKOUT"
-                        ]
-                    },
-                    "idPspList": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "transferList": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/TransferListItem"
-                        }
-                    }
-                }
-            },
-            "TransferListItem": {
-                "type": "object",
-                "properties": {
-                    "creditorInstitution": {
-                        "type": "string"
-                    },
-                    "transferCategory": {
-                        "type": "string"
-                    }
-                }
-            },
-            "ProblemJson": {
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string",
-                        "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-                    },
-                    "status": {
-                        "maximum": 600,
-                        "minimum": 100,
-                        "type": "integer",
-                        "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-                        "format": "int32",
-                        "example": 200
-                    },
-                    "detail": {
-                        "type": "string",
-                        "description": "A human readable explanation specific to this occurrence of the problem.",
-                        "example": "There was an error processing the request"
-                    }
-                }
-            },
-            "AppInfo": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "version": {
-                        "type": "string"
-                    },
-                    "environment": {
-                        "type": "string"
-                    }
-                }
-            },
             "Bundle": {
                 "type": "object",
                 "properties": {
@@ -716,6 +465,42 @@
                         "format": "int64"
                     },
                     "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProblemJson": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+                    },
+                    "status": {
+                        "maximum": 600,
+                        "minimum": 100,
+                        "type": "integer",
+                        "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+                        "format": "int32",
+                        "example": 200
+                    },
+                    "detail": {
+                        "type": "string",
+                        "description": "A human readable explanation specific to this occurrence of the problem.",
+                        "example": "There was an error processing the request"
+                    }
+                }
+            },
+            "AppInfo": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "string"
+                    },
+                    "environment": {
                         "type": "string"
                     }
                 }
