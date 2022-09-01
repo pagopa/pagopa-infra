@@ -78,12 +78,11 @@ module "apim_api_config_api" {
 ########################
 
 data "azuread_application" "apiconfig-fe" {
-  display_name = "pagopa-apiconfig-fe"
+  display_name = format("pagopa-%s-apiconfig-fe", var.env_short)
 }
 data "azuread_application" "apiconfig-be" {
-  display_name = "pagopa-apiconfig-be"
+  display_name = format("pagopa-%s-apiconfig-be", var.env_short)
 }
-
 
 resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   name                         = "apiconfig-oauth2"
@@ -175,6 +174,13 @@ module "apim_api_config_auth_api" {
     apiconfig_be_client_id = local.apiconfig_be_client_id
   })
 }
+
+##################################################################################
+#                                   DEPRECATED                                   #
+# API apim_api_config_checkout_product (which contains only a subset of actions) #
+# will be removed in favor of API apim_api_config_auth_product which             #
+# is the same of apim_api_config_product but requires authentication             #
+##################################################################################
 
 
 ###########################
