@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg_vnet" {
 
 # vnet
 module "vnet" {
-  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.51"
+  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
   name                = format("%s-vnet", local.project)
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -18,7 +18,7 @@ module "vnet" {
 
 # vnet integration
 module "vnet_integration" {
-  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.51"
+  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
   name                = format("%s-vnet-integration", local.project)
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -29,7 +29,7 @@ module "vnet_integration" {
 
 ## Peering between the vnet(main) and integration vnet
 module "vnet_peering" {
-  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.30"
+  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.90"
 
   location = azurerm_resource_group.rg_vnet.location
 
@@ -44,7 +44,7 @@ module "vnet_peering" {
 }
 
 module "route_table_peering_sia" {
-  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.25"
+  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.90"
 
   name                          = format("%s-sia-rt", local.project)
   location                      = azurerm_resource_group.rg_vnet.location

@@ -1,6 +1,6 @@
 ## Database subnet
 module "redis_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   count                = var.redis_sku_name == "Premium" && length(var.cidr_subnet_redis) > 0 ? 1 : 0
   name                 = format("%s-redis-snet", local.project)
   address_prefixes     = var.cidr_subnet_redis
@@ -10,7 +10,7 @@ module "redis_snet" {
 
 module "redis" {
   count                 = var.redis_cache_enabled ? 1 : 0
-  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v1.0.37"
+  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v1.0.90"
   name                  = format("%s-redis", local.project)
   resource_group_name   = azurerm_resource_group.data.name
   location              = azurerm_resource_group.data.location

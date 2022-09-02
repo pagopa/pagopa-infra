@@ -4,7 +4,7 @@
 
 module "apim_mock_psp_product" {
   count  = var.mock_psp_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-mock-psp"
   display_name = "product-mock-psp"
@@ -26,7 +26,7 @@ module "apim_mock_psp_product" {
 
 module "apim_mock_psp_api" {
   count  = var.mock_psp_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-mock-psp-api", var.env_short)
   api_management_name   = module.apim.name
@@ -60,7 +60,7 @@ locals {
 
 module "apim_mock_psp_mng_api" {
   count  = var.mock_psp_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = local.apim_mock_psp_mng_api_name
   api_management_name   = module.apim.name

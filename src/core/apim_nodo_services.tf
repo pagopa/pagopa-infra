@@ -3,7 +3,7 @@
 ##############
 
 module "apim_nodo_dei_pagamenti_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "nodo"
   display_name = "Nodo dei Pagamenti"
@@ -514,7 +514,7 @@ module "apim_nodo_per_pm_api_v2" {
 
 module "apim_nodo_oncloud_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-oncloud"
   display_name = "product-nodo-oncloud"
@@ -542,7 +542,7 @@ resource "azurerm_api_management_api_version_set" "nodo_oncloud_api" {
 
 module "apim_nodo_oncloud_api" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-oncloud-api", var.env_short)
   api_management_name   = module.apim.name
@@ -576,7 +576,7 @@ module "apim_nodo_oncloud_api" {
 
 module "apim_nodo_oncloud_dev_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-oncloud-dev"
   display_name = "product-nodo-oncloud-dev"
@@ -603,7 +603,7 @@ resource "azurerm_api_management_api_version_set" "nodo_oncloud_dev_api" {
 
 module "apim_nodo_oncloud_dev_api" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-oncloud-dev-api", var.env_short)
   api_management_name   = module.apim.name

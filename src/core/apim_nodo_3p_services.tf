@@ -5,7 +5,7 @@
 
 module "apim_nodo_ppt_lmi_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-ppt-lmi"
   display_name = "product-nodo-ppt-lmi"
@@ -33,7 +33,7 @@ resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_api" {
 
 module "apim_nodo_ppt_lmi_api" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-ppt-lmi-api", var.env_short)
   api_management_name   = module.apim.name
@@ -70,7 +70,7 @@ module "apim_nodo_ppt_lmi_api" {
 
 module "apim_nodo_sync_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-sync"
   display_name = "product-nodo-sync"
@@ -98,7 +98,7 @@ resource "azurerm_api_management_api_version_set" "nodo_sync_api" {
 
 module "apim_nodo_sync_api" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-sync-api", var.env_short)
   api_management_name   = module.apim.name
@@ -134,7 +134,7 @@ module "apim_nodo_sync_api" {
 
 module "apim_nodo_wfesp_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-wfesp"
   display_name = "product-nodo-wfesp"
@@ -162,7 +162,7 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
 
 module "apim_nodo_wfesp_api" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-wfesp-api", var.env_short)
   api_management_name   = module.apim.name
@@ -198,7 +198,7 @@ module "apim_nodo_wfesp_api" {
 
 module "apim_nodo_fatturazione_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-fatturazione"
   display_name = "product-nodo-fatturazione"
@@ -226,7 +226,7 @@ resource "azurerm_api_management_api_version_set" "nodo_fatturazione_api" {
 
 module "apim_nodo_fatturazione_api" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-fatturazione-api", var.env_short)
   api_management_name   = module.apim.name
@@ -262,7 +262,7 @@ module "apim_nodo_fatturazione_api" {
 
 module "apim_nodo_web_bo_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-web-bo"
   display_name = "product-nodo-web-bo"
@@ -290,7 +290,7 @@ module "apim_nodo_web_bo_product" {
 
 module "apim_nodo_web_bo_api" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-api", var.env_short)
   api_management_name   = module.apim.name

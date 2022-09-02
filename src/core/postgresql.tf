@@ -1,5 +1,5 @@
 module "postgresql_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-postgresql-snet", local.project)
   address_prefixes                               = var.cidr_subnet_postgresql
   resource_group_name                            = azurerm_resource_group.rg_vnet.name

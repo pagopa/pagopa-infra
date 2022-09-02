@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "buyerbanks_rg" {
 
 # Subnet to host buyerbanks function
 module "buyerbanks_function_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-buyerbanks-snet", local.project)
   address_prefixes                               = var.cidr_subnet_buyerbanks
   resource_group_name                            = azurerm_resource_group.rg_vnet.name

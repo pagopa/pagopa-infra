@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "pagopa_logic_app" {
 }
 
 module "logic_app_biz_evt_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-logicapp-biz-evt-snet", local.project)
   address_prefixes                               = var.cidr_subnet_logicapp_biz_evt
   resource_group_name                            = azurerm_resource_group.rg_vnet.name

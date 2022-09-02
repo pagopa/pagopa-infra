@@ -3,7 +3,7 @@
 ##############
 
 module "apim_payment_manager_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "payment-manager"
   display_name = "Payment Manager pagoPA"
@@ -54,7 +54,7 @@ resource "azurerm_api_management_api_version_set" "buyerbanks_api" {
 
 module "apim_buyerbanks_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-buyerbanks-api", var.env_short)
   api_management_name   = module.apim.name
@@ -103,7 +103,7 @@ resource "azurerm_api_management_api_version_set" "pm_restapi_api" {
 
 module "apim_pm_restapi_api_v4" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-restapi-api", local.project)
   api_management_name   = module.apim.name
@@ -152,7 +152,7 @@ resource "azurerm_api_management_api_version_set" "pm_restapicd_api" {
 
 module "apim_pm_restapicd_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-restapicd-api", local.project)
   api_management_name   = module.apim.name
@@ -178,7 +178,7 @@ module "apim_pm_restapicd_api_v1" {
 
 module "apim_pm_restapicd_api_v2" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-restapicd-api", local.project)
   api_management_name   = module.apim.name
@@ -204,7 +204,7 @@ module "apim_pm_restapicd_api_v2" {
 
 module "apim_pm_restapicd_api_v3" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-restapicd-api", local.project)
   api_management_name   = module.apim.name
@@ -243,7 +243,7 @@ locals {
 
 module "apim_pm_restapi_cd_assets" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-cd-assets-restapi", local.project)
   api_management_name   = module.apim.name
@@ -290,7 +290,7 @@ resource "azurerm_api_management_api_version_set" "pm_restapicd_internal_api" {
 
 module "apim_pm_restapicd_internal_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-restapicd-internal-api", local.project)
   api_management_name   = module.apim.name
@@ -316,7 +316,7 @@ module "apim_pm_restapicd_internal_api_v1" {
 
 module "apim_pm_restapicd_internal_api_v2" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-restapicd-internal-api", local.project)
   api_management_name   = module.apim.name
@@ -365,7 +365,7 @@ resource "azurerm_api_management_api_version_set" "pm_restapi_server_api" {
 
 module "apim_pm_restapi_server_api_v4" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-restapi-server-api", local.project)
   api_management_name   = module.apim.name
@@ -419,7 +419,7 @@ resource "azurerm_api_management_api_version_set" "pm_restapirtd_api" {
 
 module "apim_pm_restapirtd_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-restapirtd-api", local.project)
   api_management_name   = module.apim.name
@@ -445,7 +445,7 @@ module "apim_pm_restapirtd_api_v1" {
 
 module "apim_pm_restapirtd_api_v2" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-restapirtd-api", local.project)
   api_management_name   = module.apim.name
@@ -489,7 +489,7 @@ data "azurerm_key_vault_secret" "pm_logging_ip" {
 
 module "apim_pm_logging_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-logging-api", local.project)
   api_management_name   = module.apim.name
@@ -535,7 +535,7 @@ resource "azurerm_api_management_api_version_set" "pm_adminpanel_api" {
 
 module "apim_pm_adminpanel_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-adminpanel-api", local.project)
   api_management_name   = module.apim.name
@@ -579,7 +579,7 @@ data "azurerm_key_vault_secret" "pm_wisp_metadata" {
 
 module "apim_pm_wisp_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-wisp-api", local.project)
   api_management_name   = module.apim.name
@@ -636,7 +636,7 @@ resource "azurerm_api_management_api_version_set" "pm_ptg_api" {
 
 module "apim_pm_ptg_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-ptg-api", local.project)
   api_management_name   = module.apim.name
@@ -685,7 +685,7 @@ resource "azurerm_api_management_api_version_set" "pm_per_nodo_api" {
 
 module "apim_pm_per_nodo_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-per-nodo-api", local.project)
   api_management_name   = module.apim.name
@@ -734,7 +734,7 @@ resource "azurerm_api_management_api_version_set" "pmclient_iobpd_api" {
 
 module "apim_pmclient_iobpd_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pmclient-iobpd-api", local.project)
   api_management_name   = module.apim.name
@@ -784,7 +784,7 @@ resource "azurerm_api_management_api_version_set" "apim_pm_paypalpsp_api" {
 
 module "apim_pm_paypalpsp_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-paypalpsp-api", local.project)
   api_management_name   = module.apim.name
@@ -834,7 +834,7 @@ resource "azurerm_api_management_api_version_set" "apim_pm_xpay_api" {
 
 module "apim_pm_xpay_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-xpay-api", local.project)
   api_management_name   = module.apim.name
@@ -884,7 +884,7 @@ resource "azurerm_api_management_api_version_set" "apim_pm_bpd_api" {
 
 module "apim_pm_bpd_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-bpd-api", local.project)
   api_management_name   = module.apim.name
@@ -934,7 +934,7 @@ resource "azurerm_api_management_api_version_set" "apim_pm_cobadge_api" {
 
 module "apim_pm_cobadge_api_v4" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-cobadge-api", local.project)
   api_management_name   = module.apim.name
@@ -984,7 +984,7 @@ resource "azurerm_api_management_api_version_set" "apim_pm_satispay_api" {
 
 module "apim_pm_satispay_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-satispay-api", local.project)
   api_management_name   = module.apim.name
@@ -1034,7 +1034,7 @@ resource "azurerm_api_management_api_version_set" "apim_pm_fesp_api" {
 
 module "apim_pm_fesp_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-fesp-api", local.project)
   api_management_name   = module.apim.name
@@ -1076,7 +1076,7 @@ locals {
 
 module "apim_pm_mock_services_fe" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-mock-services-fe-api", local.project)
   api_management_name   = module.apim.name
@@ -1125,7 +1125,7 @@ module "apim_pm_mock_services_api_v1" {
 
   count = var.env_short == "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-mock-services-api", local.project)
   api_management_name   = module.apim.name
@@ -1176,7 +1176,7 @@ module "apim_pm_test_utility_api_v1" {
 
   count = var.env_short == "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-test-utility-api", local.project)
   api_management_name   = module.apim.name

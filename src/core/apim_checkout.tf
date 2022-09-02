@@ -4,7 +4,7 @@
 
 module "apim_checkout_product" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "checkout"
   display_name = "checkout pagoPA"
@@ -252,7 +252,7 @@ resource "azurerm_api_management_api_version_set" "checkout_transactions_api" {
 module "apim_checkout_transactions_api_v1" {
   count = var.checkout_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-checkout-transactions-api", var.env_short)
   api_management_name   = module.apim.name

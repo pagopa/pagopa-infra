@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "mock_psp_rg" {
 # Subnet to host the mock psp
 module "mock_psp_snet" {
   count                                          = var.mock_psp_enabled && var.cidr_subnet_mock_psp != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-mock-psp-snet", local.project)
   address_prefixes                               = var.cidr_subnet_mock_psp
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -27,7 +27,7 @@ module "mock_psp_snet" {
 
 module "mock_psp" {
   count  = var.mock_psp_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.90"
 
   resource_group_name = azurerm_resource_group.mock_psp_rg[0].name
   location            = var.location

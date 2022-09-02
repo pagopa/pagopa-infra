@@ -3,7 +3,7 @@
 ##############
 
 module "apim_api_config_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-api-config"
   display_name = "ApiConfig"
@@ -114,7 +114,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
 ###########################
 
 module "apim_api_config_auth_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-api-config-auth"
   display_name = "ApiConfig for Auth"
@@ -188,7 +188,7 @@ module "apim_api_config_auth_api" {
 ###########################
 
 module "apim_api_config_checkout_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-api-config-checkout"
   display_name = "ApiConfig for Checkout"

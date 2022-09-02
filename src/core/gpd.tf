@@ -57,7 +57,7 @@ locals {
 # Subnet to host the api config
 module "gpd_snet" {
   count                                          = var.cidr_subnet_gpd != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-gpd-snet", local.project)
   address_prefixes                               = var.cidr_subnet_gpd
   resource_group_name                            = azurerm_resource_group.rg_vnet.name

@@ -3,7 +3,7 @@
 ###################
 
 module "apim_gpd_payments_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-gpd-payments"
   display_name = "GPD Payments pagoPA - SOAP"
@@ -64,7 +64,7 @@ resource "azurerm_api_management_api" "apim_api_gpd_payments_api" {
 ###################
 
 module "apim_gpd_payments_rest_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-gpd-payments-rest"
   display_name = "GPD Payments pagoPA - REST"

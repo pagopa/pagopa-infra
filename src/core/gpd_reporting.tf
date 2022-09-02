@@ -1,6 +1,6 @@
 # Subnet to host reporting_batch function
 module "reporting_function_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-reporting-snet", local.project)
   address_prefixes                               = var.cidr_subnet_reporting_common
   resource_group_name                            = azurerm_resource_group.rg_vnet.name

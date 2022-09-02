@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "reporting_fdr_rg" {
 # Subnet to host reporting-fdr function
 module "reporting_fdr_function_snet" {
   count                                          = var.cidr_subnet_reporting_fdr != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-reporting-fdr-snet", local.project)
   address_prefixes                               = var.cidr_subnet_reporting_fdr
   resource_group_name                            = azurerm_resource_group.rg_vnet.name

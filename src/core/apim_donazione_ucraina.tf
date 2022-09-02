@@ -3,7 +3,7 @@
 ##############
 
 module "apim_donazioni_ucraina_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-donazioni"
   display_name = "Donazioni Ucraina"

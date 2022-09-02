@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "mock_ec_rg" {
 # Subnet to host the mock ec
 module "mock_ec_snet" {
   count                                          = var.mock_ec_enabled && var.cidr_subnet_mock_ec != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-mock-ec-snet", local.project)
   address_prefixes                               = var.cidr_subnet_mock_ec
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -27,7 +27,7 @@ module "mock_ec_snet" {
 
 module "mock_ec" {
   count  = var.mock_ec_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.14"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.90"
 
   resource_group_name = azurerm_resource_group.mock_ec_rg[0].name
   location            = var.location

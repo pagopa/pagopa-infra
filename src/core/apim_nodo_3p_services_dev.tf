@@ -5,7 +5,7 @@
 
 module "apim_nodo_ppt_lmi_dev_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-ppt-lmi-dev"
   display_name = "product-nodo-ppt-lmi-dev"
@@ -33,7 +33,7 @@ resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_dev_api" {
 
 module "apim_nodo_ppt_lmi_dev_api" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-ppt-lmi-dev-api", var.env_short)
   api_management_name   = module.apim.name
@@ -70,7 +70,7 @@ module "apim_nodo_ppt_lmi_dev_api" {
 
 module "apim_nodo_sync_dev_product" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-sync-dev"
   display_name = "product-nodo-sync-dev"
@@ -98,7 +98,7 @@ resource "azurerm_api_management_api_version_set" "nodo_sync_dev_api" {
 
 module "apim_nodo_sync_dev_api" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-sync-dev-api", var.env_short)
   api_management_name   = module.apim.name

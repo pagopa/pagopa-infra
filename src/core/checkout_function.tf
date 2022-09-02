@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "checkout_be_rg" {
 # Subnet to host checkout function
 module "checkout_function_snet" {
   count                                          = var.checkout_enabled && var.cidr_subnet_checkout_be != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-checkout-be-snet", local.project)
   address_prefixes                               = var.cidr_subnet_checkout_be
   resource_group_name                            = azurerm_resource_group.rg_vnet.name

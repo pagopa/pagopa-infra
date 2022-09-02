@@ -8,7 +8,7 @@ data "azurerm_key_vault_secret" "pm_onprem_hostname" {
 ##############
 
 module "apim_payment_transactions_gateway_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.84"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "payment-transactions-gateway"
   display_name = "Payment Transactions Gateway pagoPA"
@@ -50,7 +50,7 @@ resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_
 
 module "apim_payment_transactions_gateway_update_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-payment-transactions-gateway-update-api", local.project)
   api_management_name   = module.apim.name
@@ -101,7 +101,7 @@ resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_
 
 module "apim_payment_transactions_gateway_internal_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-payment-transactions-gateway-internal-api", local.project)
   api_management_name   = module.apim.name
@@ -152,7 +152,7 @@ resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_
 
 module "apim_payment_transactions_gateway_external_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-payment-transactions-gateway-external-api", local.project)
   api_management_name   = module.apim.name
