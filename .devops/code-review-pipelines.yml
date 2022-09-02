@@ -4,10 +4,8 @@ pr:
       - main
   paths:
     include:
-      - 'src/*'
-      - '.devops/*'
-    exclude:
-      - 'src/k8s/*'
+      - 'src/core/*'
+      - '.devops/code-review-pipelines.yml'
 
 parameters:
   - name: 'DEV'
