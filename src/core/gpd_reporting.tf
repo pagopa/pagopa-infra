@@ -445,7 +445,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
 
 
 module "flows" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
 
   name                       = replace(format("%s-flow-sa", local.project), "-", "")
   account_kind               = "StorageV2"

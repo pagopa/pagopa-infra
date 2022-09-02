@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "afm_rg" {
 }
 
 module "afm_marketplace_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                 = format("%s-marketplace-cosmosdb-snet", local.project)
   address_prefixes     = var.cidr_subnet_afm_marketplace_cosmosdb
   resource_group_name  = local.vnet_resource_group_name

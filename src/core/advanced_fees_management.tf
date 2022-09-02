@@ -218,7 +218,7 @@ module "advanced_fees_management_cosmosdb_containers" {
 module "advanced_fees_management_fe_cdn" {
   count = var.env_short == "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.28"
 
   name                = "afm-fe"
   prefix              = local.project

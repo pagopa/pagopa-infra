@@ -84,7 +84,7 @@ resource "azurerm_api_management_api_operation_policy" "get_donations" {
 
 ## Storage Account
 module "logos_donation_flows_sa" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
 
   name                       = replace(format("%s-logos-donation-sa", local.project), "-", "")
   account_kind               = "StorageV2"

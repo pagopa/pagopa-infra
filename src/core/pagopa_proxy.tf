@@ -37,7 +37,7 @@ resource "azurerm_resource_group" "pagopa_proxy_rg" {
 }
 
 module "pagopa_proxy_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.19"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
   name                 = format("%s-pagopa-proxy-snet", local.project)
   address_prefixes     = var.cidr_subnet_pagopa_proxy
   resource_group_name  = azurerm_resource_group.rg_vnet.name
@@ -55,7 +55,7 @@ module "pagopa_proxy_snet" {
 }
 
 module "pagopa_proxy_redis_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.19"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
   name                                           = format("%s-pagopa-proxy-redis-snet", local.project)
   address_prefixes                               = var.cidr_subnet_pagopa_proxy_redis
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -64,7 +64,7 @@ module "pagopa_proxy_redis_snet" {
 }
 
 module "pagopa_proxy_redis" {
-  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.19"
+  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.28"
   name                  = format("%s-pagopa-proxy-redis", local.project)
   resource_group_name   = azurerm_resource_group.pagopa_proxy_rg.name
   location              = azurerm_resource_group.pagopa_proxy_rg.location

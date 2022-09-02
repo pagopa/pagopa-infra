@@ -44,7 +44,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_d
 #tfsec:ignore:azure-database-no-public-access
 module "postgresql" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.0.5"
+  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.0.28"
 
   name                = format("%s-postgresql", local.project)
   location            = azurerm_resource_group.data.location

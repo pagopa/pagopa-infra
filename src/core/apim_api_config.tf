@@ -39,7 +39,7 @@ locals {
 }
 
 module "apim_api_config_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.28"
 
   name                  = format("%s-api-config-api", var.env_short)
   api_management_name   = module.apim.name
@@ -144,7 +144,7 @@ resource "azurerm_api_management_api_version_set" "api_config_auth_api" {
 }
 
 module "apim_api_config_auth_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.28"
 
   name                = format("%s-api-config-auth-api", var.env_short)
   api_management_name = module.apim.name
@@ -218,7 +218,7 @@ resource "azurerm_api_management_api_version_set" "api_config_checkout_api" {
 }
 
 module "apim_api_config_checkout_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.12"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.28"
 
   name                = format("%s-api-config-checkout-api", var.env_short)
   api_management_name = module.apim.name

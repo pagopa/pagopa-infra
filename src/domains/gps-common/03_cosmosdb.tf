@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "gps_rg" {
 }
 
 module "gps_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                 = format("%s-cosmosdb-snet", local.project)
   address_prefixes     = var.cidr_subnet_gps_cosmosdb
   resource_group_name  = local.vnet_resource_group_name

@@ -124,7 +124,7 @@ module "route_table_peering_sia" {
 
 # subnet acr
 module "common_private_endpoint_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.19"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
   name                 = format("%s-common-private-endpoint-snet", local.project)
   address_prefixes     = var.cidr_common_private_endpoint_snet
   resource_group_name  = azurerm_resource_group.rg_vnet.name
