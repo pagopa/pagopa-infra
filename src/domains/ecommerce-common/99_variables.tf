@@ -160,8 +160,8 @@ variable "cidr_subnet_redis_ecommerce" {
 
 variable "redis_ecommerce_params" {
   type = object({
-    capacity     = number
-    sku_name     = string
-    family = string
+    capacity = number
+    sku_name = string
+    family   = string
   })
 }
