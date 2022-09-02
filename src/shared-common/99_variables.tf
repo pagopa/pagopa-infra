@@ -141,3 +141,34 @@ variable "cidr_subnet_iuvgenerator_cosmosdb" {
   description = "Cosmos DB address space"
   default     = null
 }
+
+variable "cidr_subnet_notifications_service_storage" {
+  type        = list(string)
+  description = "Storage service address space"
+  default     = null
+}
+
+variable "notifications_service_queue_params" {
+  type = object({
+    enabled                    = bool,
+    kind                       = string,
+    tier                       = string,
+    account_replication_type   = string,
+    advanced_threat_protection = bool,
+    retention_days             = number
+  })
+
+  default = {
+    enabled                    = false,
+    kind                       = "StorageV2"
+    tier                       = "Standard",
+    account_replication_type   = "LRS",
+    advanced_threat_protection = true,
+    retention_days             = 7
+  }
+}
+
+variable "storage_private_endpoint_enabled" {
+  type    = bool
+  default = false
+}

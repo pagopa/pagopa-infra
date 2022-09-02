@@ -42,6 +42,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_redis_cach
   tags = var.tags
 }
 
+resource "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
+  count               = var.storage_queue_private_endpoint_enabled ? 1 : 0
+  name                = "privatelink.queue.core.windows.net"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
 resource "azurerm_private_dns_zone" "platform_private_dns_zone" {
   name                = format("%s.%s", var.dns_zone_prefix, var.external_domain)
   resource_group_name = azurerm_resource_group.rg_vnet.name

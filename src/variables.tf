@@ -1554,5 +1554,10 @@ variable "cidr_subnet_logicapp_biz_evt" {
   default     = null
 }
 
+variable "storage_queue_private_endpoint_enabled" {
+  type        = bool
+  description = "Whether private endpoint for Azure Storage Queues is enabled"
+  default     = false
+}
 
 
