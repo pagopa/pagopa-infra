@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "2.0",
   "info": {
     "version": "0.1.0",
     "title": "Pagopa eCommerce payment transactions service",
