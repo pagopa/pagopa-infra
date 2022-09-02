@@ -1,0 +1,70 @@
+#############################
+## Product AFM Marketplace ##
+#############################
+
+module "apim_afm_marketplace_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+
+  product_id   = "afm-marketplace"
+  display_name = "GEC pagoPA - Marketplace"
+  description  = "Prodotto Gestione Evoluta Commissioni - Gestione pacchetti"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = false
+  approval_required     = false
+
+  policy_xml = file("./api_product/marketplace/_base_policy.xml")
+}
+
+###########################
+##  API AFM Marketplace  ##
+###########################
+locals {
+  apim_afm_marketplace_service_api = {
+    display_name          = "AFM Marketplace pagoPA - marketplace of advanced fees management service API"
+    description           = "Marketplace API to support advanced fees management service"
+    path                  = "afm/marketplace-service"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "api_afm_marketplace_api" {
+
+  name                = format("%s-afm-marketplace-service-api", var.env_short)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_afm_marketplace_service_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+
+module "apim_api_afm_marketplace_api_v1" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+
+  name                  = format("%s-afm-marketplace-service-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_afm_marketplace_product.product_id]
+  subscription_required = local.apim_afm_marketplace_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_marketplace_api.id
+  api_version           = "v1"
+
+  description  = local.apim_afm_marketplace_service_api.description
+  display_name = local.apim_afm_marketplace_service_api.display_name
+  path         = local.apim_afm_marketplace_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_afm_marketplace_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/marketplace-service/v1/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/marketplace-service/v1/_base_policy.xml", {
+    hostname = local.afm_hostname
+  })
+}
