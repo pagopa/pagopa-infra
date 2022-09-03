@@ -12,14 +12,47 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: init_src
+      - name: init_terraform_folders
+        env:
+          FOLDERS: >
+            src/aks-platform
+            src/core
+            src/domains/afm-app
+            src/domains/afm-common
+            src/domains/ecommerce-app
+            src/domains/ecommerce-common
+            src/domains/gps-app
+            src/domains/gps-common
+            src/domains/shared-app
+            src/domains/shared-common
         run: |
-          TAG=$(cat .terraform-version)
-          cd src
-          sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
-          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
+          pids=()
 
-      - name: run_test
+          TAG=$(cat .terraform-version)
+          for f in $FOLDERS; do
+            pushd "$(pwd)/${f}"
+              sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
+              docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
+              pids+=($!)
+            popd
+
+          done
+
+          # Wait for each specific process to terminate.
+          # Instead of this loop, a single call to 'wait' would wait for all the jobs
+          # to terminate, but it would not give us their exit status.
+          #
+          for pid in "${pids[@]}"; do
+            #
+            # Waiting on a specific PID makes the wait command return with the exit
+            # status of that process. Because of the 'set -e' setting, any exit status
+            # other than zero causes the current shell to terminate with that exit
+            # status as well.
+            #
+            wait "$pid"
+          done
+
+      - name: run_pre_commit_terraform
         run: |
-          TAG=latest
+          TAG=v1.71.0
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
