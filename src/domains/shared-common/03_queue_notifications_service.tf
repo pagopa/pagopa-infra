@@ -25,8 +25,13 @@ module "notifications_service_storage" {
   tags = var.tags
 }
 
-resource "azurerm_storage_queue" "notifications_service_queue" {
-  name                 = format("%s-notifications-service-queue", local.project)
+resource "azurerm_storage_queue" "notifications_service_retry_queue" {
+  name                 = format("%s-notifications-service-retry-queue", local.project)
+  storage_account_name = module.notifications_service_storage.name
+}
+
+resource "azurerm_storage_queue" "notifications_service_errors_queue" {
+  name                 = format("%s-notifications-service-errors-queue", local.project)
   storage_account_name = module.notifications_service_storage.name
 }
 
@@ -47,18 +52,18 @@ module "notifications_service_storage_snet" {
 resource "azurerm_private_endpoint" "storage_private_endpoint" {
   count = var.storage_private_endpoint_enabled ? 1 : 0
 
-  name                = format("%s-private-endpoint", format("%s-notifications-service-queue", local.project))
+  name                = format("%s-private-endpoint", format("%s-notifications-service-queues", local.project))
   location            = var.location
   resource_group_name = azurerm_resource_group.shared_rg.name
   subnet_id           = module.notifications_service_storage_snet.id
 
   private_dns_zone_group {
-    name                 = format("%s-private-dns-zone-group", azurerm_storage_queue.notifications_service_queue.name)
+    name                 = format("%s-private-dns-zone-group", format("%s-notifications-service-queues", local.project))
     private_dns_zone_ids = [data.azurerm_private_dns_zone.storage.id]
   }
 
   private_service_connection {
-    name                           = format("%s-private-service-connection", azurerm_storage_queue.notifications_service_queue.name)
+    name                           = format("%s-private-service-connection", format("%s-notifications-service-queues", local.project))
     private_connection_resource_id = module.notifications_service_storage.id
     is_manual_connection           = false
     subresource_names              = ["queue"]
