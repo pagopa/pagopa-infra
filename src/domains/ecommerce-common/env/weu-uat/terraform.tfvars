@@ -61,7 +61,7 @@ cosmos_mongo_db_params = {
 
 }
 
-cidr_subnet_cosmosdb_ecommerce = ["10.1.143.0/24"]
+cidr_subnet_cosmosdb_ecommerce = ["10.1.153.0/24"]
 cidr_subnet_redis_ecommerce    = ["10.1.148.0/24"]
 
 cosmos_mongo_db_ecommerce_params = {
