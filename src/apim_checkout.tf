@@ -316,7 +316,7 @@ module "apim_checkout_ecommerce_api_v1" {
   path         = local.apim_checkout_ecommerce_api.path
   protocols    = ["https"]
 
-  content_format = "swagger-json"
+  content_format = "openapi"
   content_value = templatefile("./api/checkout/checkout_ecommerce/v1/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })

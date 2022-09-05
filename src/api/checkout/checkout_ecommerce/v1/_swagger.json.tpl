@@ -1,13 +1,13 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "version": "0.1.0",
     "title": "Pagopa eCommerce payment transactions service",
     "description": "This microservice that handles transactions' lifecycle and workflow."
   },
-  "host": "${host}",
-  "basePath": "",
-  "schemes": ["https"],
+  "servers": [{
+    "url": "https://${host}"
+  }],
   "paths": {
     "/transactions-service/transactions": {
       "post": {
