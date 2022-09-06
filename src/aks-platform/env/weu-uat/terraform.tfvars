@@ -33,6 +33,7 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 aks_sku_tier = "Free"
 # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/482870619/VPN+-+pagoPA+platform
 aks_private_cluster_is_enabled = true
+aks_alerts_enabled = false
 
 aks_system_node_pool = {
   name                         = "system01"

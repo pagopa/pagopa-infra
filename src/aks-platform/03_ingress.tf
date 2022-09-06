@@ -82,7 +82,7 @@ module "nginx_ingress" {
       # to overcome 1m size limit of https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-body-size
       # Setting size to 0 disables checking of client request body size
       name  = "controller.config.proxy-body-size"
-      value = var.nginx_helm.controller.config.1
+      value = var.nginx_helm.controller.config.proxy-body-size
     }
   ]
 }

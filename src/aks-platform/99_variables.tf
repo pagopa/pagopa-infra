@@ -97,6 +97,12 @@ variable "aks_private_cluster_is_enabled" {
   default     = true
 }
 
+variable "aks_alerts_enabled" {
+  type        = bool
+  default     = false
+  description = "AKS alerts enabled?"
+}
+
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
@@ -188,4 +194,57 @@ variable "nginx_helm" {
 
 variable "keda_helm_version" {
   type = string
+}
+
+variable "reloader_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "reloader helm chart configuration"
+}
+
+variable "prometheus_helm" {
+  type = object({
+    chart_version = string,
+    alertmanager = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    configmap_reload_prometheus = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    configmap_reload_alertmanager = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    configmap_reload_prometheus = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    node_exporter = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    server = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    pushgateway = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+  })
+  description = "prometheus helm chart configuration"
+}
+
+variable "tls_cert_check_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
 }
