@@ -5,9 +5,11 @@
     "title": "Pagopa eCommerce payment transactions service",
     "description": "This microservice that handles transactions' lifecycle and workflow."
   },
-  "servers": [{
-    "url": "https://${host}"
-  }],
+  "servers": [
+    {
+      "url": "https://${host}"
+    }
+  ],
   "paths": {
     "/transactions-service/transactions": {
       "post": {
@@ -301,25 +303,6 @@
       }
     },
     "/payment-instruments/payment-methods": {
-      "post": {
-        "operationId": "newPaymentMethod",
-        "summary": "Make a new payment method",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/PaymentMethodRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "New payment method successfully created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentMethodResponse"
-                }
-              }
-            }
-          }
-        }
-      },
       "get": {
         "operationId": "getAllPaymentMethods",
         "summary": "Retrieve all Payment Methods (by filter)",
@@ -352,36 +335,6 @@
       }
     },
     "/payment-instruments/payment-methods/{id}": {
-      "patch": {
-        "operationId": "patchPaymentMethod",
-        "summary": "Update payment method",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Payment Method ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/PatchPaymentMethodRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "Payment instrument successfully retrived",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentMethodResponse"
-                }
-              }
-            }
-          }
-        }
-      },
       "get": {
         "operationId": "getPaymentMethod",
         "summary": "Retrive payment method by ID",
@@ -411,15 +364,6 @@
       }
     },
     "/payment-instruments/payment-methods/psps": {
-      "put": {
-        "operationId": "scheduleUpdatePSPs",
-        "summary": "Update psp list",
-        "responses": {
-          "200": {
-            "description": "Update successfully scheduled"
-          }
-        }
-      },
       "get": {
         "operationId": "getPSPs",
         "summary": "Retrieve psps",
@@ -528,104 +472,100 @@
       }
     },
     "/transactions-service/payment-requests/{rpt_id}": {
-    "get": {
-      "operationId": "getPaymentRequestInfo",
-      "parameters": [
-        {
-          "in": "path",
-          "name": "rpt_id",
-          "description": "Unique identifier for payment request, so the concatenation of the tax code and notice number.",
-          "schema": {
-            "type": "string",
-            "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+      "get": {
+        "operationId": "getPaymentRequestInfo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "rpt_id",
+            "description": "Unique identifier for payment request, so the concatenation of the tax code and notice number.",
+            "schema": {
+              "type": "string",
+              "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New transaction successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentRequestsGetResponse"
+                }
+              }
+            }
           },
-          "required": true
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "New transaction successfully created",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentRequestsGetResponse"
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
               }
             }
-          }
-        },
-        "400": {
-          "description": "Formally invalid input",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProblemJson"
+          },
+          "404": {
+            "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFaultPaymentProblemJson"
+                }
               }
             }
-          }
-        },
-        "404": {
-          "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ValidationFaultPaymentProblemJson"
+          },
+          "409": {
+            "description": "Conflict on payment status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentStatusFaultPaymentProblemJson"
+                }
               }
             }
-          }
-        },
-        "409": {
-          "description": "Conflict on payment status",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentStatusFaultPaymentProblemJson"
+          },
+          "502": {
+            "description": "PagoPA services are not available or request is rejected by PagoPa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
+                }
               }
             }
-          }
-        },
-        "502": {
-          "description": "PagoPA services are not available or request is rejected by PagoPa",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
+          },
+          "503": {
+            "description": "EC services are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyConfigurationFaultPaymentProblemJson"
+                }
               }
             }
-          }
-        },
-        "503": {
-          "description": "EC services are not available",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PartyConfigurationFaultPaymentProblemJson"
-              }
-            }
-          }
-        },
-        "504": {
-          "description": "Timeout from PagoPA services",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PartyTimeoutFaultPaymentProblemJson"
+          },
+          "504": {
+            "description": "Timeout from PagoPA services",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyTimeoutFaultPaymentProblemJson"
+                }
               }
             }
           }
         }
       }
     }
-  }
   },
   "components": {
     "schemas": {
       "RptId": {
         "type": "string",
         "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
-      },
-      "Iban": {
-        "type": "string",
-        "pattern": "[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}"
       },
       "NewTransactionRequest": {
         "type": "object",
@@ -824,100 +764,6 @@
           "OK",
           "KO"
         ]
-      },
-      "Beneficiary": {
-        "description": "Beneficiary institution related to a payment",
-        "type": "object",
-        "properties": {
-          "beneficiaryId": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "denominazioneBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "codiceUnitOperBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "denomUnitOperBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "address": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "streetNumber": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "postalCode": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "city": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "province": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "country": {
-            "type": "string",
-            "pattern": "[A-Z]{2}"
-          }
-        },
-        "required": [
-          "beneficiaryId",
-          "denominazioneBeneficiario"
-        ]
-      },
-      "PaymentInstallments": {
-        "description": "Payment installments (optional)",
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Installment"
-        }
-      },
-      "Installment": {
-        "description": "Payment installment",
-        "type": "object",
-        "properties": {
-          "installment": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "data": {
-            "$ref": "#/components/schemas/InstallmentDetails"
-          }
-        }
-      },
-      "InstallmentDetails": {
-        "description": "Amount and reason related to a payment installment",
-        "type": "object",
-        "properties": {
-          "reason": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 25
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        }
       },
       "TransactionStatus": {
         "type": "string",
