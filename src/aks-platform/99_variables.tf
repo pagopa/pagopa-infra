@@ -50,6 +50,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_string" {
+  type        = string
+  description = "One of West Europe, North Europe"
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false
