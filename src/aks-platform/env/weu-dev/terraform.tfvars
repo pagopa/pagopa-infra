@@ -76,7 +76,7 @@ nginx_helm = {
       digestchroot = "sha256:fb17f1700b77d4fcc52ca6f83ffc2821861ae887dbb87149cf5cbc52bea425e5"
     },
     config = {
-      proxy-body-size : "1m",
+      proxy-body-size : 0,
     }
   }
 }
