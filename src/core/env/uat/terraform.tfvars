@@ -49,9 +49,10 @@ cidr_subnet_eventhub   = ["10.230.9.64/26"]
 cidr_subnet_api_config = ["10.230.9.128/29"]
 
 # dns
-external_domain   = "pagopa.it"
-dns_zone_prefix   = "uat.platform"
-dns_zone_checkout = "uat.checkout"
+external_domain     = "pagopa.it"
+dns_zone_prefix     = "uat.platform"
+dns_zone_prefix_prf = "prf.platform"
+dns_zone_checkout   = "uat.checkout"
 # azure devops
 azdo_sp_tls_cert_enabled = true
 enable_azdoa             = true

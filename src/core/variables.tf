@@ -346,6 +346,12 @@ variable "dns_zone_prefix" {
   description = "The dns subdomain."
 }
 
+variable "dns_zone_prefix_prf" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
 variable "dns_zone_checkout" {
   type        = string
   default     = null
