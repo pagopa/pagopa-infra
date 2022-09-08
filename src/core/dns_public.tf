@@ -115,6 +115,8 @@ resource "azurerm_dns_a_record" "dns_a_management" {
 # Replicate to PRF env
 # #####################
 resource "azurerm_dns_caa_record" "api_platform_pagopa_it_prf" {
+  count = (var.dns_zone_prefix_prf == null) ? 0 : 1
+
   name                = "@"
   zone_name           = azurerm_dns_zone.public_prf[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -137,6 +139,8 @@ resource "azurerm_dns_caa_record" "api_platform_pagopa_it_prf" {
 
 # application gateway records
 resource "azurerm_dns_a_record" "dns_a_api_prf" {
+  count = (var.dns_zone_prefix_prf == null) ? 0 : 1
+
   name                = "api"
   zone_name           = azurerm_dns_zone.public_prf[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -146,6 +150,8 @@ resource "azurerm_dns_a_record" "dns_a_api_prf" {
 }
 
 resource "azurerm_dns_a_record" "dns_a_portal_prf" {
+  count = (var.dns_zone_prefix_prf == null) ? 0 : 1
+
   name                = "portal"
   zone_name           = azurerm_dns_zone.public_prf[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -155,6 +161,8 @@ resource "azurerm_dns_a_record" "dns_a_portal_prf" {
 }
 
 resource "azurerm_dns_a_record" "dns_a_management_prf" {
+  count = (var.dns_zone_prefix_prf == null) ? 0 : 1
+
   name                = "management"
   zone_name           = azurerm_dns_zone.public_prf[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
