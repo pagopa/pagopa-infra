@@ -282,8 +282,8 @@ module "apim_checkout_transactions_api_v1" {
 locals {
   apim_checkout_ecommerce_api = {
     # params for all api versions
-    display_name          = "Checkout API for ecommerce"
-    description           = "API for the payment transaction and payment instrument microservices"
+    display_name          = "Checkout - ecommerce API"
+    description           = "API for the payment transaction and payment instrument microservices of ecommerce pagoPA platform"
     path                  = "checkout/ecommerce"
     subscription_required = true
     service_url           = null
@@ -321,6 +321,6 @@ module "apim_checkout_ecommerce_api_v1" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_base_policy.xml.tpl", {
-    backend-service = "https://api.${var.dns_zone_prefix}.${var.external_domain}"
+    backend-service = "https://api.${var.dns_zone_prefix}.${var.external_domain}/ecommerce"
   })
 }
