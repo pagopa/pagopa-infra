@@ -1,0 +1,23 @@
+<policies>
+    <inbound>
+        <base />
+        <choose>
+            <set-variable name="fromDnsHost" value="@(context.Request.Url.Host)" />
+            <when condition="@(context.Variables.GetValueOrDefault<string>("fromDnsHost").Contains("prf.platform.pagopa.it"))">
+                <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}" /> <!-- /nodo-uat -->
+            </when>
+            <otherwise>
+                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf" />
+            </otherwise>
+        </choose>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
