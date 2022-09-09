@@ -12,7 +12,7 @@ module "apim_afm_calculator_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = false
+  published             = true
   subscription_required = false
   approval_required     = false
 
@@ -28,6 +28,14 @@ locals {
     description           = "Calculator API to support advanced fees management service"
     path                  = "afm/calculator-service"
     subscription_required = false
+    service_url           = null
+  }
+
+  apim_afm_calculator_service_node_api = {
+    display_name          = "AFM Calculator pagoPA for Node - calculator of advanced fees management service API"
+    description           = "Calculator API to support advanced fees management service"
+    path                  = "afm/node/calculator-service"
+    subscription_required = true
     service_url           = null
   }
 }
@@ -65,6 +73,47 @@ module "apim_api_afm_calculator_api_v1" {
   })
 
   xml_content = templatefile("./api/calculator-service/v1/_base_policy.xml", {
+    hostname = local.afm_hostname
+  })
+}
+
+
+#########################
+##  API AFM Calculator ##
+#########################
+
+resource "azurerm_api_management_api_version_set" "api_afm_calculator_node_api" {
+  name                = format("%s-afm-calculator-service-node-api", var.env_short)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_afm_calculator_service_node_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+
+module "apim_api_afm_calculator_api_node_v1" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+
+  name                  = format("%s-afm-calculator-service-node-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_afm_calculator_product.product_id]
+  subscription_required = local.apim_afm_calculator_service_node_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_node_api.id
+  api_version           = "v1"
+
+  description  = local.apim_afm_calculator_service_node_api.description
+  display_name = local.apim_afm_calculator_service_node_api.display_name
+  path         = local.apim_afm_calculator_service_node_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_afm_calculator_service_node_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/calculator-service/node/v1/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/calculator-service/node/v1/_base_policy.xml", {
     hostname = local.afm_hostname
   })
 }
