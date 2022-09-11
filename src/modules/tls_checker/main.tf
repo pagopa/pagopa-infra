@@ -1,5 +1,7 @@
 resource "helm_release" "helm_this" {
 
+  count = var.helm_chart_present ? 1 : 0
+
   name       = local.helm_chart_name
   chart      = "microservice-chart"
   repository = "https://pagopa.github.io/aks-microservice-chart-blueprint"
@@ -31,6 +33,7 @@ resource "azurerm_monitor_metric_alert" "alert_this" {
   severity            = 0
   frequency           = "PT5M"
   auto_mitigate       = false
+  enabled = var.alert_enabled
 
   criteria {
     metric_namespace = "microsoft.insights/components"
@@ -55,6 +58,6 @@ resource "azurerm_monitor_metric_alert" "alert_this" {
   }
 
   depends_on = [
-    helm_release.helm_this
+    helm_release.helm_this[0]
   ]
 }

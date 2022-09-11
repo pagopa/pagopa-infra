@@ -71,6 +71,18 @@ variable "alert_name" {
   default = null
 }
 
+variable "alert_enabled" {
+  type = bool
+  description = "(Optional) Is this alert enabled?"
+  default = true
+}
+
+variable "helm_chart_present" {
+  type = bool
+  description = "Is this helm chart present?"
+  default = true
+}
+
 
 locals {
   alert_name = var.alert_name != null ? lower(replace("${var.alert_name}", "/\\W/", "-")) : lower(replace("${var.https_endpoint}", "/\\W/", "-"))
