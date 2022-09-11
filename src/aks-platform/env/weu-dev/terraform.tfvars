@@ -156,7 +156,25 @@ tls_checker_https_endpoints_to_check = [
   {
     https_endpoint = "weudev.afm.internal.dev.platform.pagopa.it",
     alert_name = "weudev-afm-internal-dev-platform-pagopa-it",
-    alert_enabled = false,
+    alert_enabled = true,
+    helm_present = true,
+  },
+  {
+    https_endpoint = "weudev.ecommerce.internal.dev.platform.pagopa.it",
+    alert_name = "weudev-ecommerce-internal-dev-platform-pagopa-it",
+    alert_enabled = true,
+    helm_present = true,
+  },
+  {
+    https_endpoint = "weudev.gps.internal.dev.platform.pagopa.it",
+    alert_name = "weudev-gps-internal-dev-platform-pagopa-it",
+    alert_enabled = true,
+    helm_present = true,
+  },
+  {
+    https_endpoint = "weudev.shared.internal.dev.platform.pagopa.it",
+    alert_name = "weudev-shared-internal-dev-platform-pagopa-it",
+    alert_enabled = true,
     helm_present = true,
   },
 ]
