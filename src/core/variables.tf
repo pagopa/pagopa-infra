@@ -1561,7 +1561,7 @@ variable "storage_queue_private_endpoint_enabled" {
 }
 
 variable "platform_private_dns_zone_records" {
-  type = list(string)
-  default = null
+  type        = list(string)
+  default     = null
   description = "List of records to add into the platform.pagopa.it dns private"
 }

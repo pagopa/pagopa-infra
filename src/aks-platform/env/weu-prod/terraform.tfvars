@@ -1,10 +1,10 @@
 # general
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "prod"
-location       = "westeurope"
-location_short = "weu"
+prefix          = "pagopa"
+env_short       = "p"
+env             = "prod"
+domain          = "prod"
+location        = "westeurope"
+location_short  = "weu"
 location_string = "West Europe"
 
 tags = {
@@ -33,7 +33,7 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 aks_sku_tier                   = "Paid"
 aks_private_cluster_is_enabled = true
-aks_alerts_enabled = true
+aks_alerts_enabled             = true
 
 aks_system_node_pool = {
   name                         = "system01"

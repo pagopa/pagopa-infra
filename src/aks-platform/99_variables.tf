@@ -258,10 +258,10 @@ variable "tls_checker_https_endpoints_to_check" {
   type = list(object({
     https_endpoint = string
     # max 53 chars, alfanumeric and '-', and lower case
-    alert_name = string
+    alert_name    = string
     alert_enabled = bool
-    helm_present = bool
+    helm_present  = bool
   }))
   description = "List of https endpoint to check ssl certificate and his alert name"
-  default = []
+  default     = []
 }

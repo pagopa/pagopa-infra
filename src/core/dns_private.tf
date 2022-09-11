@@ -67,7 +67,7 @@ resource "azurerm_private_dns_zone" "platform_private_dns_zone" {
 
 resource "azurerm_private_dns_a_record" "platform_dns_a_private" {
 
-  for_each = toset(var.platform_private_dns_zone_records)
+  for_each            = toset(var.platform_private_dns_zone_records)
   name                = each.key
   zone_name           = azurerm_private_dns_zone.platform_private_dns_zone.name
   resource_group_name = azurerm_resource_group.rg_vnet.name

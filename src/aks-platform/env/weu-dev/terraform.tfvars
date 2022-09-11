@@ -1,10 +1,10 @@
 # general
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "dev"
-location       = "westeurope"
-location_short = "weu"
+prefix          = "pagopa"
+env_short       = "d"
+env             = "dev"
+domain          = "dev"
+location        = "westeurope"
+location_short  = "weu"
 location_string = "West Europe"
 
 tags = {
@@ -33,7 +33,7 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
 aks_sku_tier                   = "Free"
 aks_private_cluster_is_enabled = false
-aks_alerts_enabled = false
+aks_alerts_enabled             = false
 
 aks_system_node_pool = {
   name                         = "system01"
@@ -137,44 +137,44 @@ tls_cert_check_helm = {
 tls_checker_https_endpoints_to_check = [
   {
     https_endpoint = "api.dev.platform.pagopa.it",
-    alert_name = "api-dev-platform-pagopa-it"
-    alert_enabled = true,
-    helm_present = true,
+    alert_name     = "api-dev-platform-pagopa-it"
+    alert_enabled  = true,
+    helm_present   = true,
   },
   {
     https_endpoint = "management.dev.platform.pagopa.it",
-    alert_name = "management-dev-platform-pagopa-it",
-    alert_enabled = true,
-    helm_present = true,
+    alert_name     = "management-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
   },
   {
     https_endpoint = "portal.dev.platform.pagopa.it",
-    alert_name = "portal-dev-platform-pagopa-it",
-    alert_enabled = true,
-    helm_present = true,
+    alert_name     = "portal-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
   },
   {
     https_endpoint = "weudev.afm.internal.dev.platform.pagopa.it",
-    alert_name = "weudev-afm-internal-dev-platform-pagopa-it",
-    alert_enabled = true,
-    helm_present = true,
+    alert_name     = "weudev-afm-internal-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
   },
   {
     https_endpoint = "weudev.ecommerce.internal.dev.platform.pagopa.it",
-    alert_name = "weudev-ecommerce-internal-dev-platform-pagopa-it",
-    alert_enabled = true,
-    helm_present = true,
+    alert_name     = "weudev-ecommerce-internal-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
   },
   {
     https_endpoint = "weudev.gps.internal.dev.platform.pagopa.it",
-    alert_name = "weudev-gps-internal-dev-platform-pagopa-it",
-    alert_enabled = true,
-    helm_present = true,
+    alert_name     = "weudev-gps-internal-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
   },
   {
     https_endpoint = "weudev.shared.internal.dev.platform.pagopa.it",
-    alert_name = "weudev-shared-internal-dev-platform-pagopa-it",
-    alert_enabled = true,
-    helm_present = true,
+    alert_name     = "weudev-shared-internal-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
   },
 ]
