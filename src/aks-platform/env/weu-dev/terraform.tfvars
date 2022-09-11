@@ -134,13 +134,29 @@ tls_cert_check_helm = {
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
-https_endpoints_to_check = [
+tls_checker_https_endpoints_to_check = [
   {
     https_endpoint = "api.dev.platform.pagopa.it",
     alert_name = "api-dev-platform-pagopa-it"
+    alert_enabled = true,
+    helm_present = true,
   },
   {
-    https_endpoint = "management.dev.platform.pagopa.it/ServiceStatus",
-    alert_name = "management-dev-platform-pagopa-it-servicestatus"
+    https_endpoint = "management.dev.platform.pagopa.it",
+    alert_name = "management-dev-platform-pagopa-it",
+    alert_enabled = true,
+    helm_present = true,
+  },
+  {
+    https_endpoint = "portal.dev.platform.pagopa.it",
+    alert_name = "portal-dev-platform-pagopa-it",
+    alert_enabled = true,
+    helm_present = true,
+  },
+  {
+    https_endpoint = "weudev.afm.internal.dev.platform.pagopa.it",
+    alert_name = "weudev-afm-internal-dev-platform-pagopa-it",
+    alert_enabled = false,
+    helm_present = true,
   },
 ]
