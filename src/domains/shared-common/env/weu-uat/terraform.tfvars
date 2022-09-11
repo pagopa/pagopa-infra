@@ -72,4 +72,4 @@ notifications_service_queue_params = {
   retention_days             = 7
 }
 
-storage_private_endpoint_enabled = false
+storage_private_endpoint_enabled = true
