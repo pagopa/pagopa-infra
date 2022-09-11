@@ -140,6 +140,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_
   tags = var.tags
 }
 
+# DNS private: internal.dev.platform.pagopa.it
+
 resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
   name                = "internal.${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -152,6 +154,16 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_platform_pago
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.internal_platform_pagopa_it.name
   virtual_network_id    = module.vnet_integration.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "internal_platform_vnetlink_vnet_core" {
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.internal_platform_pagopa_it.name
+  virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
   tags = var.tags
