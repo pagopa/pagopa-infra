@@ -1,6 +1,6 @@
 <policies>
     <inbound>
-      <set-backend-service base-url="{{pm-gtw-hostname}}/pp-restapi-CD/assets" />
+      <set-backend-service base-url="@(String.Format("{{pm-gtw-hostname}}:{0}/pp-restapi-CD/assets", (string)context.Variables["pm-gtw-port"]))" />
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
       <base />
     </inbound>

@@ -16,7 +16,7 @@
         </allowed-headers>
         </cors>
       <base />
-      <set-backend-service base-url="{{pm-gtw-hostname}}/pp-restapi-CD/v3" />
+      <set-backend-service base-url="@(String.Format("{{pm-gtw-hostname}}:{0}/pp-restapi-CD/v3", (string)context.Variables["pm-gtw-port"]))" />
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     </inbound>
     <outbound>

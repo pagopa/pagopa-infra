@@ -12,7 +12,16 @@
 -->
 <policies>
     <inbound>
+        <set-variable name="fromDnsHost" value="@(context.Request.OriginalUrl.Host)" />
         <base />
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault<string>("fromDnsHost").Contains("prf.platform.pagopa.it"))">
+                <set-variable name="pm-gtw-port" value="8081" /> <!-- prf -->
+            </when>
+            <otherwise>
+                <set-variable name="pm-gtw-port" value="8080" /> <!-- uat -->
+            </otherwise>
+        </choose>
     </inbound>
     <backend>
         <base />

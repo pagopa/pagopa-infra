@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="{{pm-gtw-hostname}}/pp-restapi/v4" />
+      <set-backend-service base-url="@(String.Format("{{pm-gtw-hostname}}:{0}/pp-restapi/v4", (string)context.Variables["pm-gtw-port"]))" />
     </inbound>
     <outbound>
       <base />

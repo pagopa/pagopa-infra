@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="{{pm-gtw-hostname}}/db-logging" />
+      <set-backend-service base-url="@(String.Format("{{pm-gtw-hostname}}:{0}/db-logging", (string)context.Variables["pm-gtw-port"]))" />
     </inbound>
     <outbound>
       <base />
