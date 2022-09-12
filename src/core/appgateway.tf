@@ -1,3 +1,4 @@
+
 ## Application gateway public ip ##
 resource "azurerm_public_ip" "appgateway_public_ip" {
   name                = format("%s-appgateway-pip", local.project)
@@ -117,6 +118,32 @@ module "app_gw" {
       }
     }
 
+    apiprf = var.dns_zone_prefix_prf == null ? {
+      protocol           = "Http"
+      host               = ""
+      port               = 80
+      ssl_profile_name   = ""
+      firewall_policy_id = null
+      certificate = {
+        name = ""
+        id   = null
+      }
+      } : {
+      protocol           = "Https"
+      host               = format("api.%s.%s", var.dns_zone_prefix_prf, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+      certificate = {
+        name = var.app_gateway_prf_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
+          ""
+        )
+      }
+    }
+
     portal = {
       protocol           = "Https"
       host               = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
@@ -156,6 +183,16 @@ module "app_gw" {
   routes = {
     api = {
       listener              = "api"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+
+    apiprf = var.dns_zone_prefix_prf == null ? {
+      listener              = "apiprf"
+      backend               = ""
+      rewrite_rule_set_name = null
+      } : {
+      listener              = "apiprf"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }

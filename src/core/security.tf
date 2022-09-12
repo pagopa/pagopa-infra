@@ -143,6 +143,13 @@ data "azurerm_key_vault_certificate" "app_gw_platform" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "app_gw_platform_prf" {
+  count = (var.dns_zone_prefix_prf == null) ? 0 : 1
+
+  name         = var.app_gateway_prf_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_certificate" "portal_platform" {
   name         = var.app_gateway_portal_certificate_name
   key_vault_id = module.key_vault.id
