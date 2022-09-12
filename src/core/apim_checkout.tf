@@ -324,3 +324,12 @@ module "apim_checkout_ecommerce_api_v1" {
     backend-service = "https://api.${var.dns_zone_prefix}.${var.external_domain}/ecommerce"
   })
 }
+
+resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api" {
+  api_name            = format("%s-checkout-ecommerce-api-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "getPaymentRequestInfo"
+
+  xml_content = file("./api/checkout/checkout_ecommerce/v1/_recaptcha_check.xml.tpl")
+}

@@ -471,7 +471,7 @@
         }
       }
     },
-    "/transactions-service/payment-requests/{rpt_id}": {
+    "/payment-requests-service/payment-requests/{rpt_id}": {
       "get": {
         "operationId": "getPaymentRequestInfo",
         "parameters": [
@@ -482,6 +482,14 @@
             "schema": {
               "type": "string",
               "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "recaptchaResponse",
+            "schema": {
+              "type": "string"
             },
             "required": true
           }
