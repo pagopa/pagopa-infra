@@ -84,3 +84,44 @@ nginx_helm = {
   }
 }
 keda_helm_version = "2.6.2"
+
+# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
+# image tags: https://github.com/pagopa/infra-ssl-check/releases
+tls_cert_check_helm = {
+  chart_version = "1.21.0"
+  image_name    = "ghcr.io/pagopa/infra-ssl-check"
+  image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
+}
+
+tls_checker_https_endpoints_to_check = [
+  {
+    https_endpoint = "api.uat.platform.pagopa.it",
+    alert_name     = "api-dev-platform-pagopa-it"
+    alert_enabled  = true,
+    helm_present   = true,
+  },
+  {
+    https_endpoint = "management.uat.platform.pagopa.it",
+    alert_name     = "management-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
+  },
+  {
+    https_endpoint = "portal.uat.platform.pagopa.it",
+    alert_name     = "portal-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
+  },
+  {
+    https_endpoint = "config.uat.platform.pagopa.it",
+    alert_name     = "config-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
+  },
+  {
+    https_endpoint = "uat.checkout.pagopa.it",
+    alert_name     = "dev-checkout-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
+  }
+]
