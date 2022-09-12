@@ -12,9 +12,27 @@ module "apim_afm_calculator_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = true
+  published             = false
   subscription_required = false
   approval_required     = false
+
+  policy_xml = file("./api_product/calculator/_base_policy.xml")
+}
+
+module "apim_afm_calculator_node_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+
+  product_id   = "afm-node-calculator"
+  display_name = "GEC pagoPA - Calcolatrice for Node"
+  description  = "Prodotto Gestione Evoluta Commissioni - Calcolo delle commissioni"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1
 
   policy_xml = file("./api_product/calculator/_base_policy.xml")
 }
@@ -97,7 +115,7 @@ module "apim_api_afm_calculator_api_node_v1" {
   name                  = format("%s-afm-calculator-service-node-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_afm_calculator_product.product_id]
+  product_ids           = [module.apim_afm_calculator_node_product.product_id]
   subscription_required = local.apim_afm_calculator_service_node_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_node_api.id
   api_version           = "v1"
