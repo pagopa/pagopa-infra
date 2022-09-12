@@ -56,7 +56,7 @@ resource "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
   tags = var.tags
 }
 
-# Private dns zone: platform.pagopa.it
+# Private dns zone: [env].platform.pagopa.it
 
 resource "azurerm_private_dns_zone" "platform_private_dns_zone" {
   name                = "${var.dns_zone_prefix}.${var.external_domain}"
@@ -65,7 +65,7 @@ resource "azurerm_private_dns_zone" "platform_private_dns_zone" {
   tags = var.tags
 }
 
-resource "azurerm_private_dns_a_record" "platform_dns_a_private" {
+resource "azurerm_private_dns_a_record" "platform_dns_a_private_apim" {
 
   for_each            = toset(var.platform_private_dns_zone_records)
   name                = each.key
@@ -73,6 +73,16 @@ resource "azurerm_private_dns_a_record" "platform_dns_a_private" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = module.apim.private_ip_addresses
+  tags                = var.tags
+}
+
+resource "azurerm_private_dns_cname_record" "config_platform_dns_private_cname" {
+
+  name                = "config"
+  zone_name           = azurerm_private_dns_zone.platform_private_dns_zone.name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  record             = module.api_config_fe_cdn[0].hostname
   tags                = var.tags
 }
 
