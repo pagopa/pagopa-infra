@@ -36,6 +36,6 @@ locals {
 
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 
-  storage_dns_zone_name                = "privatelink.queue.core.windows.net"
+  storage_queue_dns_zone_name          = "privatelink.queue.core.windows.net"
   storage_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 }
