@@ -17,6 +17,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_apim_afm_calculator_data_product"></a> [apim\_afm\_calculator\_data\_product](#module\_apim\_afm\_calculator\_data\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
+| <a name="module_apim_afm_calculator_node_product"></a> [apim\_afm\_calculator\_node\_product](#module\_apim\_afm\_calculator\_node\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_afm_calculator_product"></a> [apim\_afm\_calculator\_product](#module\_apim\_afm\_calculator\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_afm_marketplace_product"></a> [apim\_afm\_marketplace\_product](#module\_apim\_afm\_marketplace\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_api_afm_calculator_api_node_v1"></a> [apim\_api\_afm\_calculator\_api\_node\_v1](#module\_apim\_api\_afm\_calculator\_api\_node\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
