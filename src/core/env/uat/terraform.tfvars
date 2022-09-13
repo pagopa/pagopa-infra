@@ -495,3 +495,5 @@ cosmos_document_db_params = {
 
 #   backup_continuous_enabled = false
 # }
+
+storage_queue_private_endpoint_enabled = true
