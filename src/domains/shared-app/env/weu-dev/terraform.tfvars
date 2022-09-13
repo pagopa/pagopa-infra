@@ -1,11 +1,11 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "shared"
-location       = "westeurope"
-location_short = "weu"
+prefix          = "pagopa"
+env_short       = "d"
+env             = "dev"
+domain          = "shared"
+location        = "westeurope"
+location_short  = "weu"
 location_string = "West Europe"
-instance       = "dev"
+instance        = "dev"
 
 tags = {
   CreatedBy   = "Terraform"

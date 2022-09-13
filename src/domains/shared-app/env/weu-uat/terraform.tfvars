@@ -1,11 +1,11 @@
-prefix         = "pagopa"
-env_short      = "u"
-env            = "uat"
-domain         = "shared"
-location       = "westeurope"
-location_short = "weu"
+prefix          = "pagopa"
+env_short       = "u"
+env             = "uat"
+domain          = "shared"
+location        = "westeurope"
+location_short  = "weu"
 location_string = "West Europe"
-instance       = "uat"
+instance        = "uat"
 
 tags = {
   CreatedBy   = "Terraform"
