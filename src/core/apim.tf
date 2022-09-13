@@ -395,6 +395,21 @@ resource "azurerm_api_management_named_value" "pagopa_fn_buyerbanks_key" {
   secret              = true
 }
 
+# afm data key
+data "azurerm_key_vault_secret" "pagopa_afm_calculator_data_service_key" {
+  name         = "pagopa-afm-calculator-data-service-key"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "pagopa_afm_calculator_data_service_key" {
+  name                = "pagopa-afm-calculator-data-service-key"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pagopa-afm-calculator-data-service-key"
+  value               = data.azurerm_key_vault_secret.pagopa_afm_calculator_data_service_key.value
+  secret              = true
+}
+
 resource "azurerm_api_management_named_value" "pm_gtw_hostname" {
   name                = "pm-gtw-hostname"
   api_management_name = module.apim.name

@@ -27,7 +27,7 @@ locals {
     display_name          = "AFM Calculator Data pagoPA - data for calculator of advanced fees management service API"
     description           = "Data Calculator API to support advanced fees management service"
     path                  = "afm/calculator-data-service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
