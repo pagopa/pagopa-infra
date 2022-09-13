@@ -1,10 +1,11 @@
 # general
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "prod"
-location       = "westeurope"
-location_short = "weu"
+prefix          = "pagopa"
+env_short       = "p"
+env             = "prod"
+domain          = "prod"
+location        = "westeurope"
+location_short  = "weu"
+location_string = "West Europe"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -32,6 +33,7 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 aks_sku_tier                   = "Paid"
 aks_private_cluster_is_enabled = true
+aks_alerts_enabled             = true
 
 aks_system_node_pool = {
   name                         = "system01"
@@ -81,3 +83,44 @@ nginx_helm = {
   }
 }
 keda_helm_version = "2.6.2"
+
+# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
+# image tags: https://github.com/pagopa/infra-ssl-check/releases
+tls_cert_check_helm = {
+  chart_version = "1.21.0"
+  image_name    = "ghcr.io/pagopa/infra-ssl-check"
+  image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
+}
+
+tls_checker_https_endpoints_to_check = [
+  {
+    https_endpoint = "api.platform.pagopa.it",
+    alert_name     = "api-dev-platform-pagopa-it"
+    alert_enabled  = true,
+    helm_present   = true,
+  },
+  {
+    https_endpoint = "management.platform.pagopa.it",
+    alert_name     = "management-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
+  },
+  {
+    https_endpoint = "portal.platform.pagopa.it",
+    alert_name     = "portal-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
+  },
+  {
+    https_endpoint = "config.platform.pagopa.it",
+    alert_name     = "config-dev-platform-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
+  },
+  {
+    https_endpoint = "checkout.pagopa.it",
+    alert_name     = "dev-checkout-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
+  }
+]

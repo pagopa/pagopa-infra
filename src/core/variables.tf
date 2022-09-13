@@ -1441,7 +1441,7 @@ variable "cidr_subnet_pg_flex_dbms" {
 }
 
 # ####################
-# CosmosDb 
+# CosmosDb
 # ####################
 
 # ####################
@@ -1560,4 +1560,8 @@ variable "storage_queue_private_endpoint_enabled" {
   default     = false
 }
 
-
+variable "platform_private_dns_zone_records" {
+  type        = list(string)
+  default     = null
+  description = "List of records to add into the platform.pagopa.it dns private"
+}
