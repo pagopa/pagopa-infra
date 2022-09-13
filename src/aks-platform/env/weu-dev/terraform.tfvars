@@ -156,7 +156,7 @@ tls_checker_https_endpoints_to_check = [
   {
     https_endpoint = "config.dev.platform.pagopa.it",
     alert_name     = "config-dev-platform-pagopa-it",
-    alert_enabled  = false,
+    alert_enabled  = true,
     helm_present   = true,
   },
   {
