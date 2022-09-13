@@ -498,5 +498,4 @@ cosmos_document_db_params = {
 
 platform_private_dns_zone_records = ["api", "portal", "management"]
 
-
 storage_queue_private_endpoint_enabled = true

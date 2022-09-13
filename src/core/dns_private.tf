@@ -68,8 +68,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link_privatelink_
   tags = var.tags
 }
 
-# Private dns zone: platform.pagopa.it
-
 # Private dns zone: [env].platform.pagopa.it
 
 resource "azurerm_private_dns_zone" "platform_private_dns_zone" {
