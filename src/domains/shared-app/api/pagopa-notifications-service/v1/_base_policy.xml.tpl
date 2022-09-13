@@ -21,7 +21,7 @@
           </otherwise>
       </choose>
       <!-- Handle X-Client-Id - multi channel - END -->
-      <set-backend-service base-url="https://${hostname}/pagopa-notifications-service" />
+      <set-backend-service base-url="@(context.Request.Headers.GetValueOrDefault("blue-hostname","https://${hostname}/pagopa-notifications-service"))" />
     </inbound>
     <outbound>
       <base />
