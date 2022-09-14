@@ -62,3 +62,11 @@ resource "azurerm_key_vault_secret" "iuv_generator_cosmos_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+
+resource "azurerm_key_vault_secret" "notifications_service_sa_connection_string" {
+  name         = "notifications-service-sa-connection-string"
+  value        = module.notifications_service_storage.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}

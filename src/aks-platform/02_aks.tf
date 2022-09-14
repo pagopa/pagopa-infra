@@ -74,7 +74,7 @@ module "aks" {
   addon_azure_pod_identity_enabled               = true
 
   custom_metric_alerts = null
-  alerts_enabled       = true
+  alerts_enabled       = var.aks_alerts_enabled
   action = [
     {
       action_group_id    = data.azurerm_monitor_action_group.slack.id
