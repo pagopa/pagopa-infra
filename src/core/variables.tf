@@ -348,7 +348,7 @@ variable "dns_zone_prefix" {
 
 variable "dns_zone_prefix_prf" {
   type        = string
-  default     = null
+  default     = "" # null
   description = "The dns subdomain."
 }
 
