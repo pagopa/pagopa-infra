@@ -346,6 +346,12 @@ variable "dns_zone_prefix" {
   description = "The dns subdomain."
 }
 
+variable "dns_zone_prefix_prf" {
+  type        = string
+  default     = "" # null
+  description = "The dns subdomain."
+}
+
 variable "dns_zone_checkout" {
   type        = string
   default     = null
@@ -468,6 +474,12 @@ variable "redis_private_endpoint_enabled" {
 variable "app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
 }
 
 variable "app_gateway_portal_certificate_name" {
