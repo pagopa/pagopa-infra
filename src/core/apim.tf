@@ -413,6 +413,24 @@ resource "azurerm_api_management_named_value" "pm_onprem_hostname" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "pm_host" {
+  name                = "pm-host"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pm-host"
+  value               = data.azurerm_key_vault_secret.pm_host.value
+  secret              = true
+}
+
+resource "azurerm_api_management_named_value" "pm_host_prf" {
+  name                = "pm-host-prf"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pm-host-prf"
+  value               = data.azurerm_key_vault_secret.pm_host_prf.value
+  secret              = true
+}
+
 # fdr
 resource "azurerm_api_management_named_value" "fdrsaname" {
   name                = "fdrsaname"

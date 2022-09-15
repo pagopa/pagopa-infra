@@ -1,7 +1,16 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="@(String.Format("{{pm-gtw-hostname}}:{0}/pp-restapi-server/v4", (string)context.Variables["pm-gtw-port"]))" />
+      <set-variable name="fromDnsHost" value="@(context.Request.OriginalUrl.Host)" />
+      <choose>
+        <when condition="@(context.Variables.GetValueOrDefault<string>("fromDnsHost").Contains("prf.platform.pagopa.it"))">
+          <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-restapi-server/v4")" />
+        </when>
+        <otherwise>
+          <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/pp-restapi-server/v4")" />
+        </otherwise>
+      </choose>
+      <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
     </inbound>
     <outbound>
       <base />

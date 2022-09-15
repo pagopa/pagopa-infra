@@ -29,6 +29,15 @@ data "azurerm_key_vault_secret" "pm_restapi_ip" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "pm_host" {
+  name         = "pm-host"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "pm_host_prf" {
+  name         = "pm-host-prf"
+  key_vault_id = module.key_vault.id
+}
 #####################################
 ## API buyerbanks                  ##
 #####################################
