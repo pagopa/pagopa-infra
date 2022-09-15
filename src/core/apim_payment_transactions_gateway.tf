@@ -170,6 +170,6 @@ module "apim_payment_transactions_gateway_external_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_transactions_gateway_api/external/v1/_base_policy.xml.tpl", {
-    origin   = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}/"
+    origin = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}/"
   })
 }
