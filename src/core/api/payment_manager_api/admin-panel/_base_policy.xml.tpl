@@ -14,10 +14,10 @@
       <set-variable name="fromDnsHost" value="@(context.Request.OriginalUrl.Host)" />
       <choose>
         <when condition="@(context.Variables.GetValueOrDefault<string>("fromDnsHost").Contains("prf.platform.pagopa.it"))">
-          <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-admin-panel")" />
+          <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/pp-admin-panel")" />
         </when>
         <otherwise>
-          <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/pp-admin-panel")" />
+          <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-admin-panel")" />
         </otherwise>
       </choose>
       <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
