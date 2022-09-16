@@ -1,7 +1,7 @@
 
 locals {
 
-  # listeners 
+  # listeners
   listeners = {
 
     api = {
@@ -133,7 +133,7 @@ module "appgateway_snet" {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.1.20"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.19.0"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -142,6 +142,8 @@ module "app_gw" {
   # SKU
   sku_name = var.app_gateway_sku_name
   sku_tier = var.app_gateway_sku_tier
+
+  zones = var.env_short == "p" ? [1, 2, 3] : null
 
   # WAF
   waf_enabled = var.app_gateway_waf_enabled
@@ -201,8 +203,6 @@ module "app_gw" {
       cipher_suites = [
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
       ]
       min_protocol_version = "TLSv1_2"
     }
