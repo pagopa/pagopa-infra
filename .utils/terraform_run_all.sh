@@ -23,6 +23,8 @@ array=(
     'src/domains/ecommerce-common::weu-dev'
     'src/domains/gps-app::weu-dev'
     'src/domains/gps-common::weu-dev'
+    'src/domains/selc-app::weu-dev'
+    'src/domains/selc-common::weu-dev'
     'src/domains/shared-app::weu-dev'
     'src/domains/shared-common::weu-dev'
 )
