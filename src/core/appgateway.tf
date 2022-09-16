@@ -143,7 +143,7 @@ module "app_gw" {
   sku_name = var.app_gateway_sku_name
   sku_tier = var.app_gateway_sku_tier
 
-  zones = var.env_short == "p" ? [1,2,3] : null
+  zones = var.env_short == "p" ? [1, 2, 3] : null
 
   # WAF
   waf_enabled = var.app_gateway_waf_enabled
