@@ -63,6 +63,7 @@ cosmos_mongo_db_params = {
 
 cidr_subnet_cosmosdb_ecommerce = ["10.1.153.0/24"]
 cidr_subnet_redis_ecommerce    = ["10.1.148.0/24"]
+cidr_subnet_storage_ecommerce  = ["10.1.154.0/24"]
 
 cosmos_mongo_db_ecommerce_params = {
   enable_serverless  = true
@@ -75,4 +76,13 @@ redis_ecommerce_params = {
   capacity = 0
   sku_name = "Basic"
   family   = "C"
-} 
+}
+
+ecommerce_storage_params = {
+  enabled                    = true
+  tier                       = "Standard"
+  kind                       = "StorageV2"
+  account_replication_type   = "LRS",
+  advanced_threat_protection = true,
+  retention_days             = 7
+}
