@@ -127,6 +127,49 @@
                 </return-response>
             </when>
             <otherwise>
+                <!-- ottimizzazione-ec-buoni start -->
+                <!-- https://pagopa.atlassian.net/wiki/spaces/PAG/pages/533398561/Ottimizzazione+filtro+su+Enti+Creditori+buoni -->
+                <cache-lookup-value key="@((string) context.Variables["fiscalCode"])" variable-name="dynamicGoodEc" caching-type="internal" />
+                <choose>
+                    <when condition="@{
+                    var eclist = ((string) context.Variables["ecs"]).Split(',');
+                    var idEC = (string) context.Variables["fiscalCode"];
+                    var isFiscalCodeNotInBlackList = !Array.Exists(eclist, e => e == idEC); 
+                    //      se non è in blacklist e NON è nella dynamic => call apiconfig
+                    return  ( isFiscalCodeNotInBlackList && !context.Variables.ContainsKey("dynamicGoodEc") )  ;
+                    }">
+                        <send-request ignore-error="true" timeout="10" response-variable-name="ec-stations-body" mode="new">
+                            <!-- <set-url>@(String.Format("https://api.{0}platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{1}/stations", ${env}, (string) context.Variables["fiscalCode"] ))</set-url> -->
+                            <set-url>@(String.Format("https://api.dev.platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
+                            <set-method>GET</set-method>
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                        </send-request>
+                        <set-variable name="ec-station-response" value="@(((IResponse)context.Variables["ec-stations-body"]).Body.As<JObject>())" />
+                        <set-variable name="isAllStationsV2" value="@{
+                            var isAllv2 = true;
+                            JObject res = (JObject) context.Variables["ec-station-response"];
+                            foreach (var item1 in res["stations"])
+                            {
+                                var stationVers = (string)((JObject) item1)["version"];
+                                if (stationVers != "2" ) {
+                                    isAllv2 = false;
+                                    break;
+                                } 
+                            }
+                            return isAllv2;
+                        }" />
+                        <!-- Specify maximum cache-store duration -->
+                        <!-- 68years ( no expired ) vs 12h-->
+                        <!-- https://github.com/MicrosoftDocs/azure-docs/issues/62394 -->
+                        <cache-store-value key="@((string) context.Variables["fiscalCode"])" value="@((bool) context.Variables["isAllStationsV2"])" duration="@{ return ((bool)context.Variables["isAllStationsV2"]) ? 2147483647 : 43200; }" caching-type="internal" />
+                    </when>
+                    <otherwise>
+                        <!-- nothing -->
+                    </otherwise>
+                </choose>
+                <!-- ottimizzazione-ec-buoni stop -->
                 <cache-store-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="30" caching-type="internal" />
                 <!-- verificatore -->
                 <choose>
@@ -135,16 +178,6 @@
                     </when>
                 </choose>
                 <xml-to-json kind="direct" apply="content-type-xml" consider-accept-header="false" />
-                <!--
-        <set-variable name="idPSP" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["idPSP"])" />
-        <set-variable name="idBrokerPSP" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["idBrokerPSP"])" />
-        <set-variable name="idChannel" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["idChannel"])" />
-        <set-variable name="password" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["password"])" />
-        <set-variable name="idempotencyKey" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["idempotencyKey"])" />
-        <set-variable name="fiscalCode" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["qrCode"]["fiscalCode"])" />
-        <set-variable name="noticeNumber" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["qrCode"]["noticeNumber"])" />
-        <set-variable name="amount" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["nod$activatePaymentNoticeReq"]["amount"])" />
-        -->
                 <choose>
                     <!-- check if idBrokerPSP is in to PSP'whitelist -->
                     <!-- check if fiscalCode isn't in to EC'blacklist -->
@@ -153,6 +186,12 @@
                 var idBroker = (string) context.Variables["idBrokerPSP"];
 
                 var eclist = ((string) context.Variables["ecs"]).Split(',');
+                // ottimizzazione-ec-buoni - add to eclist dynamicGoodEc cache
+                if (context.Variables.ContainsKey("dynamicGoodEc") && ((bool) context.Variables["dynamicGoodEc"])) {
+                    eclist.Append((string) context.Variables["fiscalCode"]);
+                }
+                
+
                 var idEC = (string) context.Variables["fiscalCode"];
 
                 // return Array.Exists(brokerList, e => e == idBroker) && !Array.Exists(eclist, e => e == idEC);
