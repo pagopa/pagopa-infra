@@ -28,7 +28,7 @@ module "apim_mock_payment_gateway_api" {
   count  = var.mock_payment_gateway_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-mock-payment-gateway-api", var.env_short)
+  name                  = format("%s-mock-payment-gateway-api", local.project)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_mock_payment_gateway_product[0].product_id]
@@ -36,7 +36,7 @@ module "apim_mock_payment_gateway_api" {
 
   description  = "mock payment gateway api"
   display_name = "mock payment gateway api"
-  path         = "mock-payment-gateway/api"
+  path         = "mock-psp/api"
   protocols    = ["https"]
 
   service_url = format("https://%s", module.mock_payment_gateway[0].default_site_hostname)
@@ -55,7 +55,7 @@ module "apim_mock_payment_gateway_api" {
 ##############
 
 locals {
-  apim_mock_payment_gateway_mng_api_name = format("%s-mock-payment-gateway-mng-api", var.env_short)
+  apim_mock_payment_gateway_mng_api_name = format("%s-mock-payment-gateway-mng-api", local.project)
 }
 
 module "apim_mock_payment_gateway_mng_api" {
@@ -70,7 +70,7 @@ module "apim_mock_payment_gateway_mng_api" {
 
   description  = "mock payment gateway mng api"
   display_name = "mock payment gateway mng api"
-  path         = "mock-payment-gateway/mng-api"
+  path         = "mock-psp/mng-api"
   protocols    = ["https"]
 
   service_url = format("https://%s", module.mock_payment_gateway[0].default_site_hostname)
