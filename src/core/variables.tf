@@ -91,33 +91,33 @@ variable "cidr_subnet_mock_ec" {
 
 # mock_ec
 
-variable "mock_psp_enabled" {
+variable "mock_payment_gateway_enabled" {
   type        = bool
-  description = "Mock PSP enabled"
+  description = "Mock payment gateway enabled"
   default     = false
 }
 
-variable "mock_psp_always_on" {
+variable "mock_payment_gateway_always_on" {
   type        = bool
-  description = "Mock PSP always on property"
+  description = "Mock payment gateway always on property"
   default     = false
 }
 
-variable "mock_psp_tier" {
+variable "mock_payment_gateway_tier" {
   type        = string
-  description = "Mock PSP Plan tier"
+  description = "Mock payment gateway Plan tier"
   default     = "Standard"
 }
 
-variable "mock_psp_size" {
+variable "mock_payment_gateway_size" {
   type        = string
-  description = "Mock PSP Plan size"
+  description = "Mock payment gateway Plan size"
   default     = "S1"
 }
 
-variable "cidr_subnet_mock_psp" {
+variable "cidr_subnet_mock_payment_gateway" {
   type        = list(string)
-  description = "Address prefixes subnet mock psp"
+  description = "Address prefixes subnet mock payment_gateway"
   default     = null
 }
 
