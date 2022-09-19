@@ -47,7 +47,9 @@ module "mock_payment_gateway" {
 
   app_settings = {
     SERVER_PUBLIC_URL = format("https://api.%s.%s/mock-payment-gateway/api", var.dns_zone_prefix, var.external_domain),
-    MOCK_PROFILE      = "sit"
+    MOCK_PROFILE      = "sit",
+    xpay-apikey-alias = data.azurerm_key_vault_secret.mock_pgs_xpay_apikey_alias.value,
+    xpay-secret-key   = data.azurerm_key_vault_secret.google_recaptcha_secret.value
   }
 
   allowed_subnets = [module.apim_snet.id]
@@ -57,4 +59,14 @@ module "mock_payment_gateway" {
   subnet_id   = module.mock_payment_gateway_snet[0].id
 
   tags = var.tags
+}
+
+data "azurerm_key_vault_secret" "mock_pgs_xpay_apikey_alias" {
+  name         = "mock-pgs-xpay-apikey-alias"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "mock_pgs_xpay_secret_key" {
+  name         = "xpay-secret-key"
+  key_vault_id = module.key_vault.id
 }
