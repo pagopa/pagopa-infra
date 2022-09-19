@@ -133,7 +133,9 @@ module "apim_pm_restapi_api_v4" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl", {
+    origin = "https://${var.dns_zone_checkout}.${var.external_domain}/"
+  })
 }
 
 #####################################
@@ -609,7 +611,7 @@ module "apim_pm_wisp_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/wisp/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/payment_manager_api/wisp/_base_policy.xml.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 }
