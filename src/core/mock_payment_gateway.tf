@@ -67,6 +67,6 @@ data "azurerm_key_vault_secret" "mock_pgs_xpay_apikey_alias" {
 }
 
 data "azurerm_key_vault_secret" "mock_pgs_xpay_secret_key" {
-  name         = "xpay-secret-key"
+  name         = "mock-pgs-xpay-secret-key"
   key_vault_id = module.key_vault.id
 }
