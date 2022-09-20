@@ -583,6 +583,24 @@ resource "azurerm_api_management_named_value" "checkout_v2_test_key" {
   secret              = true
 }
 
+# verificatore keys for apiconfig ( ottimizizzaione ecs )
+
+data "azurerm_key_vault_secret" "verificatore_key_secret_apiconfig" {
+  name         = "verificatore-api-key-apiconfig"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "verificatore_api_key_apiconfig" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = "verificatore-api-key-apiconfig"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "verificatore-api-key-apiconfig"
+  value               = data.azurerm_key_vault_secret.verificatore_key_secret_apiconfig.value
+  secret              = true
+}
+
+
 # donazioni
 resource "azurerm_api_management_named_value" "donazioni_config_name" {
   name                = "donazioni-ucraina"
