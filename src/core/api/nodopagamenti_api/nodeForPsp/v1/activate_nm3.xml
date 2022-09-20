@@ -139,12 +139,15 @@
                     return  ( isFiscalCodeNotInBlackList && !context.Variables.ContainsKey("dynamicGoodEc") )  ;
                     }">
                         <send-request ignore-error="true" timeout="10" response-variable-name="ec-stations-body" mode="new">
-                            <!-- <set-url>@(String.Format("https://api.{0}platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{1}/stations", ${env}, (string) context.Variables["fiscalCode"] ))</set-url> -->
-                            <set-url>@(String.Format("https://api.dev.platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
+                            <set-url>@(String.Format("https://api.{0}platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{1}/stations", ${env}, (string) context.Variables["fiscalCode"] ))</set-url>
+                            <!-- <set-url>@(String.Format("https://api.dev.platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url> -->
                             <set-method>GET</set-method>
                             <set-header name="Content-Type" exists-action="override">
                                 <value>application/json</value>
                             </set-header>
+                            <set-header name="ocp-apim-subscription-key" exists-action="override">
+                                <value>{{verificatore-api-key-apiconfig}}</value>
+                            </set-header>                            
                         </send-request>
                         <set-variable name="ec-station-response" value="@(((IResponse)context.Variables["ec-stations-body"]).Body.As<JObject>())" />
                         <set-variable name="isAllStationsV2" value="@{
