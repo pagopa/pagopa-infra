@@ -229,6 +229,254 @@
           }
         }
       }
+    },
+    "/postepay/api/v1/user/onboarding": {
+      "post": {
+        "operationId": "userPostepayOnboarding",
+        "summary": "Postepay user onboarding",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnboardingPostepayRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "required": [
+                    "onboardingID",
+                    "userRedirectURL"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "onboardingID": {
+                      "description": "identificativo della transazione di pagamento assegnato da PosteItaliane",
+                      "type": "string"
+                    },
+                    "userRedirectURL": {
+                      "description": "URL verso cui redirigere l'utente per portare a compimento la transazione",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Errore",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/postepayweb/change/outcome": {
+      "post": {
+        "operationId": "changeOutcomePostePay",
+        "tags": [
+          "Payment Manager Controller"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "paymentOutcome",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "timeoutMs",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/postepay/api/v1/payment/details": {
+      "post": {
+        "operationId": "paymentDetail",
+        "summary": "Dettagli di una transazione di pagamento",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeatilsPaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "required": [
+                    "paymentID",
+                    "userRedirectURL",
+                    "shopId;",
+                    "shopTransactionId",
+                    "result",
+                    "authNumber",
+                    "amount",
+                    "description",
+                    "currency",
+                    "buyerName",
+                    "buyerEmail",
+                    "paymentChannel",
+                    "authType",
+                    "status",
+                    "refundedAmount"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "paymentID": {
+                      "type": "string"
+                    },
+                    "userRedirectURL": {
+                      "type": "string"
+                    },
+                    "shopId": {
+                      "type": "string"
+                    },
+                    "shopTransactionId": {
+                      "type": "string"
+                    },
+                    "result": {
+                      "type": "string"
+                    },
+                    "authNumber": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "buyerName": {
+                      "type": "string"
+                    },
+                    "buyerEmail": {
+                      "type": "string"
+                    },
+                    "paymentChannel": {
+                      "type": "string"
+                    },
+                    "authType": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "refundedAmount": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Errore",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/postepay/api/v1/payment/refund": {
+      "post": {
+        "operationId": "refundPostepayPayment",
+        "tags": [
+          "Payment Manager Controller"
+        ],
+        "summary": "refund transazione di pagamento",
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundPaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "required": [
+                    "paymentID",
+                    "shopTransactionId",
+                    "transactionResult"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "paymentID": {
+                      "description": "identificativo della transazione di pagamento assegnato da PosteItaliane",
+                      "type": "string"
+                    },
+                    "shopTransactionId": {
+                      "type": "string"
+                    },
+                    "transactionResult": {
+                      "type": "string",
+                      "enum": [
+                        "OK",
+                        "KO"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Errore",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostePayError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -308,6 +556,117 @@
           "DIFFERITA"
         ],
         "type": "string"
+      },
+      "RefundPaymentRequest": {
+        "description": "",
+        "required": [
+          "shopId",
+          "shopTransactionId",
+          "merchantId",
+          "paymentID",
+          "authNumber",
+          "currency"
+        ],
+        "type": "object",
+        "properties": {
+          "shopId": {
+            "description": "identificativo del negozio",
+            "type": "string"
+          },
+          "shopTransactionId": {
+            "description": "identificativo della transazione lato merchant",
+            "type": "string"
+          },
+          "amount": {
+            "description": "importo",
+            "type": "string"
+          },
+          "reason": {
+            "description": "descrizione della transazione presentata al cliente",
+            "type": "string"
+          },
+          "currency": {
+            "description": "valuta in codice ISO (EUR = 978)",
+            "type": "string"
+          },
+          "merchantId": {
+            "type": "string"
+          },
+          "paymentID": {
+            "type": "string"
+          },
+          "authNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "DeatilsPaymentRequest": {
+        "description": "",
+        "required": [
+          "shopId",
+          "shopTransactionId",
+          "paymentID"
+        ],
+        "type": "object",
+        "properties": {
+          "shopId": {
+            "description": "identificativo del negozio",
+            "type": "string"
+          },
+          "shopTransactionId": {
+            "description": "identificativo della transazione lato merchant",
+            "type": "string"
+          },
+          "paymentID": {
+            "description": "paymentID",
+            "type": "string"
+          }
+        }
+      },
+      "OnboardingPostepayRequest": {
+        "description": "",
+        "required": [
+          "shopId",
+          "merchantId",
+          "onboardingTransactionId",
+          "paymentChannel",
+          "responseURLs"
+        ],
+        "type": "object",
+        "properties": {
+          "shopId": {
+            "description": "identificativo del negozio",
+            "type": "string"
+          },
+          "merchantId": {
+            "description": "identificativo del merchant",
+            "type": "string"
+          },
+          "onboardingTransactionId": {
+            "description": "id onboarding transaction Id",
+            "type": "string"
+          },
+          "paymentChannel": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PaymentChannel"
+              },
+              {
+                "description": "canale di pagamento, puo essere valorizzato con APP/WEB"
+              }
+            ]
+          },
+          "responseURLs": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseURLs"
+              },
+              {
+                "description": "URL di ritorno"
+              }
+            ]
+          }
+        }
       },
       "CreatePaymentRequest": {
         "description": "",
