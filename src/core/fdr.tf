@@ -100,3 +100,37 @@ resource "null_resource" "change_auth_fdr_blob_container" {
     azurerm_storage_container.fdr_rend_flow
   ]
 }
+
+# Alerting
+resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_parsing_0_flows_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-fdr-parsing-0-flows-alertx", module.reporting_fdr_function.name)
+  resource_group_name = azurerm_resource_group.reporting_fdr_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    email_subject          = "[Fdr] FdR Flow Parsing Error"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = azurerm_application_insights.application_insights.id
+  description    = "FdR Flow Parsing Error"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | where message  matches regex "with.*flows"
+    | extend flussi = extract("END opt2ehub.*with(.*)flows", 1, message)
+    | where toint(flussi) == 0  
+  QUERY
+    , module.reporting_fdr_function.name
+  )
+  severity    = 1
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
