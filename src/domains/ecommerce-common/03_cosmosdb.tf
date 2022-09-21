@@ -34,12 +34,11 @@ module "cosmosdb_account_mongodb" {
   mongo_server_version = var.cosmos_mongo_db_params.server_version
   enable_free_tier     = var.cosmos_mongo_db_params.enable_free_tier
 
-  public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
   private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
   subnet_id                          = module.cosmosdb_ecommerce_snet.id
   private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
-  allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = [data.azurerm_subnet.aks_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
   main_geo_location_location       = azurerm_resource_group.cosmosdb_ecommerce_rg.location
