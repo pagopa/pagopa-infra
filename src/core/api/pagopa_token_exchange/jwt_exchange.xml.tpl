@@ -12,22 +12,6 @@
 -->
 <policies>
     <inbound>
-        <!-- <cors allow-credentials="true">
-            <allowed-origins>
-              %{ for origin in origins ~}
-              <origin>${origin}</origin>
-              %{ endfor ~}
-            </allowed-origins>
-            <allowed-methods preflight-result-max-age="300">
-                <method>*</method>
-            </allowed-methods>
-            <allowed-headers>
-                <header>*</header>
-            </allowed-headers>
-            <expose-headers>
-                <header>*</header>
-            </expose-headers>
-        </cors> -->
         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="outputToken">
             <openid-config url="https://api.dev.platform.pagopa.it/test-api" />
             <audiences>
@@ -74,7 +58,7 @@
                     org_role
                     }
                     ))).Split('=')[0].Replace('+', '-').Replace('/', '_');
-
+                        
                     var message = ($"{JOSEProtectedHeader}.{payload}");
 
                     using (RSA rsa = context.Deployment.Certificates["${jwt_cert_signing_thumbprint}"].GetRSAPrivateKey())
