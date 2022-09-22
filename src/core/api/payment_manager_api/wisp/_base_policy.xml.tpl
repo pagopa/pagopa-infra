@@ -21,7 +21,6 @@
         </otherwise>
       </choose>
       <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
-      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
       <base />
     </inbound>
     <outbound>
