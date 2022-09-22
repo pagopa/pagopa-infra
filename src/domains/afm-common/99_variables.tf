@@ -141,3 +141,36 @@ variable "cidr_subnet_afm_marketplace_cosmosdb" {
   description = "Cosmos DB address space"
   default     = null
 }
+
+variable "cidr_subnet_afm_storage" {
+  type        = list(string)
+  description = "Storage address space"
+  default     = null
+}
+
+variable "afm_storage_params" {
+  type = object({
+    enabled                    = bool,
+    kind                       = string,
+    tier                       = string,
+    account_replication_type   = string,
+    advanced_threat_protection = bool,
+    retention_days             = number,
+    quota                      = number
+  })
+
+  default = {
+    enabled                    = false,
+    kind                       = "StorageV2"
+    tier                       = "Standard",
+    account_replication_type   = "LRS",
+    advanced_threat_protection = true,
+    retention_days             = 7,
+    quota                      = 3  # 3GB
+  }
+}
+
+variable "storage_private_endpoint_enabled" {
+  type    = bool
+  default = false
+}
