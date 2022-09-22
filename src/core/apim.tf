@@ -220,6 +220,13 @@ resource "azurerm_api_management_group" "ecommerce" {
   display_name        = "Ecommerce pagoPA"
 }
 
+resource "azurerm_api_management_group" "ecommerce_test" {
+  name                = "ecommerce_test"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "Ecommerce pagoPA test group"
+}
+
 resource "azurerm_api_management_group" "pda" {
   name                = "client-pda"
   resource_group_name = azurerm_resource_group.rg_api.name
