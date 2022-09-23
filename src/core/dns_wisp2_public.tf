@@ -13,10 +13,10 @@ resource "azurerm_dns_ns_record" "dev_wisp2" {
   zone_name           = azurerm_dns_zone.wisp2_public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   records = [
-    "ns1-07.azure-dns.com.",
-    "ns2-07.azure-dns.net.",
-    "ns3-07.azure-dns.org.",
-    "ns4-07.azure-dns.info."
+    "ns1-09.azure-dns.com.",
+    "ns2-09.azure-dns.net.",
+    "ns3-09.azure-dns.org.",
+    "ns4-09.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
   tags = var.tags
@@ -29,10 +29,10 @@ resource "azurerm_dns_ns_record" "uat_wisp2" {
   zone_name           = azurerm_dns_zone.wisp2_public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   records = [
-    "ns1-01.azure-dns.com.",
-    "ns2-01.azure-dns.net.",
-    "ns3-01.azure-dns.org.",
-    "ns4-01.azure-dns.info."
+    "ns1-06.azure-dns.com.",
+    "ns2-06.azure-dns.net.",
+    "ns3-06.azure-dns.org.",
+    "ns4-06.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
   tags = var.tags
