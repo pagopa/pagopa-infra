@@ -52,6 +52,7 @@ cidr_subnet_api_config = ["10.230.8.128/29"]
 external_domain   = "pagopa.it"
 dns_zone_prefix   = "dev.platform"
 dns_zone_checkout = "dev.checkout"
+dns_zone_wisp2    = "dev.wisp2"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
