@@ -40,9 +40,15 @@
 | <a name="module_apim_gpd_product"></a> [apim\_gpd\_product](#module\_apim\_gpd\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_gpd_reporting_analysis_product"></a> [apim\_gpd\_reporting\_analysis\_product](#module\_apim\_gpd\_reporting\_analysis\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_ec_api"></a> [apim\_mock\_ec\_api](#module\_apim\_mock\_ec\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_mock_ec_nexi_api"></a> [apim\_mock\_ec\_nexi\_api](#module\_apim\_mock\_ec\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_mock_ec_nexi_product"></a> [apim\_mock\_ec\_nexi\_product](#module\_apim\_mock\_ec\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
+| <a name="module_apim_mock_pm_nexi_api"></a> [apim\_mock\_pm\_nexi\_api](#module\_apim\_mock\_pm\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_mock_pm_nexi_product"></a> [apim\_mock\_pm\_nexi\_product](#module\_apim\_mock\_pm\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_psp_api"></a> [apim\_mock\_psp\_api](#module\_apim\_mock\_psp\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_mock_psp_mng_api"></a> [apim\_mock\_psp\_mng\_api](#module\_apim\_mock\_psp\_mng\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_mock_psp_nexi_api"></a> [apim\_mock\_psp\_nexi\_api](#module\_apim\_mock\_psp\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_mock_psp_nexi_product"></a> [apim\_mock\_psp\_nexi\_product](#module\_apim\_mock\_psp\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_psp_product"></a> [apim\_mock\_psp\_product](#module\_apim\_mock\_psp\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_dei_pagamenti_product"></a> [apim\_nodo\_dei\_pagamenti\_product](#module\_apim\_nodo\_dei\_pagamenti\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_fatturazione_api"></a> [apim\_nodo\_fatturazione\_api](#module\_apim\_nodo\_fatturazione\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
@@ -232,6 +238,9 @@
 | [azurerm_api_management_api_version_set.checkout_payment_activations_auth_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.checkout_transactions_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.mock_ec_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.mock_ec_nexi_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.mock_pm_nexi_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.mock_psp_nexi_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.node_for_io_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.node_for_psp_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_fatturazione_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
