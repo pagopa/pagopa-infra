@@ -673,7 +673,49 @@ resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
   xml_content = templatefile("./api/payment_manager_api/wisp/_spid_metadata_policy.xml.tpl", { metadata = data.azurerm_key_vault_secret.pm_wisp_metadata.value })
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_wisp_redirect" {
+  api_name            = format("%s-pm-wisp-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "GETstaticResourcesWisp"
 
+  xml_content = templatefile("./api/payment_manager_api/wisp/_redirect_policy.xml.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "post_wisp_redirect" {
+  api_name            = format("%s-pm-wisp-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "POSTstaticResourcesWisp"
+
+  xml_content = templatefile("./api/payment_manager_api/wisp/_redirect_policy.xml.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "options_wisp_redirect" {
+  api_name            = format("%s-pm-wisp-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "OPTstaticResourcesWisp"
+
+  xml_content = templatefile("./api/payment_manager_api/wisp/_redirect_policy.xml.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "head_wisp_redirect" {
+  api_name            = format("%s-pm-wisp-api", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "HEADstaticResourcesWisp"
+
+  xml_content = templatefile("./api/payment_manager_api/wisp/_redirect_policy.xml.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+}
 ##############################################
 ## API pagopa-payment-transactions-gateway  ##
 ##############################################
