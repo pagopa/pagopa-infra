@@ -43,37 +43,12 @@
         }
       },
       "get": {
-        "summary": "API to retrieve all session tokens",
-        "operationId": "getAllTokens",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/SessionData"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/session/{rptId}": {
-      "get": {
-        "summary": "API retrieve the session token bound to an rptId",
+        "summary": "API retrieve the session token bound to an transactionId",
         "operationId": "getToken",
         "parameters": [
           {
-            "in": "path",
-            "name": "rptId",
+            "in": "query",
+            "name": "transactionId",
             "required": true,
             "schema": {
               "type": "string",
@@ -92,6 +67,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not found"
           },
           "500": {
             "description": "Internal Server Error"
@@ -132,12 +110,16 @@
     "schemas": {
       "SessionRequest": {
         "required": [
+          "transactionId",
           "rptId",
           "email",
           "paymentToken"
         ],
         "type": "object",
         "properties": {
+          "transactionId": {
+            "type": "string"
+          },
           "rptId": {
             "type": "string"
           },
@@ -151,6 +133,7 @@
       },
       "SessionData": {
         "required": [
+          "transactionId",
           "rptId",
           "email",
           "paymentToken",
@@ -158,26 +141,9 @@
         ],
         "type": "object",
         "properties": {
-          "rptId": {
+          "transactionId": {
             "type": "string"
           },
-          "email": {
-            "type": "string"
-          },
-          "paymentToken": {
-            "type": "string"
-          },
-          "sessionToken": {
-            "type": "string"
-          }
-        }
-      },
-      "SessionToken": {
-        "required": [
-          "token"
-        ],
-        "type": "object",
-        "properties": {
           "rptId": {
             "type": "string"
           },

@@ -272,7 +272,7 @@ locals {
   apim_ecommerce_sessions_service_api = {
     display_name          = "ecommerce pagoPA - sessions service API"
     description           = "API to support sessions in ecommerce"
-    path                  = "ecommerce/payment-sessions-service"
+    path                  = "ecommerce/sessions-service"
     subscription_required = false
     service_url           = null
   }
