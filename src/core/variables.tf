@@ -358,6 +358,12 @@ variable "dns_zone_checkout" {
   description = "The checkout dns subdomain."
 }
 
+variable "dns_zone_wisp2" {
+  type        = string
+  default     = null
+  description = "The wisp2 dns subdomain."
+}
+
 # vpn
 
 variable "cidr_subnet_vpn" {
@@ -490,6 +496,11 @@ variable "app_gateway_portal_certificate_name" {
 variable "app_gateway_management_certificate_name" {
   type        = string
   description = "Application gateway api management certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2 certificate name on Key Vault"
 }
 
 variable "app_gateway_sku_name" {
