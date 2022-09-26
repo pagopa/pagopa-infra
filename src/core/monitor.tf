@@ -74,6 +74,10 @@ locals {
       path = "/ServiceStatus",
     },
     {
+      host = trimsuffix(azurerm_dns_a_record.dns_a_wisp2_at.fqdn, "."),
+      path = "",
+    },
+    {
       host = join(".",
       compact(["config", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
@@ -91,7 +95,7 @@ locals {
 }
 
 module "web_test_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.12.2"
+  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.19.1"
 
   for_each = { for v in local.test_urls : v.host => v if v != null }
 
@@ -100,6 +104,7 @@ module "web_test_api" {
   location                          = azurerm_resource_group.monitor_rg.location
   resource_group                    = azurerm_resource_group.monitor_rg.name
   application_insight_name          = azurerm_application_insights.application_insights.name
+  application_insight_id            = azurerm_application_insights.application_insights.id
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   ssl_cert_remaining_lifetime_check = 7
 

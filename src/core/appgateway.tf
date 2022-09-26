@@ -54,6 +54,23 @@ locals {
         )
       }
     }
+
+    wisp2 = {
+      protocol           = "Https"
+      host               = format("wisp2.%s.%s", var.dns_zone_wisp2, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_wisp2_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.wisp2_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.wisp2_platform.version}",
+          ""
+        )
+      }
+    }
   }
 
   listeners_extra = {
@@ -96,6 +113,12 @@ locals {
       backend               = "management"
       rewrite_rule_set_name = null
     }
+
+    wisp2 = {
+      listener              = "wisp2"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
   }
 
   routes_extra = {
@@ -106,8 +129,6 @@ locals {
     }
 
   }
-
-
 
 }
 
