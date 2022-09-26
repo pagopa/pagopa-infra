@@ -14,8 +14,7 @@
   <inbound>
     <base />
     <set-backend-service base-url="https://${hostname}/pagopa-afm-calculator-service" />
-
-    <set-variable name="isMock" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key","").Equals("{{afm-dev-secondary-sub-key}}"))" />
+    <set-variable name="isMock" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key","").Equals("{{afm-secondary-sub-key}}"))" />
     <choose>
       <when condition="@(context.Variables.GetValueOrDefault<bool>("isMock"))">
       <!--Mock Responses-->
@@ -23,46 +22,31 @@
       <set-variable name="scenario1" value="@(context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("ATM"))" />
       <set-variable name="scenario2" value="@(context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("ANY"))" />
       <set-variable name="scenario3" value="@(context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("BETTING"))" />
-      <!--Scenario 1-->
+      <!--Scenario 4-->
       <choose>
-        <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario1"))">
+        <when condition="@(!((string)context.Variables["statusCode"]).Equals("200"))">
         <return-response>
           <set-status code="@(int.Parse((string)context.Variables["statusCode"]))" />
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>[
-            {
-            "taxPayerFee": 130,
-            "primaryCiIncurredFee": 20,
-            "paymentMethod": "PO",
-            "touchpoint": "ATM",
-            "idBundle": "1",
-            "idCiBundle": "1",
-            "idPsp": "88888888888"
-            }
-            ]</set-body>
+          <set-body>{
+            "title": "error",
+            "status": 500,
+            "detail": "There was an error processing the request"
+            }</set-body>
         </return-response>
       </when>
     </choose>
-    <!--Scenario 2-->
+    <!--Scenario 1-->
     <choose>
-      <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario2"))">
+      <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario1"))">
       <return-response>
         <set-status code="@(int.Parse((string)context.Variables["statusCode"]))" />
         <set-header name="Content-Type" exists-action="override">
           <value>application/json</value>
         </set-header>
         <set-body>[
-          {
-          "taxPayerFee": 80,
-          "primaryCiIncurredFee": 0,
-          "paymentMethod": "PO",
-          "touchpoint": "ANY",
-          "idBundle": "2",
-          "idCiBundle": "ANY",
-          "idPsp": "88888888888"
-          },
           {
           "taxPayerFee": 130,
           "primaryCiIncurredFee": 20,
@@ -75,32 +59,60 @@
           ]</set-body>
       </return-response>
     </when>
-    </choose>
-    <!--Scenario 3-->
-    <choose>
-      <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario3"))">
-      <return-response>
-        <set-status code="@(int.Parse((string)context.Variables["statusCode"]))" />
-        <set-header name="Content-Type" exists-action="override">
-          <value>application/json</value>
-        </set-header>
-        <set-body>[]</set-body>
-      </return-response>
-    </when>
-    </choose>
-    </when>
-    </choose>
+  </choose>
+  <!--Scenario 2-->
+  <choose>
+    <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario2"))">
+    <return-response>
+      <set-status code="@(int.Parse((string)context.Variables["statusCode"]))" />
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
+      <set-body>[
+        {
+        "taxPayerFee": 80,
+        "primaryCiIncurredFee": 0,
+        "paymentMethod": "PO",
+        "touchpoint": "ANY",
+        "idBundle": "2",
+        "idCiBundle": "ANY",
+        "idPsp": "88888888888"
+        },
+        {
+        "taxPayerFee": 130,
+        "primaryCiIncurredFee": 20,
+        "paymentMethod": "PO",
+        "touchpoint": "ATM",
+        "idBundle": "1",
+        "idCiBundle": "1",
+        "idPsp": "88888888888"
+        }
+        ]</set-body>
+    </return-response>
+  </when>
+</choose>
+  <!--Scenario 3-->
+<choose>
+<when condition="@(context.Variables.GetValueOrDefault<bool>("scenario3"))">
+<return-response>
+  <set-status code="@(int.Parse((string)context.Variables["statusCode"]))" />
+  <set-header name="Content-Type" exists-action="override">
+    <value>application/json</value>
+  </set-header>
+  <set-body>[]</set-body>
+</return-response>
+</when>
+  </choose>
+  </when>
+  </choose>
   </inbound>
-
-  <backend>
-    <base />
-  </backend>
-
-  <outbound>
-    <base />
-  </outbound>
-
-  <on-error>
-    <base />
-  </on-error>
-</policies>
+<backend>
+<base />
+</backend>
+<outbound>
+<base />
+</outbound>
+<on-error>
+<base />
+</on-error>
+  </policies>
