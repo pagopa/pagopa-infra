@@ -10,7 +10,7 @@ locals {
 }
 
 resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
-  name         = replace("${local.project}-${var.external_domain}-jwt-signing-cert", ".", "") # only chars and dash
+  name         = "${local.project}-${var.domain}-jwt-signing-cert"
   key_vault_id = module.key_vault.id
 
   certificate_policy {
@@ -52,14 +52,14 @@ resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
         "keyEncipherment",
       ]
 
-      subject            = "CN=${local.project}-${var.external_domain}-jwt-signing-cert"
+      subject            = "CN=${local.project}-${var.domain}-jwt-signing-cert"
       validity_in_months = 12
     }
   }
 }
 
 resource "azurerm_api_management_certificate" "pagopa_token_exchange_cert_jwt" {
-  name                = replace("${local.project}-${var.external_domain}-token-exchange-jwt", ".", "") # only chars and dash
+  name                = "${local.project}-${var.domain}-token-exchange-jwt"
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
   key_vault_secret_id = azurerm_key_vault_certificate.pagopa_jwt_signing_cert.versionless_secret_id
@@ -73,7 +73,7 @@ resource "azurerm_api_management_api" "pagopa_token_exchange" {
 
   revision              = "1"
   display_name          = "PagoPa Token Exchange"
-  path                  = "api/token_"
+  path                  = "api/token"
   subscription_required = false
   #service_url           = ""
   protocols = ["https"]
