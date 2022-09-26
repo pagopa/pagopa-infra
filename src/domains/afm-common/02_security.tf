@@ -69,17 +69,17 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "storage_account_primary_key" {
-  name         = "azurestorageaccountkey"
-  value        = module.afm_storage.primary_access_key
+resource "azurerm_key_vault_secret" "storage_account_connection_string" {
+  name         = format("storage-account-%s-connection-str", var.env_short)
+  value        = module.afm_storage.primary_blob_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "storage_account_name" {
-  name         = "azurestorageaccountname"
-  value        = module.afm_storage.name
+  name         = format("storage-account-%s-blob-name", var.env_short)
+  value        = azurerm_storage_container.afm_data_volume.name
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
