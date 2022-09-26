@@ -74,10 +74,6 @@ locals {
       path = "/ServiceStatus",
     },
     {
-      host = trimsuffix(azurerm_dns_a_record.dns_a_wisp2_at.fqdn, "."),
-      path = "",
-    },
-    {
       host = join(".",
       compact(["config", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
@@ -85,6 +81,11 @@ locals {
     {
       host = join(".",
       compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "checkout.pagopa.it"])),
+      path = "",
+    },
+    {
+      host = join(".",
+      compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "wisp2.pagopa.it"])),
       path = "",
     },
     {
