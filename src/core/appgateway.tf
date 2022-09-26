@@ -57,7 +57,7 @@ locals {
 
     wisp2 = {
       protocol           = "Https"
-      host               = format("wisp2.%s.%s", var.dns_zone_wisp2, var.external_domain)
+      host               = format("%s.%s", var.dns_zone_wisp2, var.external_domain)
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null
