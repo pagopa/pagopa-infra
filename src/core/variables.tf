@@ -346,10 +346,22 @@ variable "dns_zone_prefix" {
   description = "The dns subdomain."
 }
 
+variable "dns_zone_prefix_prf" {
+  type        = string
+  default     = "" # null
+  description = "The dns subdomain."
+}
+
 variable "dns_zone_checkout" {
   type        = string
   default     = null
   description = "The checkout dns subdomain."
+}
+
+variable "dns_zone_wisp2" {
+  type        = string
+  default     = null
+  description = "The wisp2 dns subdomain."
 }
 
 # vpn
@@ -470,6 +482,12 @@ variable "app_gateway_api_certificate_name" {
   description = "Application gateway api certificate name on Key Vault"
 }
 
+variable "app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
 variable "app_gateway_portal_certificate_name" {
   type        = string
   description = "Application gateway developer portal certificate name on Key Vault"
@@ -478,6 +496,11 @@ variable "app_gateway_portal_certificate_name" {
 variable "app_gateway_management_certificate_name" {
   type        = string
   description = "Application gateway api management certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2 certificate name on Key Vault"
 }
 
 variable "app_gateway_sku_name" {

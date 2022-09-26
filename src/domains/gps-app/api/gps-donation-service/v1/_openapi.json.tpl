@@ -4,11 +4,11 @@
     "title": "GPS Donation service",
     "description": "GPS microservice for donations",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.0.1"
+    "version": "1.1.0"
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:8080/api/v1"
+      "url": "${host}/gps/donation-service/v1"
     }
   ],
   "tags": [
@@ -18,6 +18,93 @@
     }
   ],
   "paths": {
+    "/donations/info": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "Health Check",
+        "description": "Return OK if application is started",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Info"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/donations/paymentoptions": {
       "post": {
         "tags": [
@@ -237,6 +324,14 @@
             "type": "string",
             "description": "A human readable explanation specific to this occurrence of the problem.",
             "example": "There was an error processing the request"
+          }
+        }
+      },
+      "Info": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
           }
         }
       }

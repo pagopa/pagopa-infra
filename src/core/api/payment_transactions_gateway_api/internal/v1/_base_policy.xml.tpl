@@ -1,7 +1,16 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="${hostname}/payment-gateway" />
+      <set-variable name="fromDnsHost" value="@(context.Request.OriginalUrl.Host)" />
+      <choose>
+        <when condition="@(context.Variables.GetValueOrDefault<string>("fromDnsHost").Contains("prf.platform.pagopa.it"))">
+          <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/payment-gateway")" />
+        </when>
+        <otherwise>
+          <set-variable name="backend-base-url" value="@($"{{pm-host}}/payment-gateway")" />
+        </otherwise>
+      </choose>
+      <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
       <!-- Handle X-Client-ID - multi channel - START -->
         <set-header name="X-Client-ID" exists-action="delete" />
         <choose>

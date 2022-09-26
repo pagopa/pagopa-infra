@@ -1,5 +1,5 @@
 module "tls_checker" {
-  source = "git::https://github.com/pagopa/azurerm.git//tls_checker?ref=tls-checker-module"
+  source = "git::https://github.com/pagopa/azurerm.git//tls_checker?ref=v2.19.0"
 
   https_endpoint                             = local.shared_hostname
   alert_name                                 = local.shared_hostname

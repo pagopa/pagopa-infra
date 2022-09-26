@@ -1,10 +1,11 @@
-prefix         = "pagopa"
-env_short      = "u"
-env            = "uat"
-domain         = "afm"
-location       = "westeurope"
-location_short = "weu"
-instance       = "uat"
+prefix          = "pagopa"
+env_short       = "u"
+env             = "uat"
+domain          = "afm"
+location        = "westeurope"
+location_short  = "weu"
+location_string = "West Europe"
+instance        = "uat"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -19,7 +20,7 @@ lock_enable = true
 terraform_remote_state_core = {
   resource_group_name  = "io-infra-rg"
   storage_account_name = "pagopainfraterraformuat"
-  container_name       = "azurermstate"
+  container_name       = "azureadstate"
   key                  = "uat.terraform.tfstate"
 }
 

@@ -52,6 +52,7 @@ cidr_subnet_api_config = ["10.230.8.128/29"]
 external_domain   = "pagopa.it"
 dns_zone_prefix   = "dev.platform"
 dns_zone_checkout = "dev.checkout"
+dns_zone_wisp2    = "dev.wisp2"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
@@ -70,6 +71,7 @@ apim_alerts_enabled = false
 app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
+app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"
 app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false

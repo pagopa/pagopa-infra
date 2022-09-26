@@ -29,6 +29,15 @@ data "azurerm_key_vault_secret" "pm_restapi_ip" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "pm_host" {
+  name         = "pm-host"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "pm_host_prf" {
+  name         = "pm-host-prf"
+  key_vault_id = module.key_vault.id
+}
 #####################################
 ## API buyerbanks                  ##
 #####################################
@@ -124,7 +133,9 @@ module "apim_pm_restapi_api_v4" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl", {
+    origin = "https://${var.dns_zone_checkout}.${var.external_domain}/"
+  })
 }
 
 #####################################
@@ -225,7 +236,9 @@ module "apim_pm_restapicd_api_v3" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/restapi-cd/v3/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/restapi-cd/v3/_base_policy.xml.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
 }
 
 ##########################################
@@ -598,7 +611,9 @@ module "apim_pm_wisp_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/wisp/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/wisp/_base_policy.xml.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
@@ -1075,7 +1090,7 @@ locals {
 }
 
 module "apim_pm_mock_services_fe" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short != "p" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-pm-mock-services-fe-api", local.project)
@@ -1112,7 +1127,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "apim_pm_mock_services_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
 
   name                = format("%s-pm-mock-services-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -1123,7 +1138,7 @@ resource "azurerm_api_management_api_version_set" "apim_pm_mock_services_api" {
 
 module "apim_pm_mock_services_api_v1" {
 
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
