@@ -39,10 +39,10 @@ module "afm_storage_snet" {
   ]
 }
 
-resource "azurerm_storage_share" "afm_data_volume" {
-  name                 = "${local.project}-data-volume"
-  storage_account_name = module.afm_storage.name
-  quota                = var.afm_storage_params.quota
+resource "azurerm_storage_container" "afm_data_volume" {
+  name                  = "${local.project}-data-volume"
+  storage_account_name  = module.afm_storage.name
+  container_access_type = "private"
 }
 
 resource "azurerm_private_endpoint" "storage_private_endpoint" {
