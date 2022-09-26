@@ -477,6 +477,46 @@
           }
         }
       }
+    },
+    "/xpay/ecomm/api/paga/autenticazione3DS": {
+      "post": {
+        "tags": [
+          "XPay Controller"
+        ],
+        "operationId": "paymentAuthorization",
+        "summary": "esegue l'autenticazione3DS",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/XPayAuthRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayAuthResponseSuccess"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Errore",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayAuthResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -767,6 +807,136 @@
           },
           "serverNotificationUrl": {
             "description": "URL presso la quale sarà eseguita la chiamata di conferma del pagamento solo per i casi OK",
+            "type": "string"
+          }
+        }
+      },
+      "XPayAuthRequest": {
+        "description": "",
+        "required": [
+          "apiKey",
+          "urlRisposta",
+          "codiceTransazione",
+          "importo",
+          "divisa",
+          "pan",
+          "scadenza",
+          "cvv",
+          "timeStamp",
+          "mac"
+        ],
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "urlRisposta": {
+            "type": "string"
+          },
+          "codiceTransazione": {
+            "type": "string"
+          },
+          "importo": {
+            "type": "number",
+            "format": "BigInteger"
+          },
+          "divisa": {
+            "description": "valuta in codice ISO (EUR = 978)",
+            "type": "number",
+            "format": "long"
+          },
+          "pan": {
+            "type": "string"
+          },
+          "scadenza": {
+            "type": "string"
+          },
+          "cvv": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayAuthResponseSuccess": {
+        "description": "",
+        "required": [
+          "esito",
+          "idOperazione",
+          "timeStamp",
+          "mac"
+        ],
+        "type": "object",
+        "properties": {
+          "esito": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idOperazione": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "number",
+            "format": "long"
+          },
+          "html": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayAuthResponseError": {
+        "description": "",
+        "required": [
+          "esito",
+          "idOperazione",
+          "timeStamp",
+          "mac"
+        ],
+        "type": "object",
+        "properties": {
+          "esito": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idOperazione": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "number",
+            "format": "long"
+          },
+          "errore": {
+            "$ref": "#/components/schemas/XPayError"
+          },
+          "mac": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayError": {
+        "required": [
+          "codice",
+          "messaggio"
+        ],
+        "properties": {
+          "codice": {
+            "type": "number",
+            "format": "long"
+          },
+          "messaggio": {
             "type": "string"
           }
         }
