@@ -19,8 +19,8 @@
       <when condition="@(context.Variables.GetValueOrDefault<bool>("isMock"))">
       <!--Mock Responses-->
       <set-variable name="statusCode" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Error-Code", "200"))" />
-      <set-variable name="scenario1" value="@(context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("ATM"))" />
-      <set-variable name="scenario2" value="@(context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("ANY"))" />
+      <set-variable name="scenario1" value="@(context.Request.Body.As<JObject>(true)["touchpoint"]!=null && context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("ATM"))" />
+      <set-variable name="scenario2" value="@(context.Request.Body.As<JObject>(true)["touchpoint"]!=null && context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("ANY"))" />
       <!--Scenario 4-->
       <choose>
         <when condition="@(!((string)context.Variables["statusCode"]).Equals("200"))">
@@ -88,11 +88,11 @@
 </choose>
   <!--Scenario 3-->
 <return-response>
-  <set-status code="@(int.Parse((string)context.Variables["statusCode"]))" />
-  <set-header name="Content-Type" exists-action="override">
-    <value>application/json</value>
-  </set-header>
-  <set-body>[]</set-body>
+<set-status code="@(int.Parse((string)context.Variables["statusCode"]))" />
+<set-header name="Content-Type" exists-action="override">
+  <value>application/json</value>
+</set-header>
+<set-body>[]</set-body>
 </return-response>
   </when>
   </choose>
