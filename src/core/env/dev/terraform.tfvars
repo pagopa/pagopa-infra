@@ -1,5 +1,7 @@
 # general
 env_short = "d"
+domain    = "pagopat"
+
 
 tags = {
   CreatedBy   = "Terraform"

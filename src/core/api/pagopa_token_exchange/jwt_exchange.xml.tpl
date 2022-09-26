@@ -13,7 +13,7 @@
 <policies>
     <inbound>
         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="outputToken">
-            <openid-config url="https://api.dev.platform.pagopa.it/test-api" />
+            <openid-config url="https://api.dev.platform.pagopa.it/test-api/jwks" />
             <audiences>
                 <audience>pagopa.selfcare.pagopa.it</audience>
             </audiences>
