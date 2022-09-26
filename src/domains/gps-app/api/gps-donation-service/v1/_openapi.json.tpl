@@ -4,7 +4,7 @@
     "title": "GPS Donation service",
     "description": "GPS microservice for donations",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.0.3-18"
+    "version": "1.1.0"
   },
   "servers": [
     {
@@ -18,7 +18,7 @@
     }
   ],
   "paths": {
-    "/info": {
+    "/donations/info": {
       "get": {
         "tags": [
           "Home"
