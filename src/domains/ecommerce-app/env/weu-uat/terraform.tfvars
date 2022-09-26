@@ -1,17 +1,17 @@
 prefix          = "pagopa"
-env_short       = "d"
-env             = "dev"
+env_short       = "u"
+env             = "uat"
 domain          = "ecommerce"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
-instance        = "dev"
+instance        = "uat"
 
 tags = {
   CreatedBy   = "Terraform"
-  Environment = "Dev"
+  Environment = "Uat"
   Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/ecommerce"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ecommerce-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -19,20 +19,20 @@ lock_enable = true
 
 terraform_remote_state_core = {
   resource_group_name  = "io-infra-rg"
-  storage_account_name = "pagopainfraterraformdev"
+  storage_account_name = "pagopainfraterraformuat"
   container_name       = "azurermstate"
-  key                  = "dev.terraform.tfstate"
+  key                  = "uat.terraform.tfstate"
 }
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+monitor_resource_group_name                 = "pagopa-u-monitor-rg"
+log_analytics_workspace_name                = "pagopa-u-law"
+log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.platform"
-apim_dns_zone_prefix     = "dev.platform"
+dns_zone_internal_prefix = "internal.uat.platform"
+apim_dns_zone_prefix     = "uat.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases

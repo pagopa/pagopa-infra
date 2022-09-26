@@ -1,5 +1,18 @@
 <policies>
     <inbound>
+      <cors>
+        <allowed-origins>
+          <origin>${origin}</origin>
+        </allowed-origins>
+        <allowed-methods>
+          <method>POST</method>
+          <method>GET</method>
+          <method>OPTIONS</method>
+        </allowed-methods>
+        <allowed-headers>
+          <header>*</header>
+        </allowed-headers>
+      </cors>
       <base />
       <set-variable name="fromDnsHost" value="@(context.Request.OriginalUrl.Host)" />
       <choose>
