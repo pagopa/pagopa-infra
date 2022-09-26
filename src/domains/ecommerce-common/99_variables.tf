@@ -165,3 +165,28 @@ variable "redis_ecommerce_params" {
     family   = string
   })
 }
+
+variable "cidr_subnet_storage_ecommerce" {
+  type        = list(string)
+  description = "Azure storage DB address space for ecommerce."
+}
+
+variable "ecommerce_storage_params" {
+  type = object({
+    enabled                    = bool,
+    kind                       = string,
+    tier                       = string,
+    account_replication_type   = string,
+    advanced_threat_protection = bool,
+    retention_days             = number
+  })
+
+  default = {
+    enabled                    = false,
+    kind                       = "StorageV2"
+    tier                       = "Standard",
+    account_replication_type   = "LRS",
+    advanced_threat_protection = true,
+    retention_days             = 7
+  }
+}
