@@ -19,7 +19,7 @@
     <choose>
       <when condition="@(context.Variables.GetValueOrDefault<bool>("isMock"))">
       <!--Mock Responses-->
-      <set-variable name="statusCode" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Error-code", "200"))" />
+      <set-variable name="statusCode" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Error-Code", "200"))" />
       <set-variable name="scenario1" value="@(context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("ATM"))" />
       <set-variable name="scenario2" value="@(context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("ANY"))" />
       <set-variable name="scenario3" value="@(context.Request.Body.As<JObject>(true)["touchpoint"].Value<string>().Equals("BETTING"))" />
@@ -58,9 +58,9 @@
           "taxPayerFee": 80,
           "primaryCiIncurredFee": 0,
           "paymentMethod": "PO",
-          "touchpoint": null,
+          "touchpoint": "ANY",
           "idBundle": "2",
-          "idCiBundle": null,
+          "idCiBundle": "ANY",
           "idPsp": "88888888888"
           },
           {
