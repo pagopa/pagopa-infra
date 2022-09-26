@@ -63,7 +63,7 @@ locals {
   test_urls = [
     {
       host = trimsuffix(azurerm_dns_a_record.dns_a_api.fqdn, "."),
-      path = "",
+      path = "/status-0123456789abcdef",
     },
     {
       host = trimsuffix(azurerm_dns_a_record.dns_a_portal.fqdn, "."),
