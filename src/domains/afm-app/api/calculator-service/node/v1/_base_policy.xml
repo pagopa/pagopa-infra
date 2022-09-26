@@ -30,11 +30,7 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body>{
-            "title": "error",
-            "status": 500,
-            "detail": "There was an error processing the request"
-            }</set-body>
+          <set-body>{}</set-body>
         </return-response>
       </when>
     </choose>
