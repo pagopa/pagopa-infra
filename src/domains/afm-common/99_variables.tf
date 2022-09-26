@@ -155,8 +155,7 @@ variable "afm_storage_params" {
     tier                       = string,
     account_replication_type   = string,
     advanced_threat_protection = bool,
-    retention_days             = number,
-    quota                      = number
+    retention_days             = number
   })
 
   default = {
@@ -165,8 +164,7 @@ variable "afm_storage_params" {
     tier                       = "Standard",
     account_replication_type   = "LRS",
     advanced_threat_protection = true,
-    retention_days             = 7,
-    quota                      = 3  # 3GB
+    retention_days             = 7
   }
 }
 

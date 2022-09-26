@@ -68,8 +68,7 @@ afm_storage_params = {
   kind                       = "StorageV2"
   account_replication_type   = "LRS",
   advanced_threat_protection = true,
-  retention_days             = 7,
-  quota                      = 3
+  retention_days             = 7
 }
 
 storage_private_endpoint_enabled = false
