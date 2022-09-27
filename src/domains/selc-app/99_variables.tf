@@ -132,3 +132,10 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
+
+# selc_fe
+variable "selc_fe_enabled" {
+  type        = bool
+  description = "Selc FE enabled"
+  default     = false
+}

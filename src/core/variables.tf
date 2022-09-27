@@ -190,13 +190,6 @@ variable "api_config_fe_enabled" {
   default     = false
 }
 
-# selc_fe
-variable "selc_fe_enabled" {
-  type        = bool
-  description = "Selc FE enabled"
-  default     = false
-}
-
 variable "cname_record_name" {
   type = string
 }

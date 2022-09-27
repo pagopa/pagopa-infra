@@ -118,9 +118,6 @@ eventhub_enabled = true
 # checkout
 checkout_enabled = true
 
-#selc
-selc_enabled     = true
-
 # checkout function
 checkout_function_kind              = "Linux"
 checkout_function_sku_tier          = "Standard"
