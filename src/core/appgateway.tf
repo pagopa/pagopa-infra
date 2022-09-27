@@ -319,6 +319,20 @@ module "app_gw" {
           response_header_configurations = []
           url                            = null
         },
+        {
+          name          = "add-original-host-header"
+          rule_sequence = 101
+          condition     = null
+
+          request_header_configurations = [
+            {
+              header_name  = "X-Orginal-Host-For"
+              header_value = "{var_host}"
+            },
+          ]
+          url                            = null
+          response_header_configurations = []
+        },
       ]
     }
   ]
