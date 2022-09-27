@@ -99,7 +99,7 @@ locals {
       firewall_policy_id = null
       certificate = {
         name = var.app_gateway_wisp2govit_certificate_name
-        id = replace(
+        id = var.app_gateway_wisp2govit_certificate_name == "" ? null : replace(
           data.azurerm_key_vault_certificate.wisp2govit[0].secret_id,
           "/${data.azurerm_key_vault_certificate.wisp2govit[0].version}",
           ""
