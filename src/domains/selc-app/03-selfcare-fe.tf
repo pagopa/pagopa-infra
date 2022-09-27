@@ -115,7 +115,7 @@ module "selc_cdn" {
       destination             = "/index.html"
       preserve_unmatched_path = false
     }
-  }]
+  }])
 
   tags = var.tags
 }
