@@ -38,10 +38,6 @@ data "azurerm_key_vault_secret" "pm_host_prf" {
   name         = "pm-host-prf"
   key_vault_id = module.key_vault.id
 }
-data "azurerm_key_vault_secret" "nexi_haproxy_ip" {
-  name         = "nexi-haproxy-ip"
-  key_vault_id = module.key_vault.id
-}
 #####################################
 ## API buyerbanks                  ##
 #####################################
