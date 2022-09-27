@@ -2,7 +2,7 @@
  * selc resource group
  **/
 resource "azurerm_resource_group" "selc_fe_rg" {
-  count    = var.selc_enabled ? 1 : 0
+  count    = var.selc_fe_enabled ? 1 : 0
   name     = format("%s-selc-fe-rg", local.project)
   location = var.location
 
@@ -17,10 +17,10 @@ resource "azurerm_resource_group" "selc_fe_rg" {
 module "selc_cdn" {
   source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.12.1"
 
-  count                 = var.selc_enabled ? 1 : 0
+  count                 = var.selc_fe_enabled ? 1 : 0
   name                  = "selc"
   prefix                = local.project
-  resource_group_name   = azurerm_resource_group.selc_fe_rg.name
+  resource_group_name   = azurerm_resource_group.selc_fe_rg[0].name
   location              = var.location
   hostname              = format("%s.%s", var.dns_zone_selc, var.external_domain)
   https_rewrite_enabled = true
@@ -60,11 +60,11 @@ module "selc_cdn" {
         name   = "Content-Security-Policy-Report-Only"
         value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
       },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = format("img-src 'self' https://assets.cdn.io.italia.it https://%s data:; ", module.selc_cdn.storage_primary_web_host)
-      },
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = format("img-src 'self' https://assets.cdn.io.italia.it https://%s data:; ", module.selc_cdn.storage_primary_web_host)
+      # },
       {
         action = "Append"
         name   = "X-Content-Type-Options"
