@@ -65,8 +65,8 @@ locals {
       certificate = {
         name = var.app_gateway_wisp2_certificate_name
         id = replace(
-          data.azurerm_key_vault_certificate.wisp2_platform.secret_id,
-          "/${data.azurerm_key_vault_certificate.wisp2_platform.version}",
+          data.azurerm_key_vault_certificate.wisp2.secret_id,
+          "/${data.azurerm_key_vault_certificate.wisp2.version}",
           ""
         )
       }
@@ -90,6 +90,21 @@ locals {
       }
     }
 
+    wisp2govit = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_wisp2, "pagopa.gov.it")
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+      certificate = {
+        name = var.app_gateway_wisp2govit_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.wisp2govit[0].secret_id,
+          "/${data.azurerm_key_vault_certificate.wisp2govit[0].version}",
+          ""
+        )
+      }
+    }
   }
 
 
@@ -127,7 +142,11 @@ locals {
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
-
+    wisp2govit = {
+      listener              = "wisp2govit"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
   }
 
 }
@@ -245,12 +264,52 @@ module "app_gw" {
         {
           name          = "http-deny-path"
           rule_sequence = 1
-          condition = {
+          condition = [{
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths)
             ignore_case = true
             negate      = false
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
           }
+        },
+        {
+          name          = "http-deny-path2"
+          rule_sequence = 2
+          condition = [{
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_deny_paths_2)
+            ignore_case = true
+            negate      = false
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+        },
+        {
+          name          = "http-deny-path-pagopa-vpn-onprem"
+          rule_sequence = 3
+          condition = [
+            {
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_deny_paths_pagopa_vpn_onprem)
+            ignore_case = true
+            negate      = false
+            },
+            {
+            variable    = "client_ip"
+            pattern     = join("|", var.app_gateway_alloewd_ips_pagopa_vpn_onprem)
+            ignore_case = true
+            negate      = false
+            },
+          ]
           request_header_configurations  = []
           response_header_configurations = []
           url = {
@@ -274,22 +333,6 @@ module "app_gw" {
           ]
           response_header_configurations = []
           url                            = null
-        },
-        {
-          name          = "http-deny-path2"
-          rule_sequence = 2
-          condition = {
-            variable    = "var_uri_path"
-            pattern     = join("|", var.app_gateway_deny_paths_2)
-            ignore_case = true
-            negate      = false
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-          url = {
-            path         = "notfound"
-            query_string = null
-          }
         },
       ]
     }
