@@ -16,25 +16,27 @@ resource "azurerm_resource_group" "selc_fe_rg" {
 #tfsec:ignore:azure-storage-default-action-deny
 module "selc_cdn" {
   source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.12.1"
+  count  = var.selc_fe_enabled ? 1 : 0
 
-  count                 = var.selc_fe_enabled ? 1 : 0
-  name                  = "selc"
-  prefix                = local.project
-  resource_group_name   = azurerm_resource_group.selc_fe_rg[0].name
-  location              = var.location
-  hostname              = format("%s.%s", var.dns_zone_selc, var.external_domain)
+  name                = "selc"
+  prefix              = local.project
+  resource_group_name = azurerm_resource_group.selc_fe_rg[0].name
+  location            = var.location
+  #                       selc.<ENV>.platform.pagopa.it
+  hostname              = format("%s.%s.%s", local.dns_zone_selc, local.dns_zone_platform, local.external_domain)
   https_rewrite_enabled = true
   lock_enabled          = var.lock_enable
 
   index_document     = "index.html"
   error_404_document = "error.html"
 
-  dns_zone_name                = azurerm_dns_zone.selc_public[0].name
-  dns_zone_resource_group_name = azurerm_dns_zone.selc_public[0].resource_group_name
+  #                             <ENV>.platform.pagopa.it
+  dns_zone_name                = format("%s.%s", local.dns_zone_platform, local.external_domain)
+  dns_zone_resource_group_name = local.vnet_resource_group_name
 
-  keyvault_resource_group_name = module.key_vault.resource_group_name
+  keyvault_resource_group_name = data.azurerm_key_vault.kv.resource_group_name
   keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
-  keyvault_vault_name          = module.key_vault.name
+  keyvault_vault_name          = data.azurerm_key_vault.kv.name
 
   querystring_caching_behaviour = "BypassCaching"
 
@@ -53,7 +55,7 @@ module "selc_cdn" {
       {
         action = "Overwrite"
         name   = "Content-Security-Policy-Report-Only"
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", local.dns_zone_selc, local.external_domain)
       },
       {
         action = "Append"
@@ -123,26 +125,26 @@ module "selc_cdn" {
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
 resource "azurerm_key_vault_secret" "selc_web_storage_access_key" {
   name         = "web-storage-access-key"
-  value        = module.selc_cdn.storage_primary_access_key
+  value        = module.selc_cdn[0].storage_primary_access_key
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
 resource "azurerm_key_vault_secret" "selc_web_storage_connection_string" {
   name         = "web-storage-connection-string"
-  value        = module.selc_cdn.storage_primary_connection_string
+  value        = module.selc_cdn[0].storage_primary_connection_string
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
 resource "azurerm_key_vault_secret" "selc_web_storage_blob_connection_string" {
   name         = "web-storage-blob-connection-string"
-  value        = module.selc_cdn.storage_primary_blob_connection_string
+  value        = module.selc_cdn[0].storage_primary_blob_connection_string
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
