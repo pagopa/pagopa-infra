@@ -68,3 +68,18 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+
+# afm data key
+data "azurerm_key_vault_secret" "afm_calculator_data_subscription_key" {
+  name         = "afm-calculator-data-subscription-key"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "afm_calculator_data_subscription_key" {
+  name                = "afm-calculator-data-subscription-key"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "afm-calculator-data-subscription-key"
+  value               = data.azurerm_key_vault_secret.afm_calculator_data_subscription_key.value
+  secret              = true
+}
