@@ -73,7 +73,7 @@ locals {
     }
   }
 
-  listeners_extra = {
+  listeners_apiprf = {
     apiprf = {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_prefix_prf, var.external_domain)
@@ -89,7 +89,9 @@ locals {
         )
       }
     }
+  }
 
+  listeners_wisp2govit = {
     wisp2govit = {
       protocol           = "Https"
       host               = format("%s.%s", var.dns_zone_wisp2, "pagopa.gov.it")
@@ -106,7 +108,6 @@ locals {
       }
     }
   }
-
 
   # routes
 
@@ -136,19 +137,21 @@ locals {
     }
   }
 
-  routes_extra = {
+  routes_apiprf = {
     apiprf = {
       listener              = "apiprf"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
+  }
+
+  routes_wisp2govit = {
     wisp2govit = {
       listener              = "wisp2govit"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
   }
-
 }
 
 ## Application gateway public ip ##
@@ -252,10 +255,20 @@ module "app_gw" {
 
   # Configure listeners
 
-  listeners = var.dns_zone_prefix_prf == "" ? local.listeners : merge(local.listeners, local.listeners_extra)
+  # listeners = var.dns_zone_prefix_prf == "" ? local.listeners : merge(local.listeners, local.listeners_extra)
+  listeners = merge(
+    local.routes,
+    var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
+    var.env_short != "d" ? local.listeners_wisp2govit : {},
+  )
 
   # maps listener to backend
-  routes = var.dns_zone_prefix_prf == "" ? local.routes : merge(local.routes, local.routes_extra)
+  # routes = var.dns_zone_prefix_prf == "" ? local.routes : merge(local.routes, local.routes_extra)
+  routes = merge(
+    local.routes,
+    var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
+    var.env_short != "d" ? local.routes_wisp2govit : {},
+  )
 
   rewrite_rule_sets = [
     {
