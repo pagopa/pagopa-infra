@@ -253,8 +253,6 @@ module "app_gw" {
   trusted_client_certificates = []
 
   # Configure listeners
-
-  # listeners = var.dns_zone_prefix_prf == "" ? local.listeners : merge(local.listeners, local.listeners_extra)
   listeners = merge(
     local.listeners,
     var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
@@ -262,7 +260,6 @@ module "app_gw" {
   )
 
   # maps listener to backend
-  # routes = var.dns_zone_prefix_prf == "" ? local.routes : merge(local.routes, local.routes_extra)
   routes = merge(
     local.routes,
     var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
