@@ -57,7 +57,7 @@ afm_marketplace_cosmos_db_params = {
 }
 
 cidr_subnet_afm_marketplace_cosmosdb = ["10.1.151.0/24"]
-cidr_subnet_afm_storage              = ["10.1.154.0/24"]
+cidr_subnet_afm_storage              = ["10.1.155.0/24"]
 
 afm_storage_params = {
   enabled                    = true
