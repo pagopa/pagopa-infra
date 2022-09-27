@@ -31,6 +31,6 @@ locals {
   pagopa_apim_rg   = "${local.product}-api-rg"
 
   apim_hostname      = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  ecommerce_hostname = var.env == "prod" ? "weudev.ecommerce.internal.platform.pagopa.it" : "weudev.ecommerce.internal.${var.env}.platform.pagopa.it"
+  ecommerce_hostname = "${var.location_short}${var.env}.ecommerce.internal.${var.env}.platform.pagopa.it"
 
 }

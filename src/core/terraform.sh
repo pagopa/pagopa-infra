@@ -25,7 +25,8 @@ az account set -s "${subscription}"
 
 if echo "init plan apply refresh import output state taint destroy console" | grep -w $action > /dev/null; then
   if [ $action = "init" ]; then
-    terraform $action -backend-config="./env/$env/backend.tfvars" $other
+    terraform init -reconfigure -backend-config="./env/$env/backend.tfvars"
+    # terraform $action -backend-config="./env/$env/backend.tfvars" $other
   elif [ $action = "output" ] || [ $action = "state" ] || [ $action = "taint" ]; then
     # init terraform backend
     terraform init -reconfigure -backend-config="./env/$env/backend.tfvars"

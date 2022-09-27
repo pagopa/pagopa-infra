@@ -160,6 +160,11 @@ data "azurerm_key_vault_certificate" "management_platform" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "wisp2_platform" {
+  name         = var.app_gateway_wisp2_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "apim_publisher_email" {
   name         = "apim-publisher-email"
   key_vault_id = module.key_vault.id
