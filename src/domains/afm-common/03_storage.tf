@@ -55,7 +55,7 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
 
   private_dns_zone_group {
     name                 = "${local.project}-storage-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage[0].id]
   }
 
   private_service_connection {
