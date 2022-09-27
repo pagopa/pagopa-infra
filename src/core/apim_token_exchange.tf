@@ -5,8 +5,7 @@ locals {
   pagopa_cdn_storage_account_name = replace(format("%s-%s-sa", local.project, "pagopacdn"), "-", "") #"cstardweuidpayidpaycdnsa"
   pagopa-oidc-config_url          = "https://${local.pagopa_cdn_storage_account_name}.blob.core.windows.net/pagopa-fe-oidc-config/openid-configuration.json"
   pagopa-portal-hostname          = "welfare.${azurerm_dns_zone.public[0].name}"
-  # selfcare-issuer                = "https://${var.env_short != "p" ? "${var.env}." : ""}selfcare.pagopa.it"
-  selfcare-issuer = "https://dev.selfcare.pagopa.it"
+  selfcare-issuer                = "https://${var.env != "p" ? "${var.env}." : ""}selfcare.pagopa.it"
 }
 
 resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
@@ -102,7 +101,6 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
     selfcare-issuer             = local.selfcare-issuer,
     jwt_cert_signing_thumbprint = azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt.thumbprint,
     pagopa-portal-hostname      = local.pagopa-portal-hostname,
-    //    origins                     = local.origins.base
   })
 
 }
