@@ -53,6 +53,7 @@ external_domain     = "pagopa.it"
 dns_zone_prefix     = "uat.platform"
 dns_zone_prefix_prf = "prf.platform"
 dns_zone_checkout   = "uat.checkout"
+dns_zone_selc       = "uat.selc.platform"
 dns_zone_wisp2      = "uat.wisp2"
 
 # azure devops
