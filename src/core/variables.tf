@@ -700,7 +700,7 @@ variable "azuread_service_principal_azure_cdn_frontdoor_id" {
   default = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 }
 
-variable " " {
+variable "cidr_subnet_checkout_be" {
   type        = list(string)
   description = "Address prefixes subnet checkout function"
   default     = null
