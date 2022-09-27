@@ -264,12 +264,12 @@ module "app_gw" {
         {
           name          = "http-deny-path"
           rule_sequence = 1
-          condition = [{
+          condition = {
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths)
             ignore_case = true
             negate      = false
-          }]
+          }
           request_header_configurations  = []
           response_header_configurations = []
           url = {
@@ -280,36 +280,12 @@ module "app_gw" {
         {
           name          = "http-deny-path2"
           rule_sequence = 2
-          condition = [{
+          condition = {
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths_2)
             ignore_case = true
             negate      = false
-          }]
-          request_header_configurations  = []
-          response_header_configurations = []
-          url = {
-            path         = "notfound"
-            query_string = null
           }
-        },
-        {
-          name          = "http-deny-path-pagopa-vpn-onprem"
-          rule_sequence = 3
-          condition = [
-            {
-            variable    = "var_uri_path"
-            pattern     = join("|", var.app_gateway_deny_paths_pagopa_vpn_onprem)
-            ignore_case = true
-            negate      = false
-            },
-            {
-            variable    = "client_ip"
-            pattern     = join("|", var.app_gateway_alloewd_ips_pagopa_vpn_onprem)
-            ignore_case = true
-            negate      = false
-            },
-          ]
           request_header_configurations  = []
           response_header_configurations = []
           url = {
