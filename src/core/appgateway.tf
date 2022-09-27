@@ -256,14 +256,14 @@ module "app_gw" {
   listeners = merge(
     local.listeners,
     var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
-    var.env_short != "d" ? local.listeners_wisp2govit : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.listeners_wisp2govit : {},
   )
 
   # maps listener to backend
   routes = merge(
     local.routes,
     var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
-    var.env_short != "d" ? local.routes_wisp2govit : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.routes_wisp2govit : {},
   )
 
   rewrite_rule_sets = [
