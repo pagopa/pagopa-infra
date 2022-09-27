@@ -36,7 +36,7 @@ module "apim_mock_payment_gateway_api" {
 
   description  = "mock payment gateway api"
   display_name = "mock payment gateway api"
-  path         = "mock-psp/api"
+  path         = "mock-payment-gateway/api"
   protocols    = ["https"]
 
   service_url = format("https://%s", module.mock_payment_gateway[0].default_site_hostname)
@@ -70,7 +70,7 @@ module "apim_mock_payment_gateway_mng_api" {
 
   description  = "mock payment gateway mng api"
   display_name = "mock payment gateway mng api"
-  path         = "mock-psp/mng-api"
+  path         = "mock-payment-gateway/mng-api"
   protocols    = ["https"]
 
   service_url = format("https://%s", module.mock_payment_gateway[0].default_site_hostname)
