@@ -1,51 +1,23 @@
+# named-values
+
+resource "azurerm_api_management_named_value" "afm_secondary_sub_key" {
+  name                = "afm-secondary-sub-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "afm-secondary-sub-key"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+}
+
 #############################
 ## Product AFM Calculator ##
 #############################
 
-module "apim_afm_calculator_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
-
-  product_id   = "afm-calculator"
-  display_name = "GEC pagoPA - Calcolatrice"
-  description  = "Prodotto Gestione Evoluta Commissioni - Calcolo delle commissioni"
-
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-
-  published             = false
-  subscription_required = false
-  approval_required     = false
-
-  policy_xml = file("./api_product/calculator/_base_policy.xml")
-}
-
-module "apim_afm_calculator_node_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
-
-  product_id   = "afm-node-calculator"
-  display_name = "GEC pagoPA - Calcolatrice for Node"
-  description  = "Prodotto Gestione Evoluta Commissioni - Calcolo delle commissioni"
-
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-
-  published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1
-
-  policy_xml = file("./api_product/calculator/_base_policy.xml")
-}
-
-###########################
-##  API AFM Calculator  ##
-###########################
 locals {
   apim_afm_calculator_service_api = {
     display_name          = "AFM Calculator pagoPA - calculator of advanced fees management service API"
     description           = "Calculator API to support advanced fees management service"
     path                  = "afm/calculator-service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 
@@ -57,6 +29,45 @@ locals {
     service_url           = null
   }
 }
+
+module "apim_afm_calculator_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+
+  product_id   = "afm-calculator"
+  display_name = local.apim_afm_calculator_service_api.display_name
+  description  = local.apim_afm_calculator_service_api.description
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = false
+  subscription_required = local.apim_afm_calculator_service_api.subscription_required
+  approval_required     = false
+
+  policy_xml = file("./api_product/calculator/_base_policy.xml")
+}
+
+module "apim_afm_calculator_node_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+
+  product_id   = "afm-node-calculator"
+  display_name = local.apim_afm_calculator_service_node_api.display_name
+  description  = local.apim_afm_calculator_service_node_api.description
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = local.apim_afm_calculator_service_node_api.subscription_required
+  approval_required     = true
+  subscriptions_limit   = 1
+
+  policy_xml = file("./api_product/calculator/_base_policy.xml")
+}
+
+###########################
+##  API AFM Calculator  ##
+###########################
 
 resource "azurerm_api_management_api_version_set" "api_afm_calculator_api" {
 
