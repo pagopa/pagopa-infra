@@ -13,10 +13,10 @@ resource "azurerm_dns_ns_record" "dev_selc" {
   zone_name           = azurerm_dns_zone.selc_public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   records = [
-    "ns1-07.azure-dns.com.",
-    "ns2-07.azure-dns.net.",
-    "ns3-07.azure-dns.org.",
-    "ns4-07.azure-dns.info."
+    "ns1-09.azure-dns.com.",
+    "ns2-09.azure-dns.net.",
+    "ns3-09.azure-dns.org.",
+    "ns4-09.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
   tags = var.tags
@@ -57,4 +57,14 @@ resource "azurerm_dns_caa_record" "selc_pagopa_it" {
   }
 
   tags = var.tags
+}
+
+# application gateway records
+resource "azurerm_dns_a_record" "dns_a_selc_at" {
+  name                = "@"
+  zone_name           = azurerm_dns_zone.selc_public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  tags                = var.tags
 }
