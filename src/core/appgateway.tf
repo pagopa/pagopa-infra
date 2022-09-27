@@ -3,7 +3,6 @@ locals {
 
   # listeners
   listeners = {
-
     api = {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
@@ -257,7 +256,7 @@ module "app_gw" {
 
   # listeners = var.dns_zone_prefix_prf == "" ? local.listeners : merge(local.listeners, local.listeners_extra)
   listeners = merge(
-    local.routes,
+    local.listeners,
     var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
     var.env_short != "d" ? local.listeners_wisp2govit : {},
   )

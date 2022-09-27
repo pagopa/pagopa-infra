@@ -166,7 +166,7 @@ data "azurerm_key_vault_certificate" "wisp2" {
 }
 
 data "azurerm_key_vault_certificate" "wisp2govit" {
-  count = (var.app_gateway_wisp2govit_certificate_name == "") ? 0 : 1
+  count = var.env_short != "d" ? 1 : 0
 
   name         = var.app_gateway_wisp2govit_certificate_name
   key_vault_id = module.key_vault.id
