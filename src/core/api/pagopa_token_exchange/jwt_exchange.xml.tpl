@@ -12,11 +12,11 @@
 -->
 <policies>
     <inbound>
-        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="outputToken">
-            <openid-config url="https://selcdcheckoutsa.blob.core.windows.net/openid-config-test/openid-configuration.json" /> 
-<!--             <audiences>
+        <validate-jwt header-name="IdentityToken" failed-validation-httpcode="401" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="outputToken">
+            <openid-config url="https://selcdcheckoutsa.blob.core.windows.net/openid-config-test/openid-configuration.json" />
+             <audiences>
                 <audience>pagopa.selfcare.pagopa.it</audience>
-            </audiences>  -->
+            </audiences>
 
             <issuers>
                 <issuer>${selfcare-issuer}</issuer>
@@ -59,7 +59,7 @@
                     org_role
                     }
                     ))).Split('=')[0].Replace('+', '-').Replace('/', '_');
-                        
+
                     var message = ($"{JOSEProtectedHeader}.{payload}");
 
                     using (RSA rsa = context.Deployment.Certificates["${jwt_cert_signing_thumbprint}"].GetRSAPrivateKey())
