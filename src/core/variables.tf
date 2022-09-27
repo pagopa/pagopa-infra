@@ -18,6 +18,16 @@ variable "env_short" {
   type = string
 }
 
+variable "env"{
+  type = string
+  default = ""
+  description = "Contains uat/dev or empty for prod"
+   validation {
+      condition     = contains(["dev", "uat", ""], var.env)
+      error_message = "Allowed values for input_parameter are \"dev\", \"uat\", or \"\" for prod."
+    }
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false
