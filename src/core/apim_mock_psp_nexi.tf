@@ -55,6 +55,6 @@ module "apim_mock_psp_service_api" {
   })
 
   xml_content = templatefile("./api/mockpspservice_api/v1/_base_policy.xml", {
-    mock_base_path = "/mock-psp-sit" # tochange
+    mock_base_path = "/pspmock-sit/servizi/MockPSP"
   })
 }
