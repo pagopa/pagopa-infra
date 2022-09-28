@@ -175,9 +175,7 @@ module "appgateway_snet" {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=app-gateway-multiple-conditions"
-  # source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.19.0"
-  # source = "/Users/pasqualedevita/Documents/github/cloud/azurerm/app_gateway"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.20.0"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
