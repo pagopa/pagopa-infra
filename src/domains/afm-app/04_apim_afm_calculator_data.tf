@@ -1,3 +1,13 @@
+# named-values
+
+resource "azurerm_api_management_named_value" "afm_calculator_data_sub_key_internal" {
+  name                = "afm-calculator-data-sub-key-internal"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "afm-calculator-data-sub-key-internal"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+}
+
 #############################
 ## Product AFM Calculator ##
 #############################
@@ -13,7 +23,7 @@ module "apim_afm_calculator_data_product" {
   resource_group_name = local.pagopa_apim_rg
 
   published             = false
-  subscription_required = false
+  subscription_required = local.apim_afm_calculator_data_service_api.subscription_required
   approval_required     = false
 
   policy_xml = file("./api_product/calculator_data/_base_policy.xml")
@@ -27,7 +37,7 @@ locals {
     display_name          = "AFM Calculator Data pagoPA - data for calculator of advanced fees management service API"
     description           = "Data Calculator API to support advanced fees management service"
     path                  = "afm/calculator-data-service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }

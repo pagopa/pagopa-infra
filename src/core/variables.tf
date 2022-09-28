@@ -503,6 +503,11 @@ variable "app_gateway_wisp2_certificate_name" {
   description = "Application gateway wisp2 certificate name on Key Vault"
 }
 
+variable "app_gateway_wisp2govit_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2govit certificate name on Key Vault"
+}
+
 variable "app_gateway_sku_name" {
   type        = string
   description = "The Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"

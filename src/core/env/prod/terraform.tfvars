@@ -82,6 +82,7 @@ app_gateway_api_certificate_name        = "api-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
+app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_min_capacity                = 2
 app_gateway_max_capacity                = 5
 app_gateway_sku_name                    = "WAF_v2"
@@ -428,8 +429,8 @@ canoneunico_queue_message_delay = 3600 // in seconds = 1h
 
 # Postgres Flexible
 # https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
-# https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
-# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server#geo_redundant_backup_enabled
+# https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server#geo_redundant_backup_enabled
 pgres_flex_params = {
 
   private_endpoint_enabled = true
@@ -449,7 +450,7 @@ pgres_flex_params = {
 }
 
 
-# Cosmos AFM
+# Cosmos AFM
 cosmos_afm_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = []
