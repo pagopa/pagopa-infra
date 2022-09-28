@@ -83,6 +83,14 @@ app_gateway_deny_paths = [
 app_gateway_deny_paths_2 = [
   "/notfound2/*",
 ]
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/allowed/*",
+  ]
+  ips = [
+    "0.0.0.0",
+  ]
+}
 
 # postgresql
 postgresql_sku_name                      = "B_Gen5_1" # todo fixme verify

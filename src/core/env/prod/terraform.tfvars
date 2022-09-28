@@ -108,18 +108,24 @@ app_gateway_deny_paths = [
   "/gps/donation-service/*",
   "/shared/iuv-generator-service/*",
   "/gpd/api/*",
-  "/gps/spontaneous-payments-service/*"
+  "/gps/spontaneous-payments-service/*",
 ]
-
 app_gateway_deny_paths_2 = [
   "/nodo-pagamenti*",
   "/ppt-lmi*",
   "/sync-cron*",
   "/wfesp/*",
   "/fatturazione/*",
-  "/web-bo/*"
 ]
-
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/*",
+    "/pp-admin-panel/*",
+  ]
+  ips = [
+    "93.63.219.230",
+  ]
+}
 
 # nat_gateway
 nat_gateway_enabled    = true

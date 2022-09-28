@@ -305,9 +305,31 @@ module "app_gw" {
           }
         },
         {
+          name          = "http-allow-pagopa-onprem-only"
+          rule_sequence = 3
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_allowed_paths_pagopa_onprem_only.paths)
+            ignore_case = true
+            negate      = false
+            },
+            {
+              variable    = "var_client_ip"
+              pattern     = join("|", var.app_gateway_allowed_paths_pagopa_onprem_only.ips)
+              ignore_case = true
+              negate      = true
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+        },
+        {
           name          = "http-headers-api"
           rule_sequence = 100
-          conditions     = []
+          conditions    = []
           request_header_configurations = [
             {
               header_name  = "X-Forwarded-For"
