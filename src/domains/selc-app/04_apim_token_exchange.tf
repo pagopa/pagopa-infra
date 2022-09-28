@@ -4,13 +4,13 @@
 locals {
   pagopa_cdn_storage_account_name = replace(format("%s-%s-sa", local.project, "pagopacdn"), "-", "") #"cstardweuidpayidpaycdnsa"
   pagopa-oidc-config_url          = "https://${local.pagopa_cdn_storage_account_name}.blob.core.windows.net/pagopa-fe-oidc-config/openid-configuration.json"
-  pagopa-portal-hostname          = "welfare.${azurerm_dns_zone.public[0].name}"
+  pagopa-portal-hostname          = "welfare.${local.dns_zone_platform}.${local.external_domain}"
   selfcare-issuer                 = "https://${var.env != "p" ? "${var.env}." : ""}selfcare.pagopa.it"
 }
 
 resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
   name         = "${local.project}-${var.domain}-jwt-signing-cert"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 
   certificate_policy {
     issuer_parameters {
@@ -59,16 +59,16 @@ resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
 
 resource "azurerm_api_management_certificate" "pagopa_token_exchange_cert_jwt" {
   name                = "${local.project}-${var.domain}-token-exchange-jwt"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   key_vault_secret_id = azurerm_key_vault_certificate.pagopa_jwt_signing_cert.versionless_secret_id
 }
 
 
 resource "azurerm_api_management_api" "pagopa_token_exchange" {
   name                = "${var.env_short}-pagopa-token-exchange"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   revision              = "1"
   display_name          = "PagoPa Token Exchange"
@@ -81,8 +81,8 @@ resource "azurerm_api_management_api" "pagopa_token_exchange" {
 resource "azurerm_api_management_api_operation" "pagopa_token_exchange" {
   operation_id        = "pagopa-token-exchange"
   api_name            = azurerm_api_management_api.pagopa_token_exchange.name
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "PagoPa Token Exchange"
   method              = "POST"
   url_template        = "/token"
