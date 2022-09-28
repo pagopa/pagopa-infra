@@ -123,5 +123,11 @@ tls_checker_https_endpoints_to_check = [
     alert_name     = "dev-checkout-pagopa-it",
     alert_enabled  = true,
     helm_present   = true,
+  },
+  {
+    https_endpoint = "uat.selc.pagopa.it",
+    alert_name     = "dev-selc-pagopa-it",
+    alert_enabled  = true,
+    helm_present   = true,
   }
 ]
