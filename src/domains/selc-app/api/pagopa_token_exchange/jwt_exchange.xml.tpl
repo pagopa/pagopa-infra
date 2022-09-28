@@ -16,7 +16,7 @@
         <validate-jwt header-name="IdentityToken" failed-validation-httpcode="401" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="outputToken">
             <openid-config url=${openid-config-url} />
             <audiences>
-                <audience>pagopa.selfcare.pagopa.it</audience>
+                <audience>api.pagopa.selfcare.pagopa.it</audience>
             </audiences>
             <issuers>
                 <issuer>${selfcare-issuer}</issuer>
