@@ -1,11 +1,11 @@
 <policies>
     <inbound>
       <choose>
-        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Forwarded-For")).Equals("{{nexi-haproxy-ip}}"))">
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For")).Equals("{{wisp2-gov-it}}"))">
           <return-response>
             <set-status code="307" />
             <set-header name="location" exists-action="override">
-              <value>@($"https://${host}{context.Request.OriginalUrl.Path}{context.Request.OriginalUrl.QueryString}")</value>
+              <value>@($"https://{{wisp2-it}}{context.Request.OriginalUrl.Path}{context.Request.OriginalUrl.QueryString}")</value>
             </set-header>
           </return-response>
         </when>
