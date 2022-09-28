@@ -3,7 +3,6 @@ locals {
 
   # listeners
   listeners = {
-
     api = {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
@@ -65,15 +64,15 @@ locals {
       certificate = {
         name = var.app_gateway_wisp2_certificate_name
         id = replace(
-          data.azurerm_key_vault_certificate.wisp2_platform.secret_id,
-          "/${data.azurerm_key_vault_certificate.wisp2_platform.version}",
+          data.azurerm_key_vault_certificate.wisp2.secret_id,
+          "/${data.azurerm_key_vault_certificate.wisp2.version}",
           ""
         )
       }
     }
   }
 
-  listeners_extra = {
+  listeners_apiprf = {
     apiprf = {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_prefix_prf, var.external_domain)
@@ -89,9 +88,25 @@ locals {
         )
       }
     }
-
   }
 
+  listeners_wisp2govit = {
+    wisp2govit = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_wisp2, "pagopa.gov.it")
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+      certificate = {
+        name = var.app_gateway_wisp2govit_certificate_name
+        id = var.app_gateway_wisp2govit_certificate_name == "" ? null : replace(
+          data.azurerm_key_vault_certificate.wisp2govit[0].secret_id,
+          "/${data.azurerm_key_vault_certificate.wisp2govit[0].version}",
+          ""
+        )
+      }
+    }
+  }
 
   # routes
 
@@ -121,15 +136,21 @@ locals {
     }
   }
 
-  routes_extra = {
+  routes_apiprf = {
     apiprf = {
       listener              = "apiprf"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
-
   }
 
+  routes_wisp2govit = {
+    wisp2govit = {
+      listener              = "wisp2govit"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+  }
 }
 
 ## Application gateway public ip ##
@@ -232,11 +253,18 @@ module "app_gw" {
   trusted_client_certificates = []
 
   # Configure listeners
-
-  listeners = var.dns_zone_prefix_prf == "" ? local.listeners : merge(local.listeners, local.listeners_extra)
+  listeners = merge(
+    local.listeners,
+    var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.listeners_wisp2govit : {},
+  )
 
   # maps listener to backend
-  routes = var.dns_zone_prefix_prf == "" ? local.routes : merge(local.routes, local.routes_extra)
+  routes = merge(
+    local.routes,
+    var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.routes_wisp2govit : {},
+  )
 
   rewrite_rule_sets = [
     {
@@ -248,6 +276,22 @@ module "app_gw" {
           condition = {
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths)
+            ignore_case = true
+            negate      = false
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+        },
+        {
+          name          = "http-deny-path2"
+          rule_sequence = 2
+          condition = {
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_deny_paths_2)
             ignore_case = true
             negate      = false
           }
@@ -276,20 +320,18 @@ module "app_gw" {
           url                            = null
         },
         {
-          name          = "http-deny-path2"
-          rule_sequence = 2
-          condition = {
-            variable    = "var_uri_path"
-            pattern     = join("|", var.app_gateway_deny_paths_2)
-            ignore_case = true
-            negate      = false
-          }
-          request_header_configurations  = []
+          name          = "add-original-host-header"
+          rule_sequence = 101
+          condition     = null
+
+          request_header_configurations = [
+            {
+              header_name  = "X-Orginal-Host-For"
+              header_value = "{var_host}"
+            },
+          ]
+          url                            = null
           response_header_configurations = []
-          url = {
-            path         = "notfound"
-            query_string = null
-          }
         },
       ]
     }
