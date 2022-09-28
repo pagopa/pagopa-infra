@@ -16,7 +16,7 @@ locals {
     display_name          = "AFM Marketplace pagoPA - marketplace of advanced fees management service API"
     description           = "Marketplace API to support advanced fees management service"
     path                  = "afm/marketplace-service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
