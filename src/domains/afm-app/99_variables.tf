@@ -24,16 +24,6 @@ variable "env_short" {
   }
 }
 
-variable "domain" {
-  type = string
-  validation {
-    condition = (
-      length(var.domain) <= 12
-    )
-    error_message = "Max length is 12 chars."
-  }
-}
-
 variable "location" {
   type        = string
   description = "One of westeurope, northeurope"
