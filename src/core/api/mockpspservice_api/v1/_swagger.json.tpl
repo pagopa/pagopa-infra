@@ -17,7 +17,7 @@
     "text/xml"
   ],
   "paths": {
-    "/servizi/MockPSP": {
+    "/": {
       "post": {
         "summary": "Operation pspNotifyPayment",
         "description": "To call pspNotifyPayment. The primitive to invoke is specified in the body request.",
