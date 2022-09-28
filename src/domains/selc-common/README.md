@@ -1,6 +1,5 @@
 <!-- markdownlint-disable -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -13,12 +12,6 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_afm_marketplace_cosmosdb_account"></a> [afm\_marketplace\_cosmosdb\_account](#module\_afm\_marketplace\_cosmosdb\_account) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.1.18 |
-| <a name="module_afm_marketplace_cosmosdb_containers"></a> [afm\_marketplace\_cosmosdb\_containers](#module\_afm\_marketplace\_cosmosdb\_containers) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v2.1.8 |
-| <a name="module_afm_marketplace_cosmosdb_database"></a> [afm\_marketplace\_cosmosdb\_database](#module\_afm\_marketplace\_cosmosdb\_database) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database | v2.1.15 |
-| <a name="module_afm_marketplace_cosmosdb_snet"></a> [afm\_marketplace\_cosmosdb\_snet](#module\_afm\_marketplace\_cosmosdb\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
-| <a name="module_afm_storage"></a> [afm\_storage](#module\_afm\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.18.10 |
-| <a name="module_afm_storage_snet"></a> [afm\_storage\_snet](#module\_afm\_storage\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.18.10 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
 
 ## Resources
@@ -27,17 +20,8 @@
 |------|------|
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_secret.afm_calculator_data_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.afm_marketplace_cosmos_pkey](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.afm_marketplace_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.storage_account_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.storage_account_name](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_endpoint.storage_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_endpoint) | resource |
-| [azurerm_resource_group.afm_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
-| [azurerm_storage_container.afm_data_volume](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -48,7 +32,6 @@
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
-| [azurerm_private_dns_zone.storage](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subscription) | data source |
@@ -59,10 +42,6 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_afm_marketplace_cosmos_db_params"></a> [afm\_marketplace\_cosmos\_db\_params](#input\_afm\_marketplace\_cosmos\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    main_geo_location_zone_redundant = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
-| <a name="input_afm_storage_params"></a> [afm\_storage\_params](#input\_afm\_storage\_params) | n/a | <pre>object({<br>    enabled                    = bool,<br>    kind                       = string,<br>    tier                       = string,<br>    account_replication_type   = string,<br>    advanced_threat_protection = bool,<br>    retention_days             = number<br>  })</pre> | <pre>{<br>  "account_replication_type": "LRS",<br>  "advanced_threat_protection": true,<br>  "enabled": false,<br>  "kind": "StorageV2",<br>  "retention_days": 7,<br>  "tier": "Standard"<br>}</pre> | no |
-| <a name="input_cidr_subnet_afm_marketplace_cosmosdb"></a> [cidr\_subnet\_afm\_marketplace\_cosmosdb](#input\_cidr\_subnet\_afm\_marketplace\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
-| <a name="input_cidr_subnet_afm_storage"></a> [cidr\_subnet\_afm\_storage](#input\_cidr\_subnet\_afm\_storage) | Storage address space | `list(string)` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
@@ -77,7 +56,6 @@
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_storage_private_endpoint_enabled"></a> [storage\_private\_endpoint\_enabled](#input\_storage\_private\_endpoint\_enabled) | n/a | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_terraform_remote_state_core"></a> [terraform\_remote\_state\_core](#input\_terraform\_remote\_state\_core) | n/a | <pre>object({<br>    resource_group_name  = string,<br>    storage_account_name = string,<br>    container_name       = string,<br>    key                  = string<br>  })</pre> | n/a | yes |
 
