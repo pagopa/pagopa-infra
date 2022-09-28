@@ -14,7 +14,7 @@
     <inbound>
         <!-- without require-scheme="Bearer" -->
         <validate-jwt header-name="IdentityToken" failed-validation-httpcode="401" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="outputToken">
-            <openid-config url="https://selcdcheckoutsa.blob.core.windows.net/openid-config-test/openid-configuration.json" />
+            <openid-config url=${openid-config-url} />
             <audiences>
                 <audience>pagopa.selfcare.pagopa.it</audience>
             </audiences>
