@@ -2,10 +2,45 @@
 ##Token Exchange##
 ##################
 locals {
-  pagopa_cdn_storage_account_name = replace(format("%s-%s-sa", local.project, "pagopacdn"), "-", "") #"cstardweuidpayidpaycdnsa"
+  pagopa_cdn_storage_account_name = replace(format("%s-%s-sa", local.project, "selc"), "-", "")
   pagopa-oidc-config_url          = "https://${local.pagopa_cdn_storage_account_name}.blob.core.windows.net/pagopa-fe-oidc-config/openid-configuration.json"
   pagopa-portal-hostname          = "welfare.${local.dns_zone_platform}.${local.external_domain}"
   selfcare-issuer                 = "https://${var.env != "p" ? "${var.env}." : ""}selfcare.pagopa.it"
+}
+
+
+# Container for oidc configuration
+resource "azurerm_storage_container" "pagopa_oidc_config" {
+  name                  = "pagopa-fe-oidc-config"
+  storage_account_name  = local.pagopa_cdn_storage_account_name
+  container_access_type = "blob"
+}
+
+## Upload file for oidc configuration
+resource "local_file" "oidc_configuration_file" {
+  filename = "./.terraform/tmp/openid-configuration.json"
+
+  content = templatefile("./api/pagopa_token_exchange/openid-configuration.json.tpl", {
+    selfcare-issuer = local.selfcare-issuer
+  })
+
+}
+
+resource "null_resource" "upload_oidc_configuration" {
+  triggers = {
+    "changes-in-config" : md5(local_file.oidc_configuration_file.content)
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+              az storage azcopy blob upload --container ${azurerm_storage_container.pagopa_oidc_config.name} --account-name ${replace(format("%s-%s-sa", local.project, "selc"), "-", "")} --source ${local_file.oidc_configuration_file.filename} --account-key ${data.azurerm_key_vault_secret.cdn_storage_access_secret.value}
+          EOT
+  }
+}
+
+data "azurerm_key_vault_secret" "cdn_storage_access_secret" {
+  name         = "web-storage-access-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
