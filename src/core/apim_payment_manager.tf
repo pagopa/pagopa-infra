@@ -236,9 +236,7 @@ module "apim_pm_restapicd_api_v3" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-cd/v3/_base_policy.xml.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
+  xml_content = file("./api/payment_manager_api/restapi-cd/v3/_base_policy.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_webview_redirect" {
