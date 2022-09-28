@@ -132,3 +132,9 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
+
+variable "influxdb2_helm_version" {
+  type        = string
+  default     = "2.1.0"
+  description = "version of influxdb's helm chart"
+}

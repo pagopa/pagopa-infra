@@ -4,7 +4,7 @@ resource "helm_release" "influxdb2" {
 
   repository = "https://helm.influxdata.com/"
   chart      = "influxdb2"
-  version    = "2.1.0"
+  version    = var.influxdb2_helm_version
   namespace  = kubernetes_namespace.namespace.metadata[0].name
 
   set {
@@ -19,12 +19,12 @@ resource "helm_release" "influxdb2" {
 
   set {
     name  = "ingress.tls"
-    value = false
+    value = true
   }
 
   set {
     name  = "ingress.hostname"
-    value = format("weu%s.shared.internal.%s.platform.pagopa.it", var.env, var.env)
+    value = "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
   }
 
   set {
