@@ -247,9 +247,7 @@ resource "azurerm_api_management_api_operation_policy" "get_webview_redirect" {
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "staticResourcesWebviewGet"
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-cd/v3/_redirect_policy.xml.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
+  xml_content = file("./api/payment_manager_api/restapi-cd/v3/_redirect_policy.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "post_webview_redirect" {
@@ -258,9 +256,7 @@ resource "azurerm_api_management_api_operation_policy" "post_webview_redirect" {
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "staticResourcesWebviewPost"
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-cd/v3/_redirect_policy.xml.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
+  xml_content = file("./api/payment_manager_api/restapi-cd/v3/_redirect_policy.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "options_webview_redirect" {
@@ -269,9 +265,7 @@ resource "azurerm_api_management_api_operation_policy" "options_webview_redirect
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "staticResourcesWebviewOptions"
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-cd/v3/_redirect_policy.xml.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
+  xml_content = file("./api/payment_manager_api/restapi-cd/v3/_redirect_policy.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "head_webview_redirect" {
@@ -280,9 +274,7 @@ resource "azurerm_api_management_api_operation_policy" "head_webview_redirect" {
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "staticResourcesWebviewHead"
 
-  xml_content = templatefile("./api/payment_manager_api/restapi-cd/v3/_redirect_policy.xml.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
+  xml_content = file("./api/payment_manager_api/restapi-cd/v3/_redirect_policy.xml.tpl")
 }
 
 ##########################################
