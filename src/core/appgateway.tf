@@ -337,6 +337,10 @@ module "app_gw" {
               header_name  = "X-Client-Ip"
               header_value = "{var_client_ip}"
             },
+            {
+              header_name  = "X-Orginal-Host-For"
+              header_value = "{var_host}"
+            },
           ]
           response_header_configurations = []
           url                            = null
