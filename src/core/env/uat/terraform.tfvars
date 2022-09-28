@@ -100,7 +100,8 @@ app_gateway_deny_paths_2 = [
   "/sync-cron*",
   "/wfesp/*",
   "/fatturazione/*",
-  "/web-bo/*"
+  "/web-bo/*",
+  "/payment-manager/pp-restapi-server/*"
 ]
 
 # nat_gateway
