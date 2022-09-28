@@ -2,7 +2,7 @@
     <inbound>
       <base />
       <choose>
-        <when condition="@(((string)context.Response.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it"))">
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it"))">
           <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/payment-gateway")" />
         </when>
         <otherwise>
