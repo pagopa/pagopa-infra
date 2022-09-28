@@ -175,7 +175,9 @@ module "appgateway_snet" {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.19.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=app-gateway-multiple-conditions"
+  # source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.19.0"
+  # source = "/Users/pasqualedevita/Documents/github/cloud/azurerm/app_gateway"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -273,12 +275,12 @@ module "app_gw" {
         {
           name          = "http-deny-path"
           rule_sequence = 1
-          condition = {
+          conditions = [{
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths)
             ignore_case = true
             negate      = false
-          }
+          }]
           request_header_configurations  = []
           response_header_configurations = []
           url = {
@@ -289,12 +291,12 @@ module "app_gw" {
         {
           name          = "http-deny-path2"
           rule_sequence = 2
-          condition = {
+          conditions = [{
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths_2)
             ignore_case = true
             negate      = false
-          }
+          }]
           request_header_configurations  = []
           response_header_configurations = []
           url = {
@@ -305,7 +307,7 @@ module "app_gw" {
         {
           name          = "http-headers-api"
           rule_sequence = 100
-          condition     = null
+          conditions     = []
           request_header_configurations = [
             {
               header_name  = "X-Forwarded-For"
@@ -318,20 +320,6 @@ module "app_gw" {
           ]
           response_header_configurations = []
           url                            = null
-        },
-        {
-          name          = "add-original-host-header"
-          rule_sequence = 101
-          condition     = null
-
-          request_header_configurations = [
-            {
-              header_name  = "X-Orginal-Host-For"
-              header_value = "{var_host}"
-            },
-          ]
-          url                            = null
-          response_header_configurations = []
         },
       ]
     }

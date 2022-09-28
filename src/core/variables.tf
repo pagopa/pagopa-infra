@@ -340,17 +340,6 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
-variable "domain" {
-  type = string
-  validation {
-    condition = (
-      length(var.domain) <= 12
-    )
-    error_message = "Max length is 12 chars."
-  }
-}
-
-
 variable "dns_zone_prefix" {
   type        = string
   default     = null
