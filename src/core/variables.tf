@@ -57,6 +57,13 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
+# mock_psp_service NEXI
+variable "mock_psp_service_enabled" {
+  type        = bool
+  description = "Mock PSP service Nexi"
+  default     = false
+}
+
 # mock_ec
 
 variable "mock_ec_enabled" {

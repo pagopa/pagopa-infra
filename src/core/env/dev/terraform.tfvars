@@ -108,8 +108,9 @@ postgresql_network_rules = {
 prostgresql_db_mockpsp = "mock-psp"
 
 # mock
-mock_ec_enabled  = true
-mock_psp_enabled = true
+mock_ec_enabled          = true
+mock_psp_enabled         = true
+mock_psp_service_enabled = true
 
 
 # apim x nodo pagamenti
