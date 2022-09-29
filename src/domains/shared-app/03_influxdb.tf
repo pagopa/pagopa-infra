@@ -1,6 +1,7 @@
 # influxdb v2
 resource "helm_release" "influxdb2" {
-  name = "pagopa-influxdb2"
+  count = var.env_short != "p" ? 1 : 0
+  name  = "pagopa-influxdb2"
 
   repository = "https://helm.influxdata.com/"
   chart      = "influxdb2"
@@ -8,8 +9,13 @@ resource "helm_release" "influxdb2" {
   namespace  = kubernetes_namespace.namespace.metadata[0].name
 
   set {
-    name  = "service.type"
-    value = "ClusterIP"
+    name  = "image.tag"
+    value = var.influxdb2_helm_image_tag
+  }
+
+  set {
+    name  = "image.repository"
+    value = "influxdb"
   }
 
   set {
