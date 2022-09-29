@@ -133,6 +133,24 @@ variable "tls_cert_check_helm" {
   description = "tls cert helm chart configuration"
 }
 
+variable "influxdb_helm" {
+  type = object({
+    chart_version = string,
+    image = object({
+      name = string,
+      tag  = string
+    })
+  })
+  default = {
+    chart_version = "4.12.0",
+    image = {
+      name = "influxdb",
+      tag  = "1.8.10-alpine@sha256:c436689dc135f204734d63b82fd03044fa3a5205127cb2d1fa7398ff224936b1"
+    }
+  }
+  description = "influxdb helm chart configuration"
+}
+
 variable "influxdb2_helm" {
   type = object({
     chart_version = string,
@@ -145,7 +163,7 @@ variable "influxdb2_helm" {
     chart_version = "2.1.0",
     image = {
       name = "influxdb",
-      tag  = "2.2.0-alpine"
+      tag  = "2.2.0-alpine@sha256:f3b54d91cae591fc3fde20299bd0b262f6f6d9a1f73b98d623b501e82c49d5fb"
     }
   }
   description = "influxdb2 helm chart configuration"
