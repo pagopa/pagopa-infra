@@ -29,6 +29,7 @@
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [helm_release.influxdb](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.influxdb2](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.14.0/docs/resources/namespace) | resource |
@@ -62,7 +63,8 @@
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
-| <a name="input_influxdb2_helm"></a> [influxdb2\_helm](#input\_influxdb2\_helm) | influxdb2 helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image = object({<br>      name = string,<br>      tag  = string<br>    })<br>  })</pre> | <pre>{<br>  "chart_version": "2.1.0",<br>  "image": {<br>    "name": "influxdb",<br>    "tag": "2.2.0-alpine"<br>  }<br>}</pre> | no |
+| <a name="input_influxdb2_helm"></a> [influxdb2\_helm](#input\_influxdb2\_helm) | influxdb2 helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image = object({<br>      name = string,<br>      tag  = string<br>    })<br>  })</pre> | <pre>{<br>  "chart_version": "2.1.0",<br>  "image": {<br>    "name": "influxdb",<br>    "tag": "2.2.0-alpine@sha256:f3b54d91cae591fc3fde20299bd0b262f6f6d9a1f73b98d623b501e82c49d5fb"<br>  }<br>}</pre> | no |
+| <a name="input_influxdb_helm"></a> [influxdb\_helm](#input\_influxdb\_helm) | influxdb helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image = object({<br>      name = string,<br>      tag  = string<br>    })<br>  })</pre> | <pre>{<br>  "chart_version": "4.12.0",<br>  "image": {<br>    "name": "influxdb",<br>    "tag": "1.8.10-alpine@sha256:c436689dc135f204734d63b82fd03044fa3a5205127cb2d1fa7398ff224936b1"<br>  }<br>}</pre> | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
