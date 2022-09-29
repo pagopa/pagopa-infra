@@ -17,7 +17,7 @@ module "apim_selc_product" {
   approval_required     = false
   # subscriptions_limit   = 1000
 
-  policy_xml = file("./api/pagopa-selfcare-ms-backoffice/_base_policy.xml")
+  policy_xml = file("./api_product/_base_policy.xml")
 }
 
 #################
@@ -66,7 +66,7 @@ module "apim_api_selc_api_v1" {
     basePath = "selc"
   })
 
-  xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/_base_policy.xml", {
-    
+  xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_base_policy.xml", {
+    hostname = local.selc_hostname
   })
 }
