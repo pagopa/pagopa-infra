@@ -1,6 +1,6 @@
 
 resource "azurerm_api_management_group" "ecommerce_test" {
-  name                = "ecommerce_test"
+  name                = "ecommerce-test"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = "Ecommerce pagoPA test group"
