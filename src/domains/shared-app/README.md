@@ -62,8 +62,7 @@
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
-| <a name="input_influxdb2_helm_image_tag"></a> [influxdb2\_helm\_image\_tag](#input\_influxdb2\_helm\_image\_tag) | image an tag of influxdb2 | `string` | `"influxdb:2.2.0-alpine@sha256:f3b54d91cae591fc3fde20299bd0b262f6f6d9a1f73b98d623b501e82c49d5fb"` | no |
-| <a name="input_influxdb2_helm_version"></a> [influxdb2\_helm\_version](#input\_influxdb2\_helm\_version) | version of influxdb's helm chart | `string` | `"2.1.0"` | no |
+| <a name="input_influxdb2_helm"></a> [influxdb2\_helm](#input\_influxdb2\_helm) | influxdb2 helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image = object({<br>      name = string,<br>      tag  = string<br>    })<br>  })</pre> | <pre>{<br>  "chart_version": "2.1.0",<br>  "image": {<br>    "name": "influxdb",<br>    "tag": "2.2.0-alpine"<br>  }<br>}</pre> | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |

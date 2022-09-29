@@ -5,17 +5,17 @@ resource "helm_release" "influxdb2" {
 
   repository = "https://helm.influxdata.com/"
   chart      = "influxdb2"
-  version    = var.influxdb2_helm_version
+  version    = var.influxdb2_helm.chart_version
   namespace  = kubernetes_namespace.namespace.metadata[0].name
 
   set {
-    name  = "image.tag"
-    value = var.influxdb2_helm_image_tag
+    name  = "image.repository"
+    value = var.influxdb2_helm.image.name
   }
 
   set {
-    name  = "image.repository"
-    value = "influxdb"
+    name  = "image.tag"
+    value = var.influxdb2_helm.image.tag
   }
 
   set {
