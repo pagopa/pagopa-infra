@@ -23,10 +23,10 @@ locals {
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   selc_hostname = var.env == "prod" ? "weuprod.selc.internal.platform.pagopa.it" : "weu${var.env}.selc.internal.${var.env}.platform.pagopa.it"
-
+  
   # selc
   dns_zone_selc     = "selc"
   dns_zone_platform = var.env == "prod" ? "platform" : "${var.env}.platform"
   external_domain   = "pagopa.it"
-
 }
+ 
