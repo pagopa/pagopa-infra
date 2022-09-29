@@ -60,16 +60,3 @@ cosmos_iuvgenerator_db_params = {
 }
 
 cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
-
-cidr_subnet_notifications_service_storage = ["10.1.152.0/24"]
-
-notifications_service_queue_params = {
-  enabled                    = true
-  tier                       = "Standard"
-  kind                       = "StorageV2"
-  account_replication_type   = "LRS",
-  advanced_threat_protection = true,
-  retention_days             = 7
-}
-
-storage_private_endpoint_enabled = true
