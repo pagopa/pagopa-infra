@@ -65,6 +65,33 @@ module "apim_afm_calculator_node_product" {
   policy_xml = file("./api_product/calculator/_base_policy.xml")
 }
 
+resource "azurerm_api_management_group" "api_afm_calculator_node_group" {
+  name                = "afm-calculator"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "AFM Calculator for Node"
+  description         = "API management group of AFM Calculator for Node"
+}
+
+data "azurerm_api_management_group" "api_afm_calculator_node_group" {
+  name                = azurerm_api_management_group.api_afm_calculator_node_group.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+
+  depends_on = [azurerm_api_management_group.api_afm_calculator_node_group]
+}
+
+resource "azurerm_api_management_product_group" "api_afm_calculator_node_product_group" {
+  # for_each is avoided in order to not delete the relationship and re-create it
+
+  product_id          = module.apim_afm_calculator_node_product.product_id
+  api_management_name = local.pagopa_apim_name
+  group_name          = data.azurerm_api_management_group.api_afm_calculator_node_group.name
+
+  resource_group_name = local.pagopa_apim_rg
+}
+
+
 ###########################
 ##  API AFM Calculator  ##
 ###########################
@@ -107,9 +134,9 @@ module "apim_api_afm_calculator_api_v1" {
 }
 
 
-#########################
-##  API AFM Calculator ##
-#########################
+##################################
+##  API AFM Calculator for Node ##
+##################################
 
 resource "azurerm_api_management_api_version_set" "api_afm_calculator_node_api" {
   name                = format("%s-afm-calculator-service-node-api", var.env_short)
@@ -118,7 +145,6 @@ resource "azurerm_api_management_api_version_set" "api_afm_calculator_node_api" 
   display_name        = local.apim_afm_calculator_service_node_api.display_name
   versioning_scheme   = "Segment"
 }
-
 
 module "apim_api_afm_calculator_api_node_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
