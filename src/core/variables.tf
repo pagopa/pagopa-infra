@@ -561,6 +561,14 @@ variable "app_gateway_deny_paths_2" {
   default     = []
 }
 
+variable "app_gateway_allowed_paths_pagopa_onprem_only" {
+  type = object({
+    paths = list(string)
+    ips   = list(string)
+  })
+  description = "Allowed paths from pagopa onprem only"
+}
+
 # Azure DevOps Agent
 variable "enable_azdoa" {
   type        = bool
