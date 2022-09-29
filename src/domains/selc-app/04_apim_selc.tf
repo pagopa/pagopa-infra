@@ -68,5 +68,6 @@ module "apim_api_selc_api_v1" {
 
   xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_base_policy.xml", {
     hostname = local.selc_hostname
+    origin = local.selc_fe_hostname
   })
 }
