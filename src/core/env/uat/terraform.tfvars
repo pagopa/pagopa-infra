@@ -78,33 +78,34 @@ app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
 app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
-  # "/nodo/*",
-  "/payment-manager/clients/*",
-  "/payment-manager/restapi-rtd/*",
-  "/payment-manager/db-logging/*",
-  "/payment-manager/payment-gateway/*",
+  "/nodo/.*",
+  "/payment-manager/clients/.*",
+  "/payment-manager/restapi-rtd/.*",
+  "/payment-manager/db-logging/.*",
+  "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal*",
-  "/payment-manager/pm-per-nodo/*",
-  "/checkout/io-for-node/*",
-  "/tkm/tkmcardmanager/*",
-  "/tkm/tkmacquirermanager/*",
-  "/tkm/internal*",
-  "/payment-transactions-gateway/internal*",
-  "/gps/donation-service/*",
-  "/shared/iuv-generator-service/*",
-  "/gpd/api/*",
-  "/gps/spontaneous-payments-service/*"
+  "/payment-manager/pm-per-nodo/.*",
+  "/checkout/io-for-node/.*",
+
+  "/tkm/tkmacquirermanager/.*",
+  "/tkm/internal/.*",
+  "/payment-transactions-gateway/internal/.*",
+  "/gps/donation-service/.*",
+  "/shared/iuv-generator-service/.*",
+  "/gpd/api/.*",
+  "/gps/spontaneous-payments-service/.*",
 ]
 app_gateway_deny_paths_2 = [
-  "/ppt-lmi*",
-  "/sync-cron*",
-  "/wfesp/*",
-  "/fatturazione/*",
+  # "/nodo-pagamenti*", - used to test UAT nodo onCloud
+  "/ppt-lmi/.*",
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
-    "/web-bo/*",
-    "/pp-admin-panel/*",
+    "/web-bo/.*",
+    "/pp-admin-panel/.*",
   ]
   ips = [
     "93.63.219.230",
