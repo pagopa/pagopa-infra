@@ -79,21 +79,21 @@ app_gateway_waf_enabled                 = false
 app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
   "/nodo/.*",
-  "/payment-manager/clients/.*",
-  "/payment-manager/restapi-rtd/.*",
-  "/payment-manager/db-logging/.*",
-  "/payment-manager/payment-gateway/.*",
-  "/payment-manager/internal*",
-  "/payment-manager/pm-per-nodo/.*",
-  "/checkout/io-for-node/.*",
+  # "/payment-manager/clients/.*",
+  # "/payment-manager/restapi-rtd/.*",
+  # "/payment-manager/db-logging/.*",
+  # "/payment-manager/payment-gateway/.*",
+  # "/payment-manager/internal/.*",
+  # "/payment-manager/pm-per-nodo/.*",
+  # "/checkout/io-for-node/.*",
 
-  "/tkm/tkmacquirermanager/.*",
-  "/tkm/internal/.*",
-  "/payment-transactions-gateway/internal/.*",
-  "/gps/donation-service/.*",
-  "/shared/iuv-generator-service/.*",
-  "/gpd/api/.*",
-  "/gps/spontaneous-payments-service/.*",
+  # "/tkm/tkmacquirermanager/.*",
+  # "/tkm/internal/.*",
+  # "/payment-transactions-gateway/internal/.*",
+  # "/gps/donation-service/.*",
+  # "/shared/iuv-generator-service/.*",
+  # "/gpd/api/.*",
+  # "/gps/spontaneous-payments-service/.*",
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
