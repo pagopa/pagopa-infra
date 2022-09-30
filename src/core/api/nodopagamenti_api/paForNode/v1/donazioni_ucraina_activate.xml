@@ -1,5 +1,6 @@
 <policies>
     <inbound>
+        <base />
         <set-variable name="donazioniucraina" value="{{donazioni-ucraina}}" />
         <set-variable name="donazioniucraina2" value="{{donazioni-ucraina2}}" />
         <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
@@ -271,7 +272,6 @@
                 </soapenv:Envelope>
             </set-body>
         </return-response>
-        <base />
     </inbound>
     <backend>
         <base />
