@@ -70,3 +70,11 @@ resource "azurerm_key_vault_secret" "notifications_service_sa_connection_string"
 
   key_vault_id = module.key_vault.id
 }
+
+resource "azurerm_key_vault_secret" "notifications_service_ai_instrumentation_key" {
+  name         = "notifications-service-ai-instrumentation-key"
+  value        = data.azurerm_application_insights.application_insights.instrumentation_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
