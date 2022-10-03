@@ -125,9 +125,9 @@ module "apim_api_gpd_payments_rest_api" {
 }
 
 
-################
-# EXTERNAL USE #
-################
+########################
+# GPD-GPS EXTERNAL USE #
+########################
 
 ##############
 ## Products ##
