@@ -154,3 +154,8 @@ variable "spa" {
     "ui"
   ]
 }
+
+variable "robots_indexed_paths" {
+  type        = list(string)
+  description = "List of cdn paths to allow robots index"
+}

@@ -86,16 +86,16 @@ module "selc_cdn" {
       value  = "max-age=31536000"
       },
       # Content-Security-Policy (in Report mode)
-      {
-        action = "Overwrite"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", local.dns_zone_selc, local.external_domain)
-      },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
-      },
+      # {
+      #   action = "Overwrite"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", local.dns_zone_selc, local.external_domain)
+      # },
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
+      # },
       # {
       #   action = "Append"
       #   name   = "Content-Security-Policy-Report-Only"
@@ -106,11 +106,11 @@ module "selc_cdn" {
         name   = "X-Content-Type-Options"
         value  = "nosniff"
       },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
-      },
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
+      # },
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
