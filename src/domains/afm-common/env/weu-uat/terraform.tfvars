@@ -39,18 +39,20 @@ afm_marketplace_cosmos_db_params = {
   capabilities = []
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "Strong"
+    consistency_level       = "BoundedStaleness"
     max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
   main_geo_location_zone_redundant = false
-  enable_free_tier                 = false
+  enable_free_tier                 = true
 
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
+  private_endpoint_enabled      = true
+  public_network_access_enabled = false
+
+  additional_geo_locations = []
+
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
