@@ -36,7 +36,7 @@ dns_zone_internal_prefix = "internal.uat.platform"
 # CosmosDb AFM Marketplace
 afm_marketplace_cosmos_db_params = {
   kind         = "GlobalDocumentDB"
-  capabilities = ["EnableServerless"]
+  capabilities = []
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"
