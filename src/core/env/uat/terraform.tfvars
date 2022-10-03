@@ -438,30 +438,6 @@ pgres_flex_params = {
 
 }
 
-# Cosmos AFM
-cosmos_afm_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = []
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = true
-
-  private_endpoint_enabled      = true
-  public_network_access_enabled = false
-
-  additional_geo_locations = []
-
-  is_virtual_network_filter_enabled = true
-
-  backup_continuous_enabled = false
-}
-
 # CosmosDb Payments
 cosmos_document_db_params = {
   kind         = "GlobalDocumentDB"
