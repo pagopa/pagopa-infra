@@ -6,6 +6,12 @@ resource "azurerm_api_management_named_value" "afm_marketplace_sub_key_internal"
   resource_group_name = local.pagopa_apim_rg
   display_name        = "afm-marketplace-sub-key-internal"
   value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
 
 #############################

@@ -6,6 +6,12 @@ resource "azurerm_api_management_named_value" "afm_calculator_data_sub_key_inter
   resource_group_name = local.pagopa_apim_rg
   display_name        = "afm-calculator-data-sub-key-internal"
   value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
 
 #############################
