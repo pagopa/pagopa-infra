@@ -43,53 +43,77 @@ data "azurerm_key_vault_secret" "cdn_storage_access_secret" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
-  name         = "${local.project}-${var.domain}-jwt-signing-cert"
-  key_vault_id = data.azurerm_key_vault.kv.id
+# resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
+#   name         = "${local.project}-${var.domain}-jwt-signing-cert"
+#   key_vault_id = data.azurerm_key_vault.kv.id
 
-  certificate_policy {
-    issuer_parameters {
-      name = "Self"
-    }
+#   certificate_policy {
+#     issuer_parameters {
+#       name = "Self"
+#     }
 
-    key_properties {
-      exportable = true
-      key_size   = 2048
-      key_type   = "RSA"
-      reuse_key  = true
-    }
+#     key_properties {
+#       exportable = true
+#       key_size   = 2048
+#       key_type   = "RSA"
+#       reuse_key  = true
+#     }
 
-    lifetime_action {
-      action {
-        action_type = "AutoRenew"
-      }
+#     lifetime_action {
+#       action {
+#         action_type = "AutoRenew"
+#       }
 
-      trigger {
-        days_before_expiry = 30
-      }
-    }
+#       trigger {
+#         days_before_expiry = 30
+#       }
+#     }
 
-    secret_properties {
-      content_type = "application/x-pkcs12"
-    }
+#     secret_properties {
+#       content_type = "application/x-pkcs12"
+#     }
 
-    x509_certificate_properties {
-      # Server Authentication = 1.3.6.1.5.5.7.3.1
-      # Client Authentication = 1.3.6.1.5.5.7.3.2
-      extended_key_usage = ["1.3.6.1.5.5.7.3.2"]
-      key_usage = [
-        "cRLSign",
-        "dataEncipherment",
-        "digitalSignature",
-        "keyAgreement",
-        "keyCertSign",
-        "keyEncipherment",
-      ]
+#     x509_certificate_properties {
+#       # Server Authentication = 1.3.6.1.5.5.7.3.1
+#       # Client Authentication = 1.3.6.1.5.5.7.3.2
+#       extended_key_usage = ["1.3.6.1.5.5.7.3.2"]
+#       key_usage = [
+#         "cRLSign",
+#         "dataEncipherment",
+#         "digitalSignature",
+#         "keyAgreement",
+#         "keyCertSign",
+#         "keyEncipherment",
+#       ]
 
-      subject            = "CN=${local.project}-${var.domain}-jwt-signing-cert"
-      validity_in_months = 12
-    }
-  }
+#       subject            = "CN=${local.project}-${var.domain}-jwt-signing-cert"
+#       validity_in_months = 12
+#     }
+#   }
+# }
+
+# JWT
+module "jwt" {
+  source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.12.1"
+
+  jwt_name         = "jwt"
+  key_vault_id     = module.key_vault.id
+  cert_common_name = "apim"
+  cert_password    = ""
+  tags             = var.tags
+}
+
+resource "pkcs12_from_pem" "jwt_pkcs12" {
+  password        = ""
+  cert_pem        = module.jwt.certificate_data_pem
+  private_key_pem = module.jwt.jwt_private_key_pem
+}
+
+resource "azurerm_api_management_certificate" "jwt_certificate" {
+  name                = "jwt-spid-crt"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  data                = pkcs12_from_pem.jwt_pkcs12.result
 }
 
 resource "azurerm_api_management_certificate" "pagopa_token_exchange_cert_jwt" {

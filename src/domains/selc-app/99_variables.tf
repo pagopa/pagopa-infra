@@ -145,3 +145,12 @@ variable "selc_fe_enabled" {
   description = "Selc FE enabled"
   default     = false
 }
+
+# Single Page Applications
+variable "spa" {
+  type        = list(string)
+  description = "spa root dirs"
+  default = [
+    "ui"
+  ]
+}
