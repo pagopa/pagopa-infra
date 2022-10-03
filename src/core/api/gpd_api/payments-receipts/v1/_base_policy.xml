@@ -9,9 +9,12 @@
             return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;
         }" />
         <base />
-        <!-- /payments/{organizationfiscalcode} -->
+        <!-- 
+            subset/restriced api of src/core/api/gpd_api/payments/v1/rest/_openapi.json.tpl (INTERNAL) without /payments/{organizationfiscalcode} 
+        -->
         <rewrite-uri template="@("/payments/"+(string)context.Variables["organizationFiscalCode"]+"/"+(string)context.Variables["requestPath"])" copy-unmatched-params="true" />
         <set-backend-service base-url="@(String.Format("https://pagopa-{0}-app-payments.azurewebsites.net", (string)context.Variables["envshort"]))" />
+        <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after" />
     </inbound>
     <outbound>
         <base />
