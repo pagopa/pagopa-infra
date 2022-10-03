@@ -142,8 +142,8 @@ postgresql_public_network_access_enabled = false
 postgres_private_endpoint_enabled        = false
 
 # mock
-mock_ec_enabled  = false
-mock_psp_enabled = false
+mock_ec_enabled              = false
+mock_payment_gateway_enabled = false
 
 
 # apim x nodo pagamenti
