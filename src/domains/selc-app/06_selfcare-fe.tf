@@ -9,6 +9,40 @@ resource "azurerm_resource_group" "selc_fe_rg" {
   tags = var.tags
 }
 
+locals {
+  spa = [
+    for i, spa in var.spa :
+    {
+      name  = replace(format("SPA-%s", spa), "-", "")
+      order = i + 3 // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
+      conditions = [
+        {
+          condition_type   = "url_path_condition"
+          operator         = "BeginsWith"
+          match_values     = [format("/%s/", spa)]
+          negate_condition = false
+          transforms       = null
+        },
+        {
+          condition_type   = "url_file_extension_condition"
+          operator         = "LessThanOrEqual"
+          match_values     = ["0"]
+          negate_condition = false
+          transforms       = null
+        },
+      ]
+      url_rewrite_action = {
+        source_pattern          = format("/%s/", spa)
+        destination             = format("/%s/index.html", spa)
+        preserve_unmatched_path = false
+      }
+    }
+  ]
+  cors = {
+    paths = ["/assets/"]
+  }
+}
+
 /**
  * CDN
  */
@@ -114,10 +148,126 @@ module "selc_cdn" {
     ]
     url_rewrite_action = {
       source_pattern          = "/"
-      destination             = "/index.html"
+      destination             = "/ui/index.html"
       preserve_unmatched_path = false
     }
-  }])
+  }],
+    local.spa
+  )
+
+  delivery_rule = [
+    {
+      name  = "robotsNoIndex"
+      order = 3 + length(local.spa)
+
+      // conditions
+      url_path_conditions = [{
+        operator         = "Equal"
+        match_values     = length(var.robots_indexed_paths) > 0 ? var.robots_indexed_paths : ["dummy"]
+        negate_condition = true
+        transforms       = null
+      }]
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_header_conditions     = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+      url_file_name_conditions      = []
+
+      // actions
+      modify_response_header_actions = [{
+        action = "Overwrite"
+        name   = "X-Robots-Tag"
+        value  = "noindex, nofollow"
+      }]
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
+    },
+    {
+      name  = "microcomponentsNoCache"
+      order = 4 + length(local.spa)
+
+      // conditions
+      url_path_conditions           = []
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_header_conditions     = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+
+      url_file_name_conditions = [{
+        operator         = "Equal"
+        match_values     = ["remoteEntry.js"]
+        negate_condition = false
+        transforms       = null
+      }]
+
+      // actions
+      modify_response_header_actions = [{
+        action = "Overwrite"
+        name   = "Cache-Control"
+        value  = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+      }]
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
+    },
+    {
+      name  = "cors"
+      order = 5 + length(local.spa)
+
+      // conditions
+      url_path_conditions = [{
+        operator         = "BeginsWith"
+        match_values     = local.cors.paths
+        negate_condition = false
+        transforms       = null
+      }]
+      request_header_conditions     = []
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+      url_file_name_conditions      = []
+
+      // actions
+      modify_response_header_actions = [{
+        action = "Overwrite"
+        name   = "Access-Control-Allow-Origin"
+        value  = "*"
+      }]
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
+  }]
 
   tags = var.tags
 }
