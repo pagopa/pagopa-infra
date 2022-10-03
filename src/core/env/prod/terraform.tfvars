@@ -82,6 +82,7 @@ app_gateway_api_certificate_name        = "api-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
+app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_min_capacity                = 2
 app_gateway_max_capacity                = 5
 app_gateway_sku_name                    = "WAF_v2"
@@ -89,36 +90,42 @@ app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true
 app_gateway_alerts_enabled              = true
 app_gateway_deny_paths = [
-  "/nodo/*",
-  "/payment-manager/clients/*",
-  "/payment-manager/restapi-rtd/*",
-  "/payment-manager/db-logging/*",
-  "/payment-manager/payment-gateway/*",
+  "/nodo/.*",
+  "/payment-manager/clients/.*",
+  "/payment-manager/restapi-rtd/.*",
+  "/payment-manager/db-logging/.*",
+  "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal*",
-  "/payment-manager/pm-per-nodo/*",
-  "/checkout/io-for-node/*",
-  "/gpd/*",
-  "/gpd-payments/*",
-  "/gpd-reporting/*",
-  "/tkm/tkmcardmanager/*",
-  "/tkm/tkmacquirermanager/*",
-  "/tkm/internal*",
-  "/payment-transactions-gateway/internal*",
-  "/gps/donation-service/*",
-  "/shared/iuv-generator-service/*",
-  "/gpd/api/*",
-  "/gps/spontaneous-payments-service/*"
+  "/payment-manager/pm-per-nodo/.*",
+  "/checkout/io-for-node/.*",
+  "/gpd/.*",           # internal use no sub-keys 
+  "/gpd-payments/.*",  # internal use no sub-keys
+  "/gpd-reporting/.*", # internal use no sub-keys
+  "/tkm/tkmcardmanager/.*",
+  "/tkm/tkmacquirermanager/.*",
+  "/tkm/internal/.*",
+  "/payment-transactions-gateway/internal/.*",
+  "/gps/donation-service/.*",             # internal use no sub-keys 
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys 
+  "/gpd/api/.*",                          # internal use no sub-keys 
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys 
 ]
-
 app_gateway_deny_paths_2 = [
-  "/nodo-pagamenti*",
-  "/ppt-lmi*",
-  "/sync-cron*",
-  "/wfesp/*",
-  "/fatturazione/*",
-  "/web-bo/*"
+  "/nodo-pagamenti/.*",
+  "/ppt-lmi/.*",
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
 ]
-
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/.*",
+    "/pp-admin-panel/.*",
+  ]
+  ips = [
+    "93.63.219.230",
+  ]
+}
 
 # nat_gateway
 nat_gateway_enabled    = true
@@ -428,8 +435,8 @@ canoneunico_queue_message_delay = 3600 // in seconds = 1h
 
 # Postgres Flexible
 # https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
-# https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
-# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server#geo_redundant_backup_enabled
+# https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server#geo_redundant_backup_enabled
 pgres_flex_params = {
 
   private_endpoint_enabled = true
@@ -449,7 +456,7 @@ pgres_flex_params = {
 }
 
 
-# Cosmos AFM
+# Cosmos AFM
 cosmos_afm_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = []

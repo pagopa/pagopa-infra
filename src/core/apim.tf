@@ -232,6 +232,12 @@ resource "azurerm_api_management_group" "gps_grp" {
   api_management_name = module.apim.name
   display_name        = "GPS Spontaneous Payments for ECs"
 }
+resource "azurerm_api_management_group" "afm_calculator" {
+  name                = "afm-calculator"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "AFM Calculator for Node"
+}
 
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   count               = var.checkout_enabled ? 1 : 0
@@ -429,6 +435,22 @@ resource "azurerm_api_management_named_value" "pm_host_prf" {
   display_name        = "pm-host-prf"
   value               = data.azurerm_key_vault_secret.pm_host_prf.value
   secret              = true
+}
+
+resource "azurerm_api_management_named_value" "wisp2_gov_it" {
+  name                = "wisp2-gov-it"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "wisp2-gov-it"
+  value               = "${var.dns_zone_wisp2}.pagopa.gov.it"
+}
+
+resource "azurerm_api_management_named_value" "wisp2_it" {
+  name                = "wisp2-it"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "wisp2-it"
+  value               = "${var.dns_zone_wisp2}.${var.external_domain}"
 }
 
 # fdr

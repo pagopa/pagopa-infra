@@ -14,6 +14,11 @@
               <value>CLIENT_PAYMENT_MANAGER</value>
             </set-header>
           </when>
+          <when condition="@(context.User.Groups.Select(g => g.Id).Contains("ecommerce-test"))" >
+            <set-header name="X-Client-Id" exists-action="override">
+              <value>CLIENT_ECOMMERCE_TEST</value>
+            </set-header>
+          </when>
           <otherwise>
               <return-response>
                   <set-status code="401" reason="Unauthorized X-Client-Id" />

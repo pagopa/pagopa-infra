@@ -88,6 +88,12 @@ locals {
       compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "wisp2.pagopa.it"])),
       path = "",
     },
+    # TODO enable after Payment Manager migration on cloud
+    # {
+    #   host = join(".",
+    #   compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "wisp2.pagopa.gov.it"])),
+    #   path = "",
+    # },
     {
       host = "status.pagopa.gov.it",
       path = "",

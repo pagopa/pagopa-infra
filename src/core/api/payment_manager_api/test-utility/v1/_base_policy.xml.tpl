@@ -108,9 +108,6 @@
               <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
               </set-header>
-              <set-header name="ocp-apim-subscription-key" exists-action="override">
-                <value>{{checkout-v2-testing-api-key}}</value>
-              </set-header>
               <set-body>@{
                   return new JObject(
                           new JProperty("sessionToken", (string) ((JObject)((JObject) context.Variables["pmSessionTest"])["data"])["sessionToken"]),

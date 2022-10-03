@@ -57,6 +57,13 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
+# mock_psp_service NEXI
+variable "mock_psp_service_enabled" {
+  type        = bool
+  description = "Mock PSP service Nexi"
+  default     = false
+}
+
 # mock_ec
 
 variable "mock_ec_enabled" {
@@ -503,6 +510,11 @@ variable "app_gateway_wisp2_certificate_name" {
   description = "Application gateway wisp2 certificate name on Key Vault"
 }
 
+variable "app_gateway_wisp2govit_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2govit certificate name on Key Vault"
+}
+
 variable "app_gateway_sku_name" {
   type        = string
   description = "The Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"
@@ -547,6 +559,14 @@ variable "app_gateway_deny_paths_2" {
   type        = list(string)
   description = "Deny paths on app gateway"
   default     = []
+}
+
+variable "app_gateway_allowed_paths_pagopa_onprem_only" {
+  type = object({
+    paths = list(string)
+    ips   = list(string)
+  })
+  description = "Allowed paths from pagopa onprem only"
 }
 
 # Azure DevOps Agent

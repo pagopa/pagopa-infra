@@ -53,6 +53,7 @@ external_domain     = "pagopa.it"
 dns_zone_prefix     = "uat.platform"
 dns_zone_prefix_prf = "prf.platform"
 dns_zone_checkout   = "uat.checkout"
+dns_zone_selc       = "uat.selc.platform"
 dns_zone_wisp2      = "uat.wisp2"
 
 # azure devops
@@ -71,36 +72,45 @@ app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
+app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
 app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
 app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
-  # "/nodo/*",
-  "/payment-manager/clients/*",
-  "/payment-manager/restapi-rtd/*",
-  "/payment-manager/db-logging/*",
-  "/payment-manager/payment-gateway/*",
-  "/payment-manager/internal*",
-  "/payment-manager/pm-per-nodo/*",
-  "/checkout/io-for-node/*",
-  "/tkm/tkmcardmanager/*",
-  "/tkm/tkmacquirermanager/*",
-  "/tkm/internal*",
-  "/payment-transactions-gateway/internal*",
-  "/gps/donation-service/*",
-  "/shared/iuv-generator-service/*",
-  "/gpd/api/*",
-  "/gps/spontaneous-payments-service/*"
-]
+  "/nodo/.*",
+  "/payment-manager/clients/.*",
+  "/payment-manager/restapi-rtd/.*",
+  "/payment-manager/db-logging/.*",
+  "/payment-manager/payment-gateway/.*",
+  "/payment-manager/internal/.*",
+  "/payment-manager/pm-per-nodo/.*",
+  "/checkout/io-for-node/.*",
 
-app_gateway_deny_paths_2 = [
-  "/ppt-lmi*",
-  "/sync-cron*",
-  "/wfesp/*",
-  "/fatturazione/*",
-  "/web-bo/*"
+  "/tkm/tkmacquirermanager/.*",
+  "/tkm/internal/.*",
+  "/payment-transactions-gateway/internal/.*",
+  "/gps/donation-service/.*",
+  "/shared/iuv-generator-service/.*",
+  "/gpd/api/.*",
+  "/gps/spontaneous-payments-service/.*",
 ]
+app_gateway_deny_paths_2 = [
+  # "/nodo-pagamenti*", - used to test UAT nodo onCloud
+  "/ppt-lmi/.*",
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
+]
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/.*",
+    "/pp-admin-panel/.*",
+  ]
+  ips = [
+    "93.63.219.230",
+  ]
+}
 
 # nat_gateway
 nat_gateway_enabled = true
