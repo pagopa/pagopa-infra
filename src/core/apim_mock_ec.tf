@@ -48,8 +48,8 @@ module "apim_mock_ec_api" {
   path         = "mock-ec/api"
   protocols    = ["https"]
 
-  # service_url = format("https://%s", module.mock_ec[0].default_site_hostname)
-  service_url = null
+  service_url = format("https://%s", module.mock_ec[0].default_site_hostname)
+  #service_url = null
 
   content_value = templatefile("./api/mockec_api/v1/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
@@ -58,7 +58,7 @@ module "apim_mock_ec_api" {
   # xml_content = file("./api/mockec_api/v1/_base_policy.xml")
 
   xml_content = templatefile("./api/mockec_api/v1/_base_policy.xml", {
-    mock_ec_host_path = var.env_short == "d" ? format("https://%s", module.mock_ec[0].default_site_hostname) : "http://${var.lb_aks}/mock-ec-sit "
+    mock_ec_host_path = var.env_short == "u" ? format("https://%s/mock-ec", module.mock_ec[0].default_site_hostname) : "http://${var.lb_aks}/mock-ec-sit/mock-ec"
   })
 
 }
