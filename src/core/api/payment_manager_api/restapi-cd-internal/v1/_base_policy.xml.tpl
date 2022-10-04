@@ -1,9 +1,12 @@
 <policies>
     <inbound>
       <base />
-      <set-variable name="fromDnsHost" value="@(context.Request.OriginalUrl.Host)" />
+      <ip-filter action="forbid">
+        <!-- pagopa-p-appgateway-snet  -->
+        <address-range from="10.1.128.0" to="10.1.128.255" />
+      </ip-filter>  
       <choose>
-        <when condition="@(context.Variables.GetValueOrDefault<string>("fromDnsHost").Contains("prf.platform.pagopa.it"))">
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it"))">
           <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/pp-restapi-CD/v1")" />
         </when>
         <otherwise>

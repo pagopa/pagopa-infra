@@ -6,6 +6,12 @@ resource "azurerm_api_management_named_value" "afm_marketplace_sub_key_internal"
   resource_group_name = local.pagopa_apim_rg
   display_name        = "afm-marketplace-sub-key-internal"
   value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
 
 #############################
@@ -16,7 +22,7 @@ locals {
     display_name          = "AFM Marketplace pagoPA - marketplace of advanced fees management service API"
     description           = "Marketplace API to support advanced fees management service"
     path                  = "afm/marketplace-service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }

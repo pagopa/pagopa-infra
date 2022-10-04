@@ -175,7 +175,7 @@ module "appgateway_snet" {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.19.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.20.0"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -273,12 +273,12 @@ module "app_gw" {
         {
           name          = "http-deny-path"
           rule_sequence = 1
-          condition = {
+          conditions = [{
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths)
             ignore_case = true
             negate      = false
-          }
+          }]
           request_header_configurations  = []
           response_header_configurations = []
           url = {
@@ -289,12 +289,34 @@ module "app_gw" {
         {
           name          = "http-deny-path2"
           rule_sequence = 2
-          condition = {
+          conditions = [{
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths_2)
             ignore_case = true
             negate      = false
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
           }
+        },
+        {
+          name          = "http-allow-pagopa-onprem-only"
+          rule_sequence = 3
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_allowed_paths_pagopa_onprem_only.paths)
+            ignore_case = true
+            negate      = false
+            },
+            {
+              variable    = "var_client_ip"
+              pattern     = join("|", var.app_gateway_allowed_paths_pagopa_onprem_only.ips)
+              ignore_case = true
+              negate      = true
+          }]
           request_header_configurations  = []
           response_header_configurations = []
           url = {
@@ -305,7 +327,7 @@ module "app_gw" {
         {
           name          = "http-headers-api"
           rule_sequence = 100
-          condition     = null
+          conditions    = []
           request_header_configurations = [
             {
               header_name  = "X-Forwarded-For"
@@ -314,6 +336,10 @@ module "app_gw" {
             {
               header_name  = "X-Client-Ip"
               header_value = "{var_client_ip}"
+            },
+            {
+              header_name  = "X-Orginal-Host-For"
+              header_value = "{var_host}"
             },
           ]
           response_header_configurations = []

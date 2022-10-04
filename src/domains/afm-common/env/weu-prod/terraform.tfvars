@@ -28,6 +28,7 @@ terraform_remote_state_core = {
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
+ingress_load_balancer_ip                    = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
@@ -36,7 +37,7 @@ apim_dns_zone_prefix     = "platform"
 # CosmosDb AFM Marketplace
 afm_marketplace_cosmos_db_params = {
   kind         = "GlobalDocumentDB"
-  capabilities = ["EnableServerless"]
+  capabilities = []
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -47,12 +48,18 @@ afm_marketplace_cosmos_db_params = {
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
-  additional_geo_locations          = []
-  private_endpoint_enabled          = true
-  public_network_access_enabled     = true
+  private_endpoint_enabled      = true
+  public_network_access_enabled = false
+
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
 }
 

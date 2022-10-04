@@ -437,6 +437,22 @@ resource "azurerm_api_management_named_value" "pm_host_prf" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "wisp2_gov_it" {
+  name                = "wisp2-gov-it"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "wisp2-gov-it"
+  value               = "${var.dns_zone_wisp2}.pagopa.gov.it"
+}
+
+resource "azurerm_api_management_named_value" "wisp2_it" {
+  name                = "wisp2-it"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "wisp2-it"
+  value               = "${var.dns_zone_wisp2}.${var.external_domain}"
+}
+
 # fdr
 resource "azurerm_api_management_named_value" "fdrsaname" {
   name                = "fdrsaname"
