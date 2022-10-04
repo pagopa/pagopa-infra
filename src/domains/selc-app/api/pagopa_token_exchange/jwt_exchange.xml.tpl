@@ -33,7 +33,7 @@
                     var iat = DateTimeOffset.Now.ToUnixTimeSeconds();
                     var exp = new DateTimeOffset(DateTime.Now.AddHours(8)).ToUnixTimeSeconds();  // sets the expiration of the token to be 8 hours from now
                     var aud = "api.platform.pagopa.it";
-                    var iss = "https://${pagopa-audience}";
+                    var iss = "https://${pagopa-issuer}";
                     var uid = selcToken.Claims.GetValueOrDefault("uid", "");
                     var name = selcToken.Claims.GetValueOrDefault("name", "");
                     var family_name = selcToken.Claims.GetValueOrDefault("family_name", "");
