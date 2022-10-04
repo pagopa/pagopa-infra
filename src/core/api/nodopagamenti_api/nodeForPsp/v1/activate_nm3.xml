@@ -1,5 +1,6 @@
 <policies>
     <inbound>
+        <base />    
         <set-variable name="psps" value="{{brokerlist}}" />
         <set-variable name="ecs" value="{{ecblacklist}}" />
         <set-variable name="requestPayload" value="@(context.Request.Body.As<string>(preserveContent: true))" />
@@ -541,7 +542,6 @@
                 </choose>
             </otherwise>
         </choose>
-        <base />
         <set-backend-service base-url="{{urlnodo}}" />
     </inbound>
     <backend>

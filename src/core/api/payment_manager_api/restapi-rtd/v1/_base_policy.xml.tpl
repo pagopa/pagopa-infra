@@ -1,7 +1,19 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="{{pm-gtw-hostname}}/pp-restapi-rtd/v1" />
+      <ip-filter action="forbid">
+        <!-- pagopa-p-appgateway-snet  -->
+        <address-range from="10.1.128.0" to="10.1.128.255" />
+      </ip-filter>        
+      <choose>
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it"))">
+          <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/pp-restapi-rtd/v1")" />
+        </when>
+        <otherwise>
+          <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-restapi-rtd/v1")" />
+        </otherwise>
+      </choose>
+      <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
     </inbound>
     <outbound>
       <base />

@@ -22,6 +22,7 @@ locals {
   portal_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", "portal")
 
   api_domain        = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+  prf_domain        = format("api.%s.%s", var.dns_zone_prefix_prf, var.external_domain)
   portal_domain     = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
   management_domain = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
 }
@@ -232,6 +233,12 @@ resource "azurerm_api_management_group" "gps_grp" {
   api_management_name = module.apim.name
   display_name        = "GPS Spontaneous Payments for ECs"
 }
+resource "azurerm_api_management_group" "afm_calculator" {
+  name                = "afm-calculator"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "AFM Calculator for Node"
+}
 
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   count               = var.checkout_enabled ? 1 : 0
@@ -413,6 +420,40 @@ resource "azurerm_api_management_named_value" "pm_onprem_hostname" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "pm_host" {
+  name                = "pm-host"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pm-host"
+  value               = data.azurerm_key_vault_secret.pm_host.value
+  secret              = true
+}
+
+resource "azurerm_api_management_named_value" "pm_host_prf" {
+  name                = "pm-host-prf"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "pm-host-prf"
+  value               = data.azurerm_key_vault_secret.pm_host_prf.value
+  secret              = true
+}
+
+resource "azurerm_api_management_named_value" "wisp2_gov_it" {
+  name                = "wisp2-gov-it"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "wisp2-gov-it"
+  value               = "${var.dns_zone_wisp2}.pagopa.gov.it"
+}
+
+resource "azurerm_api_management_named_value" "wisp2_it" {
+  name                = "wisp2-it"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "wisp2-it"
+  value               = "${var.dns_zone_wisp2}.${var.external_domain}"
+}
+
 # fdr
 resource "azurerm_api_management_named_value" "fdrsaname" {
   name                = "fdrsaname"
@@ -548,6 +589,18 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
       "/${data.azurerm_key_vault_certificate.management_platform.version}",
       ""
     )
+  }
+
+  dynamic "proxy" {
+    for_each = var.env_short == "u" ? [""] : []
+    content {
+      host_name = local.prf_domain
+      key_vault_id = replace(
+        data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
+        "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
+        ""
+      )
+    }
   }
 }
 

@@ -1,35 +1,46 @@
+# named-values
+
+resource "azurerm_api_management_named_value" "afm_marketplace_sub_key_internal" {
+  name                = "afm-marketplace-sub-key-internal"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "afm-marketplace-sub-key-internal"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 #############################
 ## Product AFM Marketplace ##
 #############################
-
-module "apim_afm_marketplace_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
-
-  product_id   = "afm-marketplace"
-  display_name = "GEC pagoPA - Marketplace"
-  description  = "Prodotto Gestione Evoluta Commissioni - Gestione pacchetti"
-
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-
-  published             = true
-  subscription_required = false
-  approval_required     = false
-
-  policy_xml = file("./api_product/marketplace/_base_policy.xml")
-}
-
-###########################
-##  API AFM Marketplace  ##
-###########################
 locals {
   apim_afm_marketplace_service_api = {
     display_name          = "AFM Marketplace pagoPA - marketplace of advanced fees management service API"
     description           = "Marketplace API to support advanced fees management service"
     path                  = "afm/marketplace-service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
+}
+module "apim_afm_marketplace_product" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+
+  product_id   = "afm-marketplace"
+  display_name = local.apim_afm_marketplace_service_api.display_name
+  description  = local.apim_afm_marketplace_service_api.description
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = local.apim_afm_marketplace_service_api.subscription_required
+  approval_required     = false
+
+  policy_xml = file("./api_product/marketplace/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "api_afm_marketplace_api" {

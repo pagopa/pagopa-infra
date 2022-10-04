@@ -1,3 +1,158 @@
+
+locals {
+
+  # listeners
+  listeners = {
+    api = {
+      protocol           = "Https"
+      host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_api_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+          ""
+        )
+      }
+    }
+
+    portal = {
+      protocol           = "Https"
+      host               = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_portal_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.portal_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.portal_platform.version}",
+          ""
+        )
+      }
+    }
+
+    management = {
+      protocol           = "Https"
+      host               = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_management_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.management_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.management_platform.version}",
+          ""
+        )
+      }
+    }
+
+    wisp2 = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_wisp2, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_wisp2_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.wisp2.secret_id,
+          "/${data.azurerm_key_vault_certificate.wisp2.version}",
+          ""
+        )
+      }
+    }
+  }
+
+  listeners_apiprf = {
+    apiprf = {
+      protocol           = "Https"
+      host               = format("api.%s.%s", var.dns_zone_prefix_prf, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+      certificate = {
+        name = var.app_gateway_prf_certificate_name
+        id = var.app_gateway_prf_certificate_name == "" ? null : replace(
+          data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
+          ""
+        )
+      }
+    }
+  }
+
+  listeners_wisp2govit = {
+    wisp2govit = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_wisp2, "pagopa.gov.it")
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+      certificate = {
+        name = var.app_gateway_wisp2govit_certificate_name
+        id = var.app_gateway_wisp2govit_certificate_name == "" ? null : replace(
+          data.azurerm_key_vault_certificate.wisp2govit[0].secret_id,
+          "/${data.azurerm_key_vault_certificate.wisp2govit[0].version}",
+          ""
+        )
+      }
+    }
+  }
+
+  # routes
+
+  routes = {
+    api = {
+      listener              = "api"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+
+    portal = {
+      listener              = "portal"
+      backend               = "portal"
+      rewrite_rule_set_name = null
+    }
+
+    mangement = {
+      listener              = "management"
+      backend               = "management"
+      rewrite_rule_set_name = null
+    }
+
+    wisp2 = {
+      listener              = "wisp2"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+  }
+
+  routes_apiprf = {
+    apiprf = {
+      listener              = "apiprf"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+  }
+
+  routes_wisp2govit = {
+    wisp2govit = {
+      listener              = "wisp2govit"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+  }
+}
+
 ## Application gateway public ip ##
 resource "azurerm_public_ip" "appgateway_public_ip" {
   name                = format("%s-appgateway-pip", local.project)
@@ -20,7 +175,7 @@ module "appgateway_snet" {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.1.20"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.20.0"
 
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
@@ -29,6 +184,8 @@ module "app_gw" {
   # SKU
   sku_name = var.app_gateway_sku_name
   sku_tier = var.app_gateway_sku_tier
+
+  zones = var.env_short == "p" ? [1, 2, 3] : null
 
   # WAF
   waf_enabled = var.app_gateway_waf_enabled
@@ -88,8 +245,6 @@ module "app_gw" {
       cipher_suites = [
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
       ]
       min_protocol_version = "TLSv1_2"
     }
@@ -98,80 +253,18 @@ module "app_gw" {
   trusted_client_certificates = []
 
   # Configure listeners
-  listeners = {
-
-    api = {
-      protocol           = "Https"
-      host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.app_gateway_api_certificate_name
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
-          ""
-        )
-      }
-    }
-
-    portal = {
-      protocol           = "Https"
-      host               = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.app_gateway_portal_certificate_name
-        id = replace(
-          data.azurerm_key_vault_certificate.portal_platform.secret_id,
-          "/${data.azurerm_key_vault_certificate.portal_platform.version}",
-          ""
-        )
-      }
-    }
-
-    management = {
-      protocol           = "Https"
-      host               = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.app_gateway_management_certificate_name
-        id = replace(
-          data.azurerm_key_vault_certificate.management_platform.secret_id,
-          "/${data.azurerm_key_vault_certificate.management_platform.version}",
-          ""
-        )
-      }
-    }
-  }
+  listeners = merge(
+    local.listeners,
+    var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.listeners_wisp2govit : {},
+  )
 
   # maps listener to backend
-  routes = {
-    api = {
-      listener              = "api"
-      backend               = "apim"
-      rewrite_rule_set_name = "rewrite-rule-set-api"
-    }
-
-    portal = {
-      listener              = "portal"
-      backend               = "portal"
-      rewrite_rule_set_name = null
-    }
-
-    mangement = {
-      listener              = "management"
-      backend               = "management"
-      rewrite_rule_set_name = null
-    }
-  }
+  routes = merge(
+    local.routes,
+    var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.routes_wisp2govit : {},
+  )
 
   rewrite_rule_sets = [
     {
@@ -180,12 +273,50 @@ module "app_gw" {
         {
           name          = "http-deny-path"
           rule_sequence = 1
-          condition = {
+          conditions = [{
             variable    = "var_uri_path"
             pattern     = join("|", var.app_gateway_deny_paths)
             ignore_case = true
             negate      = false
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
           }
+        },
+        {
+          name          = "http-deny-path2"
+          rule_sequence = 2
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_deny_paths_2)
+            ignore_case = true
+            negate      = false
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+        },
+        {
+          name          = "http-allow-pagopa-onprem-only"
+          rule_sequence = 3
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_allowed_paths_pagopa_onprem_only.paths)
+            ignore_case = true
+            negate      = false
+            },
+            {
+              variable    = "var_client_ip"
+              pattern     = join("|", var.app_gateway_allowed_paths_pagopa_onprem_only.ips)
+              ignore_case = true
+              negate      = true
+          }]
           request_header_configurations  = []
           response_header_configurations = []
           url = {
@@ -196,7 +327,7 @@ module "app_gw" {
         {
           name          = "http-headers-api"
           rule_sequence = 100
-          condition     = null
+          conditions    = []
           request_header_configurations = [
             {
               header_name  = "X-Forwarded-For"
@@ -206,25 +337,13 @@ module "app_gw" {
               header_name  = "X-Client-Ip"
               header_value = "{var_client_ip}"
             },
+            {
+              header_name  = "X-Orginal-Host-For"
+              header_value = "{var_host}"
+            },
           ]
           response_header_configurations = []
           url                            = null
-        },
-        {
-          name          = "http-deny-path2"
-          rule_sequence = 2
-          condition = {
-            variable    = "var_uri_path"
-            pattern     = join("|", var.app_gateway_deny_paths_2)
-            ignore_case = true
-            negate      = false
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-          url = {
-            path         = "notfound"
-            query_string = null
-          }
         },
       ]
     }

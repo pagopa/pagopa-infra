@@ -1,10 +1,11 @@
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "afm"
-location       = "westeurope"
-location_short = "weu"
-instance       = "prod"
+prefix          = "pagopa"
+env_short       = "p"
+env             = "prod"
+domain          = "afm"
+location        = "westeurope"
+location_short  = "weu"
+location_string = "West Europe"
+instance        = "prod"
 
 tags = {
   CreatedBy   = "Terraform"

@@ -73,10 +73,10 @@
     "ClosePaymentResponse": {
       "type": "object",
       "required": [
-        "esito"
+        "outcome"
       ],
       "properties": {
-        "esito": {
+        "outcome": {
           "type": "string",
           "enum": [
             "OK",
@@ -102,10 +102,10 @@
       "required": [
         "paymentTokens",
         "outcome",
-        "identificativoPsp",
-        "tipoVersamento",
-        "identificativoIntermediario",
-        "identificativoCanale",
+        "idPSP",
+        "idBrokerPSP",
+        "idChannel",
+        "paymentMethod",
         "transactionId",
         "totalAmount",
         "fee",
@@ -125,28 +125,27 @@
         "outcome": {
           "type": "string",
           "enum": [
-            "OK",
-            "KO"
+            "OK"
           ]
         },
-        "identificativoPsp": {
+        "idPSP": {
           "type": "string",
           "minLength": 1,
           "maxLength": 35
         },
-        "tipoVersamento": {
+        "idBrokerPSP": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 35
+        },
+        "idChannel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 35
+        },
+        "paymentMethod": {
           "type": "string",
           "minLength": 1
-        },
-        "identificativoIntermediario": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 35
-        },
-        "identificativoCanale": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 35
         },
         "transactionId": {
           "type": "string",

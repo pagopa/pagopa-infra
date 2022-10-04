@@ -68,8 +68,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link_privatelink_
   tags = var.tags
 }
 
-# Private dns zone: [env].platform.pagopa.it
-
+# DNS private 👉 <prod|uat|dev>.platform.pagopa.it
 resource "azurerm_private_dns_zone" "platform_private_dns_zone" {
   name                = "${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -117,6 +116,49 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
 
   tags = var.tags
 }
+
+# DNS private 👉 prf.platform.pagopa.it
+
+resource "azurerm_private_dns_zone" "platform_private_dns_zone_prf" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = format("%s.%s", var.dns_zone_prefix_prf, var.external_domain)
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_a_record" "platform_dns_a_private_prf" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "api"
+  zone_name           = azurerm_private_dns_zone.platform_private_dns_zone_prf[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = module.apim.private_ip_addresses
+  tags                = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet_prf" {
+  count                 = var.env_short == "u" ? 1 : 0
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.platform_private_dns_zone_prf[0].name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet_integration_prf" {
+  count                 = var.env_short == "u" ? 1 : 0
+  name                  = module.vnet_integration.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.platform_private_dns_zone_prf[0].name
+  virtual_network_id    = module.vnet_integration.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
 
 # Private DNS Zone for Postgres Databases
 
