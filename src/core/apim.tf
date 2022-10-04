@@ -573,15 +573,6 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
     )
   }
 
-  proxy {
-    host_name = local.prf_domain
-    key_vault_id = var.app_gateway_prf_certificate_name == "" ? null : replace(
-      data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
-      "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
-      ""
-    )
-  }
-
   developer_portal {
     host_name = local.portal_domain
     key_vault_id = replace(
@@ -601,6 +592,19 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   }
 }
 
+resource "azurerm_api_management_custom_domain" "api_custom_domain_prf" {
+  count             = var.env_short == "u" ? 1 : 0
+  api_management_id = module.apim.id
+
+  proxy {
+    host_name = local.prf_domain
+    key_vault_id = replace(
+      data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
+      "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
+      ""
+    )
+  }
+}
 #########
 ## API ##
 #########
