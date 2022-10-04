@@ -11,11 +11,11 @@
       <base />
         
       <set-variable name="ecommerce_url" value="${ecommerce_url}" />
-      <set-variable name="transaction_id" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["cdInfoWisp"]["codiceContestoPagamento"])" />
+      <set-variable name="ccp" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["cdInfoWisp"]["codiceContestoPagamento"])" />
 
       <!-- pagopa-proxy returned error -->
       <send-request response-variable-name="transaction-check-result" ignore-error="true" timeout="10" mode="new">
-        <set-url>@(String.Format("https://{0}/pagopa-ecommerce-transactions-service/transactions/{1}/activation-results", (string)context.Variables["ecommerce_url"], (string)context.Variables["transaction_id"] ))</set-url>
+        <set-url>@(String.Format("https://{0}/pagopa-ecommerce-transactions-service/transactions/payment-context-codes/{1}/activation-results", (string)context.Variables["ecommerce_url"], (string)context.Variables["ccp"] ))</set-url>
         <set-method>POST</set-method>
         <set-header name="Content-Type" exists-action="override">
           <value>application/x-www-form-urlencoded</value>
