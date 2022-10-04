@@ -94,6 +94,25 @@ resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
   }
 }
 
+data "azurerm_key_vault_certificate_data" "pagopa_token_exchange_cert_jwt_public" {
+  depends_on   = [azurerm_key_vault_certificate.pagopa_jwt_signing_cert]
+  name                = "${local.project}-${var.domain}-jwt-signing-cert"
+  key_vault_id        = data.azurerm_key_vault.kv.id
+}
+
+# output "jwt_signing_cert_pem" {
+#   value = data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public.pem
+# }
+
+resource "azurerm_key_vault_secret" "jwt_pub_key" {
+  depends_on   = [data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public]
+  name         = "${local.project}-${var.domain}-jwt-pub-key"
+  value        = data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public.pem
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+
+
 #from selfcare
 
 # module "key_vault" {
