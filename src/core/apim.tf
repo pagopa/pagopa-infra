@@ -575,9 +575,9 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 
   proxy {
     host_name = local.prf_domain
-    key_vault_id = replace(
-      data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-      "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+    key_vault_id = var.app_gateway_prf_certificate_name == "" ? null : replace(
+      data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
+      "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
       ""
     )
   }
