@@ -6,6 +6,7 @@ locals {
   pagopa-oidc-config_url          = "https://${local.pagopa_cdn_storage_account_name}.blob.core.windows.net/pagopa-fe-oidc-config/openid-configuration.json"
   pagopa-portal-hostname          = "welfare.${local.dns_zone_platform}.${local.external_domain}"
   selfcare-issuer                 = "https://${var.env != "p" ? "${var.env}." : ""}selfcare.pagopa.it"
+  pagopa-issuer                   = "https://api.${var.env != "p" ? "${var.env}." : ""}platform.pagopa.it"
 }
 
 
@@ -93,7 +94,23 @@ resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
   }
 }
 
-# from selfcare
+from selfcare
+
+module "key_vault" {
+  source              = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.12.1"
+  name                = data.azurerm_key_vault.kv.name
+  location            = azurerm_resource_group.sec_rg.location
+  resource_group_name = data.azurerm_key_vault.kv.resource_group_name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  lock_enable         = var.lock_enable
+
+  # Security Logs
+  sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
+
+  tags = var.tags
+}
+
 # JWT
 # module "jwt" {
 #   source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.12.1"
@@ -105,14 +122,14 @@ resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
 #   tags             = var.tags
 # }
 
-# from selfcare
+# # from selfcare
 # resource "pkcs12_from_pem" "jwt_pkcs12" {
 #   password        = ""
 #   cert_pem        = module.jwt.certificate_data_pem
 #   private_key_pem = module.jwt.jwt_private_key_pem
 # }
 
-# from selfcare
+# # from selfcare
 # resource "azurerm_api_management_certificate" "jwt_certificate" {
 #   name                = "jwt-spid-crt"
 #   api_management_name = module.apim.name
@@ -162,6 +179,7 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
   xml_content = templatefile("./api/pagopa_token_exchange/jwt_exchange.xml.tpl", {
     openid-config-url           = local.pagopa-oidc-config_url,
     selfcare-issuer             = local.selfcare-issuer,
+    pagopa-issuer               = local.pagopa-issuer,
     jwt_cert_signing_thumbprint = azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt.thumbprint,
     pagopa-portal-hostname      = local.pagopa-portal-hostname,
   })
