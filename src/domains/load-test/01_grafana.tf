@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "load_test" {
 
-  name     = "${var.prefix}-${var.env_short}-load-test-rg"
+  name     = "${local.product}-load-test-rg"
   location = var.location
 
 }
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "load_test" {
 module "grafana_managed" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//grafana?ref=feature/grafana"
 
-  name = "${var.env_short}-grafana"
+  name = "${local.product}-grafana"
 
   resource_group_name = azurerm_resource_group.load_test.name
 
