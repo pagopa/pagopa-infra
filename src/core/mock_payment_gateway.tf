@@ -46,7 +46,7 @@ module "mock_payment_gateway" {
   health_check_path   = "/actuator/health"
 
   app_settings = {
-    SERVER_PUBLIC_URL = format("https://api.%s.%s/mock-payment-gateway/api", var.dns_zone_prefix, var.external_domain),
+    SERVER_PUBLIC_URL = var.env_short == "d" ? format("https://api.%s.%s/mock-payment-gateway/api", var.dns_zone_prefix, var.external_domain) : format("https://api.prf.platform.%s/mock-payment-gateway/api", var.external_domain),
     MOCK_PROFILE      = var.env_short == "d" ? "sit" : "perf",
     XPAY_APIKEY_ALIAS = data.azurerm_key_vault_secret.mock_pgs_xpay_apikey_alias.value,
     XPAY_SECRET_ID    = data.azurerm_key_vault_secret.google_recaptcha_secret.value
