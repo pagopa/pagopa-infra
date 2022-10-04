@@ -22,7 +22,7 @@ locals {
   portal_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", "portal")
 
   api_domain        = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
-  prf_domain        = format("prf.%s.%s", var.dns_zone_prefix, var.external_domain)
+  prf_domain        = format("api.%s.%s", var.dns_zone_prefix_prf, var.external_domain)
   portal_domain     = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
   management_domain = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
 }
