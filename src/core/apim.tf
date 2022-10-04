@@ -590,21 +590,20 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
       ""
     )
   }
-}
 
-resource "azurerm_api_management_custom_domain" "api_custom_domain_prf" {
-  count             = var.env_short == "u" ? 1 : 0
-  api_management_id = module.apim.id
-
-  proxy {
-    host_name = local.prf_domain
-    key_vault_id = replace(
-      data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
-      "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
-      ""
-    )
+  dynamic "proxy" {
+    for_each = var.env_short == "u" ? [""] : []
+    content {
+      host_name = local.prf_domain
+      key_vault_id = replace(
+        data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
+        "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
+        ""
+      )
+    }
   }
 }
+
 #########
 ## API ##
 #########
