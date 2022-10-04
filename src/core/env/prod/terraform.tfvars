@@ -116,7 +116,6 @@ app_gateway_deny_paths_2 = [
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
-  "/web-bo/.*",
   "/payment-manager/pp-restapi-server/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
