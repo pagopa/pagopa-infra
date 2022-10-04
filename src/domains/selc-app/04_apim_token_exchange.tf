@@ -96,22 +96,26 @@ resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
 
 data "azurerm_key_vault_certificate_data" "pagopa_token_exchange_cert_jwt_public" {
   depends_on   = [azurerm_key_vault_certificate.pagopa_jwt_signing_cert]
-  name                = "${local.project}-${var.domain}-jwt-signing-cert"
-  key_vault_id        = data.azurerm_key_vault.kv.id
+  name         = "${local.project}-${var.domain}-jwt-signing-cert"
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 # output "jwt_signing_cert_pem" {
 #   value = data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public.pem
 # }
 
-resource "azurerm_key_vault_secret" "jwt_pub_key" {
+# Public key loaded from a terraform-generated private key, using the PEM (RFC 1421) format
+data "tls_public_key" "private_key_pem" {
   depends_on   = [data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public]
-  name         = "${local.project}-${var.domain}-jwt-pub-key"
-  value        = data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public.pem
-  key_vault_id = data.azurerm_key_vault.kv.id
+  private_key_pem = data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public.key
 }
 
-
+resource "azurerm_key_vault_secret" "jwt_pub_key" {
+  depends_on   = [data.tls_public_key.private_key_pem]
+  name         = "${local.project}-${var.domain}-jwt-pub-key"
+  value        = data.tls_public_key.private_key_pem.public_key_pem 
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
 
 #from selfcare
 
