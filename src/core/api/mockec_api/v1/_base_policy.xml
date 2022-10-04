@@ -13,6 +13,8 @@
 <policies>
     <inbound>
         <base />
+        <!-- https://pagopa.atlassian.net/browse/PAP-20 -->
+        p7b
     </inbound>
     <backend>
         <base />
