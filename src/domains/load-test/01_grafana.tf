@@ -18,7 +18,7 @@ module "grafana_managed" {
 
 resource "azurerm_dns_cname_record" "grafana" {
 
-  name                = "grafana.${var.dns_zone_prefix}.${var.external_domain}"
+name                = "grafana"
   zone_name           = var.dns_zone_prefix
   resource_group_name = local.vnet_resource_group_name
   ttl                 = 3600
