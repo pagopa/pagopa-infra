@@ -428,8 +428,8 @@ module "apim_pm_restapi_server_api_v4" {
   path         = local.apim_pm_restapi_server_api.path
   protocols    = ["https"]
 
-  content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/restapi-server/v4/_swagger.json.tpl", {
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/restapi-server/v4/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
