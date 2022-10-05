@@ -36,8 +36,8 @@ cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # cidr_subnet_gps_cosmosdb             = ["10.1.149.0/24"]
 # specific
-cidr_subnet_mock_ec  = ["10.1.137.0/29"]
-cidr_subnet_mock_psp = ["10.1.137.8/29"]
+cidr_subnet_mock_ec              = ["10.1.137.0/29"]
+cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
 
 
 # integration vnet
@@ -78,33 +78,35 @@ app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
 app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
-  # "/nodo/*",
-  "/payment-manager/clients/*",
-  "/payment-manager/restapi-rtd/*",
-  "/payment-manager/db-logging/*",
-  "/payment-manager/payment-gateway/*",
-  "/payment-manager/internal*",
-  "/payment-manager/pm-per-nodo/*",
-  "/checkout/io-for-node/*",
-  "/tkm/tkmcardmanager/*",
-  "/tkm/tkmacquirermanager/*",
-  "/tkm/internal*",
-  "/payment-transactions-gateway/internal*",
-  "/gps/donation-service/*",
-  "/shared/iuv-generator-service/*",
-  "/gpd/api/*",
-  "/gps/spontaneous-payments-service/*"
+  "/nodo/.*",
+  "/payment-manager/clients/.*",
+  "/payment-manager/restapi-rtd/.*",
+  "/payment-manager/db-logging/.*",
+  "/payment-manager/payment-gateway/.*",
+  "/payment-manager/internal/.*",
+  "/payment-manager/pm-per-nodo/.*",
+  "/checkout/io-for-node/.*",
+
+  "/tkm/tkmacquirermanager/.*",
+  "/tkm/internal/.*",
+  "/payment-transactions-gateway/internal/.*",
+  "/gps/donation-service/.*",
+  "/shared/iuv-generator-service/.*",
+  "/gpd/api/.*",
+  "/gps/spontaneous-payments-service/.*",
 ]
 app_gateway_deny_paths_2 = [
-  "/ppt-lmi*",
-  "/sync-cron*",
-  "/wfesp/*",
-  "/fatturazione/*",
+  # "/nodo-pagamenti*", - used to test UAT nodo onCloud
+  "/ppt-lmi/.*",
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
+  "/payment-manager/pp-restapi-server/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
-    "/web-bo/*",
-    "/pp-admin-panel/*",
+    "/web-bo/.*",
+    "/pp-admin-panel/.*",
   ]
   ips = [
     "93.63.219.230",
@@ -130,9 +132,9 @@ postgresql_network_rules = {
 prostgresql_db_mockpsp = "mock-psp"
 
 # mock
-mock_ec_enabled   = true
-mock_ec_always_on = true
-mock_psp_enabled  = false
+mock_ec_enabled              = true
+mock_ec_always_on            = true
+mock_payment_gateway_enabled = true
 
 
 # apim x nodo pagamenti
@@ -436,30 +438,6 @@ pgres_flex_params = {
   standby_availability_zone    = 2
   pgbouncer_enabled            = true
 
-}
-
-# Cosmos AFM
-cosmos_afm_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = []
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = true
-
-  private_endpoint_enabled      = true
-  public_network_access_enabled = false
-
-  additional_geo_locations = []
-
-  is_virtual_network_filter_enabled = true
-
-  backup_continuous_enabled = false
 }
 
 # CosmosDb Payments

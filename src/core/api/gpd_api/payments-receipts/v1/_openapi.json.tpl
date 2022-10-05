@@ -116,6 +116,17 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too many requests",
+                        "headers": {
+                        "X-Request-Id": {
+                            "description": "This header identifies the call",
+                            "schema": {
+                            "type": "string"
+                            }
+                        }
+                        }
+                    },                    
                     "500": {
                         "description": "Service unavailable.",
                         "headers": {
@@ -249,6 +260,17 @@
                             }
                         }
                     },
+                    "429": {
+                        "description": "Too many requests",
+                        "headers": {
+                        "X-Request-Id": {
+                            "description": "This header identifies the call",
+                            "schema": {
+                            "type": "string"
+                            }
+                        }
+                        }
+                    },                    
                     "500": {
                         "description": "Service unavailable.",
                         "headers": {

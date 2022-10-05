@@ -5,8 +5,10 @@
           <origin>${origin}</origin>
         </allowed-origins>
         <allowed-methods>
-          <method>POST</method>
           <method>GET</method>
+          <method>POST</method>
+          <method>PUT</method>
+          <method>DELETE</method>
           <method>OPTIONS</method>
         </allowed-methods>
         <allowed-headers>
