@@ -21,13 +21,7 @@ variable "env_short" {
 }
 
 variable "env" {
-  type        = string
-  default     = ""
-  description = "Contains uat/dev or empty for prod"
-  validation {
-    condition     = contains(["dev", "uat", ""], var.env)
-    error_message = "Allowed values for input_parameter are \"dev\", \"uat\", or \"\" for prod."
-  }
+  type = string
 }
 
 variable "domain" {
