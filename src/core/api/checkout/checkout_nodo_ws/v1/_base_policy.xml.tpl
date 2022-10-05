@@ -18,7 +18,7 @@
         <set-url>@(String.Format("https://{0}/pagopa-ecommerce-transactions-service/transactions/payment-context-codes/{1}/activation-results", (string)context.Variables["ecommerce_url"], (string)context.Variables["ccp"] ))</set-url>
         <set-method>POST</set-method>
         <set-header name="Content-Type" exists-action="override">
-          <value>application/x-www-form-urlencoded</value>
+          <value>application/json</value>
         </set-header>
       </send-request>
       
