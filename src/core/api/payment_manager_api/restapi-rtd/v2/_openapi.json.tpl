@@ -21,7 +21,7 @@
     }
   ],
   "paths": {
-    "/v2/wallets/np-wallets/get-wallets/{fiscalCode}": {
+    "/wallets/np-wallets/get-wallets/{fiscalCode}": {
       "get": {
         "tags": [
           "np-wallets-v2"
