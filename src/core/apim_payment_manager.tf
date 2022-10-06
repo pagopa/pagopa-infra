@@ -601,9 +601,7 @@ module "apim_pm_adminpanel_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
-    origin = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
-  })
+  xml_content = file("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl")
 }
 
 #####################
