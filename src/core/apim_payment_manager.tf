@@ -601,7 +601,9 @@ module "apim_pm_adminpanel_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
+    allowed_ip = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]
+  })
 }
 
 #####################
