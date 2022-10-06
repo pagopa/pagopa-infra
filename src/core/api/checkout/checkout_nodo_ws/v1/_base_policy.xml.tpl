@@ -11,7 +11,7 @@
       <base />
         
       <set-variable name="ecommerce_url" value="${ecommerce_url}" />
-      <set-variable name="ccp" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["cdInfoWisp"]["codiceContestoPagamento"])" />
+      <set-variable name="ccp" value="@((string)context.Request.Body.As<JObject>(preserveContent: true)["soapenv$Envelope"]["soapenv$Body"]["ppt$cdInfoWisp"]["codiceContestoPagamento"])" />
 
       <!-- pagopa-proxy returned error -->
       <send-request response-variable-name="transaction-check-result" ignore-error="true" timeout="10" mode="new">
@@ -27,11 +27,13 @@
         <return-response>
               <set-status code="200" />
               <set-body>
-                <soapenv:Envelope xmlns:tns="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-                  <soapenv:Body>
-                    <esito>OK</esito>
-                  </soapenv:Body>
-                </soapenv:Envelope>
+                  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"  xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://PuntoAccessoCD.spcoop.gov.it">
+                    <soap:Body>
+                      <ppt:cdInfoWispResponse xmlns:ppt="http://ws.pagamenti.telematici.gov/">
+                        <esito>OK</esito>
+                      </ppt:cdInfoWispResponse>
+                    </soap:Body>
+                  </soap:Envelope>
               </set-body>
           </return-response>
         </when>
@@ -40,12 +42,14 @@
           <return-response>
               <set-status code="502" />
               <set-body>
-                <soapenv:Envelope xmlns:tns="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-                  <soapenv:Body>
-                    <fault>KO</fault>
-                    <esito>KO</esito>
-                  </soapenv:Body>
-                </soapenv:Envelope>
+                  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"  xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://PuntoAccessoCD.spcoop.gov.it">
+                    <soap:Body>
+                      <ppt:cdInfoWispResponse xmlns:ppt="http://ws.pagamenti.telematici.gov/">
+                        <esito>KO</esito>
+                        <fault>KO</fault>
+                      </ppt:cdInfoWispResponse>
+                    </soap:Body>
+                  </soap:Envelope>
               </set-body>
           </return-response>
         </otherwise>

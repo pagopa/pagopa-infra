@@ -214,8 +214,7 @@ resource "azurerm_api_management_api_policy" "apim_cd_info_wisp_policy_v1" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/checkout/checkout_nodo_ws/v1/_base_policy.xml.tpl", {
-    Nodo-Ip-Filter = var.nodo_ip_filter,
-    ecommerce_url  = local.apim_hostname
+    ecommerce_url = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 }
 
