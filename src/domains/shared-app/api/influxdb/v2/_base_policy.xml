@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://${hostname}/pagopa-influxdb" />
+      <set-backend-service base-url="https://${hostname}/pagopa-influxdb2" />
     </inbound>
     <outbound>
       <base />
