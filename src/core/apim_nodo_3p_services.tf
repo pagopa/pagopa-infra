@@ -314,6 +314,7 @@ module "apim_nodo_web_bo_api" {
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
     apim_base_path      = "/web-bo"
+    allowed_ip          = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]
   })
 
 }

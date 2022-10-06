@@ -341,6 +341,10 @@ module "app_gw" {
               header_name  = "X-Orginal-Host-For"
               header_value = "{var_host}"
             },
+            {
+              header_name  = "X-Environment"
+              header_value = lower(var.tags["Environment"])
+            },
           ]
           response_header_configurations = []
           url                            = null
