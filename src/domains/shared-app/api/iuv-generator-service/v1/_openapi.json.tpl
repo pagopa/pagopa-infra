@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "OpenAPI definition - Iuv Generator",
-    "version": "0.0.1-17"
+    "version": "0.0.1-18"
   },
   "servers": [
     {
