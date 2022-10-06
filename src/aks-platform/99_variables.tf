@@ -50,6 +50,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_string" {
+  type        = string
+  description = "One of West Europe, North Europe"
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false
@@ -95,6 +100,12 @@ variable "aks_private_cluster_is_enabled" {
   type        = bool
   description = "Allow to configure the AKS, to be setup as a private cluster. To reach it, you need to use an internal VM or VPN"
   default     = true
+}
+
+variable "aks_alerts_enabled" {
+  type        = bool
+  default     = false
+  description = "AKS alerts enabled?"
 }
 
 variable "k8s_kube_config_path_prefix" {
@@ -188,4 +199,69 @@ variable "nginx_helm" {
 
 variable "keda_helm_version" {
   type = string
+}
+
+variable "reloader_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "reloader helm chart configuration"
+}
+
+variable "prometheus_helm" {
+  type = object({
+    chart_version = string,
+    alertmanager = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    configmap_reload_prometheus = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    configmap_reload_alertmanager = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    configmap_reload_prometheus = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    node_exporter = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    server = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    pushgateway = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+  })
+  description = "prometheus helm chart configuration"
+}
+
+variable "tls_cert_check_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
+}
+
+variable "tls_checker_https_endpoints_to_check" {
+  type = list(object({
+    https_endpoint = string
+    # max 53 chars, alfanumeric and '-', and lower case
+    alert_name    = string
+    alert_enabled = bool
+    helm_present  = bool
+  }))
+  description = "List of https endpoint to check ssl certificate and his alert name"
+  default     = []
 }

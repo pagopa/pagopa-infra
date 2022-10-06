@@ -1,7 +1,15 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="${hostname}/payment-gateway" />
+      <choose>
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it"))">
+          <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/payment-gateway")" />
+        </when>
+        <otherwise>
+          <set-variable name="backend-base-url" value="@($"{{pm-host}}/payment-gateway")" />
+        </otherwise>
+      </choose>
+      <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
     </inbound>
     <outbound>
       <base />

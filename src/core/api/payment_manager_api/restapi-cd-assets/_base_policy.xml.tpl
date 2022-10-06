@@ -1,7 +1,14 @@
 <policies>
     <inbound>
-      <set-backend-service base-url="{{pm-gtw-hostname}}/pp-restapi-CD/assets" />
-      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+      <choose>
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it"))">
+          <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/pp-restapi-CD/assets")" />
+        </when>
+        <otherwise>
+          <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-restapi-CD/assets")" />
+        </otherwise>
+      </choose>
+      <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
       <base />
     </inbound>
     <outbound>

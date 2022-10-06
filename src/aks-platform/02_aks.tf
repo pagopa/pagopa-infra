@@ -67,14 +67,14 @@ module "aks" {
   # end network
 
   rbac_enabled        = true
-  aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id]
+  aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
 
   addon_azure_policy_enabled                     = true
   addon_azure_key_vault_secrets_provider_enabled = true
   addon_azure_pod_identity_enabled               = true
 
   custom_metric_alerts = null
-  alerts_enabled       = true
+  alerts_enabled       = var.aks_alerts_enabled
   action = [
     {
       action_group_id    = data.azurerm_monitor_action_group.slack.id

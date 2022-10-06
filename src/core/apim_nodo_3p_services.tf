@@ -261,7 +261,6 @@ module "apim_nodo_fatturazione_api" {
 ############################
 
 module "apim_nodo_web_bo_product" {
-  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-web-bo"
@@ -289,13 +288,12 @@ module "apim_nodo_web_bo_product" {
 # }
 
 module "apim_nodo_web_bo_api" {
-  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_web_bo_product[0].product_id]
+  product_ids           = [module.apim_nodo_web_bo_product.product_id]
   subscription_required = false
 
   # version_set_id = azurerm_api_management_api_version_set.nodo_web_bo_api[0].id

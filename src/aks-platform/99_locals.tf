@@ -13,6 +13,7 @@ locals {
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
+  monitor_appinsights_name        = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
@@ -21,4 +22,8 @@ locals {
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
   aks_name = "${local.project}-aks"
+
+
+  vnet_integration_resource_group_name = "${local.product}-vnet-rg"
+  vnet_integration_name                = "${local.product}-integration-vnet"
 }

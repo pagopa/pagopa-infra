@@ -23,6 +23,8 @@ jobs:
             src/domains/ecommerce-common
             src/domains/gps-app
             src/domains/gps-common
+            src/domains/selc-app
+            src/domains/selc-common
             src/domains/shared-app
             src/domains/shared-common
         run: |

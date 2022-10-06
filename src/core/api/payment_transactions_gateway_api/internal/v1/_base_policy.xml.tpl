@@ -1,7 +1,19 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="${hostname}/payment-gateway" />
+      <ip-filter action="forbid">
+        <!-- pagopa-p-appgateway-snet  -->
+        <address-range from="10.1.128.0" to="10.1.128.255" />
+      </ip-filter>  
+      <choose>
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it"))">
+          <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/payment-gateway")" />
+        </when>
+        <otherwise>
+          <set-variable name="backend-base-url" value="@($"{{pm-host}}/payment-gateway")" />
+        </otherwise>
+      </choose>
+      <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
       <!-- Handle X-Client-ID - multi channel - START -->
         <set-header name="X-Client-ID" exists-action="delete" />
         <choose>

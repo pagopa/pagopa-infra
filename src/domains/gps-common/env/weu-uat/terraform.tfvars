@@ -50,14 +50,15 @@ cosmos_gps_db_params = {
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
-  additional_geo_locations          = []
-  private_endpoint_enabled          = true
-  public_network_access_enabled     = true
+  private_endpoint_enabled      = true
+  public_network_access_enabled = false
+
+  additional_geo_locations = []
+
   is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
-  # additional_geo_locations = []
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]

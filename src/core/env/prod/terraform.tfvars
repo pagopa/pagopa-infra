@@ -51,6 +51,7 @@ cidr_subnet_api_config = ["10.230.10.128/29"]
 external_domain   = "pagopa.it"
 dns_zone_prefix   = "platform"
 dns_zone_checkout = "checkout"
+dns_zone_wisp2    = "wisp2"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
@@ -80,43 +81,51 @@ apim_autoscale = {
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
-app_gateway_min_capacity                = 1
-app_gateway_max_capacity                = 3
+app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
+app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
+app_gateway_min_capacity                = 2
+app_gateway_max_capacity                = 5
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true
 app_gateway_alerts_enabled              = true
 app_gateway_deny_paths = [
-  "/nodo/*",
-  "/payment-manager/clients/*",
-  "/payment-manager/restapi-rtd/*",
-  "/payment-manager/db-logging/*",
-  "/payment-manager/payment-gateway/*",
+  "/nodo/.*",
+  "/payment-manager/clients/.*",
+  "/payment-manager/restapi-rtd/.*",
+  "/payment-manager/db-logging/.*",
+  "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal*",
-  "/payment-manager/pm-per-nodo/*",
-  "/checkout/io-for-node/*",
-  "/gpd/*",
-  "/gpd-payments/*",
-  "/gpd-reporting/*",
-  "/tkm/tkmcardmanager/*",
-  "/tkm/tkmacquirermanager/*",
-  "/tkm/internal*",
-  "/payment-transactions-gateway/internal*",
-  "/gps/donation-service/*",
-  "/shared/iuv-generator-service/*",
-  "/gpd/api/*",
-  "/gps/spontaneous-payments-service/*"
+  "/payment-manager/pm-per-nodo/.*",
+  "/checkout/io-for-node/.*",
+  "/gpd/.*",           # internal use no sub-keys 
+  "/gpd-payments/.*",  # internal use no sub-keys
+  "/gpd-reporting/.*", # internal use no sub-keys
+  "/tkm/tkmcardmanager/.*",
+  "/tkm/tkmacquirermanager/.*",
+  "/tkm/internal/.*",
+  "/payment-transactions-gateway/internal/.*",
+  "/gps/donation-service/.*",             # internal use no sub-keys 
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys 
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys 
 ]
-
 app_gateway_deny_paths_2 = [
-  "/nodo-pagamenti*",
-  "/ppt-lmi*",
-  "/sync-cron*",
-  "/wfesp/*",
-  "/fatturazione/*",
-  "/web-bo/*"
+  "/nodo-pagamenti/.*",
+  "/ppt-lmi/.*",
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
+  "/payment-manager/pp-restapi-server/.*"
 ]
-
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/.*",
+    "/pp-admin-panel/.*",
+  ]
+  ips = [
+    "93.63.219.230",
+  ]
+}
 
 # nat_gateway
 nat_gateway_enabled    = true
@@ -133,8 +142,8 @@ postgresql_public_network_access_enabled = false
 postgres_private_endpoint_enabled        = false
 
 # mock
-mock_ec_enabled  = false
-mock_psp_enabled = false
+mock_ec_enabled              = false
+mock_payment_gateway_enabled = false
 
 
 # apim x nodo pagamenti
@@ -426,8 +435,8 @@ canoneunico_queue_message_delay = 3600 // in seconds = 1h
 
 # Postgres Flexible
 # https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
-# https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
-# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server#geo_redundant_backup_enabled
+# https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server#geo_redundant_backup_enabled
 pgres_flex_params = {
 
   private_endpoint_enabled = true
@@ -445,35 +454,6 @@ pgres_flex_params = {
   pgbouncer_enabled            = true
 
 }
-
-
-# Cosmos AFM
-cosmos_afm_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = []
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = true
-
-  private_endpoint_enabled      = true
-  public_network_access_enabled = false
-  additional_geo_locations = [{
-    location          = "northeurope"
-    failover_priority = 1
-    zone_redundant    = false
-  }]
-
-  is_virtual_network_filter_enabled = true
-
-  backup_continuous_enabled = true
-}
-
 
 # CosmosDb Payments
 cosmos_document_db_params = {
@@ -502,29 +482,6 @@ cosmos_document_db_params = {
   backup_continuous_enabled = true
 }
 
-# # CosmosDb GPS
-# cosmos_gps_db_params = {
-#   kind         = "GlobalDocumentDB"
-#   capabilities = []
-#   offer_type   = "Standard"
-#   consistency_policy = {
-#     consistency_level       = "BoundedStaleness"
-#     max_interval_in_seconds = 300
-#     max_staleness_prefix    = 100000
-#   }
-#   server_version                   = "4.0"
-#   main_geo_location_zone_redundant = false
-#   enable_free_tier                 = false
+storage_queue_private_endpoint_enabled = true
 
-#   private_endpoint_enabled      = true
-#   public_network_access_enabled = false
-#   additional_geo_locations = [{
-#     location          = "northeurope"
-#     failover_priority = 1
-#     zone_redundant    = false
-#   }]
-
-#   is_virtual_network_filter_enabled = true
-
-#   backup_continuous_enabled = true
-# }
+platform_private_dns_zone_records = ["api", "portal", "management"]
