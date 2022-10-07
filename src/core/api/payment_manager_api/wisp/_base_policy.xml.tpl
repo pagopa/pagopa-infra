@@ -33,13 +33,16 @@
           </set-header>
         </when>
       </choose>
-      <!--<set-header name="Set-Cookie" exists-action="override">
-        <value>@{
-          var cookie = context.Response.Headers.GetValueOrDefault("Set-Cookie","");
-          return cookie.Replace("Domain=pm-appsrv-wisp-uat.azurewebsites.net:80", "Domain=uat.wisp2.pagopa.gov.it");
-          }
-        </value>
-      </set-header>-->  
+      <choose>
+        <when condition="@(((string)context.Response.Headers.GetValueOrDefault("Set-Cookie","")).Contains("pm-appsrv-wisp-uat.azurewebsites.net"))">
+          <set-header name="Set-Cookie" exists-action="override">
+            <value>@{
+            var cookie = context.Response.Headers.GetValueOrDefault("Set-Cookie","");
+            return cookie.Replace("pm-appsrv-wisp-uat.azurewebsites.net:80", "{{wisp2-gov-it}}").Replace("pm-appsrv-wisp-uat.azurewebsites.net", "{{wisp2-gov-it}}").Replace(",",";");
+            }</value>
+          </set-header>
+        </when>
+      </choose>
     </outbound>
     <backend>
       <base />
