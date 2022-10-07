@@ -86,14 +86,15 @@ app_gateway_deny_paths = [
   "/payment-manager/internal/.*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-
+  "/gpd/.*",           # internal use no sub-keys 
+  "/gpd-payments/.*",  # internal use no sub-keys
+  "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
-  "/gps/donation-service/.*",
-  "/shared/iuv-generator-service/.*",
-  "/gpd/api/.*",
-  "/gps/spontaneous-payments-service/.*",
+  "/gps/donation-service/.*",             # internal use no sub-keys 
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys 
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys 
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud

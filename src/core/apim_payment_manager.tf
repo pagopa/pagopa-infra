@@ -602,7 +602,8 @@ module "apim_pm_adminpanel_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
-    origin = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
+    origin     = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
+    allowed_ip = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]
   })
 }
 
