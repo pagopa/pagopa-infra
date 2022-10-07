@@ -4,7 +4,7 @@
     "title": "PagoPA API Spontaneous Payment",
     "description": "Progetto Gestione Pagamenti Spontanei",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.0"
+    "version": "0.1.0-1"
   },
   "servers": [
     {
