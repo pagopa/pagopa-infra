@@ -10,7 +10,7 @@
         <set-backend-service base-url="{{pagopa-appservice-proxy-url}}/FespCdService" />
     </inbound>
     <outbound>
-        <set-variable name="ecommerce_url" value="${ecommerce_url}"/>
+        <set-variable name="ecommerce_url" value="${ecommerce_ingress_hostname}"/>
         <send-request response-variable-name="transaction-check-result" ignore-error="true" mode="new">
             <set-url>@(String.Format("https://{0}/transactions/payment-context-codes/{1}/activation-results", (string)context.Variables["ecommerce_url"], (string)context.Variables["ccp"]))</set-url>
             <set-method>POST</set-method>

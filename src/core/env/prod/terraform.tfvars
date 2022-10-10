@@ -169,6 +169,9 @@ checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxyprod.azurewebsites.net"
 
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "weuprod.ecommerce.internal.prod.platform.pagopa.it"
+
 ehns_sku_name = "Standard"
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
