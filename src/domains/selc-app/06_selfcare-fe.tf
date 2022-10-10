@@ -3,7 +3,7 @@
  **/
 resource "azurerm_resource_group" "selc_fe_rg" {
   count    = var.selc_fe_enabled ? 1 : 0
-  name     = format("%s-selc-fe-rg", local.project)
+  name     = "${local.project}-selc-fe-rg"
   location = var.location
 
   tags = var.tags
@@ -13,13 +13,13 @@ locals {
   spa = [
     for i, spa in var.spa :
     {
-      name  = replace(format("SPA-%s", spa), "-", "")
+      name  = replace("SPA-${spa}", "-", "")
       order = i + 3 // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
       conditions = [
         {
           condition_type   = "url_path_condition"
           operator         = "BeginsWith"
-          match_values     = [format("/%s/", spa)]
+          match_values     = ["/${spa}/"]
           negate_condition = false
           transforms       = null
         },
@@ -32,8 +32,8 @@ locals {
         },
       ]
       url_rewrite_action = {
-        source_pattern          = format("/%s/", spa)
-        destination             = format("/%s/index.html", spa)
+        source_pattern          = "/${spa}/"
+        destination             = "/${spa}/index.html"
         preserve_unmatched_path = false
       }
     }
@@ -52,12 +52,12 @@ module "selc_cdn" {
   source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.12.1"
   count  = var.selc_fe_enabled ? 1 : 0
 
-  name                = "selc"
+  name                = "selfcare"
   prefix              = local.project
   resource_group_name = azurerm_resource_group.selc_fe_rg[0].name
   location            = var.location
-  #                       selc.<ENV>.platform.pagopa.it
-  hostname              = format("%s.%s.%s", local.dns_zone_selc, local.dns_zone_platform, local.external_domain)
+  #                       selfcare.<ENV>.platform.pagopa.it
+  hostname              = "${local.dns_zone_selc}.${local.dns_zone_platform}.${local.external_domain}"
   https_rewrite_enabled = true
   lock_enabled          = var.lock_enable
 
@@ -65,7 +65,7 @@ module "selc_cdn" {
   error_404_document = "error.html"
 
   #                             <ENV>.platform.pagopa.it
-  dns_zone_name                = format("%s.%s", local.dns_zone_platform, local.external_domain)
+  dns_zone_name                = "${local.dns_zone_platform}.${local.external_domain}"
   dns_zone_resource_group_name = local.vnet_resource_group_name
 
   keyvault_resource_group_name = data.azurerm_key_vault.kv.resource_group_name
@@ -151,7 +151,7 @@ module "selc_cdn" {
       destination             = "/ui/index.html"
       preserve_unmatched_path = false
     }
-  }],
+    }],
     local.spa
   )
 
