@@ -19,7 +19,7 @@
 | <a name="module_apim_api_selc_api_v1"></a> [apim\_api\_selc\_api\_v1](#module\_apim\_api\_selc\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_selc_product"></a> [apim\_selc\_product](#module\_apim\_selc\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/azurerm.git//kubernetes_pod_identity | v2.13.1 |
-| <a name="module_selc_cdn"></a> [selc\_cdn](#module\_selc\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn | v2.12.1 |
+| <a name="module_selc_cdn"></a> [selc\_cdn](#module\_selc\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn | v3.2.0 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/azurerm.git//tls_checker | v2.19.0 |
 
 ## Resources

@@ -2,6 +2,7 @@
 ##Token Exchange##
 ##################
 locals {
+  #                                         pagopa-d-wue-selfcare
   pagopa_cdn_storage_account_name = replace(format("%s-%s-sa", local.project, "selc"), "-", "")
   pagopa-oidc-config_url          = "https://${local.pagopa_cdn_storage_account_name}.blob.core.windows.net/pagopa-fe-oidc-config/openid-configuration.json"
   pagopa-portal-hostname          = "welfare.${local.dns_zone_platform}.${local.external_domain}"
