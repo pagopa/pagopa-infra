@@ -52,7 +52,7 @@ module "selc_cdn" {
   source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.12.1"
   count  = var.selc_fe_enabled ? 1 : 0
 
-  name                = "selfcare"
+  name                = "selc"
   prefix              = local.project
   resource_group_name = azurerm_resource_group.selc_fe_rg[0].name
   location            = var.location
