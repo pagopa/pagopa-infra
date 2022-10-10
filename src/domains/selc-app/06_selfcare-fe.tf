@@ -49,7 +49,7 @@ locals {
 // public storage used to serve FE
 #tfsec:ignore:azure-storage-default-action-deny
 module "selc_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.12.1"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v3.2.0"
   count  = var.selc_fe_enabled ? 1 : 0
 
   name                = "selc"
