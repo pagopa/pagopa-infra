@@ -362,6 +362,11 @@
         },
         "spezzoniCausaleVersamento": {
           "$ref": "#/definitions/SpezzoniCausaleVersamento"
+        },
+        "dueDate": {
+          "type": "string",
+          "pattern": "([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])",
+          "example": "2025-07-31"
         }
       },
       "required": [
