@@ -72,11 +72,11 @@ locals {
   afm_marketplace_cosmosdb_containers = [
     {
       name               = "bundles",
-      partition_key_path = "/idPSP",
+      partition_key_path = "/idPsp",
     },
     {
       name               = "archivedbundles",
-      partition_key_path = "/idPSP",
+      partition_key_path = "/idPsp",
     },
     {
       name               = "cibundles",
@@ -88,11 +88,11 @@ locals {
     },
     {
       name               = "bundlerequests",
-      partition_key_path = "/idPSP",
+      partition_key_path = "/idPsp",
     },
     {
       name               = "archivedbundlerequests",
-      partition_key_path = "/idPSP",
+      partition_key_path = "/idPsp",
     },
     {
       name               = "bundleoffers",

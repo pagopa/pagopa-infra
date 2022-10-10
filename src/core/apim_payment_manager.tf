@@ -428,8 +428,8 @@ module "apim_pm_restapi_server_api_v4" {
   path         = local.apim_pm_restapi_server_api.path
   protocols    = ["https"]
 
-  content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/restapi-server/v4/_swagger.json.tpl", {
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/restapi-server/v4/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
@@ -602,7 +602,8 @@ module "apim_pm_adminpanel_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
-    origin = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
+    origin     = format("https://api.%s.%s", var.dns_zone_prefix, var.external_domain)
+    allowed_ip = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]
   })
 }
 

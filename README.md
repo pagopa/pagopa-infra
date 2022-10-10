@@ -22,7 +22,7 @@ tfenv install
 
 ## Environment management
 
-In order to properly populate terraform variables for each environment, a script located at `src/terraform.sh` is provided.
+In order to properly populate terraform variables for each environment, a script located at `src/core/terraform.sh` is provided.
 
 Terraform invocations described here where environent parameters are required can be replaced with invocations to `terraform.sh` by passing an environment specification. For example:
 
@@ -30,7 +30,7 @@ Terraform invocations described here where environent parameters are required ca
 ./terraform.sh plan dev -target=module=api_config
 ```
 
-**NOTE**: `terraform.sh` must be run from the `src` folder.
+**NOTE**: `terraform.sh` must be run from the `src/core` folder.
 
 ## Terraform modules
 
