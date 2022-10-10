@@ -35,7 +35,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "api_selc_api" {
 
-  name                = format("%s-pagopa-selc-api", var.env_short)
+  name                = "${var.env_short}-pagopa-selc-api"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_selfcare_pagopa_api.display_name
@@ -46,7 +46,7 @@ resource "azurerm_api_management_api_version_set" "api_selc_api" {
 module "apim_api_selc_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pagopa-selc-api", local.project)
+  name                  = "${local.project}-pagopa-selc-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_selc_product.product_id]
@@ -62,12 +62,12 @@ module "apim_api_selc_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_openapi.json.tpl", {
-    host = local.selc_hostname
+    host     = local.selc_hostname
     basePath = "selc"
   })
 
   xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_base_policy.xml", {
     hostname = local.selc_hostname
-    origin = local.selc_fe_hostname
+    origin   = local.selc_fe_hostname
   })
 }

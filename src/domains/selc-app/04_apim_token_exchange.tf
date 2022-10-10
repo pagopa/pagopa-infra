@@ -106,14 +106,14 @@ data "azurerm_key_vault_certificate_data" "pagopa_token_exchange_cert_jwt_public
 
 # Public key loaded from a terraform-generated private key, using the PEM (RFC 1421) format
 data "tls_public_key" "private_key_pem" {
-  depends_on   = [data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public]
+  depends_on      = [data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public]
   private_key_pem = data.azurerm_key_vault_certificate_data.pagopa_token_exchange_cert_jwt_public.key
 }
 
 resource "azurerm_key_vault_secret" "jwt_pub_key" {
   depends_on   = [data.tls_public_key.private_key_pem]
   name         = "${local.project}-${var.domain}-jwt-pub-key"
-  value        = data.tls_public_key.private_key_pem.public_key_pem 
+  value        = data.tls_public_key.private_key_pem.public_key_pem
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
