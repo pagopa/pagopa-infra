@@ -13,6 +13,7 @@ locals {
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
+  monitor_appinsights_name        = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
@@ -30,6 +31,6 @@ locals {
   pagopa_apim_rg   = "${local.product}-api-rg"
 
   apim_hostname      = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  ecommerce_hostname = var.env == "prod" ? "weudev.ecommerce.internal.platform.pagopa.it" : "weudev.ecommerce.internal.${var.env}.platform.pagopa.it"
+  ecommerce_hostname = "${var.location_short}${var.env}.ecommerce.internal.${var.env}.platform.pagopa.it"
 
 }

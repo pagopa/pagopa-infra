@@ -57,6 +57,13 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
+# mock_psp_service NEXI
+variable "mock_psp_service_enabled" {
+  type        = bool
+  description = "Mock PSP service Nexi"
+  default     = false
+}
+
 # mock_ec
 
 variable "mock_ec_enabled" {
@@ -91,33 +98,33 @@ variable "cidr_subnet_mock_ec" {
 
 # mock_ec
 
-variable "mock_psp_enabled" {
+variable "mock_payment_gateway_enabled" {
   type        = bool
-  description = "Mock PSP enabled"
+  description = "Mock payment gateway enabled"
   default     = false
 }
 
-variable "mock_psp_always_on" {
+variable "mock_payment_gateway_always_on" {
   type        = bool
-  description = "Mock PSP always on property"
+  description = "Mock payment gateway always on property"
   default     = false
 }
 
-variable "mock_psp_tier" {
+variable "mock_payment_gateway_tier" {
   type        = string
-  description = "Mock PSP Plan tier"
+  description = "Mock payment gateway Plan tier"
   default     = "Standard"
 }
 
-variable "mock_psp_size" {
+variable "mock_payment_gateway_size" {
   type        = string
-  description = "Mock PSP Plan size"
+  description = "Mock payment gateway Plan size"
   default     = "S1"
 }
 
-variable "cidr_subnet_mock_psp" {
+variable "cidr_subnet_mock_payment_gateway" {
   type        = list(string)
-  description = "Address prefixes subnet mock psp"
+  description = "Address prefixes subnet mock payment_gateway"
   default     = null
 }
 
@@ -346,10 +353,22 @@ variable "dns_zone_prefix" {
   description = "The dns subdomain."
 }
 
+variable "dns_zone_prefix_prf" {
+  type        = string
+  default     = "" # null
+  description = "The dns subdomain."
+}
+
 variable "dns_zone_checkout" {
   type        = string
   default     = null
   description = "The checkout dns subdomain."
+}
+
+variable "dns_zone_wisp2" {
+  type        = string
+  default     = null
+  description = "The wisp2 dns subdomain."
 }
 
 # vpn
@@ -470,6 +489,12 @@ variable "app_gateway_api_certificate_name" {
   description = "Application gateway api certificate name on Key Vault"
 }
 
+variable "app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
 variable "app_gateway_portal_certificate_name" {
   type        = string
   description = "Application gateway developer portal certificate name on Key Vault"
@@ -478,6 +503,16 @@ variable "app_gateway_portal_certificate_name" {
 variable "app_gateway_management_certificate_name" {
   type        = string
   description = "Application gateway api management certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2 certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2govit_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2govit certificate name on Key Vault"
 }
 
 variable "app_gateway_sku_name" {
@@ -524,6 +559,14 @@ variable "app_gateway_deny_paths_2" {
   type        = list(string)
   description = "Deny paths on app gateway"
   default     = []
+}
+
+variable "app_gateway_allowed_paths_pagopa_onprem_only" {
+  type = object({
+    paths = list(string)
+    ips   = list(string)
+  })
+  description = "Allowed paths from pagopa onprem only"
 }
 
 # Azure DevOps Agent
@@ -1441,7 +1484,7 @@ variable "cidr_subnet_pg_flex_dbms" {
 }
 
 # ####################
-# CosmosDb 
+# CosmosDb
 # ####################
 
 # ####################
@@ -1461,32 +1504,6 @@ variable "advanced_fees_management_size" {
 variable "cidr_subnet_advanced_fees_management" {
   type        = list(string)
   description = "Cosmos DB address space."
-}
-
-variable "cosmos_afm_db_params" {
-  type = object({
-    kind           = string
-    capabilities   = list(string)
-    offer_type     = string
-    server_version = string
-    consistency_policy = object({
-      consistency_level       = string
-      max_interval_in_seconds = number
-      max_staleness_prefix    = number
-    })
-    main_geo_location_zone_redundant = bool
-    enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
-    additional_geo_locations = list(object({
-      location          = string
-      failover_priority = number
-      zone_redundant    = bool
-    }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
-  })
 }
 
 variable "afm_marketplace_cname_record_name" {
@@ -1560,4 +1577,8 @@ variable "storage_queue_private_endpoint_enabled" {
   default     = false
 }
 
-
+variable "platform_private_dns_zone_records" {
+  type        = list(string)
+  default     = null
+  description = "List of records to add into the platform.pagopa.it dns private"
+}

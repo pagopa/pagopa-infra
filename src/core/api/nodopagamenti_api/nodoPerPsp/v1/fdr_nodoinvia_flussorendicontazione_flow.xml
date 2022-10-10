@@ -1,6 +1,7 @@
 <!-- https://github.com/Azure/api-management-policy-snippets/blob/master/examples/PUT%20a%20file%20to%20blobStorage%20account.xml -->
 <policies>
     <inbound>
+        <base />    
         <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
         <set-variable name="identificativoPSP" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
@@ -55,7 +56,7 @@
             var fdrFileName=(string) context.Variables["identificativoPSP"]+"--"+context.Variables["identificativoIntermediarioPSP"]+"--"+context.Variables["identificativoCanale"]+"--"+context.Variables["identificativoDominio"]+"--"+context.Variables["identificativoFlusso"]+"--"+context.Variables["dataOraFlusso"];
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
-        <base />
+
         <set-backend-service base-url="{{urlnodo}}" />
     </inbound>
     <backend>

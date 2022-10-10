@@ -14,6 +14,8 @@
 |------|--------|---------|
 | <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.15.1 |
 | <a name="module_cosmosdb_ecommerce_snet"></a> [cosmosdb\_ecommerce\_snet](#module\_cosmosdb\_ecommerce\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.15.1 |
+| <a name="module_ecommerce_storage"></a> [ecommerce\_storage](#module\_ecommerce\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.18.10 |
+| <a name="module_ecommerce_storage_snet"></a> [ecommerce\_storage\_snet](#module\_ecommerce\_storage\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.18.10 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
 | <a name="module_pagopa_ecommerce_redis"></a> [pagopa\_ecommerce\_redis](#module\_pagopa\_ecommerce\_redis) | git::https://github.com/pagopa/azurerm.git//redis_cache | v2.18.3 |
 | <a name="module_pagopa_ecommerce_redis_snet"></a> [pagopa\_ecommerce\_redis\_snet](#module\_pagopa\_ecommerce\_redis\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.18.3 |
@@ -26,9 +28,11 @@
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_endpoint.storage_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.cosmosdb_ecommerce_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.redis_ecommerce_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.storage_ecommerce_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -40,6 +44,7 @@
 | [azurerm_private_dns_zone.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_documents_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.storage](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subscription) | data source |
@@ -52,10 +57,12 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_cidr_subnet_cosmosdb_ecommerce"></a> [cidr\_subnet\_cosmosdb\_ecommerce](#input\_cidr\_subnet\_cosmosdb\_ecommerce) | Cosmos DB address space for ecommerce. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_redis_ecommerce"></a> [cidr\_subnet\_redis\_ecommerce](#input\_cidr\_subnet\_redis\_ecommerce) | Redis DB address space for ecommerce. | `list(string)` | n/a | yes |
+| <a name="input_cidr_subnet_storage_ecommerce"></a> [cidr\_subnet\_storage\_ecommerce](#input\_cidr\_subnet\_storage\_ecommerce) | Azure storage DB address space for ecommerce. | `list(string)` | n/a | yes |
 | <a name="input_cosmos_mongo_db_ecommerce_params"></a> [cosmos\_mongo\_db\_ecommerce\_params](#input\_cosmos\_mongo\_db\_ecommerce\_params) | n/a | <pre>object({<br>    enable_serverless  = bool<br>    enable_autoscaling = bool<br>    throughput         = number<br>    max_throughput     = number<br>  })</pre> | n/a | yes |
 | <a name="input_cosmos_mongo_db_params"></a> [cosmos\_mongo\_db\_params](#input\_cosmos\_mongo\_db\_params) | n/a | <pre>object({<br>    enabled        = bool<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    kind           = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    main_geo_location_zone_redundant = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
+| <a name="input_ecommerce_storage_params"></a> [ecommerce\_storage\_params](#input\_ecommerce\_storage\_params) | n/a | <pre>object({<br>    enabled                    = bool,<br>    kind                       = string,<br>    tier                       = string,<br>    account_replication_type   = string,<br>    advanced_threat_protection = bool,<br>    retention_days             = number<br>  })</pre> | <pre>{<br>  "account_replication_type": "LRS",<br>  "advanced_threat_protection": true,<br>  "enabled": false,<br>  "kind": "StorageV2",<br>  "retention_days": 7,<br>  "tier": "Standard"<br>}</pre> | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
