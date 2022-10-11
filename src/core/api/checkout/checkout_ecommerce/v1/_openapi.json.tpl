@@ -471,7 +471,7 @@
         }
       }
     },
-    "/payment-requests-service/payment-requests/{rpt_id}": {
+    "/transactions-service/payment-requests-service/payment-requests/{rpt_id}": {
       "get": {
         "operationId": "getPaymentRequestInfo",
         "parameters": [

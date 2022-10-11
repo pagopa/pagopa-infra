@@ -321,7 +321,7 @@ module "apim_checkout_ecommerce_api_v1" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_base_policy.xml.tpl", {
-    backend-service = "https://api.${var.dns_zone_prefix}.${var.external_domain}/ecommerce"
+    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
   })
 }
 
