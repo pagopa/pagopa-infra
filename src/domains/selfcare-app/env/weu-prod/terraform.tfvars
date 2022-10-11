@@ -11,7 +11,7 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
   Owner       = "IO"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/selc"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/selfcare"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -44,4 +44,4 @@ tls_cert_check_helm = {
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
-selc_fe_enabled = true
+selfcare_fe_enabled = true

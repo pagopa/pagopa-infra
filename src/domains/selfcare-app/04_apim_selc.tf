@@ -2,7 +2,7 @@
 ## Products ##
 ##############
 
-module "apim_selc_product" {
+module "apim_selfcare_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
   product_id   = "selfcare-be"
@@ -21,21 +21,21 @@ module "apim_selc_product" {
 }
 
 #################
-##    API SELC ##
+##    API selfcare ##
 #################
 locals {
   apim_selfcare_pagopa_api = {
     display_name          = "Selfcare Product pagoPA"
     description           = "API to manage institution api key"
-    path                  = "selc/pagopa"
+    path                  = "selfcare/pagopa"
     subscription_required = false
     service_url           = null
   }
 }
 
-resource "azurerm_api_management_api_version_set" "api_selc_api" {
+resource "azurerm_api_management_api_version_set" "api_selfcare_api" {
 
-  name                = "${var.env_short}-pagopa-selc-api"
+  name                = "${var.env_short}-pagopa-selfcare-api"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_selfcare_pagopa_api.display_name
@@ -43,15 +43,15 @@ resource "azurerm_api_management_api_version_set" "api_selc_api" {
 }
 
 
-module "apim_api_selc_api_v1" {
+module "apim_api_selfcare_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = "${local.project}-pagopa-selc-api"
+  name                  = "${local.product}-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_selc_product.product_id]
+  product_ids           = [module.apim_selfcare_product.product_id]
   subscription_required = local.apim_selfcare_pagopa_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_selc_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_selfcare_api.id
   api_version           = "v1"
 
   description  = local.apim_selfcare_pagopa_api.description
@@ -62,12 +62,12 @@ module "apim_api_selc_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_openapi.json.tpl", {
-    host     = local.selc_hostname
-    basePath = "selc"
+    host     = local.selfcare_hostname
+    basePath = "selfcare"
   })
 
   xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_base_policy.xml", {
-    hostname = local.selc_hostname
-    origin   = local.selc_fe_hostname
+    hostname = local.selfcare_hostname
+    origin   = local.selfcare_fe_hostname
   })
 }
