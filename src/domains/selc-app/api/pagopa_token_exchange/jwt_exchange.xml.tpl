@@ -16,7 +16,7 @@
         <validate-jwt header-name="IdentityToken" failed-validation-httpcode="401" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="outputToken">
             <openid-config url="${openid-config-url}" />
             <audiences>
-                <audience>api.pagopa.selfcare.pagopa.it</audience>
+                <audience>api.platform.pagopa.it</audience>
             </audiences>
             <issuers>
                 <issuer>${selfcare-issuer}</issuer>
@@ -32,8 +32,8 @@
 
                     var iat = DateTimeOffset.Now.ToUnixTimeSeconds();
                     var exp = new DateTimeOffset(DateTime.Now.AddHours(8)).ToUnixTimeSeconds();  // sets the expiration of the token to be 8 hours from now
-                    var aud = "pagopa.selfcare.pagopa.it";
-                    var iss = "https://pagopa.dev.selfcare.pagopa.it";
+                    var aud = "api.platform.pagopa.it";
+                    var iss = "https://${pagopa-issuer}";
                     var uid = selcToken.Claims.GetValueOrDefault("uid", "");
                     var name = selcToken.Claims.GetValueOrDefault("name", "");
                     var family_name = selcToken.Claims.GetValueOrDefault("family_name", "");

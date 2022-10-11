@@ -769,6 +769,12 @@ variable "checkout_pagopaproxy_host" {
   default     = null
 }
 
+variable "ecommerce_ingress_hostname" {
+  type        = string
+  description = "ecommerce ingress hostname"
+  default     = null
+}
+
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
