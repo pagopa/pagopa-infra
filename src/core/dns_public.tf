@@ -76,12 +76,18 @@ resource "azurerm_dns_caa_record" "api_platform_pagopa_it" {
 
   record {
     flags = 0
+    tag   = "issue"
+    value = "digicert.com"
+  }
+  record {
+    flags = 0
     tag   = "iodef"
     value = "mailto:security+caa@pagopa.it"
   }
 
   tags = var.tags
 }
+
 
 # application gateway records
 resource "azurerm_dns_a_record" "dns_a_api" {

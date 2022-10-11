@@ -21,13 +21,7 @@ variable "env_short" {
 }
 
 variable "env" {
-  type        = string
-  default     = ""
-  description = "Contains uat/dev or empty for prod"
-  validation {
-    condition     = contains(["dev", "uat", ""], var.env)
-    error_message = "Allowed values for input_parameter are \"dev\", \"uat\", or \"\" for prod."
-  }
+  type = string
 }
 
 variable "domain" {
@@ -144,4 +138,18 @@ variable "selc_fe_enabled" {
   type        = bool
   description = "Selc FE enabled"
   default     = false
+}
+
+# Single Page Applications
+variable "spa" {
+  type        = list(string)
+  description = "spa root dirs"
+  default = [
+    "ui"
+  ]
+}
+
+variable "robots_indexed_paths" {
+  type        = list(string)
+  description = "List of cdn paths to allow robots index"
 }

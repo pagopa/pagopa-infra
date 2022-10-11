@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "u"
 env            = "uat"
-domain         = "selc"
+domain         = "selfcare"
 location       = "westeurope"
 location_short = "weu"
 instance       = "uat"
