@@ -22,6 +22,7 @@ locals {
   portal_cert_name_proxy_endpoint = format("%s-proxy-endpoint-cert", "portal")
 
   api_domain        = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+  prf_domain        = format("api.%s.%s", var.dns_zone_prefix_prf, var.external_domain)
   portal_domain     = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
   management_domain = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
 }
@@ -237,6 +238,13 @@ resource "azurerm_api_management_group" "afm_calculator" {
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = "AFM Calculator for Node"
+}
+
+resource "azurerm_api_management_group" "apiconfig_grp" {
+  name                = "api-config-be-writer"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "ApiConfig Writer"
 }
 
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
@@ -588,6 +596,18 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
       "/${data.azurerm_key_vault_certificate.management_platform.version}",
       ""
     )
+  }
+
+  dynamic "proxy" {
+    for_each = var.env_short == "u" ? [""] : []
+    content {
+      host_name = local.prf_domain
+      key_vault_id = replace(
+        data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
+        "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
+        ""
+      )
+    }
   }
 }
 

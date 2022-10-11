@@ -23,16 +23,19 @@
 | <a name="module_apim_api_config_checkout_api"></a> [apim\_api\_config\_checkout\_api](#module\_apim\_api\_config\_checkout\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.0.28 |
 | <a name="module_apim_api_config_checkout_product"></a> [apim\_api\_config\_checkout\_product](#module\_apim\_api\_config\_checkout\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
+| <a name="module_apim_api_debt_positions_api_v1"></a> [apim\_api\_debt\_positions\_api\_v1](#module\_apim\_api\_debt\_positions\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_api_donations_api"></a> [apim\_api\_donations\_api](#module\_apim\_api\_donations\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_api_gpd_api"></a> [apim\_api\_gpd\_api](#module\_apim\_api\_gpd\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_api_gpd_payments_rest_api"></a> [apim\_api\_gpd\_payments\_rest\_api](#module\_apim\_api\_gpd\_payments\_rest\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_api_gpd_reporting_analysis_api"></a> [apim\_api\_gpd\_reporting\_analysis\_api](#module\_apim\_api\_gpd\_reporting\_analysis\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
+| <a name="module_apim_api_payments_receipts_api_v1"></a> [apim\_api\_payments\_receipts\_api\_v1](#module\_apim\_api\_payments\_receipts\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_buyerbanks_api_v1"></a> [apim\_buyerbanks\_api\_v1](#module\_apim\_buyerbanks\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_checkout_payment_activations_api_auth_v1"></a> [apim\_checkout\_payment\_activations\_api\_auth\_v1](#module\_apim\_checkout\_payment\_activations\_api\_auth\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_checkout_payment_activations_api_auth_v2"></a> [apim\_checkout\_payment\_activations\_api\_auth\_v2](#module\_apim\_checkout\_payment\_activations\_api\_auth\_v2) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_checkout_payment_activations_api_v1"></a> [apim\_checkout\_payment\_activations\_api\_v1](#module\_apim\_checkout\_payment\_activations\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_checkout_product"></a> [apim\_checkout\_product](#module\_apim\_checkout\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_checkout_transactions_api_v1"></a> [apim\_checkout\_transactions\_api\_v1](#module\_apim\_checkout\_transactions\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_debt_positions_product"></a> [apim\_debt\_positions\_product](#module\_apim\_debt\_positions\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_donations_product"></a> [apim\_donations\_product](#module\_apim\_donations\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_donazioni_ucraina_product"></a> [apim\_donazioni\_ucraina\_product](#module\_apim\_donazioni\_ucraina\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_gpd_payments_product"></a> [apim\_gpd\_payments\_product](#module\_apim\_gpd\_payments\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
@@ -43,13 +46,13 @@
 | <a name="module_apim_mock_ec_nexi_api"></a> [apim\_mock\_ec\_nexi\_api](#module\_apim\_mock\_ec\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_mock_ec_nexi_product"></a> [apim\_mock\_ec\_nexi\_product](#module\_apim\_mock\_ec\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
+| <a name="module_apim_mock_payment_gateway_api"></a> [apim\_mock\_payment\_gateway\_api](#module\_apim\_mock\_payment\_gateway\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_mock_payment_gateway_mng_api"></a> [apim\_mock\_payment\_gateway\_mng\_api](#module\_apim\_mock\_payment\_gateway\_mng\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_mock_payment_gateway_product"></a> [apim\_mock\_payment\_gateway\_product](#module\_apim\_mock\_payment\_gateway\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_pm_nexi_api"></a> [apim\_mock\_pm\_nexi\_api](#module\_apim\_mock\_pm\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_mock_pm_nexi_product"></a> [apim\_mock\_pm\_nexi\_product](#module\_apim\_mock\_pm\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mock_psp_api"></a> [apim\_mock\_psp\_api](#module\_apim\_mock\_psp\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_mock_psp_mng_api"></a> [apim\_mock\_psp\_mng\_api](#module\_apim\_mock\_psp\_mng\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_mock_psp_nexi_api"></a> [apim\_mock\_psp\_nexi\_api](#module\_apim\_mock\_psp\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_mock_psp_nexi_product"></a> [apim\_mock\_psp\_nexi\_product](#module\_apim\_mock\_psp\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_mock_psp_product"></a> [apim\_mock\_psp\_product](#module\_apim\_mock\_psp\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_psp_service_api"></a> [apim\_mock\_psp\_service\_api](#module\_apim\_mock\_psp\_service\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_mock_psp_service_product"></a> [apim\_mock\_psp\_service\_product](#module\_apim\_mock\_psp\_service\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_dei_pagamenti_product"></a> [apim\_nodo\_dei\_pagamenti\_product](#module\_apim\_nodo\_dei\_pagamenti\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
@@ -80,6 +83,7 @@
 | <a name="module_apim_payment_transactions_gateway_internal_api_v1"></a> [apim\_payment\_transactions\_gateway\_internal\_api\_v1](#module\_apim\_payment\_transactions\_gateway\_internal\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_payment_transactions_gateway_product"></a> [apim\_payment\_transactions\_gateway\_product](#module\_apim\_payment\_transactions\_gateway\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_payment_transactions_gateway_update_api_v1"></a> [apim\_payment\_transactions\_gateway\_update\_api\_v1](#module\_apim\_payment\_transactions\_gateway\_update\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_payments_receipts_product"></a> [apim\_payments\_receipts\_product](#module\_apim\_payments\_receipts\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_pm_adminpanel_api_v1"></a> [apim\_pm\_adminpanel\_api\_v1](#module\_apim\_pm\_adminpanel\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_bpd_api_v1"></a> [apim\_pm\_bpd\_api\_v1](#module\_apim\_pm\_bpd\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_cobadge_api_v4"></a> [apim\_pm\_cobadge\_api\_v4](#module\_apim\_pm\_cobadge\_api\_v4) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
@@ -145,8 +149,8 @@
 | <a name="module_logos_donation_flows_sa"></a> [logos\_donation\_flows\_sa](#module\_logos\_donation\_flows\_sa) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.0.28 |
 | <a name="module_mock_ec"></a> [mock\_ec](#module\_mock\_ec) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.90 |
 | <a name="module_mock_ec_snet"></a> [mock\_ec\_snet](#module\_mock\_ec\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
-| <a name="module_mock_psp"></a> [mock\_psp](#module\_mock\_psp) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.90 |
-| <a name="module_mock_psp_snet"></a> [mock\_psp\_snet](#module\_mock\_psp\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
+| <a name="module_mock_payment_gateway"></a> [mock\_payment\_gateway](#module\_mock\_payment\_gateway) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.90 |
+| <a name="module_mock_payment_gateway_snet"></a> [mock\_payment\_gateway\_snet](#module\_mock\_payment\_gateway\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_monitor"></a> [monitor](#module\_monitor) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_nat_gw"></a> [nat\_gw](#module\_nat\_gw) | git::https://github.com/pagopa/azurerm.git//nat_gateway | v1.0.90 |
 | <a name="module_nodo_test_storage"></a> [nodo\_test\_storage](#module\_nodo\_test\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.1.13 |
@@ -228,12 +232,14 @@
 | [azurerm_api_management_api_version_set.api_config_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_config_auth_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_config_checkout_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_debt_positions_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_donations_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_donazioni_ucraina_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_payments_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_payments_rest_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_reporting_analysis_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_payments_receipts_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_pm_bpd_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_pm_cobadge_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_pm_fesp_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -288,6 +294,7 @@
 | [azurerm_api_management_authorization_server.apiconfig-oauth2](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_authorization_server) | resource |
 | [azurerm_api_management_custom_domain.api_custom_domain](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_custom_domain) | resource |
 | [azurerm_api_management_group.afm_calculator](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_group) | resource |
+| [azurerm_api_management_group.apiconfig_grp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.centro_stella](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.checkout_rate_limit_300](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.checkout_rate_no_limit](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_group) | resource |
@@ -445,7 +452,7 @@
 | [azurerm_resource_group.flex_data](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.gpd_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.mock_ec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.mock_psp_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.mock_payment_gateway_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.msg_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.nodo_pagamenti_test_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
@@ -512,8 +519,6 @@
 | [azurerm_key_vault_secret.checkout_v2_test_key_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.db_administrator_login](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.db_administrator_login_password](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.db_mock_psp_user_login](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.db_mock_psp_user_login_password](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.db_nodo_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.db_nodo_usr](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.fn_buyerbanks_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
@@ -524,6 +529,8 @@
 | [azurerm_key_vault_secret.gpd_paa_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.gpd_payments_apiconfig_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.io_backend_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.mock_pgs_xpay_apikey_alias](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.mock_pgs_xpay_secret_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.mock_services_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_notification_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_notification_slack_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
@@ -642,7 +649,7 @@
 | <a name="input_cidr_subnet_gpd"></a> [cidr\_subnet\_gpd](#input\_cidr\_subnet\_gpd) | Address prefixes subnet gpd service | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_logicapp_biz_evt"></a> [cidr\_subnet\_logicapp\_biz\_evt](#input\_cidr\_subnet\_logicapp\_biz\_evt) | Address prefixes subnet logic app | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_mock_ec"></a> [cidr\_subnet\_mock\_ec](#input\_cidr\_subnet\_mock\_ec) | Address prefixes subnet mock ec | `list(string)` | `null` | no |
-| <a name="input_cidr_subnet_mock_psp"></a> [cidr\_subnet\_mock\_psp](#input\_cidr\_subnet\_mock\_psp) | Address prefixes subnet mock psp | `list(string)` | `null` | no |
+| <a name="input_cidr_subnet_mock_payment_gateway"></a> [cidr\_subnet\_mock\_payment\_gateway](#input\_cidr\_subnet\_mock\_payment\_gateway) | Address prefixes subnet mock payment\_gateway | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pagopa_proxy"></a> [cidr\_subnet\_pagopa\_proxy](#input\_cidr\_subnet\_pagopa\_proxy) | Address prefixes subnet proxy | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pagopa_proxy_redis"></a> [cidr\_subnet\_pagopa\_proxy\_redis](#input\_cidr\_subnet\_pagopa\_proxy\_redis) | Address prefixes subnet redis for pagopa proxy | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pg_flex_dbms"></a> [cidr\_subnet\_pg\_flex\_dbms](#input\_cidr\_subnet\_pg\_flex\_dbms) | Postgres Flexible Server network address space. | `list(string)` | n/a | yes |
@@ -655,7 +662,6 @@
 | <a name="input_cidr_vnet_integration"></a> [cidr\_vnet\_integration](#input\_cidr\_vnet\_integration) | Virtual network to peer with sia subscription. It should host apim | `list(string)` | n/a | yes |
 | <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | n/a | yes |
 | <a name="input_cobadge_hostname"></a> [cobadge\_hostname](#input\_cobadge\_hostname) | Cobadge hostname | `string` | `""` | no |
-| <a name="input_cosmos_afm_db_params"></a> [cosmos\_afm\_db\_params](#input\_cosmos\_afm\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    main_geo_location_zone_redundant = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
 | <a name="input_cosmos_document_db_params"></a> [cosmos\_document\_db\_params](#input\_cosmos\_document\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    main_geo_location_zone_redundant = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
 | <a name="input_cstar_outbound_ip_1"></a> [cstar\_outbound\_ip\_1](#input\_cstar\_outbound\_ip\_1) | CSTAR ip 1 | `string` | n/a | yes |
 | <a name="input_cstar_outbound_ip_2"></a> [cstar\_outbound\_ip\_2](#input\_cstar\_outbound\_ip\_2) | CSTAR ip 2 | `string` | n/a | yes |
@@ -667,6 +673,7 @@
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix_prf"></a> [dns\_zone\_prefix\_prf](#input\_dns\_zone\_prefix\_prf) | The dns subdomain. | `string` | `""` | no |
 | <a name="input_dns_zone_wisp2"></a> [dns\_zone\_wisp2](#input\_dns\_zone\_wisp2) | The wisp2 dns subdomain. | `string` | `null` | no |
+| <a name="input_ecommerce_ingress_hostname"></a> [ecommerce\_ingress\_hostname](#input\_ecommerce\_ingress\_hostname) | ecommerce ingress hostname | `string` | `null` | no |
 | <a name="input_ehns_alerts_enabled"></a> [ehns\_alerts\_enabled](#input\_ehns\_alerts\_enabled) | Event hub alerts enabled? | `bool` | `true` | no |
 | <a name="input_ehns_auto_inflate_enabled"></a> [ehns\_auto\_inflate\_enabled](#input\_ehns\_auto\_inflate\_enabled) | Is Auto Inflate enabled for the EventHub Namespace? | `bool` | `false` | no |
 | <a name="input_ehns_capacity"></a> [ehns\_capacity](#input\_ehns\_capacity) | Specifies the Capacity / Throughput Units for a Standard SKU namespace. | `number` | `null` | no |
@@ -727,11 +734,11 @@
 | <a name="input_mock_ec_enabled"></a> [mock\_ec\_enabled](#input\_mock\_ec\_enabled) | Mock EC enabled | `bool` | `false` | no |
 | <a name="input_mock_ec_size"></a> [mock\_ec\_size](#input\_mock\_ec\_size) | Mock EC Plan size | `string` | `"S1"` | no |
 | <a name="input_mock_ec_tier"></a> [mock\_ec\_tier](#input\_mock\_ec\_tier) | Mock EC Plan tier | `string` | `"Standard"` | no |
-| <a name="input_mock_psp_always_on"></a> [mock\_psp\_always\_on](#input\_mock\_psp\_always\_on) | Mock PSP always on property | `bool` | `false` | no |
-| <a name="input_mock_psp_enabled"></a> [mock\_psp\_enabled](#input\_mock\_psp\_enabled) | Mock PSP enabled | `bool` | `false` | no |
+| <a name="input_mock_payment_gateway_always_on"></a> [mock\_payment\_gateway\_always\_on](#input\_mock\_payment\_gateway\_always\_on) | Mock payment gateway always on property | `bool` | `false` | no |
+| <a name="input_mock_payment_gateway_enabled"></a> [mock\_payment\_gateway\_enabled](#input\_mock\_payment\_gateway\_enabled) | Mock payment gateway enabled | `bool` | `false` | no |
+| <a name="input_mock_payment_gateway_size"></a> [mock\_payment\_gateway\_size](#input\_mock\_payment\_gateway\_size) | Mock payment gateway Plan size | `string` | `"S1"` | no |
+| <a name="input_mock_payment_gateway_tier"></a> [mock\_payment\_gateway\_tier](#input\_mock\_payment\_gateway\_tier) | Mock payment gateway Plan tier | `string` | `"Standard"` | no |
 | <a name="input_mock_psp_service_enabled"></a> [mock\_psp\_service\_enabled](#input\_mock\_psp\_service\_enabled) | Mock PSP service Nexi | `bool` | `false` | no |
-| <a name="input_mock_psp_size"></a> [mock\_psp\_size](#input\_mock\_psp\_size) | Mock PSP Plan size | `string` | `"S1"` | no |
-| <a name="input_mock_psp_tier"></a> [mock\_psp\_tier](#input\_mock\_psp\_tier) | Mock PSP Plan tier | `string` | `"Standard"` | no |
 | <a name="input_nat_gateway_enabled"></a> [nat\_gateway\_enabled](#input\_nat\_gateway\_enabled) | Nat Gateway enabled | `bool` | `false` | no |
 | <a name="input_nat_gateway_public_ips"></a> [nat\_gateway\_public\_ips](#input\_nat\_gateway\_public\_ips) | Number of public outbound ips | `number` | `1` | no |
 | <a name="input_nodo_ip_filter"></a> [nodo\_ip\_filter](#input\_nodo\_ip\_filter) | IP Node | `string` | `""` | no |

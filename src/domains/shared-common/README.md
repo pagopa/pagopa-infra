@@ -16,8 +16,6 @@
 | <a name="module_iuvgenerator_cosmosdb_account"></a> [iuvgenerator\_cosmosdb\_account](#module\_iuvgenerator\_cosmosdb\_account) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.1.18 |
 | <a name="module_iuvgenerator_cosmosdb_snet"></a> [iuvgenerator\_cosmosdb\_snet](#module\_iuvgenerator\_cosmosdb\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
-| <a name="module_notifications_service_storage"></a> [notifications\_service\_storage](#module\_notifications\_service\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.18.10 |
-| <a name="module_notifications_service_storage_snet"></a> [notifications\_service\_storage\_snet](#module\_notifications\_service\_storage\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.18.10 |
 
 ## Resources
 
@@ -30,11 +28,8 @@
 | [azurerm_key_vault_secret.notifications_service_ai_instrumentation_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.notifications_service_sa_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_endpoint.storage_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.shared_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
-| [azurerm_storage_queue.notifications_service_errors_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_queue) | resource |
-| [azurerm_storage_queue.notifications_service_retry_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_queue) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -58,7 +53,6 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_cidr_subnet_iuvgenerator_cosmosdb"></a> [cidr\_subnet\_iuvgenerator\_cosmosdb](#input\_cidr\_subnet\_iuvgenerator\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
-| <a name="input_cidr_subnet_notifications_service_storage"></a> [cidr\_subnet\_notifications\_service\_storage](#input\_cidr\_subnet\_notifications\_service\_storage) | Storage service address space | `list(string)` | `null` | no |
 | <a name="input_cosmos_iuvgenerator_db_params"></a> [cosmos\_iuvgenerator\_db\_params](#input\_cosmos\_iuvgenerator\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    main_geo_location_zone_redundant = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
@@ -73,9 +67,7 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
-| <a name="input_notifications_service_queue_params"></a> [notifications\_service\_queue\_params](#input\_notifications\_service\_queue\_params) | n/a | <pre>object({<br>    enabled                    = bool,<br>    kind                       = string,<br>    tier                       = string,<br>    account_replication_type   = string,<br>    advanced_threat_protection = bool,<br>    retention_days             = number<br>  })</pre> | <pre>{<br>  "account_replication_type": "LRS",<br>  "advanced_threat_protection": true,<br>  "enabled": false,<br>  "kind": "StorageV2",<br>  "retention_days": 7,<br>  "tier": "Standard"<br>}</pre> | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_storage_private_endpoint_enabled"></a> [storage\_private\_endpoint\_enabled](#input\_storage\_private\_endpoint\_enabled) | n/a | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_terraform_remote_state_core"></a> [terraform\_remote\_state\_core](#input\_terraform\_remote\_state\_core) | n/a | <pre>object({<br>    resource_group_name  = string,<br>    storage_account_name = string,<br>    container_name       = string,<br>    key                  = string<br>  })</pre> | n/a | yes |
 

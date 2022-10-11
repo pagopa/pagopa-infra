@@ -1,7 +1,7 @@
 prefix          = "pagopa"
 env_short       = "p"
 env             = "prod"
-domain          = "selc"
+domain          = "selfcare"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
@@ -16,6 +16,8 @@ tags = {
 }
 
 lock_enable = true
+
+robots_indexed_paths = []
 
 terraform_remote_state_core = {
   resource_group_name  = "io-infra-rg"
@@ -41,3 +43,5 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
+
+selc_fe_enabled = true

@@ -1,7 +1,7 @@
 prefix          = "pagopa"
 env_short       = "d"
 env             = "dev"
-domain          = "selc"
+domain          = "selfcare"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
@@ -16,6 +16,8 @@ tags = {
 }
 
 lock_enable = true
+
+robots_indexed_paths = []
 
 terraform_remote_state_core = {
   resource_group_name  = "io-infra-rg"
