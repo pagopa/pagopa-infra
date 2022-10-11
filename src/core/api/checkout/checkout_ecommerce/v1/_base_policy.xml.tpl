@@ -2,7 +2,7 @@
 
   <inbound>
       <base />
-      <set-backend-service base-url="https://${ecommerce_ingress_hostname}"/>
+      <set-backend-service base-url="https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service"/>
   </inbound>
 
   <outbound>
