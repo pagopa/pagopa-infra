@@ -21,12 +21,12 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
 
-  apim_hostname    = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  apim_hostname        = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   selfcare_hostname    = var.env == "prod" ? "weuprod.selfcare.internal.platform.pagopa.it" : "weu${var.env}.selfcare.internal.${var.env}.platform.pagopa.it"
   selfcare_fe_hostname = var.env == "prod" ? "selfcare.platform.pagopa.it" : "selfcare.${var.env}.platform.pagopa.it"
 
   # selfcare
-  dns_zone_selfcare     = "selfcare"
+  dns_zone_selfcare = "selfcare"
   dns_zone_platform = var.env == "prod" ? "platform" : "${var.env}.platform"
   external_domain   = "pagopa.it"
 }
