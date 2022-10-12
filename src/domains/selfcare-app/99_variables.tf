@@ -133,10 +133,10 @@ variable "tls_cert_check_helm" {
   description = "tls cert helm chart configuration"
 }
 
-# selc_fe
-variable "selc_fe_enabled" {
+# selfcare_fe
+variable "selfcare_fe_enabled" {
   type        = bool
-  description = "Selc FE enabled"
+  description = "selfcare FE enabled"
   default     = false
 }
 

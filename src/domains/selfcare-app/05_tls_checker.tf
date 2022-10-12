@@ -1,8 +1,8 @@
 module "tls_checker" {
   source = "git::https://github.com/pagopa/azurerm.git//tls_checker?ref=v2.19.0"
 
-  https_endpoint                             = local.selc_hostname
-  alert_name                                 = local.selc_hostname
+  https_endpoint                             = local.selfcare_hostname
+  alert_name                                 = local.selfcare_hostname
   alert_enabled                              = true
   helm_chart_present                         = true
   helm_chart_version                         = var.tls_cert_check_helm.chart_version
