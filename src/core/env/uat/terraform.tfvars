@@ -53,7 +53,7 @@ external_domain     = "pagopa.it"
 dns_zone_prefix     = "uat.platform"
 dns_zone_prefix_prf = "prf.platform"
 dns_zone_checkout   = "uat.checkout"
-dns_zone_selc       = "uat.selc.platform"
+dns_zone_selc       = "selfcare.uat.platform"
 dns_zone_wisp2      = "uat.wisp2"
 
 # azure devops
@@ -160,6 +160,9 @@ checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
+
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"

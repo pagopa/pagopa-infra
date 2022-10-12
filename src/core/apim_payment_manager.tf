@@ -14,8 +14,9 @@ module "apim_payment_manager_product" {
 
   published             = true
   subscription_required = true
-  approval_required     = false
-
+  approval_required     = true
+  subscriptions_limit   = 1000
+  
   policy_xml = file("./api_product/payment_manager_api/_base_policy.xml")
 }
 
@@ -414,11 +415,6 @@ locals {
   }
 }
 
-data "azurerm_key_vault_secret" "pm_restapirtd_ip" {
-  name         = "pm-restapirtd-ip"
-  key_vault_id = module.key_vault.id
-}
-
 resource "azurerm_api_management_api_version_set" "pm_restapirtd_api" {
 
   name                = format("%s-pm-restapirtd-api", local.project)
@@ -478,6 +474,80 @@ module "apim_pm_restapirtd_api_v2" {
   })
 
   xml_content = file("./api/payment_manager_api/restapi-rtd/v2/_base_policy.xml.tpl")
+}
+
+#####################################
+## API auth RTD                  ##
+#####################################
+locals {
+  apim_pm_auth_rtd_api = {
+    # params for all api versions
+    display_name          = "Payment Manager restapi RTD API with subscription key"
+    description           = "API to support 'Registro Transazioni Digitali' with subscription key"
+    path                  = "payment-manager/auth-rtd"
+    subscription_required = true
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "pm_auth_rtd_api" {
+  name                = format("%s-pm-auth-rtd-api", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_auth_rtd_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_auth_rtd_api_v1" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+
+  name                  = format("%s-pm-auth-rtd-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_auth_rtd_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pm_auth_rtd_api.id
+  api_version           = "v1"
+  service_url           = local.apim_pm_auth_rtd_api.service_url
+
+  description  = local.apim_pm_auth_rtd_api.description
+  display_name = local.apim_pm_auth_rtd_api.display_name
+  path         = local.apim_pm_auth_rtd_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/auth-rtd/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/auth-rtd/v1/_base_policy.xml.tpl")
+}
+
+module "apim_pm_auth_rtd_api_v2" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+
+  name                  = format("%s-pm-auth-rtd-api", local.project)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_auth_rtd_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pm_auth_rtd_api.id
+  api_version           = "v2"
+  service_url           = local.apim_pm_auth_rtd_api.service_url
+
+  description  = local.apim_pm_auth_rtd_api.description
+  display_name = local.apim_pm_auth_rtd_api.display_name
+  path         = local.apim_pm_auth_rtd_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/auth-rtd/v2/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/payment_manager_api/auth-rtd/v2/_base_policy.xml.tpl")
 }
 
 #####################################
