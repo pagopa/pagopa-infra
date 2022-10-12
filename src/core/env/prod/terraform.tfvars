@@ -92,7 +92,7 @@ app_gateway_alerts_enabled              = true
 app_gateway_deny_paths = [
   "/nodo/.*",
   "/payment-manager/clients/.*",
-  "/payment-manager/restapi-rtd/.*",
+  "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal*",
