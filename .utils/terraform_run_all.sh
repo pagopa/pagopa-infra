@@ -23,10 +23,11 @@ array=(
     'src/domains/ecommerce-common::weu-dev'
     'src/domains/gps-app::weu-dev'
     'src/domains/gps-common::weu-dev'
-    'src/domains/selc-app::weu-dev'
-    'src/domains/selc-common::weu-dev'
+    'src/domains/selfcare-app::weu-dev'
+    'src/domains/selfcare-common::weu-dev'
     'src/domains/shared-app::weu-dev'
     'src/domains/shared-common::weu-dev'
+    'src/domains/load-test::weu-dev'
 )
 
 function rm_terraform {

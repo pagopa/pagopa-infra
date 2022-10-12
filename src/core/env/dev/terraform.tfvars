@@ -134,6 +134,9 @@ checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
 
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
+
 ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
