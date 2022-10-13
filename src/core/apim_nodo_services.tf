@@ -473,7 +473,7 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
   operation_id        = "closePayment"
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
-    base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/v1" : "https://{{ip-nodo}}/v1"
+    base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
   })
 }
 
@@ -500,7 +500,7 @@ module "apim_nodo_per_pm_api_v2" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
-    base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/v2" : "https://{{ip-nodo}}/v2"
+    base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
   })
 }
 
