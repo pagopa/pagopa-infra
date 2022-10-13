@@ -1,9 +1,9 @@
 /**
- * selc resource group
+ * selfcare resource group
  **/
-resource "azurerm_resource_group" "selc_fe_rg" {
-  count    = var.selc_fe_enabled ? 1 : 0
-  name     = "${local.project}-selc-fe-rg"
+resource "azurerm_resource_group" "selfcare_fe_rg" {
+  count    = var.selfcare_fe_enabled ? 1 : 0
+  name     = "${local.product}-fe-rg"
   location = var.location
 
   tags = var.tags
@@ -48,16 +48,16 @@ locals {
  */
 // public storage used to serve FE
 #tfsec:ignore:azure-storage-default-action-deny
-module "selc_cdn" {
+module "selfcare_cdn" {
   source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v3.2.0"
-  count  = var.selc_fe_enabled ? 1 : 0
+  count  = var.selfcare_fe_enabled ? 1 : 0
 
-  name                = "selc"
-  prefix              = local.project
-  resource_group_name = azurerm_resource_group.selc_fe_rg[0].name
+  name                = "selfcare"
+  prefix              = local.product
+  resource_group_name = azurerm_resource_group.selfcare_fe_rg[0].name
   location            = var.location
   #                       selfcare.<ENV>.platform.pagopa.it
-  hostname              = "${local.dns_zone_selc}.${local.dns_zone_platform}.${local.external_domain}"
+  hostname              = "${local.dns_zone_selfcare}.${local.dns_zone_platform}.${local.external_domain}"
   https_rewrite_enabled = true
   lock_enabled          = var.lock_enable
 
@@ -89,7 +89,7 @@ module "selc_cdn" {
       # {
       #   action = "Overwrite"
       #   name   = "Content-Security-Policy-Report-Only"
-      #   value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", local.dns_zone_selc, local.external_domain)
+      #   value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", local.dns_zone_selfcare, local.external_domain)
       # },
       # {
       #   action = "Append"
@@ -99,7 +99,7 @@ module "selc_cdn" {
       # {
       #   action = "Append"
       #   name   = "Content-Security-Policy-Report-Only"
-      #   value  = format("img-src 'self' https://assets.cdn.io.italia.it https://%s data:; ", module.selc_cdn.storage_primary_web_host)
+      #   value  = format("img-src 'self' https://assets.cdn.io.italia.it https://%s data:; ", module.selfcare_cdn.storage_primary_web_host)
       # },
       {
         action = "Append"
@@ -273,27 +273,27 @@ module "selc_cdn" {
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
-resource "azurerm_key_vault_secret" "selc_web_storage_access_key" {
+resource "azurerm_key_vault_secret" "selfcare_web_storage_access_key" {
   name         = "web-storage-access-key"
-  value        = module.selc_cdn[0].storage_primary_access_key
+  value        = module.selfcare_cdn[0].storage_primary_access_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
-resource "azurerm_key_vault_secret" "selc_web_storage_connection_string" {
+resource "azurerm_key_vault_secret" "selfcare_web_storage_connection_string" {
   name         = "web-storage-connection-string"
-  value        = module.selc_cdn[0].storage_primary_connection_string
+  value        = module.selfcare_cdn[0].storage_primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
-resource "azurerm_key_vault_secret" "selc_web_storage_blob_connection_string" {
+resource "azurerm_key_vault_secret" "selfcare_web_storage_blob_connection_string" {
   name         = "web-storage-blob-connection-string"
-  value        = module.selc_cdn[0].storage_primary_blob_connection_string
+  value        = module.selfcare_cdn[0].storage_primary_blob_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id

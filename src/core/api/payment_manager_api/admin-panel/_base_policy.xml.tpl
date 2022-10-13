@@ -2,7 +2,7 @@
     <inbound>
       <cors>
         <allowed-origins>
-          <origin>${origin}</origin>
+          <origin>https://{{wisp2-gov-it}}</origin>
         </allowed-origins>
         <allowed-methods>
           <method>GET</method>

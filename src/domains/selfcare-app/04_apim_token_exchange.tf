@@ -3,7 +3,7 @@
 ##################
 locals {
   #                                         pagopa-<env_short>-wue-selfcare
-  pagopa_cdn_storage_account_name = replace(format("%s-%s-sa", local.project, "selc"), "-", "")
+  pagopa_cdn_storage_account_name = replace("${local.product}-${var.domain}-sa", "-", "")
   pagopa-oidc-config_url          = "https://${local.pagopa_cdn_storage_account_name}.blob.core.windows.net/pagopa-fe-oidc-config/openid-configuration.json"
   pagopa-portal-hostname          = "welfare.${local.dns_zone_platform}.${local.external_domain}"
   selfcare-issuer                 = "https://${var.env_short != "p" ? "${var.env}." : ""}selfcare.pagopa.it"
@@ -35,7 +35,7 @@ resource "null_resource" "upload_oidc_configuration" {
 
   provisioner "local-exec" {
     command = <<EOT
-              az storage azcopy blob upload --container ${azurerm_storage_container.pagopa_oidc_config.name} --account-name ${replace(format("%s-%s-sa", local.project, "selc"), "-", "")} --source ${local_file.oidc_configuration_file.filename} --account-key ${data.azurerm_key_vault_secret.cdn_storage_access_secret.value}
+              az storage azcopy blob upload --container ${azurerm_storage_container.pagopa_oidc_config.name} --account-name ${local.pagopa_cdn_storage_account_name} --source ${local_file.oidc_configuration_file.filename} --account-key ${data.azurerm_key_vault_secret.cdn_storage_access_secret.value}
           EOT
   }
 }
@@ -47,7 +47,7 @@ data "azurerm_key_vault_secret" "cdn_storage_access_secret" {
 
 # from cstar
 resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
-  name         = "${local.project}-${var.domain}-jwt-signing-cert"
+  name         = "${local.project}-jwt-signing-cert"
   key_vault_id = data.azurerm_key_vault.kv.id
 
   certificate_policy {
@@ -89,7 +89,7 @@ resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
         "keyEncipherment",
       ]
 
-      subject            = "CN=${local.project}-${var.domain}-jwt-signing-cert"
+      subject            = "CN=${local.project}-jwt-signing-cert"
       validity_in_months = 12
     }
   }
@@ -97,7 +97,7 @@ resource "azurerm_key_vault_certificate" "pagopa_jwt_signing_cert" {
 
 data "azurerm_key_vault_certificate_data" "pagopa_token_exchange_cert_jwt_public" {
   depends_on   = [azurerm_key_vault_certificate.pagopa_jwt_signing_cert]
-  name         = "${local.project}-${var.domain}-jwt-signing-cert"
+  name         = "${local.project}-jwt-signing-cert"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
@@ -113,7 +113,7 @@ data "tls_public_key" "private_key_pem" {
 
 resource "azurerm_key_vault_secret" "jwt_pub_key" {
   depends_on   = [data.tls_public_key.private_key_pem]
-  name         = "${local.project}-${var.domain}-jwt-pub-key"
+  name         = "${local.project}-jwt-pub-key"
   value        = data.tls_public_key.private_key_pem.public_key_pem
   key_vault_id = data.azurerm_key_vault.kv.id
 }
@@ -162,7 +162,7 @@ resource "azurerm_key_vault_secret" "jwt_pub_key" {
 # }
 
 resource "azurerm_api_management_certificate" "pagopa_token_exchange_cert_jwt" {
-  name                = "${local.project}-${var.domain}-token-exchange-jwt"
+  name                = "${local.project}-token-exchange-jwt"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   key_vault_secret_id = azurerm_key_vault_certificate.pagopa_jwt_signing_cert.versionless_secret_id
