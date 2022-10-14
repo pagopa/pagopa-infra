@@ -15,7 +15,7 @@ module "apim_nodo_ppt_lmi_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
 
   policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
@@ -39,7 +39,7 @@ module "apim_nodo_ppt_lmi_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_ppt_lmi_product[0].product_id]
-  subscription_required = false
+  subscription_required = true
 
   version_set_id = azurerm_api_management_api_version_set.nodo_ppt_lmi_api[0].id
   api_version    = "v1"
@@ -80,7 +80,7 @@ module "apim_nodo_sync_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
 
   policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
@@ -104,7 +104,7 @@ module "apim_nodo_sync_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_sync_product[0].product_id]
-  subscription_required = false
+  subscription_required = true
 
   version_set_id = azurerm_api_management_api_version_set.nodo_sync_api[0].id
   api_version    = "v1"
@@ -133,7 +133,7 @@ module "apim_nodo_sync_api" {
 ############################
 
 module "apim_nodo_wfesp_product" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "p" ? 0 : 1
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-wfesp"
@@ -144,14 +144,14 @@ module "apim_nodo_wfesp_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
 
   policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-wfesp-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -161,14 +161,14 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
 }
 
 module "apim_nodo_wfesp_api" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "p" ? 0 : 1
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-wfesp-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_wfesp_product[0].product_id]
-  subscription_required = false
+  subscription_required = true
 
   version_set_id = azurerm_api_management_api_version_set.nodo_wfesp_api[0].id
   api_version    = "v1"
@@ -208,7 +208,7 @@ module "apim_nodo_fatturazione_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
 
   policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
@@ -232,7 +232,7 @@ module "apim_nodo_fatturazione_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_fatturazione_product[0].product_id]
-  subscription_required = false
+  subscription_required = true
 
   version_set_id = azurerm_api_management_api_version_set.nodo_fatturazione_api[0].id
   api_version    = "v1"
@@ -271,7 +271,7 @@ module "apim_nodo_web_bo_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
 
   policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
@@ -294,7 +294,7 @@ module "apim_nodo_web_bo_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_product.product_id]
-  subscription_required = false
+  subscription_required = true
 
   # version_set_id = azurerm_api_management_api_version_set.nodo_web_bo_api[0].id
   # api_version    = "v1"
