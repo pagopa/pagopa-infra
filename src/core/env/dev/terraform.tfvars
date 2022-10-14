@@ -121,7 +121,14 @@ nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,001031
 nodo_pagamenti_url     = "http://10.70.66.200/nodo-sit/webservices/input"
 ip_nodo                = "x.x.x.x"      # disabled in DEV allOnCloud shall use lb_aks
 lb_aks                 = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
-base_path_nodo_oncloud = "/nodo-sit"
+
+base_path_nodo_oncloud      = "/nodo-sit"
+base_path_nodo_ppt_lmi      = "/ppt-lmi-sit/"
+base_path_nodo_sync         = "/sync-cron-sit/syncWisp"
+base_path_nodo_wfesp        = "/wfesp-sit"
+base_path_nodo_fatturazione = "/fatturazione-sit"
+base_path_nodo_web_bo       = "/web-bo-sit"
+
 # eventhub
 eventhub_enabled = true
 

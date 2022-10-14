@@ -156,7 +156,13 @@ nodo_pagamenti_ec      = "00493410583,09633951000,06655971007,00856930102,024786
 nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
 ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
-base_path_nodo_oncloud = "/nodo-prod"
+
+base_path_nodo_oncloud      = "/nodo-prod"
+base_path_nodo_ppt_lmi      = "/ppt-lmi-prod/"
+base_path_nodo_sync         = "/sync-cron-prod/syncWisp"
+base_path_nodo_wfesp        = "/wfesp-prod"
+base_path_nodo_fatturazione = "/fatturazione-prod"
+base_path_nodo_web_bo       = "/web-bo-prod"
 # eventhub
 eventhub_enabled = true
 
