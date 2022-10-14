@@ -4,7 +4,7 @@
 
 
 module "apim_nodo_ppt_lmi_product" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "p" ? 0 : 1
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-ppt-lmi"
@@ -22,7 +22,7 @@ module "apim_nodo_ppt_lmi_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-ppt-lmi-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -87,7 +87,7 @@ module "apim_nodo_sync_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_sync_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-sync-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -151,7 +151,7 @@ module "apim_nodo_wfesp_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-wfesp-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -215,7 +215,7 @@ module "apim_nodo_fatturazione_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_fatturazione_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-fatturazione-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -278,7 +278,7 @@ module "apim_nodo_web_bo_product" {
 }
 
 # resource "azurerm_api_management_api_version_set" "nodo_web_bo_api" {
-#   count = var.env_short == "d" ? 1 : 0
+#   count  = var.env_short == "p" ? 0 : 1
 
 #   name                = format("%s-nodo-web-bo-api", var.env_short)
 #   resource_group_name = azurerm_resource_group.rg_api.name
