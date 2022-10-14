@@ -285,7 +285,7 @@ locals {
     display_name          = "Checkout - ecommerce API"
     description           = "API for the payment transaction and payment instrument microservices of ecommerce pagoPA platform"
     path                  = "checkout/ecommerce"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
