@@ -495,3 +495,31 @@ cosmos_document_db_params = {
 platform_private_dns_zone_records = ["api", "portal", "management"]
 
 storage_queue_private_endpoint_enabled = true
+
+# Data Explorer
+dexp_params = {
+  enabled = true
+  sku = {
+    name     = "Standard_D11_v2"
+    capacity = 2
+  }
+  autoscale = {
+    min_instances = 2
+    max_instances = 3
+  }
+  public_network_access_enabled = true
+  double_encryption_enabled     = false
+  disk_encryption_enabled       = true
+  purge_enabled                 = false
+
+}
+
+dexp_db = {
+  enable             = true
+  hot_cache_period   = "P15D"
+  soft_delete_period = "P3M"
+}
+
+dexp_re_db_linkes_service = {
+  enable = true
+}
