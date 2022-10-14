@@ -288,7 +288,7 @@ resource "azurerm_api_management_named_value" "urlnodo_value" {
   value               = var.nodo_pagamenti_url
 }
 
-resource "azurerm_api_management_named_value" "ip_nodo_value" {
+resource "azurerm_api_management_named_value" "ip_nodo_value" { # TEMP used only for onPrem shall be replace with "aks_lb_nexi"
   name                = "ip-nodo"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -311,15 +311,6 @@ resource "azurerm_api_management_named_value" "base_path_nodo_oncloud" {
   display_name        = "base-path-nodo-oncloud"
   value               = var.base_path_nodo_oncloud
 }
-
-resource "azurerm_api_management_named_value" "base_path_nodo_oncloud_dev" {
-  name                = "base-path-nodo-oncloud-dev"
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "base-path-nodo-oncloud-dev"
-  value               = var.base_path_nodo_oncloud_dev
-}
-
 resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi" {
   name                = "base-path-ppt-lmi"
   api_management_name = module.apim.name
@@ -334,7 +325,6 @@ resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi_dev" {
   display_name        = "base-path-ppt-lmi-dev"
   value               = var.base_path_nodo_ppt_lmi_dev
 }
-
 resource "azurerm_api_management_named_value" "base_path_nodo_sync" {
   name                = "base-path-sync"
   api_management_name = module.apim.name
@@ -349,7 +339,6 @@ resource "azurerm_api_management_named_value" "base_path_nodo_sync_dev" {
   display_name        = "base-path-sync-dev"
   value               = var.base_path_nodo_sync_dev
 }
-
 resource "azurerm_api_management_named_value" "base_path_nodo_wfesp" {
   name                = "base-path-wfesp"
   api_management_name = module.apim.name
@@ -357,7 +346,6 @@ resource "azurerm_api_management_named_value" "base_path_nodo_wfesp" {
   display_name        = "base-path-wfesp"
   value               = var.base_path_nodo_wfesp
 }
-
 resource "azurerm_api_management_named_value" "base_path_nodo_fatturazione" {
   name                = "base-path-fatturazione"
   api_management_name = module.apim.name

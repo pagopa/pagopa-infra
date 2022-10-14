@@ -233,7 +233,7 @@ variable "nodo_pagamenti_url" {
   default     = "https://"
 }
 
-variable "ip_nodo" {
+variable "ip_nodo" { # TEMP used only for onPrem shall be replace with "lb_aks"
   type        = string
   description = "Nodo pagamenti ip"
 }
@@ -247,13 +247,12 @@ variable "lb_aks" {
 variable "base_path_nodo_oncloud" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/nodo-sit"
 }
 
-variable "base_path_nodo_oncloud_dev" {
-  type        = string
-  description = "base nodo on cloud (DEV)"
-  default     = "/nodo-dev"
+variable "nodo_pagamenti_subkey_required" {
+  type        = bool
+  description = "Enabled subkeys for nodo dei pagamenti api"
+  default     = false
 }
 
 variable "base_path_nodo_ppt_lmi" {
