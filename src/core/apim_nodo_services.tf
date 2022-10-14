@@ -6,7 +6,7 @@ module "apim_nodo_dei_pagamenti_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "nodo"
-  display_name = "Nodo dei Pagamenti "
+  display_name = "Nodo dei Pagamenti"
   description  = "Product for Nodo dei Pagamenti"
 
   api_management_name = module.apim.name
@@ -45,7 +45,7 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
 ############################
 locals {
   apim_node_for_psp_api = {
-    display_name          = "Node for PSP WS (NM3) "
+    display_name          = "Node for PSP WS (NM3)"
     description           = "Web services to support PSP in payment activations, defined in nodeForPsp.wsdl"
     path                  = "nodo/node-for-psp"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -114,7 +114,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
 ######################
 locals {
   apim_nodo_per_psp_api = {
-    display_name          = "Nodo per PSP WS "
+    display_name          = "Nodo per PSP WS"
     description           = "Web services to support PSP in payment activations, defined in nodoPerPsp.wsdl"
     path                  = "nodo/nodo-per-psp"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -181,7 +181,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
 ######################################
 locals {
   apim_nodo_per_psp_richiesta_avvisi_api = {
-    display_name          = "Nodo per PSP Richiesta Avvisi WS "
+    display_name          = "Nodo per PSP Richiesta Avvisi WS"
     description           = "Web services to support check of pending payments to PSP, defined in nodoPerPspRichiestaAvvisi.wsdl"
     path                  = "nodo/nodo-per-psp-richiesta-avvisi"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -239,7 +239,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi
 ######################
 locals {
   apim_node_for_io_api = {
-    display_name          = "Node for IO WS "
+    display_name          = "Node for IO WS"
     description           = "Web services to support activeIO, defined in nodeForIO.wsdl"
     path                  = "nodo/node-for-io"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -307,7 +307,7 @@ resource "azurerm_api_management_api_operation_policy" "activateIO_reservation_p
 ############################
 locals {
   apim_psp_for_node_api = {
-    display_name          = "PSP for Node WS (NM3) "
+    display_name          = "PSP for Node WS (NM3)"
     description           = "Web services to support payment transaction started on any PagoPA client, defined in pspForNode.wsdl"
     path                  = "nodo/psp-for-node"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -365,7 +365,7 @@ resource "azurerm_api_management_api_policy" "apim_psp_for_node_policy" {
 ######################
 locals {
   apim_nodo_per_pa_api = {
-    display_name          = "Nodo per PA WS "
+    display_name          = "Nodo per PA WS"
     description           = "Web services to support PA in payment activations, defined in nodoPerPa.wsdl"
     path                  = "nodo/nodo-per-pa"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -422,7 +422,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
 ######################
 locals {
   apim_nodo_per_pm_api = {
-    display_name          = "Nodo per Payment Manager API "
+    display_name          = "Nodo per Payment Manager API"
     description           = "API to support Payment Manager"
     path                  = "nodo/nodo-per-pm"
     subscription_required = var.nodo_pagamenti_subkey_required
