@@ -78,7 +78,7 @@ app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
 app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
-  # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well
+  # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
   "/payment-manager/clients/.*",
   "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
