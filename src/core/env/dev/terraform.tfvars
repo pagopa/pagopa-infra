@@ -134,6 +134,9 @@ checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
 
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
+
 ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
@@ -483,3 +486,31 @@ cosmos_afm_db_params = {
 storage_queue_private_endpoint_enabled = true
 
 platform_private_dns_zone_records = ["api", "portal", "management"]
+
+# Data Explorer
+dexp_params = {
+  enabled = true
+  sku = {
+    name     = "Standard_D11_v2"
+    capacity = 2
+  }
+  autoscale = {
+    min_instances = 2
+    max_instances = 3
+  }
+  public_network_access_enabled = true
+  double_encryption_enabled     = false
+  disk_encryption_enabled       = true
+  purge_enabled                 = false
+
+}
+
+dexp_db = {
+  enable             = true
+  hot_cache_period   = "P7D"
+  soft_delete_period = "P1M"
+}
+
+dexp_re_db_linkes_service = {
+  enable = true
+}

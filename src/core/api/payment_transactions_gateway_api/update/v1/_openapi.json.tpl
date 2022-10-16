@@ -153,10 +153,9 @@
             "example": 2350
           },
           "idTransaction": {
-            "type": "integer",
-            "format": "int64",
+            "type": "string",
             "description": "transaction id on Payment Manager",
-            "example": 123456
+            "example": "e8c7a6bf-0e52-45b0-b62e-03ae29b59522"
           },
           "description": {
             "type": "string",

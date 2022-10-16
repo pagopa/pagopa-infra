@@ -125,8 +125,8 @@ tls_checker_https_endpoints_to_check = [
     helm_present   = true,
   },
   {
-    https_endpoint = "uat.selc.pagopa.it",
-    alert_name     = "dev-selc-pagopa-it",
+    https_endpoint = "selfcare.uat.pagopa.it",
+    alert_name     = "selfcare-uat-pagopa-it",
     alert_enabled  = true,
     helm_present   = true,
   }
