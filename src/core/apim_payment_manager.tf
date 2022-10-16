@@ -113,7 +113,7 @@ resource "azurerm_api_management_api_version_set" "pm_restapi_api" {
 
 module "apim_pm_restapi_api_v4" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-restapi-api", local.project)
   api_management_name   = module.apim.name
@@ -164,7 +164,7 @@ resource "azurerm_api_management_api_version_set" "pm_restapicd_api" {
 
 module "apim_pm_restapicd_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-restapicd-api", local.project)
   api_management_name   = module.apim.name
@@ -190,7 +190,7 @@ module "apim_pm_restapicd_api_v1" {
 
 module "apim_pm_restapicd_api_v2" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-restapicd-api", local.project)
   api_management_name   = module.apim.name
@@ -216,7 +216,7 @@ module "apim_pm_restapicd_api_v2" {
 
 module "apim_pm_restapicd_api_v3" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-restapicd-api", local.project)
   api_management_name   = module.apim.name
@@ -302,7 +302,7 @@ resource "azurerm_api_management_api_version_set" "pm_restapicd_internal_api" {
 
 module "apim_pm_restapicd_internal_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-restapicd-internal-api", local.project)
   api_management_name   = module.apim.name
@@ -328,7 +328,7 @@ module "apim_pm_restapicd_internal_api_v1" {
 
 module "apim_pm_restapicd_internal_api_v2" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-restapicd-internal-api", local.project)
   api_management_name   = module.apim.name
@@ -426,7 +426,7 @@ resource "azurerm_api_management_api_version_set" "pm_restapirtd_api" {
 
 module "apim_pm_restapirtd_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-restapirtd-api", local.project)
   api_management_name   = module.apim.name
@@ -452,7 +452,7 @@ module "apim_pm_restapirtd_api_v1" {
 
 module "apim_pm_restapirtd_api_v2" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-restapirtd-api", local.project)
   api_management_name   = module.apim.name
@@ -500,7 +500,7 @@ resource "azurerm_api_management_api_version_set" "pm_auth_rtd_api" {
 
 module "apim_pm_auth_rtd_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-auth-rtd-api", local.project)
   api_management_name   = module.apim.name
@@ -526,7 +526,7 @@ module "apim_pm_auth_rtd_api_v1" {
 
 module "apim_pm_auth_rtd_api_v2" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-auth-rtd-api", local.project)
   api_management_name   = module.apim.name
@@ -716,7 +716,7 @@ resource "azurerm_api_management_api_version_set" "pm_ptg_api" {
 
 module "apim_pm_ptg_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-pm-ptg-api", local.project)
   api_management_name   = module.apim.name
