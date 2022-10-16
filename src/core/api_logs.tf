@@ -18,6 +18,20 @@ locals {
     module.apim_api_gpd_api.name,
   ]
 
+  api_info_log = [
+    module.apim_pm_restapi_api_v4.name,
+    module.apim_pm_restapirtd_api_v1.name,
+    module.apim_pm_restapirtd_api_v2.name,
+    module.apim_pm_auth_rtd_api_v1.name,
+    module.apim_pm_auth_rtd_api_v2.name,
+    module.apim_pm_restapicd_api_v1.name,
+    module.apim_pm_restapicd_api_v2.name,
+    module.apim_pm_restapicd_api_v3.name,
+    module.apim_pm_restapicd_internal_api_v1.name,
+    module.apim_pm_restapicd_internal_api_v2.name,
+    module.apim_pm_ptg_api_v1.name,
+  ]
+
 }
 
 # api log
@@ -50,5 +64,38 @@ resource "azurerm_api_management_api_diagnostic" "apim_logs" {
 
   backend_response {
     body_bytes = 8192
+  }
+}
+
+# api info log without request/response body
+resource "azurerm_api_management_api_diagnostic" "apim_info_logs" {
+  for_each = toset(local.api_info_log)
+
+  identifier               = "applicationinsights"
+  resource_group_name      = azurerm_resource_group.rg_api.name
+  api_management_name      = module.apim.name
+  api_name                 = each.key
+  api_management_logger_id = module.apim.logger_id
+
+  sampling_percentage       = 100
+  always_log_errors         = true
+  log_client_ip             = true
+  verbosity                 = "info"
+  http_correlation_protocol = "W3C"
+
+  frontend_request {
+    body_bytes = 0
+  }
+
+  frontend_response {
+    body_bytes = 0
+  }
+
+  backend_request {
+    body_bytes = 0
+  }
+
+  backend_response {
+    body_bytes = 0
   }
 }
