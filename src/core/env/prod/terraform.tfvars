@@ -124,6 +124,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
   ]
   ips = [
     "93.63.219.230",
+    "20.86.161.243" #cstar
   ]
 }
 

@@ -20,7 +20,8 @@
       </when> -->
       <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("prod"))">
         <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-          <value>${allowed_ip}</value>
+          <value>${allowed_ip_1}</value>
+          <value>${allowed_ip_2}</value>
         </check-header>
       </when>
     </choose>
