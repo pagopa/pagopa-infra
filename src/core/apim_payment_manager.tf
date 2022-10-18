@@ -104,7 +104,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "pm_restapi_api" {
 
-  name                = format("%s-pm-restapi-api", local.project)
+  name                = "${local.project}-pm-restapi-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_pm_restapi_api.display_name
@@ -115,7 +115,7 @@ module "apim_pm_restapi_api_v4" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-restapi-api", local.project)
+  name                  = "${local.project}-pm-restapi-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -155,7 +155,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "pm_restapicd_api" {
 
-  name                = format("%s-pm-restapicd-api", local.project)
+  name                = "${local.project}-pm-restapicd-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_pm_restapicd_api.display_name
@@ -166,7 +166,7 @@ module "apim_pm_restapicd_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-restapicd-api", local.project)
+  name                  = "${local.project}-pm-restapicd-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -192,7 +192,7 @@ module "apim_pm_restapicd_api_v2" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-restapicd-api", local.project)
+  name                  = "${local.project}-pm-restapicd-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -218,7 +218,7 @@ module "apim_pm_restapicd_api_v3" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-restapicd-api", local.project)
+  name                  = "${local.project}-pm-restapicd-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -257,7 +257,7 @@ module "apim_pm_restapi_cd_assets" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-pm-cd-assets-restapi", local.project)
+  name                  = "${local.project}-pm-cd-assets-restapi"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -293,7 +293,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "pm_restapicd_internal_api" {
 
-  name                = format("%s-pm-restapicd-internal-api", local.project)
+  name                = "${local.project}-pm-restapicd-internal-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_pm_restapicd_internal_api.display_name
@@ -304,7 +304,7 @@ module "apim_pm_restapicd_internal_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-restapicd-internal-api", local.project)
+  name                  = "${local.project}-pm-restapicd-internal-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -330,7 +330,7 @@ module "apim_pm_restapicd_internal_api_v2" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-restapicd-internal-api", local.project)
+  name                  = "${local.project}-pm-restapicd-internal-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -368,7 +368,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "pm_restapi_server_api" {
 
-  name                = format("%s-pm-restapi-server-api", local.project)
+  name                = "${local.project}-pm-restapi-server-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_pm_restapi_server_api.display_name
@@ -379,7 +379,7 @@ module "apim_pm_restapi_server_api_v4" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-pm-restapi-server-api", local.project)
+  name                  = "${local.project}-pm-restapi-server-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -417,7 +417,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "pm_restapirtd_api" {
 
-  name                = format("%s-pm-restapirtd-api", local.project)
+  name                = "${local.project}-pm-restapirtd-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_pm_restapirtd_api.display_name
@@ -428,7 +428,7 @@ module "apim_pm_restapirtd_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-restapirtd-api", local.project)
+  name                  = "${local.project}-pm-restapirtd-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -454,7 +454,7 @@ module "apim_pm_restapirtd_api_v2" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-restapirtd-api", local.project)
+  name                  = "${local.project}-pm-restapirtd-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -491,7 +491,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "pm_auth_rtd_api" {
-  name                = format("%s-pm-auth-rtd-api", local.project)
+  name                = "${local.project}-pm-auth-rtd-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_pm_auth_rtd_api.display_name
@@ -502,7 +502,7 @@ module "apim_pm_auth_rtd_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-auth-rtd-api", local.project)
+  name                  = "${local.project}-pm-auth-rtd-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -528,7 +528,7 @@ module "apim_pm_auth_rtd_api_v2" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-auth-rtd-api", local.project)
+  name                  = "${local.project}-pm-auth-rtd-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -572,7 +572,7 @@ module "apim_pm_logging_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-pm-logging-api", local.project)
+  name                  = "${local.project}-pm-logging-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -607,7 +607,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "pm_adminpanel_api" {
 
-  name                = format("%s-pm-adminpanel-api", local.project)
+  name                = "${local.project}-pm-adminpanel-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_pm_adminpanel_api.display_name
@@ -618,7 +618,7 @@ module "apim_pm_adminpanel_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-pm-adminpanel-api", local.project)
+  name                  = "${local.project}-pm-adminpanel-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -662,7 +662,7 @@ module "apim_pm_wisp_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-pm-wisp-api", local.project)
+  name                  = "${local.project}-pm-wisp-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -683,7 +683,7 @@ module "apim_pm_wisp_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
-  api_name            = format("%s-pm-wisp-api", local.project)
+  api_name            = "${local.project}-pm-wisp-api"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "GETSpidMetadata"
@@ -707,7 +707,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "pm_ptg_api" {
 
-  name                = format("%s-pm-ptg-api", local.project)
+  name                = "${local.project}-pm-ptg-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_pm_ptg_api.display_name
@@ -718,7 +718,7 @@ module "apim_pm_ptg_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-pm-ptg-api", local.project)
+  name                  = "${local.project}-pm-ptg-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
@@ -756,7 +756,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "pm_per_nodo_api" {
 
-  name                = format("%s-pm-per-nodo-api", local.project)
+  name                = "${local.project}-pm-per-nodo-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_pm_per_nodo_api.display_name
@@ -767,7 +767,7 @@ module "apim_pm_per_nodo_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-pm-per-nodo-api", local.project)
+  name                  = "${local.project}-pm-per-nodo-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
