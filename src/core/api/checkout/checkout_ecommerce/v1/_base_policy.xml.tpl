@@ -17,7 +17,7 @@
       <base />
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
       <choose>
-        <when condition="@( context.Request.Url.Path.Contains("payment-requests") ||  context.Request.Url.Path.Contains("transactions-service") )">
+        <when condition="@( context.Request.Url.Path.Contains("payment-requests") ||  context.Request.Url.Path.Contains("transactions") )">
           <set-backend-service base-url="https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service"/>
         </when>
         <when condition="@( context.Request.Url.Path.Contains("payment-methods") )">
