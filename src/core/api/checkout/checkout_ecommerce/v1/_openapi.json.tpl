@@ -108,7 +108,7 @@
         }
       }
     },
-    "/transactions-service/transactions": {
+    "/transactions": {
       "post": {
         "operationId": "newTransaction",
         "summary": "Make a new transaction",
@@ -129,7 +129,7 @@
         }
       }
     },
-    "/transactions-service/transactions/{transactionId}": {
+    "/transactions/{transactionId}": {
       "get": {
         "operationId": "getTransactionInfo",
         "parameters": [
