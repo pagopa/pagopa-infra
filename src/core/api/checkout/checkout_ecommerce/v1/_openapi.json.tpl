@@ -108,53 +108,61 @@
         }
       }
     },
-    "/request-payments/postepay/{requestId}": {
-      "get": {
-        "summary": "PGS webview polling call for PostePay authorization",
-        "tags": [
-          "payment-transactions-controller"
-        ],
-        "operationId": "webview-polling",
+    "/transactions/{transactionId}/auth-request": {
+      "summary": "Request authorization for the transaction identified by payment token",
+      "post": {
+        "operationId": "requestTransactionAuthorization",
         "parameters": [
           {
             "in": "path",
-            "name": "requestId",
+            "name": "transactionId",
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             },
             "required": true,
-            "description": "PGS-generated GUID of the request to retrieve",
-            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
+            "description": "Transaction ID"
           }
         ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RequestAuthorizationRequest"
+        },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Transaction authorization request successfully processed, redirecting client to authorization web page",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/RequestAuthorizationResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request - missing mandatory parameters",
+            "description": "Invalid transaction id",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "401": {
-            "description": "transactionId already processed",
+          "404": {
+            "description": "Transaction not found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Transaction already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -164,283 +172,96 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
           "504": {
-            "description": "Timeout",
+            "description": "Gateway timeout",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
         }
       },
-      "delete": {
-        "tags": [
-          "payment-transactions-controller"
-        ],
-        "summary": "refund PostePay requests",
-        "operationId": "refund-request",
+      "patch": {
+        "operationId": "updateTransactionAuthorization",
         "parameters": [
           {
             "in": "path",
-            "name": "requestId",
+            "name": "transactionId",
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             },
             "required": true,
-            "description": "PGS-generated GUID of the request to retrieve",
-            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
+            "description": "Transaction Id"
           }
         ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateAuthorizationRequest"
+        },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Transaction authorization request successfully updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                  "$ref": "#/components/schemas/TransactionInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
           "404": {
-            "description": "Request doesn't exist",
+            "description": "Transaction not found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
           "500": {
-            "description": "Generic Error",
+            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
           "502": {
-            "description": "Gateway Error",
+            "description": "Bad gateway",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayRefundResponse"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
           "504": {
-            "description": "Request timeout",
+            "description": "Gateway timeout",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostePayRefundResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/request-payments/postepay": {
-      "post": {
-        "summary": "payment authorization request to PostePay",
-        "tags": [
-          "payment-transactions-controller"
-        ],
-        "operationId": "auth-request",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "isOnboarding",
-            "description": "used for onboarding, if true",
-            "example": true,
-            "schema": {
-              "type": "boolean"
-            },
-            "required": false
-          },
-          {
-            "in": "header",
-            "name": "X-Client-ID",
-            "description": "channel origin (APP/Web)",
-            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          },
-          {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PostePayAuthRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthResponseEntity"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - missing mandatory parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthResponseEntity"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "transactionId already processed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthResponseEntity"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthResponseEntity"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayAuthResponseEntity"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "payment-transactions-controller"
-        ],
-        "summary": "authorization outcome response from PostePay",
-        "operationId": "auth-response",
-        "parameters": [
-          {
-            "name": "X-Correlation-ID",
-            "in": "header",
-            "required": true,
-            "description": "PostePay correlation ID",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuthMessage"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ACKMessage"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - idPostePay already processed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Unknown idPostePay",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Generic Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Request timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -451,6 +272,10 @@
   },
   "components": {
     "schemas": {
+      "RptId": {
+        "type": "string",
+        "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+      },
       "ProblemJson": {
         "type": "object",
         "properties": {
@@ -790,190 +615,176 @@
           "GENERIC_ERROR"
         ]
       },
-      "PollingResponseEntity": {
+      "RequestAuthorizationRequest": {
         "type": "object",
-        "required": [
-          "channel",
-          "urlRedirect",
-          "logoResourcePath",
-          "clientResponseUrl",
-          "authOutcome",
-          "error"
-        ],
+        "description": "Request body for requesting an authorization for a transaction",
         "properties": {
-          "channel": {
-            "type": "string",
-            "description": "request payment channel (APP or WEB)",
-            "example": "APP"
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
           },
-          "urlRedirect": {
-            "type": "string",
-            "description": "redirect URL generated by PGS logic",
-            "example": "https://.../payment-transactions-gateway/v1/webview/authRequest?requestId=e2f518a9-9de4-4a27-afb0-5303e6eefcbf"
+          "fee": {
+            "$ref": "#/components/schemas/AmountEuroCents"
           },
-          "logoResourcePath": {
+          "paymentInstrumentId": {
             "type": "string",
-            "description": "PostePay logo resource path",
-            "example": "payment-gateway/assets/img/postepay/postepay.png"
+            "description": "Payment instrument id"
           },
-          "clientResponseUrl": {
+          "pspId": {
             "type": "string",
-            "description": "redirect URL for authorization OK, empty for KO case or when PUT request has not been called yet",
-            "example": "https://..."
+            "description": "PSP id"
           },
-          "authOutcome": {
+          "language": {
             "type": "string",
-            "description": "authorization outcome",
-            "example": "OK"
-          },
-          "error": {
-            "type": "string",
-            "description": "error description for 400/500 http error codes",
-            "example": ""
+            "enum": [
+              "IT",
+              "EN",
+              "FR",
+              "DE",
+              "SL"
+            ],
+            "description": "Requested language"
           }
+        },
+        "required": [
+          "amount",
+          "fee",
+          "paymentInstrumentId",
+          "pspId",
+          "language"
+        ]
+      },
+      "AmountEuroCents": {
+        "description": "Amount for payments, in euro cents",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 99999999
+      },
+      "RequestAuthorizationResponse": {
+        "type": "object",
+        "description": "Response body for requesting an authorization for a transaction",
+        "properties": {
+          "authorizationUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "URL where to redirect clients to continue the authorization process"
+          }
+        },
+        "required": [
+          "authorizationUrl"
+        ],
+        "example": {
+          "authorizationUrl": "https://example.com"
         }
       },
-      "PostePayRefundResponse": {
+      "UpdateAuthorizationRequest": {
         "type": "object",
+        "description": "Request body for updating an authorization for a transaction",
         "properties": {
-          "requestId": {
+          "authorizationResult": {
+            "$ref": "#/components/schemas/AuthorizationResult"
+          },
+          "timestampOperation": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Payment timestamp"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          }
+        },
+        "required": [
+          "authorizationResult",
+          "timestampOperation",
+          "authorizationCode"
+        ],
+        "example": {
+          "authorizationResult": "OK",
+          "timestampOperation": "2022-02-11T12:00:00.000Z"
+        }
+      },
+      "TransactionStatus": {
+        "type": "string",
+        "description": "Possible statuses a transaction can be in",
+        "enum": [
+          "ACTIVATION_REQUESTED",
+          "ACTIVATED",
+          "AUTHORIZATION_REQUESTED",
+          "AUTHORIZED",
+          "AUTHORIZATION_FAILED",
+          "CLOSED",
+          "CLOSURE_FAILED",
+          "NOTIFIED",
+          "NOTIFIED_FAILED"
+        ]
+      },
+      "TransactionInfo": {
+        "description": "Transaction data returned when querying for an existing transaction",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NewTransactionResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "status": {
+                "$ref": "#/components/schemas/TransactionStatus"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        ],
+        "example": {
+          "amount": 200,
+          "status": "ACTIVATED"
+        }
+      },
+      "AuthorizationResult": {
+        "description": "Authorization result",
+        "type": "string",
+        "enum": [
+          "OK",
+          "KO"
+        ]
+      },
+      "NewTransactionResponse": {
+        "type": "object",
+        "description": "Transaction data returned when creating a new transaction",
+        "properties": {
+          "transactionId": {
             "type": "string"
           },
-          "paymentId": {
+          "paymentToken": {
             "type": "string"
           },
-          "refundOutcome": {
+          "rptId": {
+            "$ref": "#/components/schemas/RptId"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "reason": {
             "type": "string"
           },
-          "error": {
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents",
+            "minLength": 1,
+            "maxLength": 140
+          },
+          "authToken": {
             "type": "string"
           }
         },
         "required": [
           "transactionId",
-          "paymentId",
-          "refundOutcome",
-          "error"
-        ]
-      },
-      "PostePayAuthRequest": {
-        "required": [
-          "grandTotal",
-          "idTransaction"
+          "amount",
+          "status"
         ],
-        "type": "object",
-        "properties": {
-          "grandTotal": {
-            "type": "number",
-            "format": "integer",
-            "description": "amount + fee as euro cents",
-            "example": 2350
-          },
-          "idTransaction": {
-            "type": "string",
-            "description": "transaction id on Payment Manager",
-            "example": "e8c7a6bf-0e52-45b0-b62e-03ae29b59522"
-          },
-          "description": {
-            "type": "string",
-            "description": "payment object description",
-            "example": "pagamento bollo auto"
-          },
-          "paymentChannel": {
-            "type": "string",
-            "description": "request payment channel (APP or WEB)",
-            "example": "APP"
-          },
-          "name": {
-            "type": "string",
-            "description": "debtor's name and surname",
-            "example": "Mario Rossi"
-          },
-          "email_notice": {
-            "type": "string",
-            "description": "debtor's email address",
-            "example": "mario.rossi@gmail.com"
-          }
+        "example": {
+          "amount": 200
         }
-      },
-      "PostePayAuthResponseEntity": {
-        "type": "object",
-        "required": [
-          "requestId",
-          "channel",
-          "urlRedirect",
-          "error"
-        ],
-        "properties": {
-          "requestId": {
-            "type": "string",
-            "description": "payment request Id"
-          },
-          "channel": {
-            "type": "string",
-            "description": "request payment channel (APP or WEB)",
-            "example": "APP"
-          },
-          "urlRedirect": {
-            "type": "string",
-            "description": "redirect URL generated by PGS logic",
-            "example": "https://api.dev.platform.pagopa.it/payment-transactions-gateway/v1/webview/authRequest/e8d24dd5-14e0-4802-9f23-ddf2c198a185"
-          },
-          "error": {
-            "type": "string",
-            "description": "error description",
-            "example": null
-          }
-        }
-      },
-      "AuthMessage": {
-        "required": [
-          "auth_outcome"
-        ],
-        "type": "object",
-        "properties": {
-          "auth_outcome": {
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          },
-          "auth_code": {
-            "type": "string"
-          }
-        }
-      },
-      "ACKMessage": {
-        "required": [
-          "outcome"
-        ],
-        "type": "object",
-        "properties": {
-          "outcome": {
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "message": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "code",
-          "message"
-        ]
       }
     },
     "requestBodies": {
@@ -993,6 +804,26 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/PatchPaymentMethodRequest"
+            }
+          }
+        }
+      },
+      "RequestAuthorizationRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RequestAuthorizationRequest"
+            }
+          }
+        }
+      },
+      "UpdateAuthorizationRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UpdateAuthorizationRequest"
             }
           }
         }
