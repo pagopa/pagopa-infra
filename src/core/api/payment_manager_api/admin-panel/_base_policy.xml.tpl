@@ -2,7 +2,7 @@
     <inbound>
       <cors>
         <allowed-origins>
-          <origin>${origin}</origin>
+          <origin>https://{{wisp2-gov-it}}</origin>
         </allowed-origins>
         <allowed-methods>
           <method>GET</method>
@@ -11,6 +11,19 @@
           <method>HEAD</method>
         </allowed-methods>
       </cors>
+      <choose>
+      <!-- TODO Enable after ticket resolution -->
+      <!-- <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("uat"))">
+        <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
+          <value>${allowed_ip}</value>
+        </check-header>
+      </when> -->
+      <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("prod"))">
+        <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
+          <value>${allowed_ip}</value>
+        </check-header>
+      </when>
+    </choose>
       <choose>
         <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it"))">
           <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/pp-admin-panel")" />

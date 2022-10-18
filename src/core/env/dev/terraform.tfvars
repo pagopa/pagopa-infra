@@ -36,8 +36,8 @@ cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 
 # specific
-cidr_subnet_mock_ec  = ["10.1.137.0/29"]
-cidr_subnet_mock_psp = ["10.1.137.8/29"]
+cidr_subnet_mock_ec              = ["10.1.137.0/29"]
+cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
 
 
 # integration vnet
@@ -108,10 +108,8 @@ postgresql_network_rules = {
 prostgresql_db_mockpsp = "mock-psp"
 
 # mock
-mock_ec_enabled          = true
-mock_psp_enabled         = true
-mock_psp_service_enabled = true
-
+mock_ec_enabled              = true
+mock_payment_gateway_enabled = true
 
 # apim x nodo pagamenti
 nodo_pagamenti_enabled = true
@@ -135,6 +133,9 @@ checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
+
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
 
 ehns_sku_name = "Standard"
 
@@ -485,3 +486,31 @@ cosmos_afm_db_params = {
 storage_queue_private_endpoint_enabled = true
 
 platform_private_dns_zone_records = ["api", "portal", "management"]
+
+# Data Explorer
+dexp_params = {
+  enabled = true
+  sku = {
+    name     = "Standard_D11_v2"
+    capacity = 2
+  }
+  autoscale = {
+    min_instances = 2
+    max_instances = 3
+  }
+  public_network_access_enabled = true
+  double_encryption_enabled     = false
+  disk_encryption_enabled       = true
+  purge_enabled                 = false
+
+}
+
+dexp_db = {
+  enable             = true
+  hot_cache_period   = "P7D"
+  soft_delete_period = "P1M"
+}
+
+dexp_re_db_linkes_service = {
+  enable = true
+}

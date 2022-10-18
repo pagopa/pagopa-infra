@@ -36,8 +36,8 @@ cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # cidr_subnet_gps_cosmosdb             = ["10.1.149.0/24"]
 # specific
-cidr_subnet_mock_ec  = ["10.1.137.0/29"]
-cidr_subnet_mock_psp = ["10.1.137.8/29"]
+cidr_subnet_mock_ec              = ["10.1.137.0/29"]
+cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
 
 
 # integration vnet
@@ -53,7 +53,7 @@ external_domain     = "pagopa.it"
 dns_zone_prefix     = "uat.platform"
 dns_zone_prefix_prf = "prf.platform"
 dns_zone_checkout   = "uat.checkout"
-dns_zone_selc       = "uat.selc.platform"
+dns_zone_selc       = "selfcare.uat.platform"
 dns_zone_wisp2      = "uat.wisp2"
 
 # azure devops
@@ -80,20 +80,21 @@ app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
   "/nodo/.*",
   "/payment-manager/clients/.*",
-  "/payment-manager/restapi-rtd/.*",
+  "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
-  "/payment-manager/internal*",
+  "/payment-manager/internal/.*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-
+  "/gpd/.*",           # internal use no sub-keys 
+  "/gpd-payments/.*",  # internal use no sub-keys
+  "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
-  "/gps/donation-service/.*",
-  "/shared/iuv-generator-service/.*",
-  "/gpd/api/.*",
-  "/gps/spontaneous-payments-service/.*",
+  "/gps/donation-service/.*",             # internal use no sub-keys 
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys 
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys 
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
@@ -101,6 +102,7 @@ app_gateway_deny_paths_2 = [
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
+  "/payment-manager/pp-restapi-server/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -131,9 +133,9 @@ postgresql_network_rules = {
 prostgresql_db_mockpsp = "mock-psp"
 
 # mock
-mock_ec_enabled   = true
-mock_ec_always_on = true
-mock_psp_enabled  = false
+mock_ec_enabled              = true
+mock_ec_always_on            = true
+mock_payment_gateway_enabled = true
 
 
 # apim x nodo pagamenti
@@ -158,6 +160,9 @@ checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azurewebsites.net"
+
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
@@ -439,30 +444,6 @@ pgres_flex_params = {
 
 }
 
-# Cosmos AFM
-cosmos_afm_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = []
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = true
-
-  private_endpoint_enabled      = true
-  public_network_access_enabled = false
-
-  additional_geo_locations = []
-
-  is_virtual_network_filter_enabled = true
-
-  backup_continuous_enabled = false
-}
-
 # CosmosDb Payments
 cosmos_document_db_params = {
   kind         = "GlobalDocumentDB"
@@ -514,3 +495,31 @@ cosmos_document_db_params = {
 platform_private_dns_zone_records = ["api", "portal", "management"]
 
 storage_queue_private_endpoint_enabled = true
+
+# Data Explorer
+dexp_params = {
+  enabled = true
+  sku = {
+    name     = "Standard_D11_v2"
+    capacity = 2
+  }
+  autoscale = {
+    min_instances = 2
+    max_instances = 3
+  }
+  public_network_access_enabled = true
+  double_encryption_enabled     = false
+  disk_encryption_enabled       = true
+  purge_enabled                 = false
+
+}
+
+dexp_db = {
+  enable             = true
+  hot_cache_period   = "P15D"
+  soft_delete_period = "P3M"
+}
+
+dexp_re_db_linkes_service = {
+  enable = true
+}

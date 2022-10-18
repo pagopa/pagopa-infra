@@ -92,7 +92,7 @@ app_gateway_alerts_enabled              = true
 app_gateway_deny_paths = [
   "/nodo/.*",
   "/payment-manager/clients/.*",
-  "/payment-manager/restapi-rtd/.*",
+  "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal*",
@@ -107,7 +107,6 @@ app_gateway_deny_paths = [
   "/payment-transactions-gateway/internal/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys 
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys 
-  "/gpd/api/.*",                          # internal use no sub-keys 
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys 
 ]
 app_gateway_deny_paths_2 = [
@@ -116,6 +115,7 @@ app_gateway_deny_paths_2 = [
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
+  "/payment-manager/pp-restapi-server/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -142,8 +142,8 @@ postgresql_public_network_access_enabled = false
 postgres_private_endpoint_enabled        = false
 
 # mock
-mock_ec_enabled  = false
-mock_psp_enabled = false
+mock_ec_enabled              = false
+mock_payment_gateway_enabled = false
 
 
 # apim x nodo pagamenti
@@ -168,6 +168,9 @@ checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxyprod.azurewebsites.net"
+
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "disabled"
 
 ehns_sku_name = "Standard"
 
@@ -455,35 +458,6 @@ pgres_flex_params = {
 
 }
 
-
-# Cosmos AFM
-cosmos_afm_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = []
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = true
-
-  private_endpoint_enabled      = true
-  public_network_access_enabled = false
-  additional_geo_locations = [{
-    location          = "northeurope"
-    failover_priority = 1
-    zone_redundant    = false
-  }]
-
-  is_virtual_network_filter_enabled = true
-
-  backup_continuous_enabled = true
-}
-
-
 # CosmosDb Payments
 cosmos_document_db_params = {
   kind         = "GlobalDocumentDB"
@@ -511,33 +485,34 @@ cosmos_document_db_params = {
   backup_continuous_enabled = true
 }
 
-# # CosmosDb GPS
-# cosmos_gps_db_params = {
-#   kind         = "GlobalDocumentDB"
-#   capabilities = []
-#   offer_type   = "Standard"
-#   consistency_policy = {
-#     consistency_level       = "BoundedStaleness"
-#     max_interval_in_seconds = 300
-#     max_staleness_prefix    = 100000
-#   }
-#   server_version                   = "4.0"
-#   main_geo_location_zone_redundant = false
-#   enable_free_tier                 = false
-
-#   private_endpoint_enabled      = true
-#   public_network_access_enabled = false
-#   additional_geo_locations = [{
-#     location          = "northeurope"
-#     failover_priority = 1
-#     zone_redundant    = false
-#   }]
-
-#   is_virtual_network_filter_enabled = true
-
-#   backup_continuous_enabled = true
-# }
-
 storage_queue_private_endpoint_enabled = true
 
 platform_private_dns_zone_records = ["api", "portal", "management"]
+
+# Data Explorer
+dexp_params = {
+  enabled = true
+  sku = {
+    name     = "Standard_D11_v2"
+    capacity = 2
+  }
+  autoscale = {
+    min_instances = 2
+    max_instances = 5
+  }
+  public_network_access_enabled = true
+  double_encryption_enabled     = true
+  disk_encryption_enabled       = true
+  purge_enabled                 = false
+
+}
+
+dexp_db = {
+  enable             = true
+  hot_cache_period   = "P1M"
+  soft_delete_period = "P1Y"
+}
+
+dexp_re_db_linkes_service = {
+  enable = true
+}
