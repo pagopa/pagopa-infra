@@ -125,7 +125,8 @@
         "outcome": {
           "type": "string",
           "enum": [
-            "OK"
+            "OK",
+            "KO"
           ]
         },
         "idPSP": {
