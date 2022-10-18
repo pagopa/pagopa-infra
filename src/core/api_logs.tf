@@ -34,7 +34,7 @@ locals {
 
 }
 
-# api log
+# api verbose log with request/response body
 resource "azurerm_api_management_api_diagnostic" "apim_logs" {
   for_each = toset(local.api_verbose_log)
 
