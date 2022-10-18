@@ -1,0 +1,13 @@
+.create-or-alter function
+ with (docstring = 'Funzione per la normalizzazione degli eventi di timeout')
+     Extract_Fault_Code()  
+    {
+	ReEvent
+	| where sottoTipoEvento == 'RESP'
+	| where payload != ""
+	| extend decode_payload = base64_decode_tostring(payload)
+	| extend faultCode = extract("<faultCode>(.*)</faultCode>", 1, decode_payload)
+	| where faultCode != ""
+	| extend faultDescription = extract("<description>(.*)</description>", 1, decode_payload)
+	| project insertedTimestamp, tipoEvento, idDominio, iuv, ccp, faultCode, faultDescription, stazione, canale, psp, sessionId, sessionIdOriginal, uniqueId
+}
