@@ -527,7 +527,7 @@
             "type": "string",
             "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
           },
-          "paTaxCode": {
+          "paFiscalCode": {
             "type": "string",
             "minLength": 11,
             "maxLength": 11
