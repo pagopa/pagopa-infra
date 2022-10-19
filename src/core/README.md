@@ -67,8 +67,6 @@
 | <a name="module_apim_nodo_oncloud_dev_api"></a> [apim\_nodo\_oncloud\_dev\_api](#module\_apim\_nodo\_oncloud\_dev\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_oncloud_dev_product"></a> [apim\_nodo\_oncloud\_dev\_product](#module\_apim\_nodo\_oncloud\_dev\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_oncloud_product"></a> [apim\_nodo\_oncloud\_product](#module\_apim\_nodo\_oncloud\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_nodo_oncloud_uat_api"></a> [apim\_nodo\_oncloud\_uat\_api](#module\_apim\_nodo\_oncloud\_uat\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_nodo_oncloud_uat_product"></a> [apim\_nodo\_oncloud\_uat\_product](#module\_apim\_nodo\_oncloud\_uat\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_per_pm_api_v1"></a> [apim\_nodo\_per\_pm\_api\_v1](#module\_apim\_nodo\_per\_pm\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_nodo_per_pm_api_v2"></a> [apim\_nodo\_per\_pm\_api\_v2](#module\_apim\_nodo\_per\_pm\_api\_v2) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_nodo_ppt_lmi_api"></a> [apim\_nodo\_ppt\_lmi\_api](#module\_apim\_nodo\_ppt\_lmi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
@@ -270,7 +268,6 @@
 | [azurerm_api_management_api_version_set.nodo_fatturazione_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_oncloud_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_oncloud_dev_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.nodo_oncloud_uat_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pa_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pm_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_psp_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
