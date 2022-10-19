@@ -322,7 +322,6 @@ module "apim_checkout_ecommerce_api_v1" {
 
   xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname,
-    pgs_hostname               = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name,
     checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
 }
