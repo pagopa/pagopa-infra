@@ -3,7 +3,7 @@
  **/
 resource "azurerm_resource_group" "selfcare_fe_rg" {
   count    = var.selfcare_fe_enabled ? 1 : 0
-  name     = "${local.product}-${var.domain}-fe-rg"
+  name     = "${local.product}-fe-rg" #-${var.domain}
   location = var.location
 
   tags = var.tags
