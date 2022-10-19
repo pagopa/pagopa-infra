@@ -38,6 +38,11 @@ resource "helm_release" "influxdb" {
     value = "/pagopa-influxdb/(.*)"
   }
 
+  set {
+    name  = "ingress.annotations.nginx\\.ingress\\.kubernetes\\.io\\/rewrite-target"
+    value = "/$1"
+  }
+
 }
 
 # influxdb v2
