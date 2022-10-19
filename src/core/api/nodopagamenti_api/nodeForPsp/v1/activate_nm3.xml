@@ -542,7 +542,16 @@
                 </choose>
             </otherwise>
         </choose>
-        <set-backend-service base-url="{{urlnodo}}" />
+        <!-- <set-backend-service base-url="{{urlnodo}}" /> -->
+        <choose>
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
+                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf" />
+            </when>
+            <otherwise>
+                <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}" /> -->
+                <set-backend-service base-url="{{urlnodo}}" /> <!-- onprem -->
+            </otherwise>
+        </choose>        
     </inbound>
     <backend>
         <base />
