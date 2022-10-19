@@ -19,7 +19,7 @@
                 <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
             </when>
 
-        </choose>            
+        </choose>
     </inbound>
     <backend>
         <base />

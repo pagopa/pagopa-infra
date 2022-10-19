@@ -1,6 +1,6 @@
 <policies>
     <inbound>
-        <base />    
+        <base />
         <set-variable name="psps" value="{{brokerlist}}" />
         <set-variable name="ecs" value="{{ecblacklist}}" />
         <set-variable name="requestPayload" value="@(context.Request.Body.As<string>(preserveContent: true))" />
@@ -566,9 +566,9 @@
                         <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
                     </when>
 
-                </choose>                    
+                </choose>
             </otherwise>
-        </choose>        
+        </choose>
     </inbound>
     <backend>
         <base />
