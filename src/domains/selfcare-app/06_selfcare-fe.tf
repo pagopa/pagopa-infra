@@ -3,7 +3,7 @@
  **/
 resource "azurerm_resource_group" "selfcare_fe_rg" {
   count    = var.selfcare_fe_enabled ? 1 : 0
-  name     = "${local.product}-fe-rg"
+  name     = "${local.product}-${var.domain}-fe-rg"
   location = var.location
 
   tags = var.tags
@@ -49,7 +49,7 @@ locals {
 // public storage used to serve FE
 #tfsec:ignore:azure-storage-default-action-deny
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v3.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v3.2.1"
   count  = var.selfcare_fe_enabled ? 1 : 0
 
   name                = "selfcare"
@@ -86,16 +86,16 @@ module "selfcare_cdn" {
       value  = "max-age=31536000"
       },
       # Content-Security-Policy (in Report mode)
-      # {
-      #   action = "Overwrite"
-      #   name   = "Content-Security-Policy-Report-Only"
-      #   value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", local.dns_zone_selfcare, local.external_domain)
-      # },
-      # {
-      #   action = "Append"
-      #   name   = "Content-Security-Policy-Report-Only"
-      #   value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
-      # },
+      {
+        action = "Overwrite"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s", local.dns_zone_selfcare, local.external_domain) # https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it
+      },
+      {
+        action = "Append"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
+      },
       # {
       #   action = "Append"
       #   name   = "Content-Security-Policy-Report-Only"
