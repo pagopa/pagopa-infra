@@ -16,7 +16,7 @@
             </allowed-headers>
         </cors>
         <base />
-        <set-backend-service base-url="https://${hostname}/selc/pagopa/v1" />
+        <set-backend-service base-url="https://${hostname}/selfcare/pagopa/v1" />
     </inbound>
     <outbound>
         <base />
