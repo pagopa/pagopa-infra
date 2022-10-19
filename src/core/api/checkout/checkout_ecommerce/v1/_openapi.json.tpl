@@ -688,7 +688,7 @@
             "type": "string",
             "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
           },
-          "paTaxCode": {
+          "paFiscalCode": {
             "type": "string",
             "minLength": 11,
             "maxLength": 11
@@ -1152,6 +1152,381 @@
           "OK",
           "KO"
         ]
+      },
+      "TransactionStatus": {
+        "type": "string",
+        "description": "Possible statuses a transaction can be in",
+        "enum": [
+          "ACTIVATION_REQUESTED",
+          "ACTIVATED",
+          "AUTHORIZATION_REQUESTED",
+          "AUTHORIZED",
+          "AUTHORIZATION_FAILED",
+          "CLOSED",
+          "CLOSURE_FAILED",
+          "NOTIFIED",
+          "NOTIFIED_FAILED"
+        ]
+      },
+      "PaymentMethodResponse": {
+        "type": "object",
+        "description": "Payment method Response",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ENABLED",
+              "DISABLED",
+              "INCOMING"
+            ]
+          },
+          "paymentTypeCode": {
+            "type": "string"
+          },
+          "ranges": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/Range"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "status",
+          "paymentTypeCode",
+          "ranges"
+        ]
+      },
+      "PSPsResponse": {
+        "type": "object",
+        "description": "Get available PSP list Response",
+        "properties": {
+          "psp": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Psp"
+            }
+          }
+        }
+      },
+      "Psp": {
+        "type": "object",
+        "description": "PSP object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "paymentTypeCode": {
+            "type": "string"
+          },
+          "channelCode": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ENABLED",
+              "DISABLED",
+              "INCOMING"
+            ]
+          },
+          "businessName": {
+            "type": "string"
+          },
+          "brokerName": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "IT",
+              "EN",
+              "FR",
+              "DE",
+              "SL"
+            ]
+          },
+          "minAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "fixedCost": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": [
+          "code",
+          "paymentMethodID",
+          "description",
+          "status",
+          "type",
+          "name",
+          "brokerName",
+          "language",
+          "minAmount",
+          "maxAmount",
+          "fixedCost"
+        ]
+      },
+      "RptId": {
+        "type": "string",
+        "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+      },
+      "PaymentContextCode": {
+        "description": "Payment context code used for verifivaRPT/attivaRPT",
+        "type": "string",
+        "minLength": 32,
+        "maxLength": 32
+      },
+      "NewTransactionRequest": {
+        "type": "object",
+        "description": "Request body for creating a new transaction",
+        "properties": {
+          "rptId": {
+            "$ref": "#/components/schemas/RptId"
+          },
+          "paymentContextCode": {
+            "$ref": "#/components/schemas/PaymentContextCode"
+          },
+          "email": {
+            "type": "string"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "rptId",
+          "email",
+          "amount"
+        ],
+        "example": {
+          "rptId": "string"
+        }
+      },
+      "NewTransactionResponse": {
+        "type": "object",
+        "description": "Transaction data returned when creating a new transaction",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "paymentToken": {
+            "type": "string"
+          },
+          "rptId": {
+            "$ref": "#/components/schemas/RptId"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents",
+            "minLength": 1,
+            "maxLength": 140
+          },
+          "authToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "transactionId",
+          "amount",
+          "status"
+        ],
+        "example": {
+          "amount": 200
+        }
+      },
+      "RequestAuthorizationRequest": {
+        "type": "object",
+        "description": "Request body for requesting an authorization for a transaction",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "paymentInstrumentId": {
+            "type": "string",
+            "description": "Payment instrument id"
+          },
+          "pspId": {
+            "type": "string",
+            "description": "PSP id"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "IT",
+              "EN",
+              "FR",
+              "DE",
+              "SL"
+            ],
+            "description": "Requested language"
+          }
+        },
+        "required": [
+          "amount",
+          "fee",
+          "paymentInstrumentId",
+          "pspId",
+          "language"
+        ]
+      },
+      "UpdateAuthorizationRequest": {
+        "type": "object",
+        "description": "Request body for updating an authorization for a transaction",
+        "properties": {
+          "authorizationResult": {
+            "$ref": "#/components/schemas/AuthorizationResult"
+          },
+          "timestampOperation": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Payment timestamp"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          }
+        },
+        "required": [
+          "authorizationResult",
+          "timestampOperation",
+          "authorizationCode"
+        ],
+        "example": {
+          "authorizationResult": "OK",
+          "timestampOperation": "2022-02-11T12:00:00.000Z"
+        }
+      },
+      "UpdateTransactionStatusRequest": {
+        "type": "object",
+        "description": "Request body for updating a transaction",
+        "properties": {
+          "authorizationResult": {
+            "$ref": "#/components/schemas/AuthorizationResult"
+          },
+          "timestampOperation": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Payment timestamp"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          }
+        },
+        "required": [
+          "authorizationResult",
+          "timestampOperation",
+          "authorizationCode"
+        ]
+      },
+      "ActivationResultRequest": {
+        "type": "object",
+        "description": "Request body for activation result",
+        "properties": {
+          "paymentToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentToken"
+        ]
+      },
+      "ActivationResultResponse": {
+        "type": "object",
+        "description": "Response body for activation result",
+        "properties": {
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "TransactionInfo": {
+        "description": "Transaction data returned when querying for an existing transaction",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NewTransactionResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "status": {
+                "$ref": "#/components/schemas/TransactionStatus"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        ],
+        "example": {
+          "amount": 200,
+          "status": "ACTIVATED"
+        }
+      },
+      "AmountEuroCents": {
+        "description": "Amount for payments, in euro cents",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 99999999
+      },
+      "AuthorizationResult": {
+        "description": "Authorization result",
+        "type": "string",
+        "enum": [
+          "OK",
+          "KO"
+        ]
+      },
+      "InstallmentDetails": {
+        "description": "Amount and reason related to a payment installment",
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 25
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        }
       },
       "TransactionStatus": {
         "type": "string",
