@@ -1,0 +1,33 @@
+.create-merge table FAULT_CODE ( insertedTimestamp: datetime,
+	tipoEvento: string,
+    idDominio: string,
+    iuv: string,
+    ccp: string,
+    faultCode: string,
+    faultDescription: string,
+    stazione: string,
+    canale: string,
+    psp: string,
+    sessionId: string,
+    sessionIdOriginal: string,
+    uniqueId: string )    
+
+
+.alter table FAULT_CODE policy partitioning ```
+{
+  "PartitionKeys": [
+    {
+      "ColumnName": "insertedTimestamp",
+      "Kind": "UniformRange",
+      "Properties": {
+        "Reference": "2022-09-01T00:00:00",
+        "RangeSize": "1.00:00:00",
+        "OverrideCreationTime": false
+      }
+    }
+  ]
+}```
+
+
+.alter table FAULT_CODE policy update 
+@'[{ "IsEnabled": true, "Source": "ReEvent", "Query": "Extract_Fault_Code()", "IsTransactional": false, "PropagateIngestionProperties": true}]'
