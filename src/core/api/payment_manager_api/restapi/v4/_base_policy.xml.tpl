@@ -17,7 +17,7 @@
       </cors>
       <base />
       <choose>
-        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it"))">
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
           <set-variable name="backend-base-url" value="@($"{{pm-host-prf}}/pp-restapi/v4")" />
         </when>
         <otherwise>
