@@ -72,6 +72,12 @@ variable "mock_ec_enabled" {
   default     = false
 }
 
+variable "mock_ec_secondary_enabled" {
+  type        = bool
+  description = "Mock Secondary EC enabled"
+  default     = false
+}
+
 variable "mock_ec_always_on" {
   type        = bool
   description = "Mock EC always on property"

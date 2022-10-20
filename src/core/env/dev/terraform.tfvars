@@ -110,6 +110,7 @@ prostgresql_db_mockpsp = "mock-psp"
 
 # mock
 mock_ec_enabled              = true
+mock_ec_secondary_enabled    = true
 mock_payment_gateway_enabled = true
 
 # apim x nodo pagamenti

@@ -144,6 +144,7 @@ postgres_private_endpoint_enabled        = false
 
 # mock
 mock_ec_enabled              = false
+mock_ec_secondary_enabled    = false
 mock_payment_gateway_enabled = false
 
 
