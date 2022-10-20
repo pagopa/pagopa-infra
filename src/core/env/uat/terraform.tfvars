@@ -136,6 +136,7 @@ prostgresql_db_mockpsp = "mock-psp"
 # mock
 mock_ec_enabled              = true
 mock_ec_always_on            = true
+mock_ec_secondary_enabled    = false
 mock_payment_gateway_enabled = true
 
 

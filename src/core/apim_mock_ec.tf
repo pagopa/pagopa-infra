@@ -48,17 +48,15 @@ module "apim_mock_ec_api" {
   path         = "mock-ec/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s", module.mock_ec[0].default_site_hostname)
-  #service_url = null
+  # UAT pagoPA - DEV nexi 
+  service_url = var.env_short == "u" ? format("https://%s/mock-ec", module.mock_ec[0].default_site_hostname) : var.env_short == "d" ? "http://${var.lb_aks}/mock-ec-sit/servizi/PagamentiTelematiciRPT" : null
 
   content_value = templatefile("./api/mockec_api/v1/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  # xml_content = file("./api/mockec_api/v1/_base_policy.xml")
-
   xml_content = templatefile("./api/mockec_api/v1/_base_policy.xml", {
-    mock_ec_host_path = var.env_short == "u" ? format("https://%s/mock-ec", module.mock_ec[0].default_site_hostname) : "http://${var.lb_aks}/mock-ec-sit/mock-ec"
+    mock_ec_host_path = var.env_short == "u" ? format("https://%s/mock-ec", module.mock_ec[0].default_site_hostname) : var.env_short == "d" ? "http://${var.lb_aks}/mock-ec-sit/servizi/PagamentiTelematiciRPT" : ""
   })
 
 }
@@ -67,7 +65,7 @@ module "apim_mock_ec_api" {
 ## Mock EC Nexi secondary  ##
 #############################
 module "apim_secondary_mock_ec_product" {
-  count  = var.mock_ec_enabled ? 1 : 0
+  count  = var.mock_ec_secondary_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-secondary-mock-ec"
@@ -85,7 +83,7 @@ module "apim_secondary_mock_ec_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "secondary_mock_ec_api" {
-  count = var.mock_ec_enabled ? 1 : 0
+  count = var.mock_ec_secondary_enabled ? 1 : 0
 
   name                = format("%s-secondary-mock-ec-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -95,7 +93,7 @@ resource "azurerm_api_management_api_version_set" "secondary_mock_ec_api" {
 }
 
 module "apim_secondary_mock_ec_api" {
-  count  = var.mock_ec_enabled ? 1 : 0
+  count  = var.mock_ec_secondary_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-secondary-mock-ec-api", var.env_short)
@@ -112,17 +110,16 @@ module "apim_secondary_mock_ec_api" {
   path         = "secondary-mock-ec/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s", module.mock_ec[0].default_site_hostname)
-  #service_url = null
+  # service_url = format("https://%s", module.mock_ec[0].default_site_hostname)
+  service_url = "http://${var.lb_aks}/secondary-mock-ec-sit/secondary-mock-ec"
 
   content_value = templatefile("./api/mockec_api/secondary_v1/_swagger.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
   # xml_content = file("./api/mockec_api/v1/_base_policy.xml")
-
   xml_content = templatefile("./api/mockec_api/secondary_v1/_base_policy.xml", {
-    mock_ec_host_path = var.env_short == "u" ? format("https://%s/mock-ec", module.mock_ec[0].default_site_hostname) : "http://${var.lb_aks}/secondary-mock-ec-sit/servizi/PagamentiTelematiciRPT"
+    mock_ec_host_path = "http://${var.lb_aks}/secondary-mock-ec-sit/secondary-mock-ec"
   })
 
 }
