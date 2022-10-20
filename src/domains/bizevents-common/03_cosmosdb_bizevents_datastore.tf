@@ -23,7 +23,7 @@ module "bizevents_datastore_cosmosdb_snet" {
 
 module "bizevents_datastore_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-datastore-cosmos-account", local.project)
+  name     = format("%s-ds-cosmos-account", local.project)
   location = var.location
 
   resource_group_name = azurerm_resource_group.bizevents_rg.name
@@ -51,7 +51,7 @@ module "bizevents_datastore_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.bizevents_datastore_cosmos_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = format("%s-datastore-cosmos-sql-endpoint", local.project)
+  private_endpoint_name    = format("%s-ds-cosmos-sql-endpoint", local.project)
   private_endpoint_enabled = var.bizevents_datastore_cosmos_db_params.private_endpoint_enabled
   subnet_id                = module.bizevents_datastore_cosmosdb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
@@ -72,36 +72,9 @@ locals {
   # TODO
   bizevents_datastore_cosmosdb_containers = [
     {
-      name               = "bundles",
-      partition_key_path = "/idPsp",
-    },
-    {
-      name               = "archivedbundles",
-      partition_key_path = "/idPsp",
-    },
-    {
-      name               = "cibundles",
-      partition_key_path = "/ciFiscalCode",
-    },
-    {
-      name               = "archivedcibundles",
-      partition_key_path = "/ciFiscalCode",
-    },
-    {
-      name               = "bundlerequests",
-      partition_key_path = "/idPsp",
-    },
-    {
-      name               = "archivedbundlerequests",
-      partition_key_path = "/idPsp",
-    },
-    {
-      name               = "bundleoffers",
-      partition_key_path = "/ciFiscalCode",
-    },
-    {
-      name               = "archivedbundleoffers",
-      partition_key_path = "/ciFiscalCode",
+      name               = "TODO",
+      partition_key_path = "/todo",
+      default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
     },
   ]
 }
@@ -112,11 +85,12 @@ module "bizevents_datastore_cosmosdb_containers" {
   for_each = { for c in local.bizevents_datastore_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
-  resource_group_name = azurerm_resource_group.afm_rg.name
+  resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.bizevents_datastore_cosmosdb_account.name
   database_name       = module.bizevents_datastore_cosmosdb_database.name
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
+  default_ttl         = lookup(each.value, "default_ttl", null)
 
   autoscale_settings = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }

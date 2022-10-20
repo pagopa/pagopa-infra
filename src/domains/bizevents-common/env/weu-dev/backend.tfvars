@@ -1,4 +1,4 @@
 resource_group_name  = "io-infra-rg"
 storage_account_name = "pagopainfraterraformdev"
 container_name       = "azurermstate"
-key                  = "afm-common-dev.terraform.tfstate"
+key                  = "bizevents-common-dev.terraform.tfstate"
