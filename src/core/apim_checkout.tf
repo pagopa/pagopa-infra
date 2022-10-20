@@ -285,7 +285,7 @@ locals {
     display_name          = "Checkout - ecommerce API"
     description           = "API for the payment transaction and payment instrument microservices of ecommerce pagoPA platform"
     path                  = "checkout/ecommerce"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
@@ -322,7 +322,7 @@ module "apim_checkout_ecommerce_api_v1" {
 
   xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname,
-    checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
+    checkout_origin            = var.env_short == "d" || var.env_short == "u" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
 }
 
