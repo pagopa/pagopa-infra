@@ -89,7 +89,7 @@ module "selfcare_cdn" {
       {
         action = "Overwrite"
         name   = "Content-Security-Policy-Report-Only"
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s;", local.dns_zone_selfcare, local.external_domain) # https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it
+        value  = format("default-src 'self'; object-src 'none'; connect-src 'self' https://api.%s.%s/; script-src https://api.%s.%s/; ", local.dns_zone_selfcare, local.external_domain, local.dns_zone_selfcare, local.external_domain) # https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it
       },
       {
         action = "Append"
