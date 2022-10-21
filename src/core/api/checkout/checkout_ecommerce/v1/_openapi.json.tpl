@@ -21,7 +21,7 @@
             "description": "Unique identifier for payment request, so the concatenation of the tax code and notice number.",
             "schema": {
               "type": "string",
-              "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+              "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
             },
             "required": true
           },
@@ -686,7 +686,7 @@
         "properties": {
           "rptId": {
             "type": "string",
-            "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+            "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
           },
           "paFiscalCode": {
             "type": "string",
@@ -912,7 +912,7 @@
       },
       "RptId": {
         "type": "string",
-        "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+        "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
       },
       "PaymentContextCode": {
         "description": "Payment context code used for verifivaRPT/attivaRPT",
@@ -1290,7 +1290,7 @@
       },
       "RptId": {
         "type": "string",
-        "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+        "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
       },
       "PaymentContextCode": {
         "description": "Payment context code used for verifivaRPT/attivaRPT",
