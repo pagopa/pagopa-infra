@@ -6,7 +6,7 @@ module "apim_nodo_dei_pagamenti_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "nodo"
-  display_name = "Nodo dei Pagamenti"
+  display_name = "Nodo dei Pagamenti "
   description  = "Product for Nodo dei Pagamenti"
 
   api_management_name = module.apim.name
@@ -45,7 +45,7 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
 ############################
 locals {
   apim_node_for_psp_api = {
-    display_name          = "Node for PSP WS (NM3)"
+    display_name          = "Node for PSP WS (NM3) "
     description           = "Web services to support PSP in payment activations, defined in nodeForPsp.wsdl"
     path                  = "nodo/node-for-psp"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -114,7 +114,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
 ######################
 locals {
   apim_nodo_per_psp_api = {
-    display_name          = "Nodo per PSP WS"
+    display_name          = "Nodo per PSP WS "
     description           = "Web services to support PSP in payment activations, defined in nodoPerPsp.wsdl"
     path                  = "nodo/nodo-per-psp"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -181,7 +181,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
 ######################################
 locals {
   apim_nodo_per_psp_richiesta_avvisi_api = {
-    display_name          = "Nodo per PSP Richiesta Avvisi WS"
+    display_name          = "Nodo per PSP Richiesta Avvisi WS "
     description           = "Web services to support check of pending payments to PSP, defined in nodoPerPspRichiestaAvvisi.wsdl"
     path                  = "nodo/nodo-per-psp-richiesta-avvisi"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -239,7 +239,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi
 ######################
 locals {
   apim_node_for_io_api = {
-    display_name          = "Node for IO WS"
+    display_name          = "Node for IO WS "
     description           = "Web services to support activeIO, defined in nodeForIO.wsdl"
     path                  = "nodo/node-for-io"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -307,7 +307,7 @@ resource "azurerm_api_management_api_operation_policy" "activateIO_reservation_p
 ############################
 locals {
   apim_psp_for_node_api = {
-    display_name          = "PSP for Node WS (NM3)"
+    display_name          = "PSP for Node WS (NM3) "
     description           = "Web services to support payment transaction started on any PagoPA client, defined in pspForNode.wsdl"
     path                  = "nodo/psp-for-node"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -365,7 +365,7 @@ resource "azurerm_api_management_api_policy" "apim_psp_for_node_policy" {
 ######################
 locals {
   apim_nodo_per_pa_api = {
-    display_name          = "Nodo per PA WS"
+    display_name          = "Nodo per PA WS "
     description           = "Web services to support PA in payment activations, defined in nodoPerPa.wsdl"
     path                  = "nodo/nodo-per-pa"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -422,7 +422,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
 ######################
 locals {
   apim_nodo_per_pm_api = {
-    display_name          = "Nodo per Payment Manager API"
+    display_name          = "Nodo per Payment Manager API "
     description           = "API to support Payment Manager"
     path                  = "nodo/nodo-per-pm"
     subscription_required = var.nodo_pagamenti_subkey_required
@@ -462,8 +462,8 @@ module "apim_nodo_per_pm_api_v1" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
-    # base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
-    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    # base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 }
 
@@ -474,8 +474,8 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
   operation_id        = "closePayment"
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
-    # base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}" 
-    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    # base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" 
+    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 }
 
@@ -502,7 +502,59 @@ module "apim_nodo_per_pm_api_v2" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
-    # base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
-    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    # base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
+}
+
+######################
+## NODO monitoring  ##
+######################
+locals {
+  apim_nodo_monitoring_api = {
+    display_name          = "Nodo monitoring "
+    description           = "Nodo monitoring"
+    path                  = "nodo/monitoring"
+    subscription_required = var.nodo_pagamenti_subkey_required
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name                = format("%s-nodo-monitoring-api", var.env_short)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_nodo_monitoring_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_nodo_monitoring_api" {
+  count  = var.env_short != "p" ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+
+  name                  = format("%s-nodo-monitoring-api", var.env_short)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_nodo_dei_pagamenti_product.product_id]
+  subscription_required = local.apim_nodo_monitoring_api.subscription_required
+
+  version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api[0].id
+  api_version    = "v1"
+
+  description  = local.apim_nodo_monitoring_api.description
+  display_name = local.apim_nodo_monitoring_api.display_name
+  path         = local.apim_nodo_monitoring_api.path
+  protocols    = ["https"]
+
+  service_url = null
+
+  content_format = "openapi"
+  content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = file("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml")
+
 }
