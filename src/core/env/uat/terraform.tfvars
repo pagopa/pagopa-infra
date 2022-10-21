@@ -159,6 +159,8 @@ base_path_nodo_fatturazione   = "/fatturazione-uat"
 base_path_nodo_web_bo         = "/web-bo-uat"
 base_path_nodo_web_bo_history = "/web-bo-history-uat"
 
+nodo_auth_subscription_limit = 10000
+
 # eventhub
 eventhub_enabled = true
 
