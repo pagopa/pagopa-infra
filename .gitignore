@@ -36,3 +36,5 @@ __TMP
 .metals/
 __azurite_*
 /.idea
+
+__*.sh
