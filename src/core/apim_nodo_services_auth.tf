@@ -364,7 +364,7 @@ resource "azurerm_api_management_api_policy" "apim_psp_for_node_policy_auth" {
 ## WS nodo per PA ##
 ######################
 locals {
-  apim_nodo_per_pa_api = {
+  apim_nodo_per_pa_api_auth = {
     display_name          = "Nodo per PA WS (AUTH)"
     description           = "Web services to support PA in payment activations, defined in nodoPerPa.wsdl"
     path                  = "nodo-auth/nodo-per-pa"
@@ -421,7 +421,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_auth" {
 ## Nodo per PM API  ##
 ######################
 locals {
-  apim_nodo_per_pm_api = {
+  apim_nodo_per_pm_api_auth = {
     display_name          = "Nodo per Payment Manager API (AUTH)"
     description           = "API to support Payment Manager"
     path                  = "nodo-auth/nodo-per-pm"
