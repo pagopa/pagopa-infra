@@ -15,6 +15,7 @@ module "apim_nodo_dei_pagamenti_product_auth" {
   published             = true
   subscription_required = true
   approval_required     = true
+  subscriptions_limit   = var.nodo_auth_subscription_limit
 
   policy_xml = file("./api_product/nodo_pagamenti_api/auth/_base_policy.xml")
 }

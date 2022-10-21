@@ -335,6 +335,13 @@ variable "nodo_pagamenti_test_enabled" {
   default     = false
 }
 
+# nodo dei pagamenti - auth (nuova connettività)
+variable "nodo_auth_subscription_limit" {
+  type        = number
+  description = "subscriptions limit"
+  default     = 1000
+}
+
 # Network
 variable "cidr_vnet" {
   type        = list(string)
