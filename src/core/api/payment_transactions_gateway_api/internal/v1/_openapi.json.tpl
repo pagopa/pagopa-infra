@@ -9,6 +9,11 @@
       "url": "${host}/payment-gateway"
     }
   ],
+  "security": [
+    {
+      "ApiKey": []
+    }
+  ],
   "paths": {
     "/request-payments/bancomatpay": {
       "put": {
@@ -574,6 +579,14 @@
           "refundOutcome",
           "error"
         ]
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "description": "The API key to access this function app.",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
       }
     }
   }
