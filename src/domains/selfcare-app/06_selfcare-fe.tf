@@ -119,7 +119,7 @@ module "selfcare_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "img-src 'self' https://assets.cdn.io.italia.it https://pagopadweuselfcareselfcaresa.z6.web.core.windows.net data:;"
+        value  = "img-src 'self' https://assets.cdn.io.italia.it https://selcdcheckoutsa.z6.web.core.windows.net data:;"
       },
       # {
       #   action = "Append"
