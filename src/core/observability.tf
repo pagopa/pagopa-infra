@@ -2,7 +2,6 @@
 # https://learn.microsoft.com/en-us/azure/data-explorer/ingest-data-event-hub
 
 resource "azurerm_kusto_cluster" "data_explorer_cluster" {
-
   count = var.dexp_params.enabled ? 1 : 0
 
   name                = replace(format("%sdataexplorer", local.project), "-", "")
@@ -14,9 +13,17 @@ resource "azurerm_kusto_cluster" "data_explorer_cluster" {
     capacity = var.dexp_params.sku.capacity
   }
 
-  optimized_auto_scale {
-    minimum_instances = var.dexp_params.autoscale.min_instances
-    maximum_instances = var.dexp_params.autoscale.max_instances
+  dynamic "optimized_auto_scale" {
+    for_each = var.dexp_params.autoscale.enabled ? [1] : []
+
+    content {
+      minimum_instances = var.dexp_params.autoscale.min_instances
+      maximum_instances = var.dexp_params.autoscale.max_instances
+    }
+  }
+
+  identity {
+    type = "SystemAssigned"
   }
 
   public_network_access_enabled = var.dexp_params.public_network_access_enabled
@@ -24,7 +31,6 @@ resource "azurerm_kusto_cluster" "data_explorer_cluster" {
   engine                        = "V3"
 
   tags = var.tags
-
 }
 
 data "azurerm_kusto_cluster" "dexp_cluster" {

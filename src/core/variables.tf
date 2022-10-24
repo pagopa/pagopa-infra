@@ -1605,6 +1605,7 @@ variable "dexp_params" {
       capacity = number
     })
     autoscale = object({
+      enabled       = bool
       min_instances = number
       max_instances = number
     })
@@ -1614,6 +1615,7 @@ variable "dexp_params" {
     purge_enabled                 = bool
   })
 }
+
 variable "dexp_db" {
   type = object({
     enable             = bool
