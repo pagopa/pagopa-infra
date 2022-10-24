@@ -98,16 +98,16 @@ app_gateway_deny_paths = [
   "/payment-manager/internal*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd/.*",           # internal use no sub-keys 
+  "/gpd/.*",           # internal use no sub-keys
   "/gpd-payments/.*",  # internal use no sub-keys
   "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
-  "/gps/donation-service/.*",             # internal use no sub-keys 
-  "/shared/iuv-generator-service/.*",     # internal use no sub-keys 
-  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys 
+  "/gps/donation-service/.*",             # internal use no sub-keys
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   "/nodo-pagamenti/.*",
@@ -499,6 +499,7 @@ dexp_params = {
     capacity = 2
   }
   autoscale = {
+    enabled       = true
     min_instances = 2
     max_instances = 5
   }
@@ -506,7 +507,6 @@ dexp_params = {
   double_encryption_enabled     = true
   disk_encryption_enabled       = true
   purge_enabled                 = false
-
 }
 
 dexp_db = {
