@@ -14,7 +14,7 @@
       "get": {
         "summary": "PGS webview polling call",
         "tags": [
-          "payment-transactions-controller"
+          "Postepay-external"
         ],
         "operationId": "webviewPolling",
         "parameters": [
@@ -83,103 +83,168 @@
           }
         }
       }
+    },
+    "/request-payments/xpay/{requestId}/resume": {
+      "get": {
+        "summary": "payment request to xPay",
+        "tags": [
+          "XPay-external"
+        ],
+        "operationId": "resumeXPayPayment",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "esito",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idOperazione",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "xpayNonce",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timeStamp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mac",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resumeType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "OK-FOUND"
+          },
+          "400": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bad Request - mandatory parameters missing"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "TimeOut",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "RequestId not Found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Error during payment for requestId: xxx "
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/request-payments/xpay/{requestId}": {
+      "get": {
+        "summary": "retrieve XPay payment request",
+        "tags": [
+          "XPay-external"
+        ],
+        "operationId": "auth-response-xpay",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "MDC-Fields",
+            "description": "MDC information",
+            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayPollingResponseEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayPollingResponseEntity404"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "AuthMessage": {
-        "required": [
-          "auth_outcome"
-        ],
-        "type": "object",
-        "properties": {
-          "auth_outcome": {
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          },
-          "auth_code": {
-            "type": "string"
-          }
-        }
-      },
-      "ACKMessage": {
-        "required": [
-          "outcome"
-        ],
-        "type": "object",
-        "properties": {
-          "outcome": {
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          }
-        }
-      },
-      "PostePayAuthRequest": {
-        "required": [
-          "grandTotal",
-          "idTransaction",
-          "description"
-        ],
-        "type": "object",
-        "properties": {
-          "grandTotal": {
-            "type": "number",
-            "format": "integer",
-            "description": "amount + fee as euro cents",
-            "example": 2350
-          },
-          "idTransaction": {
-            "type": "string",
-            "description": "transaction id on Payment Manager",
-            "example": "e8c7a6bf-0e52-45b0-b62e-03ae29b59522"
-          },
-          "description": {
-            "type": "string",
-            "description": "payment object description",
-            "example": "pagamento bollo auto"
-          },
-          "paymentChannel": {
-            "type": "string",
-            "description": "request payment channel (APP or WEB)",
-            "example": "APP"
-          },
-          "name": {
-            "type": "string",
-            "description": "debtor's name and surname",
-            "example": "Mario Rossi"
-          },
-          "email_notice": {
-            "type": "string",
-            "description": "debtor's email address",
-            "example": "mario.rossi@gmail.com"
-          }
-        }
-      },
-      "PostePayAuthResponseEntity": {
-        "type": "object",
-        "required": [
-          "channel",
-          "urlRedirect"
-        ],
-        "properties": {
-          "channel": {
-            "type": "string",
-            "description": "request payment channel (APP or WEB)",
-            "example": "APP"
-          },
-          "urlRedirect": {
-            "type": "string",
-            "description": "redirect URL generated by PGS logic",
-            "example": "https://.../e2f518a9-9de4-4a27-afb0-5303e6eefcbf"
-          }
-        }
-      },
       "PollingResponseEntity": {
         "type": "object",
         "required": [
@@ -216,41 +281,64 @@
           }
         }
       },
-      "PostePayAuthError": {
+      "XPayPollingResponseEntity": {
         "type": "object",
         "required": [
-          "channel",
-          "error"
+          "status"
         ],
         "properties": {
-          "channel": {
+          "html": {
             "type": "string",
-            "description": "request payment channel (APP or WEB)",
-            "example": "APP"
+            "description": "HTML received in response from XPay",
+            "example": "<html>\n<head>\n<title>\nGestione Pagamento Fraud detection</title>\n<script type=\"text/javascript\" language=\"javascript\">\nfunction moveWindow() {\n    document.tdsFraudForm.submit();\n}\n</script>\n</head>\n<body>\n<form name=\"tdsFraudForm\" action=\"https://coll-ecommerce.nexi.it/ecomm/ecomm/TdsMerchantServlet\" method=\"POST\">\n<input type=\"hidden\" name=\"action\"     value=\"fraud\">\n<input type=\"hidden\" name=\"merchantId\" value=\"31320986\">\n<input type=\"hidden\" name=\"description\" value=\"7090069933_1606392234626\">\n<input type=\"hidden\" name=\"gdiUrl\"      value=\"\">\n<input type=\"hidden\" name=\"gdiNotify\"   value=\"\">\n</form>\n<script type=\"text/javascript\">\n  moveWindow();\n</script>\n</body>\n</html>\n"
           },
-          "error": {
+          "status": {
             "type": "string",
-            "description": "error description",
-            "example": "Error description"
+            "description": "status",
+            "example": "CREATED"
+          },
+          "authOutcome": {
+            "type": "string",
+            "description": "authorization outcome received from XPay",
+            "example": "OK"
+          },
+          "authCode": {
+            "type": "string",
+            "description": "authorization code received from XPay",
+            "example": 123
+          },
+          "redirectUrl": {
+            "type": "string",
+            "description": "redirection URL after a response from XPay has been received",
+            "example": "http://localhost:8080/payment-gateway/request-payments/xpay/2d75ebf8-c789-46a9-9a22-edf1976a8917"
           }
         }
       },
-      "Error": {
+      "XPayPollingResponseEntity404": {
         "type": "object",
         "required": [
-          "outcome",
-          "message"
+          "error"
         ],
         "properties": {
-          "outcome": {
-            "type": "string",
-            "description": "error outcome",
-            "example": "KO"
-          },
-          "message": {
-            "type": "string",
-            "description": "error message",
-            "example": "error message"
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "number",
+                "format": "integer",
+                "description": "error code",
+                "example": 404
+              },
+              "message": {
+                "type": "string",
+                "description": "error message",
+                "example": "RequestId not found"
+              }
+            }
           }
         }
       }
