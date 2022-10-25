@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="http://${hostname}:80" />
+      <set-backend-service base-url="https://${hostname}" />
     </inbound>
 
     <outbound>
