@@ -1,6 +1,6 @@
 <policies>
     <inbound>
-      <choose>
+      <!--<choose>
         <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For")).Equals("{{wisp2-gov-it}}"))">
           <return-response>
             <set-status code="307" />
@@ -9,7 +9,7 @@
             </set-header>
           </return-response>
         </when>
-      </choose>
+      </choose>-->
       <base />
     </inbound>
     <outbound>

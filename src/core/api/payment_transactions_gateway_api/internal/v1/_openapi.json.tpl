@@ -10,6 +10,74 @@
     }
   ],
   "paths": {
+    "/request-payments/bancomatpay": {
+      "put": {
+        "tags": [
+          "payment-transactions-controller"
+        ],
+        "operationId": "updateTransaction",
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ACKMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "payment-transactions-controller"
+        ],
+        "operationId": "requestPaymentToBancomatPay",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BPayPaymentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BPayPaymentResponseEntity"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/request-payments/postepay": {
       "post": {
         "summary": "payment authorization request to PostePay",
@@ -268,6 +336,68 @@
           }
         }
       },
+      "BPayPaymentRequest": {
+        "required": [
+          "amount",
+          "encryptedTelephoneNumber",
+          "idPagoPa",
+          "idPsp"
+        ],
+        "type": "object",
+        "properties": {
+          "idPsp": {
+            "type": "string"
+          },
+          "idPagoPa": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "encryptedTelephoneNumber": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "BPayPaymentResponseEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idPagoPa": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "outcome": {
+            "type": "boolean"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "clientGuid": {
+            "type": "string"
+          },
+          "isProcessed": {
+            "type": "boolean"
+          }
+        }
+      },
       "ACKMessage": {
         "required": [
           "outcome"
@@ -298,10 +428,9 @@
             "example": 2350
           },
           "idTransaction": {
-            "type": "integer",
-            "format": "int64",
+            "type": "string",
             "description": "transaction id on Payment Manager",
-            "example": 123456
+            "example": "e8c7a6bf-0e52-45b0-b62e-03ae29b59522"
           },
           "description": {
             "type": "string",

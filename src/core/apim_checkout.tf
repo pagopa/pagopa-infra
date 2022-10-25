@@ -277,3 +277,60 @@ module "apim_checkout_transactions_api_v1" {
     origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
   })
 }
+
+# pagopa-ecommerce APIs for checkout
+locals {
+  apim_checkout_ecommerce_api = {
+    # params for all api versions
+    display_name          = "Checkout - ecommerce API"
+    description           = "API for the payment transaction and payment instrument microservices of ecommerce pagoPA platform"
+    path                  = "checkout/ecommerce"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "checkout_ecommerce_api_v1" {
+  name                = "${local.project}-checkout-ecommerce-api"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_checkout_ecommerce_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_checkout_ecommerce_api_v1" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+
+  name                  = "${local.project}-checkout-ecommerce-api"
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_checkout_product[0].product_id]
+  subscription_required = local.apim_checkout_ecommerce_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.checkout_ecommerce_api_v1.id
+  api_version           = "v1"
+  service_url           = local.apim_checkout_ecommerce_api.service_url
+
+  description  = local.apim_checkout_ecommerce_api.description
+  display_name = local.apim_checkout_ecommerce_api.display_name
+  path         = local.apim_checkout_ecommerce_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/checkout/checkout_ecommerce/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_base_policy.xml.tpl", {
+    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname,
+    checkout_origin            = var.env_short == "d" || var.env_short == "u" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api" {
+  api_name            = "${local.project}-checkout-ecommerce-api-v1"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "getPaymentRequestInfo"
+
+  xml_content = file("./api/checkout/checkout_ecommerce/v1/_recaptcha_check.xml.tpl")
+}

@@ -92,22 +92,22 @@ app_gateway_alerts_enabled              = true
 app_gateway_deny_paths = [
   "/nodo/.*",
   "/payment-manager/clients/.*",
-  "/payment-manager/restapi-rtd/.*",
+  "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd/.*",           # internal use no sub-keys 
+  "/gpd/.*",           # internal use no sub-keys
   "/gpd-payments/.*",  # internal use no sub-keys
   "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
-  "/gps/donation-service/.*",             # internal use no sub-keys 
-  "/shared/iuv-generator-service/.*",     # internal use no sub-keys 
-  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys 
+  "/gps/donation-service/.*",             # internal use no sub-keys
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   "/nodo-pagamenti/.*",
@@ -124,6 +124,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
   ]
   ips = [
     "93.63.219.230",
+    "20.86.161.243" #cstar
   ]
 }
 
@@ -143,6 +144,7 @@ postgres_private_endpoint_enabled        = false
 
 # mock
 mock_ec_enabled              = false
+mock_ec_secondary_enabled    = false
 mock_payment_gateway_enabled = false
 
 
@@ -488,3 +490,31 @@ cosmos_document_db_params = {
 storage_queue_private_endpoint_enabled = true
 
 platform_private_dns_zone_records = ["api", "portal", "management"]
+
+# Data Explorer
+dexp_params = {
+  enabled = true
+  sku = {
+    name     = "Standard_D11_v2"
+    capacity = 2
+  }
+  autoscale = {
+    enabled       = true
+    min_instances = 2
+    max_instances = 5
+  }
+  public_network_access_enabled = true
+  double_encryption_enabled     = true
+  disk_encryption_enabled       = true
+  purge_enabled                 = false
+}
+
+dexp_db = {
+  enable             = true
+  hot_cache_period   = "P1M"
+  soft_delete_period = "P1Y"
+}
+
+dexp_re_db_linkes_service = {
+  enable = true
+}

@@ -46,7 +46,7 @@
       <!-- Test login END-->
       <!-- Test Session PM START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
-          <set-url>@($"https://acardste.vaservices.eu/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletTokenTest"]}")</set-url>
+          <set-url>@($"https://api.uat.platform.pagopa.it/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletTokenTest"]}")</set-url>
           <set-method>GET</set-method>
       </send-request>
        <choose>
@@ -111,7 +111,8 @@
               <set-body>@{
                   return new JObject(
                           new JProperty("sessionToken", (string) ((JObject)((JObject) context.Variables["pmSessionTest"])["data"])["sessionToken"]),
-                          new JProperty("idPayment", (string)((JObject) context.Variables["get-activate-response"])["idPagamento"])
+                          new JProperty("idPayment", (string)((JObject) context.Variables["get-activate-response"])["idPagamento"]),
+                          new JProperty("wisp", $"https://uat.wisp2.pagopa.gov.it/wallet/welcome?idSession={((string)((JObject) context.Variables["get-activate-response"])["idPagamento"])}")
                       ).ToString();
              }</set-body>
       </return-response>
