@@ -141,9 +141,3 @@ variable "cidr_subnet_afm_marketplace_cosmosdb" {
   description = "Cosmos DB address space"
   default     = null
 }
-
-
-variable "storage_private_endpoint_enabled" {
-  type    = bool
-  default = false
-}
