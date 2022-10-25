@@ -86,15 +86,15 @@ app_gateway_deny_paths = [
   "/payment-manager/internal/.*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd/.*",           # internal use no sub-keys 
+  "/gpd/.*",           # internal use no sub-keys
   "/gpd-payments/.*",  # internal use no sub-keys
   "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
-  "/gps/donation-service/.*",             # internal use no sub-keys 
-  "/shared/iuv-generator-service/.*",     # internal use no sub-keys 
-  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys 
+  "/gps/donation-service/.*",             # internal use no sub-keys
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
@@ -111,6 +111,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
   ]
   ips = [
     "93.63.219.230",
+    "20.93.160.60" #cstar
   ]
 }
 
@@ -135,6 +136,7 @@ prostgresql_db_mockpsp = "mock-psp"
 # mock
 mock_ec_enabled              = true
 mock_ec_always_on            = true
+mock_ec_secondary_enabled    = false
 mock_payment_gateway_enabled = true
 
 
@@ -500,10 +502,11 @@ storage_queue_private_endpoint_enabled = true
 dexp_params = {
   enabled = true
   sku = {
-    name     = "Standard_D11_v2"
-    capacity = 2
+    name     = "Dev(No SLA)_Standard_E2a_v4"
+    capacity = 1
   }
   autoscale = {
+    enabled       = false
     min_instances = 2
     max_instances = 3
   }
@@ -511,7 +514,6 @@ dexp_params = {
   double_encryption_enabled     = false
   disk_encryption_enabled       = true
   purge_enabled                 = false
-
 }
 
 dexp_db = {

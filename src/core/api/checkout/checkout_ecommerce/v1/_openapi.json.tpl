@@ -21,7 +21,7 @@
             "description": "Unique identifier for payment request, so the concatenation of the tax code and notice number.",
             "schema": {
               "type": "string",
-              "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+              "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
             },
             "required": true
           },
@@ -227,6 +227,167 @@
           },
           "409": {
             "description": "Illegal transaction status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{transactionId}/auth-request": {
+      "summary": "Request authorization for the transaction identified by payment token",
+      "post": {
+        "operationId": "requestTransactionAuthorization",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RequestAuthorizationRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction authorization request successfully processed, redirecting client to authorization web page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestAuthorizationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Transaction already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateTransactionAuthorization",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction Id"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UpdateAuthorizationRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction authorization request successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
             "content": {
               "application/json": {
                 "schema": {
@@ -525,9 +686,9 @@
         "properties": {
           "rptId": {
             "type": "string",
-            "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+            "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
           },
-          "paTaxCode": {
+          "paFiscalCode": {
             "type": "string",
             "minLength": 11,
             "maxLength": 11
@@ -751,7 +912,7 @@
       },
       "RptId": {
         "type": "string",
-        "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+        "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
       },
       "PaymentContextCode": {
         "description": "Payment context code used for verifivaRPT/attivaRPT",
@@ -805,9 +966,7 @@
             "type": "string"
           },
           "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents",
-            "minLength": 1,
-            "maxLength": 140
+            "$ref": "#/components/schemas/AmountEuroCents"
           },
           "authToken": {
             "type": "string"
@@ -885,6 +1044,23 @@
         "example": {
           "authorizationResult": "OK",
           "timestampOperation": "2022-02-11T12:00:00.000Z"
+        }
+      },
+      "RequestAuthorizationResponse": {
+        "type": "object",
+        "description": "Response body for requesting an authorization for a transaction",
+        "properties": {
+          "authorizationUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "URL where to redirect clients to continue the authorization process"
+          }
+        },
+        "required": [
+          "authorizationUrl"
+        ],
+        "example": {
+          "authorizationUrl": "https://example.com"
         }
       },
       "UpdateTransactionStatusRequest": {
@@ -974,20 +1150,6 @@
           "OK",
           "KO"
         ]
-      },
-      "InstallmentDetails": {
-        "description": "Amount and reason related to a payment installment",
-        "type": "object",
-        "properties": {
-          "reason": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 25
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        }
       },
       "TransactionStatus": {
         "type": "string",

@@ -72,6 +72,12 @@ variable "mock_ec_enabled" {
   default     = false
 }
 
+variable "mock_ec_secondary_enabled" {
+  type        = bool
+  description = "Mock Secondary EC enabled"
+  default     = false
+}
+
 variable "mock_ec_always_on" {
   type        = bool
   description = "Mock EC always on property"
@@ -1599,6 +1605,7 @@ variable "dexp_params" {
       capacity = number
     })
     autoscale = object({
+      enabled       = bool
       min_instances = number
       max_instances = number
     })
@@ -1608,6 +1615,7 @@ variable "dexp_params" {
     purge_enabled                 = bool
   })
 }
+
 variable "dexp_db" {
   type = object({
     enable             = bool
