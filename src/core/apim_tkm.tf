@@ -302,7 +302,7 @@ module "apim_tkm_mock_circuit_api_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_mock_circuit_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.tkm_consent_manager_api.id
+  version_set_id        = azurerm_api_management_api_version_set.tkm_mock_circuit_api[0].id
   api_version           = "v1"
   service_url           = local.apim_tkm_mock_circuit_api.service_url
 
