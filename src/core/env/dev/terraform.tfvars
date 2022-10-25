@@ -493,10 +493,11 @@ platform_private_dns_zone_records = ["api", "portal", "management"]
 dexp_params = {
   enabled = true
   sku = {
-    name     = "Standard_D11_v2"
-    capacity = 2
+    name     = "Dev(No SLA)_Standard_E2a_v4"
+    capacity = 1
   }
   autoscale = {
+    enabled       = false
     min_instances = 2
     max_instances = 3
   }
@@ -504,7 +505,6 @@ dexp_params = {
   double_encryption_enabled     = false
   disk_encryption_enabled       = true
   purge_enabled                 = false
-
 }
 
 dexp_db = {
