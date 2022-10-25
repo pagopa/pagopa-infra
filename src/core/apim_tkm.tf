@@ -284,7 +284,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "tkm_mock_circuit_api" {
 
-  name                = format("%s-tkm-mock-circuit-api", local.project)
+  name                = "${local.project}-tkm-mock-circuit-api"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_tkm_mock_circuit_api.display_name
@@ -296,7 +296,7 @@ module "apim_tkm_mock_circuit_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-tkm-mock-circuit-api", local.project)
+  name                  = "${local.project}-tkm-mock-circuit-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
