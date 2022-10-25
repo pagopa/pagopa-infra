@@ -232,6 +232,148 @@
           }
         }
       }
+    },
+    "/xpay/change/autenticazione3DS/outcome": {
+      "post": {
+        "tags": [
+          "XPay Authentication Change Outcome Controller"
+        ],
+        "operationId": "xpayChangeAuthenticationOutcome",
+        "summary": "permette di cambiare l'outcome dell'autenticazione3DS",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "outcome",
+            "example": "OK",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OK",
+                "KO"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "errorCode",
+            "example": "97L",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/xpay/change/paga3DS/outcome": {
+      "post": {
+        "tags": [
+          "XPay Payment Change Outcome Controller"
+        ],
+        "operationId": "xpayChangePaymentOutcome",
+        "summary": "permette di cambiare l'outcome della paga3DS",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "outcome",
+            "example": "OK",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OK",
+                "KO"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "errorCode",
+            "example": "97L",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/xpay/change/storna/outcome": {
+      "post": {
+        "tags": [
+          "XPay Refund Change Outcome Controller"
+        ],
+        "operationId": "xPayRefundChangeOutcome",
+        "parameters": [
+          {
+            "name": "outcome",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OK",
+                "KO"
+              ]
+            }
+          },
+          {
+            "name": "errorCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/xpay/change/situazioneOrdine/outcome": {
+      "post": {
+        "tags": [
+          "XPay OrderStatus Change Outcome Controller"
+        ],
+        "operationId": "xPayOrderStatusChangeOutcome",
+        "parameters": [
+          {
+            "name": "outcome",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OK",
+                "KO"
+              ]
+            }
+          },
+          {
+            "name": "errorCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   }
 }
