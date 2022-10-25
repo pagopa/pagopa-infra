@@ -176,66 +176,6 @@
             }
           }
         }
-      },
-      "patch": {
-        "operationId": "patchTransactionStatus",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          }
-        ],
-        "summary": "Patch status of specific transaction",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/UpdateTransactionStatusRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction data successfully updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid transaction id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Illegal transaction status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/transactions/{transactionId}/auth-request": {
@@ -299,85 +239,6 @@
           },
           "500": {
             "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "operationId": "updateTransactionAuthorization",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction Id"
-          }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/UpdateAuthorizationRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction authorization request successfully updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid transaction id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Bad gateway",
             "content": {
               "application/json": {
                 "schema": {
@@ -661,23 +522,6 @@
             "minimum": 0
           }
         }
-      },
-      "PatchPaymentMethodRequest": {
-        "type": "object",
-        "description": "Patch Payment Method Request",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
-          }
-        },
-        "required": [
-          "status"
-        ]
       },
       "PaymentRequestsGetResponse": {
         "type": "object",
@@ -1063,57 +907,6 @@
           "authorizationUrl": "https://example.com"
         }
       },
-      "UpdateTransactionStatusRequest": {
-        "type": "object",
-        "description": "Request body for updating a transaction",
-        "properties": {
-          "authorizationResult": {
-            "$ref": "#/components/schemas/AuthorizationResult"
-          },
-          "timestampOperation": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Payment timestamp"
-          },
-          "authorizationCode": {
-            "type": "string",
-            "description": "Payment gateway-specific authorization code related to the transaction"
-          }
-        },
-        "required": [
-          "authorizationResult",
-          "timestampOperation",
-          "authorizationCode"
-        ]
-      },
-      "ActivationResultRequest": {
-        "type": "object",
-        "description": "Request body for activation result",
-        "properties": {
-          "paymentToken": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "paymentToken"
-        ]
-      },
-      "ActivationResultResponse": {
-        "type": "object",
-        "description": "Response body for activation result",
-        "properties": {
-          "outcome": {
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          }
-        },
-        "required": [
-          "outcome"
-        ]
-      },
       "TransactionInfo": {
         "description": "Transaction data returned when querying for an existing transaction",
         "allOf": [
@@ -1298,16 +1091,6 @@
           }
         }
       },
-      "PatchPaymentMethodRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/PatchPaymentMethodRequest"
-            }
-          }
-        }
-      },
       "NewTransactionRequest": {
         "required": true,
         "content": {
@@ -1334,36 +1117,6 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/UpdateAuthorizationRequest"
-            }
-          }
-        }
-      },
-      "UpdateTransactionStatusRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/UpdateTransactionStatusRequest"
-            }
-          }
-        }
-      },
-      "ActivationResultRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ActivationResultRequest"
-            }
-          }
-        }
-      },
-      "ActivationResultResponse": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ActivationResultResponse"
             }
           }
         }
