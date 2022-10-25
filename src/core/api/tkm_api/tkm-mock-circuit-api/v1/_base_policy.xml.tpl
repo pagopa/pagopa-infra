@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="http://{{aks-lb-nexi}}:80" />
+      <set-backend-service base-url="http://${hostname}:80" />
     </inbound>
 
     <outbound>

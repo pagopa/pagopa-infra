@@ -292,6 +292,7 @@ resource "azurerm_api_management_api_version_set" "tkm_mock_circuit_api" {
 }
 
 module "apim_tkm_mock_circuit_api_v1" {
+  count  = var.env_short == "u" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
@@ -314,5 +315,7 @@ module "apim_tkm_mock_circuit_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/tkm_api/tkm-mock-circuit-api/v1/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/tkm_api/tkm-mock-circuit-api/v1/_base_policy.xml.tpl", {
+    hostname = "weuuat.shared.internal.uat.platform.pagopa.it"
+  })
 }
