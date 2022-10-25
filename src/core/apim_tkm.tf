@@ -283,6 +283,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "tkm_mock_circuit_api" {
+  count  = var.env_short == "u" ? 1 : 0
 
   name                = "${local.project}-tkm-mock-circuit-api"
   resource_group_name = azurerm_resource_group.rg_api.name
