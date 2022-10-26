@@ -229,7 +229,7 @@
         }
       }
     },
-    "/transactions/{transactionId}/auth-request": {
+    "/transactions/{transactionId}/auth-requests": {
       "summary": "Request authorization for the transaction identified by payment token",
       "post": {
         "operationId": "requestTransactionAuthorization",
