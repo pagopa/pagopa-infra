@@ -29,6 +29,10 @@ resource "kubernetes_role_binding" "deployer_binding" {
     name      = "azure-devops"
     namespace = local.system_domain_namespace
   }
+
+  depends_on = [
+    kubernetes_namespace.namespace
+  ]
 }
 
 resource "kubernetes_role_binding" "system_deployer_binding" {
@@ -81,5 +85,3 @@ resource "azurerm_key_vault_secret" "azure_devops_sa_cacrt" {
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
-
-

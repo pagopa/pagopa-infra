@@ -17,6 +17,10 @@ module "pod_identity" {
   key_vault     = data.azurerm_key_vault.kv
 
   secret_permissions = ["Get"]
+
+  depends_on = [
+    kubernetes_namespace.namespace
+  ]
 }
 
 resource "helm_release" "reloader" {
@@ -30,4 +34,8 @@ resource "helm_release" "reloader" {
     name  = "reloader.watchGlobally"
     value = "false"
   }
+
+    depends_on = [
+    kubernetes_namespace.namespace
+  ]
 }
