@@ -57,11 +57,24 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
+# mock_psp_service NEXI
+variable "mock_psp_service_enabled" {
+  type        = bool
+  description = "Mock PSP service Nexi"
+  default     = false
+}
+
 # mock_ec
 
 variable "mock_ec_enabled" {
   type        = bool
   description = "Mock EC enabled"
+  default     = false
+}
+
+variable "mock_ec_secondary_enabled" {
+  type        = bool
+  description = "Mock Secondary EC enabled"
   default     = false
 }
 
@@ -91,33 +104,33 @@ variable "cidr_subnet_mock_ec" {
 
 # mock_ec
 
-variable "mock_psp_enabled" {
+variable "mock_payment_gateway_enabled" {
   type        = bool
-  description = "Mock PSP enabled"
+  description = "Mock payment gateway enabled"
   default     = false
 }
 
-variable "mock_psp_always_on" {
+variable "mock_payment_gateway_always_on" {
   type        = bool
-  description = "Mock PSP always on property"
+  description = "Mock payment gateway always on property"
   default     = false
 }
 
-variable "mock_psp_tier" {
+variable "mock_payment_gateway_tier" {
   type        = string
-  description = "Mock PSP Plan tier"
+  description = "Mock payment gateway Plan tier"
   default     = "Standard"
 }
 
-variable "mock_psp_size" {
+variable "mock_payment_gateway_size" {
   type        = string
-  description = "Mock PSP Plan size"
+  description = "Mock payment gateway Plan size"
   default     = "S1"
 }
 
-variable "cidr_subnet_mock_psp" {
+variable "cidr_subnet_mock_payment_gateway" {
   type        = list(string)
-  description = "Address prefixes subnet mock psp"
+  description = "Address prefixes subnet mock payment_gateway"
   default     = null
 }
 
@@ -554,6 +567,14 @@ variable "app_gateway_deny_paths_2" {
   default     = []
 }
 
+variable "app_gateway_allowed_paths_pagopa_onprem_only" {
+  type = object({
+    paths = list(string)
+    ips   = list(string)
+  })
+  description = "Allowed paths from pagopa onprem only"
+}
+
 # Azure DevOps Agent
 variable "enable_azdoa" {
   type        = bool
@@ -751,6 +772,12 @@ variable "checkout_function_always_on" {
 variable "checkout_pagopaproxy_host" {
   type        = string
   description = "pagopaproxy host"
+  default     = null
+}
+
+variable "ecommerce_ingress_hostname" {
+  type        = string
+  description = "ecommerce ingress hostname"
   default     = null
 }
 
@@ -1491,32 +1518,6 @@ variable "cidr_subnet_advanced_fees_management" {
   description = "Cosmos DB address space."
 }
 
-variable "cosmos_afm_db_params" {
-  type = object({
-    kind           = string
-    capabilities   = list(string)
-    offer_type     = string
-    server_version = string
-    consistency_policy = object({
-      consistency_level       = string
-      max_interval_in_seconds = number
-      max_staleness_prefix    = number
-    })
-    main_geo_location_zone_redundant = bool
-    enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
-    additional_geo_locations = list(object({
-      location          = string
-      failover_priority = number
-      zone_redundant    = bool
-    }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
-  })
-}
-
 variable "afm_marketplace_cname_record_name" {
   type        = string
   description = "DNS canonical name"
@@ -1592,4 +1593,39 @@ variable "platform_private_dns_zone_records" {
   type        = list(string)
   default     = null
   description = "List of records to add into the platform.pagopa.it dns private"
+}
+
+# Data Explorer
+
+variable "dexp_params" {
+  type = object({
+    enabled = bool
+    sku = object({
+      name     = string
+      capacity = number
+    })
+    autoscale = object({
+      enabled       = bool
+      min_instances = number
+      max_instances = number
+    })
+    public_network_access_enabled = bool
+    double_encryption_enabled     = bool
+    disk_encryption_enabled       = bool
+    purge_enabled                 = bool
+  })
+}
+
+variable "dexp_db" {
+  type = object({
+    enable             = bool
+    hot_cache_period   = string
+    soft_delete_period = string
+  })
+}
+
+variable "dexp_re_db_linkes_service" {
+  type = object({
+    enable = bool
+  })
 }

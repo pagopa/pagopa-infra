@@ -68,3 +68,13 @@ module "ecommerce_storage" {
 
   tags = var.tags
 }
+
+resource "azurerm_storage_queue" "notifications_service_retry_queue" {
+  name                 = "${local.project}-notifications-service-retry-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
+resource "azurerm_storage_queue" "notifications_service_errors_queue" {
+  name                 = "${local.project}-notifications-service-errors-queue"
+  storage_account_name = module.ecommerce_storage.name
+}

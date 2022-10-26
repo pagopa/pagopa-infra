@@ -73,10 +73,10 @@
     "ClosePaymentResponse": {
       "type": "object",
       "required": [
-        "esito"
+        "outcome"
       ],
       "properties": {
-        "esito": {
+        "outcome": {
           "type": "string",
           "enum": [
             "OK",
@@ -125,7 +125,8 @@
         "outcome": {
           "type": "string",
           "enum": [
-            "OK"
+            "OK",
+            "KO"
           ]
         },
         "idPSP": {
