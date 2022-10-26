@@ -62,7 +62,7 @@ resources:
       type: github
       name: pagopa/azure-pipeline-templates
       # ref: refs/tags/v2.10.3
-      ref: refs/head/DEVOPS-549-pipelines-fix-deploy-iac-la-richiesta-di-autorizzazione-non-e-piu-presente
+      ref: refs/heads/DEVOPS-549-pipelines-fix-deploy-iac-la-richiesta-di-autorizzazione-non-e-piu-presente
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
