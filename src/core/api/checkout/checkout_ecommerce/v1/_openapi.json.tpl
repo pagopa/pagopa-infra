@@ -48,16 +48,6 @@
                 }
               }
             }
-          },
-          "502": {
-            "description": "PagoPA services are not available or request is rejected by PagoPa",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
-                }
-              }
-            }
           }
         }
       }
