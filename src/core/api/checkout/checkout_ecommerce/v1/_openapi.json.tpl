@@ -1142,11 +1142,13 @@
             "example": [
               {
                 "noticeNumber": "302012387654312384",
-                "fiscalCode": "7777777777"
+                "fiscalCode": "7777777777",
+                "amount": 1000
               },
               {
                 "noticeNumber": "302012387654312385",
-                "fiscalCode": "7777777777"
+                "fiscalCode": "7777777777",
+                "amount": 2000
               }
             ]
           },
@@ -1155,7 +1157,7 @@
             "required": [
               "returnOkUrl",
               "returnCancelUrl",
-              "retunErrorOk"
+              "retunErrorUrl"
             ],
             "properties": {
               "returnOkUrl": {
@@ -1168,7 +1170,7 @@
                 "format": "uri",
                 "example": "www.comune.di.prova.it/pagopa/cancel.html"
               },
-              "retunErrorOk": {
+              "retunErrorUrl": {
                 "type": "string",
                 "format": "uri",
                 "example": "www.comune.di.prova.it/pagopa/error.html"
@@ -1179,6 +1181,11 @@
       },
       "PaymentNotice": {
         "type": "object",
+        "required": [
+          "noticeNumber",
+          "fiscalCode",
+          "amount"
+        ],
         "properties": {
           "noticeNumber": {
             "type": "string",
