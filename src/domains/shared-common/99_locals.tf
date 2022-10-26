@@ -34,6 +34,7 @@ locals {
     },
   ]
 
+  aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 
   storage_queue_dns_zone_name          = "privatelink.queue.core.windows.net"
