@@ -13,6 +13,28 @@
 <policies>
     <inbound>
         <base />
+      <set-body>
+        @{
+          // get request body content
+          XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+          XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+          // get primitive
+          XElement primitive = (XElement) body.FirstNode;
+          // get idChannel field
+          XElement idChannel = primitive.Descendants("idChannel").FirstOrDefault();
+          // if password exists then blank
+          // otherwise add an empty password field
+          XElement password = primitive.Descendants("password").FirstOrDefault();
+          if (password != null) {
+            password.Value = "";
+          } else {
+            password = XElement.Parse("<password></password>");
+            idChannel.AddAfterSelf(password);
+          }
+
+          return doc.ToString();
+        }
+      </set-body>
     </inbound>
     <backend>
         <base />
