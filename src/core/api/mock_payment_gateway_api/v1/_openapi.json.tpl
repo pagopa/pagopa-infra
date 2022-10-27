@@ -517,6 +517,106 @@
           }
         }
       }
+    },
+    "/xpay/ecomm/api/paga/paga3DS": {
+      "post": {
+        "tags": [
+          "XPay Payment Controller"
+        ],
+        "operationId": "xPayPayment",
+        "summary": "esegue la paga3DS",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/XPayPaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayPaymentResponseSuccess"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Errore",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayPaymentResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/xpay/ecomm/api/bo/storna": {
+      "post": {
+        "tags": [
+          "XPay Refund Controller"
+        ],
+        "operationId": "xPayRefund",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/XPayRefundRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayRefundResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/xpay/ecomm/api/bo/situazioneOrdine": {
+      "post": {
+        "tags": [
+          "XPay OrderStatus Controller"
+        ],
+        "operationId": "xPayOrderStatus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/XPayOrderRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayOrderResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -937,6 +1037,437 @@
             "format": "long"
           },
           "messaggio": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayPaymentRequest": {
+        "description": "",
+        "required": [
+          "apiKey",
+          "codiceTransazione",
+          "importo",
+          "divisa",
+          "xpayNonce",
+          "timeStamp",
+          "mac"
+        ],
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "codiceTransazione": {
+            "type": "string"
+          },
+          "importo": {
+            "type": "number",
+            "format": "BigInteger"
+          },
+          "divisa": {
+            "description": "valuta in codice ISO (EUR = 978)",
+            "type": "number",
+            "format": "long"
+          },
+          "xpayNonce": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          },
+          "parametriAggiuntivi": {
+            "$ref": "#/components/schemas/XPayAdditionalParameters"
+          }
+        }
+      },
+      "XPayAdditionalParameters": {
+        "properties": {
+          "mail": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "cognome": {
+            "type": "string"
+          },
+          "descrizione": {
+            "type": "string"
+          },
+          "note1": {
+            "type": "string"
+          },
+          "XPayTconTabEnum": {
+            "type": "string",
+            "enum": [
+              "C",
+              "D"
+            ]
+          }
+        }
+      },
+      "XPayPaymentResponseSuccess": {
+        "description": "",
+        "required": [
+          "esito",
+          "idOperazione",
+          "timeStamp",
+          "mac",
+          "codiceAutorizzazione",
+          "codiceConvenzione",
+          "data",
+          "nazione",
+          "regione",
+          "brand",
+          "tipoProdotto",
+          "tipoTransazione"
+        ],
+        "type": "object",
+        "properties": {
+          "esito": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idOperazione": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "number",
+            "format": "long"
+          },
+          "mac": {
+            "type": "string"
+          },
+          "codiceAutorizzazione": {
+            "type": "string"
+          },
+          "codiceConvenzione": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "nazione": {
+            "type": "string"
+          },
+          "regione": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "tipoProdotto": {
+            "type": "string"
+          },
+          "tipoTransazione": {
+            "type": "string"
+          },
+          "ppo": {
+            "type": "string"
+          },
+          "parametriAggiuntivi": {
+            "$ref": "#/components/schemas/XPayAdditionalParameters"
+          }
+        }
+      },
+      "XPayPaymentResponseError": {
+        "description": "",
+        "required": [
+          "esito",
+          "idOperazione",
+          "timeStamp"
+        ],
+        "type": "object",
+        "properties": {
+          "esito": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idOperazione": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "number",
+            "format": "long"
+          },
+          "errore": {
+            "$ref": "#/components/schemas/XPayError"
+          },
+          "mac": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayRefundRequest": {
+        "required": [
+          "apiKey",
+          "codiceTransazione",
+          "divisa",
+          "importo",
+          "mac",
+          "timeStamp"
+        ],
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "codiceTransazione": {
+            "type": "string"
+          },
+          "importo": {
+            "type": "integer"
+          },
+          "divisa": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "timeStamp": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          },
+          "idContabParzialePayPal": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayInfoApm": {
+        "type": "object",
+        "properties": {
+          "apm": {
+            "type": "string"
+          },
+          "info": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayRefundResponse": {
+        "type": "object",
+        "properties": {
+          "esito": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idOperazione": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mac": {
+            "type": "string"
+          },
+          "infoAPM": {
+            "$ref": "#/components/schemas/XPayInfoApm"
+          },
+          "errore": {
+            "$ref": "#/components/schemas/XPayError"
+          }
+        }
+      },
+      "XPayOrderRequest": {
+        "required": [
+          "apiKey",
+          "codiceTransazione",
+          "mac",
+          "timeStamp"
+        ],
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "codiceTransazione": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayOrderResponse": {
+        "type": "object",
+        "properties": {
+          "timeStamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "esito": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idOperazione": {
+            "type": "string"
+          },
+          "scadenza": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          },
+          "errore": {
+            "$ref": "#/components/schemas/XPayError"
+          },
+          "report": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/XPayReport"
+            }
+          }
+        }
+      },
+      "XPayReport": {
+        "type": "object",
+        "properties": {
+          "numeroMerchant": {
+            "type": "string"
+          },
+          "codiceTransazione": {
+            "type": "string"
+          },
+          "importo": {
+            "type": "integer"
+          },
+          "divisa": {
+            "type": "string"
+          },
+          "codiceAutorizzazione": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "tipoPagamento": {
+            "type": "string"
+          },
+          "tipoTransazione": {
+            "type": "string"
+          },
+          "nazione": {
+            "type": "string"
+          },
+          "tipoProdotto": {
+            "type": "string"
+          },
+          "pan": {
+            "type": "string"
+          },
+          "parametri": {
+            "type": "string"
+          },
+          "stato": {
+            "type": "string"
+          },
+          "dataTransazione": {
+            "type": "string"
+          },
+          "mail": {
+            "type": "string"
+          },
+          "dettaglio": {
+            "$ref": "#/components/schemas/XPayReportDetail"
+          }
+        }
+      },
+      "XPayReportDetail": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "cognome": {
+            "type": "string"
+          },
+          "mail": {
+            "type": "string"
+          },
+          "importo": {
+            "type": "integer"
+          },
+          "importoRifiutato": {
+            "type": "integer"
+          },
+          "divisa": {
+            "type": "string"
+          },
+          "stato": {
+            "type": "string"
+          },
+          "codiceTransazione": {
+            "type": "string"
+          },
+          "parametriAggiuntivi": {
+            "type": "string"
+          },
+          "controvaloreValuta": {
+            "type": "integer"
+          },
+          "decimaliValuta": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tassoCambio": {
+            "type": "integer"
+          },
+          "codiceValuta": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "flagValuta": {
+            "type": "boolean"
+          },
+          "operazioni": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/XPayReportOperations"
+            }
+          }
+        }
+      },
+      "XPayReportOperations": {
+        "type": "object",
+        "properties": {
+          "tipoOperazione": {
+            "type": "string"
+          },
+          "importo": {
+            "type": "integer"
+          },
+          "divisa": {
+            "type": "string"
+          },
+          "stato": {
+            "type": "string"
+          },
+          "dataOperazione": {
+            "type": "string"
+          },
+          "utente": {
+            "type": "string"
+          },
+          "idContabParzialePayPal": {
             "type": "string"
           }
         }
