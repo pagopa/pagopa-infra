@@ -64,6 +64,7 @@ stages:
         DOMAIN_NAME: 'shared_app'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
         ENVIRONMENT: "dev"
+        TF_ENVIRONMENT_FOLDER: "weu-dev"
         WORKINGDIR: 'src/domains/shared-app'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_DEV_NAME }}
@@ -77,6 +78,7 @@ stages:
         DOMAIN_NAME: 'shared_common'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
         ENVIRONMENT: "dev"
+        TF_ENVIRONMENT_FOLDER: "weu-dev"
         WORKINGDIR: 'src/domains/shared-common'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_DEV_NAME }}
@@ -94,6 +96,7 @@ stages:
         DOMAIN_NAME: 'shared_app'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
         ENVIRONMENT: "uat"
+        TF_ENVIRONMENT_FOLDER: "weu-uat"
         WORKINGDIR: 'src/domains/shared-app'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_UAT_NAME }}
@@ -107,6 +110,7 @@ stages:
         DOMAIN_NAME: 'shared_common'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
         ENVIRONMENT: "uat"
+        TF_ENVIRONMENT_FOLDER: "weu-uat"
         WORKINGDIR: 'src/domains/shared-common'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_UAT_NAME }}
@@ -124,6 +128,7 @@ stages:
         DOMAIN_NAME: 'shared_app'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
         ENVIRONMENT: "prod"
+        TF_ENVIRONMENT_FOLDER: "weu-prod"
         WORKINGDIR: 'src/domains/shared-app'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_PROD_NAME }}
@@ -137,6 +142,7 @@ stages:
         DOMAIN_NAME: 'shared_common'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
         ENVIRONMENT: "prod"
+        TF_ENVIRONMENT_FOLDER: "weu-prod"
         WORKINGDIR: 'src/domains/shared-common'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_PROD_NAME }}
