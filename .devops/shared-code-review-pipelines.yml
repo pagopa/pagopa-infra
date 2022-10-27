@@ -1,14 +1,14 @@
-# pr:
-#   autoCancel: false
-#   branches:
-#     include:
-#       - main
-#   paths:
-#     include:
-#       - 'src/domains/shared-app'
-#       - 'src/domains/shared-common'
-#     exclude:
-#       - '**/*.lock.hcl'
+pr:
+  autoCancel: false
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - 'src/domains/shared-app'
+      - 'src/domains/shared-common'
+    exclude:
+      - '**/*.lock.hcl'
 
 parameters:
   - name: 'DEV'
