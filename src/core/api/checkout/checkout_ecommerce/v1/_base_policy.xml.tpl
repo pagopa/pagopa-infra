@@ -19,10 +19,10 @@
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"") />
       <choose>
         <when condition="@( context.Request.Url.Path.Contains("payment-requests") ||  context.Request.Url.Path.Contains("transactions") )">
-          <set-backend-service base-url="https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service"/>
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service")"/>
         </when>
         <when condition="@( context.Request.Url.Path.Contains("payment-methods") )">
-          <set-backend-service base-url="https://${ecommerce_ingress_hostname}/pagopa-ecommerce-payment-methods-service"/>
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
         </when>
         <when condition="@( context.Request.Url.Path.Contains("carts") )"> <!-- TODO use startWith -->
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
