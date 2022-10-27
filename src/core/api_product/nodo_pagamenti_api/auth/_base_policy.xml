@@ -20,8 +20,14 @@
           XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
           // get primitive
           XElement primitive = (XElement) body.FirstNode;
-          // get idChannel field
-          XElement idChannel = primitive.Descendants("idChannel").FirstOrDefault();
+          // get prev field
+          XElement prevField = primitive.Descendants("idChannel").FirstOrDefault();
+          if (prevField == null) {
+            prevField = primitive.Descendants("identificativoCanale").FirstOrDefault();
+          }
+          if (prevField == null) {
+            prevField = primitive.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
+          }
           // if password exists then blank
           // otherwise add an empty password field
           XElement password = primitive.Descendants("password").FirstOrDefault();
@@ -29,7 +35,7 @@
             password.Value = "";
           } else {
             password = XElement.Parse("<password></password>");
-            idChannel.AddAfterSelf(password);
+            prevField.AddAfterSelf(password);
           }
 
           return doc.ToString();
