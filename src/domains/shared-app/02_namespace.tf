@@ -35,7 +35,7 @@ resource "helm_release" "reloader" {
     value = "false"
   }
 
-    depends_on = [
+  depends_on = [
     kubernetes_namespace.namespace
   ]
 }
