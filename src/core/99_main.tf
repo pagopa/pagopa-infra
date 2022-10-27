@@ -8,6 +8,14 @@ terraform {
       source  = "hashicorp/azuread"
       version = "= 2.6.0"
     }
+    local = {
+      source = "hashicorp/local"
+      version = ">= 2.2.3"
+    }
+    time = {
+      source = "hashicorp/time"
+      version = ">= 0.9.0"
+    }
   }
 
   backend "azurerm" {}
