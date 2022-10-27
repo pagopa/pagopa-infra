@@ -36,7 +36,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/heads/DEVOPS-549-pipelines-fix-deploy-iac-la-richiesta-di-autorizzazione-non-e-piu-presente
+      ref: refs/tags/v3.0.0
       endpoint: 'io-azure-devops-github-ro'
 
 lockBehavior: sequential
