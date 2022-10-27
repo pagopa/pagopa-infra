@@ -414,17 +414,6 @@
           },
           {
             "in": "header",
-            "name": "X-Client-ID",
-            "description": "channel origin (APP/Web)",
-            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          },
-          {
-            "in": "header",
             "name": "MDC-Fields",
             "description": "MDC information",
             "example": "97g10t83x7bb0437bbc50sdf58e970gt",
@@ -506,16 +495,6 @@
         ],
         "operationId": "auth-request-xpay",
         "parameters": [
-          {
-            "in": "header",
-            "name": "X-Client-ID",
-            "description": "channel origin (APP/Web)",
-            "example": "APP",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
           {
             "in": "header",
             "name": "MDC-Fields",
