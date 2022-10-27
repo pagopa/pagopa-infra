@@ -56,6 +56,7 @@ resources:
       ref: refs/heads/DEVOPS-549-pipelines-fix-deploy-iac-la-richiesta-di-autorizzazione-non-e-piu-presente
       endpoint: 'io-azure-devops-github-ro'
 
+lockBehavior: sequential
 stages:
   - ${{ if eq(parameters['DEV'], true) }}:
     # DEV shared APP
