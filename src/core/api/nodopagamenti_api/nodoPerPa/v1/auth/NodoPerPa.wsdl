@@ -156,7 +156,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" />
           <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35" />
           <xsd:element name="codiceContestoPagamento" type="ppt:stText35" />
@@ -204,7 +203,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" />
           <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35" />
           <xsd:element name="codiceContestoPagamento" type="ppt:stText35" />
@@ -227,7 +225,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" />
           <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35" />
           <xsd:element name="codiceContestoPagamento" type="ppt:stText35" />
@@ -249,7 +246,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" />
           <xsd:element name="identificativoUnivocoVersamento" type="ppt:stText35" />
           <xsd:element name="codiceContestoPagamento" type="ppt:stText35" />
@@ -269,7 +265,6 @@
 
       <xsd:complexType name="nodoInviaRPT">
         <xsd:sequence>
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoPSP" type="ppt:stText35" />
           <xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" />
           <xsd:element name="identificativoCanale" type="ppt:stText35" />
@@ -292,7 +287,6 @@
 
       <xsd:complexType name="nodoInviaCarrelloRPT">
         <xsd:sequence>
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoPSP" type="ppt:stText35" />
           <xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" />
           <xsd:element name="identificativoCanale" type="ppt:stText35" />
@@ -341,7 +335,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
           <xsd:element name="rangeDa" type="xsd:dateTime" minOccurs="0" />
           <xsd:element name="rangeA" type="xsd:dateTime" minOccurs="0" />
@@ -379,7 +372,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
           <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0" />
         </xsd:sequence>
@@ -400,7 +392,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" />
         </xsd:sequence>
       </xsd:complexType>
@@ -420,7 +411,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
         </xsd:sequence>
       </xsd:complexType>
@@ -453,7 +443,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
           <xsd:element name="identificativoFlusso" type="xsd:string" />
         </xsd:sequence>
@@ -474,7 +463,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
           <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0" />
         </xsd:sequence>
@@ -508,7 +496,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
           <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0" />
           <xsd:element name="identificativoFlusso" type="xsd:string" />
@@ -530,7 +517,6 @@
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA" type="ppt:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA" type="ppt:stText35" />
-          <xsd:element name="password" type="ppt:stPassword" />
           <xsd:element name="identificativoDominio" type="ppt:stText35" />
           <xsd:element name="keyPA" type="ppt:stText40" />
           <xsd:element name="keyWISP" type="ppt:stText40" />

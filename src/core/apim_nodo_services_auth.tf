@@ -343,7 +343,7 @@ resource "azurerm_api_management_api" "apim_psp_for_node_api_v1_auth" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/pspForNode/v1/auth/pspForNode.wsdl")
+    content_value  = file("./api/nodopagamenti_api/pspForNode/v1/pspForNode.wsdl")
     wsdl_selector {
       service_name  = "pspForNode_Service"
       endpoint_name = "pspForNode_Port"
