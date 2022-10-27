@@ -353,7 +353,7 @@ module "apim_pagopa_notifications_service_api_v1" {
   protocols    = ["https"]
   service_url  = local.apim_pagopa_notifications_service_api.service_url
 
-  content_format = "openapi"
+  content_format = "swagger-json"
   content_value = templatefile("./api/ecommerce-notifications-service/v1/_swagger.json.tpl", {
     hostname = local.apim_hostname
   })
