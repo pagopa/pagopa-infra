@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "shared_rg" {
-  name     = format("%s-rg", local.project)
+  name     = "${local.project}-rg"
   location = var.location
 
   tags = var.tags
@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "shared_rg" {
 
 module "iuvgenerator_cosmosdb_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
-  name                 = format("%s-cosmosdb-snet", local.project)
+  name                 = "${local.project}-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_iuvgenerator_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
@@ -23,7 +23,7 @@ module "iuvgenerator_cosmosdb_snet" {
 
 module "iuvgenerator_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-iuv-gen-cosmos-account", local.project)
+  name     = "${local.project}-iuv-gen-cosmos-account"
   location = var.location
 
   resource_group_name = azurerm_resource_group.shared_rg.name
@@ -51,7 +51,7 @@ module "iuvgenerator_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.cosmos_iuvgenerator_db_params.public_network_access_enabled ? [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = format("%s-iuv-gen-cosmos-sql-endpoint", local.project)
+  private_endpoint_name    = "${local.project}-iuv-gen-cosmos-sql-endpoint"
   private_endpoint_enabled = var.cosmos_iuvgenerator_db_params.private_endpoint_enabled
   subnet_id                = module.iuvgenerator_cosmosdb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
@@ -63,7 +63,7 @@ module "iuvgenerator_cosmosdb_account" {
 resource "azurerm_cosmosdb_table" "iuvgenerator_cosmosdb_tables" {
   for_each = { for c in local.iuvgenerator_cosmosdb_tables : c.name => c }
 
-  name                = replace(format("%s-table", each.value.name), "-", "")
+  name                = replace("${each.value.name}-table", "-", "")
   resource_group_name = azurerm_resource_group.shared_rg.name
   account_name        = module.iuvgenerator_cosmosdb_account.name
   throughput          = each.value.throughput
