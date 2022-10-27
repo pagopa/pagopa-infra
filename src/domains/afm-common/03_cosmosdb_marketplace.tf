@@ -102,6 +102,10 @@ locals {
       name               = "archivedbundleoffers",
       partition_key_path = "/ciFiscalCode",
     },
+    {
+      name               = "validbundles",
+      partition_key_path = "/idPsp",
+    },
   ]
 }
 

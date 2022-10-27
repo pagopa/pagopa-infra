@@ -152,6 +152,41 @@
           }
         }
       }
+    },
+    "/par": {
+      "post": {
+        "tags": [
+          "authenticated"
+        ],
+        "summary": "update or create card with a new set of par and tokens",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParCreationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParCreationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -166,6 +201,62 @@
             "type": "string"
           }
         }
+      },
+      "ParCreationRequest": {
+        "type": "object",
+        "properties": {
+          "pan": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 19
+          },
+          "circuit": {
+            "type": "string",
+            "enum": [
+              "VISA",
+              "MASTERCARD",
+              "AMEX"
+            ]
+          },
+          "tokenNumber": {
+            "type": "integer",
+            "description": "Number of tokens to generate"
+          }
+        },
+        "required": [
+          "pan",
+          "circuit"
+        ]
+      },
+      "ParCreationResponse": {
+        "type": "object",
+        "properties": {
+          "pan": {
+            "type": "string"
+          },
+          "par": {
+            "type": "string"
+          },
+          "circuit": {
+            "type": "string",
+            "enum": [
+              "VISA",
+              "MASTERCARD",
+              "AMEX"
+            ]
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "pan",
+          "par",
+          "tokens"
+        ]
       }
     }
   }

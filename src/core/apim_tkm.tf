@@ -267,3 +267,56 @@ module "apim_tkm_test_utility_api_v1" {
 
   xml_content = file("./api/tkm_api/tkm-ms-test-utility/v1/_base_policy.xml.tpl")
 }
+
+#################################
+## API tkm-mock-circuit-api    ##
+#################################
+locals {
+  apim_tkm_mock_circuit_api = {
+    # params for all api versions
+    display_name          = "TKM - mock circuit"
+    description           = "RESTful APIs provided for TKM mock circuit"
+    path                  = "tkm/internal/tkmmockcircuits"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "tkm_mock_circuit_api" {
+  count = var.env_short == "u" ? 1 : 0
+
+  name                = "${local.project}-tkm-mock-circuit-api"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_tkm_mock_circuit_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_tkm_mock_circuit_api_v1" {
+  count = var.env_short == "u" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+
+  name                  = "${local.project}-tkm-mock-circuit-api"
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_tkm_product.product_id]
+  subscription_required = local.apim_tkm_mock_circuit_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.tkm_mock_circuit_api[0].id
+  api_version           = "v1"
+  service_url           = local.apim_tkm_mock_circuit_api.service_url
+
+  description  = local.apim_tkm_mock_circuit_api.description
+  display_name = local.apim_tkm_mock_circuit_api.display_name
+  path         = local.apim_tkm_mock_circuit_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/tkm_api/tkm-mock-circuit-api/v1/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/tkm_api/tkm-mock-circuit-api/v1/_base_policy.xml.tpl", {
+    hostname = "weuuat.shared.internal.uat.platform.pagopa.it"
+  })
+}
