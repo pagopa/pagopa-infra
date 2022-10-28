@@ -63,6 +63,11 @@ variable "mock_psp_service_enabled" {
   description = "Mock PSP service Nexi"
   default     = false
 }
+variable "mock_psp_secondary_service_enabled" {
+  type        = bool
+  description = "Mock Secondary PSP service Nexi"
+  default     = false
+}
 
 # mock_ec
 
@@ -255,21 +260,26 @@ variable "nodo_pagamenti_subkey_required" {
   default     = false
 }
 
+# 1. PPT LMI
+# 2. SYNC
+# 3. WFESP
+# 4. Fatturazione
+# 5. Web-BO
+# 6. Web-BO History 
+
 variable "base_path_nodo_ppt_lmi" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/ppt-lmi-sit/"
 }
 variable "base_path_nodo_ppt_lmi_dev" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/ppt-lmi-dev/"
+  default     = "/ppt-lmi-dev"
 }
 
 variable "base_path_nodo_sync" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/sync-cron-sit/syncWisp"
 }
 
 variable "base_path_nodo_sync_dev" {
@@ -281,21 +291,42 @@ variable "base_path_nodo_sync_dev" {
 variable "base_path_nodo_wfesp" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/wfesp-sit"
+}
+variable "base_path_nodo_wfesp_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/wfesp-dev"
 }
 
 variable "base_path_nodo_fatturazione" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/fatturazione-sit"
+}
+variable "base_path_nodo_fatturazione_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/fatturazione-dev"
 }
 
 variable "base_path_nodo_web_bo" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/web-bo-sit"
+}
+variable "base_path_nodo_web_bo_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/web-bo-dev"
 }
 
+variable "base_path_nodo_web_bo_history" {
+  type        = string
+  description = "base nodo on cloud"
+}
+variable "base_path_nodo_web_bo_history_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/web-bo-history-dev"
+}
 
 # nodo dei pagamenti - test
 variable "nodo_pagamenti_test_enabled" {

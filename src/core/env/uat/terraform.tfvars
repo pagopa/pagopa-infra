@@ -98,10 +98,12 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
-  "/ppt-lmi/.*",
-  "/sync-cron/.*",
-  "/wfesp/.*",
-  "/fatturazione/.*",
+  # "/ppt-lmi*",
+  # "/sync-cron*",
+  # "/wfesp*",
+  # "/fatturazione*",
+  # "/web-bo*",
+  # "/web-bo-history*",
   "/payment-manager/pp-restapi-server/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
@@ -149,12 +151,14 @@ nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input"
 ip_nodo                = "10.79.20.32"  # TEMP Nodo On Premises
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
-base_path_nodo_oncloud      = "/nodo-uat"
-base_path_nodo_ppt_lmi      = "/ppt-lmi-uat/"
-base_path_nodo_sync         = "/sync-cron-uat/syncWisp"
-base_path_nodo_wfesp        = "/wfesp-uat"
-base_path_nodo_fatturazione = "/fatturazione-uat"
-base_path_nodo_web_bo       = "/web-bo-uat"
+base_path_nodo_oncloud        = "/nodo-uat"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-uat"
+base_path_nodo_sync           = "/sync-cron-uat/syncWisp"
+base_path_nodo_wfesp          = "/wfesp-uat"
+base_path_nodo_fatturazione   = "/fatturazione-uat"
+base_path_nodo_web_bo         = "/web-bo-uat"
+base_path_nodo_web_bo_history = "/web-bo-history-uat"
+
 # eventhub
 eventhub_enabled = true
 

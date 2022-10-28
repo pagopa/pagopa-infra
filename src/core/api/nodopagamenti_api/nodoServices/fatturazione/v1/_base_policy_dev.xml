@@ -27,25 +27,10 @@
             </expose-headers>
         </cors>
         <base />
-
-        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-ppt-lmi}}" />
-        <choose>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/ppt-lmi-prf" />
-            </when>
-        </choose>   
-
-
+        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-fatturazione-dev}}" />
         <set-variable name="external-scheme" value="https" />
-
-        <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.<ENV>.platform.pagopa.it -->
-        <choose>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                <set-variable name="external-host" value="api.prf.platform.pagopa.it" />
-            </when>
-        </choose>  
-
-        <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /ppt-lmi/api/v1 -->
+        <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.dev.platform.pagopa.it -->
+        <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /fatturazione/api/v1 -->
         <choose>
             <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\${apim_base_path}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
                 <return-response>
@@ -69,41 +54,6 @@
     </backend>
     <outbound>
         <base />
-        <find-and-replace from="src=&quot;/" to="@{
-            string str = "src=\"";
-            str += (string)context.Variables["external-context-path"];
-            str += "/";
-            return str;
-        }" />
-        <find-and-replace from="href=&quot;/" to="@{
-            string str = "href=\"";
-            str += (string)context.Variables["external-context-path"];
-            str += "/";
-            return str;
-        }" />
-        <find-and-replace from="action=&quot;/" to="@{
-            string str = "action=\"";
-            str += (string)context.Variables["external-context-path"];
-            str += "/";
-            return str;
-        }" />
-        <find-and-replace from="@{
-            string str = context.Request.Url.Scheme;
-            str += "://";
-            str += context.Request.Url.Host;
-            str += "/";
-            return str;
-        }" to="@{
-            string str = (string)context.Variables["external-scheme"];
-            str += "://";
-            str += (string)context.Variables["external-host"];
-            str += (string)context.Variables["external-context-path"];
-            str += "/";
-            return str;
-        }" />
-        <set-header name="location" exists-action="override">
-            <value>@(context.Response.Headers.GetValueOrDefault("location","").Replace(context.Request.Url.Scheme + "://" + context.Request.Url.Host + "/", (string)context.Variables["external-scheme"] + "://" + (string)context.Variables["external-host"] + (string)context.Variables["external-context-path"] + "/"))</value>
-        </set-header>
     </outbound>
     <on-error>
         <base />

@@ -64,7 +64,7 @@ module "apim_mock_psp_service_api" {
 #############################
 
 module "apim_mock_psp_service_product_secondary" {
-  count  = var.mock_psp_service_enabled ? 1 : 0
+  count  = var.mock_psp_secondary_service_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-secondary-mock-psp-service"
@@ -82,7 +82,7 @@ module "apim_mock_psp_service_product_secondary" {
 }
 
 resource "azurerm_api_management_api_version_set" "mock_psp_service_api_secondary" {
-  count = var.mock_psp_service_enabled ? 1 : 0
+  count = var.mock_psp_secondary_service_enabled ? 1 : 0
 
   name                = format("%s-secondary-mock-psp-service-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -92,7 +92,7 @@ resource "azurerm_api_management_api_version_set" "mock_psp_service_api_secondar
 }
 
 module "apim_mock_psp_service_api_secondary" {
-  count  = var.mock_psp_service_enabled ? 1 : 0
+  count  = var.mock_psp_secondary_service_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-secondary-mock-psp-service-api", var.env_short)

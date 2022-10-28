@@ -311,6 +311,8 @@ resource "azurerm_api_management_named_value" "base_path_nodo_oncloud" {
   display_name        = "base-path-nodo-oncloud"
   value               = var.base_path_nodo_oncloud
 }
+
+# 1. PPT LMI
 resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi" {
   name                = "base-path-ppt-lmi"
   api_management_name = module.apim.name
@@ -325,6 +327,8 @@ resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi_dev" {
   display_name        = "base-path-ppt-lmi-dev"
   value               = var.base_path_nodo_ppt_lmi_dev
 }
+
+# 2. SYNC
 resource "azurerm_api_management_named_value" "base_path_nodo_sync" {
   name                = "base-path-sync"
   api_management_name = module.apim.name
@@ -339,6 +343,8 @@ resource "azurerm_api_management_named_value" "base_path_nodo_sync_dev" {
   display_name        = "base-path-sync-dev"
   value               = var.base_path_nodo_sync_dev
 }
+
+# 3. WFESP
 resource "azurerm_api_management_named_value" "base_path_nodo_wfesp" {
   name                = "base-path-wfesp"
   api_management_name = module.apim.name
@@ -346,6 +352,15 @@ resource "azurerm_api_management_named_value" "base_path_nodo_wfesp" {
   display_name        = "base-path-wfesp"
   value               = var.base_path_nodo_wfesp
 }
+resource "azurerm_api_management_named_value" "base_path_nodo_wfesp_dev" {
+  name                = "base-path-wfesp-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-wfesp-dev"
+  value               = var.base_path_nodo_wfesp_dev
+}
+
+# 4. Fatturazione
 resource "azurerm_api_management_named_value" "base_path_nodo_fatturazione" {
   name                = "base-path-fatturazione"
   api_management_name = module.apim.name
@@ -353,6 +368,15 @@ resource "azurerm_api_management_named_value" "base_path_nodo_fatturazione" {
   display_name        = "base-path-fatturazione"
   value               = var.base_path_nodo_fatturazione
 }
+resource "azurerm_api_management_named_value" "base_path_nodo_fatturazione_dev" {
+  name                = "base-path-fatturazione-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-fatturazione-dev"
+  value               = var.base_path_nodo_fatturazione_dev
+}
+
+# 5. Web-BO
 resource "azurerm_api_management_named_value" "base_path_nodo_web_bo" {
   name                = "base-path-web-bo"
   api_management_name = module.apim.name
@@ -360,6 +384,30 @@ resource "azurerm_api_management_named_value" "base_path_nodo_web_bo" {
   display_name        = "base-path-web-bo"
   value               = var.base_path_nodo_web_bo
 }
+resource "azurerm_api_management_named_value" "base_path_nodo_web_bo_dev" {
+  name                = "base-path-web-bo-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-web-bo-dev"
+  value               = var.base_path_nodo_web_bo_dev
+}
+
+# 6. Web-BO History
+resource "azurerm_api_management_named_value" "base_path_nodo_web_bo_history" {
+  name                = "base-path-web-bo-history"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-web-bo-history"
+  value               = var.base_path_nodo_web_bo_history
+}
+resource "azurerm_api_management_named_value" "base_path_nodo_web_bo_history_dev" {
+  name                = "base-path-web-bo-history-dev"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "base-path-web-bo-history-dev"
+  value               = var.base_path_nodo_web_bo_history_dev
+}
+
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_key" {
   count               = var.checkout_enabled ? 1 : 0
   name                = "pagopa-fn-checkout-key"

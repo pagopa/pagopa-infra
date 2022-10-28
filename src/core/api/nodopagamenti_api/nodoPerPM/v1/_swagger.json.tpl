@@ -547,7 +547,7 @@
         }
       }
     },
-    "/closepayment": {
+    "/v1/closepayment": {
       "post": {
         "tags": [
           "nodo"
