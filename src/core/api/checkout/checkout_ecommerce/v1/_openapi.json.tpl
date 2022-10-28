@@ -332,10 +332,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PaymentMethodResponse"
-                  }
+                  "$ref": "#/components/schemas/PaymentMethodsResponse"
                 }
               }
             }
@@ -1050,6 +1047,12 @@
           "paymentTypeCode",
           "ranges"
         ]
+      },
+      "PaymentMethodsResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PaymentMethodResponse"
+        }
       },
       "PSPsResponse": {
         "type": "object",
