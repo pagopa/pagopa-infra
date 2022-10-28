@@ -357,6 +357,8 @@ module "apim_nodo_web_bo_dev_product_history" {
 # }
 
 module "apim_nodo_web_bo_dev_api_history" {
+  count = var.env_short == "d" ? 1 : 0
+
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-dev-api-history", var.env_short)

@@ -3,6 +3,7 @@
 ##############
 
 module "apim_nodo_dei_pagamenti_product_dev" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "nodo-dev"
@@ -21,13 +22,11 @@ module "apim_nodo_dei_pagamenti_product_dev" {
 
 locals {
 
-  api_nodo_product_dev = [
-    azurerm_api_management_api.apim_node_for_psp_api_v1_dev.name,
-    azurerm_api_management_api.apim_nodo_per_psp_api_v1_dev.name,
-    azurerm_api_management_api.apim_node_for_io_api_v1_dev.name,
-    azurerm_api_management_api.apim_psp_for_node_api_v1_dev.name,
-    azurerm_api_management_api.apim_nodo_per_pa_api_v1_dev.name,
-  ]
+  api_nodo_product_dev = var.env_short == "d" ? [azurerm_api_management_api.apim_node_for_psp_api_v1_dev[0].name,
+    azurerm_api_management_api.apim_nodo_per_psp_api_v1_dev[0].name,
+    azurerm_api_management_api.apim_node_for_io_api_v1_dev[0].name,
+    azurerm_api_management_api.apim_psp_for_node_api_v1_dev[0].name,
+  azurerm_api_management_api.apim_nodo_per_pa_api_v1_dev[0].name, ] : []
 
 }
 
@@ -35,7 +34,7 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
   for_each = toset(local.api_nodo_product_dev)
 
   api_name            = each.key
-  product_id          = module.apim_nodo_dei_pagamenti_product_dev.product_id
+  product_id          = module.apim_nodo_dei_pagamenti_product_dev[0].product_id
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 }
@@ -54,6 +53,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                = format("%s-node-for-psp-api-dev", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -62,11 +63,13 @@ resource "azurerm_api_management_api_version_set" "node_for_psp_api_dev" {
 }
 
 resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                  = format("%s-node-for-psp-api-dev", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_node_for_psp_api_dev.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.node_for_psp_api_dev.id
+  version_set_id        = azurerm_api_management_api_version_set.node_for_psp_api_dev[0].id
   version               = "v1"
   service_url           = local.apim_node_for_psp_api_dev.service_url
   revision              = "1"
@@ -90,7 +93,9 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_dev" {
-  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_dev.name
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_dev[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
@@ -123,6 +128,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_psp_api_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                = format("%s-nodo-per-psp-api-dev", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -131,11 +138,13 @@ resource "azurerm_api_management_api_version_set" "nodo_per_psp_api_dev" {
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                  = format("%s-nodo-per-psp-api-dev", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_psp_api_dev.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.nodo_per_psp_api_dev.id
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_psp_api_dev[0].id
   version               = "v1"
   service_url           = local.apim_nodo_per_psp_api_dev.service_url
   revision              = "1"
@@ -159,7 +168,9 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_dev" {
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_dev.name
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_dev[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
@@ -190,6 +201,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_psp_richiesta_avvisi_api_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                = format("%s-nodo-per-psp-richiesta-avvisi-api-dev", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -198,11 +211,13 @@ resource "azurerm_api_management_api_version_set" "nodo_per_psp_richiesta_avvisi
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                  = format("%s-nodo-per-psp-richiesta-avvisi-api-dev", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_psp_richiesta_avvisi_api_dev.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api_dev.id
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api_dev[0].id
   version               = "v1"
   service_url           = local.apim_nodo_per_psp_richiesta_avvisi_api_dev.service_url
   revision              = "1"
@@ -226,7 +241,9 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi_policy_dev" {
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_dev.name
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_dev[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
@@ -248,6 +265,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_io_api_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                = format("%s-nodo-for-io-api-dev", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -256,11 +275,13 @@ resource "azurerm_api_management_api_version_set" "node_for_io_api_dev" {
 }
 
 resource "azurerm_api_management_api" "apim_node_for_io_api_v1_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                  = format("%s-node-for-io-api-dev", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_node_for_io_api_dev.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.node_for_io_api_dev.id
+  version_set_id        = azurerm_api_management_api_version_set.node_for_io_api_dev[0].id
   version               = "v1"
   service_url           = local.apim_node_for_io_api_dev.service_url
   revision              = "1"
@@ -284,7 +305,9 @@ resource "azurerm_api_management_api" "apim_node_for_io_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_dev" {
-  api_name            = resource.azurerm_api_management_api.apim_node_for_io_api_v1_dev.name
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = resource.azurerm_api_management_api.apim_node_for_io_api_v1_dev[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
@@ -316,6 +339,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "psp_for_node_api_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                = format("%s-psp-for-node-api-dev", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -324,11 +349,13 @@ resource "azurerm_api_management_api_version_set" "psp_for_node_api_dev" {
 }
 
 resource "azurerm_api_management_api" "apim_psp_for_node_api_v1_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                  = format("%s-psp-for-node-api-dev", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_psp_for_node_api_dev.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.psp_for_node_api_dev.id
+  version_set_id        = azurerm_api_management_api_version_set.psp_for_node_api_dev[0].id
   version               = "v1"
   service_url           = local.apim_psp_for_node_api_dev.service_url
   revision              = "1"
@@ -352,7 +379,9 @@ resource "azurerm_api_management_api" "apim_psp_for_node_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_psp_for_node_policy_dev" {
-  api_name            = resource.azurerm_api_management_api.apim_psp_for_node_api_v1_dev.name
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = resource.azurerm_api_management_api.apim_psp_for_node_api_v1_dev[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
@@ -374,6 +403,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                = format("%s-nodo-per-pa-api-dev", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -382,11 +413,13 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_dev" {
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   name                  = format("%s-nodo-per-pa-api-dev", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_pa_api_dev.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pa_api_dev.id
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pa_api_dev[0].id
   version               = "v1"
   service_url           = local.apim_nodo_per_pa_api_dev.service_url
   revision              = "1"
@@ -410,7 +443,9 @@ resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_dev" {
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1_dev.name
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1_dev[0].name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
@@ -431,6 +466,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_dev" {
+  count = var.env_short == "d" ? 1 : 0
 
   name                = format("%s-nodo-per-pm-api-dev", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -440,6 +476,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_dev" {
 }
 
 module "apim_nodo_per_pm_api_v1_dev" {
+  count = var.env_short == "d" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
@@ -447,7 +484,7 @@ module "apim_nodo_per_pm_api_v1_dev" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_pm_api_dev.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api_dev.id
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api_dev[0].id
   api_version           = "v1"
   service_url           = local.apim_nodo_per_pm_api_dev.service_url
 
@@ -480,6 +517,7 @@ module "apim_nodo_per_pm_api_v1_dev" {
 # }
 
 module "apim_nodo_per_pm_api_v2_dev" {
+  count = var.env_short == "d" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
@@ -487,7 +525,7 @@ module "apim_nodo_per_pm_api_v2_dev" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_pm_api_dev.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api_dev.id
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api_dev[0].id
   api_version           = "v2"
   service_url           = local.apim_nodo_per_pm_api_dev.service_url
 
@@ -521,7 +559,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_dev" {
-  count = var.env_short != "p" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
 
   name                = format("%s-nodo-monitoring-api-dev", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -531,13 +569,14 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_dev" {
 }
 
 module "apim_nodo_monitoring_api_dev" {
-  count  = var.env_short != "p" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
+
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-monitoring-api-dev", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_dei_pagamenti_product_dev.product_id]
+  product_ids           = [module.apim_nodo_dei_pagamenti_product_dev[0].product_id]
   subscription_required = local.apim_nodo_monitoring_api_dev.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api_dev[0].id
