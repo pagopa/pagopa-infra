@@ -83,19 +83,4 @@ resource "azurerm_api_management_api_diagnostic" "apim_info_logs" {
   verbosity                 = "information"
   http_correlation_protocol = "W3C"
 
-  frontend_request {
-    body_bytes = 0
-  }
-
-  frontend_response {
-    body_bytes = 0
-  }
-
-  backend_request {
-    body_bytes = 0
-  }
-
-  backend_response {
-    body_bytes = 0
-  }
 }
