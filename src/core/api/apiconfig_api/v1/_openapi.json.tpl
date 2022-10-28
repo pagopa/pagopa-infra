@@ -4,7 +4,7 @@
     "title": "PagoPA API configuration",
     "description": "Spring Application exposes Api to manage configuration for EC/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.18.8"
+    "version": "0.23.0"
   },
   "servers": [
     {
@@ -1996,6 +1996,163 @@
             },
             "content": {
               "application/json": {}
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cdis/check": {
+      "post": {
+        "tags": [
+          "Payment Service Providers"
+        ],
+        "summary": "Verify a XML file containing the details of an CDI",
+        "operationId": "verifyCdi",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "description": "XML file regarding CDI to check",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CheckItem"
+                  }
+                }
+              }
             }
           },
           "400": {
@@ -5707,6 +5864,7 @@
             "description": "Payment type code",
             "required": true,
             "schema": {
+              "pattern": "[A-Z]*",
               "type": "string"
             }
           }
@@ -10256,6 +10414,145 @@
         }
       ]
     },
+    "/icas/check": {
+      "post": {
+        "tags": [
+          "Creditor Institutions"
+        ],
+        "summary": "Validate XML file containing the details of an ICA",
+        "operationId": "verifyIca",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "description": "XML file regarding ICA to check",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CheckItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/icas/xsd": {
       "post": {
         "tags": [
@@ -13703,6 +14000,8 @@
             "example": "Lorem ipsum dolor sit amet"
           },
           "version": {
+            "maximum": 2,
+            "minimum": 1,
             "type": "integer",
             "description": "number version",
             "format": "int64"
@@ -13717,6 +14016,8 @@
             "type": "string"
           },
           "port": {
+            "maximum": 65535,
+            "minimum": 1,
             "type": "integer",
             "format": "int64"
           },
@@ -13734,6 +14035,8 @@
             "type": "string"
           },
           "redirect_port": {
+            "maximum": 65535,
+            "minimum": 1,
             "type": "integer",
             "format": "int64"
           },
@@ -13767,6 +14070,8 @@
             "type": "string"
           },
           "port_4mod": {
+            "maximum": 65535,
+            "minimum": 1,
             "type": "integer",
             "format": "int64"
           },
@@ -13780,6 +14085,8 @@
             "type": "string"
           },
           "proxy_port": {
+            "maximum": 65535,
+            "minimum": 1,
             "type": "integer",
             "format": "int64"
           },
@@ -13790,18 +14097,22 @@
             "type": "string"
           },
           "thread_number": {
+            "minimum": 1,
             "type": "integer",
             "format": "int64"
           },
           "timeout_a": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },
           "timeout_b": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },
           "timeout_c": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },
@@ -13983,10 +14294,12 @@
             "format": "int64"
           },
           "application_code": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },
           "segregation_code": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },
@@ -14054,6 +14367,8 @@
             "example": "localhost"
           },
           "port": {
+            "maximum": 65535,
+            "minimum": 1,
             "type": "integer",
             "format": "int32",
             "example": 1234
@@ -14086,6 +14401,7 @@
           "payment_type": {
             "maxLength": 15,
             "minLength": 0,
+            "pattern": "[A-Z]*",
             "type": "string",
             "example": "AD"
           }
@@ -14217,6 +14533,8 @@
             "type": "string"
           },
           "port": {
+            "maximum": 65535,
+            "minimum": 1,
             "type": "integer",
             "format": "int64"
           },
@@ -14233,6 +14551,8 @@
             "type": "string"
           },
           "proxy_port": {
+            "maximum": 65535,
+            "minimum": 1,
             "type": "integer",
             "format": "int64"
           },
@@ -14243,18 +14563,22 @@
             "type": "string"
           },
           "thread_number": {
+            "minimum": 1,
             "type": "integer",
             "format": "int64"
           },
           "timeout_a": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },
           "timeout_b": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },
           "timeout_c": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },
@@ -14271,6 +14595,8 @@
             "type": "string"
           },
           "redirect_port": {
+            "maximum": 65535,
+            "minimum": 1,
             "type": "integer",
             "format": "int64"
           },
@@ -14414,6 +14740,30 @@
           }
         }
       },
+      "CheckItem": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "valid": {
+            "type": "string",
+            "enum": [
+              "VALID",
+              "NOT_VALID"
+            ]
+          },
+          "note": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          }
+        }
+      },
       "Encoding": {
         "required": [
           "code_type",
@@ -14500,6 +14850,8 @@
             "example": "localhost"
           },
           "port": {
+            "maximum": 65535,
+            "minimum": 1,
             "type": "integer",
             "format": "int32",
             "example": 1234
@@ -14592,6 +14944,8 @@
             "example": "Lorem ipsum dolor sit amet"
           },
           "version": {
+            "maximum": 2,
+            "minimum": 1,
             "type": "integer",
             "description": "number version",
             "format": "int64"
@@ -15052,11 +15406,14 @@
             "example": "Lorem ipsum dolor sit amet"
           },
           "version": {
+            "maximum": 2,
+            "minimum": 1,
             "type": "integer",
             "description": "number version",
             "format": "int64"
           },
           "application_code": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },
@@ -15065,6 +15422,7 @@
             "format": "int64"
           },
           "segregation_code": {
+            "minimum": 0,
             "type": "integer",
             "format": "int64"
           },

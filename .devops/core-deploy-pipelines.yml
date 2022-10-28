@@ -36,87 +36,46 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v2.4.0
+      ref: refs/tags/v3.0.0
       endpoint: 'io-azure-devops-github-ro'
 
+lockBehavior: sequential
 stages:
-  - stage: apply_dev
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
-    pool:
-      name: pagopa-dev-linux
-    jobs:
-      - job: tf_apply_dev
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              ENVIRONMENT: "dev"
-              WORKINGDIR: 'src/core'
-              AZURE_SERVICE_CONNECTION_NAME: DEV-PAGOPA-SERVICE-CONN
-          # 3. Run terraform apply
-          - template: templates/terraform-apply/template.yaml@terraform
-            parameters:
-              ENVIRONMENT: "dev"
-              WORKINGDIR: 'src/core'
-              AZURE_SERVICE_CONNECTION_NAME: DEV-PAGOPA-SERVICE-CONN
+  - ${{ if eq(parameters['DEV'], true) }}:
+    # DEV CORE
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'core'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
+        ENVIRONMENT: "dev"
+        TF_ENVIRONMENT_FOLDER: "dev"
+        WORKINGDIR: 'src/core'
+        AZURE_SERVICE_CONNECTION_NAME: DEV-PAGOPA-SERVICE-CONN
 
-  - stage: apply_uat
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
-    pool:
-      name: pagopa-uat-linux
-    jobs:
-      #
-      # idpay_common
-      #
-      - job: tf_apply_uat
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              ENVIRONMENT: "uat"
-              WORKINGDIR: 'src/core'
-              AZURE_SERVICE_CONNECTION_NAME: UAT-PAGOPA-SERVICE-CONN
-          # 3. Run terraform apply
-          - template: templates/terraform-apply/template.yaml@terraform
-            parameters:
-              ENVIRONMENT: "uat"
-              WORKINGDIR: 'src/core'
-              AZURE_SERVICE_CONNECTION_NAME: UAT-PAGOPA-SERVICE-CONN
+  #
+  # UAT
+  #
+  - ${{ if eq(parameters['UAT'], true) }}:
+    # UAT CORE
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'core'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
+        ENVIRONMENT: "uat"
+        TF_ENVIRONMENT_FOLDER: "uat"
+        WORKINGDIR: 'src/core'
+        AZURE_SERVICE_CONNECTION_NAME: UAT-PAGOPA-SERVICE-CONN
 
-  - stage: apply_prod
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
-    pool:
-      name: pagopa-prod-linux
-    jobs:
-      #
-      # idpay_common
-      #
-      - job: tf_apply_prod
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              ENVIRONMENT: "prod"
-              WORKINGDIR: 'src/core'
-              AZURE_SERVICE_CONNECTION_NAME: PROD-PAGOPA-SERVICE-CONN
-          # 3. Run terraform apply
-          - template: templates/terraform-apply/template.yaml@terraform
-            parameters:
-              ENVIRONMENT: "prod"
-              WORKINGDIR: 'src/core'
-              AZURE_SERVICE_CONNECTION_NAME: PROD-PAGOPA-SERVICE-CONN
+  #
+  # PROD
+  #
+  - ${{ if eq(parameters['PROD'], true) }}:
+    # PROD CORE
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'core'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
+        ENVIRONMENT: "prod"
+        TF_ENVIRONMENT_FOLDER: "prod"
+        WORKINGDIR: 'src/core'
+        AZURE_SERVICE_CONNECTION_NAME: PROD-PAGOPA-SERVICE-CONN

@@ -23,14 +23,14 @@ module "key_vault" {
 }
 
 ## ad group policy ##
-resource "azurerm_key_vault_access_policy" "ad_group_policy" {
+resource "azurerm_key_vault_access_policy" "ad_admin_group_policy" {
   key_vault_id = module.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions     = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
 }
@@ -45,7 +45,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   object_id = data.azuread_group.adgroup_developers.object_id
 
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -61,4 +61,25 @@ resource "azurerm_key_vault_secret" "iuv_generator_cosmos_connection_string" {
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
+}
+
+#
+# IaC
+#
+
+#pagopaspa-cstar-platform-iac-projects-{subscription}
+data "azuread_service_principal" "platform_iac_sp" {
+  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.platform_iac_sp.object_id
+
+  secret_permissions = ["Get", "List", "Set", ]
+
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", ]
+
+  storage_permissions = []
 }
