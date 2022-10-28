@@ -48,7 +48,17 @@
                 }
               }
             }
-          }
+          },
+         "422": {
+           "description": "More than one payment notice present into the request",
+           "content": {
+             "application/json": {
+               "schema": {
+                 "$ref": "#/components/schemas/ProblemJson"
+               }
+             }
+           }
+         }
         }
       }
     },
