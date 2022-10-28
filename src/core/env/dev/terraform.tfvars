@@ -109,9 +109,11 @@ postgresql_network_rules = {
 prostgresql_db_mockpsp = "mock-psp"
 
 # mock
-mock_ec_enabled              = true
-mock_ec_secondary_enabled    = true
-mock_payment_gateway_enabled = true
+mock_ec_enabled                    = true
+mock_ec_secondary_enabled          = true
+mock_psp_service_enabled           = true
+mock_psp_secondary_service_enabled = true
+mock_payment_gateway_enabled       = true
 
 # apim x nodo pagamenti
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
@@ -122,12 +124,13 @@ nodo_pagamenti_url     = "http://10.70.66.200/nodo-sit/webservices/input"
 ip_nodo                = "x.x.x.x"      # disabled in DEV allOnCloud shall use lb_aks
 lb_aks                 = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
 
-base_path_nodo_oncloud      = "/nodo-sit"
-base_path_nodo_ppt_lmi      = "/ppt-lmi-sit/"
-base_path_nodo_sync         = "/sync-cron-sit/syncWisp"
-base_path_nodo_wfesp        = "/wfesp-sit"
-base_path_nodo_fatturazione = "/fatturazione-sit"
-base_path_nodo_web_bo       = "/web-bo-sit"
+base_path_nodo_oncloud        = "/nodo-sit"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-sit"
+base_path_nodo_sync           = "/sync-cron-sit/syncWisp"
+base_path_nodo_wfesp          = "/wfesp-sit"
+base_path_nodo_fatturazione   = "/fatturazione-sit"
+base_path_nodo_web_bo         = "/web-bo-sit"
+base_path_nodo_web_bo_history = "/web-bo-history-sit"
 
 # eventhub
 eventhub_enabled = true

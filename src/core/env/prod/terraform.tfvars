@@ -110,11 +110,13 @@ app_gateway_deny_paths = [
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
-  "/nodo-pagamenti/.*",
-  "/ppt-lmi/.*",
-  "/sync-cron/.*",
-  "/wfesp/.*",
-  "/fatturazione/.*",
+  "/nodo-pagamenti*",
+  "/ppt-lmi*",
+  "/sync-cron*",
+  "/wfesp*",
+  "/fatturazione*",
+  "/web-bo*",
+  "/web-bo-history*",
   "/payment-manager/pp-restapi-server/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
@@ -157,12 +159,15 @@ nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
 ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
-base_path_nodo_oncloud      = "/nodo-prod"
-base_path_nodo_ppt_lmi      = "/ppt-lmi-prod/"
-base_path_nodo_sync         = "/sync-cron-prod/syncWisp"
-base_path_nodo_wfesp        = "/wfesp-prod"
-base_path_nodo_fatturazione = "/fatturazione-prod"
-base_path_nodo_web_bo       = "/web-bo-prod"
+base_path_nodo_oncloud        = "/nodo-prd"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-prd"
+base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
+base_path_nodo_wfesp          = "/wfesp-prd"
+base_path_nodo_fatturazione   = "/fatturazione-prd"
+base_path_nodo_web_bo         = "/web-bo-prd"
+base_path_nodo_web_bo_history = "/web-bo-history-prd"
+
+
 # eventhub
 eventhub_enabled = true
 

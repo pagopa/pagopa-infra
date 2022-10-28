@@ -1,5 +1,6 @@
 # Data Explorer
 # https://learn.microsoft.com/en-us/azure/data-explorer/ingest-data-event-hub
+# https://learn.microsoft.com/it-it/azure/data-explorer/grafana
 
 resource "azurerm_kusto_cluster" "data_explorer_cluster" {
   count = var.dexp_params.enabled ? 1 : 0
