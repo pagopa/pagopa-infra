@@ -1666,3 +1666,36 @@ variable "dexp_re_db_linkes_service" {
     enable = bool
   })
 }
+
+# node forwarder
+# api_config
+
+variable "cidr_subnet_node_forwarder" {
+  type        = list(string)
+  description = "Address prefixes subnet node forwarder"
+  default     = null
+}
+
+variable "node_forwarder_tier" {
+  type        = string
+  description = "Node Forwarder plan tier"
+  default     = "Standard"
+}
+
+variable "node_forwarder_size" {
+  type        = string
+  description = "Node Forwarder plan size"
+  default     = "S1"
+}
+
+variable "node_forwarder_always_on" {
+  type        = bool
+  description = "Node Forwarder always on property"
+  default     = true
+}
+
+variable "node_forwarder_logging_level" {
+  type        = string
+  description = "Logging level of Node Forwarder"
+  default     = "INFO"
+}
