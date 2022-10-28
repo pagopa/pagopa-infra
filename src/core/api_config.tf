@@ -138,8 +138,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
 
 resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
   name                = format("%s-autoscale-apiconfig", local.project)
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  location            = azurerm_resource_group.gpd_rg.location
+  resource_group_name = azurerm_resource_group.api_config_rg.name
+  location            = azurerm_resource_group.api_config_rg.location
   target_resource_id  = module.api_config_app_service.plan_id
 
   profile {
@@ -151,7 +151,7 @@ resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
       maximum = 3
     }
 
-    # gpd rules
+    # rules
     rule {
       metric_trigger {
         metric_name              = "Requests"
