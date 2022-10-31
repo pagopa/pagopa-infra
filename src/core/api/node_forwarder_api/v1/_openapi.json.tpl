@@ -12,16 +12,6 @@
             "description": "Generated server url"
         }
     ],
-    "tags": [
-        {
-            "name": "Actuator",
-            "description": "Monitor and interact",
-            "externalDocs": {
-                "description": "Spring Boot Actuator Web API Documentation",
-                "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
-            }
-        }
-    ],
     "paths": {
         "/actuator": {
             "get": {
@@ -349,15 +339,6 @@
                     "proxy-controller"
                 ],
                 "operationId": "sendRequestToSPM_4",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "OK",

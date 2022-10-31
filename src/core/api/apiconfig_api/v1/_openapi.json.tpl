@@ -12,28 +12,6 @@
       "description": "Generated server url"
     }
   ],
-  "tags": [
-    {
-      "name": "Payment Service Providers",
-      "description": "Everything about Payment Service Providers"
-    },
-    {
-      "name": "Batch Operation",
-      "description": "Everything about Batch Operation"
-    },
-    {
-      "name": "Creditor Institutions",
-      "description": "Everything about Creditor Institution"
-    },
-    {
-      "name": "Configuration",
-      "description": "Everything about Configuration"
-    },
-    {
-      "name": "Utilities",
-      "description": "Everything about Utilities"
-    }
-  ],
   "paths": {
     "/batchoperation/creditorinstitution-station/loading": {
       "post": {
