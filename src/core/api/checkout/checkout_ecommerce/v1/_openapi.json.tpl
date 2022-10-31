@@ -16,15 +16,7 @@
         "operationId": "PostCarts",
         "description": "create a cart",
         "requestBody": {
-          "description": "New Cart related to payment requests",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CartRequest"
-              }
-            }
-          }
+          "$ref": "#/components/requestBodies/CartRequest"
         },
         "responses": {
           "302": {
@@ -49,16 +41,16 @@
               }
             }
           },
-         "422": {
-           "description": "More than one payment notice present into the request",
-           "content": {
-             "application/json": {
-               "schema": {
-                 "$ref": "#/components/schemas/ProblemJson"
-               }
-             }
-           }
-         }
+          "422": {
+            "description": "More than one payment notice present into the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
         }
       }
     },
