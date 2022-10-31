@@ -41,8 +41,8 @@ module "node_forwarder_app_service" {
   name                = format("%s-app-node-forwarder", local.project)
   client_cert_enabled = false
   always_on           = var.node_forwarder_always_on
-  linux_fx_version  = format("DOCKER|%s/pagopanodeforwarder:%s", module.container_registry.login_server, "latest")
-  health_check_path = "/node-forwarder/api/v1/info" # TODO verify
+  linux_fx_version    = format("DOCKER|%s/pagopanodeforwarder:%s", module.container_registry.login_server, "latest")
+  health_check_path   = "/node-forwarder/api/v1/info" # TODO verify
 
   app_settings = {
     # Monitoring
@@ -66,7 +66,7 @@ module "node_forwarder_app_service" {
     WEBSITE_VNET_ROUTE_ALL                          = "1"
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
     # Spring Environment
-    LOGGING_LEVEL              = var.node_forwarder_logging_level
+    LOGGING_LEVEL = var.node_forwarder_logging_level
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
