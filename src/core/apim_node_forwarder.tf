@@ -49,7 +49,8 @@ module "apim_node_forwarder_api" {
   # UAT pagoPA - DEV nexi 
   service_url = "https://${module.node_forwarder_app_service.default_site_hostname}/forward"
 
-  content_value = templatefile("./api/node_forwarder_api/v1/_swagger.json.tpl", {
+  content_format = "openapi"
+  content_value = templatefile("./api/node_forwarder_api/v1/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
