@@ -6,8 +6,8 @@ module "apim_node_forwarder_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-node-forwarder"
-  display_name = "product-node-forwarder"
-  description  = "product-node-forwarder"
+  display_name = "pagoPA Node Forwarder API"
+  description  = "Product pagoPA Node Forwarder API"
 
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -46,7 +46,6 @@ module "apim_node_forwarder_api" {
   path         = "pagopa-node-forwarder/api"
   protocols    = ["https"]
 
-  # UAT pagoPA - DEV nexi 
   service_url = "https://${module.node_forwarder_app_service.default_site_hostname}/forward"
 
   content_format = "openapi"
