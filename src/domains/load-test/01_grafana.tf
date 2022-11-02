@@ -22,7 +22,7 @@ resource "azurerm_dns_cname_record" "grafana" {
   zone_name           = var.dns_zone_prefix
   resource_group_name = local.vnet_resource_group_name
   ttl                 = 3600
-  record              = module.grafana_managed.endpoint
+  record              = module.grafana_managed.hostname
 
   tags = var.tags
 }
