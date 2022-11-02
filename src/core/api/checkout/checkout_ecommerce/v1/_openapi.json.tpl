@@ -11,49 +11,6 @@
     }
   ],
   "paths": {
-    "/carts": {
-      "post": {
-        "operationId": "PostCarts",
-        "description": "create a cart",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/CartRequest"
-        },
-        "responses": {
-          "302": {
-            "description": "Redirect",
-            "headers": {
-              "location": {
-                "description": "CheckOut Url",
-                "schema": {
-                  "type": "string",
-                  "format": "uri"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Formally invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "More than one payment notice present into the request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/payment-requests/{rpt_id}": {
       "get": {
         "operationId": "getPaymentRequestInfo",
@@ -1124,97 +1081,6 @@
           "maxAmount",
           "fixedCost"
         ]
-      },
-      "CartRequest": {
-        "type": "object",
-        "required": [
-          "paymentNotices",
-          "returnurls"
-        ],
-        "properties": {
-          "emailNotice": {
-            "type": "string",
-            "format": "email",
-            "example": "my_email@mail.it"
-          },
-          "paymentNotices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PaymentNotice"
-            },
-            "minItems": 1,
-            "maxItems": 5,
-            "example": [
-              {
-                "noticeNumber": "302012387654312384",
-                "fiscalCode": "7777777777",
-                "amount": 1000
-              },
-              {
-                "noticeNumber": "302012387654312385",
-                "fiscalCode": "7777777777",
-                "amount": 2000
-              }
-            ]
-          },
-          "returnurls": {
-            "type": "object",
-            "required": [
-              "returnOkUrl",
-              "returnCancelUrl",
-              "retunErrorUrl"
-            ],
-            "properties": {
-              "returnOkUrl": {
-                "type": "string",
-                "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/success.html"
-              },
-              "returnCancelUrl": {
-                "type": "string",
-                "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/cancel.html"
-              },
-              "retunErrorUrl": {
-                "type": "string",
-                "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/error.html"
-              }
-            }
-          }
-        }
-      },
-      "PaymentNotice": {
-        "type": "object",
-        "required": [
-          "noticeNumber",
-          "fiscalCode",
-          "amount"
-        ],
-        "properties": {
-          "noticeNumber": {
-            "type": "string",
-            "minLength": 18,
-            "maxLength": 18
-          },
-          "fiscalCode": {
-            "type": "string",
-            "minLength": 11,
-            "maxLength": 11
-          },
-          "amount": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "companyName": {
-            "type": "string",
-            "maxLength": 140
-          },
-          "description": {
-            "type": "string",
-            "maxLength": 140
-          }
-        }
       }
     },
     "requestBodies": {
@@ -1254,16 +1120,6 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/UpdateAuthorizationRequest"
-            }
-          }
-        }
-      },
-      "CartRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/CartRequest"
             }
           }
         }
