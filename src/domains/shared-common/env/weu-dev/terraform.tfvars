@@ -60,3 +60,4 @@ cosmos_iuvgenerator_db_params = {
 }
 
 cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
+cidr_subnet_loadtest_agent        = ["10.1.159.0/24"]
