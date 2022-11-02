@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "afm_rg" {
-  name     = format("%s-rg", local.project)
+  name     = "${local.project}-rg"
   location = var.location
 
   tags = var.tags
@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "afm_rg" {
 
 module "afm_marketplace_cosmosdb_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
-  name                 = format("%s-marketplace-cosmosdb-snet", local.project)
+  name                 = "${local.project}-marketplace-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_afm_marketplace_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
@@ -23,7 +23,7 @@ module "afm_marketplace_cosmosdb_snet" {
 
 module "afm_marketplace_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-marketplace-cosmos-account", local.project)
+  name     = "${local.project}-marketplace-cosmos-account"
   location = var.location
 
   resource_group_name = azurerm_resource_group.afm_rg.name
@@ -51,7 +51,7 @@ module "afm_marketplace_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.afm_marketplace_cosmos_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = format("%s-marketplace-cosmos-sql-endpoint", local.project)
+  private_endpoint_name    = "${local.project}-marketplace-cosmos-sql-endpoint"
   private_endpoint_enabled = var.afm_marketplace_cosmos_db_params.private_endpoint_enabled
   subnet_id                = module.afm_marketplace_cosmosdb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
@@ -111,7 +111,7 @@ locals {
 
 # cosmosdb container for marketplace
 module "afm_marketplace_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
   for_each = { for c in local.afm_marketplace_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
