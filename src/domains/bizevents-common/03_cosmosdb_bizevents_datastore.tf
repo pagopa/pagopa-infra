@@ -69,11 +69,10 @@ module "bizevents_datastore_cosmosdb_database" {
 
 ### Containers
 locals {
-  # TODO
   bizevents_datastore_cosmosdb_containers = [
     {
-      name               = "TODO",
-      partition_key_path = "/todo",
+      name               = "biz-events",
+      partition_key_path = "/id",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
     },
   ]
