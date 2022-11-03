@@ -61,7 +61,7 @@ bizevents_datastore_cosmos_db_params = {
 
   backup_continuous_enabled = true
 
-  container_default_ttl = 157788000 # 5 year in second
+  container_default_ttl = 315576000 # 10 year in second
 }
 
 cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
