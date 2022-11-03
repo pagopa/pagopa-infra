@@ -35,7 +35,7 @@ cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
 cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # cidr_subnet_gps_cosmosdb             = ["10.1.149.0/24"]
-cidr_subnet_node_forwarder           = ["10.1.158.0/24"]
+cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
 cidr_subnet_mock_ec              = ["10.1.137.0/29"]
@@ -81,6 +81,7 @@ app_gateway_waf_enabled                 = false
 app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
   # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
+  # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
   "/payment-manager/clients/.*",
   "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
