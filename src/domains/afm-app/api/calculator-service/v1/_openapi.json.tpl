@@ -4,7 +4,7 @@
     "title": "PagoPA API Calculator Logic",
     "description": "Calculator Logic microservice for pagoPA AFM",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.0.4-3"
+    "version": "0.0.5-1-cosmos"
   },
   "servers": [
     {
@@ -18,21 +18,25 @@
       "description": "Everything about Calculator business logic"
     },
     {
-      "name": "Configuration",
-      "description": "Everything about Calculator Configuration"
+      "name": "Actuator",
+      "description": "Monitor and interact",
+      "externalDocs": {
+        "description": "Spring Boot Actuator Web API Documentation",
+        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+      }
     }
   ],
   "paths": {
-    "/configuration": {
+    "/actuator": {
       "get": {
         "tags": [
-          "Configuration"
+          "Actuator"
         ],
-        "summary": "Get calculator configuration",
-        "operationId": "getConfiguration",
+        "summary": "Actuator root web endpoint",
+        "operationId": "links",
         "responses": {
           "200": {
-            "description": "Created",
+            "description": "OK",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -42,77 +46,189 @@
               }
             },
             "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Configuration"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
                 }
               }
             }
           }
-        },
-        "security": [
-          {
-            "ApiKey": []
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
           }
-        ]
+        }
+      ]
+    },
+    "/actuator/health": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint 'health'",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/actuator/health/**": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint 'health-path'",
+        "operationId": "health-path",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/actuator/info": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint 'info'",
+        "operationId": "info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
       },
       "parameters": [
         {
@@ -518,26 +634,26 @@
           "paymentMethod": {
             "type": "string",
             "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
+              "PaymentMethod.ANY(value=ANY)",
+              "PaymentMethod.PPAL(value=PPAL)",
+              "PaymentMethod.BPAY(value=BPAY)",
+              "PaymentMethod.PAYBP(value=PayBP)",
+              "PaymentMethod.BBT(value=BBT)",
+              "PaymentMethod.AD(value=AD)",
+              "PaymentMethod.CP(value=CP)",
+              "PaymentMethod.PO(value=PO)",
+              "PaymentMethod.JIF(value=JIF)",
+              "PaymentMethod.MYBK(value=MYBK)"
             ]
           },
           "touchpoint": {
             "type": "string",
             "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
+              "Touchpoint.ANY(value=ANY)",
+              "Touchpoint.IO(value=IO)",
+              "Touchpoint.WISP(value=WISP)",
+              "Touchpoint.CHECKOUT(value=CHECKOUT)",
+              "Touchpoint.PSP(value=PSP)"
             ]
           },
           "transferList": {
@@ -555,59 +671,6 @@
             "type": "string"
           },
           "transferCategory": {
-            "type": "string"
-          }
-        }
-      },
-      "Transfer": {
-        "type": "object",
-        "properties": {
-          "taxPayerFee": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "primaryCiIncurredFee": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
-            ]
-          },
-          "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
-          },
-          "idBundle": {
-            "type": "string"
-          },
-          "bundleName": {
-            "type": "string"
-          },
-          "bundleDescription": {
-            "type": "string"
-          },
-          "idCiBundle": {
-            "type": "string"
-          },
-          "idPsp": {
             "type": "string"
           }
         }
@@ -634,7 +697,64 @@
           }
         }
       },
+      "Transfer": {
+        "type": "object",
+        "properties": {
+          "taxPayerFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "primaryCiIncurredFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "PaymentMethod.ANY(value=ANY)",
+              "PaymentMethod.PPAL(value=PPAL)",
+              "PaymentMethod.BPAY(value=BPAY)",
+              "PaymentMethod.PAYBP(value=PayBP)",
+              "PaymentMethod.BBT(value=BBT)",
+              "PaymentMethod.AD(value=AD)",
+              "PaymentMethod.CP(value=CP)",
+              "PaymentMethod.PO(value=PO)",
+              "PaymentMethod.JIF(value=JIF)",
+              "PaymentMethod.MYBK(value=MYBK)"
+            ]
+          },
+          "touchpoint": {
+            "type": "string",
+            "enum": [
+              "Touchpoint.ANY(value=ANY)",
+              "Touchpoint.IO(value=IO)",
+              "Touchpoint.WISP(value=WISP)",
+              "Touchpoint.CHECKOUT(value=CHECKOUT)",
+              "Touchpoint.PSP(value=PSP)"
+            ]
+          },
+          "idBundle": {
+            "type": "string"
+          },
+          "bundleName": {
+            "type": "string"
+          },
+          "bundleDescription": {
+            "type": "string"
+          },
+          "idCiBundle": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          }
+        }
+      },
       "PaymentOption": {
+        "required": [
+          "paymentAmount",
+          "primaryCreditorInstitution"
+        ],
         "type": "object",
         "properties": {
           "paymentAmount": {
@@ -647,26 +767,26 @@
           "paymentMethod": {
             "type": "string",
             "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
+              "PaymentMethod.ANY(value=ANY)",
+              "PaymentMethod.PPAL(value=PPAL)",
+              "PaymentMethod.BPAY(value=BPAY)",
+              "PaymentMethod.PAYBP(value=PayBP)",
+              "PaymentMethod.BBT(value=BBT)",
+              "PaymentMethod.AD(value=AD)",
+              "PaymentMethod.CP(value=CP)",
+              "PaymentMethod.PO(value=PO)",
+              "PaymentMethod.JIF(value=JIF)",
+              "PaymentMethod.MYBK(value=MYBK)"
             ]
           },
           "touchpoint": {
             "type": "string",
             "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
+              "Touchpoint.ANY(value=ANY)",
+              "Touchpoint.IO(value=IO)",
+              "Touchpoint.WISP(value=WISP)",
+              "Touchpoint.CHECKOUT(value=CHECKOUT)",
+              "Touchpoint.PSP(value=PSP)"
             ]
           },
           "idPspList": {
@@ -697,142 +817,14 @@
           }
         }
       },
-      "Bundle": {
+      "Link": {
         "type": "object",
         "properties": {
-          "id": {
+          "href": {
             "type": "string"
           },
-          "idPsp": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "paymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "minPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "maxPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
-            ]
-          },
-          "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "GLOBAL",
-              "PUBLIC",
-              "PRIVATE"
-            ]
-          },
-          "transferCategoryList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TransferCategory"
-            }
-          }
-        }
-      },
-      "CiBundle": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "ciFiscalCode": {
-            "type": "string"
-          },
-          "idBundle": {
-            "type": "string"
-          },
-          "attributes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CiBundleAttribute"
-            }
-          }
-        }
-      },
-      "CiBundleAttribute": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "maxPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "transferCategory": {
-            "type": "string"
-          },
-          "transferCategoryRelation": {
-            "type": "string",
-            "enum": [
-              "EQUAL",
-              "NOT_EQUAL"
-            ]
-          }
-        }
-      },
-      "Configuration": {
-        "type": "object",
-        "properties": {
-          "bundles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Bundle"
-            }
-          },
-          "ciBundles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CiBundle"
-            }
-          }
-        }
-      },
-      "TransferCategory": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
+          "templated": {
+            "type": "boolean"
           }
         }
       }
