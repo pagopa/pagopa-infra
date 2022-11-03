@@ -66,7 +66,12 @@ module "node_forwarder_app_service" {
     WEBSITE_VNET_ROUTE_ALL                          = "1"
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
     # Spring Environment
-    LOGGING_LEVEL = var.node_forwarder_logging_level
+    DEFAULT_LOGGING_LEVEL = var.node_forwarder_logging_level
+    APP_LOGGING_LEVEL     = var.node_forwarder_logging_level
+
+    # Cert configuration
+    CERTIFICATE_CRT = data.azurerm_key_vault_secret.certificate_crt_node_forwarder.value
+    CERTIFICATE_KEY = data.azurerm_key_vault_secret.certificate_key_node_forwarder.value
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
@@ -145,4 +150,43 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
       }
     }
   }
+}
+
+# KV placeholder for CERT and KEY certificate
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "certificate_crt_node_forwarder" {
+  name         = "certificate-crt-node-forwarder"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
+  name         = "certificate-key-node-forwarder"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+data "azurerm_key_vault_secret" "certificate_crt_node_forwarder" {
+  name         = "certificate-crt-node-forwarder"
+  key_vault_id = module.key_vault.id
+}
+data "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
+  name         = "certificate-key-node-forwarder"
+  key_vault_id = module.key_vault.id
 }
