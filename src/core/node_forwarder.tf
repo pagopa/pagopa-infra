@@ -154,7 +154,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
 
 # KV placeholder for CERT and KEY certificate
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "certificate_crt_node_forwarder" {
+resource "azurerm_key_vault_secret" "certificate_crt_node_forwarder_s" {
   name         = "certificate-crt-node-forwarder"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
@@ -168,7 +168,7 @@ resource "azurerm_key_vault_secret" "certificate_crt_node_forwarder" {
   }
 }
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
+resource "azurerm_key_vault_secret" "certificate_key_node_forwarder_s" {
   name         = "certificate-key-node-forwarder"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
