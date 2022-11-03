@@ -42,7 +42,7 @@ module "node_forwarder_app_service" {
   client_cert_enabled = false
   always_on           = var.node_forwarder_always_on
   linux_fx_version    = format("DOCKER|%s/pagopanodeforwarder:%s", module.container_registry.login_server, "latest")
-  health_check_path   = "/node-forwarder/api/v1/info" # TODO verify
+  health_check_path   = "/actuator/info"
 
   app_settings = {
     # Monitoring
