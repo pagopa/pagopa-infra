@@ -46,7 +46,7 @@ module "apim_node_forwarder_api" {
   path         = "pagopa-node-forwarder/api"
   protocols    = ["https"]
 
-  service_url = "https://${module.node_forwarder_app_service.default_site_hostname}/forward"
+  service_url = "https://${module.node_forwarder_app_service.default_site_hostname}"
 
   content_format = "openapi"
   content_value = templatefile("./api/node_forwarder_api/v1/_openapi.json.tpl", {
