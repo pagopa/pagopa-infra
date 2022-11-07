@@ -76,7 +76,6 @@ stages:
           - ${{ each DOMAIN in parameters.DOMAINS }}:
               # 2. Run terragrunt plan
               - template: templates/terraform-plan/template.yaml@terraform
-                displayName: "Plan ${{ DOMAIN }}"
                 parameters:
                   WORKINGDIR: ${{ DOMAIN }}
                   SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
@@ -100,7 +99,6 @@ stages:
           - ${{ each DOMAIN in parameters.DOMAINS }}:
               # 2. Run terragrunt plan
               - template: templates/terraform-plan/template.yaml@terraform
-                displayName: "Plan ${{ DOMAIN }}"
                 parameters:
                   WORKINGDIR: ${{ DOMAIN }}
                   SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
@@ -124,7 +122,6 @@ stages:
           - ${{ each DOMAIN in parameters.DOMAINS }}:
               # 2. Run terragrunt plan
               - template: templates/terraform-plan/template.yaml@terraform
-                displayName: "Plan ${{ DOMAIN }}"
                 parameters:
                   WORKINGDIR: ${{ DOMAIN }}
                   SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
