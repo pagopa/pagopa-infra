@@ -112,14 +112,13 @@ app_gateway_deny_paths = [
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
-  "/nodo-pagamenti*",
-  "/ppt-lmi*",
-  "/sync-cron*",
-  "/wfesp*",
-  "/fatturazione*",
-  "/web-bo*",
-  "/web-bo-history*",
-  "/payment-manager/pp-restapi-server/.*"
+  "/nodo-pagamenti/.*",
+  "/ppt-lmi/.*",
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
+  "/payment-manager/pp-restapi-server/.*",
+  "/pagopa-node-forwarder/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [

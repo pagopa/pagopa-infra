@@ -101,13 +101,12 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
-  # "/ppt-lmi*",
-  # "/sync-cron*",
-  # "/wfesp*",
-  # "/fatturazione*",
-  # "/web-bo*",
-  # "/web-bo-history*",
-  "/payment-manager/pp-restapi-server/.*"
+  "/ppt-lmi/.*",
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
+  "/payment-manager/pp-restapi-server/.*",
+  #"/pagopa-node-forwarder/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [

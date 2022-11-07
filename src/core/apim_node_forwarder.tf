@@ -13,9 +13,9 @@ module "apim_node_forwarder_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
+  subscription_required = false
+  approval_required     = false
+  # subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/node_forwarder_api/_base_policy.xml")
 }
@@ -36,7 +36,7 @@ module "apim_node_forwarder_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_node_forwarder_product.product_id]
-  subscription_required = true
+  subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.node_forwarder_api.id
   api_version    = "v1"
@@ -54,7 +54,7 @@ module "apim_node_forwarder_api" {
   })
 
   xml_content = templatefile("./api/node_forwarder_api/v1/_base_policy.xml", {
-    node_forwarder_host_path = "https://${module.node_forwarder_app_service.default_site_hostname}/forward"
+    node_forwarder_host_path = "https://${module.node_forwarder_app_service.default_site_hostname}"
   })
 
 }
