@@ -25,23 +25,26 @@ parameters:
     values:
       - False
       - True
+  - name: 'DOMAINS'
+    type: object
+    default:
+      - 'src/core'
+      - 'src/aks-platform'
+      - 'src/domains/afm-app'
+      - 'src/domains/afm-common'
+      - 'src/domains/ecommerce-app'
+      - 'src/domains/ecommerce-common'
+      - 'src/domains/gps-app'
+      - 'src/domains/gps-common'
+      - 'src/domains/selfcare-app'
+      - 'src/domains/selfcare-common'
+      - 'src/domains/shared-app'
+      - 'src/domains/shared-common'
+      - 'src/domains/load-test'
+
 
 variables:
   TIME_OUT: 10
-  DOMAINS: [ 'src/core',
-             'src/aks-platform',
-             'src/domains/afm-app',
-             'src/domains/afm-common',
-             'src/domains/ecommerce-app',
-             'src/domains/ecommerce-common',
-             'src/domains/gps-app',
-             'src/domains/gps-common',
-             'src/domains/selfcare-app',
-             'src/domains/selfcare-common',
-             'src/domains/shared-app',
-             'src/domains/shared-common',
-             'src/domains/load-test'
-  ]
 
 pool:
   vmImage: 'ubuntu-20.04'
