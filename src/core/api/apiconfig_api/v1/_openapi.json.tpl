@@ -4,7 +4,7 @@
     "title": "PagoPA API configuration",
     "description": "Spring Application exposes Api to manage configuration for EC/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.23.0"
+    "version": "0.24.0"
   },
   "servers": [
     {
@@ -389,11 +389,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ],
-              "default": "CODE"
+              ]
             }
           },
           {
@@ -403,11 +403,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ],
-              "default": "DESC"
+              ]
             }
           }
         ],
@@ -1127,11 +1127,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ],
-              "default": "CODE"
+              ]
             }
           },
           {
@@ -1141,11 +1141,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ],
-              "default": "DESC"
+              ]
             }
           }
         ],
@@ -2628,11 +2628,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ],
-              "default": "DESC"
+              ]
             }
           }
         ],
@@ -8115,11 +8115,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ],
-              "default": "CODE"
+              ]
             }
           },
           {
@@ -8129,11 +8129,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ],
-              "default": "DESC"
+              ]
             }
           }
         ],
@@ -10271,6 +10271,18 @@
         ],
         "summary": "Upload a XML file containing the details of an ICA",
         "operationId": "createIca",
+        "parameters": [
+          {
+            "name": "force",
+            "in": "query",
+            "description": "Force upload ignoring the validity date",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -11170,11 +11182,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ],
-              "default": "CODE"
+              ]
             }
           },
           {
@@ -11184,11 +11196,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ],
-              "default": "DESC"
+              ]
             }
           }
         ],
@@ -12625,14 +12637,14 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "IT",
               "enum": [
                 "IT",
                 "EN",
                 "FR",
                 "DE",
                 "SL"
-              ],
-              "default": "IT"
+              ]
             }
           },
           {
@@ -12816,11 +12828,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ],
-              "default": "DESC"
+              ]
             }
           }
         ],
