@@ -236,7 +236,7 @@
     "/xpay/change/autenticazione3DS/outcome": {
       "post": {
         "tags": [
-          "XPay Authentication Change Outcome Controller"
+          "XPay Controller"
         ],
         "operationId": "xpayChangeAuthenticationOutcome",
         "summary": "permette di cambiare l'outcome dell'autenticazione3DS",
@@ -272,7 +272,7 @@
     "/xpay/change/paga3DS/outcome": {
       "post": {
         "tags": [
-          "XPay Payment Change Outcome Controller"
+          "XPay Controller"
         ],
         "operationId": "xpayChangePaymentOutcome",
         "summary": "permette di cambiare l'outcome della paga3DS",
@@ -308,7 +308,7 @@
     "/xpay/change/storna/outcome": {
       "post": {
         "tags": [
-          "XPay Refund Change Outcome Controller"
+          "XPay Controller"
         ],
         "operationId": "xPayRefundChangeOutcome",
         "parameters": [
@@ -343,7 +343,7 @@
     "/xpay/change/situazioneOrdine/outcome": {
       "post": {
         "tags": [
-          "XPay OrderStatus Change Outcome Controller"
+          "XPay Controller"
         ],
         "operationId": "xPayOrderStatusChangeOutcome",
         "parameters": [
@@ -371,6 +371,71 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/xpay/mac": {
+      "get": {
+        "tags": [
+          "XPay Controller"
+        ],
+        "operationId": "generateMac",
+        "parameters": [
+          {
+            "name": "codiceTransazione",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timeStamp",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "divisa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "importo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayAuthResponseSuccess"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Errore",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayAuthResponseError"
+                }
+              }
+            }
           }
         }
       }
