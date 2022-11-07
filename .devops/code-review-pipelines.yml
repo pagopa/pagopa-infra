@@ -2,9 +2,6 @@ pr:
   branches:
     include:
       - main
-  paths:
-    include:
-      - '.devops/code-review-pipelines.yml'
 
 parameters:
   - name: 'DEV'
@@ -78,6 +75,7 @@ stages:
             - template: templates/terraform-plan/template.yaml@terraform
               displayName: "Plan ${{ DOMAIN }}"
               parameters:
+                WORKINGDIR: ${{ DOMAIN }}
                 SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
                 ENVIRONMENT: dev
 
@@ -101,6 +99,7 @@ stages:
             - template: templates/terraform-plan/template.yaml@terraform
               displayName: "Plan ${{ DOMAIN }}"
               parameters:
+                WORKINGDIR: ${{ DOMAIN }}
                 SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
                 ENVIRONMENT: uat
 
@@ -124,5 +123,6 @@ stages:
               - template: templates/terraform-plan/template.yaml@terraform
                 displayName: "Plan ${{ DOMAIN }}"
                 parameters:
+                  WORKINGDIR: ${{ DOMAIN }}
                   SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
                   ENVIRONMENT: prod
