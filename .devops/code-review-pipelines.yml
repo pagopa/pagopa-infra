@@ -60,11 +60,11 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-            # 2. Run terragrunt plan
-            - template: templates/terraform-plan/template.yaml@terraform
-              parameters:
-                SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
-                ENVIRONMENT: dev
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
+              ENVIRONMENT: dev
 
   - stage: UAT
     dependsOn: []
@@ -81,11 +81,11 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-            # 2. Run terragrunt plan
-            - template: templates/terraform-plan/template.yaml@terraform
-              parameters:
-                SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
-                ENVIRONMENT: uat
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
+              ENVIRONMENT: uat
 
   - stage: PROD
     dependsOn: []
@@ -102,8 +102,8 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-              # 2. Run terragrunt plan
-              - template: templates/terraform-plan/template.yaml@terraform
-                parameters:
-                  SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
-                  ENVIRONMENT: prod
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
+              ENVIRONMENT: prod
