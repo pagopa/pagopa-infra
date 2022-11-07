@@ -64,7 +64,7 @@ stages:
       name: pagopa-dev-linux
     jobs:
       - ${{ each DOMAIN in parameters.DOMAINS }}:
-        - job: tf_plan_core ${{ DOMAIN }}
+        - job: "tf_plan_core_${{ DOMAIN }}"
           timeoutInMinutes: $[variables.TIME_OUT]
           steps:
             - checkout: self
