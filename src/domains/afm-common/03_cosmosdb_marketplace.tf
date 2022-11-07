@@ -107,7 +107,7 @@ locals {
       partition_key_path = "/idPsp",
     },
     {
-      name = "touchpoints",
+      name               = "touchpoints",
       partition_key_path = "/name"
     }
   ]
