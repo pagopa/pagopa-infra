@@ -63,10 +63,10 @@ stages:
     pool:
       name: pagopa-dev-linux
     jobs:
-      - ${{ each DOMAIN in parameters.DOMAINS }}:
-        - job: "tf_plan_core_${{ DOMAIN }}"
-          timeoutInMinutes: $[variables.TIME_OUT]
-          steps:
+      - job: tf_plan_core
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - ${{ each DOMAIN in parameters.DOMAINS }}:
             - checkout: self
             # 1. Install terraform and terragrunt
             - template: templates/terraform-setup/template.yaml@terraform
