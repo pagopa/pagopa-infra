@@ -30,7 +30,7 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
 
-  apim_hostname      = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   nodo_hostname = "${var.location_short}${var.env}.nodo.internal.${var.env}.platform.pagopa.it"
 
 }

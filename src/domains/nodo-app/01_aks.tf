@@ -25,11 +25,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodo_pool" {
   ### vm configuration
   vm_size = var.nodo_user_node_pool.vm_size
   # https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general
-  os_disk_type           = var.nodo_user_node_pool.os_disk_type # Managed or Ephemeral
-  os_disk_size_gb        = var.nodo_user_node_pool.os_disk_size_gb
-  availability_zones     = ["1", "2", "3"]
-  
-  os_type                = "Linux"
+  os_disk_type       = var.nodo_user_node_pool.os_disk_type # Managed or Ephemeral
+  os_disk_size_gb    = var.nodo_user_node_pool.os_disk_size_gb
+  availability_zones = ["1", "2", "3"]
+
+  os_type = "Linux"
 
   ### autoscaling
   enable_auto_scaling = true

@@ -134,16 +134,16 @@ variable "tls_cert_check_helm" {
 }
 variable "nodo_user_node_pool" {
   type = object({
-    enabled         = bool,
-    name            = string,
-    vm_size         = string,
-    os_disk_type    = string,
-    os_disk_size_gb = string,
-    node_count_min  = number,
-    node_count_max  = number,
-    node_labels     = map(any),
-    node_taints     = list(string),
-    node_tags       = map(any),
+    enabled            = bool,
+    name               = string,
+    vm_size            = string,
+    os_disk_type       = string,
+    os_disk_size_gb    = string,
+    node_count_min     = number,
+    node_count_max     = number,
+    node_labels        = map(any),
+    node_taints        = list(string),
+    node_tags          = map(any),
     nodo_pool_max_pods = number,
   })
   description = "AKS node pool user configuration"
