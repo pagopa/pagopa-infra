@@ -440,5 +440,87 @@
         }
       }
     }
+  },
+  "components": {
+    "schemas": {
+      "XPayAuthResponseSuccess": {
+        "description": "",
+        "required": [
+          "esito",
+          "idOperazione",
+          "timeStamp",
+          "mac"
+        ],
+        "type": "object",
+        "properties": {
+          "esito": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idOperazione": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "number",
+            "format": "long"
+          },
+          "html": {
+            "type": "string"
+          },
+          "mac": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayAuthResponseError": {
+        "description": "",
+        "required": [
+          "esito",
+          "idOperazione",
+          "timeStamp"
+        ],
+        "type": "object",
+        "properties": {
+          "esito": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idOperazione": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "number",
+            "format": "long"
+          },
+          "errore": {
+            "$ref": "#/components/schemas/XPayError"
+          },
+          "mac": {
+            "type": "string"
+          }
+        }
+      },
+      "XPayError": {
+        "required": [
+          "codice",
+          "messaggio"
+        ],
+        "properties": {
+          "codice": {
+            "type": "number",
+            "format": "long"
+          },
+          "messaggio": {
+            "type": "string"
+          }
+        }
+      }
+    }
   }
 }
