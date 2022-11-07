@@ -28,20 +28,20 @@ parameters:
 
 variables:
   TIME_OUT: 10
-  DOMAINS:
-    - 'src/core'
-    - 'src/aks-platform'
-    - 'src/domains/afm-app'
-    - 'src/domains/afm-common'
-    - 'src/domains/ecommerce-app'
-    - 'src/domains/ecommerce-common'
-    - 'src/domains/gps-app'
-    - 'src/domains/gps-common'
-    - 'src/domains/selfcare-app'
-    - 'src/domains/selfcare-common'
-    - 'src/domains/shared-app'
-    - 'src/domains/shared-common'
-    - 'src/domains/load-test'
+  DOMAINS: [ 'src/core',
+             'src/aks-platform',
+             'src/domains/afm-app',
+             'src/domains/afm-common',
+             'src/domains/ecommerce-app',
+             'src/domains/ecommerce-common',
+             'src/domains/gps-app',
+             'src/domains/gps-common',
+             'src/domains/selfcare-app',
+             'src/domains/selfcare-common',
+             'src/domains/shared-app',
+             'src/domains/shared-common',
+             'src/domains/load-test'
+  ]
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -56,7 +56,7 @@ resources:
 
 stages:
   - stage: DEV
-    dependsOn: []
+    dependsOn: [ ]
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
       name: pagopa-dev-linux
@@ -80,7 +80,7 @@ stages:
                   ENVIRONMENT: dev
 
   - stage: UAT
-    dependsOn: []
+    dependsOn: [ ]
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
       name: pagopa-uat-linux
@@ -104,7 +104,7 @@ stages:
                   ENVIRONMENT: uat
 
   - stage: PROD
-    dependsOn: []
+    dependsOn: [ ]
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
       name: pagopa-prod-linux
