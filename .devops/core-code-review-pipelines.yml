@@ -1,14 +1,7 @@
 pr:
-  autoCancel: false
   branches:
     include:
       - main
-  paths:
-    include:
-      - 'src/core/*'
-      - '.devops/code-review-pipelines.yml'
-    exclude:
-      - '**/*.lock.hcl'
 
 parameters:
   - name: 'DEV'
@@ -35,6 +28,20 @@ parameters:
 
 variables:
   TIME_OUT: 10
+  DOMAINS:
+    - 'src/core'
+    - 'src/aks-platform'
+    - 'src/domains/afm-app'
+    - 'src/domains/afm-common'
+    - 'src/domains/ecommerce-app'
+    - 'src/domains/ecommerce-common'
+    - 'src/domains/gps-app'
+    - 'src/domains/gps-common'
+    - 'src/domains/selfcare-app'
+    - 'src/domains/selfcare-common'
+    - 'src/domains/shared-app'
+    - 'src/domains/shared-common'
+    - 'src/domains/load-test'
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -48,59 +55,74 @@ resources:
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
-  - stage: tf_plan_core_dev
+  - stage: DEV
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
       name: pagopa-dev-linux
     jobs:
-      - job: tf_plan_core
+      - job: terraform_install
+        steps:
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
+      - job: terraform_plan
+        dependsOn: terraform_install
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan idpay-common
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              WORKINGDIR: 'src/core'
-              TF_ENVIRONMENT_FOLDER: "dev"
-              AZURE_SERVICE_CONNECTION_NAME: DEV-PAGOPA-SERVICE-CONN
+          - ${{ each DOMAIN in parameters.DOMAINS }}:
+              # 2. Run terragrunt plan
+              - template: templates/terraform-plan/template.yaml@terraform
+                displayName: "Plan ${{ DOMAIN }}"
+                parameters:
+                  WORKINGDIR: ${{ DOMAIN }}
+                  SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
+                  ENVIRONMENT: dev
 
-  - stage: tf_plan_core_uat
+  - stage: UAT
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
       name: pagopa-uat-linux
     jobs:
-      - job: tf_plan_core
+      - job: terraform_install
+        steps:
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
+      - job: terraform_plan
+        dependsOn: terraform_install
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan idpay-common
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              WORKINGDIR: 'src/core'
-              TF_ENVIRONMENT_FOLDER: "uat"
-              AZURE_SERVICE_CONNECTION_NAME: UAT-PAGOPA-SERVICE-CONN
+          - ${{ each DOMAIN in parameters.DOMAINS }}:
+              # 2. Run terragrunt plan
+              - template: templates/terraform-plan/template.yaml@terraform
+                displayName: "Plan ${{ DOMAIN }}"
+                parameters:
+                  WORKINGDIR: ${{ DOMAIN }}
+                  SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
+                  ENVIRONMENT: uat
 
-  - stage: tf_plan_core_prod
+  - stage: PROD
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
       name: pagopa-prod-linux
     jobs:
-      - job: tf_plan_core
+      - job: terraform_install
+        steps:
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
+      - job: terraform_plan
+        dependsOn: terraform_install
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan idpay-common
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              WORKINGDIR: 'src/core'
-              TF_ENVIRONMENT_FOLDER: "prod"
-              AZURE_SERVICE_CONNECTION_NAME: PROD-PAGOPA-SERVICE-CONN
+          - ${{ each DOMAIN in parameters.DOMAINS }}:
+              # 2. Run terragrunt plan
+              - template: templates/terraform-plan/template.yaml@terraform
+                displayName: "Plan ${{ DOMAIN }}"
+                parameters:
+                  WORKINGDIR: ${{ DOMAIN }}
+                  SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
+                  ENVIRONMENT: prod
