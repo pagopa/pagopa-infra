@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "cosmosdb_rg" {
-  name     = format("%s-cosmosdb-paymentsdb-rg", local.project)
+  name     = "${local.project}-cosmosdb-paymentsdb-rg"
   location = var.location
 
   tags = var.tags
@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "cosmosdb_rg" {
 
 module "cosmosdb_paymentsdb_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.15.1"
-  name                 = format("%s-cosmosb-paymentsdb-snet", local.project)
+  name                 = "${local.project}-cosmosb-paymentsdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_paymentsdb
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   virtual_network_name = module.vnet.name
@@ -18,7 +18,7 @@ module "cosmosdb_paymentsdb_snet" {
 
 module "cosmos_payments_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = format("%s-payments-cosmos-account", local.project)
+  name     = "${local.project}-payments-cosmos-account"
   location = var.location
 
   resource_group_name = azurerm_resource_group.cosmosdb_rg.name
@@ -46,7 +46,7 @@ module "cosmos_payments_account" {
   allowed_virtual_network_subnet_ids = var.cosmos_document_db_params.public_network_access_enabled ? [] : [module.logic_app_biz_evt_snet.id]
 
   # private endpoint
-  private_endpoint_name    = format("%s-cosmos-payments-sql-endpoint", local.project)
+  private_endpoint_name    = "${local.project}-cosmos-payments-sql-endpoint"
   private_endpoint_enabled = var.cosmos_document_db_params.private_endpoint_enabled
   subnet_id                = module.cosmosdb_paymentsdb_snet.id
   private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents_azure_com.id]
@@ -77,7 +77,7 @@ locals {
 }
 
 module "payments_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.4"
   for_each = { for c in local.payments_cosmosdb_containers : c.name => c }
 
   name                = each.value.name

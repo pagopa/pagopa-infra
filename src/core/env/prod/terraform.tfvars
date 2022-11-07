@@ -352,8 +352,8 @@ acr_enabled = true
 
 # db nodo dei pagamenti
 db_port                            = 1521
-db_service_name                    = "NDPSPCP_PP_NODO4_CFG" # TODO chiedere a SIA
-dns_a_reconds_dbnodo_ips           = ["10.102.35.61", "10.102.35.62", "10.102.35.63", "10.102.35.60", "10.102.35.59", "10.102.35.58", "10.102.35.57"]
+db_service_name                    = "NDPSPCP_PP_NODO4_CFG"           # TODO chiedere a SIA
+dns_a_reconds_dbnodo_ips           = ["10.102.35.58", "10.102.35.57"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 private_dns_zone_db_nodo_pagamenti = "p.db-nodo-pagamenti.com"
 
 # API Config

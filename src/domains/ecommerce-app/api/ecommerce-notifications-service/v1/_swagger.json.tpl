@@ -10,6 +10,11 @@
   "schemes": [
     "https"
   ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "paths": {
     "/emails": {
       "x-swagger-router-controller": "emailController",
@@ -132,9 +137,16 @@
         "instance": {
           "type": "string",
           "format": "uri",
-          "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
+          "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced.securityDefinitions:"
         }
       }
+    }
+  },
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Ocp-Apim-Subscription-Key"
     }
   }
 }

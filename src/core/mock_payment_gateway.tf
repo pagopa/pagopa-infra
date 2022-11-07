@@ -49,7 +49,7 @@ module "mock_payment_gateway" {
     SERVER_PUBLIC_URL = var.env_short == "d" ? format("https://api.%s.%s/mock-payment-gateway/api", var.dns_zone_prefix, var.external_domain) : format("https://api.prf.platform.%s/mock-payment-gateway/api", var.external_domain),
     MOCK_PROFILE      = var.env_short == "d" ? "sit" : "perf",
     XPAY_APIKEY_ALIAS = data.azurerm_key_vault_secret.mock_pgs_xpay_apikey_alias[0].value,
-    XPAY_SECRET_ID    = data.azurerm_key_vault_secret.mock_pgs_xpay_secret_key[0].value
+    XPAY_SECRET_KEY   = data.azurerm_key_vault_secret.mock_pgs_xpay_secret_key[0].value
   }
 
   allowed_subnets = [module.apim_snet.id]

@@ -142,10 +142,15 @@ variable "cidr_subnet_iuvgenerator_cosmosdb" {
   default     = null
 }
 
-
 variable "cidr_subnet_loadtest_agent" {
   type        = list(string)
   description = "LoadTest Agent Pool address space"
   default     = null
 }
 
+### Aks
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}

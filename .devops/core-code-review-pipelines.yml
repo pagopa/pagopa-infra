@@ -44,7 +44,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v2.4.0
+      ref: refs/tags/v3.0.0
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
@@ -63,8 +63,8 @@ stages:
           # 2. Run terraform plan idpay-common
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              ENVIRONMENT: "dev"
               WORKINGDIR: 'src/core'
+              TF_ENVIRONMENT_FOLDER: "dev"
               AZURE_SERVICE_CONNECTION_NAME: DEV-PAGOPA-SERVICE-CONN
 
   - stage: tf_plan_core_uat
@@ -82,8 +82,8 @@ stages:
           # 2. Run terraform plan idpay-common
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              ENVIRONMENT: "uat"
               WORKINGDIR: 'src/core'
+              TF_ENVIRONMENT_FOLDER: "uat"
               AZURE_SERVICE_CONNECTION_NAME: UAT-PAGOPA-SERVICE-CONN
 
   - stage: tf_plan_core_prod
@@ -101,6 +101,6 @@ stages:
           # 2. Run terraform plan idpay-common
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              ENVIRONMENT: "prod"
               WORKINGDIR: 'src/core'
+              TF_ENVIRONMENT_FOLDER: "prod"
               AZURE_SERVICE_CONNECTION_NAME: PROD-PAGOPA-SERVICE-CONN

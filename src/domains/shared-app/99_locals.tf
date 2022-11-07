@@ -33,4 +33,8 @@ locals {
   apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   shared_hostname = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
 
+  # DOMAINS
+  system_domain_namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
+  domain_namespace        = kubernetes_namespace.namespace.metadata[0].name
+
 }
