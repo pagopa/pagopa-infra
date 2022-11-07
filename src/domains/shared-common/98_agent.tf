@@ -1,4 +1,4 @@
-module "iuvgenerator_loadtest_agent_snet" {
+module "loadtest_agent_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                 = format("%s-loadtest-agent-snet", local.project)
   address_prefixes     = var.cidr_subnet_loadtest_agent
@@ -15,11 +15,11 @@ module "iuvgenerator_loadtest_agent_snet" {
 }
 
 module "azdoa_loadtest_li" {
-  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v2.18.7"
+  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=agent-docker-compose"
   count               = var.env_short != "p" ? 1 : 0
   name                = format("%s-azdoa-vmss-loadtest-li", local.project)
   resource_group_name = local.vnet_resource_group_name
-  subnet_id           = module.iuvgenerator_loadtest_agent_snet.id
+  subnet_id           = module.loadtest_agent_snet.id
   subscription        = data.azurerm_subscription.current.display_name
   vm_sku              = "Standard_D8ds_v5"
 
