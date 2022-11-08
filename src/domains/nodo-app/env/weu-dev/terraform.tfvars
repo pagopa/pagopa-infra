@@ -44,14 +44,20 @@ tls_cert_check_helm = {
 }
 
 nodo_user_node_pool = {
-  enabled            = true
-  name               = "nodo01"
-  vm_size            = "Standard_D8ds_v5"
-  os_disk_type       = "Ephemeral"
-  os_disk_size_gb    = "300"
-  node_count_min     = "1" #TODO change to 2 or 3 in prod
-  node_count_max     = "2"
-  node_labels        = { node_name : "nodo-dev", node_type : "nodo-cron-dev" },
+  enabled         = true
+  name            = "nodo01"
+  vm_size         = "Standard_B8ms"
+  os_disk_type    = "Ephemeral"
+  os_disk_size_gb = "300"
+  node_count_min  = "1" #TODO change to 2 or 3 in prod
+  node_count_max  = "2"
+  node_labels = {
+    node_name : "nodo-dev",
+    node_type : "nodo-cron-dev",
+    "nodo-dev"        = "true",
+    "nodo-cron-dev"   = "true",
+    "nodo-dev-canary" = "true",
+  "nodo-cron-dev-canary" = "true", },
   node_taints        = [],
   node_tags          = { node_tag_1 : "1" },
   nodo_pool_max_pods = "250",

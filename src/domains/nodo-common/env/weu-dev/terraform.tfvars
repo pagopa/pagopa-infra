@@ -53,3 +53,7 @@ pgres_flex_params = {
   create_mode                  = "Default"
 
 }
+
+pgres_flex_private_endpoint_enabled = false
+pgres_flex_ha_enabled               = false
+pgres_flex_pgbouncher_enabled       = false

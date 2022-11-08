@@ -25,3 +25,17 @@ data "azurerm_subnet" "aks_subnet" {
   virtual_network_name = local.vnet_name
   resource_group_name  = local.vnet_resource_group_name
 }
+
+data "azurerm_private_dns_zone" "postgres" {
+  count               = var.env_short != "d" ? 1 : 0
+  name                = "private.postgres.database.azure.com"
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "postgres_vnet" {
+  count                 = var.env_short != "d" ? 1 : 0
+  name                  = "${local.project}-postgres-vnet-private-dns-zone-link"
+  resource_group_name   = data.azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = data.azurerm_private_dns_zone.postgres[count.index].name
+  virtual_network_id    = data.azurerm_virtual_network.vnet.id
+}

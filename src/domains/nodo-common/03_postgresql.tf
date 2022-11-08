@@ -42,20 +42,17 @@ module "postgres_flexible_server" {
 
   count = var.pgres_flex_params.enabled ? 1 : 0
 
-  source              = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.1.14"
+  source              = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.12.3"
   name                = format("%s-flexible-postgresql", local.project)
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name
 
-  private_endpoint = {
-    enabled   = true
-    subnet_id = module.postgres_flexible_snet.id
-    private_dns_zone = {
-      id   = azurerm_private_dns_zone.postgres.id
-      name = azurerm_private_dns_zone.postgres.name
-      rg   = data.azurerm_resource_group.rg_vnet.name
-    }
-  }
+
+  private_endpoint_enabled  = var.pgres_flex_private_endpoint_enabled
+  private_dns_zone_id       = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[count.index].id : null
+  delegated_subnet_id       = var.env_short != "d" ? module.postgres_flexible_snet.id : null
+  high_availability_enabled = var.pgres_flex_ha_enabled
+  pgbouncer_enabled         = var.pgres_flex_pgbouncer_enabled
 
   administrator_login    = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
   administrator_password = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value

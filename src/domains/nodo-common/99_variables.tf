@@ -129,3 +129,21 @@ variable "pgres_flex_params" {
   })
 
 }
+
+variable "pgres_flex_private_endpoint_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable or Disable private endpoint for postgresql flex."
+}
+
+variable "pgres_flex_ha_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable or Disable hight availability postgresql flex."
+}
+
+variable "pgres_flex_pgbouncer_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable or Disable hight availability postgresql flex."
+}
