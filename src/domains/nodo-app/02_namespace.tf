@@ -4,27 +4,6 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
-# module "ingress" {
-#   source = "git::https://github.com/pagopa/azurerm.git//kubernetes_ingress?ref=v2.13.1"
-
-#   resource_group_name = local.aks_resource_group_name
-#   location            = var.location
-#   tenant_id           = data.azurerm_subscription.current.tenant_id
-#   cluster_name        = local.aks_name
-
-#   name      = kubernetes_namespace.namespace.metadata[0].name
-#   namespace = kubernetes_namespace.namespace.metadata[0].name
-#   key_vault = data.azurerm_key_vault.kv
-
-#   host = "${local.ingress_hostname}.${local.internal_dns_zone_name}"
-#   rules = [
-#     {
-#       path         = "/pagopa-ecommerce-transactions-service/(.*)"
-#       service_name = "pagopaecommercetransactionsservice-microservice-chart"
-#       service_port = 8080
-#     }
-#   ]
-# }
 
 module "pod_identity" {
   source = "git::https://github.com/pagopa/azurerm.git//kubernetes_pod_identity?ref=v2.13.1"
