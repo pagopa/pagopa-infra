@@ -43,7 +43,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodo_pool" {
   node_taints = var.nodo_user_node_pool.node_taints
 
   ### networking
-  vnet_subnet_id        = module.aks_snet.id
+  vnet_subnet_id        = data.azurerm_subnet.aks_snet.id
   enable_node_public_ip = false
 
 
