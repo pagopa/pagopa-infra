@@ -10,7 +10,7 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
   Owner       = "IO"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/selfcare"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-common"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
