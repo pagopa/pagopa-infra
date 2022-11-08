@@ -66,5 +66,4 @@ module "postgres_flexible_server" {
 
   tags = var.tags
 
-  depends_on = [azurerm_private_dns_zone_virtual_network_link.postgres_vnet]
 }
