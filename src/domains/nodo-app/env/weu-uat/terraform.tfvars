@@ -11,7 +11,7 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "Uat"
   Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ecommerce-app"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
