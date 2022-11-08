@@ -1,7 +1,7 @@
 prefix          = "pagopa"
 env_short       = "u"
 env             = "uat"
-domain          = "ecommerce"
+domain          = "nodo"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
