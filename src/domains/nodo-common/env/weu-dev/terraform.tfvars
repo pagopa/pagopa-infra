@@ -54,6 +54,7 @@ pgres_flex_params = {
 
 }
 
-pgres_flex_private_endpoint_enabled = false
-pgres_flex_ha_enabled               = false
-pgres_flex_pgbouncher_enabled       = false
+pgres_flex_private_endpoint_enabled    = false
+pgres_flex_ha_enabled                  = false
+pgres_flex_pgbouncher_enabled          = false
+pgres_flex_diagnostic_settings_enabled = false
