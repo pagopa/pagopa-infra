@@ -3,7 +3,7 @@
  **/
 resource "azurerm_resource_group" "selfcare_fe_rg" {
   count    = var.selfcare_fe_enabled ? 1 : 0
-  name     = "${local.product}-fe-rg"
+  name     = "${local.product}-fe-rg" #-${var.domain}
   location = var.location
 
   tags = var.tags
@@ -49,7 +49,7 @@ locals {
 // public storage used to serve FE
 #tfsec:ignore:azure-storage-default-action-deny
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v3.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v3.2.1"
   count  = var.selfcare_fe_enabled ? 1 : 0
 
   name                = "selfcare"
@@ -86,16 +86,16 @@ module "selfcare_cdn" {
       value  = "max-age=31536000"
       },
       # Content-Security-Policy (in Report mode)
-      # {
-      #   action = "Overwrite"
-      #   name   = "Content-Security-Policy-Report-Only"
-      #   value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", local.dns_zone_selfcare, local.external_domain)
-      # },
-      # {
-      #   action = "Append"
-      #   name   = "Content-Security-Policy-Report-Only"
-      #   value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
-      # },
+      {
+        action = "Overwrite"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api.${local.dns_zone_selfcare}.${local.external_domain}/ https://${local.dns_zone_selfcare}.${local.dns_zone_platform}.${local.external_domain}/;" # https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it
+      },
+      {
+        action = "Append"
+        name   = "Content-Security-Policy-Report-Only"
+        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
+      },
       # {
       #   action = "Append"
       #   name   = "Content-Security-Policy-Report-Only"
@@ -111,26 +111,26 @@ module "selfcare_cdn" {
       #   name   = "Content-Security-Policy-Report-Only"
       #   value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
       # },
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
+      # },
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
+        value  = "img-src 'self' https://assets.cdn.io.italia.it https://selcdcheckoutsa.z6.web.core.windows.net data:;"
       },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it www.gstatic.com/recaptcha data:;"
-      },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/;"
-      },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
-      }
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/;"
+      # },
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
+      # }
     ]
   }
 
