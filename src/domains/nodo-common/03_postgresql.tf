@@ -40,7 +40,6 @@ module "postgres_flexible_snet" {
 
 module "postgres_flexible_server" {
 
-  count = var.pgres_flex_params.enabled ? 1 : 0
 
   source              = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.12.3"
   name                = format("%s-flexible-postgresql", local.project)
