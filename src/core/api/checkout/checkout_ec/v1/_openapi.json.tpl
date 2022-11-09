@@ -140,7 +140,7 @@
             "required": [
               "returnOkUrl",
               "returnCancelUrl",
-              "retunErrorUrl"
+              "returnErrorUrl"
             ],
             "properties": {
               "returnOkUrl": {
@@ -153,7 +153,7 @@
                 "format": "uri",
                 "example": "www.comune.di.prova.it/pagopa/cancel.html"
               },
-              "retunErrorUrl": {
+              "returnErrorUrl": {
                 "type": "string",
                 "format": "uri",
                 "example": "www.comune.di.prova.it/pagopa/error.html"
