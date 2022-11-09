@@ -327,6 +327,12 @@ variable "base_path_nodo_web_bo_history_dev" {
   description = "base nodo on cloud"
   default     = "/web-bo-history-dev"
 }
+variable "nodo_pagamenti_auth_password" {
+  type        = string
+  description = "Default passowrd used for nodo-auth"
+  default     = "PLACEHOLDER"
+}
+
 
 # nodo dei pagamenti - test
 variable "nodo_pagamenti_test_enabled" {

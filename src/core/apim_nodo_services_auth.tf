@@ -504,3 +504,11 @@ module "apim_nodo_per_pm_api_v2_auth" {
     base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/v2" : "https://{{ip-nodo}}/v2"
   })
 }
+
+resource "azurerm_api_management_named_value" "nodo_auth_password_value" {
+  name                = "nodoAuthPassword"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "nodoAuthPassword"
+  value               = var.nodo_pagamenti_auth_password
+}
