@@ -70,7 +70,7 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 }
 resource "azurerm_key_vault_secret" "cosmos_biz_connection_string" {
   name         = format("cosmos-%s-biz-connection-string", var.env_short)
-  value        = module.bizevents_datastore_cosmosdb_account.connection_strings
+  value        = module.bizevents_datastore_cosmosdb_account.connection_strings[0]
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
