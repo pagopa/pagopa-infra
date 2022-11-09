@@ -13,6 +13,7 @@
 <policies>
     <inbound>
         <base />
+        <set-variable name="password" value="{{nodoAuthPassword}}" />
       <set-body>
         @{
           // get request body content
@@ -28,13 +29,14 @@
           if (prevField == null) {
             prevField = primitive.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
           }
-          // if password exists then blank
-          // otherwise add an empty password field
+          // if password exists then set default password
+          // otherwise add a password field with default value
           XElement password = primitive.Descendants("password").FirstOrDefault();
+          String passwordValue = ((string) context.Variables["password"]);
           if (password != null) {
-            password.Value = "";
+            password.Value = passwordValue;
           } else {
-            password = XElement.Parse("<password></password>");
+            password = XElement.Parse("<password>" + passwordValue + "</password>");
             prevField.AddAfterSelf(password);
           }
 

@@ -15,7 +15,6 @@ module "apim_node_forwarder_product" {
   published             = true
   subscription_required = false
   approval_required     = false
-  # subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/node_forwarder_api/_base_policy.xml")
 }
