@@ -125,12 +125,12 @@
             "example": [
               {
                 "noticeNumber": "302012387654312384",
-                "fiscalCode": "7777777777",
+                "fiscalCode": "77777777777",
                 "amount": 1000
               },
               {
                 "noticeNumber": "302012387654312385",
-                "fiscalCode": "7777777777",
+                "fiscalCode": "77777777777",
                 "amount": 2000
               }
             ]
