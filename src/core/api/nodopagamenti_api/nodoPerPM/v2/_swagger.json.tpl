@@ -16,7 +16,7 @@
   ],
   "host": "${host}",
   "paths": {
-    "/v2/closepayment": {
+    "/closepayment": {
       "post": {
         "tags": [
           "nodo"
