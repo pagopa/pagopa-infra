@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-dev" />
+        <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-dev/webservices/input" />
     </inbound>
     <backend>
         <base />
