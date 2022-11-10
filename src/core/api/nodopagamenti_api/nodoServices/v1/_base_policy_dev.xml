@@ -1,7 +1,8 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-dev/webservices/input" />
+        <!-- le allInone non devono avere webservices/input per consentire di chimare le rest / -->
+        <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-dev" />
     </inbound>
     <backend>
         <base />
