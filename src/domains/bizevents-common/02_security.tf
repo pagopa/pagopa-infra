@@ -82,3 +82,12 @@ resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+resource "azurerm_key_vault_secret" "biz_azurewebjobsstorage" {
+  name         = format("bizevent-%s-azurewebjobsstorage", var.env_short)
+  value        = module.bizevents_datastore_fn_sa.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+
