@@ -56,4 +56,8 @@ module "apim_node_forwarder_api" {
     node_forwarder_host_path = "https://${module.node_forwarder_app_service.default_site_hostname}"
   })
 
+  depends_on = [
+    module.node_forwarder_app_service
+  ]
+
 }
