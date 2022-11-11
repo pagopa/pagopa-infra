@@ -3,21 +3,33 @@
       <base />
       <ip-filter action="forbid">
         <!-- pagopa-p-appgateway-snet  -->
-        <!-- <address-range from="10.1.128.0" to="10.1.128.255" /> -->
+        <address-range from="10.1.128.0" to="10.1.128.255" />
       </ip-filter>  
-      <!-- addUserReceipt for pm -->
-      <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
-      <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-restapi-CD/v2")" />
-      <set-variable name="ecommerce_url" value="${ecommerce_ingress_hostname}"/>
-      <set-variable name="body_value" value="@(context.Request.Body.As<string>())" />
-      <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
+        <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
+        <choose>
+            <when condition="@(!(Regex.Match((string)context.Variables["transactionId"],@"^[0-9]*$").Success))">
+                <return-response>
+                    <set-status code="400" reason="Bad Request" />
+                    <set-header name="Reason" exists-action="override">
+                        <value>Bearer error="malformed request"</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
+        <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-restapi-CD/v2")" />
+        <set-variable name="ecommerce_url" value="weudev.ecommerce.internal.dev.platform.pagopa.it" />
+        <set-variable name="body_value" value="@(context.Request.Body.As<string>(preserveContent: true))" />
+        <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
     </inbound>
     <outbound>
-        <set-variable name="body_response" value="@(context.Response.Body.As<JObject>(preserveContent: true))" />
-        <set-variable name="outcome" value="@(((string)((JObject)context.Variables["body_response"])["outcome"]))" />
         <base />
         <choose>
-            <when condition="@(!((string)context.Variables["outcome"]).Equals("OK"))">
+            <when condition="@(context.Response.StatusCode == 200)">
+                <set-variable name="outcome" value="@(((string)((JObject)context.Response.Body.As<JObject>(preserveContent: true))["outcome"]))" />
+            </when>
+        </choose>
+        <choose>
+            <when condition="@(context.Response.StatusCode != 200 || !((string)context.Variables["outcome"]).Equals("OK"))">
                 <!-- addUserReceipt for ecommerce -->
                 <send-request ignore-error="true" timeout="10" response-variable-name="test-transaction" mode="new">
                     <set-url>@($"https://{(string)context.Variables["ecommerce_url"]}/pagopa-ecommerce-transactions-service/transactions/{(string)context.Variables["transactionId"]}/user-receipts")</set-url>
@@ -27,14 +39,14 @@
                     </set-header>
                     <set-body>@($"{(string)context.Variables["body_value"]}")</set-body>
                 </send-request>
-                <!-- <set-variable name="ecommerce_response" value="@(((IResponse)context.Variables["test-transaction"]).StatusCode)" /> -->
+                <return-response response-variable-name="test-transaction" />
             </when>
         </choose>
     </outbound>
     <backend>
-      <base />
+        <base />
     </backend>
     <on-error>
-      <base />
+        <base />
     </on-error>
-  </policies>
+</policies>
