@@ -107,7 +107,7 @@
         "type": "object",
         "required": [
           "paymentNotices",
-          "returnurls"
+          "returnUrls"
         ],
         "properties": {
           "emailNotice": {
@@ -135,7 +135,7 @@
               }
             ]
           },
-          "returnurls": {
+          "returnUrls": {
             "type": "object",
             "required": [
               "returnOkUrl",
