@@ -6,16 +6,6 @@
         <address-range from="10.1.128.0" to="10.1.128.255" />
       </ip-filter>  
         <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
-        <choose>
-            <when condition="@(!(Regex.Match((string)context.Variables["transactionId"],@"^[0-9]*$").Success))">
-                <return-response>
-                    <set-status code="400" reason="Bad Request" />
-                    <set-header name="Reason" exists-action="override">
-                        <value>Bearer error="malformed request"</value>
-                    </set-header>
-                </return-response>
-            </when>
-        </choose>
         <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-restapi-CD/v2")" />
         <set-variable name="ecommerce_url" value="weudev.ecommerce.internal.dev.platform.pagopa.it" />
         <set-variable name="body_value" value="@(context.Request.Body.As<string>(preserveContent: true))" />
