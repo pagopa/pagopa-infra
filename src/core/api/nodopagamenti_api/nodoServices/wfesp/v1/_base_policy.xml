@@ -28,8 +28,22 @@
         </cors>
         <base />
         <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-wfesp}}" />
+        <choose>
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
+                <set-backend-service base-url="http://{{aks-lb-nexi}}/wfesp-prf" />
+            </when>
+        </choose>   
+        
         <set-variable name="external-scheme" value="https" />
-        <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.dev.platform.pagopa.it -->
+
+        <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.<ENV>.platform.pagopa.it -->
+        <choose>
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
+                <set-variable name="external-host" value="api.prf.platform.pagopa.it" />
+            </when>
+        </choose>  
+
+
         <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /wfesp/api/v1 -->
         <choose>
             <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\${apim_base_path}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
