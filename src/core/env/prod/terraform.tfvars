@@ -35,6 +35,7 @@ cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
 cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # cidr_subnet_gps_cosmosdb             = ["10.1.149.0/24"]
+cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
 cidr_subnet_redis = ["10.1.132.0/24"]
@@ -91,6 +92,7 @@ app_gateway_waf_enabled                 = true
 app_gateway_alerts_enabled              = true
 app_gateway_deny_paths = [
   "/nodo/.*",
+  "/nodo-auth/.*", # non serve in quanto queste API sono con subkey required 🔐
   "/payment-manager/clients/.*",
   "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
@@ -115,7 +117,8 @@ app_gateway_deny_paths_2 = [
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
-  "/payment-manager/pp-restapi-server/.*"
+  "/payment-manager/pp-restapi-server/.*",
+  "/pagopa-node-forwarder/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -149,11 +152,24 @@ mock_payment_gateway_enabled = false
 
 
 # apim x nodo pagamenti
+# https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "97249640588,08658331007,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec      = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
 nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
-ip_nodo                = "10.79.20.34"
+ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
+lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
+
+base_path_nodo_oncloud        = "/nodo-prd"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-prd"
+base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
+base_path_nodo_wfesp          = "/wfesp-prd"
+base_path_nodo_fatturazione   = "/fatturazione-prd"
+base_path_nodo_web_bo         = "/web-bo-prd"
+base_path_nodo_web_bo_history = "/web-bo-history-prd"
+
+
+nodo_auth_subscription_limit = 10000
 
 # eventhub
 eventhub_enabled = true
@@ -518,3 +534,7 @@ dexp_db = {
 dexp_re_db_linkes_service = {
   enable = true
 }
+
+# node forwarder
+node_forwarder_tier = "PremiumV3"
+node_forwarder_size = "P1v3"

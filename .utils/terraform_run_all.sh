@@ -19,15 +19,19 @@ array=(
     'src/aks-platform::weu-dev'
     'src/domains/afm-app::weu-dev'
     'src/domains/afm-common::weu-dev'
+    'src/domains/bizevents-app::weu-dev'
+    'src/domains/bizevents-common::weu-dev'
     'src/domains/ecommerce-app::weu-dev'
     'src/domains/ecommerce-common::weu-dev'
     'src/domains/gps-app::weu-dev'
     'src/domains/gps-common::weu-dev'
+    'src/domains/load-test::weu-dev'
+    'src/domains/nodo-app::weu-dev'
+    'src/domains/nodo-common::weu-dev'
     'src/domains/selfcare-app::weu-dev'
     'src/domains/selfcare-common::weu-dev'
     'src/domains/shared-app::weu-dev'
     'src/domains/shared-common::weu-dev'
-    'src/domains/load-test::weu-dev'
 )
 
 function rm_terraform {
