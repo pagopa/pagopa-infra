@@ -1,6 +1,6 @@
 <policies>
     <inbound>
-        <base />    
+        <base />
         <set-variable name="psps" value="{{brokerlist}}" />
         <set-variable name="ecs" value="{{ecblacklist}}" />
         <set-variable name="requestPayload" value="@(context.Request.Body.As<string>(preserveContent: true))" />
@@ -542,7 +542,33 @@
                 </choose>
             </otherwise>
         </choose>
-        <set-backend-service base-url="{{urlnodo}}" />
+        <!-- <set-backend-service base-url="{{urlnodo}}" /> -->
+        <choose>
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
+                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
+            </when>
+            <otherwise>
+                <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
+                <set-backend-service base-url="{{urlnodo}}" /> <!-- onprem -->
+                <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
+                <choose>
+
+                    <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
+                        <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
+                    </when>
+
+                    <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("uat.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("uat.platform.pagopa.it"))">
+                        <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
+                        <set-backend-service base-url="{{urlnodo}}" /> <!-- onprem -->
+                    </when>
+
+                    <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("dev.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("dev.platform.pagopa.it"))">
+                        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
+                    </when>
+
+                </choose>
+            </otherwise>
+        </choose>
     </inbound>
     <backend>
         <base />

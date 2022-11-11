@@ -19,15 +19,19 @@ jobs:
             src/core
             src/domains/afm-app
             src/domains/afm-common
+            src/domains/bizevents-app
+            src/domains/bizevents-common
             src/domains/ecommerce-app
             src/domains/ecommerce-common
             src/domains/gps-app
             src/domains/gps-common
+            src/domains/load-test
+            src/domains/nodo-app
+            src/domains/nodo-common
             src/domains/selfcare-app
             src/domains/selfcare-common
             src/domains/shared-app
             src/domains/shared-common
-            src/domains/load-test
         run: |
           pids=()
 
