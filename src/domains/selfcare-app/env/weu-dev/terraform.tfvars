@@ -15,17 +15,6 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-lock_enable = true
-
-robots_indexed_paths = []
-
-terraform_remote_state_core = {
-  resource_group_name  = "io-infra-rg"
-  storage_account_name = "pagopainfraterraformdev"
-  container_name       = "azurermstate"
-  key                  = "dev.terraform.tfstate"
-}
-
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
@@ -44,5 +33,5 @@ tls_cert_check_helm = {
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
-
-selfcare_fe_enabled = true
+selfcare_fe_enabled  = true
+robots_indexed_paths = []
