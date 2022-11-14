@@ -52,3 +52,11 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
     "Delete", "Restore", "Purge", "Recover"
   ]
 }
+
+resource "azurerm_key_vault_secret" "ai_connection_string" {
+  name         = format("ai-%s-connection-string", var.env_short)
+  value        = data.terraform_remote_state.core.outputs.application_insights_instrumentation_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
