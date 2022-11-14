@@ -4,12 +4,34 @@
     "title": "PagoPA API configuration",
     "description": "Spring Application exposes Api to manage configuration for EC/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.24.0"
+    "version": "0.25.0"
   },
   "servers": [
     {
       "url": "${host}/apiconfig/api/v1",
       "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Payment Service Providers",
+      "description": "Everything about Payment Service Providers"
+    },
+    {
+      "name": "Batch Operation",
+      "description": "Everything about Batch Operation"
+    },
+    {
+      "name": "Creditor Institutions",
+      "description": "Everything about Creditor Institution"
+    },
+    {
+      "name": "Configuration",
+      "description": "Everything about Configuration"
+    },
+    {
+      "name": "Utilities",
+      "description": "Everything about Utilities"
     }
   ],
   "paths": {
@@ -367,11 +389,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -381,11 +403,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -1105,11 +1127,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -1119,11 +1141,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -2606,11 +2628,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -8093,11 +8115,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -8107,11 +8129,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -11160,11 +11182,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -11174,11 +11196,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -12615,14 +12637,14 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "IT",
               "enum": [
                 "IT",
                 "EN",
                 "FR",
                 "DE",
                 "SL"
-              ]
+              ],
+              "default": "IT"
             }
           },
           {
@@ -12806,11 +12828,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -14111,6 +14133,16 @@
           },
           "invio_rt_istantaneo": {
             "type": "boolean"
+          },
+          "target_host": {
+            "type": "string"
+          },
+          "target_port": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "target_path": {
+            "type": "string"
           }
         }
       },
