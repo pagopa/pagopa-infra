@@ -15,13 +15,6 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-terraform_remote_state_core = {
-  resource_group_name  = "io-infra-rg"
-  storage_account_name = "pagopainfraterraformdev"
-  container_name       = "azurermstate"
-  key                  = "dev.terraform.tfstate"
-}
-
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
@@ -62,6 +55,8 @@ aks_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
+aks_kubernetes_version = "1.23.12"
+
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
 ingress_load_balancer_ip  = "10.1.100.250"
@@ -82,7 +77,21 @@ nginx_helm = {
     }
   }
 }
-keda_helm_version = "2.6.2"
+
+# chart releases: https://github.com/kedacore/charts/releases
+# keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
+# keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
+keda_helm = {
+  chart_version = "2.8.0"
+  keda = {
+    image_name = "ghcr.io/kedacore/keda"
+    image_tag  = "2.8.0@sha256:cce502ff17fd2984af70b4e470b403a82067929f6e4d1888875a52fcb33fa9fd"
+  }
+  metrics_api_server = {
+    image_name = "ghcr.io/kedacore/keda-metrics-apiserver"
+    image_tag  = "2.8.0@sha256:4afe231e9ce5ca351fcf10a83479eb0ee2f3e6dc0f386108b89d1b5623d56b14"
+  }
+}
 
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags

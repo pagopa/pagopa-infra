@@ -2,15 +2,17 @@ name: Static Analysis
 
 on:
   push:
-    branches-ignore:
-      - main
 
 jobs:
   static_analysis:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v2
+      # from https://github.com/actions/checkout/commits/main
+      - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: init_terraform_folders
         env:
@@ -61,5 +63,6 @@ jobs:
 
       - name: run_pre_commit_terraform
         run: |
-          TAG=v1.71.0
+          # from https://github.com/antonbabenko/pre-commit-terraform/pkgs/container/pre-commit-terraform
+          TAG=v1.76.0@sha256:50ed39dc67b6a5b198e45fa7b06aa73b50ccc20613bc795f1a7841fd41b2c838
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a

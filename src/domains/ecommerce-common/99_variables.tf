@@ -55,26 +55,11 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
-}
-
 variable "tags" {
   type = map(any)
   default = {
     CreatedBy = "Terraform"
   }
-}
-
-variable "terraform_remote_state_core" {
-  type = object({
-    resource_group_name  = string,
-    storage_account_name = string,
-    container_name       = string,
-    key                  = string
-  })
 }
 
 ### External resources
@@ -110,7 +95,7 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-# CosmosDb 
+# CosmosDb
 variable "cidr_subnet_cosmosdb_ecommerce" {
   type        = list(string)
   description = "Cosmos DB address space for ecommerce."
@@ -152,7 +137,7 @@ variable "cosmos_mongo_db_ecommerce_params" {
   })
 }
 
-# Redis 
+# Redis
 variable "cidr_subnet_redis_ecommerce" {
   type        = list(string)
   description = "Redis DB address space for ecommerce."

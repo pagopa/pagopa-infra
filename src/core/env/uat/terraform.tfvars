@@ -370,7 +370,7 @@ acr_enabled = true
 # db nodo dei pagamenti
 db_port                            = 1521
 db_service_name                    = "NDPSPCA_PP_NODO4_CFG"
-dns_a_reconds_dbnodo_ips           = ["10.101.35.35", "10.101.35.36"]# use physical IPs instead of scan ones ["10.101.35.39", "10.101.35.40", "10.101.35.41"]
+dns_a_reconds_dbnodo_ips           = ["10.101.35.35", "10.101.35.36"] # use physical IPs instead of scan ones ["10.101.35.39", "10.101.35.40", "10.101.35.41"]
 private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
 # API Config
