@@ -14,21 +14,16 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-lock_enable = true
-
-terraform_remote_state_core = {
-  resource_group_name  = "io-infra-rg"
-  storage_account_name = "pagopainfraterraformprod"
-  container_name       = "azureadstate"
-  key                  = "prod.terraform.tfstate"
-}
-
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
-ingress_load_balancer_ip                    = "10.1.100.250"
+application_insights_name                   = "pagopa-p-appinsights"
+
+### Aks
+
+ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"

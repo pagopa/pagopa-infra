@@ -14,8 +14,6 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
 
-  # Logs
-
   tags = var.tags
 }
 
