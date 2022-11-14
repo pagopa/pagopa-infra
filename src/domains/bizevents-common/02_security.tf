@@ -96,3 +96,10 @@ resource "azurerm_key_vault_secret" "cosmos_biz_key" {
 
   key_vault_id = module.key_vault.id
 }
+resource "azurerm_key_vault_secret" "ehub_tx_biz_key" {
+  name         = format("ehub-tx-%s-biz-key", var.env_short)
+  value        = data.terraform_remote_state.core.outputs.ehub_biz_event_tx_primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
