@@ -79,6 +79,11 @@ variable "log_analytics_workspace_resource_group_name" {
   description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
+variable "application_insights_name" {
+  type        = string
+  description = "Specifies the name of the Application Insights."
+}
+
 variable "ingress_load_balancer_ip" {
   type = string
 }
