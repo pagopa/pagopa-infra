@@ -97,7 +97,7 @@ resource "azurerm_key_vault_secret" "cosmos_biz_key" {
 }
 resource "azurerm_key_vault_secret" "ehub_tx_biz_key" {
   name         = format("ehub-tx-%s-biz-key", var.env_short)
-  value        = data.terraform_remote_state.core.outputs.ehub_biz_event_tx_primary_key
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

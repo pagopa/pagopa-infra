@@ -925,6 +925,7 @@
 | <a name="output_container_registry_admin_username"></a> [container\_registry\_admin\_username](#output\_container\_registry\_admin\_username) | n/a |
 | <a name="output_container_registry_login_server"></a> [container\_registry\_login\_server](#output\_container\_registry\_login\_server) | # Container registry ## |
 | <a name="output_ehub_biz_event_rx_conn_str"></a> [ehub\_biz\_event\_rx\_conn\_str](#output\_ehub\_biz\_event\_rx\_conn\_str) | n/a |
+| <a name="output_ehub_biz_event_tx_primary_key"></a> [ehub\_biz\_event\_tx\_primary\_key](#output\_ehub\_biz\_event\_tx\_primary\_key) | n/a |
 | <a name="output_nat_gw_outbound_ip_addresses"></a> [nat\_gw\_outbound\_ip\_addresses](#output\_nat\_gw\_outbound\_ip\_addresses) | n/a |
 | <a name="output_nodo_test_sa_blob_connection_string"></a> [nodo\_test\_sa\_blob\_connection\_string](#output\_nodo\_test\_sa\_blob\_connection\_string) | n/a |
 | <a name="output_nodo_test_sa_blob_host"></a> [nodo\_test\_sa\_blob\_host](#output\_nodo\_test\_sa\_blob\_host) | Blob storage |
