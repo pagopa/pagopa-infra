@@ -59,6 +59,7 @@ module "selfcare_cdn" {
   #                       selfcare.<ENV>.platform.pagopa.it
   hostname              = "${local.dns_zone_selfcare}.${local.dns_zone_platform}.${local.external_domain}"
   https_rewrite_enabled = true
+  lock_enabled          = false
 
   index_document     = "index.html"
   error_404_document = "error.html"
