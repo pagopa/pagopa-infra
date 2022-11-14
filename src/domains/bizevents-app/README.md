@@ -96,6 +96,8 @@ No outputs.
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_api_bizevents_api_v1"></a> [apim\_api\_bizevents\_api\_v1](#module\_apim\_api\_bizevents\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
+| <a name="module_apim_bizevents_product"></a> [apim\_bizevents\_product](#module\_apim\_bizevents\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/azurerm.git//kubernetes_pod_identity | v2.13.1 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/azurerm.git//tls_checker | v2.19.0 |
 
@@ -103,6 +105,7 @@ No outputs.
 
 | Name | Type |
 |------|------|
+| [azurerm_api_management_api_version_set.api_bizevents_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
@@ -126,7 +129,6 @@ No outputs.
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/virtual_network) | data source |
 | [kubernetes_secret.azure_devops_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/data-sources/secret) | data source |
-| [terraform_remote_state.core](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
 ## Inputs
 

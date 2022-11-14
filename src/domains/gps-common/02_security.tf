@@ -13,11 +13,6 @@ module "key_vault" {
   resource_group_name        = azurerm_resource_group.sec_rg.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
-  lock_enable                = true
-
-  # Logs
-  sec_log_analytics_workspace_id = var.env_short == "p" ? data.terraform_remote_state.core.outputs.sec_workspace_id : null
-  sec_storage_id                 = var.env_short == "p" ? data.terraform_remote_state.core.outputs.sec_storage_id : null
 
   tags = var.tags
 }

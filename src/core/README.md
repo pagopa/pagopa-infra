@@ -930,8 +930,6 @@
 | <a name="output_nodo_test_sa_blob_host"></a> [nodo\_test\_sa\_blob\_host](#output\_nodo\_test\_sa\_blob\_host) | Blob storage |
 | <a name="output_nodo_test_sa_connection_string"></a> [nodo\_test\_sa\_connection\_string](#output\_nodo\_test\_sa\_connection\_string) | n/a |
 | <a name="output_nodo_test_sa_web_host"></a> [nodo\_test\_sa\_web\_host](#output\_nodo\_test\_sa\_web\_host) | n/a |
-| <a name="output_sec_storage_id"></a> [sec\_storage\_id](#output\_sec\_storage\_id) | n/a |
-| <a name="output_sec_workspace_id"></a> [sec\_workspace\_id](#output\_sec\_workspace\_id) | n/a |
 | <a name="output_vnet_address_space"></a> [vnet\_address\_space](#output\_vnet\_address\_space) | n/a |
 | <a name="output_vnet_id"></a> [vnet\_id](#output\_vnet\_id) | n/a |
 | <a name="output_vnet_integration_address_space"></a> [vnet\_integration\_address\_space](#output\_vnet\_integration\_address\_space) | n/a |

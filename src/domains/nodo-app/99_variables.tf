@@ -60,26 +60,11 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
-}
-
 variable "tags" {
   type = map(any)
   default = {
     CreatedBy = "Terraform"
   }
-}
-
-variable "terraform_remote_state_core" {
-  type = object({
-    resource_group_name  = string,
-    storage_account_name = string,
-    container_name       = string,
-    key                  = string
-  })
 }
 
 ### External resources
