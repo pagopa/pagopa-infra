@@ -25,11 +25,27 @@ resource "helm_release" "keda" {
   name       = "keda"
   chart      = "keda"
   repository = "https://kedacore.github.io/charts"
-  version    = var.keda_helm_version
+  version    = var.keda_helm.chart_version
   namespace  = kubernetes_namespace.keda.metadata[0].name
 
   set {
     name  = "podIdentity.activeDirectory.identity"
     value = "${kubernetes_namespace.keda.metadata[0].name}-pod-identity"
+  }
+  set {
+    name  = "image.keda.repository"
+    value = var.keda_helm.keda.image_name
+  }
+  set {
+    name  = "image.keda.tag"
+    value = var.keda_helm.keda.image_tag
+  }
+  set {
+    name  = "image.metrics_api_server.repository"
+    value = var.keda_helm.metrics_api_server.image_name
+  }
+  set {
+    name  = "image.metrics_api_server.tag"
+    value = var.keda_helm.metrics_api_server.image_tag
   }
 }

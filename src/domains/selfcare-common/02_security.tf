@@ -13,11 +13,6 @@ module "key_vault" {
   resource_group_name        = azurerm_resource_group.sec_rg.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
-  lock_enable                = true
-
-  # Logs
-  sec_log_analytics_workspace_id = var.env_short == "p" ? data.terraform_remote_state.core.outputs.sec_workspace_id : null
-  sec_storage_id                 = var.env_short == "p" ? data.terraform_remote_state.core.outputs.sec_storage_id : null
 
   tags = var.tags
 }
@@ -51,4 +46,12 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
     "Get", "List", "Update", "Create", "Import",
     "Delete", "Restore", "Purge", "Recover"
   ]
+}
+
+resource "azurerm_key_vault_secret" "ai_connection_string" {
+  name         = format("ai-%s-connection-string", var.env_short)
+  value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
 }

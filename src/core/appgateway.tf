@@ -359,10 +359,6 @@ module "app_gw" {
   app_gateway_min_capacity = var.app_gateway_min_capacity
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
-  # Logs
-  sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
-  sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
-
   alerts_enabled = var.app_gateway_alerts_enabled
 
   action = [
