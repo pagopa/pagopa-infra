@@ -55,16 +55,6 @@ output "nodo_test_sa_blob_connection_string" {
   sensitive = true
 }
 
-output "sec_workspace_id" {
-  value     = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
-  sensitive = true
-}
-
-output "sec_storage_id" {
-  value     = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
-  sensitive = true
-}
-
 output "application_insights_instrumentation_key" {
   value     = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
   sensitive = true
@@ -72,5 +62,10 @@ output "application_insights_instrumentation_key" {
 
 output "ehub_biz_event_rx_conn_str" {
   value     = module.event_hub01.keys["nodo-dei-pagamenti-biz-evt.pagopa-biz-evt-rx"].primary_connection_string
+  sensitive = true
+}
+
+output "ehub_biz_event_tx_primary_key" {
+  value     = module.event_hub01.keys["nodo-dei-pagamenti-biz-evt.pagopa-biz-evt-tx"].primary_key
   sensitive = true
 }
