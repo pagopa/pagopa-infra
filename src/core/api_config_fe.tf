@@ -24,6 +24,7 @@ module "api_config_fe_cdn" {
   # should be something like that            config              <dev|uat>.platform   .pagapa.it
   hostname              = format("%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
   https_rewrite_enabled = true
+  lock_enabled          = false
 
   index_document     = "index.html"
   error_404_document = "not_found.html"
