@@ -57,7 +57,6 @@
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/resource_group) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/virtual_network) | data source |
-| [terraform_remote_state.core](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
 ## Inputs
 
@@ -78,7 +77,7 @@
 | <a name="input_ingress_max_replica_count"></a> [ingress\_max\_replica\_count](#input\_ingress\_max\_replica\_count) | n/a | `string` | n/a | yes |
 | <a name="input_ingress_min_replica_count"></a> [ingress\_min\_replica\_count](#input\_ingress\_min\_replica\_count) | n/a | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
-| <a name="input_keda_helm_version"></a> [keda\_helm\_version](#input\_keda\_helm\_version) | n/a | `string` | n/a | yes |
+| <a name="input_keda_helm"></a> [keda\_helm](#input\_keda\_helm) | keda helm chart configuration | <pre>object({<br>    chart_version = string,<br>    keda = object({<br>      image_name = string,<br>      image_tag  = string,<br>    }),<br>    metrics_api_server = object({<br>      image_name = string,<br>      image_tag  = string,<br>    }),<br>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_location_string"></a> [location\_string](#input\_location\_string) | One of West Europe, North Europe | `string` | n/a | yes |
@@ -91,7 +90,6 @@
 | <a name="input_prometheus_helm"></a> [prometheus\_helm](#input\_prometheus\_helm) | prometheus helm chart configuration | <pre>object({<br>    chart_version = string,<br>    alertmanager = object({<br>      image_name = string,<br>      image_tag  = string,<br>    }),<br>    configmap_reload_prometheus = object({<br>      image_name = string,<br>      image_tag  = string,<br>    }),<br>    configmap_reload_alertmanager = object({<br>      image_name = string,<br>      image_tag  = string,<br>    }),<br>    configmap_reload_prometheus = object({<br>      image_name = string,<br>      image_tag  = string,<br>    }),<br>    node_exporter = object({<br>      image_name = string,<br>      image_tag  = string,<br>    }),<br>    server = object({<br>      image_name = string,<br>      image_tag  = string,<br>    }),<br>    pushgateway = object({<br>      image_name = string,<br>      image_tag  = string,<br>    }),<br>  })</pre> | n/a | yes |
 | <a name="input_reloader_helm"></a> [reloader\_helm](#input\_reloader\_helm) | reloader helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
-| <a name="input_terraform_remote_state_core"></a> [terraform\_remote\_state\_core](#input\_terraform\_remote\_state\_core) | n/a | <pre>object({<br>    resource_group_name  = string,<br>    storage_account_name = string,<br>    container_name       = string,<br>    key                  = string<br>  })</pre> | n/a | yes |
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 | <a name="input_tls_checker_https_endpoints_to_check"></a> [tls\_checker\_https\_endpoints\_to\_check](#input\_tls\_checker\_https\_endpoints\_to\_check) | List of https endpoint to check ssl certificate and his alert name | <pre>list(object({<br>    https_endpoint = string<br>    # max 53 chars, alfanumeric and '-', and lower case<br>    alert_name    = string<br>    alert_enabled = bool<br>    helm_present  = bool<br>  }))</pre> | `[]` | no |
 
