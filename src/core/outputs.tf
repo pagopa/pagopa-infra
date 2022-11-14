@@ -69,3 +69,8 @@ output "application_insights_instrumentation_key" {
   value     = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
   sensitive = true
 }
+
+output "ehub_biz_event_rx_conn_str" {
+  value     = module.event_hub01.keys["nodo-dei-pagamenti-biz-evt.pagopa-biz-evt-rx"].primary_connection_string
+  sensitive = true
+}

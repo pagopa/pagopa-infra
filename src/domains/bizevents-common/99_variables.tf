@@ -142,3 +142,22 @@ variable "cidr_subnet_bizevents_datastore_cosmosdb" {
   description = "Cosmos DB address space"
   default     = null
 }
+
+
+variable "bizevents_datastore_fn_sa_enable_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "bizevents_datastore_fn_sa_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "bizevents_datastore_fn_sa_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
