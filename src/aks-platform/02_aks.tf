@@ -86,10 +86,6 @@ module "aks" {
     }
   ]
 
-  # Logs
-  sec_log_analytics_workspace_id = var.env_short == "p" ? data.terraform_remote_state.core.outputs.sec_workspace_id : null
-  sec_storage_id                 = var.env_short == "p" ? data.terraform_remote_state.core.outputs.sec_storage_id : null
-
   tags = var.tags
 }
 
