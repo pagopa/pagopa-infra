@@ -58,7 +58,7 @@ resource "azurerm_key_vault_secret" "biz_events_datastore_cosmos_pkey" {
 
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = format("ai-%s-connection-string", var.env_short)
-  value        = data.azurerm_application_insights.application_insights.instrumentation_key
+  value        = data.azurerm_application_insights.application_insights.connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -71,13 +71,15 @@ resource "azurerm_key_vault_secret" "cosmos_biz_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+
 resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
   name         = format("ehub-%s-biz-connection-string", var.env_short)
-  value        = data.terraform_remote_state.core.outputs.ehub_biz_event_rx_conn_str
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
+
 resource "azurerm_key_vault_secret" "biz_azurewebjobsstorage" {
   name         = format("bizevent-%s-azurewebjobsstorage", var.env_short)
   value        = module.bizevents_datastore_fn_sa.primary_connection_string
@@ -85,6 +87,7 @@ resource "azurerm_key_vault_secret" "biz_azurewebjobsstorage" {
 
   key_vault_id = module.key_vault.id
 }
+
 resource "azurerm_key_vault_secret" "cosmos_biz_key" {
   name         = format("cosmos-%s-biz-key", var.env_short)
   value        = module.bizevents_datastore_cosmosdb_account.primary_key
