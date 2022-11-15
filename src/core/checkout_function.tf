@@ -55,6 +55,8 @@ module "checkout_function" {
   storage_account_name = replace(format("%s-st-fncheckout", local.project), "-", "")
 
   app_settings = {
+    linux_fx_version = "NODE|14-lts"
+
     FUNCTIONS_WORKER_RUNTIME       = "node"
     WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4

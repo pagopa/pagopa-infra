@@ -168,7 +168,7 @@ module "apim_ecommerce_transaction_results_service_api_v1" {
 }
 
 #################################################
-## API transactions service - payment-requests ##
+## API payment request service                 ##
 #################################################
 locals {
   apim_ecommerce_payment_requests_service_api = {
