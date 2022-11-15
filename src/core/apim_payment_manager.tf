@@ -747,12 +747,12 @@ module "apim_pm_ptg_api_v1" {
 locals {
   apim_pm_per_nodo_api = {
     # params for all api versions
-    display_name          = "Payment Manager - PM per Nodo API"
-    description           = "API PM for Nodo"
-    path                  = "payment-manager/pm-per-nodo"
+    display_name             = "Payment Manager - PM per Nodo API"
+    description              = "API PM for Nodo"
+    path                     = "payment-manager/pm-per-nodo"
     subscription_required_v1 = false
     subscription_required_v2 = true
-    service_url           = null
+    service_url              = null
   }
 }
 
@@ -815,7 +815,7 @@ module "apim_pm_per_nodo_v2" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_base_policy.xml.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name,
+    host                       = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name,
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
   })
 }
