@@ -1,3 +1,5 @@
+
+
 data "azurerm_key_vault" "keyvault" {
   name                = "${local.product}-${var.domain}-kv"
   resource_group_name = "${local.product}-${var.domain}-sec-rg"
@@ -15,26 +17,47 @@ resource "azurerm_key_vault_key" "generated" {
   ]
 }
 
+data "external" "external" {
+  program = [
+    "bash", "terrasops.sh"
+  ]
+  query = {
+    env = "${var.location_short}-${var.env}"
+  }
+}
+
 locals {
-  secret_data = jsondecode(file(var.input_file))
-  all_secrets_value = flatten([
-    for secrets in local.secret_data.secrets : {
-      valore = secrets.value
-      chiave = secrets.key
+  all_enc_secrets_value = flatten([
+    for k, v in data.external.external.result : {
+      valore = v
+      chiave = k
+    }
+  ])
+
+  clean_secret_data = jsondecode(file(var.input_file))
+  all_clean_secrets_value = flatten([
+    for kc, vc in local.clean_secret_data : {
+      valore = vc
+      chiave = kc
     }
   ])
 }
 
-#Print secrets to screen
-output "secrets" {
-  value = local.all_secrets_value
-}
 
-## Upload all secrets
+## Upload all encryted secrets
 resource "azurerm_key_vault_secret" "secret" {
-  for_each = { for i, v in local.all_secrets_value : local.all_secrets_value[i].chiave => i }
+  for_each = { for i, v in local.all_enc_secrets_value : local.all_enc_secrets_value[i].chiave => i }
 
   key_vault_id = data.azurerm_key_vault.keyvault.id
-  name         = local.all_secrets_value[each.value].chiave
-  value        = local.all_secrets_value[each.value].valore
+  name         = local.all_enc_secrets_value[each.value].chiave
+  value        = local.all_enc_secrets_value[each.value].valore
+}
+
+## Upload all clean secrets
+resource "azurerm_key_vault_secret" "clansecret" {
+  for_each = { for i, v in local.all_clean_secrets_value : local.all_clean_secrets_value[i].chiave => i }
+
+  key_vault_id = data.azurerm_key_vault.keyvault.id
+  name         = local.all_clean_secrets_value[each.value].chiave
+  value        = local.all_clean_secrets_value[each.value].valore
 }

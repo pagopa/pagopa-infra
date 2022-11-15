@@ -20,10 +20,12 @@ No modules.
 | Name | Type |
 |------|------|
 | [azurerm_key_vault_key.generated](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_key) | resource |
+| [azurerm_key_vault_secret.clansecret](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.keyvault](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subscription) | data source |
+| [external_external.external](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 | [terraform_remote_state.core](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
 ## Inputs
@@ -48,7 +50,5 @@ No modules.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_secrets"></a> [secrets](#output\_secrets) | Print secrets to screen |
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

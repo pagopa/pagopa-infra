@@ -35,7 +35,6 @@ if echo "init plan apply refresh import output state taint destroy" | grep -w $a
     terraform $action -var-file="./env/$env/terraform.tfvars" $other
   fi
 
-  ./sops.sh e $env
 
 else
     echo "Action not allowed."
