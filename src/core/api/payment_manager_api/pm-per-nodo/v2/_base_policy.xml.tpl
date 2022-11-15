@@ -19,7 +19,7 @@
             </when>
         </choose>
         <choose>
-            <when condition="@(context.Response.StatusCode != 200 || !((string)context.Variables["outcome"]).Equals("OK"))">
+        <when condition="@(context.Response.StatusCode != 200 || !((string)context.Variables.GetValueOrDefault("outcome","")).Equals("OK"))">
                 <!-- addUserReceipt for ecommerce -->
                 <send-request ignore-error="true" timeout="10" response-variable-name="test-transaction" mode="new">
                     <set-url>@($"https://{(string)context.Variables["ecommerce_url"]}/pagopa-ecommerce-transactions-service/transactions/{(string)context.Variables["transactionId"]}/user-receipts")</set-url>
