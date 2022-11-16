@@ -68,8 +68,14 @@ if echo "d a s n" | grep -w $action > /dev/null; then
         sops -i --set  '["'$chiave'"] "'$valore'"' --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
       ;;
       "n")
-        echo "{}" > ./secret/$localenv/$file_crypted
-        sops --encrypt -i --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
+        if [ -f ./secret/$localenv/$file_crypted ]
+        then
+          echo "file ./secret/$localenv/$file_crypted già presente"
+          exit 0
+        else
+          echo "{}" > ./secret/$localenv/$file_crypted
+          sops --encrypt -i --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
+        fi
     esac
   
 else
