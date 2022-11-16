@@ -146,7 +146,7 @@ locals {
   apim_pm_restapi_old_api = {
     # params for all api versions
     display_name          = "Payment Manager restapi API old"
-    description           = "API to support payment trasactions for Checkout and Wisp"
+    description           = "API to support payment trasactions for Checkout and Wisp - old"
     path                  = "pp-restapi"
     subscription_required = false
     service_url           = null
