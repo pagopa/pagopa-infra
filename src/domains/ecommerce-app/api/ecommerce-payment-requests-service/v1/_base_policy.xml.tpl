@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-transactions-service" />
+      <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-payment-requests-service" />
     </inbound>
     <outbound>
       <base />

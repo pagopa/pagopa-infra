@@ -5,7 +5,6 @@
       <set-header name="x-functions-key" exists-action="override">
         <value>{{pagopa-fn-buyerbanks-key}}</value>
       </set-header>
-      <rate-limit-by-key calls="50" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     </inbound>
     <outbound>
       <base />
