@@ -1,13 +1,7 @@
 
-
-data "azurerm_key_vault" "keyvault" {
-  name                = "${local.product}-${var.domain}-kv"
-  resource_group_name = "${local.product}-${var.domain}-sec-rg"
-}
-
 resource "azurerm_key_vault_key" "generated" {
   name         = "${local.product}-${var.domain}-sops-key"
-  key_vault_id = data.azurerm_key_vault.keyvault.id
+  key_vault_id = module.key_vault.id
   key_type     = "RSA"
   key_size     = 2048
 
@@ -48,7 +42,7 @@ locals {
 resource "azurerm_key_vault_secret" "secret" {
   for_each = { for i, v in local.all_enc_secrets_value : local.all_enc_secrets_value[i].chiave => i }
 
-  key_vault_id = data.azurerm_key_vault.keyvault.id
+  key_vault_id = module.key_vault.id
   name         = local.all_enc_secrets_value[each.value].chiave
   value        = local.all_enc_secrets_value[each.value].valore
 }
@@ -57,7 +51,7 @@ resource "azurerm_key_vault_secret" "secret" {
 resource "azurerm_key_vault_secret" "clansecret" {
   for_each = { for i, v in local.all_clean_secrets_value : local.all_clean_secrets_value[i].chiave => i }
 
-  key_vault_id = data.azurerm_key_vault.keyvault.id
+  key_vault_id = module.key_vault.id
   name         = local.all_clean_secrets_value[each.value].chiave
   value        = local.all_clean_secrets_value[each.value].valore
 }
