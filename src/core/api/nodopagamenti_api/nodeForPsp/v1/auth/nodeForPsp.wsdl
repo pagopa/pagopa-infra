@@ -150,6 +150,11 @@
         </xsd:restriction>
       </xsd:simpleType>
 
+      <xsd:complexType name="stPaymentTokens">
+        <xsd:sequence>
+          <xsd:element name="paymentToken" type="tns:stPaymentToken" minOccurs="1" maxOccurs="5" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:simpleType name="stCommissione">
         <xsd:restriction base="xsd:string">
           <xsd:enumeration value="Y" />
@@ -352,6 +357,62 @@
       <xsd:simpleType name="stIdentificativoServizio">
         <xsd:restriction base="xsd:string">
           <xsd:length value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stPaymentMethodFee">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="BBT" />
+          <!-- Bonifico Bancario di Tesoreria -->
+          <xsd:enumeration value="BP" />
+          <!-- Bollettino Postale -->
+          <xsd:enumeration value="AD" />
+          <!-- Addebito Diretto -->
+          <xsd:enumeration value="CP" />
+          <!-- Carta di Pagamento -->
+          <xsd:enumeration value="PO" />
+          <!-- Pagamento attivato presso PSP  -->
+          <xsd:enumeration value="OBEP" />
+          <!-- Online Banking Electronic Payment -->
+          <xsd:enumeration value="JIF" />
+          <!-- Bancomat Pay  -->
+          <xsd:enumeration value="MYBK" />
+          <!-- MyBank Seller Bank -->
+          <xsd:enumeration value="PPAL" />
+          <!-- PayPal -->
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stTouchpointFee">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="IO" />
+          <xsd:enumeration value="WISP" />
+          <xsd:enumeration value="CHECKOUT" />
+          <xsd:enumeration value="PSP" />
+          <!-- Pagamento presso PSP  generico -->
+          <xsd:enumeration value="ATM" />
+          <!-- Pagamento presso PSP  ATM -->
+          <xsd:enumeration value="BETTING" />
+          <!-- Pagamento presso PSP  ricevitoria -->
+          <xsd:enumeration value="TS" />
+          <!-- Pagamento presso PSP  tabaccheria -->
+          <xsd:enumeration value="HB" />
+          <!-- Pagamento presso PSP  home banking -->
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stBase64Binary72">
+        <xsd:restriction base="xsd:base64Binary">
+          <xsd:pattern value=".{4,72}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stTipoBolloDigitale">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="01" />
+          <xsd:length value="2" />
         </xsd:restriction>
       </xsd:simpleType>
 
@@ -561,6 +622,62 @@
 
         <xsd:sequence>
           <xsd:element name="transfer" type="tns:ctTransferPSP" maxOccurs="5" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ctTransferListPSPV2">
+        <xsd:sequence>
+          <xsd:element name="transfer" type="tns:ctTransferPSPV2" maxOccurs="5" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ctMapEntry">
+        <xsd:sequence>
+          <xsd:element name="key" type="tns:stText140" />
+          <xsd:element name="value" type="tns:stText140" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ctMetadata">
+        <xsd:sequence>
+          <xsd:element name="mapEntry" type="tns:ctMapEntry" minOccurs="1" maxOccurs="10"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ctMarcaDaBollo">
+        <xsd:sequence>
+          <xsd:element name="paymentToken" type="tns:stPaymentToken" />
+          <xsd:element name="idTransfer" type="tns:stIdTransfer" />
+          <xsd:element name="MBDAttachment" type="xsd:base64Binary" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ctListaMarcheDaBollo">
+        <xsd:sequence>
+          <xsd:element name="marcaDaBollo" type="tns:ctMarcaDaBollo" maxOccurs="25" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ctTransferPSPV2">
+        <xsd:sequence>
+          <xsd:element name="idTransfer" type="tns:stIdTransfer" />
+          <xsd:element name="transferAmount" type="tns:stAmount" />
+          <xsd:element name="fiscalCodePA" type="tns:stFiscalCodePA" />
+          <xsd:choice minOccurs="0">
+            <xsd:element name="IBAN" type="tns:stIBAN" />
+            <xsd:element name="richiestaMarcaDaBollo" type="tns:ctRichiestaMarcaDaBollo" />
+          </xsd:choice>
+          <xsd:element name="remittanceInformation" type="tns:stText140" />
+          <xsd:element name="metadata" type="tns:ctMetadata" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+
+      <xsd:complexType name="ctRichiestaMarcaDaBollo">
+        <xsd:sequence>
+          <xsd:element name="hashDocumento" type="tns:stBase64Binary72" />
+          <xsd:element name="tipoBollo" type="tns:stTipoBolloDigitale" />
+          <xsd:element name="provinciaResidenza" type="tns:stNazioneProvincia" />
         </xsd:sequence>
       </xsd:complexType>
 
@@ -780,6 +897,24 @@
         </xsd:sequence>
 
       </xsd:complexType>
+
+      <xsd:complexType name="ctOutcomeDetailsV2">
+        <xsd:sequence>
+          <xsd:element name="paymentMethod" type="tns:stPaymentMethod" />
+          <xsd:element name="paymentChannel" type="tns:stPaymentChannel" minOccurs="0" />
+          <xsd:element name="fee" type="tns:stAmount" />
+          <xsd:element name="primaryCiIncurredFee" type="tns:stAmount" minOccurs="0" />
+          <xsd:element name="idBundle" type="tns:stText70" minOccurs="0" />
+          <xsd:element name="idCiBundle" type="tns:stText70" minOccurs="0" />
+          <xsd:element name="payer" type="tns:ctSubject" minOccurs="0" />
+          <xsd:element name="applicationDate" type="tns:stISODate" />
+          <!--data applicativa-->
+          <xsd:element name="transferDate" type="tns:stISODate" />
+          <!--data di disposizione bonifico-->
+          <xsd:element name="marcheDaBollo" type="tns:ctListaMarcheDaBollo" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+
       <xsd:complexType name="sendPaymentOutcomeReq">
         <xsd:annotation>
           <xsd:documentation>
@@ -860,6 +995,63 @@
       </xsd:complexType>
 
 
+      <xsd:complexType name="activatePaymentNoticeV2Request">
+        <xsd:sequence>
+          <xsd:element name="idPSP" type="tns:stIdPSP" />
+          <xsd:element name="idBrokerPSP" type="tns:stIdBroker" />
+          <xsd:element name="idChannel" type="tns:stIdChannel" />
+          <xsd:element name="idempotencyKey" type="tns:stIdempotencyKey" minOccurs="0" />
+          <xsd:element name="qrCode" type="tns:ctQrCode" />
+          <xsd:element name="expirationTime" type="tns:stExpirationTime" minOccurs="0" />
+          <xsd:element name="amount" type="tns:stAmount" />
+          <xsd:element name="dueDate" type="tns:stISODate" minOccurs="0" />
+          <xsd:element name="paymentNote" type="tns:stText210" minOccurs="0" />
+          <xsd:element name="paymentMethod" type="tns:stPaymentMethodFee" minOccurs="0" />
+          <xsd:element name="touchPoint" type="tns:stTouchpointFee" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="activatePaymentNoticeV2Response">
+        <xsd:complexContent>
+          <xsd:extension base="tns:ctResponse">
+            <xsd:sequence>
+              <xsd:element name="totalAmount" type="tns:stAmount" minOccurs="0" />
+              <xsd:element name="paymentDescription" type="tns:stText140" minOccurs="0" />
+              <xsd:element name="fiscalCodePA" type="tns:stFiscalCodePA" minOccurs="0" />
+              <xsd:element name="companyName" type="tns:stText140" minOccurs="0" />
+              <xsd:element name="officeName" type="tns:stText140" minOccurs="0" />
+              <xsd:element name="paymentToken" type="tns:stPaymentToken" minOccurs="0" />
+              <xsd:element name="transferList" type="tns:ctTransferListPSPV2" minOccurs="0" />
+              <xsd:element name="metadata" type="tns:ctMetadata" minOccurs="0" />
+              <xsd:element name="creditorReferenceId" type="tns:stText35" minOccurs="0" />
+              <xsd:element name="suggestedUserFee" type="tns:stAmount" minOccurs="0" />
+              <xsd:element name="suggestedPaFee" type="tns:stAmount" minOccurs="0" />
+              <xsd:element name="suggestedIdBundle" type="tns:stText70" minOccurs="0" />
+              <xsd:element name="suggestedIdCiBundle" type="tns:stText70" minOccurs="0" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+      <xsd:complexType name="sendPaymentOutcomeV2Request">
+        <xsd:sequence>
+          <xsd:element name="idPSP" type="tns:stIdPSP" />
+          <xsd:element name="idBrokerPSP" type="tns:stIdBroker" />
+          <xsd:element name="idChannel" type="tns:stIdChannel" />
+          <xsd:element name="idempotencyKey" type="tns:stIdempotencyKey" minOccurs="0" />
+          <xsd:element name="paymentTokens" type="tns:stPaymentTokens" />
+          <xsd:element name="outcome" type="tns:stOutcome" />
+          <xsd:element name="details" type="tns:ctOutcomeDetailsV2" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="sendPaymentOutcomeV2Response">
+        <xsd:complexContent>
+          <xsd:extension base="tns:ctResponse"></xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+      <!-- step#4 -->
       <!-- Wrapper Elements -->
       <xsd:element name="verificaBollettinoReq" type="tns:verificaBollettinoReq" />
       <xsd:element name="verificaBollettinoRes" type="tns:verificaBollettinoRes" />
@@ -873,6 +1065,10 @@
       <xsd:element name="demandPaymentNoticeResponse" type="tns:demandPaymentNoticeResponse" />
       <xsd:element name="nodoChiediCatalogoServiziV2Request" type="tns:nodoChiediCatalogoServiziV2Request" />
       <xsd:element name="nodoChiediCatalogoServiziV2Response" type="tns:nodoChiediCatalogoServiziV2Response" />
+      <xsd:element name="activatePaymentNoticeV2Request" type="tns:activatePaymentNoticeV2Request" />
+      <xsd:element name="activatePaymentNoticeV2Response" type="tns:activatePaymentNoticeV2Response" />
+      <xsd:element name="sendPaymentOutcomeV2Request" type="tns:sendPaymentOutcomeV2Request" />
+      <xsd:element name="sendPaymentOutcomeV2Response" type="tns:sendPaymentOutcomeV2Response" />
       <!-- fault messages -->
       <xsd:element name="handledException" type="tns:ctHandledException" />
 
@@ -880,6 +1076,7 @@
     </xsd:schema>
   </wsdl:types>
 
+  <!-- step#3 -->
   <wsdl:message name="verificaBollettinoReq">
     <wsdl:part name="requestBody" element="nfpsp:verificaBollettinoReq" />
   </wsdl:message>
@@ -928,7 +1125,21 @@
     <wsdl:part name="responseBody" element="nfpsp:nodoChiediCatalogoServiziV2Response"></wsdl:part>
   </wsdl:message>
 
+  <wsdl:message name="activatePaymentNoticeV2">
+    <wsdl:part name="requestBody" element="nfpsp:activatePaymentNoticeV2Request"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="activatePaymentNoticeV2Response">
+    <wsdl:part name="responseBody" element="nfpsp:activatePaymentNoticeV2Response"></wsdl:part>
+  </wsdl:message>
 
+  <wsdl:message name="sendPaymentOutcomeV2">
+    <wsdl:part name="requestBody" element="nfpsp:sendPaymentOutcomeV2Request"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sendPaymentOutcomeV2Response">
+    <wsdl:part name="responseBody" element="nfpsp:sendPaymentOutcomeV2Response"></wsdl:part>
+  </wsdl:message>
+
+  <!-- step#2 -->
   <wsdl:portType name="nodeForPsp_PortType">
     <wsdl:operation name="verificaBollettino">
       <wsdl:documentation>
@@ -1000,14 +1211,28 @@ The idempotency layer compares incoming parameters to those of the original requ
       <wsdl:output message="tns:demandPaymentNoticeResponse" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/demandPaymentNoticeResponse"/>
       <wsdl:fault message="tns:handledException" name="handledException" />
     </wsdl:operation>
+
     <wsdl:operation name="nodoChiediCatalogoServiziV2">
       <wsdl:input message="tns:nodoChiediCatalogoServiziV2" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/nodoChiediCatalogoServiziV2" />
       <wsdl:output message="tns:nodoChiediCatalogoServiziV2Response" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/nodoChiediCatalogoServiziV2Response" />
       <wsdl:fault message="tns:handledException" name="handledException" />
     </wsdl:operation>
 
+    <wsdl:operation name="activatePaymentNoticeV2">
+      <wsdl:input message="tns:activatePaymentNoticeV2" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/activatePaymentNoticeV2" />
+      <wsdl:output message="tns:activatePaymentNoticeV2Response" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/activatePaymentNoticeV2Response" />
+      <wsdl:fault message="tns:handledException" name="handledException" />
+    </wsdl:operation>
+
+    <wsdl:operation name="sendPaymentOutcomeV2">
+      <wsdl:input message="tns:sendPaymentOutcomeV2" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/sendPaymentOutcomeV2" />
+      <wsdl:output message="tns:sendPaymentOutcomeV2Response" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/sendPaymentOutcomeV2Response" />
+      <wsdl:fault message="tns:handledException" name="handledException" />
+    </wsdl:operation>
+
   </wsdl:portType>
 
+  <!-- step#1 -->
   <wsdl:binding name="nodeForPsp_Binding" type="tns:nodeForPsp_PortType">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
 
@@ -1075,6 +1300,30 @@ The idempotency layer compares incoming parameters to those of the original requ
       <soap:operation soapAction="nodoChiediCatalogoServiziV2" />
       <wsdl:input>
         <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="handledException">
+        <soap:fault name="handledException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="activatePaymentNoticeV2">
+      <soap:operation soapAction="activatePaymentNoticeV2" />
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="handledException">
+        <soap:fault name="handledException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sendPaymentOutcomeV2">
+      <soap:operation soapAction="sendPaymentOutcomeV2" />
+      <wsdl:input>
+        <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output>
         <soap:body use="literal" />
