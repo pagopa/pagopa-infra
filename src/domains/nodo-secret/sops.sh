@@ -23,6 +23,9 @@ Usage:
 ./sops.sh a env -> aggiunge record enc json  per ambiente
     example: ./sops.sh a weu-dev
 
+./sops.sh e env -> edit enc json  per ambiente
+    example: ./sops.sh a weu-dev
+
 EOF
 )
   echo "$helpmessage"
@@ -37,7 +40,7 @@ fi
 source "./secret/$localenv/secret.ini"
 
 
-if echo "d a s n" | grep -w $action > /dev/null; then
+if echo "d a s n e" | grep -w $action > /dev/null; then
 
   azurekvurl=`az keyvault key show --name $prefix-$env_short-$domain-sops-key --vault-name $prefix-$env_short-$domain-kv --query key.kid | sed 's/"//g'`
 
@@ -76,6 +79,17 @@ if echo "d a s n" | grep -w $action > /dev/null; then
           echo "{}" > ./secret/$localenv/$file_crypted
           sops --encrypt -i --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
         fi
+      ;;
+      "e")
+        if [ -f ./secret/$localenv/$file_crypted ]
+        then
+          sops  --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
+          
+        else
+          echo "file ./secret/$localenv/$file_crypted non trovato"
+          
+        fi
+      ;;
     esac
   
 else
