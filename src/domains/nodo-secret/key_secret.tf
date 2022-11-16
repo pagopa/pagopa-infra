@@ -29,29 +29,23 @@ locals {
   ])
 
   clean_secret_data = jsondecode(file(var.input_file))
-  all_clean_secrets_value = flatten([
+  all_config_secrets_value = flatten([
     for kc, vc in local.clean_secret_data : {
       valore = vc
       chiave = kc
     }
   ])
+
+  all_secrets_value = concat(local.all_config_secrets_value, local.all_enc_secrets_value)
 }
 
 
 ## Upload all encryted secrets
 resource "azurerm_key_vault_secret" "secret" {
-  for_each = { for i, v in local.all_enc_secrets_value : local.all_enc_secrets_value[i].chiave => i }
+  for_each = { for i, v in local.all_secrets_value : local.all_secrets_value[i].chiave => i }
 
   key_vault_id = module.key_vault.id
-  name         = local.all_enc_secrets_value[each.value].chiave
-  value        = local.all_enc_secrets_value[each.value].valore
+  name         = local.all_secrets_value[each.value].chiave
+  value        = local.all_secrets_value[each.value].valore
 }
 
-## Upload all clean secrets
-resource "azurerm_key_vault_secret" "clansecret" {
-  for_each = { for i, v in local.all_clean_secrets_value : local.all_clean_secrets_value[i].chiave => i }
-
-  key_vault_id = module.key_vault.id
-  name         = local.all_clean_secrets_value[each.value].chiave
-  value        = local.all_clean_secrets_value[each.value].valore
-}
