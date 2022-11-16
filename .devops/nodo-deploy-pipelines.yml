@@ -59,20 +59,20 @@ resources:
 lockBehavior: sequential
 stages:
   - ${{ if eq(parameters['DEV'], true) }}:
-    # DEV nodo APP
+    # DEV nodo SECRET
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'nodo_app'
+        DOMAIN_NAME: 'nodo_secret'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
         ENVIRONMENT: "dev"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/nodo-app'
+        WORKINGDIR: 'src/domains/nodo-secret'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_DEV_NAME }}
         AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
+    
     # DEV nodo COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
@@ -87,32 +87,35 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
     
-    # DEV nodo SECRET
+    # DEV nodo APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'nodo_secret'
+        DOMAIN_NAME: 'nodo_app'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
         ENVIRONMENT: "dev"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/nodo-secret'
+        WORKINGDIR: 'src/domains/nodo-app'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_DEV_NAME }}
         AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+    
+    
+
   #
   # UAT
   #
   - ${{ if eq(parameters['UAT'], true) }}:
-    # UAT nodo APP
+    # UAT nodo SECRET
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'nodo_app'
+        DOMAIN_NAME: 'nodo_secret'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
         ENVIRONMENT: "uat"
         TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/nodo-app'
+        WORKINGDIR: 'src/domains/nodo-secret'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_UAT_NAME }}
         AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
@@ -132,25 +135,56 @@ stages:
         AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
-    
-    # UAT nodo SECRET
+
+    # UAT nodo APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'nodo_secret'
+        DOMAIN_NAME: 'nodo_app'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
         ENVIRONMENT: "uat"
         TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/nodo-secret'
+        WORKINGDIR: 'src/domains/nodo-app'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_UAT_NAME }}
         AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+    
+    
+    
   #
   # PROD
   #
   - ${{ if eq(parameters['PROD'], true) }}:
+    # PROD nodo SECRET
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'nodo_secret'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
+        ENVIRONMENT: "prod"
+        TF_ENVIRONMENT_FOLDER: "weu-prod"
+        WORKINGDIR: 'src/domains/nodo-secret'
+        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
+        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
+    
+    # PROD nodo COMMON
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'nodo_common'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
+        ENVIRONMENT: "prod"
+        TF_ENVIRONMENT_FOLDER: "weu-prod"
+        WORKINGDIR: 'src/domains/nodo-common'
+        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
+        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
+
     # PROD nodo APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
@@ -165,30 +199,5 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-    # PROD nodo COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'nodo_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
-        ENVIRONMENT: "prod"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/nodo-common'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-      
-    # PROD nodo SECRET
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        DOMAIN_NAME: 'nodo_secret'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
-        ENVIRONMENT: "prod"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/nodo-secret'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
+    
+    
