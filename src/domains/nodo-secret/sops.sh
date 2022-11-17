@@ -14,7 +14,7 @@ Usage:
 ./sops.sh d env -> decrypt json file in specified environment
     example: ./sops.sh d weu-dev
 
-./sops.sh s env -> search in enc file per ambiente
+./sops.sh s env -> search in enc file in specified environment
     example: ./sops.sh s weu-dev
 
 ./sops.sh n env -> crea nuovo file enc json  per ambiente
