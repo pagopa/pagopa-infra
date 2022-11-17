@@ -54,7 +54,7 @@ if echo "d a s n e" | grep -w $action > /dev/null; then
         if [ $? -eq 1 ]
         then
           echo "-------------------------------"
-          echo "--->>> File $filesecret NON criptato"
+          echo "--->>> File $filesecret NOT encrypted"
           exit 0
         fi
       
