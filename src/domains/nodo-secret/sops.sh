@@ -73,7 +73,7 @@ if echo "d a s n e" | grep -w $action > /dev/null; then
       "n")
         if [ -f ./secret/$localenv/$file_crypted ]
         then
-          echo "file ./secret/$localenv/$file_crypted già presente"
+          echo "file ./secret/$localenv/$file_crypted already exists"
           exit 0
         else
           echo "{}" > ./secret/$localenv/$file_crypted
