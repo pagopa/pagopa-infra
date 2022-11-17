@@ -61,7 +61,7 @@ if echo "d a s n e" | grep -w $action > /dev/null; then
       ;;
       "s")
       read -p 'key: ' key
-      sops --decrypt --azure-kv $azurekvurl ./secret/$localenv/$file_crypted | grep -i $chiave
+      sops --decrypt --azure-kv $azurekvurl ./secret/$localenv/$file_crypted | grep -i $key
       
       ;;
 
