@@ -123,6 +123,7 @@ app_gateway_deny_paths_2 = [
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
     "/web-bo/.*",
+    "/web-bo-PRODONPREM/.*",
     "/pp-admin-panel/.*",
   ]
   ips = [
