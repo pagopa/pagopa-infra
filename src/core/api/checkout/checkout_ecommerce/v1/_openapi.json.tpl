@@ -436,7 +436,8 @@
             "name": "id_cart",
             "description": "Unique identifier for cart",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             },
             "required": true
           }
