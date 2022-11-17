@@ -130,11 +130,17 @@ variable "pgres_flex_ha_enabled" {
 variable "pgres_flex_pgbouncer_enabled" {
   type        = bool
   default     = false
-  description = "Enable or Disable hight availability postgresql flex."
+  description = "Enable or Disable high availability postgresql flex."
 }
 
 variable "pgres_flex_diagnostic_settings_enabled" {
   type        = bool
   default     = false
-  description = "Enable or Disable disgnostic postgresql flex."
+  description = "Enable or Disable diagnostic postgresql flex."
+}
+
+variable "pgres_flex_nodo_db_name" {
+  type        = string
+  description = "Nodo DB name"
+  default     = "nodo"
 }
