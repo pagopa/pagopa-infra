@@ -66,9 +66,9 @@ if echo "d a s n e" | grep -w $action > /dev/null; then
       ;;
 
       "a")
-        read -p 'key: ' chiave
-        read -p 'valore: ' valore
-        sops -i --set  '["'$chiave'"] "'$valore'"' --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
+        read -p 'key: ' key
+        read -p 'valore: ' value
+        sops -i --set  '["'$key'"] "'$value'"' --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
       ;;
       "n")
         if [ -f ./secret/$localenv/$file_crypted ]
