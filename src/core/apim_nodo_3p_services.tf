@@ -260,7 +260,7 @@ module "apim_nodo_fatturazione_api" {
 ############################
 
 module "apim_nodo_web_bo_product" {
-  count = var.env_short == "p" ? 0 : 1
+  count = var.env_short == "p" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
@@ -325,24 +325,24 @@ module "apim_nodo_web_bo_api" {
 ## 5. Nodo Web-BO OnPrem  ##
 ############################
 
-module "apim_nodo_web_bo_product_onprem" {
-  count = var.env_short == "p" ? 1 : 0
+# module "apim_nodo_web_bo_product_onprem" {
+#   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+#   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
-  product_id   = "product-nodo-web-bo-onprem"
-  display_name = "product-nodo-web-bo-onprem"
-  description  = "product-nodo-web-bo-onprem"
+#   product_id   = "product-nodo-web-bo-onprem"
+#   display_name = "product-nodo-web-bo-onprem"
+#   description  = "product-nodo-web-bo-onprem"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+#   api_management_name = module.apim.name
+#   resource_group_name = azurerm_resource_group.rg_api.name
 
-  published             = true
-  subscription_required = false
-  approval_required     = false
+#   published             = true
+#   subscription_required = false
+#   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
-}
+#   policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+# }
 
 # resource "azurerm_api_management_api_version_set" "nodo_web_bo_api" {
 #   count  = var.env_short == "p" ? 0 : 1
@@ -362,7 +362,7 @@ module "apim_nodo_web_bo_api_onprem" {
   name                  = format("%s-nodo-web-bo-onprem-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_web_bo_product_onprem[0].product_id]
+  product_ids           = [module.apim_nodo_web_bo_product[0].product_id]
   subscription_required = false
 
   # version_set_id = azurerm_api_management_api_version_set.nodo_web_bo_api[0].id
@@ -370,7 +370,7 @@ module "apim_nodo_web_bo_api_onprem" {
 
   description  = "Nodo OnPrem WEB-BO" # "NodeDeiPagamenti (web-bo)"
   display_name = "Nodo OnPrem WEB-BO" # "NodeDeiPagamenti (web-bo)"
-  path         = "web-bo-PRODONPREM"
+  path         = "bo-nodo"
   protocols    = ["https"]
 
   service_url = null
@@ -382,7 +382,7 @@ module "apim_nodo_web_bo_api_onprem" {
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-on-prem/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path      = "/web-bo-PRODONPREM"
+    apim_base_path      = "/bo-nodo"
     allowed_ip          = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]
   })
 

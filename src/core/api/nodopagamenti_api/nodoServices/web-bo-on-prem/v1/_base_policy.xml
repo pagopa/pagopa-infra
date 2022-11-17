@@ -45,7 +45,7 @@
     <set-backend-service base-url="{{pm-host}}/bo-nodo" />
     <set-variable name="external-scheme" value="https" />
     <set-variable name="external-host" value="{{wisp2-gov-it}}" /> <!-- wisp2.pagopa.gov.it -->
-    <set-variable name="external-context-path" value="PRODONPREM" />
+    <set-variable name="external-context-path" value="/bo-nodo" />
     <!-- /web-bo/api/v1 -->
     <choose>
       <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\${apim_base_path}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">

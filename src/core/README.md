@@ -99,7 +99,6 @@
 | <a name="module_apim_nodo_web_bo_dev_product_history"></a> [apim\_nodo\_web\_bo\_dev\_product\_history](#module\_apim\_nodo\_web\_bo\_dev\_product\_history) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_product"></a> [apim\_nodo\_web\_bo\_product](#module\_apim\_nodo\_web\_bo\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_product_history"></a> [apim\_nodo\_web\_bo\_product\_history](#module\_apim\_nodo\_web\_bo\_product\_history) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_nodo_web_bo_product_onprem"></a> [apim\_nodo\_web\_bo\_product\_onprem](#module\_apim\_nodo\_web\_bo\_product\_onprem) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_wfesp_api"></a> [apim\_nodo\_wfesp\_api](#module\_apim\_nodo\_wfesp\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_wfesp_dev_api"></a> [apim\_nodo\_wfesp\_dev\_api](#module\_apim\_nodo\_wfesp\_dev\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_wfesp_dev_product"></a> [apim\_nodo\_wfesp\_dev\_product](#module\_apim\_nodo\_wfesp\_dev\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
