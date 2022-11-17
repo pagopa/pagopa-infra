@@ -20,7 +20,7 @@ Usage:
 ./sops.sh n env -> create new file enc json template in specified environment
     example: ./sops.sh n weu-dev
 
-./sops.sh a env -> aggiunge record enc json  per ambiente
+./sops.sh a env -> add new secret record to enc json in specified environment
     example: ./sops.sh a weu-dev
 
 ./sops.sh e env -> edit enc json  per ambiente
