@@ -23,7 +23,7 @@ Usage:
 ./sops.sh a env -> add new secret record to enc json in specified environment
     example: ./sops.sh a weu-dev
 
-./sops.sh e env -> edit enc json  per ambiente
+./sops.sh e env -> edit enc json record in specified environment
     example: ./sops.sh a weu-dev
 
 EOF
