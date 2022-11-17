@@ -17,7 +17,7 @@ Usage:
 ./sops.sh s env -> search in enc file in specified environment
     example: ./sops.sh s weu-dev
 
-./sops.sh n env -> crea nuovo file enc json  per ambiente
+./sops.sh n env -> create new file enc json template in specified environment
     example: ./sops.sh n weu-dev
 
 ./sops.sh a env -> aggiunge record enc json  per ambiente
