@@ -11,48 +11,45 @@
     - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
 -->
 <policies>
-  <inbound>
-    <cors>
-      <allowed-origins>
-        <origin>*</origin>
-      </allowed-origins>
-      <allowed-methods>
-        <method>*</method>
-      </allowed-methods>
-      <allowed-headers>
-        <header>*</header>
-      </allowed-headers>
-      <expose-headers>
-        <header>*</header>
-      </expose-headers>
-    </cors>
-    <!-- check onprem pagopa vpn ips -->
-    <choose>
-      <!-- TODO Enable after ticket resolution -->
-      <!-- <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("uat"))">
+	<inbound>
+		<cors>
+			<allowed-origins>
+				<origin>*</origin>
+			</allowed-origins>
+			<allowed-methods>
+				<method>*</method>
+			</allowed-methods>
+			<allowed-headers>
+				<header>*</header>
+			</allowed-headers>
+			<expose-headers>
+				<header>*</header>
+			</expose-headers>
+		</cors>
+		<!-- check onprem pagopa vpn ips -->
+		<choose>
+			<!-- TODO Enable after ticket resolution -->
+			<!-- <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("uat"))">
         <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-          <value>${allowed_ip}</value>
+          <value>93.63.219.230</value>
         </check-header>
       </when> -->
-      <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("prod"))">
-        <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-          <value>${allowed_ip}</value>
-        </check-header>
-      </when>
-    </choose>
+			<when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("prod"))">
+				<check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
+					<value>93.63.219.230</value>
+				</check-header>
+			</when>
+		</choose>
+		<set-variable name="external-scheme" value="https" />
+		<set-variable name="external-host" value="wisp2.pagopa.gov.it" />
 
-    <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-web-bo}}" /> -->
-    <set-backend-service base-url="{{pm-host}}/bo-nodo" />
-    <set-variable name="external-scheme" value="https" />
-    <set-variable name="external-host" value="{{wisp2-gov-it}}" /> <!-- wisp2.pagopa.gov.it -->
-    <set-variable name="external-context-path" value="/bo-nodo" />
-    <!-- /web-bo/api/v1 -->
-    <choose>
-      <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\${apim_base_path}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
-        <return-response>
-          <set-status code="301" reason="See Other" />
-          <set-header name="Location" exists-action="override">
-            <value>@{
+		<set-variable name="external-context-path" value="/bo-nodo/" />
+		<choose>
+			<when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\/bo-nodo$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
+				<return-response>
+					<set-status code="301" reason="See Other" />
+					<set-header name="Location" exists-action="override">
+						<value>@{
                             string str = (string)context.Variables["external-scheme"];
                             str += "://";
                             str += (string)context.Variables["external-host"];
@@ -60,39 +57,34 @@
                             str += "/";
                             return str;
                         }</value>
-          </set-header>
-        </return-response>
-      </when>
-    </choose>
-  </inbound>
-  <backend>
-    <base />
-  </backend>
-  <outbound>
-    <base />
-    <find-and-replace from="src=&quot;/" to="@{
-            string str = "src=\"";
-            str += (string)context.Variables["external-context-path"];
-            str += "/";
-            return str;
-        }" />
-    <find-and-replace from="href=&quot;/" to="@{
-            string str = "href=\"";
-            str += (string)context.Variables["external-context-path"];
-            str += "/";
-            return str;
-        }" />
-    <find-and-replace from="action=&quot;/" to="@{
-            string str = "action=\"";
-            str += (string)context.Variables["external-context-path"];
-            str += "/";
-            return str;
-        }" />
-    <set-header name="location" exists-action="override">
-      <value>@(context.Response.Headers.GetValueOrDefault("location","").Replace(context.Request.Url.Scheme + "://" + context.Request.Url.Host + "/", (string)context.Variables["external-scheme"] + "://" + (string)context.Variables["external-host"] + (string)context.Variables["external-context-path"] + "/"))</value>
-    </set-header>
-  </outbound>
-  <on-error>
-    <base />
-  </on-error>
+					</set-header>
+				</return-response>
+			</when>
+		</choose>
+		<choose>
+			<when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\/bo-nodo/$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
+				<set-backend-service base-url="{{pm-host}}/bo-nodo/" />
+			</when>
+			<otherwise>
+				<set-backend-service base-url="{{pm-host}}/bo-nodo" />
+			</otherwise>
+		</choose>
+	</inbound>
+	<backend>
+		<base />
+	</backend>
+	<outbound>
+		<base />
+		<choose>
+			<when condition="@(((string)context.Response.Headers.GetValueOrDefault("location","")).Contains("{{pm-host}}"))">
+				<set-variable name="locationIn" value=" @(Regex.Replace((string)context.Response.Headers.GetValueOrDefault("location",""), "{{pm-host}}", "https://{{wisp2-gov-it}}"))" />
+				<set-header name="location" exists-action="override">
+					<value>@(context.Variables.GetValueOrDefault<string>("locationIn"))</value>
+				</set-header>
+			</when>
+		</choose>
+	</outbound>
+	<on-error>
+		<base />
+	</on-error>
 </policies>
