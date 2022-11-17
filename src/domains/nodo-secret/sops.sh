@@ -11,7 +11,7 @@ if [ -z "$action" ]; then
 helpmessage=$(cat <<EOF
 Usage:
 
-./sops.sh d env -> decrypt json file per ambiente 
+./sops.sh d env -> decrypt json file in specified environment
     example: ./sops.sh d weu-dev
 
 ./sops.sh s env -> search in enc file per ambiente
