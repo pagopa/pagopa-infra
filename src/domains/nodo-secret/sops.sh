@@ -86,7 +86,7 @@ if echo "d a s n e" | grep -w $action > /dev/null; then
           sops  --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
           
         else
-          echo "file ./secret/$localenv/$file_crypted non trovato"
+          echo "file ./secret/$localenv/$file_crypted not found"
           
         fi
       ;;
