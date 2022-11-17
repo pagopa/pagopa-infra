@@ -260,8 +260,6 @@ module "apim_nodo_fatturazione_api" {
 ############################
 
 module "apim_nodo_web_bo_product" {
-  count = var.env_short == "p" ? 1 : 0
-
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-web-bo"
@@ -296,7 +294,7 @@ module "apim_nodo_web_bo_api" {
   name                  = format("%s-nodo-web-bo-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_web_bo_product[0].product_id]
+  product_ids           = [module.apim_nodo_web_bo_product.product_id]
   subscription_required = false
 
   # version_set_id = azurerm_api_management_api_version_set.nodo_web_bo_api[0].id
@@ -321,39 +319,6 @@ module "apim_nodo_web_bo_api" {
   })
 
 }
-############################
-## 5. Nodo Web-BO OnPrem  ##
-############################
-
-# module "apim_nodo_web_bo_product_onprem" {
-#   count = var.env_short == "p" ? 1 : 0
-
-#   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
-
-#   product_id   = "product-nodo-web-bo-onprem"
-#   display_name = "product-nodo-web-bo-onprem"
-#   description  = "product-nodo-web-bo-onprem"
-
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-
-#   published             = true
-#   subscription_required = false
-#   approval_required     = false
-
-#   policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
-# }
-
-# resource "azurerm_api_management_api_version_set" "nodo_web_bo_api" {
-#   count  = var.env_short == "p" ? 0 : 1
-
-#   name                = format("%s-nodo-web-bo-api", var.env_short)
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   api_management_name = module.apim.name
-#   display_name        = "Nodo OnCloud WEB-BO"
-#   versioning_scheme   = "Segment"
-# }
-
 module "apim_nodo_web_bo_api_onprem" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -362,7 +327,7 @@ module "apim_nodo_web_bo_api_onprem" {
   name                  = format("%s-nodo-web-bo-onprem-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_web_bo_product[0].product_id]
+  product_ids           = [module.apim_nodo_web_bo_product.product_id]
   subscription_required = false
 
   # version_set_id = azurerm_api_management_api_version_set.nodo_web_bo_api[0].id
