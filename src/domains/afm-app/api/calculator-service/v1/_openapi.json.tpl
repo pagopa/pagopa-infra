@@ -4,7 +4,7 @@
     "title": "PagoPA API Calculator Logic",
     "description": "Calculator Logic microservice for pagoPA AFM",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.0.4-3"
+    "version": "2.4.0"
   },
   "servers": [
     {
@@ -18,21 +18,25 @@
       "description": "Everything about Calculator business logic"
     },
     {
-      "name": "Configuration",
-      "description": "Everything about Calculator Configuration"
+      "name": "Actuator",
+      "description": "Monitor and interact",
+      "externalDocs": {
+        "description": "Spring Boot Actuator Web API Documentation",
+        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+      }
     }
   ],
   "paths": {
-    "/configuration": {
+    "/actuator": {
       "get": {
         "tags": [
-          "Configuration"
+          "Actuator"
         ],
-        "summary": "Get calculator configuration",
-        "operationId": "getConfiguration",
+        "summary": "Actuator root web endpoint",
+        "operationId": "links",
         "responses": {
           "200": {
-            "description": "Created",
+            "description": "OK",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -42,77 +46,365 @@
               }
             },
             "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Configuration"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
                 }
               }
             }
           }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/actuator/health": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint 'health'",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/actuator/health/**": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint 'health-path'",
+        "operationId": "health-path",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/actuator/info": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint 'info'",
+        "operationId": "info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/configuration/bundles/add": {
+      "post": {
+        "tags": [
+          "configuration-controller"
+        ],
+        "operationId": "addValidBundles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ValidBundle"
+                }
+              }
+            }
+          },
+          "required": true
         },
-        "security": [
-          {
-            "ApiKey": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
-        ]
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/configuration/bundles/delete": {
+      "post": {
+        "tags": [
+          "configuration-controller"
+        ],
+        "operationId": "deleteValidBundles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ValidBundle"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/configuration/touchpoint/add": {
+      "post": {
+        "tags": [
+          "configuration-controller"
+        ],
+        "operationId": "addTouchpoints",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Touchpoint"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/configuration/touchpoint/delete": {
+      "post": {
+        "tags": [
+          "configuration-controller"
+        ],
+        "operationId": "deleteTouchpoints",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Touchpoint"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       },
       "parameters": [
         {
@@ -531,14 +823,7 @@
             ]
           },
           "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
+            "type": "string"
           },
           "transferList": {
             "type": "array",
@@ -556,6 +841,9 @@
           },
           "transferCategory": {
             "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
           }
         }
       },
@@ -586,14 +874,7 @@
             ]
           },
           "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
+            "type": "string"
           },
           "idBundle": {
             "type": "string"
@@ -609,6 +890,15 @@
           },
           "idPsp": {
             "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
           }
         }
       },
@@ -635,6 +925,11 @@
         }
       },
       "PaymentOption": {
+        "required": [
+          "paymentAmount",
+          "primaryCreditorInstitution",
+          "transferList"
+        ],
         "type": "object",
         "properties": {
           "paymentAmount": {
@@ -660,14 +955,7 @@
             ]
           },
           "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
+            "type": "string"
           },
           "idPspList": {
             "type": "array",
@@ -683,21 +971,72 @@
           }
         }
       },
-      "AppInfo": {
+      "Touchpoint": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
-          "version": {
-            "type": "string"
-          },
-          "environment": {
-            "type": "string"
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
-      "Bundle": {
+      "CiBundle": {
+        "required": [
+          "ciFiscalCode",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ciFiscalCode": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CiBundleAttribute"
+            }
+          }
+        }
+      },
+      "CiBundleAttribute": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "maxPaymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "transferCategory": {
+            "type": "string"
+          },
+          "transferCategoryRelation": {
+            "type": "string",
+            "enum": [
+              "EQUAL",
+              "NOT_EQUAL"
+            ]
+          }
+        }
+      },
+      "ValidBundle": {
+        "required": [
+          "digitalStamp",
+          "digitalStampRestriction"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -740,14 +1079,7 @@
             ]
           },
           "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
+            "type": "string"
           },
           "type": {
             "type": "string",
@@ -760,63 +1092,25 @@
           "transferCategoryList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TransferCategory"
-            }
-          }
-        }
-      },
-      "CiBundle": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "ciFiscalCode": {
-            "type": "string"
-          },
-          "idBundle": {
-            "type": "string"
-          },
-          "attributes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CiBundleAttribute"
-            }
-          }
-        }
-      },
-      "CiBundleAttribute": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "maxPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "transferCategory": {
-            "type": "string"
-          },
-          "transferCategoryRelation": {
-            "type": "string",
-            "enum": [
-              "EQUAL",
-              "NOT_EQUAL"
-            ]
-          }
-        }
-      },
-      "Configuration": {
-        "type": "object",
-        "properties": {
-          "bundles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Bundle"
+              "type": "string"
             }
           },
-          "ciBundles": {
+          "idChannel": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
+          },
+          "digitalStampRestriction": {
+            "type": "boolean"
+          },
+          "onUs": {
+            "type": "boolean"
+          },
+          "ciBundleList": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CiBundle"
@@ -824,15 +1118,28 @@
           }
         }
       },
-      "TransferCategory": {
+      "AppInfo": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
           "name": {
             "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "environment": {
+            "type": "string"
+          }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
           }
         }
       }
