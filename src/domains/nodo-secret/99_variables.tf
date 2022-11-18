@@ -60,11 +60,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
-}
 
 variable "tags" {
   type = map(any)
