@@ -15,7 +15,6 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-lock_enable = true
 
 
 
