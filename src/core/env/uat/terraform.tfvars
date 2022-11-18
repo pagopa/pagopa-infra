@@ -35,6 +35,8 @@ cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
 cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # cidr_subnet_gps_cosmosdb             = ["10.1.149.0/24"]
+cidr_subnet_node_forwarder = ["10.1.158.0/24"]
+
 # specific
 cidr_subnet_mock_ec              = ["10.1.137.0/29"]
 cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
@@ -78,7 +80,8 @@ app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
 app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
-  "/nodo/.*",
+  # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
+  # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
   "/payment-manager/clients/.*",
   "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
@@ -102,11 +105,13 @@ app_gateway_deny_paths_2 = [
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
-  "/payment-manager/pp-restapi-server/.*"
+  "/payment-manager/pp-restapi-server/.*",
+  #"/pagopa-node-forwarder/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
     "/web-bo/.*",
+    "/bo-nodo/.*",
     "/pp-admin-panel/.*",
   ]
   ips = [
@@ -141,13 +146,24 @@ mock_payment_gateway_enabled = true
 
 
 # apim x nodo pagamenti
+# https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,08658331007,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571,97086740582,80029030568,87007530170,92000530532,80023370168,01349510436,10718570012,01032450072,01248040998,00608810057,80094780378,82002730487,80016430045,03299640163,94032590278,01928010683,91007750937,80052310580,97169170822,80043570482,80011170505,94050080038,01013130073,09227921005,94055970480,01429910183,01013210073,80031650486,83002410260,00337870406,92001600524,80007270376,02928200241,80082160013,01242340998,83000730297,01266290996,80012150274,02508710585,01142420056,02438750586"
 nodo_pagamenti_url     = "https://10.79.20.32/uat/webservices/input"
-ip_nodo                = "10.79.20.32"
-lb_aks                 = "10.70.74.200" # use http protocol + /nodo-uat or /nodo-prf + for SOAP services add /webservices/input
-base_path_nodo_oncloud = "/nodo-uat"
+ip_nodo                = "10.79.20.32"  # TEMP Nodo On Premises
+lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
+
+base_path_nodo_oncloud        = "/nodo-uat"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-uat"
+base_path_nodo_sync           = "/sync-cron-uat/syncWisp"
+base_path_nodo_wfesp          = "/wfesp-uat"
+base_path_nodo_fatturazione   = "/fatturazione-uat"
+base_path_nodo_web_bo         = "/web-bo-uat"
+base_path_nodo_web_bo_history = "/web-bo-history-uat"
+
+nodo_auth_subscription_limit = 10000
+
 # eventhub
 eventhub_enabled = true
 
@@ -355,7 +371,7 @@ acr_enabled = true
 # db nodo dei pagamenti
 db_port                            = 1521
 db_service_name                    = "NDPSPCA_PP_NODO4_CFG"
-dns_a_reconds_dbnodo_ips           = ["10.101.35.39", "10.101.35.40", "10.101.35.41"]
+dns_a_reconds_dbnodo_ips           = ["10.101.35.35", "10.101.35.36"] # use physical IPs instead of scan ones ["10.101.35.39", "10.101.35.40", "10.101.35.41"]
 private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
 # API Config

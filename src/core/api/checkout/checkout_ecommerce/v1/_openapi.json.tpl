@@ -11,57 +11,6 @@
     }
   ],
   "paths": {
-    "/carts": {
-      "post": {
-        "operationId": "PostCarts",
-        "description": "create a cart",
-        "requestBody": {
-          "description": "New Cart related to payment requests",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CartRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "302": {
-            "description": "Redirect",
-            "headers": {
-              "location": {
-                "description": "CheckOut Url",
-                "schema": {
-                  "type": "string",
-                  "format": "uri"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Formally invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-         "422": {
-           "description": "More than one payment notice present into the request",
-           "content": {
-             "application/json": {
-               "schema": {
-                 "$ref": "#/components/schemas/ProblemJson"
-               }
-             }
-           }
-         }
-        }
-      }
-    },
     "/payment-requests/{rpt_id}": {
       "get": {
         "operationId": "getPaymentRequestInfo",
@@ -470,6 +419,65 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PSPsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id_cart}": {
+      "get": {
+        "operationId": "GetCarts",
+        "description": "Get a cart data",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id_cart",
+            "description": "Unique identifier for cart",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cart not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -1137,7 +1145,7 @@
         "type": "object",
         "required": [
           "paymentNotices",
-          "returnurls"
+          "returnUrls"
         ],
         "properties": {
           "emailNotice": {
@@ -1155,22 +1163,20 @@
             "example": [
               {
                 "noticeNumber": "302012387654312384",
-                "fiscalCode": "7777777777",
-                "amount": 1000
+                "fiscalCode": "77777777777"
               },
               {
                 "noticeNumber": "302012387654312385",
-                "fiscalCode": "7777777777",
-                "amount": 2000
+                "fiscalCode": "77777777777"
               }
             ]
           },
-          "returnurls": {
+          "returnUrls": {
             "type": "object",
             "required": [
               "returnOkUrl",
               "returnCancelUrl",
-              "retunErrorUrl"
+              "returnErrorUrl"
             ],
             "properties": {
               "returnOkUrl": {
@@ -1183,7 +1189,7 @@
                 "format": "uri",
                 "example": "www.comune.di.prova.it/pagopa/cancel.html"
               },
-              "retunErrorUrl": {
+              "returnErrorUrl": {
                 "type": "string",
                 "format": "uri",
                 "example": "www.comune.di.prova.it/pagopa/error.html"
@@ -1262,16 +1268,6 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/UpdateAuthorizationRequest"
-            }
-          }
-        }
-      },
-      "CartRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/CartRequest"
             }
           }
         }

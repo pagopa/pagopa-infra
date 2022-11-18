@@ -1,24 +1,7 @@
 repos:
-  # ## general
-  # - repo: https://github.com/pre-commit/pre-commit-hooks
-  #   rev: v4.2.0
-  #   hooks:
-  #     # Common errors
-  #     - id: end-of-file-fixer
-  #       exclude_types: [sql]
-  #     - id: trailing-whitespace
-  #       args: [--markdown-linebreak-ext=md]
-  #       exclude_types: [sql]
-  #     - id: check-yaml
-  #     - id: check-executables-have-shebangs
-  #     # Cross platform
-  #     - id: check-case-conflict
-  #     - id: mixed-line-ending
-  #       args: [--fix=lf]
-  #       exclude_types: [sql, txt]
   ## terraform
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.71.0
+    rev: v1.76.0
     hooks:
       - id: terraform_fmt
       - id: terraform_docs

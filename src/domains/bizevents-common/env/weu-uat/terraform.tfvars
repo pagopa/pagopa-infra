@@ -14,21 +14,16 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-lock_enable = true
-
-terraform_remote_state_core = {
-  resource_group_name  = "io-infra-rg"
-  storage_account_name = "pagopainfraterraformuat"
-  container_name       = "azureadstate"
-  key                  = "uat.terraform.tfstate"
-}
-
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
-ingress_load_balancer_ip                    = "10.1.100.250"
+application_insights_name                   = "pagopa-u-appinsights"
+
+### Aks
+
+ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
@@ -56,7 +51,7 @@ bizevents_datastore_cosmos_db_params = {
 
   backup_continuous_enabled = false
 
-  container_default_ttl     = 2629800  # 1 month in second
+  container_default_ttl = 2629800 # 1 month in second
 }
 
 cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]

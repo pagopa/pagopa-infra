@@ -68,15 +68,6 @@ variable "tags" {
   }
 }
 
-variable "terraform_remote_state_core" {
-  type = object({
-    resource_group_name  = string,
-    storage_account_name = string,
-    container_name       = string,
-    key                  = string
-  })
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -197,8 +188,19 @@ variable "nginx_helm" {
   description = "nginx ingress helm chart configuration"
 }
 
-variable "keda_helm_version" {
-  type = string
+variable "keda_helm" {
+  type = object({
+    chart_version = string,
+    keda = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    metrics_api_server = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+  })
+  description = "keda helm chart configuration"
 }
 
 variable "reloader_helm" {
