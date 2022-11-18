@@ -127,8 +127,10 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "/pp-admin-panel/.*",
   ]
   ips = [
-    "93.63.219.230",
-    "20.86.161.243" #cstar
+    "93.63.219.230",  # PagoPA on prem VPN
+    "20.86.161.243",  # CSTAR
+    "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "213.215.138.79", # Softlab L1 Pagamenti VPN
   ]
 }
 
