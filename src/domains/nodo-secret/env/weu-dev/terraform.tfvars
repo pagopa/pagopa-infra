@@ -15,10 +15,6 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-
-
-
-
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"

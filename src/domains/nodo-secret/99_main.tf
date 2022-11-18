@@ -12,6 +12,10 @@ terraform {
       source  = "hashicorp/null"
       version = "= 3.1.1"
     }
+    external = {
+      source  = "hashicorp/external"
+      version = "= 2.2.3"
+    }
   }
 
   backend "azurerm" {}
@@ -28,5 +32,3 @@ provider "azurerm" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
-
-
