@@ -32,6 +32,7 @@
 | <a name="module_apim_api_gpd_reporting_analysis_api"></a> [apim\_api\_gpd\_reporting\_analysis\_api](#module\_apim\_api\_gpd\_reporting\_analysis\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_api_payments_receipts_api_v1"></a> [apim\_api\_payments\_receipts\_api\_v1](#module\_apim\_api\_payments\_receipts\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_buyerbanks_api_v1"></a> [apim\_buyerbanks\_api\_v1](#module\_apim\_buyerbanks\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_checkout_ec_api_v1"></a> [apim\_checkout\_ec\_api\_v1](#module\_apim\_checkout\_ec\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_checkout_ecommerce_api_v1"></a> [apim\_checkout\_ecommerce\_api\_v1](#module\_apim\_checkout\_ecommerce\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_checkout_payment_activations_api_auth_v1"></a> [apim\_checkout\_payment\_activations\_api\_auth\_v1](#module\_apim\_checkout\_payment\_activations\_api\_auth\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_checkout_payment_activations_api_auth_v2"></a> [apim\_checkout\_payment\_activations\_api\_auth\_v2](#module\_apim\_checkout\_payment\_activations\_api\_auth\_v2) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
@@ -91,6 +92,7 @@
 | <a name="module_apim_nodo_sync_product"></a> [apim\_nodo\_sync\_product](#module\_apim\_nodo\_sync\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_api"></a> [apim\_nodo\_web\_bo\_api](#module\_apim\_nodo\_web\_bo\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_api_history"></a> [apim\_nodo\_web\_bo\_api\_history](#module\_apim\_nodo\_web\_bo\_api\_history) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_nodo_web_bo_api_onprem"></a> [apim\_nodo\_web\_bo\_api\_onprem](#module\_apim\_nodo\_web\_bo\_api\_onprem) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_dev_api"></a> [apim\_nodo\_web\_bo\_dev\_api](#module\_apim\_nodo\_web\_bo\_dev\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_dev_api_history"></a> [apim\_nodo\_web\_bo\_dev\_api\_history](#module\_apim\_nodo\_web\_bo\_dev\_api\_history) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_dev_product"></a> [apim\_nodo\_web\_bo\_dev\_product](#module\_apim\_nodo\_web\_bo\_dev\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
@@ -119,6 +121,7 @@
 | <a name="module_apim_pm_paypalpsp_api_v1"></a> [apim\_pm\_paypalpsp\_api\_v1](#module\_apim\_pm\_paypalpsp\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_per_nodo_v1"></a> [apim\_pm\_per\_nodo\_v1](#module\_apim\_pm\_per\_nodo\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_ptg_api_v1"></a> [apim\_pm\_ptg\_api\_v1](#module\_apim\_pm\_ptg\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
+| <a name="module_apim_pm_restapi_api_old_v4"></a> [apim\_pm\_restapi\_api\_old\_v4](#module\_apim\_pm\_restapi\_api\_old\_v4) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pm_restapi_api_v4"></a> [apim\_pm\_restapi\_api\_v4](#module\_apim\_pm\_restapi\_api\_v4) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pm_restapi_cd_assets"></a> [apim\_pm\_restapi\_cd\_assets](#module\_apim\_pm\_restapi\_cd\_assets) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_restapi_server_api_v4"></a> [apim\_pm\_restapi\_server\_api\_v4](#module\_apim\_pm\_restapi\_server\_api\_v4) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
@@ -254,7 +257,6 @@
 | [azurerm_api_management_api_operation_policy.get_donations](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_payment_info_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_payment_request_info_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_operation_policy.get_spid_metadata_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.nm3_activate_verify_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_policy.apim_cd_info_wisp_policy_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
@@ -298,6 +300,7 @@
 | [azurerm_api_management_api_version_set.apim_pm_xpay_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.buyerbanks_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.cd_info_wisp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.checkout_ec_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.checkout_ecommerce_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.checkout_payment_activations_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.checkout_payment_activations_auth_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -347,6 +350,7 @@
 | [azurerm_api_management_api_version_set.pm_per_nodo_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_ptg_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_restapi_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.pm_restapi_old_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_restapi_server_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_restapicd_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_restapicd_internal_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -466,6 +470,7 @@
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_logic_app_standard.logic_app_biz_evt](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/logic_app_standard) | resource |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_action_group) | resource |
+| [azurerm_monitor_action_group.error_action_group](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_autoscale_setting.apiconfig_app_service_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.buyerbanks_function](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
@@ -600,6 +605,8 @@
 | [azurerm_key_vault_certificate.portal_platform](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.wisp2](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.wisp2govit](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_certificate) | data source |
+| [azurerm_key_vault_secret.alert_error_notification_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.alert_error_notification_slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.apiconfig-client-secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.apim_publisher_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.certificate_crt_node_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
@@ -919,13 +926,13 @@
 | <a name="output_container_registry_admin_password"></a> [container\_registry\_admin\_password](#output\_container\_registry\_admin\_password) | n/a |
 | <a name="output_container_registry_admin_username"></a> [container\_registry\_admin\_username](#output\_container\_registry\_admin\_username) | n/a |
 | <a name="output_container_registry_login_server"></a> [container\_registry\_login\_server](#output\_container\_registry\_login\_server) | # Container registry ## |
+| <a name="output_ehub_biz_event_rx_conn_str"></a> [ehub\_biz\_event\_rx\_conn\_str](#output\_ehub\_biz\_event\_rx\_conn\_str) | n/a |
+| <a name="output_ehub_biz_event_tx_primary_key"></a> [ehub\_biz\_event\_tx\_primary\_key](#output\_ehub\_biz\_event\_tx\_primary\_key) | n/a |
 | <a name="output_nat_gw_outbound_ip_addresses"></a> [nat\_gw\_outbound\_ip\_addresses](#output\_nat\_gw\_outbound\_ip\_addresses) | n/a |
 | <a name="output_nodo_test_sa_blob_connection_string"></a> [nodo\_test\_sa\_blob\_connection\_string](#output\_nodo\_test\_sa\_blob\_connection\_string) | n/a |
 | <a name="output_nodo_test_sa_blob_host"></a> [nodo\_test\_sa\_blob\_host](#output\_nodo\_test\_sa\_blob\_host) | Blob storage |
 | <a name="output_nodo_test_sa_connection_string"></a> [nodo\_test\_sa\_connection\_string](#output\_nodo\_test\_sa\_connection\_string) | n/a |
 | <a name="output_nodo_test_sa_web_host"></a> [nodo\_test\_sa\_web\_host](#output\_nodo\_test\_sa\_web\_host) | n/a |
-| <a name="output_sec_storage_id"></a> [sec\_storage\_id](#output\_sec\_storage\_id) | n/a |
-| <a name="output_sec_workspace_id"></a> [sec\_workspace\_id](#output\_sec\_workspace\_id) | n/a |
 | <a name="output_vnet_address_space"></a> [vnet\_address\_space](#output\_vnet\_address\_space) | n/a |
 | <a name="output_vnet_id"></a> [vnet\_id](#output\_vnet\_id) | n/a |
 | <a name="output_vnet_integration_address_space"></a> [vnet\_integration\_address\_space](#output\_vnet\_integration\_address\_space) | n/a |

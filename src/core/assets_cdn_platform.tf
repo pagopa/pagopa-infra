@@ -22,7 +22,7 @@ module "assets_cdn_platform" {
   location              = var.location
   hostname              = "assets.cdn.platform.pagopa.it"
   https_rewrite_enabled = true
-  lock_enabled          = var.lock_enable
+  lock_enabled          = false
 
   dns_zone_name                = azurerm_dns_zone.public[0].name
   dns_zone_resource_group_name = azurerm_dns_zone.public[0].resource_group_name

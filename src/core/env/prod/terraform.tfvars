@@ -84,8 +84,8 @@ app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
-app_gateway_min_capacity                = 2
-app_gateway_max_capacity                = 5
+app_gateway_min_capacity                = 5 # TODO tuning, probably 3 it's more indicate value
+app_gateway_max_capacity                = 10
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true
@@ -123,11 +123,15 @@ app_gateway_deny_paths_2 = [
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
     "/web-bo/.*",
+    "/bo-nodo/.*",
     "/pp-admin-panel/.*",
   ]
   ips = [
-    "93.63.219.230",
-    "20.86.161.243" #cstar
+    "93.63.219.230",  # PagoPA on prem VPN
+    "93.63.219.234",  # PagoPA on prem VPN DR
+    "20.86.161.243",  # CSTAR
+    "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "213.215.138.79", # Softlab L1 Pagamenti VPN
   ]
 }
 

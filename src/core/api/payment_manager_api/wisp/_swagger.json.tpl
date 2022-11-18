@@ -12,23 +12,6 @@
     "https"
   ],
   "paths": {
-   "/spid/metadata": {
-      "get": {
-        "operationId": "GETSpidMetadata",
-        "description": "Get Spid metadata wisp",
-        "responses": {
-          "200": {
-            "description": "Metadata xml file"
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "500": {
-            "description": "generic error"
-          }
-        }
-      }
-    },
     "/*": {
       "get": {
         "operationId": "GETstaticResourcesWisp",
