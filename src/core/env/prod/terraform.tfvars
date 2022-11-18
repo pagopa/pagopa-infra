@@ -541,5 +541,5 @@ dexp_re_db_linkes_service = {
 }
 
 # node forwarder
-node_forwarder_tier = "PremiumV3"
-node_forwarder_size = "P1v3"
+node_forwarder_tier = "Basic" # TODO change to "PremiumV3"
+node_forwarder_size = "B1"    # TODO change to "P1v3"

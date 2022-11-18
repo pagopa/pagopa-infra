@@ -849,8 +849,8 @@
 | <a name="input_nat_gateway_public_ips"></a> [nat\_gateway\_public\_ips](#input\_nat\_gateway\_public\_ips) | Number of public outbound ips | `number` | `1` | no |
 | <a name="input_node_forwarder_always_on"></a> [node\_forwarder\_always\_on](#input\_node\_forwarder\_always\_on) | Node Forwarder always on property | `bool` | `true` | no |
 | <a name="input_node_forwarder_logging_level"></a> [node\_forwarder\_logging\_level](#input\_node\_forwarder\_logging\_level) | Logging level of Node Forwarder | `string` | `"INFO"` | no |
-| <a name="input_node_forwarder_size"></a> [node\_forwarder\_size](#input\_node\_forwarder\_size) | Node Forwarder plan size | `string` | `"S1"` | no |
-| <a name="input_node_forwarder_tier"></a> [node\_forwarder\_tier](#input\_node\_forwarder\_tier) | Node Forwarder plan tier | `string` | `"Standard"` | no |
+| <a name="input_node_forwarder_size"></a> [node\_forwarder\_size](#input\_node\_forwarder\_size) | Node Forwarder plan size | `string` | `"B1"` | no |
+| <a name="input_node_forwarder_tier"></a> [node\_forwarder\_tier](#input\_node\_forwarder\_tier) | Node Forwarder plan tier | `string` | `"Basic"` | no |
 | <a name="input_nodo_auth_subscription_limit"></a> [nodo\_auth\_subscription\_limit](#input\_nodo\_auth\_subscription\_limit) | subscriptions limit | `number` | `1000` | no |
 | <a name="input_nodo_ip_filter"></a> [nodo\_ip\_filter](#input\_nodo\_ip\_filter) | IP Node | `string` | `""` | no |
 | <a name="input_nodo_pagamenti_auth_password"></a> [nodo\_pagamenti\_auth\_password](#input\_nodo\_pagamenti\_auth\_password) | Default passowrd used for nodo-auth | `string` | `"PLACEHOLDER"` | no |
