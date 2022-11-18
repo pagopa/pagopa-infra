@@ -22,14 +22,14 @@ parameters:
   - name: 'UAT'
     displayName: 'Run on UAT environment'
     type: boolean
-    default: True
+    default: False
     values:
       - False
       - True
   - name: 'PROD'
     displayName: 'Run on PROD environment'
     type: boolean
-    default: True
+    default: False
     values:
       - False
       - True
