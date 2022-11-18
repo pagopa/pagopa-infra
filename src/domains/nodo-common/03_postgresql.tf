@@ -8,12 +8,12 @@ resource "azurerm_resource_group" "db_rg" {
 
 data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
   name         = "db-administrator-login"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
   name         = "db-administrator-login-password"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 # Postgres Flexible Server subnet

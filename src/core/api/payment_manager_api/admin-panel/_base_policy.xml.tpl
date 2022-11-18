@@ -40,6 +40,14 @@
     </inbound>
     <outbound>
       <base />
+      <choose>
+        <when condition="@(((string)context.Response.Headers.GetValueOrDefault("location","")).Contains("{{pm-host}}"))">
+          <set-variable name="locationIn" value=" @(Regex.Replace((string)context.Response.Headers.GetValueOrDefault("location",""), "{{pm-host}}", "https://{{wisp2-gov-it}}"))" />
+          <set-header name="location" exists-action="override">
+              <value>@(context.Variables.GetValueOrDefault<string>("locationIn"))</value>
+          </set-header>
+        </when>
+      </choose>
     </outbound>
     <backend>
       <base />

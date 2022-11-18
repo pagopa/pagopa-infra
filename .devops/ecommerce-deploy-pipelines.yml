@@ -26,7 +26,7 @@ parameters:
       - True
 
 variables:
-  TIME_OUT: 10
+  TIME_OUT: 30
   DEV_AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
   DEV_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
   DEV_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
@@ -59,28 +59,28 @@ resources:
 lockBehavior: sequential
 stages:
   - ${{ if eq(parameters['DEV'], true) }}:
-    # DEV shared COMMON
+    # DEV ecommerce COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'shared_common'
+        DOMAIN_NAME: 'ecommerce_common'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
         ENVIRONMENT: "dev"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/shared-common'
+        WORKINGDIR: 'src/domains/ecommerce-common'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_DEV_NAME }}
         AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-    # DEV shared APP
+    # DEV ecommerce APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'shared_app'
+        DOMAIN_NAME: 'ecommerce_app'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
         ENVIRONMENT: "dev"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
-        WORKINGDIR: 'src/domains/shared-app'
+        WORKINGDIR: 'src/domains/ecommerce-app'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_DEV_NAME }}
         AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
@@ -88,32 +88,33 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
     
+
   #
   # UAT
   #
   - ${{ if eq(parameters['UAT'], true) }}:
-    # UAT shared COMMON
+    # UAT ecommerce COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'shared_common'
+        DOMAIN_NAME: 'ecommerce_common'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
         ENVIRONMENT: "uat"
         TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/shared-common'
+        WORKINGDIR: 'src/domains/ecommerce-common'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_UAT_NAME }}
         AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-    # UAT shared APP
+    # UAT ecommerce APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'shared_app'
+        DOMAIN_NAME: 'ecommerce_app'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
         ENVIRONMENT: "uat"
         TF_ENVIRONMENT_FOLDER: "weu-uat"
-        WORKINGDIR: 'src/domains/shared-app'
+        WORKINGDIR: 'src/domains/ecommerce-app'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_UAT_NAME }}
         AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
@@ -125,28 +126,28 @@ stages:
   # PROD
   #
   - ${{ if eq(parameters['PROD'], true) }}:
-    # PROD shared COMMON
+    # PROD ecommerce COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'shared_common'
+        DOMAIN_NAME: 'ecommerce_common'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
         ENVIRONMENT: "prod"
         TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/shared-common'
+        WORKINGDIR: 'src/domains/ecommerce-common'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_PROD_NAME }}
         AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-    # PROD shared APP
+        
+    # PROD ecommerce APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        DOMAIN_NAME: 'shared_app'
+        DOMAIN_NAME: 'ecommerce_app'
         AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
         ENVIRONMENT: "prod"
         TF_ENVIRONMENT_FOLDER: "weu-prod"
-        WORKINGDIR: 'src/domains/shared-app'
+        WORKINGDIR: 'src/domains/ecommerce-app'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
         AKS_NAME: ${{ variables.AKS_PROD_NAME }}
         AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
