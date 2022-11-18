@@ -30,7 +30,7 @@ locals {
 
   config_secret_data = jsondecode(file(var.input_file))
   all_config_secrets_value = flatten([
-    for kc, vc in local.clean_secret_data : {
+    for kc, vc in local.config_secret_data : {
       valore = vc
       chiave = kc
     }
