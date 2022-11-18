@@ -24,7 +24,7 @@ module "node_forwarder_snet" {
 }
 
 module "node_forwarder_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.4.0"
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
