@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -x
 
 #
 # Apply the configuration relative to a given subscription
@@ -28,7 +28,7 @@ if [ ! -d "${WORKDIR}/subscriptions/${SUBSCRIPTION}" ]; then
 fi
 
 echo "Setting subscription"
-az account set -s "${SUBSCRIPTION}"
+# az account set -s "${SUBSCRIPTION}"
 
 # shellcheck disable=SC1090
 source "${WORKDIR}/subscriptions/${SUBSCRIPTION}/backend.ini"
@@ -105,6 +105,11 @@ LQB_CONTEXTS="!dev"
 ' > dev.env
 
 cat dev.env
+
+echo -n "Configure nodo db ..."
+sh postgres-scripts/100-nodo-create.sh
+echo "DONE!"
+
 
 echo "Executing docker compose"
 #docker compose -f docker-compose-liquibase.yml up

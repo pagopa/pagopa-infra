@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. ../dev.env
+. dev.env
 
 init () {
     PG_USER=$1
@@ -12,16 +12,17 @@ init () {
     TABLESPACE_LOB=$7
     TABLESPACE_IDX=$8
 
-    mkdir -p /var/lib/postgresql/tablespaces/$TABLESPACE_DATA
-    mkdir -p /var/lib/postgresql/tablespaces/$TABLESPACE_LOB
-    mkdir -p /var/lib/postgresql/tablespaces/$TABLESPACE_IDX
+    # mkdir -p /var/lib/postgresql/tablespaces/$TABLESPACE_DATA
+    # mkdir -p /var/lib/postgresql/tablespaces/$TABLESPACE_LOB
+    # mkdir -p /var/lib/postgresql/tablespaces/$TABLESPACE_IDX
 
     echo ""
     echo "Creating '$SCHEMA' ..."
 
     set -e
 
-    echo "POSTGRES_DB_HOST ($POSTGRES_DB_HOST)"
+    echo "POSTGRES_DB_HOST >>> ($POSTGRES_DB_HOST)"
+    # connection and create user
     PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$POSTGRES_DB_HOST" -p "$POSTGRES_DB_PORT" -v ON_ERROR_STOP=1 --username "$PG_USER" --dbname "$PG_DB" <<-EOSQL
     CREATE USER $USERNAME WITH PASSWORD '$PASSWORD';
     GRANT ALL PRIVILEGES ON DATABASE $PG_DB TO $USERNAME;
