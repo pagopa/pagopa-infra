@@ -532,7 +532,7 @@ dexp_params = {
 
 dexp_db = {
   enable             = true
-  hot_cache_period   = "P1M"
+  hot_cache_period   = "P5D"
   soft_delete_period = "P1Y"
 }
 
