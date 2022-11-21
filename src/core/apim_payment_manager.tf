@@ -687,8 +687,12 @@ module "apim_pm_adminpanel_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
-    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]
-    allowed_ip_2 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1]
+    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0] # PagoPA on prem VPN
+    allowed_ip_2 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1] # PagoPA on prem VPN DR
+    allowed_ip_3 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[2] # CSTAR
+    allowed_ip_4 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[3] # Softlab L1 Pagamenti VPN
+    allowed_ip_5 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[4] # Softlab L1 Pagamenti VPN
+    allowed_ip_6 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[5] # Softlab L1 Pagamenti VPN
   })
 }
 
