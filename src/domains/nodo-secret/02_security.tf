@@ -60,9 +60,9 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azuread_service_principal.iac_principal[0].object_id
 
-  secret_permissions = ["Get", "List", "Set", ]
-
+  secret_permissions      = ["Get", "List", "Set", ]
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
 
   storage_permissions = []
 }

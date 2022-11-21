@@ -175,3 +175,9 @@ variable "ecommerce_storage_params" {
     retention_days             = 7
   }
 }
+
+variable "enable_iac_pipeline" {
+  type        = bool
+  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
+  default     = false
+}
