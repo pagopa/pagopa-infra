@@ -111,11 +111,16 @@ app_gateway_deny_paths_2 = [
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
     "/web-bo/.*",
+    "/bo-nodo/.*",
     "/pp-admin-panel/.*",
   ]
   ips = [
-    "93.63.219.230",
-    "20.93.160.60" #cstar
+    "93.63.219.230",  # PagoPA on prem VPN
+    "93.63.219.234",  # PagoPA on prem VPN DR
+    "20.93.160.60",   # CSTAR
+    "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "82.112.220.178", # Softlab L1 Pagamenti VPN
+    "77.43.17.42",    # Softlab L1 Pagamenti VPN
   ]
 }
 

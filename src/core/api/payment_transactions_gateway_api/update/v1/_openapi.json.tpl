@@ -13,7 +13,7 @@
     "/request-payments/postepay": {
       "put": {
         "tags": [
-          "payment-transactions-controller"
+          "BancomatPay"
         ],
         "summary": "authorization outcome response from PostePay",
         "operationId": "auth-response",
@@ -95,6 +95,118 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/request-payments/xpay/{requestId}/resume": {
+      "get": {
+        "summary": "payment request to xPay",
+        "tags": [
+          "XPay"
+        ],
+        "operationId": "resumeXPayPayment",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "esito",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idOperazione",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "xpayNonce",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timeStamp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "mac",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resumeType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "OK-FOUND",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bad Request - mandatory parameters missing"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Unauthorized - transaction already processed"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "TimeOut",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "RequestId not Found"
                 }
               }
             }
