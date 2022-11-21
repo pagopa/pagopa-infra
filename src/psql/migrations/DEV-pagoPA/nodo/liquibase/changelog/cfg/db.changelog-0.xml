@@ -118,9 +118,9 @@
     </changeSet>
 
     <changeSet author="liquibase" id="1666281980396-1">
-        <createTable tablespace="${tablespaceData}" tableName="PSP_CANALE_TIPO_VERSAMENTO">
+        <createTable  tableName="PSP_CANALE_TIPO_VERSAMENTO">
             <column defaultValueSequenceNext="PSP_CANALE_TIPO_VERSAMENTO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_PSP_CANALE_TIPO_VERSAMENTO"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PSP_CANALE_TIPO_VERSAMENTO"/>
             </column>
             <column name="FK_CANALE_TIPO_VERSAMENTO" type="NUMBER">
                 <constraints nullable="false"/>
@@ -131,9 +131,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-2">
-        <createTable tablespace="${tablespaceData}" tableName="CANALI">
+        <createTable  tableName="CANALI">
             <column defaultValueSequenceNext="CANALI_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CANALI"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CANALI"/>
             </column>
             <column name="ID_CANALE" type="VARCHAR2(35 )">
                 <constraints nullable="false"/>
@@ -191,9 +191,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-3">
-        <createTable tablespace="${tablespaceData}" tableName="CDI_FASCIA_COSTO_SERVIZIO">
+        <createTable  tableName="CDI_FASCIA_COSTO_SERVIZIO">
             <column defaultValueSequenceNext="CDI_FASCIA_COSTO_SERVIZIO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CDI_FASCIA_COSTO_SERVIZIO"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDI_FASCIA_COSTO_SERVIZIO"/>
             </column>
             <column name="IMPORTO_MINIMO" type="FLOAT(22)">
                 <constraints nullable="false"/>
@@ -212,9 +212,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-4">
-        <createTable tablespace="${tablespaceData}" tableName="TIPI_VERSAMENTO">
+        <createTable  tableName="TIPI_VERSAMENTO">
             <column defaultValueSequenceNext="TIPI_VERSAMENTO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_TIPI_VERSAMENTO"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_TIPI_VERSAMENTO"/>
             </column>
             <column name="DESCRIZIONE" type="VARCHAR2(35 )"/>
             <column name="TIPO_VERSAMENTO" type="VARCHAR2(15 )">
@@ -223,9 +223,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-5">
-        <createTable tablespace="${tablespaceData}" tableName="CDI_PREFERENCES">
+        <createTable  tableName="CDI_PREFERENCES">
             <column defaultValueSequenceNext="CDI_PREFERENCES_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK__CDI_PREF__755589F03429BB53"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK__CDI_PREF__755589F03429BB53"/>
             </column>
             <column name="FK_INFORMATIVA_DETAIL" type="NUMBER">
                 <constraints nullable="false"/>
@@ -240,9 +240,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-6">
-        <createTable tablespace="${tablespaceData}" tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER">
+        <createTable  tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER">
             <column defaultValueSequenceNext="INFORMATIVE_CONTO_ACCREDITO_MASTER_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_INFORMATIVE_CONTO_ACCREDITO_MASTER"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_CONTO_ACCREDITO_MASTER"/>
             </column>
             <column name="DATA_INIZIO_VALIDITA" type="TIMESTAMP(6)"/>
             <column name="DATA_PUBBLICAZIONE" type="TIMESTAMP(6)"/>
@@ -256,9 +256,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-7">
-        <createTable tablespace="${tablespaceData}" tableName="CANALI_NODO">
+        <createTable  tableName="CANALI_NODO">
             <column defaultValueSequenceNext="CANALI_NODO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CANALI_NODO"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CANALI_NODO"/>
             </column>
             <column name="REDIRECT_IP" type="VARCHAR2(100)"/>
             <column name="REDIRECT_PATH" type="VARCHAR2(100)"/>
@@ -305,9 +305,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-8">
-        <createTable tablespace="${tablespaceData}" tableName="INFORMATIVE_CONTO_ACCREDITO_DETAIL">
+        <createTable  tableName="INFORMATIVE_CONTO_ACCREDITO_DETAIL">
             <column defaultValueSequenceNext="INFORMATIVE_CONTO_ACCREDITO_DETAIL_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_INFORMATIVE_CONTO_ACCREDITO_DETAIL"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_CONTO_ACCREDITO_DETAIL"/>
             </column>
             <column name="IBAN_ACCREDITO" type="VARCHAR2(35)"/>
             <column name="FK_INFORMATIVA_CONTO_ACCREDITO_MASTER" type="NUMBER"/>
@@ -318,9 +318,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-9">
-        <createTable tablespace="${tablespaceData}" tableName="CANALE_TIPO_VERSAMENTO">
+        <createTable  tableName="CANALE_TIPO_VERSAMENTO">
             <column defaultValueSequenceNext="CANALE_TIPO_VERSAMENTO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CANALE_TIPO_VERSAMENTOE"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CANALE_TIPO_VERSAMENTOE"/>
             </column>
             <column name="FK_CANALE" type="NUMBER">
                 <constraints nullable="false"/>
@@ -331,9 +331,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-10">
-        <createTable tablespace="${tablespaceData}" tableName="CDI_INFORMAZIONI_SERVIZIO">
+        <createTable  tableName="CDI_INFORMAZIONI_SERVIZIO">
             <column defaultValueSequenceNext="CDI_INFORMAZIONI_SERVIZIO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CDI_INFORMAZIONI_SERVIZIO"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDI_INFORMAZIONI_SERVIZIO"/>
             </column>
             <column name="CODICE_LINGUA" type="CHAR(2)">
                 <constraints nullable="false"/>
@@ -352,9 +352,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-11">
-        <createTable tablespace="${tablespaceData}" tableName="INTERMEDIARI_PSP">
+        <createTable  tableName="INTERMEDIARI_PSP">
             <column defaultValueSequenceNext="INTERMEDIARI_PSP_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_INTERMEDIARI_PSP"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INTERMEDIARI_PSP"/>
             </column>
             <column name="ID_INTERMEDIARIO_PSP" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -375,9 +375,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-12">
-        <createTable tablespace="${tablespaceData}" tableName="CDI_MASTER">
+        <createTable  tableName="CDI_MASTER">
             <column defaultValueSequenceNext="CDI_MASTER_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CDI_MASTER"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDI_MASTER"/>
             </column>
             <column name="ID_INFORMATIVA_PSP" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -404,9 +404,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-13">
-        <createTable tablespace="${tablespaceData}" tableName="CDI_DETAIL">
+        <createTable  tableName="CDI_DETAIL">
             <column defaultValueSequenceNext="CDI_DETAIL_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CDI_DETAIL"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDI_DETAIL"/>
             </column>
             <column name="NOME_SERVIZIO" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -429,9 +429,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-14">
-        <createTable tablespace="${tablespaceData}" tableName="PSP">
+        <createTable  tableName="PSP">
             <column defaultValueSequenceNext="PSP_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_PSP"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PSP"/>
             </column>
             <column name="ID_PSP" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -645,7 +645,7 @@
     </changeSet>
 
     <changeSet author="liquibase" id="1666281980396-58">
-        <createTable tablespace="${tablespaceData}" tableName="AUTH_ACCOUNT_ROLES">
+        <createTable  tableName="AUTH_ACCOUNT_ROLES">
             <column name="ACCOUNT_ID" type="NUMBER">
                 <constraints nullable="false"/>
             </column>
@@ -655,9 +655,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-59">
-        <createTable tablespace="${tablespaceData}" tableName="AUTH_PERMISSIONS">
+        <createTable  tableName="AUTH_PERMISSIONS">
             <column defaultValueSequenceNext="AUTH_PERMISSIONS_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_AUTH_PERMISSIONS"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_AUTH_PERMISSIONS"/>
             </column>
             <column name="PERM_ACTION" type="VARCHAR2(250)"/>
             <column name="PERM_TYPE" type="VARCHAR2(1)">
@@ -670,9 +670,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-60">
-        <createTable tablespace="${tablespaceData}" tableName="AUTH_ROLES">
+        <createTable  tableName="AUTH_ROLES">
             <column defaultValueSequenceNext="AUTH_ROLES_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_AUTH_ROLES"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_AUTH_ROLES"/>
             </column>
             <column name="OPTLOCK" type="NUMBER"/>
             <column name="FUNCTIONAL_ROLE" type="CHAR(1)">
@@ -693,7 +693,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-61">
-        <createTable tablespace="${tablespaceData}" tableName="AUTH_ROLE_GROUPS">
+        <createTable  tableName="AUTH_ROLE_GROUPS">
             <column name="ROLE_ID" type="NUMBER">
                 <constraints nullable="false"/>
             </column>
@@ -703,9 +703,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-62">
-        <createTable tablespace="${tablespaceData}" tableName="AUTH_USERS">
+        <createTable  tableName="AUTH_USERS">
             <column defaultValueSequenceNext="AUTH_USERS_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_AUTH_USERS"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_AUTH_USERS"/>
             </column>
             <column name="OPTLOCK" type="NUMBER"/>
             <column name="USER_CODE" type="VARCHAR2(10)">
@@ -731,9 +731,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-63">
-        <createTable tablespace="${tablespaceData}" tableName="BINARY_FILE">
+        <createTable  tableName="BINARY_FILE">
             <column defaultValueSequenceNext="BINARY_FILE_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_BINARY_FILE"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_BINARY_FILE"/>
             </column>
             <column name="FILE_CONTENT" type="BYTEA">
                 <constraints nullable="false"/>
@@ -749,7 +749,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-64">
-        <createTable tablespace="${tablespaceData}" tableName="CACHE">
+        <createTable  tableName="CACHE">
             <column name="ID" type="VARCHAR2(20)">
                 <constraints nullable="false"/>
             </column>
@@ -763,9 +763,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-66">
-        <createTable tablespace="${tablespaceData}" tableName="CDS_CATEGORIE">
+        <createTable  tableName="CDS_CATEGORIE">
             <column defaultValueSequenceNext="CDS_CATEGORIE_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CDS_CATEGORIE"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDS_CATEGORIE"/>
             </column>
             <column name="DESCRIZIONE" type="VARCHAR2(70)">
                 <constraints nullable="false"/>
@@ -773,9 +773,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-67">
-        <createTable tablespace="${tablespaceData}" tableName="CDS_SERVIZIO">
+        <createTable  tableName="CDS_SERVIZIO">
             <column defaultValueSequenceNext="CDS_SERVIZIO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CDS_SERVIZIO"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDS_SERVIZIO"/>
             </column>
             <column name="ID_SERVIZIO" type="VARCHAR2(5)">
                 <constraints nullable="false"/>
@@ -795,9 +795,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-68">
-        <createTable tablespace="${tablespaceData}" tableName="CDS_SOGGETTO">
+        <createTable  tableName="CDS_SOGGETTO">
             <column defaultValueSequenceNext="CDS_SOGGETTO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CDS_SOGGETTO"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDS_SOGGETTO"/>
             </column>
             <column name="ID_DOMINIO" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -808,9 +808,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-69">
-        <createTable tablespace="${tablespaceData}" tableName="CDS_SOGGETTO_SERVIZIO">
+        <createTable  tableName="CDS_SOGGETTO_SERVIZIO">
             <column defaultValueSequenceNext="CDS_SOGGETTO_SERVIZIO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CDS_SOGGETTO_SERVIZIO"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDS_SOGGETTO_SERVIZIO"/>
             </column>
             <column name="FK_CDS_SOGGETTO" type="NUMBER">
                 <constraints nullable="false"/>
@@ -829,9 +829,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-70">
-        <createTable tablespace="${tablespaceData}" tableName="CODIFICHE">
+        <createTable  tableName="CODIFICHE">
             <column defaultValueSequenceNext="CODIFICHE_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CODIFICHE"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CODIFICHE"/>
             </column>
             <column name="ID_CODIFICA" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -840,9 +840,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-71">
-        <createTable tablespace="${tablespaceData}" tableName="CODIFICHE_PA">
+        <createTable  tableName="CODIFICHE_PA">
             <column defaultValueSequenceNext="CODIFICHE_PA_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CODIFICHE_PA"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CODIFICHE_PA"/>
             </column>
             <column name="CODICE_PA" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -856,7 +856,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-72">
-        <createTable tablespace="${tablespaceData}" tableName="CONFIGURATION_KEYS">
+        <createTable  tableName="CONFIGURATION_KEYS">
             <column name="CONFIG_CATEGORY" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
             </column>
@@ -870,20 +870,20 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-73">
-        <createTable tablespace="${tablespaceData}" tableName="DENYLIST">
+        <createTable  tableName="DENYLIST">
             <column name="FK_PSP" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_DENYLIST"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_DENYLIST"/>
             </column>
             <column name="FK_CANALE" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_DENYLIST"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_DENYLIST"/>
             </column>
             <column name="FK_PA" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_DENYLIST"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_DENYLIST"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-74">
-        <createTable tablespace="${tablespaceData}" tableName="DIZIONARIO_METADATI">
+        <createTable  tableName="DIZIONARIO_METADATI">
             <column name="CHIAVE" type="VARCHAR2(140)">
                 <constraints nullable="false"/>
             </column>
@@ -895,9 +895,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-75">
-        <createTable tablespace="${tablespaceData}" tableName="ELENCO_SERVIZI">
+        <createTable  tableName="ELENCO_SERVIZI">
             <column defaultValueSequenceNext="ELENCO_SERVIZI_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_ELENCO_SERVIZI"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_ELENCO_SERVIZI"/>
             </column>
             <column name="PSP_ID" type="VARCHAR2(35)"/>
             <column name="FLUSSO_ID" type="VARCHAR2(35)"/>
@@ -932,9 +932,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-76">
-        <createTable tablespace="${tablespaceData}" tableName="FTP_SERVERS">
+        <createTable  tableName="FTP_SERVERS">
             <column defaultValueSequenceNext="FTP_SERVERS_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK__FTP_SERV__755589F079FD19BE"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK__FTP_SERV__755589F079FD19BE"/>
             </column>
             <column name="HOST" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
@@ -964,7 +964,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-77">
-        <createTable tablespace="${tablespaceData}" tableName="GDE_CONFIG">
+        <createTable  tableName="GDE_CONFIG">
             <column name="PRIMITIVA" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
             </column>
@@ -980,9 +980,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-78">
-        <createTable tablespace="${tablespaceData}" tableName="INFORMATIVE_PA_DETAIL">
+        <createTable  tableName="INFORMATIVE_PA_DETAIL">
             <column defaultValueSequenceNext="INFORMATIVE_PA_DETAIL_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_INFORMATIVE_PA_DETAIL"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_PA_DETAIL"/>
             </column>
             <column name="FLAG_DISPONIBILITA" type="CHAR(1)">
                 <constraints nullable="false"/>
@@ -995,9 +995,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-79">
-        <createTable tablespace="${tablespaceData}" tableName="INFORMATIVE_PA_FASCE">
+        <createTable  tableName="INFORMATIVE_PA_FASCE">
             <column defaultValueSequenceNext="INFORMATIVE_PA_FASCE_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_INFORMATIVE_PA_FASCE"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_PA_FASCE"/>
             </column>
             <column name="ORA_A" type="VARCHAR2(35)"/>
             <column name="ORA_DA" type="VARCHAR2(35)"/>
@@ -1007,9 +1007,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-80">
-        <createTable tablespace="${tablespaceData}" tableName="INFORMATIVE_PA_MASTER">
+        <createTable  tableName="INFORMATIVE_PA_MASTER">
             <column defaultValueSequenceNext="INFORMATIVE_PA_MASTER_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_INFORMATIVE_PA_MASTER"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_PA_MASTER"/>
             </column>
             <column name="ID_INFORMATIVA_PA" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1025,9 +1025,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-81">
-        <createTable tablespace="${tablespaceData}" tableName="INTERMEDIARI_PA">
+        <createTable  tableName="INTERMEDIARI_PA">
             <column defaultValueSequenceNext="INTERMEDIARI_PA_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_INTERMEDIARI_PA"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INTERMEDIARI_PA"/>
             </column>
             <column name="ID_INTERMEDIARIO_PA" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1042,9 +1042,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-82">
-        <createTable tablespace="${tablespaceData}" tableName="PA">
+        <createTable  tableName="PA">
             <column defaultValueSequenceNext="PA_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_PA"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PA"/>
             </column>
             <column name="ID_DOMINIO" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1079,9 +1079,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-83">
-        <createTable tablespace="${tablespaceData}" tableName="PA_STAZIONE_PA">
+        <createTable  tableName="PA_STAZIONE_PA">
             <column defaultValueSequenceNext="PA_STAZIONE_PA_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_PA_STAZIONE_PA"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PA_STAZIONE_PA"/>
             </column>
             <column name="PROGRESSIVO" type="NUMBER"/>
             <column name="FK_PA" type="NUMBER">
@@ -1110,9 +1110,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-84">
-        <createTable tablespace="${tablespaceData}" tableName="PDD">
+        <createTable  tableName="PDD">
             <column defaultValueSequenceNext="PDD_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_PDD"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PDD"/>
             </column>
             <column name="ID_PDD" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1130,9 +1130,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-85">
-        <createTable tablespace="${tablespaceData}" tableName="QUADRATURE_SCHED">
+        <createTable  tableName="QUADRATURE_SCHED">
             <column defaultValueSequenceNext="QUADRATURE_SCHED_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_QUADRATURE_SCHED"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_QUADRATURE_SCHED"/>
             </column>
             <column name="ID_SOGGETTO" type="VARCHAR2(35)"/>
             <column name="MODALITA" type="VARCHAR2(35)"/>
@@ -1153,9 +1153,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-86">
-        <createTable tablespace="${tablespaceData}" tableName="STAZIONI">
+        <createTable  tableName="STAZIONI">
             <column defaultValueSequenceNext="STAZIONI_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_STAZIONI"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_STAZIONI"/>
             </column>
             <column name="ID_STAZIONE" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1227,9 +1227,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-87">
-        <createTable tablespace="${tablespaceData}" tableName="SYNC_STATUS">
+        <createTable  tableName="SYNC_STATUS">
             <column defaultValueSequenceNext="SYNC_STATUS_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_SYNC_STATUS"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_SYNC_STATUS"/>
             </column>
             <column name="SNAPSHOT_VERSION" type="NUMBER(19, 0)"/>
             <column name="STATUS" type="CHAR(1 BYTE)"/>
@@ -1240,7 +1240,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-88">
-        <createTable tablespace="${tablespaceData}" tableName="TEMPLATE_MARKDOWN">
+        <createTable  tableName="TEMPLATE_MARKDOWN">
             <column name="NAME" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
             </column>
@@ -1251,9 +1251,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-89">
-        <createTable tablespace="${tablespaceData}" tableName="WFESP_PLUGIN_CONF">
+        <createTable  tableName="WFESP_PLUGIN_CONF">
             <column defaultValueSequenceNext="WFESP_PLUGIN_CONF_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_WFESP_PLUGIN_CONF"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_WFESP_PLUGIN_CONF"/>
             </column>
             <column name="ID_SERV_PLUGIN" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1265,7 +1265,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281980396-92">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CDS_CATEGORIE_DESCRIZIONE_UNIQUE" tableName="CDS_CATEGORIE" unique="true">
+        <createIndex  indexName="CDS_CATEGORIE_DESCRIZIONE_UNIQUE" tableName="CDS_CATEGORIE" unique="true">
             <column name="DESCRIZIONE"/>
         </createIndex>
     </changeSet>
@@ -1273,7 +1273,7 @@
 <!--        <addUniqueConstraint columnNames="DESCRIZIONE" constraintName="CDS_CATEGORIE_DESCRIZIONE_UNIQUE"  tableName="CDS_CATEGORIE"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-94">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CDS_SOGGETTO_SERVIZIO_ID_SOGGETTO_SERVIZIO_UNIQUE" tableName="CDS_SOGGETTO_SERVIZIO" unique="true">
+        <createIndex  indexName="CDS_SOGGETTO_SERVIZIO_ID_SOGGETTO_SERVIZIO_UNIQUE" tableName="CDS_SOGGETTO_SERVIZIO" unique="true">
             <column name="ID_SOGGETTO_SERVIZIO"/>
         </createIndex>
     </changeSet>
@@ -1281,7 +1281,7 @@
 <!--        <addUniqueConstraint columnNames="ID_SOGGETTO_SERVIZIO" constraintName="CDS_SOGGETTO_SERVIZIO_ID_SOGGETTO_SERVIZIO_UNIQUE"  tableName="CDS_SOGGETTO_SERVIZIO"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-96">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_CONFIGURATION_KEYS" tableName="CONFIGURATION_KEYS" unique="true">
+        <createIndex  indexName="UQ_CONFIGURATION_KEYS" tableName="CONFIGURATION_KEYS" unique="true">
             <column name="CONFIG_CATEGORY"/>
             <column name="CONFIG_KEY"/>
         </createIndex>
@@ -1290,7 +1290,7 @@
 <!--        <addUniqueConstraint columnNames="CONFIG_CATEGORY, CONFIG_KEY" constraintName="UQ_CONFIGURATION_KEYS"  tableName="CONFIGURATION_KEYS"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-98">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_ID_CANALE" tableName="CANALI" unique="true">
+        <createIndex  indexName="UQ_ID_CANALE" tableName="CANALI" unique="true">
             <column name="ID_CANALE"/>
         </createIndex>
     </changeSet>
@@ -1298,7 +1298,7 @@
 <!--        <addUniqueConstraint columnNames="ID_CANALE" constraintName="UQ_ID_CANALE"  tableName="CANALI"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-100">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_ID_CODIFICA" tableName="CODIFICHE" unique="true">
+        <createIndex  indexName="UQ_ID_CODIFICA" tableName="CODIFICHE" unique="true">
             <column name="ID_CODIFICA"/>
         </createIndex>
     </changeSet>
@@ -1306,7 +1306,7 @@
 <!--        <addUniqueConstraint columnNames="ID_CODIFICA" constraintName="UQ_ID_CODIFICA"  tableName="CODIFICHE"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-102">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_ID_DOMINIO" tableName="PA" unique="true">
+        <createIndex  indexName="UQ_ID_DOMINIO" tableName="PA" unique="true">
             <column name="ID_DOMINIO"/>
         </createIndex>
     </changeSet>
@@ -1314,7 +1314,7 @@
 <!--        <addUniqueConstraint columnNames="ID_DOMINIO" constraintName="UQ_ID_DOMINIO"  tableName="PA"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-104">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_ID_INTERMEDIARIO_PA" tableName="INTERMEDIARI_PA" unique="true">
+        <createIndex  indexName="UQ_ID_INTERMEDIARIO_PA" tableName="INTERMEDIARI_PA" unique="true">
             <column name="ID_INTERMEDIARIO_PA"/>
         </createIndex>
     </changeSet>
@@ -1322,7 +1322,7 @@
 <!--        <addUniqueConstraint columnNames="ID_INTERMEDIARIO_PA" constraintName="UQ_ID_INTERMEDIARIO_PA"  tableName="INTERMEDIARI_PA"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-106">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_ID_INTERMEDIARIO_PSP" tableName="INTERMEDIARI_PSP" unique="true">
+        <createIndex  indexName="UQ_ID_INTERMEDIARIO_PSP" tableName="INTERMEDIARI_PSP" unique="true">
             <column name="ID_INTERMEDIARIO_PSP"/>
         </createIndex>
     </changeSet>
@@ -1330,7 +1330,7 @@
 <!--        <addUniqueConstraint columnNames="ID_INTERMEDIARIO_PSP" constraintName="UQ_ID_INTERMEDIARIO_PSP"  tableName="INTERMEDIARI_PSP"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-108">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_ID_PSP" tableName="PSP" unique="true">
+        <createIndex  indexName="UQ_ID_PSP" tableName="PSP" unique="true">
             <column name="ID_PSP"/>
         </createIndex>
     </changeSet>
@@ -1338,7 +1338,7 @@
 <!--        <addUniqueConstraint columnNames="ID_PSP" constraintName="UQ_ID_PSP"  tableName="PSP"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-110">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_ID_SERV_PLUGIN" tableName="WFESP_PLUGIN_CONF" unique="true">
+        <createIndex  indexName="UQ_ID_SERV_PLUGIN" tableName="WFESP_PLUGIN_CONF" unique="true">
             <column name="ID_SERV_PLUGIN"/>
         </createIndex>
     </changeSet>
@@ -1346,7 +1346,7 @@
 <!--        <addUniqueConstraint columnNames="ID_SERV_PLUGIN" constraintName="UQ_ID_SERV_PLUGIN"  tableName="WFESP_PLUGIN_CONF"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-112">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_ID_STAZIONE" tableName="STAZIONI" unique="true">
+        <createIndex  indexName="UQ_ID_STAZIONE" tableName="STAZIONI" unique="true">
             <column name="ID_STAZIONE"/>
         </createIndex>
     </changeSet>
@@ -1354,7 +1354,7 @@
 <!--        <addUniqueConstraint columnNames="ID_STAZIONE" constraintName="UQ_ID_STAZIONE"  tableName="STAZIONI"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-114">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_INFORMATIVA_CDI" tableName="CDI_MASTER" unique="true">
+        <createIndex  indexName="UQ_INFORMATIVA_CDI" tableName="CDI_MASTER" unique="true">
             <column name="FK_PSP"/>
             <column name="ID_INFORMATIVA_PSP"/>
         </createIndex>
@@ -1363,7 +1363,7 @@
 <!--        <addUniqueConstraint columnNames="FK_PSP, ID_INFORMATIVA_PSP" constraintName="UQ_INFORMATIVA_CDI"  tableName="CDI_MASTER"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-116">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_INFORMATIVA_CONTO_ACCREDITO" tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER" unique="true">
+        <createIndex  indexName="UQ_INFORMATIVA_CONTO_ACCREDITO" tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER" unique="true">
             <column name="FK_PA"/>
             <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA"/>
         </createIndex>
@@ -1372,7 +1372,7 @@
 <!--        <addUniqueConstraint columnNames="FK_PA, ID_INFORMATIVA_CONTO_ACCREDITO_PA" constraintName="UQ_INFORMATIVA_CONTO_ACCREDITO"  tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-118">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_INFORMATIVA_PA" tableName="INFORMATIVE_PA_MASTER" unique="true">
+        <createIndex  indexName="UQ_INFORMATIVA_PA" tableName="INFORMATIVE_PA_MASTER" unique="true">
             <column name="FK_PA"/>
             <column name="ID_INFORMATIVA_PA"/>
         </createIndex>
@@ -1381,7 +1381,7 @@
 <!--        <addUniqueConstraint columnNames="FK_PA, ID_INFORMATIVA_PA" constraintName="UQ_INFORMATIVA_PA"  tableName="INFORMATIVE_PA_MASTER"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-120">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_PDD" tableName="PDD" unique="true">
+        <createIndex  indexName="UQ_PDD" tableName="PDD" unique="true">
             <column name="ID_PDD"/>
         </createIndex>
     </changeSet>
@@ -1389,7 +1389,7 @@
 <!--        <addUniqueConstraint columnNames="ID_PDD" constraintName="UQ_PDD"  tableName="PDD"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-122">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_TEMPLATE_MARKDOWN" tableName="TEMPLATE_MARKDOWN" unique="true">
+        <createIndex  indexName="UQ_TEMPLATE_MARKDOWN" tableName="TEMPLATE_MARKDOWN" unique="true">
             <column name="NAME"/>
         </createIndex>
     </changeSet>
@@ -1397,7 +1397,7 @@
 <!--        <addUniqueConstraint columnNames="NAME" constraintName="UQ_TEMPLATE_MARKDOWN"  tableName="TEMPLATE_MARKDOWN"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666281980396-124">
-        <createIndex tablespace="${tablespaceIdx}" indexName="UQ_TIPO_VERSAMENTO" tableName="TIPI_VERSAMENTO" unique="true">
+        <createIndex  indexName="UQ_TIPO_VERSAMENTO" tableName="TIPI_VERSAMENTO" unique="true">
             <column name="TIPO_VERSAMENTO"/>
         </createIndex>
     </changeSet>

@@ -84,9 +84,9 @@
         <createView fullDefinition="true" viewName="V_RT_VERSAMENTI">CREATE OR REPLACE VIEW ${schema}.V_RT_VERSAMENTI(ID,PROGRESSIVO,IMPORTO_RT,ESITO,CAUSALE_VERSAMENTO,DATI_SPECIFICI_RISCOSSIONE,COMMISSIONE_APPLICATE_PSP,FK_RT,INSERTED_TIMESTAMP,UPDATED_TIMESTAMP) AS SELECT ID,PROGRESSIVO,IMPORTO_RT,ESITO,CAUSALE_VERSAMENTO,DATI_SPECIFICI_RISCOSSIONE,COMMISSIONE_APPLICATE_PSP,FK_RT,INSERTED_TIMESTAMP,UPDATED_TIMESTAMP FROM  ${schemaOnline}.RT_VERSAMENTI</createView>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-12">
-        <createTable tablespace="${tablespaceData}" tableName="RENDICONTAZIONE">
+        <createTable  tableName="RENDICONTAZIONE">
             <column defaultValueSequenceNext="RENDICONTAZIONE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RENDICONTAZIONE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RENDICONTAZIONE_PK"/>
             </column>
             <column name="OPTLOCK" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -117,9 +117,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-13">
-        <createTable tablespace="${tablespaceData}" tableName="BINARY_FILE">
+        <createTable  tableName="BINARY_FILE">
             <column defaultValueSequenceNext="BINARY_FILE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="BINARY_FILE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="BINARY_FILE_PK"/>
             </column>
             <column name="FILE_SIZE" type="NUMBER(19, 0)"/>
             <column name="FILE_CONTENT" type="BYTEA"/>
@@ -129,7 +129,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-44">
-        <createTable tablespace="${tablespaceData}" tableName="CATALOGO_DATI">
+        <createTable  tableName="CATALOGO_DATI">
             <column name="NAME" type="VARCHAR2(100 BYTE)">
                 <constraints nullable="false"/>
             </column>
@@ -139,9 +139,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-45">
-        <createTable tablespace="${tablespaceData}" tableName="ELENCO_SERVIZI_PA">
+        <createTable  tableName="ELENCO_SERVIZI_PA">
             <column defaultValueSequenceNext="ELENCO_SERVIZI_PA_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="ELENCO_SERVIZI_PA_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ELENCO_SERVIZI_PA_PK"/>
             </column>
             <column name="FK_SNAPSHOT_VERSION" type="NUMBER(19, 0)"/>
             <column name="IBAN_ACCREDITO" type="CHAR(35 )"/>
@@ -154,9 +154,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-46">
-        <createTable tablespace="${tablespaceData}" tableName="ELENCO_SERVIZI_PA_SYNC_STATUS">
+        <createTable  tableName="ELENCO_SERVIZI_PA_SYNC_STATUS">
             <column defaultValueSequenceNext="ELENCO_SERVIZI_PA_SYNC_STATUS_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="ELENCO_SERVIZI_PA_SYNK_STATUS_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ELENCO_SERVIZI_PA_SYNK_STATUS_PK"/>
             </column>
             <column name="SNAPSHOT_VERSION" type="NUMBER(19, 0)"/>
             <column name="STATUS" type="CHAR(1 )">
@@ -173,12 +173,12 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-47">
-        <createTable tablespace="${tablespaceData}" tableName="ELENCO_SERVIZI_PSP">
+        <createTable  tableName="ELENCO_SERVIZI_PSP">
             <column name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="ELENCO_SERVIZI_PSP_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ELENCO_SERVIZI_PSP_PK"/>
             </column>
             <column name="FK_SNAPSHOT_VERSION" type="NUMBER(19, 0)">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="ELENCO_SERVIZI_PSP_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ELENCO_SERVIZI_PSP_PK"/>
             </column>
             <column name="PSP_ID" type="CHAR(35 )">
                 <constraints nullable="false"/>
@@ -227,18 +227,18 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-48">
-        <createTable tablespace="${tablespaceData}" tableName="ELENCO_SERVIZI_PSP_LOGOS">
+        <createTable  tableName="ELENCO_SERVIZI_PSP_LOGOS">
             <column defaultValueSequenceNext="ELENCO_SERVIZI_PSP_LOGOS_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="ELENCO_SERVIZI_PSP_LOGOS_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ELENCO_SERVIZI_PSP_LOGOS_PK"/>
             </column>
             <column name="FILE_SIZE" type="NUMBER(19, 0)"/>
             <column name="LOGO" type="BYTEA"/>
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-49">
-        <createTable tablespace="${tablespaceData}" tableName="ELENCO_SERVIZI_PSP_SYNC_STATUS">
+        <createTable  tableName="ELENCO_SERVIZI_PSP_SYNC_STATUS">
             <column name="SNAPSHOT_VERSION" type="NUMBER(19, 0)">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="ELENCO_SERVIZI_PSP_SYNC_STATUS_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ELENCO_SERVIZI_PSP_SYNC_STATUS_PK"/>
             </column>
             <column name="VALID" type="CHAR(1)">
                 <constraints nullable="false"/>
@@ -258,9 +258,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-50">
-        <createTable tablespace="${tablespaceData}" tableName="FATTURAZIONI">
+        <createTable  tableName="FATTURAZIONI">
             <column defaultValueSequenceNext="FATTURAZIONI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="FATTURAZIONI_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="FATTURAZIONI_PK"/>
             </column>
             <column name="SESSION_ID" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
@@ -279,7 +279,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-51">
-        <createTable tablespace="${tablespaceData}" tableName="FATTURAZIONI_PSP_AGGR">
+        <createTable  tableName="FATTURAZIONI_PSP_AGGR">
             <column name="SESSION_ID" type="VARCHAR2(255 BYTE)"/>
             <column name="DAY" type="date"/>
             <column name="PSP" type="VARCHAR2(35 BYTE)"/>
@@ -294,9 +294,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-52">
-        <createTable tablespace="${tablespaceData}" tableName="FLUSSI_RT_NEGATIVE">
+        <createTable  tableName="FLUSSI_RT_NEGATIVE">
             <column defaultValueSequenceNext="FLUSSI_RT_NEGATIVE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="FLUS_RT_NEG_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="FLUS_RT_NEG_PK"/>
             </column>
             <column name="SESSION_ID" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
@@ -315,9 +315,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-53">
-        <createTable tablespace="${tablespaceData}" tableName="QUADRATURA_FLUSSI">
+        <createTable  tableName="QUADRATURA_FLUSSI">
             <column defaultValueSequenceNext="QUADRATURA_FLUSSI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="QUADRATURA_FLUSSI_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="QUADRATURA_FLUSSI_PK"/>
             </column>
             <column name="VERSIONE_OGGETTO" type="VARCHAR2(50)"/>
             <column name="SOGGETTO_RICHIEDENTE" type="VARCHAR2(50)"/>
@@ -333,9 +333,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-54">
-        <createTable tablespace="${tablespaceData}" tableName="QUADRATURE_RPT">
+        <createTable  tableName="QUADRATURE_RPT">
             <column defaultValueSequenceNext="QUADRATURE_RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="QUADRATURE_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="QUADRATURE_RPT_PK"/>
             </column>
             <column name="ID_FLUSSO_QUADRATURA" type="NUMBER">
                 <constraints nullable="false"/>
@@ -350,9 +350,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-55">
-        <createTable tablespace="${tablespaceData}" tableName="QUADRATURE_RT">
+        <createTable  tableName="QUADRATURE_RT">
             <column defaultValueSequenceNext="QUADRATURE_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="QUADRATURE_RT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="QUADRATURE_RT_PK"/>
             </column>
             <column name="ID_FLUSSO_QUADRATURA" type="NUMBER">
                 <constraints nullable="false"/>
@@ -367,9 +367,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-56">
-        <createTable tablespace="${tablespaceData}" tableName="RENDICONTAZIONE_BOLLO">
+        <createTable  tableName="RENDICONTAZIONE_BOLLO">
             <column defaultValueSequenceNext="RENDICONTAZIONE_BOLLO_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RENDICONTAZIONE_BOLLO_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RENDICONTAZIONE_BOLLO_PK"/>
             </column>
             <column name="ID_DOMINIO" type="VARCHAR2(35)"/>
             <column name="RENDICONTAZIONE_BOLLO_PROGRESSIVE" type="NUMBER(19, 0)"/>
@@ -389,15 +389,15 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-57">
-        <createTable tablespace="${tablespaceData}" tableName="RENDICONTAZIONE_BOLLO_VERSAMENTO">
+        <createTable  tableName="RENDICONTAZIONE_BOLLO_VERSAMENTO">
             <column name="FK_VERSAMENTO_BOLLO" type="NUMBER(19, 0)"/>
             <column name="FK_RENDICONTAZIONE_BOLLO" type="NUMBER(19, 0)"/>
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-58">
-        <createTable tablespace="${tablespaceData}" tableName="RENDICONTAZIONE_SFTP_RECEIVE_QUEUE">
+        <createTable  tableName="RENDICONTAZIONE_SFTP_RECEIVE_QUEUE">
             <column defaultValueSequenceNext="RENDICONTAZIONE_SFTP_RECEIVE_QUEUE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RENDICONTAZIONE_SFTP_RECEIVE_QUEUE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RENDICONTAZIONE_SFTP_RECEIVE_QUEUE_PK"/>
             </column>
             <column name="FILE_NAME" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
@@ -441,9 +441,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-59">
-        <createTable tablespace="${tablespaceData}" tableName="RENDICONTAZIONE_SFTP_SEND_QUEUE">
+        <createTable  tableName="RENDICONTAZIONE_SFTP_SEND_QUEUE">
             <column defaultValueSequenceNext="RENDICONTAZIONE_SFTP_SEND_QUEUE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RENDICONTAZIONE_SFTP_SEND_QUEUE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RENDICONTAZIONE_SFTP_SEND_QUEUE_PK"/>
             </column>
             <column name="FILE_NAME" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
@@ -488,9 +488,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-60" objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-        <createTable tablespace="${tablespaceData}" tableName="SCHEDULER_FIRE_CHECK">
+        <createTable  tableName="SCHEDULER_FIRE_CHECK">
             <column defaultValueSequenceNext="SCHEDULER_FIRE_CHECK_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="SCHEDULER_FIRE_CHECK_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SCHEDULER_FIRE_CHECK_PK"/>
             </column>
             <column name="JOB_NAME" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -506,9 +506,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-61">
-        <createTable tablespace="${tablespaceData}" tableName="SCHEDULER_TRACE">
+        <createTable  tableName="SCHEDULER_TRACE">
             <column defaultValueSequenceNext="SCHEDULER_TRACE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="SCHEDULER_TRACE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SCHEDULER_TRACE_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -611,7 +611,7 @@
 
 
     <changeSet author="liquibase" id="1666281309642-62">
-        <createIndex tablespace="${tablespaceIdx}" indexName="ELENCO_SERVIZI_PSP_IDX1" tableName="ELENCO_SERVIZI_PSP">
+        <createIndex indexName="ELENCO_SERVIZI_PSP_IDX1" tableName="ELENCO_SERVIZI_PSP">
             <column name="TIPO_VERS_COD"/>
             <column name="FK_SNAPSHOT_VERSION"/>
             <column name="CANALE_MOD_PAG"/>
@@ -620,26 +620,26 @@
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-63">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RENDICONTAZIONE_IDX1" tableName="RENDICONTAZIONE">
+        <createIndex indexName="RENDICONTAZIONE_IDX1" tableName="RENDICONTAZIONE">
             <column name="STATO"/>
             <column name="ID_FLUSSO"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-64">
-        <createIndex tablespace="${tablespaceIdx}" indexName="REND_ELENCO_FLUSSI" tableName="RENDICONTAZIONE">
+        <createIndex indexName="REND_ELENCO_FLUSSI" tableName="RENDICONTAZIONE">
             <column name="STATO"/>
             <column name="DATA_ORA_FLUSSO"/>
             <column name="DOMINIO"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-65">
-        <createIndex tablespace="${tablespaceIdx}" indexName="SCHEDULER_FIRE_CHECK_JOB_NAME_EXTRA_KEY_IDX" tableName="SCHEDULER_FIRE_CHECK">
+        <createIndex indexName="SCHEDULER_FIRE_CHECK_JOB_NAME_EXTRA_KEY_IDX" tableName="SCHEDULER_FIRE_CHECK">
             <column name="JOB_NAME"/>
             <column name="EXTRA_KEY"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-66">
-        <createIndex tablespace="${tablespaceIdx}" indexName="SCHEDULER_TRACE_ID_SESSIONE_IDX" tableName="SCHEDULER_TRACE">
+        <createIndex indexName="SCHEDULER_TRACE_ID_SESSIONE_IDX" tableName="SCHEDULER_TRACE">
             <column name="ID_SESSIONE"/>
         </createIndex>
     </changeSet>

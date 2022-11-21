@@ -52,17 +52,6 @@ administrator_login_password=$(az keyvault secret show --name db-administrator-l
 nodo_cfg_user=$(az keyvault secret show --name db-nodo-cfg-login --vault-name "${keyvault_name}" -o tsv --query value)
 nodo_cfg_user_password=$(az keyvault secret show --name db-nodo-cfg-login-password --vault-name "${keyvault_name}" -o tsv --query value)
 
-#export ADMIN_USER="${administrator_login}"
-#export FLYWAY_URL="jdbc:postgresql://${psql_server_private_fqdn}:5432/${DATABASE}?sslmode=require"
-#export FLYWAY_USER="${administrator_login}"
-#export FLYWAY_PASSWORD="${administrator_login_password}"
-#export SERVER_NAME="${psql_server_name}"
-#export FLYWAY_DOCKER_TAG="7.11.1-alpine"
-#export FLYWAY_SCHEMAS="${SCHEMA}"
-#export NODO_CFG_DB_USER="${nodo_cfg_user}"
-#export NODO_CFG_DB_PASS="${nodo_cfg_user_password}"
-#printf "user [%s] pwd [%s] schema [%s]\n" "${NODO_CFG_DB_USER}" "${NODO_CFG_DB_PASS}"
-
 printf "Creating env file"
 cd migrations/${SUBSCRIPTION}/nodo
 
@@ -106,23 +95,11 @@ LQB_CONTEXTS="!dev"
 
 cat dev.env
 
-echo -n "Configure nodo db ..."
-sh postgres-scripts/100-nodo-create.sh
+echo -n "Configuring nodo db ( CREATE SCHEMAs ... ) "
+#sh postgres-scripts/100-nodo-create.sh
 echo "DONE!"
 
 
-echo "Executing docker compose"
-#docker compose -f docker-compose-liquibase.yml up
-
+echo -n "Executing docker compose"
+docker compose -f docker-compose-liquibase.yml up
 echo "Migration done"
-
-#docker run --rm -it --network=host -v "${WORKDIR}/migrations/${SUBSCRIPTION}/${DATABASE}":/flyway/sql \
-#  flyway/flyway:"${FLYWAY_DOCKER_TAG}" \
-#  -url="${FLYWAY_URL}" -user="${FLYWAY_USER}" -password="${FLYWAY_PASSWORD}" \
-#  -validateMigrationNaming=true \
-#  -placeholders.admin="${ADMIN_USER}" \
-#  -placeholders.db_user="${NODO_CFG_DB_USER}" \
-#  -placeholders.db_user_password="${NODO_CFG_DB_PASS}" \
-#  -placeholders.database="${DATABASE}" \
-#  -placeholders.db_schema="${FLYWAY_SCHEMAS}" \
-#  "${COMMAND}" ${other}

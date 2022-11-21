@@ -5,7 +5,7 @@
         <createSequence cacheSize="20000" maxValue="9223372036854775807" sequenceName="RE_SEQ" startValue="1540001"/>
     </changeSet>
     <changeSet author="liquibase" id="1666281263874-1">
-        <createTable tablespace="${tablespaceData}" tableName="RE">
+        <createTable  tableName="RE">
             <column defaultValueSequenceNext="RE_SEQ" name="ID" type="NUMBER"/>
             <column name="DATA_ORA_EVENTO" type="VARCHAR2(23 )">
                 <constraints nullable="false"/>
