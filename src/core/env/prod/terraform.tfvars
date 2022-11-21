@@ -131,7 +131,8 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "93.63.219.234",  # PagoPA on prem VPN DR
     "20.86.161.243",  # CSTAR
     "213.215.138.80", # Softlab L1 Pagamenti VPN
-    "213.215.138.79", # Softlab L1 Pagamenti VPN
+    "82.112.220.178", # Softlab L1 Pagamenti VPN
+    "77.43.17.42",    # Softlab L1 Pagamenti VPN
   ]
 }
 
@@ -540,5 +541,5 @@ dexp_re_db_linkes_service = {
 }
 
 # node forwarder
-node_forwarder_tier = "PremiumV3"
-node_forwarder_size = "P1v3"
+node_forwarder_tier = "Basic" # TODO change to "PremiumV3"
+node_forwarder_size = "B1"    # TODO change to "P1v3"
