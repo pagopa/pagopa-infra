@@ -26,7 +26,8 @@ locals {
   selfcare_fe_hostname = var.env == "prod" ? "selfcare.platform.pagopa.it" : "selfcare.${var.env}.platform.pagopa.it"
 
   # selfcare
-  dns_zone_selfcare = "selfcare"
-  dns_zone_platform = var.env == "prod" ? "platform" : "${var.env}.platform"
-  external_domain   = "pagopa.it"
+  dns_zone_selfcare   = "selfcare"
+  dns_zone_platform   = var.env == "prod" ? "platform" : "${var.env}.platform"
+  external_domain     = "pagopa.it"
+  selfcare_pagopa_cdn = "${var.prefix}${var.env_short}${local.dns_zone_selfcare}sa"
 }

@@ -106,6 +106,10 @@ locals {
       name               = "validbundles",
       partition_key_path = "/idPsp",
     },
+    {
+      name               = "touchpoints",
+      partition_key_path = "/name"
+    }
   ]
 }
 

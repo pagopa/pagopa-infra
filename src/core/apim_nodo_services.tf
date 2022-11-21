@@ -13,7 +13,7 @@ module "apim_nodo_dei_pagamenti_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = var.nodo_pagamenti_subkey_required
   approval_required     = false
 
   policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
@@ -48,7 +48,7 @@ locals {
     display_name          = "Node for PSP WS (NM3)"
     description           = "Web services to support PSP in payment activations, defined in nodeForPsp.wsdl"
     path                  = "nodo/node-for-psp"
-    subscription_required = false
+    subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
 }
@@ -117,7 +117,7 @@ locals {
     display_name          = "Nodo per PSP WS"
     description           = "Web services to support PSP in payment activations, defined in nodoPerPsp.wsdl"
     path                  = "nodo/nodo-per-psp"
-    subscription_required = false
+    subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
 }
@@ -184,7 +184,7 @@ locals {
     display_name          = "Nodo per PSP Richiesta Avvisi WS"
     description           = "Web services to support check of pending payments to PSP, defined in nodoPerPspRichiestaAvvisi.wsdl"
     path                  = "nodo/nodo-per-psp-richiesta-avvisi"
-    subscription_required = false
+    subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
 }
@@ -242,7 +242,7 @@ locals {
     display_name          = "Node for IO WS"
     description           = "Web services to support activeIO, defined in nodeForIO.wsdl"
     path                  = "nodo/node-for-io"
-    subscription_required = false
+    subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
 }
@@ -310,7 +310,7 @@ locals {
     display_name          = "PSP for Node WS (NM3)"
     description           = "Web services to support payment transaction started on any PagoPA client, defined in pspForNode.wsdl"
     path                  = "nodo/psp-for-node"
-    subscription_required = false
+    subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
 }
@@ -368,7 +368,7 @@ locals {
     display_name          = "Nodo per PA WS"
     description           = "Web services to support PA in payment activations, defined in nodoPerPa.wsdl"
     path                  = "nodo/nodo-per-pa"
-    subscription_required = false
+    subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
 }
@@ -425,7 +425,7 @@ locals {
     display_name          = "Nodo per Payment Manager API"
     description           = "API to support Payment Manager"
     path                  = "nodo/nodo-per-pm"
-    subscription_required = false
+    subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
 }
@@ -462,20 +462,17 @@ module "apim_nodo_per_pm_api_v1" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}" : "https://{{ip-nodo}}"
+    # base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
-  api_name            = format("%s-nodo-per-pm-api-v1", local.project)
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "closePayment"
+# resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
+#   api_name            = format("%s-nodo-per-pm-api-v1", local.project)
+#   api_management_name = module.apim.name
+#   resource_group_name = azurerm_resource_group.rg_api.name
+#   operation_id        = "closePayment"
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
-    base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/v1" : "https://{{ip-nodo}}/v1"
-  })
-}
 
 module "apim_nodo_per_pm_api_v2" {
 
@@ -500,193 +497,59 @@ module "apim_nodo_per_pm_api_v2" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
-    base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/v2" : "https://{{ip-nodo}}/v2"
+    # base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
   })
 }
 
-#####################################################################################################
-# The followig section define 2 products to define ALL-IN-ONE path to nodo onCloud NEXI SIT and DEV #
-#####################################################################################################
-
-################################
-## Nodo on CLoud AllInOne SIT ##
-################################
-
-module "apim_nodo_oncloud_product" {
-  count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
-
-  product_id   = "product-nodo-oncloud"
-  display_name = "product-nodo-oncloud"
-  description  = "product-nodo-oncloud"
-
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-
-  published             = true
-  subscription_required = false
-  approval_required     = false
-
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+######################
+## NODO monitoring  ##
+######################
+locals {
+  apim_nodo_monitoring_api = {
+    display_name          = "Nodo monitoring "
+    description           = "Nodo monitoring"
+    path                  = "nodo/monitoring"
+    subscription_required = var.nodo_pagamenti_subkey_required
+    service_url           = null
+  }
 }
 
-resource "azurerm_api_management_api_version_set" "nodo_oncloud_api" {
-  count = var.env_short == "d" ? 1 : 0
+resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
+  count = var.env_short != "p" ? 1 : 0
 
-  name                = format("%s-nodo-oncloud-api", var.env_short)
+  name                = format("%s-nodo-monitoring-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
-  display_name        = "Nodo OnCloud SIT"
+  display_name        = local.apim_nodo_monitoring_api.display_name
   versioning_scheme   = "Segment"
 }
 
-module "apim_nodo_oncloud_api" {
-  count  = var.env_short == "d" ? 1 : 0
+module "apim_nodo_monitoring_api" {
+  count  = var.env_short != "p" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-nodo-oncloud-api", var.env_short)
+  name                  = format("%s-nodo-monitoring-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_oncloud_product[0].product_id]
-  subscription_required = false
+  product_ids           = [module.apim_nodo_dei_pagamenti_product.product_id]
+  subscription_required = local.apim_nodo_monitoring_api.subscription_required
 
-  version_set_id = azurerm_api_management_api_version_set.nodo_oncloud_api[0].id
+  version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api[0].id
   api_version    = "v1"
 
-  description  = "NodeDeiPagamenti (oncloud)"
-  display_name = "NodeDeiPagamenti (oncloud)"
-  path         = "nodo-pagamenti/api"
+  description  = local.apim_nodo_monitoring_api.description
+  display_name = local.apim_nodo_monitoring_api.display_name
+  path         = local.apim_nodo_monitoring_api.path
   protocols    = ["https"]
 
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/nodopagamenti_api/nodoServices/v1/_base_policy.xml")
+  xml_content = file("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml")
 
 }
-
-
-################################
-## Nodo on CLoud AllInOne DEV ##
-################################
-
-module "apim_nodo_oncloud_dev_product" {
-  count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
-
-  product_id   = "product-nodo-oncloud-dev"
-  display_name = "product-nodo-oncloud-dev"
-  description  = "product-nodo-oncloud-dev"
-
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-
-  published             = true
-  subscription_required = false
-  approval_required     = false
-
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
-}
-
-resource "azurerm_api_management_api_version_set" "nodo_oncloud_dev_api" {
-  count               = var.env_short == "d" ? 1 : 0
-  name                = format("%s-nodo-oncloud-dev-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
-  display_name        = "Nodo OnCloud DEV"
-  versioning_scheme   = "Segment"
-}
-
-module "apim_nodo_oncloud_dev_api" {
-  count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = format("%s-nodo-oncloud-dev-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_oncloud_dev_product[0].product_id]
-  subscription_required = false
-
-  version_set_id = azurerm_api_management_api_version_set.nodo_oncloud_dev_api[0].id
-  api_version    = "v1"
-
-  description  = "NodeDeiPagamenti (oncloud) DEV"
-  display_name = "NodeDeiPagamenti (oncloud) DEV"
-  path         = "nodo-pagamenti-dev/api"
-  protocols    = ["https"]
-
-  service_url = null
-
-  content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
-
-  xml_content = file("./api/nodopagamenti_api/nodoServices/v1/_base_policy_dev.xml")
-
-}
-
-####################################
-## Nodo on CLoud AllInOne UAT/PRF ##
-####################################
-
-module "apim_nodo_oncloud_uat_product" {
-  count  = var.env_short == "u" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
-
-  product_id   = "product-nodo-oncloud-uat"
-  display_name = "product-nodo-oncloud-uat"
-  description  = "product-nodo-oncloud-uat"
-
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-
-  published             = true
-  subscription_required = false
-  approval_required     = false
-
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
-}
-
-resource "azurerm_api_management_api_version_set" "nodo_oncloud_uat_api" {
-  count               = var.env_short == "u" ? 1 : 0
-  name                = format("%s-nodo-oncloud-uat-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
-  display_name        = "Nodo OnCloud UAT"
-  versioning_scheme   = "Segment"
-}
-
-module "apim_nodo_oncloud_uat_api" {
-  count  = var.env_short == "u" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = format("%s-nodo-oncloud-uat-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_oncloud_uat_product[0].product_id]
-  subscription_required = false
-
-  version_set_id = azurerm_api_management_api_version_set.nodo_oncloud_uat_api[0].id
-  api_version    = "v1"
-
-  description  = "NodeDeiPagamenti (oncloud) UAT"
-  display_name = "NodeDeiPagamenti (oncloud) UAT"
-  path         = "nodo-pagamenti-uat-prf/api"
-  protocols    = ["https"]
-
-  service_url = null
-
-  content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
-
-  xml_content = file("./api/nodopagamenti_api/nodoServices/v1/_base_policy_uat_prf.xml")
-
-}
-

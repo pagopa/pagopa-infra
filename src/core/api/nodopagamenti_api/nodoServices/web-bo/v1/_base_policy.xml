@@ -31,19 +31,41 @@
       <!-- TODO Enable after ticket resolution -->
       <!-- <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("uat"))">
         <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-          <value>${allowed_ip}</value>
+          <value>${allowed_ip_1}</value>
+          <value>${allowed_ip_2}</value>
+          <value>${allowed_ip_3}</value>
+          <value>${allowed_ip_4}</value>
+          <value>${allowed_ip_5}</value>
         </check-header>
       </when> -->
       <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("prod"))">
         <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-          <value>${allowed_ip}</value>
+          <value>${allowed_ip_1}</value>
+          <value>${allowed_ip_2}</value>
+          <value>${allowed_ip_3}</value>
+          <value>${allowed_ip_4}</value>
+          <value>${allowed_ip_5}</value>
         </check-header>
       </when>
     </choose>
+
     <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-web-bo}}" />
+    <choose>
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
+            <set-backend-service base-url="http://{{aks-lb-nexi}}/web-bo-prf" />
+        </when>
+    </choose>
+
+
     <set-variable name="external-scheme" value="https" />
-    <set-variable name="external-host" value="${dns_pagopa_platform}" />
-    <!-- api.dev.platform.pagopa.it -->
+
+    <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.<ENV>.platform.pagopa.it -->
+    <choose>
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
+            <set-variable name="external-host" value="api.prf.platform.pagopa.it" />
+        </when>
+    </choose>
+
     <set-variable name="external-context-path" value="${apim_base_path}" />
     <!-- /web-bo/api/v1 -->
     <choose>

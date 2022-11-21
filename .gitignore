@@ -36,3 +36,9 @@ __TMP
 .metals/
 __azurite_*
 /.idea
+
+__*.sh
+
+#sops decrypted files
+
+*_decrypted.json

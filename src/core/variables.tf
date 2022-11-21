@@ -63,6 +63,11 @@ variable "mock_psp_service_enabled" {
   description = "Mock PSP service Nexi"
   default     = false
 }
+variable "mock_psp_secondary_service_enabled" {
+  type        = bool
+  description = "Mock Secondary PSP service Nexi"
+  default     = false
+}
 
 # mock_ec
 
@@ -233,7 +238,7 @@ variable "nodo_pagamenti_url" {
   default     = "https://"
 }
 
-variable "ip_nodo" {
+variable "ip_nodo" { # TEMP used only for onPrem shall be replace with "lb_aks"
   type        = string
   description = "Nodo pagamenti ip"
 }
@@ -247,30 +252,34 @@ variable "lb_aks" {
 variable "base_path_nodo_oncloud" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/nodo-sit"
 }
 
-variable "base_path_nodo_oncloud_dev" {
-  type        = string
-  description = "base nodo on cloud (DEV)"
-  default     = "/nodo-dev"
+variable "nodo_pagamenti_subkey_required" {
+  type        = bool
+  description = "Enabled subkeys for nodo dei pagamenti api"
+  default     = false
 }
+
+# 1. PPT LMI
+# 2. SYNC
+# 3. WFESP
+# 4. Fatturazione
+# 5. Web-BO
+# 6. Web-BO History
 
 variable "base_path_nodo_ppt_lmi" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/ppt-lmi-sit/"
 }
 variable "base_path_nodo_ppt_lmi_dev" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/ppt-lmi-dev/"
+  default     = "/ppt-lmi-dev"
 }
 
 variable "base_path_nodo_sync" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/sync-cron-sit/syncWisp"
 }
 
 variable "base_path_nodo_sync_dev" {
@@ -282,19 +291,46 @@ variable "base_path_nodo_sync_dev" {
 variable "base_path_nodo_wfesp" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/wfesp-sit"
+}
+variable "base_path_nodo_wfesp_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/wfesp-dev"
 }
 
 variable "base_path_nodo_fatturazione" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/fatturazione-sit"
+}
+variable "base_path_nodo_fatturazione_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/fatturazione-dev"
 }
 
 variable "base_path_nodo_web_bo" {
   type        = string
   description = "base nodo on cloud"
-  default     = "/web-bo-sit"
+}
+variable "base_path_nodo_web_bo_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/web-bo-dev"
+}
+
+variable "base_path_nodo_web_bo_history" {
+  type        = string
+  description = "base nodo on cloud"
+}
+variable "base_path_nodo_web_bo_history_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/web-bo-history-dev"
+}
+variable "nodo_pagamenti_auth_password" {
+  type        = string
+  description = "Default passowrd used for nodo-auth"
+  default     = "PLACEHOLDER"
 }
 
 
@@ -303,6 +339,13 @@ variable "nodo_pagamenti_test_enabled" {
   type        = bool
   description = "test del nodo dei pagamenti enabled"
   default     = false
+}
+
+# nodo dei pagamenti - auth (nuova connettività)
+variable "nodo_auth_subscription_limit" {
+  type        = number
+  description = "subscriptions limit"
+  default     = 1000
 }
 
 # Network
@@ -1628,4 +1671,37 @@ variable "dexp_re_db_linkes_service" {
   type = object({
     enable = bool
   })
+}
+
+# node forwarder
+# api_config
+
+variable "cidr_subnet_node_forwarder" {
+  type        = list(string)
+  description = "Address prefixes subnet node forwarder"
+  default     = null
+}
+
+variable "node_forwarder_tier" {
+  type        = string
+  description = "Node Forwarder plan tier"
+  default     = "Basic"
+}
+
+variable "node_forwarder_size" {
+  type        = string
+  description = "Node Forwarder plan size"
+  default     = "B1"
+}
+
+variable "node_forwarder_always_on" {
+  type        = bool
+  description = "Node Forwarder always on property"
+  default     = true
+}
+
+variable "node_forwarder_logging_level" {
+  type        = string
+  description = "Logging level of Node Forwarder"
+  default     = "INFO"
 }

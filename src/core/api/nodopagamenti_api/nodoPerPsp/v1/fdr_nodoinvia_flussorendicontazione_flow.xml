@@ -1,7 +1,7 @@
 <!-- https://github.com/Azure/api-management-policy-snippets/blob/master/examples/PUT%20a%20file%20to%20blobStorage%20account.xml -->
 <policies>
     <inbound>
-        <base />    
+        <base />
         <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
         <set-variable name="identificativoPSP" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
@@ -57,7 +57,24 @@
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
 
-        <set-backend-service base-url="{{urlnodo}}" />
+        <set-backend-service base-url="{{urlnodo}}" /> <!-- onprem -->
+        <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
+        <choose>
+
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
+                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
+            </when>
+
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("uat.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("uat.platform.pagopa.it"))">
+                <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
+                <set-backend-service base-url="{{urlnodo}}" /> <!-- onprem -->
+            </when>
+
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("dev.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("dev.platform.pagopa.it"))">
+                <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
+            </when>
+
+        </choose>
     </inbound>
     <backend>
         <base />

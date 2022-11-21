@@ -17,12 +17,20 @@
         <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
           <value>${allowed_ip_1}</value>
           <value>${allowed_ip_2}</value>
+          <value>${allowed_ip_3}</value>
+          <value>${allowed_ip_4}</value>
+          <value>${allowed_ip_5}</value>
+          <value>${allowed_ip_6}</value>
         </check-header>
       </when> -->
       <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("prod"))">
         <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
           <value>${allowed_ip_1}</value>
           <value>${allowed_ip_2}</value>
+          <value>${allowed_ip_3}</value>
+          <value>${allowed_ip_4}</value>
+          <value>${allowed_ip_5}</value>
+          <value>${allowed_ip_6}</value>
         </check-header>
       </when>
     </choose>
@@ -40,6 +48,14 @@
     </inbound>
     <outbound>
       <base />
+      <choose>
+        <when condition="@(((string)context.Response.Headers.GetValueOrDefault("location","")).Contains("{{pm-host}}"))">
+          <set-variable name="locationIn" value=" @(Regex.Replace((string)context.Response.Headers.GetValueOrDefault("location",""), "{{pm-host}}", "https://{{wisp2-gov-it}}"))" />
+          <set-header name="location" exists-action="override">
+              <value>@(context.Variables.GetValueOrDefault<string>("locationIn"))</value>
+          </set-header>
+        </when>
+      </choose>
     </outbound>
     <backend>
       <base />
