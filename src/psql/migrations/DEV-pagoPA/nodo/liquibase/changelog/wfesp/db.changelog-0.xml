@@ -11,9 +11,9 @@
         <createSequence cacheSize="20000" maxValue="9223372036854775807" sequenceName="RPT_SEQ" startValue="1"/>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-4">
-        <createTable tablespace="${tablespaceData}" tableName="CARRELLO_RPT">
+        <createTable  tableName="CARRELLO_RPT">
             <column defaultValueSequenceNext="CARRELLO_RPT_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="CARRELLO_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="CARRELLO_RPT_PK"/>
             </column>
             <column name="ID_CARRELLO" type="VARCHAR2(35 )"/>
             <column name="CODICE_CARRELLO" type="VARCHAR2(128 )"/>
@@ -57,9 +57,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-5">
-        <createTable tablespace="${tablespaceData}" tableName="REDIRECT_MY_BANK">
+        <createTable  tableName="REDIRECT_MY_BANK">
             <column defaultValueSequenceNext="REDIRECT_MY_BANK_SEQ"  name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="REDIRECT_MY_BANK_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="REDIRECT_MY_BANK_PK"/>
             </column>
             <column name="ID_DOMINIO" type="VARCHAR2(35 )"/>
             <column name="IUV" type="VARCHAR2(35 )"/>
@@ -100,9 +100,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-6">
-        <createTable tablespace="${tablespaceData}" tableName="RPT">
+        <createTable  tableName="RPT">
             <column defaultValueSequenceNext="RPT_SEQ"  name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RPT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_PK"/>
             </column>
             <column name="ID_DOMINIO" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -154,7 +154,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-7">
-        <createIndex tablespace="${tablespaceIdx}" indexName="NODO_ONLINE_CARRELLO_IDX1" tableName="CARRELLO_RPT" unique="true">
+        <createIndex indexName="NODO_ONLINE_CARRELLO_IDX1" tableName="CARRELLO_RPT" unique="true">
             <column name="PARAMETRI_PAGAMENTO_IMMEDIATO"/>
             <column name="PSP"/>
             <column name="CODICE_CARRELLO"/>
@@ -164,7 +164,7 @@
         <addUniqueConstraint columnNames="PARAMETRI_PAGAMENTO_IMMEDIATO, PSP, CODICE_CARRELLO" constraintName="NODO_ONLINE_CARRELLO_IDX1_UNI" tableName="CARRELLO_RPT"/>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-9">
-        <createIndex tablespace="${tablespaceIdx}" indexName="NODO_ONLINE_RPT_IDX1" tableName="RPT" unique="true">
+        <createIndex indexName="NODO_ONLINE_RPT_IDX1" tableName="RPT" unique="true">
             <column name="PARAMETRI_PAGAMENTO_IMMEDIATO"/>
             <column name="PSP"/>
             <column name="CODICE_CARRELLO"/>
@@ -174,39 +174,39 @@
         <addUniqueConstraint columnNames="PARAMETRI_PAGAMENTO_IMMEDIATO, PSP, CODICE_CARRELLO" constraintName="NODO_ONLINE_RPT_IDX1_UNI" tableName="RPT"/>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-11">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CARRELLO_RPT_IDX01" tableName="CARRELLO_RPT">
+        <createIndex indexName="CARRELLO_RPT_IDX01" tableName="CARRELLO_RPT">
             <column name="ID_SESSIONE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-12">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CARRELLO_RPT_IDX02" tableName="CARRELLO_RPT">
+        <createIndex indexName="CARRELLO_RPT_IDX02" tableName="CARRELLO_RPT">
             <column name="PARAMETRI_PAGAMENTO_IMMEDIATO"/>
             <column name="PSP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-13">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CARRELLO_RPT_IDX03" tableName="CARRELLO_RPT">
+        <createIndex indexName="CARRELLO_RPT_IDX03" tableName="CARRELLO_RPT">
             <column name="CODICE_CARRELLO"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-14">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CARRELLO_RPT_IDX04" tableName="CARRELLO_RPT">
+        <createIndex indexName="CARRELLO_RPT_IDX04" tableName="CARRELLO_RPT">
             <column name="ID_CARRELLO"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-15">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_IDX01" tableName="RPT">
+        <createIndex indexName="RPT_IDX01" tableName="RPT">
             <column name="ID_SESSIONE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-16">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_IDX02" tableName="RPT">
+        <createIndex indexName="RPT_IDX02" tableName="RPT">
             <column name="PARAMETRI_PAGAMENTO_IMMEDIATO"/>
             <column name="PSP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-17">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_IDX03" tableName="RPT">
+        <createIndex indexName="RPT_IDX03" tableName="RPT">
             <column name="IUV"/>
             <column name="CCP"/>
         </createIndex>

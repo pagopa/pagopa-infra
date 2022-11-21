@@ -158,9 +158,9 @@
         <createSequence cacheSize="20000" maxValue="9223372036854775807" sequenceName="VERIFICA_BOLLETTINO_SEQ" startValue="1020001"/>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-53">
-        <createTable tablespace="${tablespaceData}" tableName="ANAGRAFICA_NOTIFICA_RT">
+        <createTable  tableName="ANAGRAFICA_NOTIFICA_RT">
             <column defaultValueSequenceNext="ANAGRAFICA_NOTIFICA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="ANAGRAFICA_NOTIFICA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ANAGRAFICA_NOTIFICA_RT_PK"/>
             </column>
             <column name="HASH_CF" type="VARCHAR2(100 BYTE)">
                 <constraints nullable="false"/>
@@ -168,9 +168,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-54">
-        <createTable tablespace="${tablespaceData}" tableName="CARRELLO">
+        <createTable  tableName="CARRELLO">
             <column defaultValueSequenceNext="CARRELLO_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="CARRELLO_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="CARRELLO_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -211,9 +211,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-55">
-        <createTable tablespace="${tablespaceData}" tableName="CD_INFO_PAGAMENTO">
+        <createTable  tableName="CD_INFO_PAGAMENTO">
             <column defaultValueSequenceNext="CD_INFO_PAGAMENTO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="CD_INFO_PAGAMENTO_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="CD_INFO_PAGAMENTO_PK"/>
             </column>
             <column name="IDENT_DOMINIO" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -234,9 +234,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-56">
-        <createTable tablespace="${tablespaceData}" tableName="IDEMPOTENCY_CACHE">
+        <createTable  tableName="IDEMPOTENCY_CACHE">
             <column defaultValueSequenceNext="IDEMPOTENCY_CACHE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="IDEMPOTENCY_CACHE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="IDEMPOTENCY_CACHE_PK"/>
             </column>
             <column name="PRIMITIVA" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -266,9 +266,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-57">
-        <createTable tablespace="${tablespaceData}" tableName="MESSAGGI">
+        <createTable  tableName="MESSAGGI">
             <column defaultValueSequenceNext="MESSAGGI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="MESSAGGI_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="MESSAGGI_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -284,9 +284,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-58">
-        <createTable tablespace="${tablespaceData}" tableName="NEXT_RETRY_NOTIFICA_RT">
+        <createTable  tableName="NEXT_RETRY_NOTIFICA_RT">
             <column defaultValueSequenceNext="NEXT_RETRY_NOTIFICA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="NEXT_RETRY_NOTIFICA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="NEXT_RETRY_NOTIFICA_RT_PK"/>
             </column>
             <column name="NEXT_RETRY" type="TIMESTAMP(6)">
                 <constraints nullable="false"/>
@@ -294,7 +294,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-59">
-        <createTable tablespace="${tablespaceData}" tableName="NMU_CANCEL_UTILITY">
+        <createTable  tableName="NMU_CANCEL_UTILITY">
             <column name="TRANSACTION_ID" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
             </column>
@@ -316,9 +316,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-60">
-        <createTable tablespace="${tablespaceData}" tableName="NOTIFICA_RT">
+        <createTable  tableName="NOTIFICA_RT">
             <column defaultValueSequenceNext="NOTIFICA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="NOTIFICA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="NOTIFICA_RT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -363,9 +363,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-61">
-        <createTable tablespace="${tablespaceData}" tableName="PM_METADATA">
+        <createTable  tableName="PM_METADATA">
             <column defaultValueSequenceNext="SQ_PM_METADATA_ID" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_PM_METADATA"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PM_METADATA"/>
             </column>
             <column name="TRANSACTION_ID" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -391,9 +391,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-62">
-        <createTable tablespace="${tablespaceData}" tableName="PM_SESSION_DATA">
+        <createTable  tableName="PM_SESSION_DATA">
             <column defaultValueSequenceNext="PM_SESSION_DATA_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RPT_PM_DATA_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_PM_DATA_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -427,9 +427,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-63">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_ACTIVATE">
+        <createTable  tableName="POSITION_ACTIVATE">
             <column defaultValueSequenceNext="POSITION_ACTIVATE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_ACTIVATE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_ACTIVATE_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -454,9 +454,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-64">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_PAYMENT">
+        <createTable  tableName="POSITION_PAYMENT">
             <column defaultValueSequenceNext="POSITION_PAYMENT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_PAYMENT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_PAYMENT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -502,9 +502,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-65">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_PAYMENT_PLAN">
+        <createTable  tableName="POSITION_PAYMENT_PLAN">
             <column defaultValueSequenceNext="POSITION_PAYMENT_PLAN_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PPP_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PPP_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -522,9 +522,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-66">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_PAYMENT_STATUS">
+        <createTable  tableName="POSITION_PAYMENT_STATUS">
             <column defaultValueSequenceNext="POSITION_PAYMENT_STATUS_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_PAYMENT_STATUS_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_PAYMENT_STATUS_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -536,9 +536,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-67">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
+        <createTable  tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
             <column defaultValueSequenceNext="POSITION_PAYMENT_STATUS_SNAPSHOT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_PAYMENT_STATUS_SNAPSHOT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_PAYMENT_STATUS_SNAPSHOT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -553,9 +553,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-68">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_RECEIPT">
+        <createTable  tableName="POSITION_RECEIPT">
             <column defaultValueSequenceNext="POSITION_RECEIPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_RECEIPT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RECEIPT_PK"/>
             </column>
             <column name="RECEIPT_ID" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -593,9 +593,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-69">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_RECEIPT_RECIPIENT">
+        <createTable  tableName="POSITION_RECEIPT_RECIPIENT">
             <column defaultValueSequenceNext="POSITION_RECEIPT_RECIPIENT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_RECEIPT_RECIPIENT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RECEIPT_RECIPIENT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -616,9 +616,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-70">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_RECEIPT_RECIPIENT_STATUS">
+        <createTable  tableName="POSITION_RECEIPT_RECIPIENT_STATUS">
             <column defaultValueSequenceNext="POSITION_RECEIPT_RECIPIENT_STATUS_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_RECEIPT_RECIPIENT_STATUS_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RECEIPT_RECIPIENT_STATUS_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -636,7 +636,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-71">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_RECEIPT_TRANSFER">
+        <createTable  tableName="POSITION_RECEIPT_TRANSFER">
             <column name="FK_POSITION_RECEIPT" type="NUMBER">
                 <constraints nullable="false"/>
             </column>
@@ -650,9 +650,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-72">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_RECEIPT_XML">
+        <createTable  tableName="POSITION_RECEIPT_XML">
             <column defaultValueSequenceNext="POSITION_RECEIPT_XML_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_RECEIPT_XML_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RECEIPT_XML_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -672,9 +672,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-73">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_RETRY_PA_SEND_RT">
+        <createTable  tableName="POSITION_RETRY_PA_SEND_RT">
             <column defaultValueSequenceNext="POSITION_RETRY_PA_SEND_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_RETRY_PA_SEND_RT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RETRY_PA_SEND_RT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -696,9 +696,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-74">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_RETRY_PSP_SEND_PAYMENT">
+        <createTable  tableName="POSITION_RETRY_PSP_SEND_PAYMENT">
             <column defaultValueSequenceNext="POSITION_RETRY_PSP_SEND_PAYMENT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_RETRY_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RETRY_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="IUV" type="VARCHAR2(50)"/>
@@ -715,9 +715,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-75">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_RETRY_SENDPAYMENTRESULT">
+        <createTable  tableName="POSITION_RETRY_SENDPAYMENTRESULT">
             <column defaultValueSequenceNext="SQ_POSITION_RETRY_SENDPAYMENTRESULT_ID" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_POSITION_RETRY_SENDPAYMENTRESULT"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_POSITION_RETRY_SENDPAYMENTRESULT"/>
             </column>
             <column name="PAYMENT_TOKEN" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
@@ -775,9 +775,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-76">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_SERVICE">
+        <createTable  tableName="POSITION_SERVICE">
             <column defaultValueSequenceNext="POSITION_SERVICE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PS_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PS_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -792,9 +792,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-77">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_STATUS">
+        <createTable  tableName="POSITION_STATUS">
             <column defaultValueSequenceNext="POSITION_STATUS_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_STATUS_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_STATUS_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -804,9 +804,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-78">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_STATUS_SNAPSHOT">
+        <createTable  tableName="POSITION_STATUS_SNAPSHOT">
             <column defaultValueSequenceNext="POSITION_STATUS_SNAPSHOT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_STATUS_SNAPSHOT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_STATUS_SNAPSHOT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -820,9 +820,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-79">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_SUBJECT">
+        <createTable  tableName="POSITION_SUBJECT">
             <column defaultValueSequenceNext="POSITION_SUBJECT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_SUBJECT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_SUBJECT_PK"/>
             </column>
             <column name="SUBJECT_TYPE" type="VARCHAR2(50)"/>
             <column name="ENTITY_UNIQUE_IDENTIFIER_TYPE" type="VARCHAR2(1)"/>
@@ -846,9 +846,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-80">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_TRANSFER">
+        <createTable  tableName="POSITION_TRANSFER">
             <column defaultValueSequenceNext="POSITION_TRANSFER_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="POSITION_TRANSFER_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_TRANSFER_PK"/>
             </column>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
             <column name="CREDITOR_REFERENCE_ID" type="VARCHAR2(50)"/>
@@ -873,9 +873,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-81">
-        <createTable tablespace="${tablespaceData}" tableName="POSITION_TRANSFER_MBD">
+        <createTable  tableName="POSITION_TRANSFER_MBD">
             <column defaultValueSequenceNext="SQ_POSITION_TRANSFER_MBD_ID" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_POSITION_TRANSFER_MBD"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_POSITION_TRANSFER_MBD"/>
             </column>
             <column name="FK_POSITION_TRANSFER" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -913,9 +913,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-82">
-        <createTable tablespace="${tablespaceData}" tableName="REGISTRO_CHIAMATE_NOTIFICA_RT">
+        <createTable  tableName="REGISTRO_CHIAMATE_NOTIFICA_RT">
             <column defaultValueSequenceNext="REGISTRO_CHIAMATE_NOTIFICA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="REGISTRO_CHIAMATE_NOTIFICA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="REGISTRO_CHIAMATE_NOTIFICA_RT_PK"/>
             </column>
             <column name="DATA" type="TIMESTAMP(6)">
                 <constraints nullable="false"/>
@@ -926,9 +926,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-83">
-        <createTable tablespace="${tablespaceData}" tableName="RETRY_PA_ATTIVA_RPT">
+        <createTable  tableName="RETRY_PA_ATTIVA_RPT">
             <column defaultValueSequenceNext="RETRY_PA_ATTIVA_RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RETRY_PA_ATTIVA_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_PA_ATTIVA_RPT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -950,9 +950,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-84">
-        <createTable tablespace="${tablespaceData}" tableName="RETRY_PA_INVIA_RT">
+        <createTable  tableName="RETRY_PA_INVIA_RT">
             <column defaultValueSequenceNext="RETRY_PA_INVIA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RETRY_PA_INVIA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_PA_INVIA_RT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -998,9 +998,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-85">
-        <createTable tablespace="${tablespaceData}" tableName="RETRY_PSP_ACK">
+        <createTable  tableName="RETRY_PSP_ACK">
             <column defaultValueSequenceNext="RETRY_PSP_ACK_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RETRY_PSP_ACK_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_PSP_ACK_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1041,9 +1041,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-86">
-        <createTable tablespace="${tablespaceData}" tableName="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT">
+        <createTable  tableName="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT">
             <column defaultValueSequenceNext="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1086,9 +1086,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-87">
-        <createTable tablespace="${tablespaceData}" tableName="RETRY_RPT">
+        <createTable  tableName="RETRY_RPT">
             <column defaultValueSequenceNext="RETRY_RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RETRY_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_RPT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1126,9 +1126,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-88">
-        <createTable tablespace="${tablespaceData}" tableName="RETRY_RPT_NOTIFICA_CANCELLAZIONE">
+        <createTable  tableName="RETRY_RPT_NOTIFICA_CANCELLAZIONE">
             <column defaultValueSequenceNext="RETRY_RPT_NOTIFICA_CANCELLAZIONE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RETRY_RPT_NOTIFICA_CANCELLAZIONE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_RPT_NOTIFICA_CANCELLAZIONE_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1171,9 +1171,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-89">
-        <createTable tablespace="${tablespaceData}" tableName="REVOCA_ESITI">
+        <createTable  tableName="REVOCA_ESITI">
             <column defaultValueSequenceNext="REVOCA_ESITI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="REVOCA_ESITI_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="REVOCA_ESITI_PK"/>
             </column>
             <column name="ID_MESSAGGIO_ESITO" type="VARCHAR2(255)"/>
             <column name="DATA_ORA_MESSAGGIO_ESITO" type="TIMESTAMP(6) WITH TIME ZONE"/>
@@ -1192,9 +1192,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-90">
-        <createTable tablespace="${tablespaceData}" tableName="REVOCA_RICHIESTE">
+        <createTable  tableName="REVOCA_RICHIESTE">
             <column defaultValueSequenceNext="REVOCA_RICHIESTE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="REVOCA_RICHIESTE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="REVOCA_RICHIESTE_PK"/>
             </column>
             <column name="ID_MESSAGGIO_REVOCA" type="VARCHAR2(255)"/>
             <column name="DATA_ORA_REVOCA" type="TIMESTAMP(6) WITH TIME ZONE"/>
@@ -1219,9 +1219,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-91">
-        <createTable tablespace="${tablespaceData}" tableName="RPT">
+        <createTable  tableName="RPT">
             <column defaultValueSequenceNext="RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RPT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1292,7 +1292,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-92">
-        <createTable tablespace="${tablespaceData}" tableName="RPT_ACTIVATIONS">
+        <createTable  tableName="RPT_ACTIVATIONS">
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50 BYTE)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50 BYTE)"/>
             <column name="CREDITOR_REFERENCE_ID" type="VARCHAR2(50 BYTE)"/>
@@ -1307,12 +1307,12 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-93">
-        <createTable tablespace="${tablespaceData}" tableName="RPT_SOGGETTI">
+        <createTable  tableName="RPT_SOGGETTI">
             <column name="RPT_ID" type="NUMBER(19, 0)">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RPT_SOGGETTI_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_SOGGETTI_PK"/>
             </column>
             <column name="TIPO_SOGGETTO" type="CHAR(1)">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RPT_SOGGETTI_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_SOGGETTI_PK"/>
             </column>
             <column name="TIPO_IDENTIFICATIVO_UNIVOCO" type="CHAR(1)">
                 <constraints nullable="false"/>
@@ -1341,9 +1341,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-94">
-        <createTable tablespace="${tablespaceData}" tableName="RPT_VERSAMENTI">
+        <createTable  tableName="RPT_VERSAMENTI">
             <column defaultValueSequenceNext="RPT_VERSAMENTI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RPT_VERSAMENTI_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_VERSAMENTI_PK"/>
             </column>
             <column name="PROGRESSIVO" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -1378,9 +1378,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-95">
-        <createTable tablespace="${tablespaceData}" tableName="RPT_VERSAMENTI_BOLLO">
+        <createTable  tableName="RPT_VERSAMENTI_BOLLO">
             <column defaultValueSequenceNext="RPT_VERSAMENTI_BOLLO_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RPT_VERSAMENTI_BOLLO_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_VERSAMENTI_BOLLO_PK"/>
             </column>
             <column name="PROGRESSIVO" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -1406,9 +1406,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-96">
-        <createTable tablespace="${tablespaceData}" tableName="RPT_XML">
+        <createTable  tableName="RPT_XML">
             <column defaultValueSequenceNext="RPT_XML_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RPT_XML_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_XML_PK"/>
             </column>
             <column name="CCP" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1435,9 +1435,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-97">
-        <createTable tablespace="${tablespaceData}" tableName="RT">
+        <createTable  tableName="RT">
             <column defaultValueSequenceNext="RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1486,9 +1486,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-98">
-        <createTable tablespace="${tablespaceData}" tableName="RT_VERSAMENTI">
+        <createTable  tableName="RT_VERSAMENTI">
             <column defaultValueSequenceNext="RT_VERSAMENTI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RT_VERSAMENTI_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RT_VERSAMENTI_PK"/>
             </column>
             <column name="PROGRESSIVO" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -1518,9 +1518,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-99">
-        <createTable tablespace="${tablespaceData}" tableName="RT_VERSAMENTI_BOLLO">
+        <createTable  tableName="RT_VERSAMENTI_BOLLO">
             <column defaultValueSequenceNext="RT_VERSAMENTI_BOLLO_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RT_VERSAMENTI_BOLLO_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RT_VERSAMENTI_BOLLO_PK"/>
             </column>
             <column name="PROGRESSIVO" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -1559,9 +1559,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-100">
-        <createTable tablespace="${tablespaceData}" tableName="RT_XML">
+        <createTable  tableName="RT_XML">
             <column defaultValueSequenceNext="RT_XML_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="RT_XML_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="RT_XML_PK"/>
             </column>
             <column name="CCP" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1589,7 +1589,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-101">
-        <createTable tablespace="${tablespaceData}" tableName="STATI_CARRELLO">
+        <createTable  tableName="STATI_CARRELLO">
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
             </column>
@@ -1607,17 +1607,17 @@
             </column>
             <column name="ID_SESSIONE_ORIGINALE" type="VARCHAR2(50)"/>
             <column autoIncrement="true" defaultOnNull="true" generationType="BY DEFAULT" name="ID" type="bigint">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="STATI_CARRELLO_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="STATI_CARRELLO_PK"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-102">
-        <createTable tablespace="${tablespaceData}" tableName="STATI_CARRELLO_SNAPSHOT">
+        <createTable  tableName="STATI_CARRELLO_SNAPSHOT">
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="ID_CARRELLO" type="VARCHAR2(35)">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="PK_CARRELLO"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CARRELLO"/>
             </column>
             <column name="STATO" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1637,9 +1637,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-103">
-        <createTable tablespace="${tablespaceData}" tableName="STATI_RPT">
+        <createTable  tableName="STATI_RPT">
             <column defaultValueSequenceNext="STATI_RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="STATI_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="STATI_RPT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1666,15 +1666,15 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-104">
-        <createTable tablespace="${tablespaceData}" tableName="STATI_RPT_SNAPSHOT">
+        <createTable  tableName="STATI_RPT_SNAPSHOT">
             <column name="ID_DOMINIO" type="VARCHAR2(35)">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="STATI_RPT_SNAPSHOT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="STATI_RPT_SNAPSHOT_PK"/>
             </column>
             <column name="IUV" type="VARCHAR2(35)">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="STATI_RPT_SNAPSHOT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="STATI_RPT_SNAPSHOT_PK"/>
             </column>
             <column name="CCP" type="VARCHAR2(35)">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="STATI_RPT_SNAPSHOT_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="STATI_RPT_SNAPSHOT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1698,9 +1698,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-105">
-        <createTable tablespace="${tablespaceData}" tableName="STORNO_ESITI">
+        <createTable  tableName="STORNO_ESITI">
             <column defaultValueSequenceNext="STORNO_ESITI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="STORNO_ESITI_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="STORNO_ESITI_PK"/>
             </column>
             <column name="ID_MESSAGGIO_ESITO" type="VARCHAR2(255)"/>
             <column name="DATA_ORA_MESSAGGIO_ESITO" type="TIMESTAMP(6) WITH TIME ZONE"/>
@@ -1719,9 +1719,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-106">
-        <createTable tablespace="${tablespaceData}" tableName="STORNO_RICHIESTE">
+        <createTable  tableName="STORNO_RICHIESTE">
             <column defaultValueSequenceNext="STORNO_RICHIESTE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="STORNO_RICHIESTE_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="STORNO_RICHIESTE_PK"/>
             </column>
             <column name="ID_MESSAGGIO_REVOCA" type="VARCHAR2(255)"/>
             <column name="DATA_ORA_REVOCA" type="TIMESTAMP(6) WITH TIME ZONE"/>
@@ -1743,9 +1743,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-107">
-        <createTable tablespace="${tablespaceData}" tableName="TOKEN_UTILITY">
+        <createTable  tableName="TOKEN_UTILITY">
             <column defaultValueSequenceNext="TOKEN_UTILITY_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="TOKEN_UTILITY_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="TOKEN_UTILITY_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50 BYTE)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50 BYTE)"/>
@@ -1763,7 +1763,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-108">
-        <createTable tablespace="${tablespaceData}" tableName="T_SOGLIE_MON">
+        <createTable  tableName="T_SOGLIE_MON">
             <column name="GIORNO" type="VARCHAR2(5 BYTE)"/>
             <column name="ORA" type="NUMBER"/>
             <column name="MONITOR" type="VARCHAR2(100 BYTE)"/>
@@ -1772,9 +1772,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-109">
-        <createTable tablespace="${tablespaceData}" tableName="VERIFICA_BOLLETTINO">
+        <createTable  tableName="VERIFICA_BOLLETTINO">
             <column defaultValueSequenceNext="VERIFICA_BOLLETTINO_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyTablespace="${tablespaceIdx}" primaryKeyName="VB_PK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="VB_PK"/>
             </column>
             <column name="CCPOST" type="VARCHAR2(12)">
                 <constraints nullable="false"/>
@@ -1796,7 +1796,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-110">
-        <createIndex tablespace="${tablespaceIdx}" indexName="ANAGRAFICA_NOTIFICA_RT_HASH_CF" tableName="ANAGRAFICA_NOTIFICA_RT" unique="true">
+        <createIndex indexName="ANAGRAFICA_NOTIFICA_RT_HASH_CF" tableName="ANAGRAFICA_NOTIFICA_RT" unique="true">
             <column name="HASH_CF"/>
         </createIndex>
     </changeSet>
@@ -1804,7 +1804,7 @@
 <!--        <addUniqueConstraint columnNames="HASH_CF" constraintName="ANAGRAFICA_NOTIFICA_RT_HASH_CF" tableName="ANAGRAFICA_NOTIFICA_RT"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666267273412-112">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_SERVICE_PA_FISCAL_CODE_IDX" tableName="POSITION_SERVICE" unique="true">
+        <createIndex indexName="POSITION_SERVICE_PA_FISCAL_CODE_IDX" tableName="POSITION_SERVICE" unique="true">
             <column name="PA_FISCAL_CODE"/>
             <column name="NOTICE_ID"/>
         </createIndex>
@@ -1813,7 +1813,7 @@
 <!--        <addUniqueConstraint columnNames="PA_FISCAL_CODE, NOTICE_ID" constraintName="POSITION_SERVICE_PA_FISCAL_CODE_IDX" tableName="POSITION_SERVICE" validate="false"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666267273412-114">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RETRY_PA_INVIA_RT_UN" tableName="RETRY_PA_INVIA_RT" unique="true">
+        <createIndex indexName="RETRY_PA_INVIA_RT_UN" tableName="RETRY_PA_INVIA_RT" unique="true">
             <column name="IUV"/>
             <column name="CCP"/>
             <column name="ID_DOMINIO"/>
@@ -1823,7 +1823,7 @@
 <!--        <addUniqueConstraint columnNames="IUV, CCP, ID_DOMINIO" constraintName="RETRY_PA_INVIA_RT_UN" tableName="RETRY_PA_INVIA_RT"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666267273412-116">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_UNIQUE" tableName="RPT" unique="true">
+        <createIndex indexName="RPT_UNIQUE" tableName="RPT" unique="true">
             <column name="IDENT_DOMINIO"/>
             <column name="IUV"/>
             <column name="CCP"/>
@@ -1833,7 +1833,7 @@
 <!--        <addUniqueConstraint columnNames="IDENT_DOMINIO, IUV, CCP" constraintName="RPT_UNIQUE" tableName="RPT"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666267273412-118">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RT_UNIQUE" tableName="RT" unique="true">
+        <createIndex indexName="RT_UNIQUE" tableName="RT" unique="true">
             <column name="IDENT_DOMINIO"/>
             <column name="IUV"/>
             <column name="CCP"/>
@@ -1843,7 +1843,7 @@
 <!--        <addUniqueConstraint columnNames="IDENT_DOMINIO, IUV, CCP" constraintName="RT_UNIQUE" tableName="RT"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666267273412-120">
-        <createIndex tablespace="${tablespaceIdx}" indexName="VERIFICA_BOLLETTINO_UNIQUE" tableName="VERIFICA_BOLLETTINO" unique="true">
+        <createIndex indexName="VERIFICA_BOLLETTINO_UNIQUE" tableName="VERIFICA_BOLLETTINO" unique="true">
             <column name="NOTICE_ID"/>
             <column name="PA_FISCAL_CODE"/>
         </createIndex>
@@ -1852,19 +1852,19 @@
 <!--        <addUniqueConstraint columnNames="NOTICE_ID, PA_FISCAL_CODE" constraintName="VER_BOLL_UNIQUE_PA_NN" tableName="VERIFICA_BOLLETTINO"/>-->
 <!--    </changeSet>-->
     <changeSet author="liquibase" id="1666267273412-122">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CARRELLO_ID_CARRELLO_IDX" tableName="CARRELLO">
+        <createIndex indexName="CARRELLO_ID_CARRELLO_IDX" tableName="CARRELLO">
             <column name="ID_CARRELLO"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-123">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CD_INFO_PAGAMENTO_IDX" tableName="CD_INFO_PAGAMENTO">
+        <createIndex indexName="CD_INFO_PAGAMENTO_IDX" tableName="CD_INFO_PAGAMENTO">
             <column name="IDENT_DOMINIO"/>
             <column name="IUV"/>
             <column name="CCP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-124">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CFFJ72A4012C5_IDX" tableName="RPT">
+        <createIndex indexName="CFFJ72A4012C5_IDX" tableName="RPT">
             <column name="IUV"/>
             <column name="IDENT_DOMINIO"/>
             <column name="CCP"/>
@@ -1872,345 +1872,345 @@
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-125">
-        <createIndex tablespace="${tablespaceIdx}" indexName="CRED_FISCAL_CODE_IDX" tableName="POSITION_PAYMENT_PLAN">
+        <createIndex indexName="CRED_FISCAL_CODE_IDX" tableName="POSITION_PAYMENT_PLAN">
             <column name="CREDITOR_REFERENCE_ID"/>
             <column name="PA_FISCAL_CODE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-126">
-        <createIndex tablespace="${tablespaceIdx}" indexName="DSF6XW4TWZYR2_IDX" tableName="RPT">
+        <createIndex indexName="DSF6XW4TWZYR2_IDX" tableName="RPT">
             <column name="FK_CARRELLO"/>
             <column name="WISP_2"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-127">
-        <createIndex tablespace="${tablespaceIdx}" indexName="IDEMPOTENCY_CACHE_HASH_IDX" tableName="IDEMPOTENCY_CACHE">
+        <createIndex indexName="IDEMPOTENCY_CACHE_HASH_IDX" tableName="IDEMPOTENCY_CACHE">
             <column name="HASH_REQUEST"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-128">
-        <createIndex tablespace="${tablespaceIdx}" indexName="IDEMPOTENCY_CACHE_KEY_PSP_ID" tableName="IDEMPOTENCY_CACHE">
+        <createIndex indexName="IDEMPOTENCY_CACHE_KEY_PSP_ID" tableName="IDEMPOTENCY_CACHE">
             <column name="IDEMPOTENCY_KEY"/>
             <column name="PSP_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-129">
-        <createIndex tablespace="${tablespaceIdx}" indexName="IDEMPOTENCY_CACHE_PSP_NOTICE_IDX" tableName="IDEMPOTENCY_CACHE">
+        <createIndex indexName="IDEMPOTENCY_CACHE_PSP_NOTICE_IDX" tableName="IDEMPOTENCY_CACHE">
             <column name="PRIMITIVA"/>
             <column name="PSP_ID"/>
             <column name="NOTICE_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-130">
-        <createIndex tablespace="${tablespaceIdx}" indexName="IDEMPOTENCY_CACHE_PSP_TOKEN_IDX" tableName="IDEMPOTENCY_CACHE">
+        <createIndex indexName="IDEMPOTENCY_CACHE_PSP_TOKEN_IDX" tableName="IDEMPOTENCY_CACHE">
             <column name="PRIMITIVA"/>
             <column name="PSP_ID"/>
             <column name="TOKEN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-131">
-        <createIndex tablespace="${tablespaceIdx}" indexName="I_06B1NAX785KUU_IDX" tableName="POSITION_PAYMENT_PLAN">
+        <createIndex indexName="I_06B1NAX785KUU_IDX" tableName="POSITION_PAYMENT_PLAN">
             <column name="CREDITOR_REFERENCE_ID"/>
             <column name="NOTICE_ID"/>
             <column name="PA_FISCAL_CODE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-132">
-        <createIndex tablespace="${tablespaceIdx}" indexName="I_FK_PP_PS" tableName="POSITION_PAYMENT">
+        <createIndex indexName="I_FK_PP_PS" tableName="POSITION_PAYMENT">
             <column name="FK_PAYMENT_PLAN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-133">
-        <createIndex tablespace="${tablespaceIdx}" indexName="I_FK_PP_RPT" tableName="POSITION_PAYMENT">
+        <createIndex indexName="I_FK_PP_RPT" tableName="POSITION_PAYMENT">
             <column name="RPT_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-134">
-        <createIndex tablespace="${tablespaceIdx}" indexName="I_FK_RPT_1" tableName="TOKEN_UTILITY">
+        <createIndex indexName="I_FK_RPT_1" tableName="TOKEN_UTILITY">
             <column name="FK_RPT1"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-135">
-        <createIndex tablespace="${tablespaceIdx}" indexName="I_FK_RPT_2" tableName="TOKEN_UTILITY">
+        <createIndex indexName="I_FK_RPT_2" tableName="TOKEN_UTILITY">
             <column name="FK_RPT2"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-136">
-        <createIndex tablespace="${tablespaceIdx}" indexName="MESSAGGI_ID_CARRELLO_IDX" tableName="MESSAGGI">
+        <createIndex indexName="MESSAGGI_ID_CARRELLO_IDX" tableName="MESSAGGI">
             <column name="ID_CARRELLO"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-137">
-        <createIndex tablespace="${tablespaceIdx}" indexName="MESSAGGI_ID_DOMINIO_IUV_CCP_IDX" tableName="MESSAGGI">
+        <createIndex indexName="MESSAGGI_ID_DOMINIO_IUV_CCP_IDX" tableName="MESSAGGI">
             <column name="ID_DOMINIO"/>
             <column name="IUV"/>
             <column name="CCP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-138">
-        <createIndex tablespace="${tablespaceIdx}" indexName="MESSAGGI_ID_SESS" tableName="MESSAGGI">
+        <createIndex indexName="MESSAGGI_ID_SESS" tableName="MESSAGGI">
             <column name="ID_SESSIONE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-139">
-        <createIndex tablespace="${tablespaceIdx}" indexName="NMU_CANCEL_UTILITY_IDX1" tableName="NMU_CANCEL_UTILITY">
+        <createIndex indexName="NMU_CANCEL_UTILITY_IDX1" tableName="NMU_CANCEL_UTILITY">
             <column name="TRANSACTION_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-140">
-        <createIndex tablespace="${tablespaceIdx}" indexName="PM_SESSION_DATA_RRN_IDX" tableName="PM_SESSION_DATA">
+        <createIndex indexName="PM_SESSION_DATA_RRN_IDX" tableName="PM_SESSION_DATA">
             <column name="RRN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-141">
-        <createIndex tablespace="${tablespaceIdx}" indexName="PM_SESS_DATA_SESSID_IDX" tableName="PM_SESSION_DATA">
+        <createIndex indexName="PM_SESS_DATA_SESSID_IDX" tableName="PM_SESSION_DATA">
             <column name="ID_SESSIONE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-142">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_ACTIVATE_IDX1" tableName="POSITION_ACTIVATE">
+        <createIndex indexName="POSITION_ACTIVATE_IDX1" tableName="POSITION_ACTIVATE">
             <column name="PAYMENT_TOKEN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-143">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_ACTIVATE_PA_NO" tableName="POSITION_ACTIVATE">
+        <createIndex indexName="POSITION_ACTIVATE_PA_NO" tableName="POSITION_ACTIVATE">
             <column name="PA_FISCAL_CODE"/>
             <column name="NOTICE_ID"/>
             <column name="PAYMENT_TOKEN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-144">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_IDX" tableName="POSITION_PAYMENT">
+        <createIndex indexName="POSITION_PAYMENT_IDX" tableName="POSITION_PAYMENT">
             <column name="PAYMENT_TOKEN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-145">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_IDX1" tableName="POSITION_PAYMENT">
+        <createIndex indexName="POSITION_PAYMENT_IDX1" tableName="POSITION_PAYMENT">
             <column name="NOTICE_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-146">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_IDX3" tableName="POSITION_PAYMENT">
+        <createIndex indexName="POSITION_PAYMENT_IDX3" tableName="POSITION_PAYMENT">
             <column name="PAYMENT_TOKEN"/>
             <column name="PSP_ID"/>
             <column name="INSERTED_TIMESTAMP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-147">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_INSERTED_TIMESTAMP" tableName="POSITION_PAYMENT">
+        <createIndex indexName="POSITION_PAYMENT_INSERTED_TIMESTAMP" tableName="POSITION_PAYMENT">
             <column name="INSERTED_TIMESTAMP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-148">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_PLAN_IDX" tableName="POSITION_PAYMENT_PLAN">
+        <createIndex indexName="POSITION_PAYMENT_PLAN_IDX" tableName="POSITION_PAYMENT_PLAN">
             <column name="FK_POSITION_SERVICE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-149">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_STATUS_IDX" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_PAYMENT_STATUS_IDX" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
             <column name="STATUS"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-150">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_IDX" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_IDX" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
             <column name="FK_POSITION_PAYMENT"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-151">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_IDX1" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_IDX1" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
             <column name="NOTICE_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-152">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_INSERTED_TIMESTAMP" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_INSERTED_TIMESTAMP" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
             <column name="INSERTED_TIMESTAMP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-153">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_PA_NO" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_PA_NO" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
             <column name="PA_FISCAL_CODE"/>
             <column name="NOTICE_ID"/>
             <column name="PAYMENT_TOKEN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-154">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_TOKEN" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_PAYMENT_STATUS_SNAPSHOT_TOKEN" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
             <column name="PAYMENT_TOKEN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-155">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_RECEIPT_PAYMENT_DATE_TIME" tableName="POSITION_RECEIPT">
+        <createIndex indexName="POSITION_RECEIPT_PAYMENT_DATE_TIME" tableName="POSITION_RECEIPT">
             <column name="PAYMENT_DATE_TIME"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-156">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_RECEIPT_RECIPIENT_INSERTED_TIMESTAMP" tableName="POSITION_RECEIPT_RECIPIENT">
+        <createIndex indexName="POSITION_RECEIPT_RECIPIENT_INSERTED_TIMESTAMP" tableName="POSITION_RECEIPT_RECIPIENT">
             <column name="INSERTED_TIMESTAMP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-157">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_RECEIPT_RECIPIENT_PA_NO_TO" tableName="POSITION_RECEIPT_RECIPIENT">
+        <createIndex indexName="POSITION_RECEIPT_RECIPIENT_PA_NO_TO" tableName="POSITION_RECEIPT_RECIPIENT">
             <column name="PA_FISCAL_CODE"/>
             <column name="NOTICE_ID"/>
             <column name="PAYMENT_TOKEN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-158">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_SERVICE_INSERTED_TIMESTAMP" tableName="POSITION_SERVICE">
+        <createIndex indexName="POSITION_SERVICE_INSERTED_TIMESTAMP" tableName="POSITION_SERVICE">
             <column name="INSERTED_TIMESTAMP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-159">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_STATUS_SNAPSHOT_IDX" tableName="POSITION_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_STATUS_SNAPSHOT_IDX" tableName="POSITION_STATUS_SNAPSHOT">
             <column name="FK_POSITION_SERVICE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-160">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_STATUS_SNAPSHOT_IDX1" tableName="POSITION_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_STATUS_SNAPSHOT_IDX1" tableName="POSITION_STATUS_SNAPSHOT">
             <column name="NOTICE_ID"/>
             <column name="PA_FISCAL_CODE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-161">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_STATUS_SNAPSHOT_IDX2" tableName="POSITION_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_STATUS_SNAPSHOT_IDX2" tableName="POSITION_STATUS_SNAPSHOT">
             <column name="NOTICE_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-162">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_STATUS_SNAPSHOT_INSERTED_TIMESTAMP" tableName="POSITION_STATUS_SNAPSHOT">
+        <createIndex indexName="POSITION_STATUS_SNAPSHOT_INSERTED_TIMESTAMP" tableName="POSITION_STATUS_SNAPSHOT">
             <column name="INSERTED_TIMESTAMP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-163">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_TRANSFER_FK_POSITION_PAYMENT" tableName="POSITION_TRANSFER">
+        <createIndex indexName="POSITION_TRANSFER_FK_POSITION_PAYMENT" tableName="POSITION_TRANSFER">
             <column name="FK_POSITION_PAYMENT"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-164">
-        <createIndex tablespace="${tablespaceIdx}" indexName="POSITION_TRANSFER_IDX1" tableName="POSITION_TRANSFER">
+        <createIndex indexName="POSITION_TRANSFER_IDX1" tableName="POSITION_TRANSFER">
             <column name="FK_PAYMENT_PLAN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-165">
-        <createIndex tablespace="${tablespaceIdx}" indexName="PPSS_2QUPZ9MDTJ4B6_IDX" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
+        <createIndex indexName="PPSS_2QUPZ9MDTJ4B6_IDX" tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
             <column name="CREDITOR_REFERENCE_ID"/>
             <column name="PA_FISCAL_CODE"/>
             <column name="PAYMENT_TOKEN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-166">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RETRY_PA_ATTIVA_RPT_IDX1" tableName="RETRY_PA_ATTIVA_RPT">
+        <createIndex indexName="RETRY_PA_ATTIVA_RPT_IDX1" tableName="RETRY_PA_ATTIVA_RPT">
             <column name="PA_FISCAL_CODE"/>
             <column name="IUV"/>
             <column name="TOKEN"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-167">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RETRY_PSP_ACK_IDX" tableName="RETRY_PSP_ACK">
+        <createIndex indexName="RETRY_PSP_ACK_IDX" tableName="RETRY_PSP_ACK">
             <column name="ID_DOMINIO"/>
             <column name="IUV"/>
             <column name="CCP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-168">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_ACTIVATIONS_FU6MSYD0TADCW_IDX" tableName="RPT_ACTIVATIONS">
+        <createIndex indexName="RPT_ACTIVATIONS_FU6MSYD0TADCW_IDX" tableName="RPT_ACTIVATIONS">
             <column name="CREDITOR_REFERENCE_ID"/>
             <column name="PAYMENT_TOKEN"/>
             <column name="PA_FISCAL_CODE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-169">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_ACTIVATIONS_PA_FISCAL_CODE_IDX" tableName="RPT_ACTIVATIONS">
+        <createIndex indexName="RPT_ACTIVATIONS_PA_FISCAL_CODE_IDX" tableName="RPT_ACTIVATIONS">
             <column name="PA_FISCAL_CODE"/>
             <column name="NOTICE_ID"/>
             <column name="CREDITOR_REFERENCE_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-170">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_FK_CARRELLO" tableName="RPT">
+        <createIndex indexName="RPT_FK_CARRELLO" tableName="RPT">
             <column name="FK_CARRELLO"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-171">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_SOGGETTI_RPT_ID_IDX" tableName="RPT_SOGGETTI">
+        <createIndex indexName="RPT_SOGGETTI_RPT_ID_IDX" tableName="RPT_SOGGETTI">
             <column name="RPT_ID"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-172">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_STAZ_INTERMEDIARIOPA" tableName="RPT">
+        <createIndex indexName="RPT_STAZ_INTERMEDIARIOPA" tableName="RPT">
             <column name="STAZ_INTERMEDIARIOPA"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-173">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_VERSAMENTI_BOLLO_FK_RPT_VERSAMENTI_IDX" tableName="RPT_VERSAMENTI_BOLLO">
+        <createIndex indexName="RPT_VERSAMENTI_BOLLO_FK_RPT_VERSAMENTI_IDX" tableName="RPT_VERSAMENTI_BOLLO">
             <column name="FK_RPT_VERSAMENTI"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-174">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_VERSAMENTI_FK_RPT_IDX" tableName="RPT_VERSAMENTI">
+        <createIndex indexName="RPT_VERSAMENTI_FK_RPT_IDX" tableName="RPT_VERSAMENTI">
             <column name="FK_RPT"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-175">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_XML_CCP_IUV_IDX" tableName="RPT_XML">
+        <createIndex indexName="RPT_XML_CCP_IUV_IDX" tableName="RPT_XML">
             <column name="CCP"/>
             <column name="IUV"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-176">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_XML_FK_RPT_IDX" tableName="RPT_XML">
+        <createIndex indexName="RPT_XML_FK_RPT_IDX" tableName="RPT_XML">
             <column name="FK_RPT"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-177">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RPT_XML_ID_FK_CARRELLO_IDX" tableName="RPT_XML">
+        <createIndex indexName="RPT_XML_ID_FK_CARRELLO_IDX" tableName="RPT_XML">
             <column name="FK_CARRELLO"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-178">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RT_VERSAMENTI_BOLLO_FK_RT_VERSAMENTI_IDX" tableName="RT_VERSAMENTI_BOLLO">
+        <createIndex indexName="RT_VERSAMENTI_BOLLO_FK_RT_VERSAMENTI_IDX" tableName="RT_VERSAMENTI_BOLLO">
             <column name="FK_RT_VERSAMENTI"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-179">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RT_VERSAMENTI_BOLLO_IUBD" tableName="RT_VERSAMENTI_BOLLO">
+        <createIndex indexName="RT_VERSAMENTI_BOLLO_IUBD" tableName="RT_VERSAMENTI_BOLLO">
             <column name="IUBD"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-180">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RT_VERSAMENTI_FK_RT_IDX" tableName="RT_VERSAMENTI">
+        <createIndex indexName="RT_VERSAMENTI_FK_RT_IDX" tableName="RT_VERSAMENTI">
             <column name="FK_RT"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-181">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RT_XML_FK_RT_IDX" tableName="RT_XML">
+        <createIndex indexName="RT_XML_FK_RT_IDX" tableName="RT_XML">
             <column name="FK_RT"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-182">
-        <createIndex tablespace="${tablespaceIdx}" indexName="RT_XML_IDX1" tableName="RT_XML">
+        <createIndex indexName="RT_XML_IDX1" tableName="RT_XML">
             <column name="CCP"/>
             <column name="IUV"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-183">
-        <createIndex tablespace="${tablespaceIdx}" indexName="STATI_CARRELLO_IDX_ID_CARRELLO_ID_SESSIONE" tableName="STATI_CARRELLO">
+        <createIndex indexName="STATI_CARRELLO_IDX_ID_CARRELLO_ID_SESSIONE" tableName="STATI_CARRELLO">
             <column name="ID_CARRELLO"/>
             <column name="ID_SESSIONE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-184">
-        <createIndex tablespace="${tablespaceIdx}" indexName="STATI_CARRELLO_SNAPSHOT_IDX_ID_SESSIONE" tableName="STATI_CARRELLO_SNAPSHOT">
+        <createIndex indexName="STATI_CARRELLO_SNAPSHOT_IDX_ID_SESSIONE" tableName="STATI_CARRELLO_SNAPSHOT">
             <column name="ID_SESSIONE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-185">
-        <createIndex tablespace="${tablespaceIdx}" indexName="STATI_RPT_IDX_ID_SESSIONE_ORIGINALE" tableName="STATI_RPT">
+        <createIndex indexName="STATI_RPT_IDX_ID_SESSIONE_ORIGINALE" tableName="STATI_RPT">
             <column name="ID_SESSIONE_ORIGINALE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-186">
-        <createIndex tablespace="${tablespaceIdx}" indexName="STATI_RPT_IDX_RPTKEY_ID_SESSIONE" tableName="STATI_RPT">
+        <createIndex indexName="STATI_RPT_IDX_RPTKEY_ID_SESSIONE" tableName="STATI_RPT">
             <column name="ID_DOMINIO"/>
             <column name="IUV"/>
             <column name="CCP"/>
@@ -2218,22 +2218,22 @@
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-187">
-        <createIndex tablespace="${tablespaceIdx}" indexName="STATI_RPT_MV_IDX1" tableName="STATI_RPT">
+        <createIndex indexName="STATI_RPT_MV_IDX1" tableName="STATI_RPT">
             <column name="INSERTED_TIMESTAMP"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-188">
-        <createIndex tablespace="${tablespaceIdx}" indexName="STATI_RPT_SNAPSHOT_IDX1" tableName="STATI_RPT_SNAPSHOT">
+        <createIndex indexName="STATI_RPT_SNAPSHOT_IDX1" tableName="STATI_RPT_SNAPSHOT">
             <column name="STATO"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-189">
-        <createIndex tablespace="${tablespaceIdx}" indexName="STATI_RPT_SNAPSHOT_IDX_ID_SESSIONE" tableName="STATI_RPT_SNAPSHOT">
+        <createIndex indexName="STATI_RPT_SNAPSHOT_IDX_ID_SESSIONE" tableName="STATI_RPT_SNAPSHOT">
             <column name="ID_SESSIONE"/>
         </createIndex>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-190">
-        <createIndex tablespace="${tablespaceIdx}" indexName="STATI_RPT_SNAPSHOT_MV_IDX1" tableName="STATI_RPT_SNAPSHOT">
+        <createIndex indexName="STATI_RPT_SNAPSHOT_MV_IDX1" tableName="STATI_RPT_SNAPSHOT">
             <column name="INSERTED_TIMESTAMP"/>
         </createIndex>
     </changeSet>
