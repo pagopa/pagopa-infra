@@ -139,7 +139,7 @@ module "apim_mock_psp_nexi_api" {
 ############################
 
 module "apim_mock_pm_nexi_product" {
-  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment 
+  count  = var.env_short != "p" ? 1 : 0 # only UAT pointing out to NEXI PRF environment + Esposizione apim SIT mock PM
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-mock-pm-nexi"
@@ -157,7 +157,7 @@ module "apim_mock_pm_nexi_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "mock_pm_nexi_api" {
-  count = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment 
+  count = var.env_short != "p" ? 1 : 0 # only UAT pointing out to NEXI PRF environment Esposizione apim SIT mock PM
 
   name                = format("%s-mock-pm-nexi-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -167,7 +167,7 @@ resource "azurerm_api_management_api_version_set" "mock_pm_nexi_api" {
 }
 
 module "apim_mock_pm_nexi_api" {
-  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment 
+  count  = var.env_short != "p" ? 1 : 0 # only UAT pointing out to NEXI PRF environment + Esposizione apim SIT mock PM
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-mock-pm-nexi-api", var.env_short)
@@ -179,9 +179,9 @@ module "apim_mock_pm_nexi_api" {
   version_set_id = azurerm_api_management_api_version_set.mock_pm_nexi_api[0].id
   api_version    = "v1"
 
-  description  = "Mock PM Nexi PRF"
-  display_name = "Mock PM Nexi PRF "
-  path         = "mock-pm-prf"
+  description  = "Mock PM Nexi"
+  display_name = "Mock PM Nexi"
+  path         = var.env_short == "u" ? "mock-pm-prf" : "mock-pm-sit"
   protocols    = ["https"]
 
   service_url = null
@@ -192,7 +192,7 @@ module "apim_mock_pm_nexi_api" {
   })
 
   xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {
-    mock_base_path = "/mock-pm-prf/PerfPMMock/RestAPI"
+    mock_base_path = var.env_short == "u" ? "/mock-pm-prf/PerfPMMock/RestAPI" : "/sit-mock-pm"
   })
 
 }

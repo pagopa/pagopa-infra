@@ -11,11 +11,6 @@ module "key_vault" {
   location            = azurerm_resource_group.sec_rg.location
   resource_group_name = azurerm_resource_group.sec_rg.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
-  lock_enable         = var.lock_enable
-
-  # Security Logs
-  sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
-  sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
 
   tags = var.tags
 }
@@ -266,5 +261,18 @@ data "azurerm_key_vault_secret" "gpd_paa_pwd" {
 
 data "azurerm_key_vault_secret" "gpd_payments_apiconfig_subkey" {
   name         = "gpd-payments-apiconfig-subkey"
+  key_vault_id = module.key_vault.id
+}
+
+#
+# Alerts
+#
+data "azurerm_key_vault_secret" "alert_error_notification_email" {
+  name         = "alert-error-notification-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "alert_error_notification_slack" {
+  name         = "alert-error-notification-slack"
   key_vault_id = module.key_vault.id
 }

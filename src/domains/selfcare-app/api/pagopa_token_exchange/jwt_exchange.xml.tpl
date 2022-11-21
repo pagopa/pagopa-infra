@@ -12,6 +12,21 @@
 -->
 <policies>
     <inbound>
+        <cors>
+            <allowed-origins>
+                <origin>https://${origin}</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>GET</method>
+                <method>POST</method>
+                <method>PUT</method>
+                <method>DELETE</method>
+                <method>OPTIONS</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+        </cors>
         <!-- without require-scheme="Bearer" -->
         <validate-jwt header-name="IdentityToken" failed-validation-httpcode="401" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="outputToken">
             <openid-config url="${openid-config-url}" />
@@ -33,7 +48,7 @@
                     var iat = DateTimeOffset.Now.ToUnixTimeSeconds();
                     var exp = new DateTimeOffset(DateTime.Now.AddHours(8)).ToUnixTimeSeconds();  // sets the expiration of the token to be 8 hours from now
                     var aud = "api.platform.pagopa.it";
-                    var iss = "https://${pagopa-issuer}";
+                    var iss = "${pagopa-issuer}";
                     var uid = selcToken.Claims.GetValueOrDefault("uid", "");
                     var name = selcToken.Claims.GetValueOrDefault("name", "");
                     var family_name = selcToken.Claims.GetValueOrDefault("family_name", "");

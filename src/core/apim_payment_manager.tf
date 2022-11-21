@@ -140,6 +140,57 @@ module "apim_pm_restapi_api_v4" {
 }
 
 #####################################
+## API restapi old                 ##
+#####################################
+locals {
+  apim_pm_restapi_old_api = {
+    # params for all api versions
+    display_name          = "Payment Manager restapi API old"
+    description           = "API to support payment trasactions for Checkout and Wisp - old"
+    path                  = "pp-restapi"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "pm_restapi_old_api" {
+
+  name                = "${local.project}-pm-restapi-old-api"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_pm_restapi_old_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_restapi_api_old_v4" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+
+  name                  = "${local.project}-pm-restapi-old-api"
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_restapi_old_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pm_restapi_old_api.id
+  api_version           = "v4"
+  service_url           = local.apim_pm_restapi_old_api.service_url
+
+  description  = local.apim_pm_restapi_old_api.description
+  display_name = local.apim_pm_restapi_old_api.display_name
+  path         = local.apim_pm_restapi_old_api.path
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/payment_manager_api/restapi/v4/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl", {
+    origin = "https://${var.dns_zone_checkout}.${var.external_domain}/"
+  })
+}
+
+#####################################
 ## API restapi CD                  ##
 #####################################
 locals {
@@ -636,8 +687,12 @@ module "apim_pm_adminpanel_api_v1" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
-    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]
-    allowed_ip_2 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1]
+    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0] # PagoPA on prem VPN
+    allowed_ip_2 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1] # PagoPA on prem VPN DR
+    allowed_ip_3 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[2] # CSTAR
+    allowed_ip_4 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[3] # Softlab L1 Pagamenti VPN
+    allowed_ip_5 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[4] # Softlab L1 Pagamenti VPN
+    allowed_ip_6 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[5] # Softlab L1 Pagamenti VPN
   })
 }
 
@@ -683,14 +738,14 @@ module "apim_pm_wisp_api_v1" {
   xml_content = file("./api/payment_manager_api/wisp/_base_policy.xml.tpl")
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
-  api_name            = "${local.project}-pm-wisp-api"
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "GETSpidMetadata"
+# resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
+#   api_name            = "${local.project}-pm-wisp-api"
+#   api_management_name = module.apim.name
+#   resource_group_name = azurerm_resource_group.rg_api.name
+#   operation_id        = "GETSpidMetadata"
 
-  xml_content = templatefile("./api/payment_manager_api/wisp/_spid_metadata_policy.xml.tpl", { metadata = data.azurerm_key_vault_secret.pm_wisp_metadata.value })
-}
+#   xml_content = templatefile("./api/payment_manager_api/wisp/_spid_metadata_policy.xml.tpl", { metadata = data.azurerm_key_vault_secret.pm_wisp_metadata.value })
+# }
 
 ##############################################
 ## API pagopa-payment-transactions-gateway  ##
@@ -747,11 +802,12 @@ module "apim_pm_ptg_api_v1" {
 locals {
   apim_pm_per_nodo_api = {
     # params for all api versions
-    display_name          = "Payment Manager - PM per Nodo API"
-    description           = "API PM for Nodo"
-    path                  = "payment-manager/pm-per-nodo"
-    subscription_required = false
-    service_url           = null
+    display_name             = "Payment Manager - PM per Nodo API"
+    description              = "API PM for Nodo"
+    path                     = "payment-manager/pm-per-nodo"
+    subscription_required_v1 = false
+    subscription_required_v2 = true
+    service_url              = null
   }
 }
 
@@ -772,7 +828,7 @@ module "apim_pm_per_nodo_v1" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_pm_per_nodo_api.subscription_required
+  subscription_required = local.apim_pm_per_nodo_api.subscription_required_v1
   version_set_id        = azurerm_api_management_api_version_set.pm_per_nodo_api.id
   api_version           = "v1"
   service_url           = local.apim_pm_per_nodo_api.service_url
@@ -789,6 +845,36 @@ module "apim_pm_per_nodo_v1" {
 
   xml_content = file("./api/payment_manager_api/pm-per-nodo/v1/_base_policy.xml.tpl")
 }
+
+module "apim_pm_per_nodo_v2" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+
+  name                  = "${local.project}-pm-per-nodo-api"
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_payment_manager_product.product_id]
+  subscription_required = local.apim_pm_per_nodo_api.subscription_required_v2
+  version_set_id        = azurerm_api_management_api_version_set.pm_per_nodo_api.id
+  api_version           = "v2"
+  service_url           = local.apim_pm_per_nodo_api.service_url
+
+  description  = local.apim_pm_per_nodo_api.description
+  display_name = local.apim_pm_per_nodo_api.display_name
+  path         = local.apim_pm_per_nodo_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_base_policy.xml.tpl", {
+    host                       = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name,
+    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
+  })
+}
+
 
 ########################
 ## client IO bpd API  ##
