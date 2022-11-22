@@ -366,6 +366,32 @@ eventhubs = [
       }
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt-enrich"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
 
 # acr
