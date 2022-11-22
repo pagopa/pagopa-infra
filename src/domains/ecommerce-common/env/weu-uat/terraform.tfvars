@@ -77,3 +77,5 @@ ecommerce_storage_params = {
   advanced_threat_protection = true,
   retention_days             = 7
 }
+
+enable_iac_pipeline = true
