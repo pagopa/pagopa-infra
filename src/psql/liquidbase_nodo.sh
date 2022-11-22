@@ -28,7 +28,7 @@ if [ ! -d "${WORKDIR}/subscriptions/${SUBSCRIPTION}" ]; then
 fi
 
 echo "Setting subscription"
-# az account set -s "${SUBSCRIPTION}"
+az account set -s "${SUBSCRIPTION}"
 
 # shellcheck disable=SC1090
 source "${WORKDIR}/subscriptions/${SUBSCRIPTION}/backend.ini"
@@ -95,11 +95,11 @@ LQB_CONTEXTS="!dev"
 
 cat dev.env
 
-echo -n "Configuring nodo db ( CREATE SCHEMAs ... ) "
-#sh postgres-scripts/100-nodo-create.sh
-echo "DONE!"
+echo ">>>>>>>>>>>>>>>>>>>>>>>>>>> STEP#1 Configuring nodo db ( CREATE SCHEMAs ... ) "
+sh postgres-scripts/100-nodo-create.sh
+echo "<<<<<<<<<<<<<<<<<<<<<<<<<<< done!"
 
 
-echo -n "Executing docker compose"
+echo ">>>>>>>>>>>>>>>>>>>>>>>>>>> STEP#2 Executing docker compose ( liquibase Migration ) "
 docker compose -f docker-compose-liquibase.yml up
-echo "Migration done"
+echo "<<<<<<<<<<<<<<<<<<<<<<<<<<< Migration done!"
