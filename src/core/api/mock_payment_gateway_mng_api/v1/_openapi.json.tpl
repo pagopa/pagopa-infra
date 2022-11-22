@@ -439,6 +439,29 @@
           }
         }
       }
+    },
+    "/vpos/change/outcome": {
+      "post": {
+        "tags": [
+          "VPOS Settings"
+        ],
+        "operationId": "changeVposOutcome",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeVposOutcome"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -518,6 +541,95 @@
           },
           "messaggio": {
             "type": "string"
+          }
+        }
+      },
+      "ChangeVposOutcome": {
+        "required": [
+          "httpOutcome",
+          "method3dsOutcome",
+          "orderStatusOutcome",
+          "step0Outcome",
+          "step1Outcome",
+          "transactionStatusOutcome"
+        ],
+        "type": "object",
+        "properties": {
+          "method3dsOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "step0Outcome": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "REQREFNUM_DUPLICATED_OR_INCORRECT",
+              "INCORRECT_MESSAGE_FORMAT_MISSING_OR_INCORRECT_FIELD",
+              "INCORRECT_API_AUTHENTICATION_INCORRECT_MAC",
+              "UNFORESEEN_ERROR_DURING_PROCESSING_OF_REQUEST",
+              "THE_CARD_IS_VBV_ENABLED",
+              "METHOD",
+              "A_CHALLENGE_FLOW",
+              "EMPTY_XML_OR_MISSING_DATA_PARAMETER",
+              "XML_NOT_PARSABLE",
+              "INSTALLMENTS_NOT_AVAILABLE",
+              "INSTALLMENT_NUMBER_OUT_OF_BOUNDS_CLIENT_SIDE",
+              "TRANSACTION_FAILED_SEE_SPECIFIC_OUTCOME"
+            ]
+          },
+          "step1Outcome": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "REQREFNUM_DUPLICATED_OR_INCORRECT",
+              "INCORRECT_MESSAGE_FORMAT_MISSING_OR_INCORRECT_FIELD",
+              "INCORRECT_API_AUTHENTICATION_INCORRECT_MAC",
+              "UNFORESEEN_ERROR_DURING_PROCESSING_OF_REQUEST",
+              "THREEDSTRANSID_NOT_FOUND",
+              "MAXIMUM_TIME_LIMIT_FOR_FORWARDING_THE_VBV",
+              "A_CHALLENGE_FLOW",
+              "EMPTY_XML_OR_MISSING_DATA_PARAMETER",
+              "XML_NOT_PARSABLE",
+              "TRANSACTION_FAILED_SEE_SPECIFIC_OUTCOME"
+            ]
+          },
+          "orderStatusOutcome": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "ORDER_OR_REQREFNUM_NOT_FOUND",
+              "REQREFNUM_DUPLICATED_OR_INCORRECT",
+              "INCORRECT_MESSAGE_FORMAT_MISSING_OR_INCORRECT_FIELD",
+              "INCORRECT_API_AUTHENTICATION_INCORRECT_MAC",
+              "UNFORESEEN_ERROR_DURING_PROCESSING_OF_REQUEST",
+              "THREEDSTRANSID_NOT_FOUND",
+              "EMPTY_XML_OR_MISSING_DATA_PARAMETER",
+              "XML_NOT_PARSABLE",
+              "TRANSACTION_FAILED_SEE_SPECIFIC_OUTCOME"
+            ]
+          },
+          "transactionStatusOutcome": {
+            "type": "string",
+            "enum": [
+              "AUTH_GRANTED_BOOKABLE",
+              "AUTH_DENIED",
+              "AUTH_BOOKED_TO_BE_PROCESSED_BY_CLEARING",
+              "AUTH_BOOKED_PROCESSED_BY_CLEARING",
+              "AUTH_REVERSED",
+              "AUTH_TO_BE_REVERSED_DUE_TO_ERROR",
+              "AUTH_UNDERWAY"
+            ]
+          },
+          "httpOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "NOT_FOUND",
+              "SERVICE_UNAVAILABLE"
+            ]
           }
         }
       }
