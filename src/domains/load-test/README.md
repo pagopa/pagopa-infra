@@ -20,6 +20,13 @@
 |------|------|
 | [azurerm_dns_cname_record.grafana](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/resources/dns_cname_record) | resource |
 | [azurerm_resource_group.load_test](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/resources/resource_group) | resource |
+| [azurerm_role_assignment.adgroup_devevelopers_to_grafana_admin](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.adgroup_devevelopers_to_grafana_editor](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.adgroup_devevelopers_to_grafana_viewer](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/resources/role_assignment) | resource |
+| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.28.1/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.28.1/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_operations](https://registry.terraform.io/providers/hashicorp/azuread/2.28.1/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_technical_project_managers](https://registry.terraform.io/providers/hashicorp/azuread/2.28.1/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/data-sources/client_config) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.24.0/docs/data-sources/subscription) | data source |
 
