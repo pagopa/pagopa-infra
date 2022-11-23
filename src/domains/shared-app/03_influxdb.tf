@@ -124,3 +124,4 @@ resource "helm_release" "influxdb2" {
     value = random_password.admin_influxdb_password.result
   }
 }
+
