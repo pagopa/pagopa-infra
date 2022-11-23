@@ -125,9 +125,9 @@ module "apim_api_gpd_payments_rest_api" {
 }
 
 
-########################
-# GPD-GPS EXTERNAL USE #
-########################
+#############################
+# GPD-GPS EXTERNAL USE AUTH #
+#############################
 
 ##############
 ## Products ##
@@ -136,9 +136,9 @@ module "apim_api_gpd_payments_rest_api" {
 module "apim_payments_receipts_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
-  product_id   = "payments-receipts"
-  display_name = "GPD Payments Receipts for organizations"
-  description  = "GPD Payments Receipts for organizations"
+  product_id   = "product-gpd-payments-rest-auth"
+  display_name = "GPD Payments Receipts pagoPA  - REST Auth"
+  description  = "GPD Payments Receipts pagoPA  - REST Auth"
 
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -148,14 +148,14 @@ module "apim_payments_receipts_product" {
   approval_required     = true
   subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/gpd/payments-receipts/_base_policy.xml")
+  policy_xml = file("./api_product/gpd/auth-receipts/_base_policy.xml")
 }
 
 locals {
   apim_payments_receipts_service_api = {
-    display_name          = "GPD pagoPA - Payments Receipts service API for organizations"
-    description           = "API to support payments receipts service for organizations"
-    path                  = "gpd/payments-receipts-service"
+    display_name          = "GPD pagoPA - Payments Receipts service API Auth"
+    description           = "GPD pagoPA - Payments Receipts service API Auth"
+    path                  = "payment-receipts-auth/api"
     subscription_required = true
     service_url           = null
   }
@@ -163,7 +163,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "api_payments_receipts_api" {
 
-  name                = format("%s-payments-receipts-service-api", var.env_short)
+  name                = format("%s-payments-receipts-service-api-auth", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
   display_name        = local.apim_payments_receipts_service_api.display_name
@@ -174,7 +174,7 @@ resource "azurerm_api_management_api_version_set" "api_payments_receipts_api" {
 module "apim_api_payments_receipts_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-payments-receipts-service-api", local.project)
+  name                  = format("%s-payments-receipts-service-api-auth", local.project)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payments_receipts_product.product_id]
@@ -189,11 +189,11 @@ module "apim_api_payments_receipts_api_v1" {
   service_url  = local.apim_payments_receipts_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/gpd_api/payments-receipts/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/gpd_api/payments/v1/rest/_openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = templatefile("./api/gpd_api/payments-receipts/v1/_base_policy.xml", {
+  xml_content = templatefile("./api/gpd_api/auth-receipts/v1/_base_policy.xml", {
     env_short = var.env_short
   })
 }
