@@ -132,3 +132,22 @@ resource "influxdb_database" "metrics" {
 
   name = "afmcalculatork6"
 }
+resource "influxdb_user" "grafana" {
+  name     = "grafana"
+  password = "super-secret"
+
+  grant {
+    database  = influxdb_database.metrics.name
+    privilege = "read"
+  }
+}
+
+resource "influxdb_user" "k6" {
+  name     = "k6"
+  password = "super-secret"
+
+  grant {
+    database  = influxdb_database.metrics.name
+    privilege = "write"
+  }
+}
