@@ -1,3 +1,9 @@
+resource "random_password" "admin_influxdb_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
 # influxdb v1
 resource "helm_release" "influxdb" {
   count = var.env_short != "p" ? 1 : 0
@@ -43,6 +49,20 @@ resource "helm_release" "influxdb" {
     value = "/$1"
   }
 
+  set {
+    name  = "setDefaultUser.enabled"
+    value = true
+  }
+
+  set {
+    name  = "setDefaultUser.user.username"
+    value = "admin"
+  }
+
+  set {
+    name  = "setDefaultUser.user.password"
+    value = random_password.admin_influxdb_password.result
+  }
 }
 
 # influxdb v2
@@ -89,4 +109,18 @@ resource "helm_release" "influxdb2" {
     value = "/$1"
   }
 
+  set {
+    name  = "setDefaultUser.enabled"
+    value = true
+  }
+
+  set {
+    name  = "setDefaultUser.user.username"
+    value = "admin"
+  }
+
+  set {
+    name  = "setDefaultUser.user.password"
+    value = random_password.admin_influxdb_password.result
+  }
 }
