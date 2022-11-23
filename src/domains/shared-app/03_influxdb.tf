@@ -125,3 +125,10 @@ resource "helm_release" "influxdb2" {
   }
 }
 
+resource "influxdb_database" "metrics" {
+  depends_on = [
+    helm_release.influxdb2
+  ]
+
+  name = "afmcalculatork6"
+}
