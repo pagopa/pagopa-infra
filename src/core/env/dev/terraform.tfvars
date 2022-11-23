@@ -90,7 +90,11 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
   ]
   ips = [
     "0.0.0.0",
-    "0.0.0.0"
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
   ]
 }
 
@@ -333,6 +337,32 @@ eventhubs = [
       }
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt-enrich"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
 
 # acr
@@ -524,7 +554,7 @@ dexp_params = {
 
 dexp_db = {
   enable             = true
-  hot_cache_period   = "P7D"
+  hot_cache_period   = "P5D"
   soft_delete_period = "P1M"
 }
 

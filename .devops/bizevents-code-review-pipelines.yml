@@ -28,7 +28,7 @@ parameters:
   - name: 'PROD'
     displayName: 'Run on PROD environment'
     type: boolean
-    default: True
+    default: False
     values:
       - False
       - True

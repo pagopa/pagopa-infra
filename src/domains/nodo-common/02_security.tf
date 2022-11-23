@@ -1,49 +1,35 @@
-resource "azurerm_resource_group" "sec_rg" {
-  name     = "${local.product}-${var.domain}-sec-rg"
-  location = var.location
-
-  tags = var.tags
+data "azurerm_key_vault" "key_vault" {
+  name                = "${local.product}-${var.domain}-kv"
+  resource_group_name = "${local.product}-${var.domain}-sec-rg"
 }
 
-module "key_vault" {
-  source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.13.1"
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "db_nodo_cfg_login" {
+  name         = "db-nodo-cfg-login"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
 
-  name                       = "${local.product}-${var.domain}-kv"
-  location                   = azurerm_resource_group.sec_rg.location
-  resource_group_name        = azurerm_resource_group.sec_rg.name
-  tenant_id                  = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days = 90
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
 
-## ad group policy ##
-resource "azurerm_key_vault_access_policy" "ad_group_policy" {
-  key_vault_id = module.key_vault.id
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "db_nodo_cfg_login_password" {
+  name         = "db-nodo-cfg-login-password"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
 
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_admin.object_id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
 
-## ad group policy ##
-resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  count = var.env_short == "d" ? 1 : 0
-
-  key_vault_id = module.key_vault.id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_developers.object_id
-
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
-  storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
-}

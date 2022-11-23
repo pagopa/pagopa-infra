@@ -669,6 +669,59 @@
           }
         }
       }
+    },
+    "/request-payments/bancomatpay/{requestId}": {
+      "get": {
+        "tags": [
+          "BancomatPay-internal"
+        ],
+        "operationId": "retrieve the correlationId of a BancomatPay payment request",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "PGS-generated GUID of the request to retrieve",
+            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BPayInfoResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BPayInfoResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BPayInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1133,6 +1186,22 @@
         "required": [
           "transactionId",
           "error"
+        ]
+      },
+      "BPayInfoResponse": {
+        "type": "object",
+        "properties": {
+          "correlationId": {
+            "type": "string",
+            "example": "7cbf110b-6ebe-49ed-ab39-cd2f35339622"
+          },
+          "errorMessage": {
+            "type": "string",
+            "example": "RequestId 77e1c83b-7bb0-437b-bc50-a7a58e5660ac has not been found"
+          }
+        },
+        "required": [
+          "correlationId"
         ]
       }
     },
