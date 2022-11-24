@@ -204,7 +204,7 @@ module "app_gw" {
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 60
+      request_timeout             = 10
       pick_host_name_from_backend = false
     }
 
