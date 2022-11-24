@@ -131,3 +131,9 @@ variable "cidr_subnet_gps_cosmosdb" {
   description = "Cosmos DB address space"
   default     = null
 }
+
+variable "enable_iac_pipeline" {
+  type        = bool
+  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
+  default     = false
+}

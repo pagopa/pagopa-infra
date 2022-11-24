@@ -48,6 +48,25 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   ]
 }
 
+# azure devops policy
+data "azuread_service_principal" "iac_principal" {
+  count        = var.enable_iac_pipeline ? 1 : 0
+  display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
+  count        = var.enable_iac_pipeline ? 1 : 0
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.iac_principal[0].object_id
+
+  secret_permissions      = ["Get", "List", "Set", ]
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+
+  storage_permissions = []
+}
+
 resource "azurerm_key_vault_secret" "biz_events_datastore_cosmos_pkey" {
   name         = format("biz-events-datastore-%s-cosmos-pkey", var.env_short)
   value        = module.bizevents_datastore_cosmosdb_account.primary_key
@@ -97,7 +116,7 @@ resource "azurerm_key_vault_secret" "cosmos_biz_key" {
 }
 resource "azurerm_key_vault_secret" "ehub_tx_biz_key" {
   name         = format("ehub-tx-%s-biz-key", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

@@ -80,7 +80,7 @@ locals {
 
 # cosmosdb container for biz events datastore
 module "bizevents_datastore_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
   for_each = { for c in local.bizevents_datastore_cosmosdb_containers : c.name => c }
 
   name                = each.value.name

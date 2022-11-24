@@ -617,6 +617,162 @@
           }
         }
       }
+    },
+    "/cc/": {
+      "get": {
+        "tags": [
+          "Credit Card Controller"
+        ],
+        "operationId": "creditCard WebView",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/cc/generateCard": {
+      "get": {
+        "tags": [
+          "Credit Card Controller"
+        ],
+        "operationId": "generateCard",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/issuer/3ds20/method": {
+      "get": {
+        "tags": [
+          "Issuer Controller"
+        ],
+        "operationId": "methodUrl WebView",
+        "parameters": [
+          {
+            "name": "threeDSMethodData",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/issuer/3ds20/challenge": {
+      "get": {
+        "tags": [
+          "Issuer Controller"
+        ],
+        "operationId": "challengeUrl WebView",
+        "parameters": [
+          {
+            "name": "creq",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/3ds2.0-manager/challenge/save/response": {
+      "post": {
+        "tags": [
+          "Manager Controller"
+        ],
+        "operationId": "saveChallengeOutcome",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveResponseChallenge3Ds2"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/vpos/authorize3dsV2": {
+      "post": {
+        "tags": [
+          "VPOS Controller"
+        ],
+        "operationId": "vposAuthorize",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/xml;charset=ISO-8859-1": {
+                "schema": {
+                  "$ref": "#/components/schemas/BPWXmlResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1469,6 +1625,588 @@
           },
           "idContabParzialePayPal": {
             "type": "string"
+          }
+        }
+      },
+      "SaveResponseChallenge3Ds2": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "type": "string"
+          },
+          "threeDSServerTransID": {
+            "type": "string"
+          }
+        }
+      },
+      "BPWXmlResponse": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "xml": {
+              "name": "Timestamp"
+            }
+          },
+          "result": {
+            "type": "string",
+            "xml": {
+              "name": "Result"
+            }
+          },
+          "mac": {
+            "type": "string",
+            "xml": {
+              "name": "MAC"
+            }
+          },
+          "data": {
+            "$ref": "#/components/schemas/XmlData"
+          }
+        },
+        "xml": {
+          "name": "BPWXmlResponse"
+        }
+      },
+      "OrderStatus": {
+        "type": "object",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/OrderStatusHeader"
+          },
+          "orderId": {
+            "type": "string",
+            "xml": {
+              "name": "OrderID"
+            }
+          }
+        }
+      },
+      "OrderStatusHeader": {
+        "type": "object",
+        "properties": {
+          "shopId": {
+            "type": "string",
+            "xml": {
+              "name": "ShopID"
+            }
+          },
+          "operatorId": {
+            "type": "string",
+            "xml": {
+              "name": "OperatorID"
+            }
+          },
+          "reqRefNum": {
+            "type": "string",
+            "xml": {
+              "name": "ReqRefNum"
+            }
+          }
+        }
+      },
+      "PanAliasData": {
+        "type": "object",
+        "properties": {
+          "panAlias": {
+            "type": "string",
+            "xml": {
+              "name": "PanAlias"
+            }
+          },
+          "panAliasExpDate": {
+            "type": "string",
+            "xml": {
+              "name": "PanAliasExpDate"
+            }
+          },
+          "panAliasTail": {
+            "type": "string",
+            "xml": {
+              "name": "PanAliasTail"
+            }
+          },
+          "mac": {
+            "type": "string",
+            "xml": {
+              "name": "MAC"
+            }
+          }
+        }
+      },
+      "ThreeDSAuthorization": {
+        "type": "object",
+        "properties": {
+          "paymentType": {
+            "type": "string",
+            "xml": {
+              "name": "PaymentType"
+            }
+          },
+          "authorizationType": {
+            "type": "string",
+            "xml": {
+              "name": "AuthorizationType"
+            }
+          },
+          "transactionID": {
+            "type": "string",
+            "xml": {
+              "name": "TransactionID"
+            }
+          },
+          "network": {
+            "type": "string",
+            "xml": {
+              "name": "Network"
+            }
+          },
+          "orderID": {
+            "type": "string",
+            "xml": {
+              "name": "OrderID"
+            }
+          },
+          "transactionAmount": {
+            "type": "string",
+            "xml": {
+              "name": "TransactionAmount"
+            }
+          },
+          "authorizedAmount": {
+            "type": "string",
+            "xml": {
+              "name": "AuthorizedAmount"
+            }
+          },
+          "currency": {
+            "type": "string",
+            "xml": {
+              "name": "Currency"
+            }
+          },
+          "exponent": {
+            "type": "string",
+            "xml": {
+              "name": "Exponent"
+            }
+          },
+          "accountedAmount": {
+            "type": "string",
+            "xml": {
+              "name": "AccountedAmount"
+            }
+          },
+          "refundedAmount": {
+            "type": "string",
+            "xml": {
+              "name": "RefundedAmount"
+            }
+          },
+          "transactionResult": {
+            "type": "string",
+            "xml": {
+              "name": "TransactionResult"
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "xml": {
+              "name": "Timestamp"
+            }
+          },
+          "authorizationNumber": {
+            "type": "string",
+            "xml": {
+              "name": "AuthorizationNumber"
+            }
+          },
+          "acquirerBIN": {
+            "type": "string",
+            "xml": {
+              "name": "AcquirerBIN"
+            }
+          },
+          "merchantID": {
+            "type": "string",
+            "xml": {
+              "name": "MerchantID"
+            }
+          },
+          "transactionStatus": {
+            "type": "string",
+            "xml": {
+              "name": "TransactionStatus"
+            }
+          },
+          "responseCodeISO": {
+            "type": "string",
+            "xml": {
+              "name": "ResponseCodeISO"
+            }
+          },
+          "rrn": {
+            "type": "string",
+            "xml": {
+              "name": "RRN"
+            }
+          },
+          "mac": {
+            "type": "string",
+            "xml": {
+              "name": "MAC"
+            }
+          }
+        }
+      },
+      "ThreeDSAuthorizationRequest0": {
+        "type": "object",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/VposHeader"
+          },
+          "orderID": {
+            "type": "string",
+            "xml": {
+              "name": "OrderID"
+            }
+          },
+          "pan": {
+            "type": "string",
+            "xml": {
+              "name": "Pan"
+            }
+          },
+          "cvv2": {
+            "type": "string",
+            "xml": {
+              "name": "CVV2"
+            }
+          },
+          "createPanAlias": {
+            "type": "string",
+            "xml": {
+              "name": "CreatePanAlias"
+            }
+          },
+          "expDate": {
+            "type": "string",
+            "xml": {
+              "name": "ExpDate"
+            }
+          },
+          "amount": {
+            "type": "string",
+            "xml": {
+              "name": "Amount"
+            }
+          },
+          "currency": {
+            "type": "string",
+            "xml": {
+              "name": "Currency"
+            }
+          },
+          "exponent": {
+            "type": "string",
+            "xml": {
+              "name": "Exponent"
+            }
+          },
+          "accountingMode": {
+            "type": "string",
+            "xml": {
+              "name": "AccountingMode"
+            }
+          },
+          "network": {
+            "type": "string",
+            "xml": {
+              "name": "Network"
+            }
+          },
+          "userid": {
+            "type": "string",
+            "xml": {
+              "name": "Userid"
+            }
+          },
+          "opDescr": {
+            "type": "string",
+            "xml": {
+              "name": "OpDescr"
+            }
+          },
+          "productRef": {
+            "type": "string",
+            "xml": {
+              "name": "ProductRef"
+            }
+          },
+          "name": {
+            "type": "string",
+            "xml": {
+              "name": "Name"
+            }
+          },
+          "surname": {
+            "type": "string",
+            "xml": {
+              "name": "Surname"
+            }
+          },
+          "taxID": {
+            "type": "string",
+            "xml": {
+              "name": "TaxID"
+            }
+          },
+          "threeDSData": {
+            "type": "string",
+            "xml": {
+              "name": "ThreeDSData"
+            }
+          },
+          "notifUrl": {
+            "type": "string",
+            "xml": {
+              "name": "NotifUrl"
+            }
+          },
+          "emailCH": {
+            "type": "string",
+            "xml": {
+              "name": "EmailCH"
+            }
+          },
+          "nameCH": {
+            "type": "string",
+            "xml": {
+              "name": "NameCH"
+            }
+          },
+          "acquirer": {
+            "type": "string",
+            "xml": {
+              "name": "Acquirer"
+            }
+          },
+          "ipAddress": {
+            "type": "string",
+            "xml": {
+              "name": "IpAddress"
+            }
+          },
+          "usrAuthFlag": {
+            "type": "string",
+            "xml": {
+              "name": "UsrAuthFlag"
+            }
+          },
+          "options": {
+            "type": "string",
+            "xml": {
+              "name": "Options"
+            }
+          },
+          "antiFraud": {
+            "type": "string",
+            "xml": {
+              "name": "AntiFraud"
+            }
+          },
+          "installmentsNumber": {
+            "type": "string",
+            "xml": {
+              "name": "InstallmentsNumber"
+            }
+          },
+          "threeDSMtdNotifUrl": {
+            "type": "string",
+            "xml": {
+              "name": "ThreeDSMtdNotifUrl"
+            }
+          },
+          "challengeWinSize": {
+            "type": "string",
+            "xml": {
+              "name": "ChallengeWinSize"
+            }
+          },
+          "trecurr": {
+            "type": "string"
+          },
+          "cprof": {
+            "type": "string"
+          },
+          "crecurr": {
+            "type": "string"
+          }
+        }
+      },
+      "ThreeDSAuthorizationRequest1": {
+        "type": "object",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/VposHeader"
+          },
+          "threeDSTransId": {
+            "type": "string",
+            "xml": {
+              "name": "ThreeDSTransID"
+            }
+          },
+          "threeDSMtdComplInd": {
+            "type": "string",
+            "xml": {
+              "name": "ThreeDSMtdComplInd"
+            }
+          }
+        }
+      },
+      "ThreeDSAuthorizationRequest2": {
+        "type": "object",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/VposHeader"
+          },
+          "threeDSTransId": {
+            "type": "string",
+            "xml": {
+              "name": "ThreeDSTransID"
+            }
+          }
+        }
+      },
+      "ThreeDSChallenge": {
+        "type": "object",
+        "properties": {
+          "threeDSTransId": {
+            "type": "string",
+            "xml": {
+              "name": "ThreeDSTransId"
+            }
+          },
+          "acsUrl": {
+            "type": "string",
+            "xml": {
+              "name": "ACSUrl"
+            }
+          },
+          "mac": {
+            "type": "string",
+            "xml": {
+              "name": "MAC"
+            }
+          },
+          "creq": {
+            "type": "string"
+          }
+        }
+      },
+      "ThreeDSMethod": {
+        "type": "object",
+        "properties": {
+          "threeDSTransId": {
+            "type": "string",
+            "xml": {
+              "name": "ThreeDSTransId"
+            }
+          },
+          "threeDSMethodData": {
+            "type": "string",
+            "xml": {
+              "name": "ThreeDSMethodData"
+            }
+          },
+          "threeDSMethodUrl": {
+            "type": "string",
+            "xml": {
+              "name": "ThreeDSMethodUrl"
+            }
+          },
+          "mac": {
+            "type": "string",
+            "xml": {
+              "name": "MAC"
+            }
+          }
+        }
+      },
+      "VposHeader": {
+        "type": "object",
+        "properties": {
+          "shopID": {
+            "type": "string",
+            "xml": {
+              "name": "ShopID"
+            }
+          },
+          "operatorID": {
+            "type": "string",
+            "xml": {
+              "name": "OperatorID"
+            }
+          },
+          "reqRefNum": {
+            "type": "string",
+            "xml": {
+              "name": "ReqRefNum"
+            }
+          }
+        }
+      },
+      "XmlData": {
+        "type": "object",
+        "properties": {
+          "orderStatus": {
+            "$ref": "#/components/schemas/OrderStatus"
+          },
+          "productRef": {
+            "type": "string",
+            "xml": {
+              "name": "ProductRef"
+            }
+          },
+          "numberOfItems": {
+            "type": "integer",
+            "format": "int32",
+            "xml": {
+              "name": "NumberOfItems"
+            }
+          },
+          "authorization": {
+            "$ref": "#/components/schemas/ThreeDSAuthorization"
+          },
+          "panAliasData": {
+            "$ref": "#/components/schemas/PanAliasData"
+          },
+          "header": {
+            "$ref": "#/components/schemas/OrderStatusHeader"
+          },
+          "orderId": {
+            "type": "string",
+            "xml": {
+              "name": "OrderID"
+            }
+          },
+          "threeDSAuthorizationRequest0": {
+            "$ref": "#/components/schemas/ThreeDSAuthorizationRequest0"
+          },
+          "threeDSAuthorizationRequest1": {
+            "$ref": "#/components/schemas/ThreeDSAuthorizationRequest1"
+          },
+          "threeDSAuthorizationRequest2": {
+            "$ref": "#/components/schemas/ThreeDSAuthorizationRequest2"
+          },
+          "threeDSMethod": {
+            "$ref": "#/components/schemas/ThreeDSMethod"
+          },
+          "threeDSChallenge": {
+            "$ref": "#/components/schemas/ThreeDSChallenge"
+          },
+          "threeDSAuthorization": {
+            "$ref": "#/components/schemas/ThreeDSAuthorization"
           }
         }
       }
