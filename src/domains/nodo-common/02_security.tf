@@ -33,3 +33,12 @@ resource "azurerm_key_vault_secret" "db_nodo_cfg_login_password" {
   }
 }
 
+# secrets used in pipeline
+resource "azurerm_key_vault_secret" "kv_service_connection" {
+  name = "azure-subscription"
+  value = data.azurerm_subscription.current.subscription_id
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
