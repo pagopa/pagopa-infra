@@ -4,7 +4,7 @@
     "title": "PagoPA API Calculator Logic",
     "description": "Calculator Logic microservice for pagoPA AFM",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "2.4.0"
+    "version": "2.4.0-1-PGEC-99-calculator-fix-performance-test"
   },
   "servers": [
     {
@@ -16,6 +16,10 @@
     {
       "name": "Calculator",
       "description": "Everything about Calculator business logic"
+    },
+    {
+      "name": "Configuration",
+      "description": "Utility Services"
     },
     {
       "name": "Actuator",
@@ -46,7 +50,7 @@
               }
             },
             "content": {
-              "application/vnd.spring-boot.actuator.v3+json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -68,7 +72,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v3+json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -113,7 +117,7 @@
               }
             },
             "content": {
-              "application/vnd.spring-boot.actuator.v3+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -123,7 +127,7 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v3+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -162,7 +166,7 @@
               }
             },
             "content": {
-              "application/vnd.spring-boot.actuator.v3+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -172,7 +176,7 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v3+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -211,7 +215,7 @@
               }
             },
             "content": {
-              "application/vnd.spring-boot.actuator.v3+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -221,7 +225,7 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v3+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -244,7 +248,7 @@
     "/configuration/bundles/add": {
       "post": {
         "tags": [
-          "configuration-controller"
+          "Configuration"
         ],
         "operationId": "addValidBundles",
         "requestBody": {
@@ -288,7 +292,7 @@
     "/configuration/bundles/delete": {
       "post": {
         "tags": [
-          "configuration-controller"
+          "Configuration"
         ],
         "operationId": "deleteValidBundles",
         "requestBody": {
@@ -332,7 +336,7 @@
     "/configuration/touchpoint/add": {
       "post": {
         "tags": [
-          "configuration-controller"
+          "Configuration"
         ],
         "operationId": "addTouchpoints",
         "requestBody": {
@@ -376,7 +380,7 @@
     "/configuration/touchpoint/delete": {
       "post": {
         "tags": [
-          "configuration-controller"
+          "Configuration"
         ],
         "operationId": "deleteTouchpoints",
         "requestBody": {
@@ -797,220 +801,42 @@
   },
   "components": {
     "schemas": {
-      "PaymentOptionByPsp": {
+      "AppInfo": {
         "type": "object",
         "properties": {
-          "paymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "primaryCreditorInstitution": {
-            "type": "string"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
-            ]
-          },
-          "touchpoint": {
-            "type": "string"
-          },
-          "transferList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TransferListItem"
-            }
-          }
-        }
-      },
-      "TransferListItem": {
-        "type": "object",
-        "properties": {
-          "creditorInstitution": {
-            "type": "string"
-          },
-          "transferCategory": {
-            "type": "string"
-          },
-          "digitalStamp": {
-            "type": "boolean"
-          }
-        }
-      },
-      "Transfer": {
-        "type": "object",
-        "properties": {
-          "taxPayerFee": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "primaryCiIncurredFee": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
-            ]
-          },
-          "touchpoint": {
-            "type": "string"
-          },
-          "idBundle": {
-            "type": "string"
-          },
-          "bundleName": {
-            "type": "string"
-          },
-          "bundleDescription": {
-            "type": "string"
-          },
-          "idCiBundle": {
-            "type": "string"
-          },
-          "idPsp": {
-            "type": "string"
-          },
-          "idChannel": {
-            "type": "string"
-          },
-          "idBrokerPsp": {
-            "type": "string"
-          },
-          "onUs": {
-            "type": "boolean"
-          }
-        }
-      },
-      "ProblemJson": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
-          }
-        }
-      },
-      "PaymentOption": {
-        "required": [
-          "paymentAmount",
-          "primaryCreditorInstitution",
-          "transferList"
-        ],
-        "type": "object",
-        "properties": {
-          "paymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "primaryCreditorInstitution": {
-            "type": "string"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
-            ]
-          },
-          "touchpoint": {
-            "type": "string"
-          },
-          "idPspList": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "transferList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TransferListItem"
-            }
-          }
-        }
-      },
-      "Touchpoint": {
-        "type": "object",
-        "properties": {
-          "id": {
+          "environment": {
             "type": "string"
           },
           "name": {
             "type": "string"
           },
-          "creationDate": {
-            "type": "string",
-            "format": "date-time"
+          "version": {
+            "type": "string"
           }
         }
       },
       "CiBundle": {
-        "required": [
-          "ciFiscalCode",
-          "id"
-        ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "ciFiscalCode": {
-            "type": "string"
-          },
           "attributes": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CiBundleAttribute"
             }
+          },
+          "ciFiscalCode": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
           }
-        }
+        },
+        "required": [
+          "ciFiscalCode",
+          "id"
+        ]
       },
       "CiBundleAttribute": {
-        "required": [
-          "id"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1030,28 +856,242 @@
               "NOT_EQUAL"
             ]
           }
-        }
-      },
-      "ValidBundle": {
+        },
         "required": [
-          "digitalStamp",
-          "digitalStampRestriction"
-        ],
+          "id"
+        ]
+      },
+      "Link": {
         "type": "object",
         "properties": {
+          "href": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PaymentOption": {
+        "type": "object",
+        "properties": {
+          "idPspList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "ANY",
+              "PPAL",
+              "BPAY",
+              "PAYBP",
+              "BBT",
+              "AD",
+              "CP",
+              "PO",
+              "JIF",
+              "MYBK"
+            ]
+          },
+          "primaryCreditorInstitution": {
+            "type": "string"
+          },
+          "touchpoint": {
+            "type": "string"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          }
+        },
+        "required": [
+          "paymentAmount",
+          "primaryCreditorInstitution",
+          "transferList"
+        ]
+      },
+      "PaymentOptionByPsp": {
+        "type": "object",
+        "properties": {
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "ANY",
+              "PPAL",
+              "BPAY",
+              "PAYBP",
+              "BBT",
+              "AD",
+              "CP",
+              "PO",
+              "JIF",
+              "MYBK"
+            ]
+          },
+          "primaryCreditorInstitution": {
+            "type": "string"
+          },
+          "touchpoint": {
+            "type": "string"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          }
+        }
+      },
+      "ProblemJson": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem.",
+            "example": "There was an error processing the request"
+          },
+          "status": {
+            "maximum": 600,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 200
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          }
+        }
+      },
+      "Touchpoint": {
+        "type": "object",
+        "properties": {
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
           "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Transfer": {
+        "type": "object",
+        "properties": {
+          "bundleDescription": {
+            "type": "string"
+          },
+          "bundleName": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idBundle": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idCiBundle": {
             "type": "string"
           },
           "idPsp": {
             "type": "string"
           },
-          "name": {
+          "onUs": {
+            "type": "boolean"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "ANY",
+              "PPAL",
+              "BPAY",
+              "PAYBP",
+              "BBT",
+              "AD",
+              "CP",
+              "PO",
+              "JIF",
+              "MYBK"
+            ]
+          },
+          "primaryCiIncurredFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "taxPayerFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "touchpoint": {
             "type": "string"
+          }
+        }
+      },
+      "TransferListItem": {
+        "type": "object",
+        "properties": {
+          "creditorInstitution": {
+            "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
+          },
+          "transferCategory": {
+            "type": "string"
+          }
+        }
+      },
+      "ValidBundle": {
+        "type": "object",
+        "properties": {
+          "ciBundleList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CiBundle"
+            }
           },
           "description": {
             "type": "string"
           },
-          "paymentAmount": {
+          "digitalStamp": {
+            "type": "boolean"
+          },
+          "digitalStampRestriction": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "maxPaymentAmount": {
             "type": "integer",
             "format": "int64"
           },
@@ -1059,7 +1099,13 @@
             "type": "integer",
             "format": "int64"
           },
-          "maxPaymentAmount": {
+          "name": {
+            "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
+          },
+          "paymentAmount": {
             "type": "integer",
             "format": "int64"
           },
@@ -1081,6 +1127,12 @@
           "touchpoint": {
             "type": "string"
           },
+          "transferCategoryList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "type": {
             "type": "string",
             "enum": [
@@ -1088,60 +1140,12 @@
               "PUBLIC",
               "PRIVATE"
             ]
-          },
-          "transferCategoryList": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "idChannel": {
-            "type": "string"
-          },
-          "idBrokerPsp": {
-            "type": "string"
-          },
-          "digitalStamp": {
-            "type": "boolean"
-          },
-          "digitalStampRestriction": {
-            "type": "boolean"
-          },
-          "onUs": {
-            "type": "boolean"
-          },
-          "ciBundleList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CiBundle"
-            }
           }
-        }
-      },
-      "AppInfo": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "version": {
-            "type": "string"
-          },
-          "environment": {
-            "type": "string"
-          }
-        }
-      },
-      "Link": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string"
-          },
-          "templated": {
-            "type": "boolean"
-          }
-        }
+        },
+        "required": [
+          "digitalStamp",
+          "digitalStampRestriction"
+        ]
       }
     },
     "securitySchemes": {
