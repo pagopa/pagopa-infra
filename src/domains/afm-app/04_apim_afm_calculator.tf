@@ -103,6 +103,7 @@ resource "azurerm_api_management_product_group" "api_afm_calculator_node_product
 ###########################
 
 resource "azurerm_api_management_api_version_set" "api_afm_calculator_api" {
+  count = var.env_short != "p" ? 1 : 0
 
   name                = format("%s-afm-calculator-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -114,6 +115,7 @@ resource "azurerm_api_management_api_version_set" "api_afm_calculator_api" {
 
 module "apim_api_afm_calculator_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  count  = var.env_short != "p" ? 1 : 0
 
   name                  = format("%s-afm-calculator-service-api", local.project)
   api_management_name   = local.pagopa_apim_name

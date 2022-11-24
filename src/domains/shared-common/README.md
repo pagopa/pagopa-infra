@@ -13,7 +13,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | agent-docker-compose |
+| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v3.5.0 |
 | <a name="module_iuvgenerator_cosmosdb_account"></a> [iuvgenerator\_cosmosdb\_account](#module\_iuvgenerator\_cosmosdb\_account) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.1.18 |
 | <a name="module_iuvgenerator_cosmosdb_snet"></a> [iuvgenerator\_cosmosdb\_snet](#module\_iuvgenerator\_cosmosdb\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
