@@ -4,6 +4,18 @@ resource "random_password" "admin_influxdb_password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
+resource "random_password" "k6_influxdb_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+resource "random_password" "grafana_influxdb_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
 # influxdb v1
 resource "helm_release" "influxdb" {
   count = var.env_short != "p" ? 1 : 0
@@ -127,27 +139,29 @@ resource "helm_release" "influxdb2" {
 
 resource "influxdb_database" "metrics" {
   depends_on = [
-    helm_release.influxdb2
+    helm_release.influxdb
   ]
 
   name = "afmcalculatork6"
 }
 resource "influxdb_user" "grafana" {
   name     = "grafana"
-  password = "super-secret"
+  password = random_password.grafana_influxdb_password.result
 
   grant {
     database  = influxdb_database.metrics.name
-    privilege = "read"
+    privilege = "READ"
   }
 }
 
 resource "influxdb_user" "k6" {
   name     = "k6"
-  password = "super-secret"
+  password = random_password.k6_influxdb_password.result
 
   grant {
     database  = influxdb_database.metrics.name
-    privilege = "write"
+    privilege = "WRITE"
   }
 }
+
+## copia password dentro keyvault
