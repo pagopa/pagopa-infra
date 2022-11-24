@@ -195,7 +195,7 @@ data "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "node_forwarder_subscription_key" {
-  count  = var.env_short != "p" ? 1 : 0 # only in DEV and UAT
+  count        = var.env_short != "p" ? 1 : 0 # only in DEV and UAT
   name         = "node-forwarder-api-subscription-key"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
