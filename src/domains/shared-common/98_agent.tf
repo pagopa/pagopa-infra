@@ -15,7 +15,7 @@ module "loadtest_agent_snet" {
 }
 
 module "azdoa_loadtest_li" {
-  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=agent-docker-compose"
+  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v3.5.0"
   count               = var.env_short != "p" ? 1 : 0
   name                = format("%s-azdoa-vmss-loadtest-li", local.project)
   resource_group_name = local.vnet_resource_group_name
