@@ -693,6 +693,9 @@ module "apim_pm_adminpanel_api_v1" {
     allowed_ip_4 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[3] # Softlab L1 Pagamenti VPN
     allowed_ip_5 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[4] # Softlab L1 Pagamenti VPN
     allowed_ip_6 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[5] # Softlab L1 Pagamenti VPN
+    allowed_ip_7 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[6] # Softlab L1 Pagamenti VPN
+    allowed_ip_8 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # NEXI VPN
+    allowed_ip_9 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
   })
 }
 
