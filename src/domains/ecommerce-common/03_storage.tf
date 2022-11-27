@@ -79,7 +79,7 @@ resource "azurerm_storage_queue" "notifications_service_errors_queue" {
   storage_account_name = module.ecommerce_storage.name
 }
 
-resource "azurerm_storage_queue" "notifications_service_errors_queue" {
+resource "azurerm_storage_queue" "activated_events_queue" {
   name                 = "${local.project}-activated-events-queue"
   storage_account_name = module.ecommerce_storage.name
 }
