@@ -506,12 +506,14 @@ module "apim_nodo_per_pm_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
   api_name            = format("%s-nodo-per-pm-api-dev-v1", local.project)
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "closePayment"
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
-    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}/nodo-dev"
   })
 }
 
