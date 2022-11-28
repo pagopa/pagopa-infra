@@ -103,7 +103,6 @@ resource "azurerm_api_management_product_group" "api_afm_calculator_node_product
 ###########################
 
 resource "azurerm_api_management_api_version_set" "api_afm_calculator_api" {
-  count = var.env_short != "p" ? 1 : 0
 
   name                = format("%s-afm-calculator-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
