@@ -1,0 +1,29 @@
+.create-merge table VM3_STATE (
+  INSERTEDTIMESTAMP: datetime,
+    ID_DOMINIO: string,
+    IUV: string,
+    CCP: string,
+    STATO: string,
+    STAZIONE: string,
+    CANALE: string,
+    PSP: string,
+    INSERTED_BY: string,
+    SESSION_ID: string,
+    SESSION_ID_ORIGINALE: string
+    )    
+
+
+.alter table VM3_STATE policy partitioning ```
+{
+  "PartitionKeys": [
+    {
+      "ColumnName": "INSERTEDTIMESTAMP",
+      "Kind": "UniformRange",
+      "Properties": {
+        "Reference": "2022-09-01T00:00:00",
+        "RangeSize": "1.00:00:00",
+        "OverrideCreationTime": false
+      }
+    }
+  ]
+}```
