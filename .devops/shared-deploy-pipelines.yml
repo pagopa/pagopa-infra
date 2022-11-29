@@ -59,7 +59,8 @@ resources:
 lockBehavior: sequential
 stages:
   - ${{ if eq(parameters['DEV'], true) }}:
-    jobs: 
+    - stage: DEV
+      jobs: 
       - job:
         # DEV shared COMMON
         - template: templates/terraform-plan-apply/template.yaml@terraform
@@ -95,7 +96,8 @@ stages:
   # UAT
   #
   - ${{ if eq(parameters['UAT'], true) }}:
-    jobs: 
+    - stage: UAT
+      jobs: 
       - job:
         # UAT shared COMMON
         - template: templates/terraform-plan-apply/template.yaml@terraform
@@ -130,7 +132,8 @@ stages:
   # PROD
   #
   - ${{ if eq(parameters['PROD'], true) }}:
-    jobs: 
+    - stage: PROD
+      jobs: 
       - job:
         # PROD shared COMMON
         - template: templates/terraform-plan-apply/template.yaml@terraform
