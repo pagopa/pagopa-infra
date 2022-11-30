@@ -81,7 +81,7 @@ app_gateway_waf_enabled                 = true
 # app_gateway_sku_name                    = "Standard_v2"
 # app_gateway_sku_tier                    = "Standard_v2"
 # app_gateway_waf_enabled                 = false
-app_gateway_alerts_enabled              = false
+app_gateway_alerts_enabled = false
 app_gateway_deny_paths = [
   # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
   # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
