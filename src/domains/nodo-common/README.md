@@ -19,6 +19,9 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_key_vault_secret.db_nodo_cfg_login](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.db_nodo_cfg_login_password](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_postgresql_flexible_server_database.nodo_db](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/postgresql_flexible_server_database) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -57,10 +60,11 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
-| <a name="input_pgres_flex_diagnostic_settings_enabled"></a> [pgres\_flex\_diagnostic\_settings\_enabled](#input\_pgres\_flex\_diagnostic\_settings\_enabled) | Enable or Disable disgnostic postgresql flex. | `bool` | `false` | no |
+| <a name="input_pgres_flex_diagnostic_settings_enabled"></a> [pgres\_flex\_diagnostic\_settings\_enabled](#input\_pgres\_flex\_diagnostic\_settings\_enabled) | Enable or Disable diagnostic postgresql flex. | `bool` | `false` | no |
 | <a name="input_pgres_flex_ha_enabled"></a> [pgres\_flex\_ha\_enabled](#input\_pgres\_flex\_ha\_enabled) | Enable or Disable hight availability postgresql flex. | `bool` | `false` | no |
+| <a name="input_pgres_flex_nodo_db_name"></a> [pgres\_flex\_nodo\_db\_name](#input\_pgres\_flex\_nodo\_db\_name) | Nodo DB name | `string` | `"nodo"` | no |
 | <a name="input_pgres_flex_params"></a> [pgres\_flex\_params](#input\_pgres\_flex\_params) | Postgres Flexible | <pre>object({<br>    enabled                      = bool<br>    sku_name                     = string<br>    db_version                   = string<br>    storage_mb                   = string<br>    zone                         = number<br>    backup_retention_days        = number<br>    geo_redundant_backup_enabled = bool<br>    create_mode                  = string<br>  })</pre> | n/a | yes |
-| <a name="input_pgres_flex_pgbouncer_enabled"></a> [pgres\_flex\_pgbouncer\_enabled](#input\_pgres\_flex\_pgbouncer\_enabled) | Enable or Disable hight availability postgresql flex. | `bool` | `false` | no |
+| <a name="input_pgres_flex_pgbouncer_enabled"></a> [pgres\_flex\_pgbouncer\_enabled](#input\_pgres\_flex\_pgbouncer\_enabled) | Enable or Disable high availability postgresql flex. | `bool` | `false` | no |
 | <a name="input_pgres_flex_private_endpoint_enabled"></a> [pgres\_flex\_private\_endpoint\_enabled](#input\_pgres\_flex\_private\_endpoint\_enabled) | Enable or Disable private endpoint for postgresql flex. | `bool` | `false` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |

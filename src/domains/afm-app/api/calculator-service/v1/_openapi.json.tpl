@@ -4,7 +4,7 @@
     "title": "PagoPA API Calculator Logic",
     "description": "Calculator Logic microservice for pagoPA AFM",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.0.4-3"
+    "version": "2.4.0-1-PGEC-99-calculator-fix-performance-test"
   },
   "servers": [
     {
@@ -19,100 +19,174 @@
     },
     {
       "name": "Configuration",
-      "description": "Everything about Calculator Configuration"
+      "description": "Utility Services"
     }
   ],
   "paths": {
-    "/configuration": {
-      "get": {
+    "/configuration/bundles/add": {
+      "post": {
         "tags": [
           "Configuration"
         ],
-        "summary": "Get calculator configuration",
-        "operationId": "getConfiguration",
+        "operationId": "addValidBundles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ValidBundle"
+                }
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Created",
+            "description": "OK",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Configuration"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
           }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/configuration/bundles/delete": {
+      "post": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "deleteValidBundles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ValidBundle"
+                }
+              }
+            }
+          },
+          "required": true
         },
-        "security": [
-          {
-            "ApiKey": []
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
-        ]
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/configuration/touchpoint/add": {
+      "post": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "addTouchpoints",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Touchpoint"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/configuration/touchpoint/delete": {
+      "post": {
+        "tags": [
+          "Configuration"
+        ],
+        "operationId": "deleteTouchpoints",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Touchpoint"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       },
       "parameters": [
         {
@@ -505,285 +579,40 @@
   },
   "components": {
     "schemas": {
-      "PaymentOptionByPsp": {
-        "type": "object",
-        "properties": {
-          "paymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "primaryCreditorInstitution": {
-            "type": "string"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
-            ]
-          },
-          "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
-          },
-          "transferList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TransferListItem"
-            }
-          }
-        }
-      },
-      "TransferListItem": {
-        "type": "object",
-        "properties": {
-          "creditorInstitution": {
-            "type": "string"
-          },
-          "transferCategory": {
-            "type": "string"
-          }
-        }
-      },
-      "Transfer": {
-        "type": "object",
-        "properties": {
-          "taxPayerFee": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "primaryCiIncurredFee": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
-            ]
-          },
-          "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
-          },
-          "idBundle": {
-            "type": "string"
-          },
-          "bundleName": {
-            "type": "string"
-          },
-          "bundleDescription": {
-            "type": "string"
-          },
-          "idCiBundle": {
-            "type": "string"
-          },
-          "idPsp": {
-            "type": "string"
-          }
-        }
-      },
-      "ProblemJson": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
-          }
-        }
-      },
-      "PaymentOption": {
-        "type": "object",
-        "properties": {
-          "paymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "primaryCreditorInstitution": {
-            "type": "string"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
-            ]
-          },
-          "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
-          },
-          "idPspList": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "transferList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TransferListItem"
-            }
-          }
-        }
-      },
       "AppInfo": {
         "type": "object",
         "properties": {
+          "environment": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
           "version": {
             "type": "string"
-          },
-          "environment": {
-            "type": "string"
-          }
-        }
-      },
-      "Bundle": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "idPsp": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "paymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "minPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "maxPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "PPAL",
-              "BPAY",
-              "PAYBP",
-              "BBT",
-              "AD",
-              "CP",
-              "PO",
-              "JIF",
-              "MYBK"
-            ]
-          },
-          "touchpoint": {
-            "type": "string",
-            "enum": [
-              "ANY",
-              "IO",
-              "WISP",
-              "CHECKOUT",
-              "PSP"
-            ]
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "GLOBAL",
-              "PUBLIC",
-              "PRIVATE"
-            ]
-          },
-          "transferCategoryList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TransferCategory"
-            }
           }
         }
       },
       "CiBundle": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "ciFiscalCode": {
-            "type": "string"
-          },
-          "idBundle": {
-            "type": "string"
-          },
           "attributes": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CiBundleAttribute"
             }
+          },
+          "ciFiscalCode": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
           }
-        }
+        },
+        "required": [
+          "ciFiscalCode",
+          "id"
+        ]
       },
       "CiBundleAttribute": {
         "type": "object",
@@ -805,36 +634,296 @@
               "NOT_EQUAL"
             ]
           }
-        }
+        },
+        "required": [
+          "id"
+        ]
       },
-      "Configuration": {
+      "Link": {
         "type": "object",
         "properties": {
-          "bundles": {
+          "href": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PaymentOption": {
+        "type": "object",
+        "properties": {
+          "idPspList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Bundle"
+              "type": "string"
             }
           },
-          "ciBundles": {
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "ANY",
+              "PPAL",
+              "BPAY",
+              "PAYBP",
+              "BBT",
+              "AD",
+              "CP",
+              "PO",
+              "JIF",
+              "MYBK"
+            ]
+          },
+          "primaryCreditorInstitution": {
+            "type": "string"
+          },
+          "touchpoint": {
+            "type": "string"
+          },
+          "transferList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CiBundle"
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          }
+        },
+        "required": [
+          "paymentAmount",
+          "primaryCreditorInstitution",
+          "transferList"
+        ]
+      },
+      "PaymentOptionByPsp": {
+        "type": "object",
+        "properties": {
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "ANY",
+              "PPAL",
+              "BPAY",
+              "PAYBP",
+              "BBT",
+              "AD",
+              "CP",
+              "PO",
+              "JIF",
+              "MYBK"
+            ]
+          },
+          "primaryCreditorInstitution": {
+            "type": "string"
+          },
+          "touchpoint": {
+            "type": "string"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
             }
           }
         }
       },
-      "TransferCategory": {
+      "ProblemJson": {
         "type": "object",
         "properties": {
-          "id": {
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem.",
+            "example": "There was an error processing the request"
+          },
+          "status": {
+            "maximum": 600,
+            "minimum": 100,
             "type": "integer",
-            "format": "int64"
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 200
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          }
+        }
+      },
+      "Touchpoint": {
+        "type": "object",
+        "properties": {
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string"
           },
           "name": {
             "type": "string"
           }
         }
+      },
+      "Transfer": {
+        "type": "object",
+        "properties": {
+          "bundleDescription": {
+            "type": "string"
+          },
+          "bundleName": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idBundle": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idCiBundle": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "ANY",
+              "PPAL",
+              "BPAY",
+              "PAYBP",
+              "BBT",
+              "AD",
+              "CP",
+              "PO",
+              "JIF",
+              "MYBK"
+            ]
+          },
+          "primaryCiIncurredFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "taxPayerFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "touchpoint": {
+            "type": "string"
+          }
+        }
+      },
+      "TransferListItem": {
+        "type": "object",
+        "properties": {
+          "creditorInstitution": {
+            "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
+          },
+          "transferCategory": {
+            "type": "string"
+          }
+        }
+      },
+      "ValidBundle": {
+        "type": "object",
+        "properties": {
+          "ciBundleList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CiBundle"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
+          },
+          "digitalStampRestriction": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "maxPaymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "minPaymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
+          },
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "ANY",
+              "PPAL",
+              "BPAY",
+              "PAYBP",
+              "BBT",
+              "AD",
+              "CP",
+              "PO",
+              "JIF",
+              "MYBK"
+            ]
+          },
+          "touchpoint": {
+            "type": "string"
+          },
+          "transferCategoryList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "GLOBAL",
+              "PUBLIC",
+              "PRIVATE"
+            ]
+          }
+        },
+        "required": [
+          "digitalStamp",
+          "digitalStampRestriction"
+        ]
       }
     },
     "securitySchemes": {

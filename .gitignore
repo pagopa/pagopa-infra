@@ -40,5 +40,5 @@ __azurite_*
 __*.sh
 
 #sops decrypted files
-
 *_decrypted.json
+*.env

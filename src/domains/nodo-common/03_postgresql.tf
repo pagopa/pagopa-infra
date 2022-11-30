@@ -5,7 +5,6 @@ resource "azurerm_resource_group" "db_rg" {
   tags = var.tags
 }
 
-
 data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
   name         = "db-administrator-login"
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -37,15 +36,11 @@ module "postgres_flexible_snet" {
   }
 }
 
-
 module "postgres_flexible_server" {
-
-
   source              = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.12.3"
   name                = format("%s-flexible-postgresql", local.project)
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name
-
 
   private_endpoint_enabled    = var.pgres_flex_private_endpoint_enabled
   private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
@@ -65,5 +60,12 @@ module "postgres_flexible_server" {
   create_mode                  = var.pgres_flex_params.create_mode
 
   tags = var.tags
+}
 
+# Nodo database
+resource "azurerm_postgresql_flexible_server_database" "nodo_db" {
+  name      = var.pgres_flex_nodo_db_name
+  server_id = module.postgres_flexible_server.id
+  collation = "en_US.utf8"
+  charset   = "utf8"
 }

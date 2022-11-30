@@ -75,10 +75,13 @@ app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
-app_gateway_sku_name                    = "Standard_v2"
-app_gateway_sku_tier                    = "Standard_v2"
-app_gateway_waf_enabled                 = false
-app_gateway_alerts_enabled              = false
+app_gateway_sku_name                    = "WAF_v2"
+app_gateway_sku_tier                    = "WAF_v2"
+app_gateway_waf_enabled                 = true
+# app_gateway_sku_name                    = "Standard_v2"
+# app_gateway_sku_tier                    = "Standard_v2"
+# app_gateway_waf_enabled                 = false
+app_gateway_alerts_enabled = false
 app_gateway_deny_paths = [
   # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
   # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
@@ -367,6 +370,32 @@ eventhubs = [
       }
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt-enrich"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
 
 # acr
@@ -538,7 +567,7 @@ dexp_params = {
 
 dexp_db = {
   enable             = true
-  hot_cache_period   = "P15D"
+  hot_cache_period   = "P5D"
   soft_delete_period = "P3M"
 }
 
