@@ -75,10 +75,13 @@ app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
-app_gateway_sku_name                    = "Standard_v2"
-app_gateway_sku_tier                    = "Standard_v2"
-app_gateway_waf_enabled                 = false
-app_gateway_alerts_enabled              = false
+app_gateway_sku_name                    = "WAF_v2"
+app_gateway_sku_tier                    = "WAF_v2"
+app_gateway_waf_enabled                 = true
+# app_gateway_sku_name                    = "Standard_v2"
+# app_gateway_sku_tier                    = "Standard_v2"
+# app_gateway_waf_enabled                 = false
+app_gateway_alerts_enabled = false
 app_gateway_deny_paths = [
   # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
   # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
@@ -119,8 +122,11 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "93.63.219.234",  # PagoPA on prem VPN DR
     "20.93.160.60",   # CSTAR
     "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "213.215.138.79", # Softlab L1 Pagamenti VPN
     "82.112.220.178", # Softlab L1 Pagamenti VPN
     "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "193.203.229.20", # VPN NEXI
+    "193.203.230.22", # VPN NEXI
   ]
 }
 

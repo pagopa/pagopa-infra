@@ -436,7 +436,8 @@
             "name": "id_cart",
             "description": "Unique identifier for cart",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             },
             "required": true
           }
@@ -1163,11 +1164,17 @@
             "example": [
               {
                 "noticeNumber": "302012387654312384",
-                "fiscalCode": "77777777777"
+                "fiscalCode": "77777777777",
+                "amount": 10000,
+                "companyName": "companyName",
+                "description": "description"
               },
               {
                 "noticeNumber": "302012387654312385",
-                "fiscalCode": "77777777777"
+                "fiscalCode": "77777777777",
+                "amount": 5000,
+                "companyName": "companyName",
+                "description": "description"
               }
             ]
           },
@@ -1203,7 +1210,9 @@
         "required": [
           "noticeNumber",
           "fiscalCode",
-          "amount"
+          "amount",
+          "companyName",
+          "description"
         ],
         "properties": {
           "noticeNumber": {
