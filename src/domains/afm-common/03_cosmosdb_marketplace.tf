@@ -109,6 +109,10 @@ locals {
     {
       name               = "touchpoints",
       partition_key_path = "/name"
+    },
+    {
+      name               = "paymenttypes",
+      partition_key_path = "/name"
     }
   ]
 }
