@@ -99,9 +99,9 @@ resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "ehub_biz_pdnd_connection_string" {
-  name         = format("ehub-%s-biz-pdnd-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt-pdnd_pagopa-biz-evt-tx.primary_connection_string
+resource "azurerm_key_vault_secret" "ehub_biz_enrich_connection_string" {
+  name         = format("ehub-%s-biz-enrich-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
