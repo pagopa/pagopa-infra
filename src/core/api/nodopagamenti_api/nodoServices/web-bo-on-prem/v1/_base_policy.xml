@@ -70,10 +70,10 @@
 		</choose>
 		<choose>
 			<when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\/bo-nodo/$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
-				<set-backend-service base-url="{{pm-host}}/bo-nodo/" />
+				<set-backend-service base-url="{{pm-onprem-hostname}}/bo-nodo/" />
 			</when>
 			<otherwise>
-				<set-backend-service base-url="{{pm-host}}/bo-nodo" />
+				<set-backend-service base-url="{{pm-onprem-hostname}}/bo-nodo" />
 			</otherwise>
 		</choose>
 	</inbound>
