@@ -130,6 +130,76 @@
           }
         }
       }
+    },
+    "/request-refunds/bancomatpay": {
+      "post": {
+        "tags": [
+          "payment-transactions-controller"
+        ],
+        "operationId": "refundTransaction",
+        "parameters": [
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BPayRefundRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BPayOutcomeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Generic Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -243,6 +313,52 @@
         },
         "required": [
           "correlationId"
+        ]
+      },
+      "BPayRefundRequest": {
+        "required": [
+          "idPagoPa"
+        ],
+        "type": "object",
+        "properties": {
+          "idPagoPa": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "refundAttempt": {
+            "type": "number",
+            "format": "integer"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "BPayOutcomeResponse": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
         ]
       }
     }
