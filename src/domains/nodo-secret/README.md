@@ -15,6 +15,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
+| <a name="module_nodocerts_sa"></a> [nodocerts\_sa](#module\_nodocerts\_sa) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.0.28 |
 
 ## Resources
 
@@ -30,8 +31,12 @@
 | [azurerm_key_vault_key.generated](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_key) | resource |
 | [azurerm_key_vault_secret.client_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.dev_sa_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.dev_sa_name](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
+| [azurerm_storage_share.certs](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_share) | resource |
+| [azurerm_storage_share_file.upload_certs](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_share_file) | resource |
 | [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/client_config) | data source |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -47,6 +52,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_az_nodo_app_kv_ro_policy_name"></a> [az\_nodo\_app\_kv\_ro\_policy\_name](#input\_az\_nodo\_app\_kv\_ro\_policy\_name) | APP for use key vault with access read only | `string` | n/a | yes |
+| <a name="input_az_nodo_sa_share_name"></a> [az\_nodo\_sa\_share\_name](#input\_az\_nodo\_sa\_share\_name) | Azure storage account share name | `string` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
@@ -65,6 +71,7 @@
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_upload_certificates"></a> [upload\_certificates](#input\_upload\_certificates) | n/a | `map(string)` | n/a | yes |
 
 ## Outputs
 

@@ -124,3 +124,12 @@ variable "kv-storage-permissions-read" {
   description = "List of read storage permissions"
   default     = ["Get", "GetSAS", "List", "ListSAS"]
 }
+
+variable "az_nodo_sa_share_name" {
+  type        = string
+  description = "Azure storage account share name"
+}
+
+variable "upload_certificates" {
+  type = map(string)
+}

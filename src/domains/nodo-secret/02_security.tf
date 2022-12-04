@@ -118,20 +118,20 @@ resource "azurerm_key_vault_secret" "client_secret" {
   # depends_on = [azurerm_key_vault_access_policy.owner_policy]
 }
 
-# ## Upload storage name id and storage key for access to storage account, used from pipeline for create secret on aks 
-# FCPS
-# resource "azurerm_key_vault_secret" "dev_sa_name" {
-#   key_vault_id = module.key_vault.id
-#   name         = "az-storage-account-name"
-#   value        = azurerm_storage_account.certs.name
+## Upload storage name id and storage key for access to storage account, used from pipeline for create secret on aks 
 
-#   depends_on = [azurerm_key_vault_access_policy.owner_policy]
-# }
+resource "azurerm_key_vault_secret" "dev_sa_name" {
+  key_vault_id = module.key_vault.id
+  name         = "az-storage-account-name"
+  value        = module.nodocerts_sa.name
 
-# resource "azurerm_key_vault_secret" "dev_sa_key" {
-#   key_vault_id = module.key_vault.id
-#   name         = "az-storage-account-key"
-#   value        = azurerm_storage_account.certs.primary_access_key
+  # depends_on = [azurerm_key_vault_access_policy.owner_policy]
+}
 
-#   depends_on = [azurerm_key_vault_access_policy.owner_policy]
-# }
+resource "azurerm_key_vault_secret" "dev_sa_key" {
+  key_vault_id = module.key_vault.id
+  name         = "az-storage-account-key"
+  value        = module.nodocerts_sa.primary_access_key
+
+  # depends_on = [azurerm_key_vault_access_policy.owner_policy]
+}
