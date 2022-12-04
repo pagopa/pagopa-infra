@@ -1,7 +1,7 @@
 module "nodocerts_sa" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
 
-  name                       = "nodocertsdev" # replace(format("%s-fdr-flows-sa", local.project), "-", "")
+  name                       = replace("${local.product}-${var.domain}-nodocerts-sa", "-", "") # nodocerts<dev|uat|prod>
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   account_replication_type   = "LRS"
