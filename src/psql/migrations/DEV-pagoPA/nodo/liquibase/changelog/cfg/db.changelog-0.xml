@@ -1,0 +1,1500 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd"
+                   >
+
+    <changeSet author="liquibase" id="1666281980396-20">
+        <createSequence maxValue="9223372036854775807" sequenceName="AUTH_PERMISSIONS_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-21">
+        <createSequence maxValue="9223372036854775807" sequenceName="AUTH_ROLES_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-22">
+        <createSequence maxValue="9223372036854775807" sequenceName="AUTH_USERS_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-23">
+        <createSequence maxValue="9223372036854775807" sequenceName="BINARY_FILE_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-24">
+        <createSequence maxValue="9223372036854775807" sequenceName="CANALE_TIPO_VERSAMENTO_SEQ" startValue="1000041"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-25">
+        <createSequence maxValue="9223372036854775807" sequenceName="CANALI_NODO_SEQ" startValue="1000021"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-26">
+        <createSequence maxValue="9223372036854775807" sequenceName="CANALI_SEQ" startValue="1000021"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-27">
+        <createSequence maxValue="9223372036854775807" sequenceName="CDI_DETAIL_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-28">
+        <createSequence maxValue="9223372036854775807" sequenceName="CDI_FASCIA_COSTO_SERVIZIO_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-29">
+        <createSequence maxValue="9223372036854775807" sequenceName="CDI_INFORMAZIONI_SERVIZIO_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-30">
+        <createSequence maxValue="9223372036854775807" sequenceName="CDI_MASTER_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-31">
+        <createSequence maxValue="9223372036854775807" sequenceName="CDI_PREFERENCES_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-32">
+        <createSequence cacheSize="20000" maxValue="9223372036854775807" sequenceName="CDS_CATEGORIE_SEQ" startValue="20001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-33">
+        <createSequence maxValue="9223372036854775807" sequenceName="CDS_SERVIZIO_SEQ" startValue="1000021"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-34">
+        <createSequence maxValue="9223372036854775807" sequenceName="CDS_SOGGETTO_SEQ" startValue="1000021"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-35">
+        <createSequence maxValue="9223372036854775807" sequenceName="CDS_SOGGETTO_SERVIZIO_SEQ" startValue="1000021"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-36">
+        <createSequence maxValue="9223372036854775807" sequenceName="CODIFICHE_PA_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-37">
+        <createSequence maxValue="9223372036854775807" sequenceName="CODIFICHE_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-38">
+        <createSequence maxValue="9223372036854775807" sequenceName="ELENCO_SERVIZI_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-39">
+        <createSequence maxValue="9223372036854775807" sequenceName="FTP_SERVERS_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-40">
+        <createSequence maxValue="999999999" sequenceName="HIBERNATE_SEQUENCE" startValue="1685335"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-41">
+        <createSequence maxValue="9223372036854775807" sequenceName="INFORMATIVE_CONTO_ACCREDITO_DETAIL_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-42">
+        <createSequence maxValue="9223372036854775807" sequenceName="INFORMATIVE_CONTO_ACCREDITO_MASTER_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-43">
+        <createSequence maxValue="9223372036854775807" sequenceName="INFORMATIVE_PA_DETAIL_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-44">
+        <createSequence maxValue="9223372036854775807" sequenceName="INFORMATIVE_PA_FASCE_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-45">
+        <createSequence maxValue="9223372036854775807" sequenceName="INFORMATIVE_PA_MASTER_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-46">
+        <createSequence maxValue="9223372036854775807" sequenceName="INTERMEDIARI_PA_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-47">
+        <createSequence maxValue="9223372036854775807" sequenceName="INTERMEDIARI_PSP_SEQ" startValue="1000021"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-48">
+        <createSequence maxValue="9223372036854775807" sequenceName="PA_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-49">
+        <createSequence maxValue="9223372036854775807" sequenceName="PA_STAZIONE_PA_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-50">
+        <createSequence maxValue="9223372036854775807" sequenceName="PDD_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-51">
+        <createSequence maxValue="9223372036854775807" sequenceName="PSP_CANALE_TIPO_VERSAMENTO_SEQ" startValue="1000041"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-52">
+        <createSequence maxValue="9223372036854775807" sequenceName="PSP_SEQ" startValue="1000021"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-53">
+        <createSequence maxValue="9223372036854775807" sequenceName="QUADRATURE_SCHED_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-54">
+        <createSequence maxValue="9223372036854775807" sequenceName="STAZIONI_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-55">
+        <createSequence maxValue="9223372036854775807" sequenceName="SYNC_STATUS_SEQ" startValue="1000001"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-56">
+        <createSequence maxValue="9223372036854775807" sequenceName="TIPI_VERSAMENTO_SEQ" startValue="1000021"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-57">
+        <createSequence maxValue="9223372036854775807" sequenceName="WFESP_PLUGIN_CONF_SEQ" startValue="1000001"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="1666281980396-1">
+        <createTable  tableName="PSP_CANALE_TIPO_VERSAMENTO">
+            <column defaultValueSequenceNext="PSP_CANALE_TIPO_VERSAMENTO_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PSP_CANALE_TIPO_VERSAMENTO"/>
+            </column>
+            <column name="FK_CANALE_TIPO_VERSAMENTO" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PSP" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-2">
+        <createTable  tableName="CANALI">
+            <column defaultValueSequenceNext="CANALI_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CANALI"/>
+            </column>
+            <column name="ID_CANALE" type="VARCHAR2(35 )">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="CHAR(1 )">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IP" type="VARCHAR2(100 )"/>
+            <column name="NEW_PASSWORD" type="VARCHAR2(15 )"/>
+            <column name="PASSWORD" type="VARCHAR2(15 )"/>
+            <column name="PORTA" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROTOCOLLO" type="VARCHAR2(255 )">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SERVIZIO" type="VARCHAR2(100 )"/>
+            <column name="DESCRIZIONE" type="VARCHAR2(70 )"/>
+            <column name="FK_INTERMEDIARIO_PSP" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROXY_ENABLED" type="CHAR(1 )">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROXY_HOST" type="VARCHAR2(100 )"/>
+            <column name="PROXY_PASSWORD" type="VARCHAR2(15 )"/>
+            <column name="PROXY_PORT" type="NUMBER"/>
+            <column name="PROXY_USERNAME" type="VARCHAR2(15 )"/>
+            <column defaultValue="N" name="CANALE_NODO" type="CHAR(1 )">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="CANALE_AVV" type="CHAR(1 )">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_CANALI_NODO" type="NUMBER"/>
+            <column defaultValueNumeric="120" name="TIMEOUT" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NUM_THREAD" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USE_NEW_FAULT_CODE" type="CHAR(1 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIMEOUT_A" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIMEOUT_B" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIMEOUT_C" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SERVIZIO_NMP" type="VARCHAR2(255 )"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-3">
+        <createTable  tableName="CDI_FASCIA_COSTO_SERVIZIO">
+            <column defaultValueSequenceNext="CDI_FASCIA_COSTO_SERVIZIO_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDI_FASCIA_COSTO_SERVIZIO"/>
+            </column>
+            <column name="IMPORTO_MINIMO" type="FLOAT(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IMPORTO_MASSIMO" type="FLOAT(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COSTO_FISSO" type="FLOAT(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_CDI_DETAIL" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALORE_COMMISSIONE" type="FLOAT(22)"/>
+            <column name="CODICE_CONVENZIONE" type="VARCHAR2(35 )"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-4">
+        <createTable  tableName="TIPI_VERSAMENTO">
+            <column defaultValueSequenceNext="TIPI_VERSAMENTO_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_TIPI_VERSAMENTO"/>
+            </column>
+            <column name="DESCRIZIONE" type="VARCHAR2(35 )"/>
+            <column name="TIPO_VERSAMENTO" type="VARCHAR2(15 )">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-5">
+        <createTable  tableName="CDI_PREFERENCES">
+            <column defaultValueSequenceNext="CDI_PREFERENCES_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK__CDI_PREF__755589F03429BB53"/>
+            </column>
+            <column name="FK_INFORMATIVA_DETAIL" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SELLER" type="VARCHAR2(255 )">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BUYER" type="VARCHAR2(255 )"/>
+            <column name="COSTO_CONVENZIONE" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-6">
+        <createTable  tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER">
+            <column defaultValueSequenceNext="INFORMATIVE_CONTO_ACCREDITO_MASTER_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_CONTO_ACCREDITO_MASTER"/>
+            </column>
+            <column name="DATA_INIZIO_VALIDITA" type="TIMESTAMP(6)"/>
+            <column name="DATA_PUBBLICAZIONE" type="TIMESTAMP(6)"/>
+            <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" type="VARCHAR2(35 )">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RAGIONE_SOCIALE" type="VARCHAR2(70 )"/>
+            <column name="FK_PA" type="NUMBER"/>
+            <column name="FK_BINARY_FILE" type="NUMBER"/>
+            <column name="VERSIONE" type="VARCHAR2(35 )"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-7">
+        <createTable  tableName="CANALI_NODO">
+            <column defaultValueSequenceNext="CANALI_NODO_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CANALI_NODO"/>
+            </column>
+            <column name="REDIRECT_IP" type="VARCHAR2(100)"/>
+            <column name="REDIRECT_PATH" type="VARCHAR2(100)"/>
+            <column name="REDIRECT_PORTA" type="NUMBER"/>
+            <column name="REDIRECT_QUERY_STRING" type="VARCHAR2(255)"/>
+            <column name="MODELLO_PAGAMENTO" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MULTI_PAYMENT" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RAGIONE_SOCIALE" type="VARCHAR2(35)"/>
+            <column name="RPT_RT_COMPLIANT" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="WSAPI" type="VARCHAR2(15)"/>
+            <column name="REDIRECT_PROTOCOLLO" type="VARCHAR2(35)"/>
+            <column name="ID_SERV_PLUGIN" type="VARCHAR2(35)"/>
+            <column name="ID_CLUSTER" type="VARCHAR2(255)"/>
+            <column name="ID_FESP_INSTANCE" type="VARCHAR2(275)"/>
+            <column name="LENTO" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RT_PUSH" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AGID_CHANNEL" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ON_US" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CARRELLO_CARTE" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="RECOVERY" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MARCA_BOLLO_DIGITALE" type="CHAR(1 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="FLAG_IO" type="CHAR(1 BYTE)"/>
+            <column defaultValueNumeric="1" name="VERSIONE_PRIMITIVE" type="NUMBER(2, 0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-8">
+        <createTable  tableName="INFORMATIVE_CONTO_ACCREDITO_DETAIL">
+            <column defaultValueSequenceNext="INFORMATIVE_CONTO_ACCREDITO_DETAIL_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_CONTO_ACCREDITO_DETAIL"/>
+            </column>
+            <column name="IBAN_ACCREDITO" type="VARCHAR2(35)"/>
+            <column name="FK_INFORMATIVA_CONTO_ACCREDITO_MASTER" type="NUMBER"/>
+            <column name="ID_MERCHANT" type="VARCHAR2(15)"/>
+            <column name="CHIAVE_AVVIO" type="VARCHAR2(255)"/>
+            <column name="CHIAVE_ESITO" type="VARCHAR2(255)"/>
+            <column name="ID_BANCA_SELLER" type="VARCHAR2(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-9">
+        <createTable  tableName="CANALE_TIPO_VERSAMENTO">
+            <column defaultValueSequenceNext="CANALE_TIPO_VERSAMENTO_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CANALE_TIPO_VERSAMENTOE"/>
+            </column>
+            <column name="FK_CANALE" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_TIPO_VERSAMENTO" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-10">
+        <createTable  tableName="CDI_INFORMAZIONI_SERVIZIO">
+            <column defaultValueSequenceNext="CDI_INFORMAZIONI_SERVIZIO_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDI_INFORMAZIONI_SERVIZIO"/>
+            </column>
+            <column name="CODICE_LINGUA" type="CHAR(2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIZIONE_SERVIZIO" type="VARCHAR2(140)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DISPONIBILITA_SERVIZIO" type="VARCHAR2(140)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="URL_INFORMAZIONI_CANALE" type="VARCHAR2(255)"/>
+            <column name="FK_CDI_DETAIL" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LIMITAZIONI_SERVIZIO" type="VARCHAR2(140)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-11">
+        <createTable  tableName="INTERMEDIARI_PSP">
+            <column defaultValueSequenceNext="INTERMEDIARI_PSP_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INTERMEDIARI_PSP"/>
+            </column>
+            <column name="ID_INTERMEDIARIO_PSP" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODICE_INTERMEDIARIO" type="VARCHAR2(255)"/>
+            <column defaultValue="N" name="INTERMEDIARIO_AVV" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="INTERMEDIARIO_NODO" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="FAULT_BEAN_ESTESO" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-12">
+        <createTable  tableName="CDI_MASTER">
+            <column defaultValueSequenceNext="CDI_MASTER_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDI_MASTER"/>
+            </column>
+            <column name="ID_INFORMATIVA_PSP" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_INIZIO_VALIDITA" type="TIMESTAMP(6)"/>
+            <column name="DATA_PUBBLICAZIONE" type="TIMESTAMP(6)"/>
+            <column name="LOGO_PSP" type="BYTEA"/>
+            <column name="URL_INFORMAZIONI_PSP" type="VARCHAR2(255)"/>
+            <column name="MARCA_BOLLO_DIGITALE" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STORNO_PAGAMENTO" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PSP" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_BINARY_FILE" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSIONE" type="VARCHAR2(35)"/>
+            <column name="URL_INFORMATIVA_PSP" type="VARCHAR2(255)"/>
+            <column name="URL_CONVENZIONI_PSP" type="VARCHAR2(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-13">
+        <createTable  tableName="CDI_DETAIL">
+            <column defaultValueSequenceNext="CDI_DETAIL_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDI_DETAIL"/>
+            </column>
+            <column name="NOME_SERVIZIO" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRIORITA" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MODELLO_PAGAMENTO" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_CDI_MASTER" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PSP_CANALE_TIPO_VERSAMENTO" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CANALE_APP" type="NUMBER"/>
+            <column name="TAGS" type="VARCHAR2(135)"/>
+            <column name="LOGO_SERVIZIO" type="BYTEA"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-14">
+        <createTable  tableName="PSP">
+            <column defaultValueSequenceNext="PSP_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PSP"/>
+            </column>
+            <column name="ID_PSP" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ABI" type="VARCHAR2(5)"/>
+            <column name="BIC" type="VARCHAR2(11)"/>
+            <column name="DESCRIZIONE" type="VARCHAR2(70)"/>
+            <column name="RAGIONE_SOCIALE" type="VARCHAR2(70)"/>
+            <column name="FK_INT_QUADRATURE" type="NUMBER(19, 0)"/>
+            <column defaultValueNumeric="0" name="STORNO_PAGAMENTO" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FLAG_REPO_COMMISSIONE_CARICO_PA" type="CHAR(1)"/>
+            <column name="EMAIL_REPO_COMMISSIONE_CARICO_PA" type="VARCHAR2(255)"/>
+            <column name="CODICE_MYBANK" type="VARCHAR2(35)"/>
+            <column name="MARCA_BOLLO_DIGITALE" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AGID_PSP" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="PSP_NODO" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="PSP_AVV" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODICE_FISCALE" type="VARCHAR2(16)"/>
+            <column name="VAT_NUMBER" type="VARCHAR2(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-15">
+        <createView fullDefinition="true" viewName="PSP_CANALE_TIPO_VERSAMENTO_CANALE">CREATE OR REPLACE VIEW ${schema}.PSP_CANALE_TIPO_VERSAMENTO_CANALE (OBJ_ID, FK_PSP, FK_CANALE, FK_TIPO_VERSAMENTO) AS SELECT pspctv.OBJ_ID,
+            pspctv.FK_PSP,
+            ctv.FK_CANALE,
+            ctv.FK_TIPO_VERSAMENTO
+            FROM ${schema}.PSP_CANALE_TIPO_VERSAMENTO pspctv
+            JOIN ${schema}.CANALE_TIPO_VERSAMENTO ctv
+            ON pspctv.FK_CANALE_TIPO_VERSAMENTO = ctv.OBJ_ID;</createView>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-16">
+        <createView fullDefinition="true" viewName="ELENCO_SERVIZI_VIEW">CREATE OR REPLACE VIEW ${schema}.ELENCO_SERVIZI_VIEW ("OBJ_ID", "PSP_ID", "PSP_RAG_SOC", "PSP_FLAG_STORNO", "PSP_FLAG_BOLLO", "LOGO_PSP", "FLUSSO_ID", "INTM_ID", "CANALE_ID", "NOME_SERVIZIO", "CANALE_MOD_PAG", "TIPO_VERS_COD", "CODICE_LINGUA", "INF_COND_EC_MAX", "INF_DESC_SERV", "INF_DISP_SERV", "INF_URL_CANALE", "TIMESTAMP_INS", "DATA_VALIDITA", "IMPORTO_MINIMO", "IMPORTO_MASSIMO", "COSTO_FISSO", "TAGS", "LOGO_SERVIZIO", "CANALE_APP", "ON_US", "CARRELLO_CARTE", "CODICE_ABI", "CODICE_MYBANK", "CODICE_CONVENZIONE", "FLAG_IO") AS WITH cte
+            AS (
+            SELECT
+            P.ID_PSP ID_PSP,
+            P.OBJ_ID OBJ_ID,
+            P.RAGIONE_SOCIALE PSP_RAG_SOC,
+            P.ABI ABI,
+            MAX(M.OBJ_ID) ID_CDI_MASTER,
+            P.CODICE_MYBANK CODICE_MYBANK
+            FROM ${schema}.CDI_MASTER M, ${schema}.PSP P
+            WHERE M.FK_PSP=P.OBJ_ID
+            AND P.ENABLED = 'Y'
+            AND M.DATA_INIZIO_VALIDITA &lt; (current_date +1)
+            AND P.ENABLED = 'Y'
+            GROUP BY P.ID_PSP, P.OBJ_ID, P.RAGIONE_SOCIALE, P.ABI, P.CODICE_MYBANK
+            )
+            SELECT
+            ROW_NUMBER() OVER(ORDER BY m.OBJ_ID
+            ASC,d.obj_id,cfcs.obj_id,cis.obj_id,pctv.obj_id,ctv.obj_id,c.OBJ_ID,ip.OBJ_ID,tv.OBJ_ID) AS OBJ_ID,
+            CAST(p.ID_PSP AS VARCHAR(35)) PSP_ID,
+            CAST(p.PSP_RAG_SOC AS VARCHAR(255)) PSP_RAG_SOC,
+            CAST(
+            CASE
+            WHEN m.STORNO_PAGAMENTO = 0 THEN 'N'
+            ELSE 'Y'
+            END AS CHAR(1)
+            ) PSP_FLAG_STORNO,
+            CAST(
+            CASE
+            WHEN m.MARCA_BOLLO_DIGITALE = 1 AND cn.MARCA_BOLLO_DIGITALE = 'Y'
+            THEN 'Y'
+            ELSE 'N'
+            END AS CHAR(1)
+            ) PSP_FLAG_BOLLO,
+            m.LOGO_PSP LOGO_PSP,
+            CAST(m.ID_INFORMATIVA_PSP AS VARCHAR(35)) FLUSSO_ID,
+            CAST(ip.ID_INTERMEDIARIO_PSP AS VARCHAR(35)) INTM_ID,
+            CAST(c.ID_CANALE AS VARCHAR(35)) CANALE_ID,
+            CAST(d.NOME_SERVIZIO AS VARCHAR(255)) NOME_SERVIZIO,
+            CAST(
+            (
+            CASE cn.MODELLO_PAGAMENTO
+            WHEN 'IMMEDIATO' THEN 0
+            WHEN 'IMMEDIATO_MULTIBENEFICIARIO' THEN 1
+            WHEN 'DIFFERITO' THEN 2
+            WHEN 'ATTIVATO_PRESSO_PSP' THEN 4
+            END
+            ) AS NUMERIC(1, 0)
+            ) CANALE_MOD_PAG,
+            CAST(tv.TIPO_VERSAMENTO AS VARCHAR(15)) TIPO_VERS_COD,
+            CAST(cis.CODICE_LINGUA AS CHAR(2)) CODICE_LINGUA,
+            CAST(NULL AS VARCHAR(35)) INF_COND_EC_MAX,
+            CAST(cis.DESCRIZIONE_SERVIZIO AS VARCHAR(140)) INF_DESC_SERV,
+            CAST(cis.DISPONIBILITA_SERVIZIO AS VARCHAR(140)) INF_DISP_SERV,
+            CAST(cis.URL_INFORMAZIONI_CANALE AS VARCHAR(140)) INF_URL_CANALE,
+            current_date AS TIMESTAMP_INS,
+            CAST(m.DATA_INIZIO_VALIDITA AS timestamp) DATA_VALIDITA,
+            CAST(cfcs.IMPORTO_MINIMO AS FLOAT) IMPORTO_MINIMO,
+            CAST(cfcs.IMPORTO_MASSIMO AS FLOAT) IMPORTO_MASSIMO,
+            CAST((cfcs.COSTO_FISSO + cfcs.VALORE_COMMISSIONE) AS FLOAT) COSTO_FISSO,
+            CAST(d.TAGS AS VARCHAR(255)) TAGS,
+            d.LOGO_SERVIZIO LOGO_SERVIZIO,
+            CAST(
+            CASE
+            WHEN d.CANALE_APP = 0 THEN 'N'
+            ELSE 'Y'
+            END AS CHAR(1)
+            ) CANALE_APP,
+            cn.ON_US ON_US,
+            cn.CARRELLO_CARTE CARRELLO_CARTE,
+            p.ABI CODICE_ABI,
+            p.CODICE_MYBANK CODICE_MYBANK,
+            cfcs.CODICE_CONVENZIONE CODICE_CONVENZIONE,
+            cn.FLAG_IO
+            FROM ${schema}.CDI_MASTER m
+            JOIN ${schema}.CDI_DETAIL d ON d.FK_CDI_MASTER = m.OBJ_ID
+            JOIN ${schema}.CDI_FASCIA_COSTO_SERVIZIO cfcs ON cfcs.FK_CDI_DETAIL = d.OBJ_ID
+            JOIN ${schema}.CDI_INFORMAZIONI_SERVIZIO cis ON cis.FK_CDI_DETAIL = d.OBJ_ID
+            JOIN cte p ON m.OBJ_ID = p.ID_CDI_MASTER
+            JOIN ${schema}.PSP_CANALE_TIPO_VERSAMENTO pctv ON pctv.OBJ_ID = d.FK_PSP_CANALE_TIPO_VERSAMENTO
+            JOIN ${schema}.CANALE_TIPO_VERSAMENTO ctv ON ctv.OBJ_ID = pctv.FK_CANALE_TIPO_VERSAMENTO
+            JOIN ${schema}.CANALI c ON c.OBJ_ID = ctv.FK_CANALE
+            JOIN ${schema}.CANALI_NODO cn ON c.FK_CANALI_NODO = cn.OBJ_ID
+            JOIN ${schema}.INTERMEDIARI_PSP ip ON c.FK_INTERMEDIARIO_PSP = ip.OBJ_ID
+            JOIN ${schema}.TIPI_VERSAMENTO tv ON ctv.FK_TIPO_VERSAMENTO = tv.OBJ_ID
+            WHERE c.CANALE_NODO = 'Y' AND C.ENABLED = 'Y' AND ip.enabled='Y'</createView>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-17">-->
+<!--        <createView fullDefinition="true" viewName="CANALI_VIEW">CREATE OR REPLACE VIEW ${schema}."CANALI_VIEW" ("OBJ_ID", "ID_CANALE", "ENABLED", "IP", "PASSWORD", "PORTA", "PROTOCOLLO", "SERVIZIO", "DESCRIZIONE", "FK_INTERMEDIARIO_PSP", "PROXY_ENABLED", "PROXY_HOST", "PROXY_PASSWORD", "PROXY_PORT", "PROXY_USERNAME", "FK_CANALI_NODO", "TIMEOUT", "NUM_THREAD", "USE_NEW_FAULT_CODE", "TIMEOUT_A", "TIMEOUT_B", "TIMEOUT_C", "SERVIZIO_NMP", "REDIRECT_IP", "REDIRECT_PATH", "REDIRECT_PORTA", "REDIRECT_QUERY_STRING", "MODELLO_PAGAMENTO", "AGID_CHANNEL", "RPT_RT_COMPLIANT", "REDIRECT_PROTOCOLLO", "ID_SERV_PLUGIN", "RT_PUSH", "CARRELLO_CARTE", "RECOVERY", "MARCA_BOLLO_DIGITALE", "FLAG_IO") AS SELECT c.OBJ_ID,-->
+<!--            ID_CANALE,-->
+<!--            ENABLED,-->
+<!--            IP,-->
+<!--            PASSWORD,-->
+<!--            PORTA,-->
+<!--            PROTOCOLLO,-->
+<!--            SERVIZIO,-->
+<!--            DESCRIZIONE,-->
+<!--            FK_INTERMEDIARIO_PSP,-->
+<!--            PROXY_ENABLED,-->
+<!--            PROXY_HOST,-->
+<!--            PROXY_PASSWORD,-->
+<!--            PROXY_PORT,-->
+<!--            PROXY_USERNAME,-->
+<!--            FK_CANALI_NODO,-->
+<!--            TIMEOUT,-->
+<!--            NUM_THREAD,-->
+<!--            USE_NEW_FAULT_CODE,-->
+<!--            TIMEOUT_A,-->
+<!--            TIMEOUT_B,-->
+<!--            TIMEOUT_C,-->
+<!--            SERVIZIO_NMP,-->
+<!--            REDIRECT_IP,-->
+<!--            REDIRECT_PATH,-->
+<!--            REDIRECT_PORTA,-->
+<!--            REDIRECT_QUERY_STRING,-->
+<!--            MODELLO_PAGAMENTO,-->
+<!--            AGID_CHANNEL,-->
+<!--            RPT_RT_COMPLIANT,-->
+<!--            REDIRECT_PROTOCOLLO,-->
+<!--            ID_SERV_PLUGIN,-->
+<!--            RT_PUSH,-->
+<!--            CARRELLO_CARTE,-->
+<!--            RECOVERY,-->
+<!--            MARCA_BOLLO_DIGITALE,-->
+<!--            FLAG_IO FROM ${schema}."CANALI" c JOIN ${schema}."CANALI_NODO" cn ON c."FK_CANALI_NODO" = cn."OBJ_ID"</createView>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-18">
+        <createView fullDefinition="true" viewName="CDI_PREFERENCES_VIEW">CREATE OR REPLACE VIEW CDI_PREFERENCES_VIEW ("OBJ_ID", "SELLER", "BUYER", "COSTO_CONVENZIONE", "ID_CDI_MASTER") AS (
+            SELECT
+            pr.OBJ_ID OBJ_ID,
+            pr.SELLER SELLER,
+            pr.BUYER BUYER,
+            pr.COSTO_CONVENZIONE COSTO_CONVENZIONE,
+            MAX(mas.OBJ_ID) ID_CDI_MASTER
+            FROM ${schema}.CDI_PREFERENCES pr
+            INNER JOIN ${schema}.CDI_DETAIL det ON det.OBJ_ID = pr.FK_INFORMATIVA_DETAIL
+            INNER JOIN ${schema}.CDI_MASTER mas ON mas.OBJ_ID = det.FK_CDI_MASTER
+            WHERE mas.DATA_INIZIO_VALIDITA &lt; (current_date +1)
+            GROUP BY pr.OBJ_ID, pr.SELLER, pr.BUYER, pr.COSTO_CONVENZIONE
+            )</createView>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-19">
+        <createView fullDefinition="true" viewName="IBAN_VALIDI_PER_PA">CREATE OR REPLACE VIEW ${schema}.IBAN_VALIDI_PER_PA (FK_PA, IBAN_ACCREDITO, DATA_INIZIO_VALIDITA, DATA_PUBBLICAZIONE, RAGIONE_SOCIALE, ID_MERCHANT, ID_BANCA_SELLER, CHIAVE_AVVIO, CHIAVE_ESITO, OBJ_ID, MASTER_OBJ) AS select
+            mas.FK_PA,
+            det.IBAN_ACCREDITO,
+            mas.DATA_INIZIO_VALIDITA,
+            mas.DATA_PUBBLICAZIONE,
+            mas.RAGIONE_SOCIALE,
+            nullif(det.ID_MERCHANT, '') ID_MERCHANT,
+            nullif(det.ID_BANCA_SELLER,'') ID_BANCA_SELLER,
+            nullif(det.CHIAVE_AVVIO,'') CHIAVE_AVVIO,
+            nullif(det.CHIAVE_ESITO,'') CHIAVE_ESITO,
+            det.OBJ_ID OBJ_ID,
+            mas.OBJ_ID MASTER_OBJ
+            from ${schema}.INFORMATIVE_CONTO_ACCREDITO_MASTER mas
+            inner join (
+            select
+            max(OBJ_ID) OBJ_ID
+            FROM ${schema}.INFORMATIVE_CONTO_ACCREDITO_MASTER
+            where DATA_INIZIO_VALIDITA &lt;= CURRENT_TIMESTAMP
+            GROUP BY FK_PA
+            HAVING max(DATA_INIZIO_VALIDITA) &lt;= CURRENT_TIMESTAMP
+            )  right_id_by_pk
+            on mas.OBJ_ID = right_id_by_pk.OBJ_ID
+            inner join ${schema}.INFORMATIVE_CONTO_ACCREDITO_DETAIL det
+            on mas.OBJ_ID = det.FK_INFORMATIVA_CONTO_ACCREDITO_MASTER</createView>
+    </changeSet>
+
+    <changeSet author="liquibase" id="1666281980396-58">
+        <createTable  tableName="AUTH_ACCOUNT_ROLES">
+            <column name="ACCOUNT_ID" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE_ID" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-59">
+        <createTable  tableName="AUTH_PERMISSIONS">
+            <column defaultValueSequenceNext="AUTH_PERMISSIONS_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_AUTH_PERMISSIONS"/>
+            </column>
+            <column name="PERM_ACTION" type="VARCHAR2(250)"/>
+            <column name="PERM_TYPE" type="VARCHAR2(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERM_RECIPIENT" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERM_TARGET" type="VARCHAR2(250)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-60">
+        <createTable  tableName="AUTH_ROLES">
+            <column defaultValueSequenceNext="AUTH_ROLES_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_AUTH_ROLES"/>
+            </column>
+            <column name="OPTLOCK" type="NUMBER"/>
+            <column name="FUNCTIONAL_ROLE" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BUSINESS_ROLE" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONDITIONAL_ROLE" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEFAULT_ROLE" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLE_NAME" type="VARCHAR2(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-61">
+        <createTable  tableName="AUTH_ROLE_GROUPS">
+            <column name="ROLE_ID" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GROUP_ID" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-62">
+        <createTable  tableName="AUTH_USERS">
+            <column defaultValueSequenceNext="AUTH_USERS_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_AUTH_USERS"/>
+            </column>
+            <column name="OPTLOCK" type="NUMBER"/>
+            <column name="USER_CODE" type="VARCHAR2(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATION_DATE" type="TIMESTAMP(6)"/>
+            <column name="USER_EMAIL" type="VARCHAR2(100)"/>
+            <column name="EXPIRY_DATE" type="TIMESTAMP(6)"/>
+            <column name="FAILED_LOGINS" type="NUMBER(19, 0)"/>
+            <column name="USER_FIRSTNAME" type="VARCHAR2(50)"/>
+            <column name="LAST_LOGIN_DATE" type="TIMESTAMP(6)"/>
+            <column name="USER_PASSWORD" type="VARCHAR2(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSW_EXPIRY_DATE" type="TIMESTAMP(6)"/>
+            <column name="USER_STATUS" type="VARCHAR2(15)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_SURNAME" type="VARCHAR2(50)"/>
+            <column name="USER_NAME" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-63">
+        <createTable  tableName="BINARY_FILE">
+            <column defaultValueSequenceNext="BINARY_FILE_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_BINARY_FILE"/>
+            </column>
+            <column name="FILE_CONTENT" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FILE_HASH" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FILE_SIZE" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SIGNATURE_TYPE" type="VARCHAR2(30)"/>
+            <column name="XML_FILE_CONTENT" type="CLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-64">
+        <createTable  tableName="CACHE">
+            <column name="ID" type="VARCHAR2(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIME" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CACHE" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION" type="VARCHAR2(32)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-66">
+        <createTable  tableName="CDS_CATEGORIE">
+            <column defaultValueSequenceNext="CDS_CATEGORIE_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDS_CATEGORIE"/>
+            </column>
+            <column name="DESCRIZIONE" type="VARCHAR2(70)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-67">
+        <createTable  tableName="CDS_SERVIZIO">
+            <column defaultValueSequenceNext="CDS_SERVIZIO_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDS_SERVIZIO"/>
+            </column>
+            <column name="ID_SERVIZIO" type="VARCHAR2(5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIZIONE_SERVIZIO" type="VARCHAR2(70)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="XSD_RIFERIMENTO" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="2" name="VERSIONE" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="CATEGORIA_ID" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-68">
+        <createTable  tableName="CDS_SOGGETTO">
+            <column defaultValueSequenceNext="CDS_SOGGETTO_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDS_SOGGETTO"/>
+            </column>
+            <column name="ID_DOMINIO" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIZIONE_ENTE" type="VARCHAR2(70)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-69">
+        <createTable  tableName="CDS_SOGGETTO_SERVIZIO">
+            <column defaultValueSequenceNext="CDS_SOGGETTO_SERVIZIO_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CDS_SOGGETTO_SERVIZIO"/>
+            </column>
+            <column name="FK_CDS_SOGGETTO" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_CDS_SERVIZIO" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_INIZIO_VALIDITA" type="TIMESTAMP(6)"/>
+            <column name="DATA_FINE_VALIDITA" type="TIMESTAMP(6)"/>
+            <column defaultValue="N" name="COMMISSIONE" type="CHAR(1 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_SOGGETTO_SERVIZIO" type="VARCHAR2(5)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-70">
+        <createTable  tableName="CODIFICHE">
+            <column defaultValueSequenceNext="CODIFICHE_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CODIFICHE"/>
+            </column>
+            <column name="ID_CODIFICA" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIZIONE" type="VARCHAR2(35)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-71">
+        <createTable  tableName="CODIFICHE_PA">
+            <column defaultValueSequenceNext="CODIFICHE_PA_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_CODIFICHE_PA"/>
+            </column>
+            <column name="CODICE_PA" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_CODIFICA" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_PA" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-72">
+        <createTable  tableName="CONFIGURATION_KEYS">
+            <column name="CONFIG_CATEGORY" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIG_KEY" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIG_VALUE" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIG_DESCRIPTION" type="VARCHAR2(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-73">
+        <createTable  tableName="DENYLIST">
+            <column name="FK_PSP" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_DENYLIST"/>
+            </column>
+            <column name="FK_CANALE" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_DENYLIST"/>
+            </column>
+            <column name="FK_PA" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_DENYLIST"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-74">
+        <createTable  tableName="DIZIONARIO_METADATI">
+            <column name="CHIAVE" type="VARCHAR2(140)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIZIONE" type="VARCHAR2(200)"/>
+            <column name="DATA_INIZIO_VALIDITA" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_FINE_VALIDITA" type="TIMESTAMP(6)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-75">
+        <createTable  tableName="ELENCO_SERVIZI">
+            <column defaultValueSequenceNext="ELENCO_SERVIZI_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_ELENCO_SERVIZI"/>
+            </column>
+            <column name="PSP_ID" type="VARCHAR2(35)"/>
+            <column name="FLUSSO_ID" type="VARCHAR2(35)"/>
+            <column name="PSP_RAG_SOC" type="VARCHAR2(255)"/>
+            <column name="PSP_FLAG_STORNO" type="CHAR(1 BYTE)"/>
+            <column name="PSP_FLAG_BOLLO" type="CHAR(1 BYTE)"/>
+            <column name="INTM_ID" type="VARCHAR2(35)"/>
+            <column name="CANALE_ID" type="VARCHAR2(35)"/>
+            <column name="NOME_SERVIZIO" type="VARCHAR2(35)"/>
+            <column name="CANALE_MOD_PAG" type="NUMBER(19, 0)"/>
+            <column name="TIPO_VERS_COD" type="VARCHAR2(255)"/>
+            <column name="CODICE_LINGUA" type="CHAR(2 BYTE)"/>
+            <column name="INF_COND_EC_MAX" type="VARCHAR2(35)"/>
+            <column name="INF_DESC_SERV" type="VARCHAR2(511)"/>
+            <column name="INF_DISP_SERV" type="VARCHAR2(511)"/>
+            <column name="INF_URL_CANALE" type="VARCHAR2(255)"/>
+            <column name="IMPORTO_MINIMO" type="FLOAT(22)"/>
+            <column name="IMPORTO_MASSIMO" type="FLOAT(22)"/>
+            <column name="COSTO_FISSO" type="FLOAT(22)"/>
+            <column name="TIMESTAMP_INS" type="TIMESTAMP(6)"/>
+            <column name="DATA_VALIDITA" type="TIMESTAMP(6)"/>
+            <column name="LOGO_PSP" type="BYTEA"/>
+            <column name="TAGS" type="VARCHAR2(135)"/>
+            <column name="LOGO_SERVIZIO" type="BYTEA"/>
+            <column name="CANALE_APP" type="CHAR(1 BYTE)"/>
+            <column name="ON_US" type="CHAR(1 BYTE)"/>
+            <column name="CARRELLO_CARTE" type="CHAR(1 BYTE)"/>
+            <column name="CODICE_ABI" type="VARCHAR2(5)"/>
+            <column name="CODICE_MYBANK" type="VARCHAR2(35)"/>
+            <column name="CODICE_CONVENZIONE" type="VARCHAR2(35)"/>
+            <column name="FLAG_IO" type="CHAR(1 BYTE)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-76">
+        <createTable  tableName="FTP_SERVERS">
+            <column defaultValueSequenceNext="FTP_SERVERS_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK__FTP_SERV__755589F079FD19BE"/>
+            </column>
+            <column name="HOST" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PORT" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERNAME" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROOT_PATH" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SERVICE" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TYPE" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IN_PATH" type="VARCHAR2(255)"/>
+            <column name="OUT_PATH" type="VARCHAR2(255)"/>
+            <column name="HISTORY_PATH" type="VARCHAR2(255)"/>
+            <column name="ENABLED" type="CHAR(1 BYTE)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-77">
+        <createTable  tableName="GDE_CONFIG">
+            <column name="PRIMITIVA" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TYPE" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EVENT_HUB" type="NUMBER(1, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EVENT_HUB_PAYLOAD" type="NUMBER(1, 0)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-78">
+        <createTable  tableName="INFORMATIVE_PA_DETAIL">
+            <column defaultValueSequenceNext="INFORMATIVE_PA_DETAIL_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_PA_DETAIL"/>
+            </column>
+            <column name="FLAG_DISPONIBILITA" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GIORNO" type="VARCHAR2(35)"/>
+            <column name="TIPO" type="VARCHAR2(35)"/>
+            <column name="FK_INFORMATIVA_PA_MASTER" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-79">
+        <createTable  tableName="INFORMATIVE_PA_FASCE">
+            <column defaultValueSequenceNext="INFORMATIVE_PA_FASCE_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_PA_FASCE"/>
+            </column>
+            <column name="ORA_A" type="VARCHAR2(35)"/>
+            <column name="ORA_DA" type="VARCHAR2(35)"/>
+            <column name="FK_INFORMATIVA_PA_DETAIL" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-80">
+        <createTable  tableName="INFORMATIVE_PA_MASTER">
+            <column defaultValueSequenceNext="INFORMATIVE_PA_MASTER_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INFORMATIVE_PA_MASTER"/>
+            </column>
+            <column name="ID_INFORMATIVA_PA" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_INIZIO_VALIDITA" type="TIMESTAMP(6)"/>
+            <column name="DATA_PUBBLICAZIONE" type="TIMESTAMP(6)"/>
+            <column name="FK_PA" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_BINARY_FILE" type="NUMBER"/>
+            <column name="VERSIONE" type="VARCHAR2(35)"/>
+            <column name="PAGAMENTI_PRESSO_PSP" type="NUMBER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-81">
+        <createTable  tableName="INTERMEDIARI_PA">
+            <column defaultValueSequenceNext="INTERMEDIARI_PA_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_INTERMEDIARI_PA"/>
+            </column>
+            <column name="ID_INTERMEDIARIO_PA" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CODICE_INTERMEDIARIO" type="VARCHAR2(255)"/>
+            <column defaultValue="N" name="FAULT_BEAN_ESTESO" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-82">
+        <createTable  tableName="PA">
+            <column defaultValueSequenceNext="PA_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PA"/>
+            </column>
+            <column name="ID_DOMINIO" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIZIONE" type="VARCHAR2(70)"/>
+            <column name="RAGIONE_SOCIALE" type="VARCHAR2(70)"/>
+            <column name="FK_INT_QUADRATURE" type="NUMBER"/>
+            <column name="FLAG_REPO_COMMISSIONE_CARICO_PA" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL_REPO_COMMISSIONE_CARICO_PA" type="VARCHAR2(255)"/>
+            <column name="INDIRIZZO_DOMICILIO_FISCALE" type="VARCHAR2(255)"/>
+            <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE" type="VARCHAR2(2)"/>
+            <column name="COMUNE_DOMICILIO_FISCALE" type="VARCHAR2(255)"/>
+            <column name="DENOMINAZIONE_DOMICILIO_FISCALE" type="VARCHAR2(255)"/>
+            <column name="PAGAMENTO_PRESSO_PSP" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RENDICONTAZIONE_FTP" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RENDICONTAZIONE_ZIP" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="REVOCA_PAGAMENTO" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CAP_DOMICILIO_FISCALE" type="CHAR(5 BYTE)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-83">
+        <createTable  tableName="PA_STAZIONE_PA">
+            <column defaultValueSequenceNext="PA_STAZIONE_PA_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PA_STAZIONE_PA"/>
+            </column>
+            <column name="PROGRESSIVO" type="NUMBER"/>
+            <column name="FK_PA" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FK_STAZIONE" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUX_DIGIT" type="NUMBER"/>
+            <column name="SEGREGAZIONE" type="NUMBER"/>
+            <column name="QUARTO_MODELLO" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="STAZIONE_NODO" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="STAZIONE_AVV" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="BROADCAST" type="CHAR(1 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="N" name="PAGAMENTO_SPONTANEO" type="CHAR(1 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-84">
+        <createTable  tableName="PDD">
+            <column defaultValueSequenceNext="PDD_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PDD"/>
+            </column>
+            <column name="ID_PDD" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIZIONE" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IP" type="VARCHAR2(15)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PORTA" type="NUMBER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-85">
+        <createTable  tableName="QUADRATURE_SCHED">
+            <column defaultValueSequenceNext="QUADRATURE_SCHED_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_QUADRATURE_SCHED"/>
+            </column>
+            <column name="ID_SOGGETTO" type="VARCHAR2(35)"/>
+            <column name="MODALITA" type="VARCHAR2(35)"/>
+            <column name="TIPO_QUAD" type="VARCHAR2(35)"/>
+            <column name="DAYS_OF_THE_WEEK_CODE" type="VARCHAR2(7)"/>
+            <column name="JOB_START_DATE" type="TIMESTAMP(6)"/>
+            <column name="ENABLED" type="CHAR(1 BYTE)"/>
+            <column name="ON_CLICK" type="CHAR(1 BYTE)"/>
+            <column name="JOB_END_HOUR" type="TIMESTAMP(6)"/>
+            <column name="JOB_START_HOUR" type="TIMESTAMP(6)"/>
+            <column name="TIMESTAMP_LAST_ACTION" type="TIMESTAMP(6)"/>
+            <column name="TIMESTAMP_END" type="TIMESTAMP(6)"/>
+            <column name="TIMESTAMP_BEGIN" type="TIMESTAMP(6)"/>
+            <column name="QUAD_LAST_DATE" type="TIMESTAMP(6)"/>
+            <column defaultValue="N" name="TYPE_INIZIO_GIORNATA" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-86">
+        <createTable  tableName="STAZIONI">
+            <column defaultValueSequenceNext="STAZIONI_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_STAZIONI"/>
+            </column>
+            <column name="ID_STAZIONE" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IP" type="VARCHAR2(100)"/>
+            <column name="NEW_PASSWORD" type="VARCHAR2(15)"/>
+            <column name="PASSWORD" type="VARCHAR2(15)"/>
+            <column name="PORTA" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROTOCOLLO" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REDIRECT_IP" type="VARCHAR2(100)"/>
+            <column name="REDIRECT_PATH" type="VARCHAR2(100)"/>
+            <column name="REDIRECT_PORTA" type="NUMBER"/>
+            <column name="REDIRECT_QUERY_STRING" type="VARCHAR2(255)"/>
+            <column name="SERVIZIO" type="VARCHAR2(100)"/>
+            <column name="RT_ENABLED" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SERVIZIO_POF" type="VARCHAR2(100)"/>
+            <column name="FK_INTERMEDIARIO_PA" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REDIRECT_PROTOCOLLO" type="VARCHAR2(35)"/>
+            <column name="PROTOCOLLO_4MOD" type="VARCHAR2(255)"/>
+            <column name="IP_4MOD" type="VARCHAR2(100)"/>
+            <column name="PORTA_4MOD" type="NUMBER"/>
+            <column name="SERVIZIO_4MOD" type="VARCHAR2(255)"/>
+            <column name="PROXY_ENABLED" type="CHAR(1)"/>
+            <column name="PROXY_HOST" type="VARCHAR2(100)"/>
+            <column name="PROXY_PORT" type="NUMBER"/>
+            <column name="PROXY_USERNAME" type="VARCHAR2(15)"/>
+            <column name="PROXY_PASSWORD" type="VARCHAR2(15)"/>
+            <column name="PROTOCOLLO_AVV" type="VARCHAR2(255)"/>
+            <column name="IP_AVV" type="VARCHAR2(100)"/>
+            <column name="PORTA_AVV" type="NUMBER"/>
+            <column name="SERVIZIO_AVV" type="VARCHAR2(255)"/>
+            <column defaultValueNumeric="120" name="TIMEOUT" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NUM_THREAD" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIMEOUT_A" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIMEOUT_B" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TIMEOUT_C" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="Y" name="FLAG_ONLINE" type="CHAR(1 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1.0" name="VERSIONE" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SERVIZIO_NMP" type="VARCHAR2(255)"/>
+            <column defaultValue="N" name="INVIO_RT_ISTANTANEO" type="CHAR(1 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="1" name="VERSIONE_PRIMITIVE" type="NUMBER(2, 0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-87">
+        <createTable  tableName="SYNC_STATUS">
+            <column defaultValueSequenceNext="SYNC_STATUS_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_SYNC_STATUS"/>
+            </column>
+            <column name="SNAPSHOT_VERSION" type="NUMBER(19, 0)"/>
+            <column name="STATUS" type="CHAR(1 BYTE)"/>
+            <column name="TIMESTAMP_SNAPSHOT" type="TIMESTAMP(6)"/>
+            <column name="SYNC_FESP" type="CHAR(1 BYTE)"/>
+            <column name="SYNC_PM" type="CHAR(1 BYTE)"/>
+            <column name="SYNC_NODO_4" type="CHAR(1 BYTE)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-88">
+        <createTable  tableName="TEMPLATE_MARKDOWN">
+            <column name="NAME" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTENT" type="VARCHAR2(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR2(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-89">
+        <createTable  tableName="WFESP_PLUGIN_CONF">
+            <column defaultValueSequenceNext="WFESP_PLUGIN_CONF_SEQ" name="OBJ_ID" type="NUMBER">
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_WFESP_PLUGIN_CONF"/>
+            </column>
+            <column name="ID_SERV_PLUGIN" type="VARCHAR2(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROFILO_PAG_CONST_STRING" type="VARCHAR2(150)"/>
+            <column name="PROFILO_PAG_SOAP_RULE" type="VARCHAR2(150)"/>
+            <column name="PROFILO_PAG_RPT_XPATH" type="VARCHAR2(150)"/>
+            <column name="ID_BEAN" type="VARCHAR2(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-92">
+        <createIndex  indexName="CDS_CATEGORIE_DESCRIZIONE_UNIQUE" tableName="CDS_CATEGORIE" unique="true">
+            <column name="DESCRIZIONE"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-93">-->
+<!--        <addUniqueConstraint columnNames="DESCRIZIONE" constraintName="CDS_CATEGORIE_DESCRIZIONE_UNIQUE"  tableName="CDS_CATEGORIE"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-94">
+        <createIndex  indexName="CDS_SOGGETTO_SERVIZIO_ID_SOGGETTO_SERVIZIO_UNIQUE" tableName="CDS_SOGGETTO_SERVIZIO" unique="true">
+            <column name="ID_SOGGETTO_SERVIZIO"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-95">-->
+<!--        <addUniqueConstraint columnNames="ID_SOGGETTO_SERVIZIO" constraintName="CDS_SOGGETTO_SERVIZIO_ID_SOGGETTO_SERVIZIO_UNIQUE"  tableName="CDS_SOGGETTO_SERVIZIO"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-96">
+        <createIndex  indexName="UQ_CONFIGURATION_KEYS" tableName="CONFIGURATION_KEYS" unique="true">
+            <column name="CONFIG_CATEGORY"/>
+            <column name="CONFIG_KEY"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-97">-->
+<!--        <addUniqueConstraint columnNames="CONFIG_CATEGORY, CONFIG_KEY" constraintName="UQ_CONFIGURATION_KEYS"  tableName="CONFIGURATION_KEYS"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-98">
+        <createIndex  indexName="UQ_ID_CANALE" tableName="CANALI" unique="true">
+            <column name="ID_CANALE"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-99">-->
+<!--        <addUniqueConstraint columnNames="ID_CANALE" constraintName="UQ_ID_CANALE"  tableName="CANALI"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-100">
+        <createIndex  indexName="UQ_ID_CODIFICA" tableName="CODIFICHE" unique="true">
+            <column name="ID_CODIFICA"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-101">-->
+<!--        <addUniqueConstraint columnNames="ID_CODIFICA" constraintName="UQ_ID_CODIFICA"  tableName="CODIFICHE"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-102">
+        <createIndex  indexName="UQ_ID_DOMINIO" tableName="PA" unique="true">
+            <column name="ID_DOMINIO"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-103">-->
+<!--        <addUniqueConstraint columnNames="ID_DOMINIO" constraintName="UQ_ID_DOMINIO"  tableName="PA"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-104">
+        <createIndex  indexName="UQ_ID_INTERMEDIARIO_PA" tableName="INTERMEDIARI_PA" unique="true">
+            <column name="ID_INTERMEDIARIO_PA"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-105">-->
+<!--        <addUniqueConstraint columnNames="ID_INTERMEDIARIO_PA" constraintName="UQ_ID_INTERMEDIARIO_PA"  tableName="INTERMEDIARI_PA"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-106">
+        <createIndex  indexName="UQ_ID_INTERMEDIARIO_PSP" tableName="INTERMEDIARI_PSP" unique="true">
+            <column name="ID_INTERMEDIARIO_PSP"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-107">-->
+<!--        <addUniqueConstraint columnNames="ID_INTERMEDIARIO_PSP" constraintName="UQ_ID_INTERMEDIARIO_PSP"  tableName="INTERMEDIARI_PSP"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-108">
+        <createIndex  indexName="UQ_ID_PSP" tableName="PSP" unique="true">
+            <column name="ID_PSP"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-109">-->
+<!--        <addUniqueConstraint columnNames="ID_PSP" constraintName="UQ_ID_PSP"  tableName="PSP"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-110">
+        <createIndex  indexName="UQ_ID_SERV_PLUGIN" tableName="WFESP_PLUGIN_CONF" unique="true">
+            <column name="ID_SERV_PLUGIN"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-111">-->
+<!--        <addUniqueConstraint columnNames="ID_SERV_PLUGIN" constraintName="UQ_ID_SERV_PLUGIN"  tableName="WFESP_PLUGIN_CONF"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-112">
+        <createIndex  indexName="UQ_ID_STAZIONE" tableName="STAZIONI" unique="true">
+            <column name="ID_STAZIONE"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-113">-->
+<!--        <addUniqueConstraint columnNames="ID_STAZIONE" constraintName="UQ_ID_STAZIONE"  tableName="STAZIONI"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-114">
+        <createIndex  indexName="UQ_INFORMATIVA_CDI" tableName="CDI_MASTER" unique="true">
+            <column name="FK_PSP"/>
+            <column name="ID_INFORMATIVA_PSP"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-115">-->
+<!--        <addUniqueConstraint columnNames="FK_PSP, ID_INFORMATIVA_PSP" constraintName="UQ_INFORMATIVA_CDI"  tableName="CDI_MASTER"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-116">
+        <createIndex  indexName="UQ_INFORMATIVA_CONTO_ACCREDITO" tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER" unique="true">
+            <column name="FK_PA"/>
+            <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-117">-->
+<!--        <addUniqueConstraint columnNames="FK_PA, ID_INFORMATIVA_CONTO_ACCREDITO_PA" constraintName="UQ_INFORMATIVA_CONTO_ACCREDITO"  tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-118">
+        <createIndex  indexName="UQ_INFORMATIVA_PA" tableName="INFORMATIVE_PA_MASTER" unique="true">
+            <column name="FK_PA"/>
+            <column name="ID_INFORMATIVA_PA"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-119">-->
+<!--        <addUniqueConstraint columnNames="FK_PA, ID_INFORMATIVA_PA" constraintName="UQ_INFORMATIVA_PA"  tableName="INFORMATIVE_PA_MASTER"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-120">
+        <createIndex  indexName="UQ_PDD" tableName="PDD" unique="true">
+            <column name="ID_PDD"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-121">-->
+<!--        <addUniqueConstraint columnNames="ID_PDD" constraintName="UQ_PDD"  tableName="PDD"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-122">
+        <createIndex  indexName="UQ_TEMPLATE_MARKDOWN" tableName="TEMPLATE_MARKDOWN" unique="true">
+            <column name="NAME"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-123">-->
+<!--        <addUniqueConstraint columnNames="NAME" constraintName="UQ_TEMPLATE_MARKDOWN"  tableName="TEMPLATE_MARKDOWN"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-124">
+        <createIndex  indexName="UQ_TIPO_VERSAMENTO" tableName="TIPI_VERSAMENTO" unique="true">
+            <column name="TIPO_VERSAMENTO"/>
+        </createIndex>
+    </changeSet>
+<!--    <changeSet author="liquibase" id="1666281980396-125">-->
+<!--        <addUniqueConstraint columnNames="TIPO_VERSAMENTO" constraintName="UQ_TIPO_VERSAMENTO"  tableName="TIPI_VERSAMENTO"/>-->
+<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281980396-126">
+        <addForeignKeyConstraint baseColumnNames="FK_BINARY_FILE" baseTableName="INFORMATIVE_CONTO_ACCREDITO_MASTER" constraintName="FK_BINARY_FILE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="BINARY_FILE" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-127">
+        <addForeignKeyConstraint baseColumnNames="FK_CANALE_TIPO_VERSAMENTO" baseTableName="PSP_CANALE_TIPO_VERSAMENTO" constraintName="FK_CANALE_TIPO_VERSAMENTO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CANALE_TIPO_VERSAMENTO" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-128">
+        <addForeignKeyConstraint baseColumnNames="FK_CANALE" baseTableName="CANALE_TIPO_VERSAMENTO" constraintName="FK_CANALE_TIPO_VERSAMENTO_CANALI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CANALI" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-129">
+        <addForeignKeyConstraint baseColumnNames="FK_TIPO_VERSAMENTO" baseTableName="CANALE_TIPO_VERSAMENTO" constraintName="FK_CANALE_TIPO_VERSAMENTO_TIPO_VERSAMENTO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="TIPI_VERSAMENTO" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-130">
+        <addForeignKeyConstraint baseColumnNames="FK_INTERMEDIARIO_PSP" baseTableName="CANALI" constraintName="FK_CANALI_INTERMEDIARI_PSP" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="INTERMEDIARI_PSP" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-131">
+        <addForeignKeyConstraint baseColumnNames="FK_CANALI_NODO" baseTableName="CANALI" constraintName="FK_CANALI_NODO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CANALI_NODO" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-132">
+        <addForeignKeyConstraint baseColumnNames="ID_SERV_PLUGIN" baseTableName="CANALI_NODO" constraintName="FK_CANALI_SERV_PLUGIN" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID_SERV_PLUGIN" referencedTableName="WFESP_PLUGIN_CONF" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-133">
+        <addForeignKeyConstraint baseColumnNames="CATEGORIA_ID" baseTableName="CDS_SERVIZIO" constraintName="FK_CATEGORIA_ID_CDSSERVIZIO_CDSCATEGORIE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CDS_CATEGORIE" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-134">
+        <addForeignKeyConstraint baseColumnNames="FK_CDI_MASTER" baseTableName="CDI_DETAIL" constraintName="FK_CDI_DETAIL_TO_CDI_MASTER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CDI_MASTER" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-135">
+        <addForeignKeyConstraint baseColumnNames="FK_PSP_CANALE_TIPO_VERSAMENTO" baseTableName="CDI_DETAIL" constraintName="FK_CDI_DETAIL_TO_PSP_CANALE_TIPO_VERSAMENTO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="PSP_CANALE_TIPO_VERSAMENTO" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-136">
+        <addForeignKeyConstraint baseColumnNames="FK_CDI_DETAIL" baseTableName="CDI_FASCIA_COSTO_SERVIZIO" constraintName="FK_CDI_FASCIA_COSTO_SERVIZIO_TO_CDI_DETAIL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CDI_DETAIL" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-137">
+        <addForeignKeyConstraint baseColumnNames="FK_CDI_DETAIL" baseTableName="CDI_INFORMAZIONI_SERVIZIO" constraintName="FK_CDI_INFORMAZIONI_SERVIZIO_TO_CDI_DETAIL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CDI_DETAIL" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-138">
+        <addForeignKeyConstraint baseColumnNames="FK_BINARY_FILE" baseTableName="CDI_MASTER" constraintName="FK_CDI_MASTER_TO_BINARY_FILE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="BINARY_FILE" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-139">
+        <addForeignKeyConstraint baseColumnNames="FK_PSP" baseTableName="CDI_MASTER" constraintName="FK_CDI_MASTER_TO_PSP" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="PSP" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-140">
+        <addForeignKeyConstraint baseColumnNames="FK_CDS_SERVIZIO" baseTableName="CDS_SOGGETTO_SERVIZIO" constraintName="FK_CDS_SOGGETTO_SERVIZIO_TO_CDS_SERVIZIO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CDS_SERVIZIO" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-141">
+        <addForeignKeyConstraint baseColumnNames="FK_CDS_SOGGETTO" baseTableName="CDS_SOGGETTO_SERVIZIO" constraintName="FK_CDS_SOGGETTO_SERVIZIO_TO_CDS_SOGGETTO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CDS_SOGGETTO" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-142">
+        <addForeignKeyConstraint baseColumnNames="FK_CODIFICA" baseTableName="CODIFICHE_PA" constraintName="FK_CODIFICHE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CODIFICHE" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-143">
+        <addForeignKeyConstraint baseColumnNames="FK_PA" baseTableName="CODIFICHE_PA" constraintName="FK_CODIFICHE_PA_PA" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="PA" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-144">
+        <addForeignKeyConstraint baseColumnNames="FK_INFORMATIVA_CONTO_ACCREDITO_MASTER" baseTableName="INFORMATIVE_CONTO_ACCREDITO_DETAIL" constraintName="FK_INFORMATIVA_CONTO_ACCREDITO_MASTER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="INFORMATIVE_CONTO_ACCREDITO_MASTER" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-145">
+        <addForeignKeyConstraint baseColumnNames="FK_INFORMATIVA_DETAIL" baseTableName="CDI_PREFERENCES" constraintName="FK_INFORMATIVA_DETAIL_TO_CDI_DETAIL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="CDI_DETAIL" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-146">
+        <addForeignKeyConstraint baseColumnNames="FK_PA" baseTableName="INFORMATIVE_CONTO_ACCREDITO_MASTER" constraintName="FK_INFORMATIVE_CONTO_ACCREDITO_MASTER_PA" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="PA" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-147">
+        <addForeignKeyConstraint baseColumnNames="FK_INFORMATIVA_PA_DETAIL" baseTableName="INFORMATIVE_PA_FASCE" constraintName="FK_INFORMATIVE_PA_DETAIL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="INFORMATIVE_PA_DETAIL" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-148">
+        <addForeignKeyConstraint baseColumnNames="FK_INFORMATIVA_PA_MASTER" baseTableName="INFORMATIVE_PA_DETAIL" constraintName="FK_INFORMATIVE_PA_MASTER" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="INFORMATIVE_PA_MASTER" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-149">
+        <addForeignKeyConstraint baseColumnNames="FK_BINARY_FILE" baseTableName="INFORMATIVE_PA_MASTER" constraintName="FK_INFORMATIVE_PA_MASTER_BINARY_FILE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="BINARY_FILE" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-150">
+        <addForeignKeyConstraint baseColumnNames="FK_PA" baseTableName="INFORMATIVE_PA_MASTER" constraintName="FK_INFORMATIVE_PA_MASTER_PA" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="PA" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-151">
+        <addForeignKeyConstraint baseColumnNames="FK_INT_QUADRATURE" baseTableName="PA" constraintName="FK_PA_INT_QUADRATURE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="INTERMEDIARI_PA" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-152">
+        <addForeignKeyConstraint baseColumnNames="FK_PA" baseTableName="PA_STAZIONE_PA" constraintName="FK_PA_STAZIONE_PA_PA" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="PA" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-153">
+        <addForeignKeyConstraint baseColumnNames="FK_STAZIONE" baseTableName="PA_STAZIONE_PA" constraintName="FK_PA_STAZIONE_PA_STAZIONE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="STAZIONI" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-154">
+        <addForeignKeyConstraint baseColumnNames="FK_PSP" baseTableName="PSP_CANALE_TIPO_VERSAMENTO" constraintName="FK_PSP_CANALE_TIPO_VERSAMENTO_PSP" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="PSP" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-155">
+        <addForeignKeyConstraint baseColumnNames="FK_INT_QUADRATURE" baseTableName="PSP" constraintName="FK_PSP_INT_QUADRATURE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="INTERMEDIARI_PSP" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281980396-156">
+        <addForeignKeyConstraint baseColumnNames="FK_INTERMEDIARIO_PA" baseTableName="STAZIONI" constraintName="FK_STAZIONI_INTERMEDIARI_PA" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="OBJ_ID" referencedTableName="INTERMEDIARI_PA" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

@@ -56,6 +56,8 @@ aks_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
+aks_kubernetes_version = "1.23.12"
+
 ingress_min_replica_count = "2"
 ingress_max_replica_count = "30"
 ingress_load_balancer_ip  = "10.1.100.250"

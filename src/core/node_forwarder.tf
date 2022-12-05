@@ -24,7 +24,7 @@ module "node_forwarder_snet" {
 }
 
 module "node_forwarder_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.4.0"
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
@@ -92,6 +92,8 @@ module "node_forwarder_app_service" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
+  count = var.node_forwarder_tier == "PremiumV3" ? 1 : 0
+
   name                = format("%s-autoscale-node-forwarder", local.project)
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
   location            = azurerm_resource_group.node_forwarder_rg.location
@@ -189,4 +191,20 @@ data "azurerm_key_vault_secret" "certificate_crt_node_forwarder" {
 data "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
   name         = "certificate-key-node-forwarder"
   key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "node_forwarder_subscription_key" {
+  count        = var.env_short != "p" ? 1 : 0 # only in DEV and UAT
+  name         = "node-forwarder-api-subscription-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
