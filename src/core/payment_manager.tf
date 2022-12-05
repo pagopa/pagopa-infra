@@ -29,7 +29,7 @@ requests
     by Time=bin(timestamp, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | extend Watermark=99
-| project Watermark, Availability, Time
+| where toint(Availability) < 99
   QUERY
   )
   severity    = 1
@@ -64,8 +64,7 @@ requests
     Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 and toint(duration) < 2000)
     by Time=bin(timestamp, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| extend Watermark=99
-| project Watermark, Availability, Time
+| where toint(Availability) < 99
   QUERY
   )
   severity    = 1
@@ -78,7 +77,7 @@ requests
 }
 
 
-# Availability: Payment Manager - pp-wallet-CD
+# Availability: Payment Manager - pp-wallet
 resource "azurerm_monitor_scheduled_query_rules_alert" "pm_wallet_availability" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-pm-restapi-wallet-availability-alert"
@@ -102,7 +101,7 @@ requests
     by Time=bin(timestamp, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | extend Watermark=99
-| project Watermark, Availability, Time
+| where toint(Availability) < 99
   QUERY
   )
   severity    = 1
@@ -138,7 +137,7 @@ requests
     by Time=bin(timestamp, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | extend Watermark=99
-| project Watermark, Availability, Time
+| where toint(Availability) < 99
   QUERY
   )
   severity    = 1
