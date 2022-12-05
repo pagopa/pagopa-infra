@@ -10,7 +10,7 @@ locals {
   apim_payments_receipts_api = {
     display_name          = "GPD Payments pagoPA - REST"
     description           = "REST API Payments per Gestione Posizione Debitorie"
-    # temporary path for migration purpose - the official one will be gpd/payments-receipts-service
+    # temporary path for migration purpose - the official one will be payment-receipts/api
     path                  = "gps/payment-receipts/api"
     subscription_required = true
     service_url           = null
@@ -57,23 +57,22 @@ module "apim_gpd_payments_rest_product" {
 
 resource "azurerm_api_management_api_version_set" "api_gpd_payments_rest_api" {
   name                = format("%s-api-gpd-payments-rest-api", var.env_short)
-  resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = "Payment Receipts"
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = local.apim_payments_receipts_api.display_name
   versioning_scheme   = "Segment"
 }
 
 module "apim_api_gpd_payments_rest_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
-  name                  = format("%s-api-gpd-payments-rest-api", 
-var.env_short)
-  resource_group_name   = local.pagopa_apim_rg
+  name                  = format("%s-api-gpd-payments-rest-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_gpd_payments_rest_product.product_id]
-  subscription_required = true
-  api_version           = "v1"
+  subscription_required = local.apim_payments_receipts_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_payments_rest_api.id
+  api_version           = "v1"
 
   description  = local.apim_payments_receipts_api.description
   display_name = local.apim_payments_receipts_api.display_name
@@ -116,15 +115,15 @@ module "apim_payments_receipts_product" {
 
   policy_xml = file("./api_product/payments-service/_base_policy.xml")
 }
+
 resource "azurerm_api_management_api_version_set" "api_payments_receipts_api" {
 
   name                = format("%s-payments-receipts-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_spontaneous_payments_service_api.display_name
+  display_name        = local.apim_payments_receipts_service_api.display_name
   versioning_scheme   = "Segment"
 }
-
 
 module "apim_api_payments_receipts_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
