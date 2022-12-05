@@ -910,6 +910,17 @@
               "SL"
             ],
             "description": "Requested language"
+          },
+          "details": {
+            "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PostePayAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/CardAuthRequestDetails"
+              }
+            ]
           }
         },
         "required": [
@@ -917,8 +928,57 @@
           "fee",
           "paymentInstrumentId",
           "pspId",
-          "language"
+          "language",
+          "details"
         ]
+      },
+      "PostePayAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for the PostePay payment method",
+        "properties": {
+          "accountEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "PostePay account email"
+          }
+        },
+        "required": [
+          "accountEmail"
+        ],
+        "example": {
+          "accountEmail": "user@example.com"
+        }
+      },
+      "CardAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for credit cards",
+        "properties": {
+          "cvv": {
+            "type": "string",
+            "description": "Credit card CVV",
+            "pattern": "^[0-9]{3,4}$"
+          },
+          "pan": {
+            "type": "string",
+            "description": "Credit card PAN",
+            "pattern": "^[0-9]{14,16}$"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "Credit card expiry date. Note that only the month and year components are taken into account.",
+            "format": "date"
+          }
+        },
+        "required": [
+          "cvv",
+          "pan",
+          "expiryDate"
+        ],
+        "example": {
+          "cvv": 0,
+          "pan": 123456789012345,
+          "expiryDate": "2099-01-01T00:00:00.000Z"
+        }
       },
       "UpdateAuthorizationRequest": {
         "type": "object",
