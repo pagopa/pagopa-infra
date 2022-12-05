@@ -241,6 +241,65 @@
           }
         }
       }
+    },
+    "/request-payments/creditCard/{requestId}": {
+      "get": {
+        "summary": "retrieve CreditCard payment request",
+        "tags": [
+          "CreditCard-external"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "MDC-Fields",
+            "description": "MDC information",
+            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CcPaymentInfoError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -341,6 +400,60 @@
             }
           }
         }
+      },
+      "CcPaymentInfoAcsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "responseType": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "acsUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "responseType",
+          "requestId",
+          "acsUrl"
+        ]
+      },
+      "CcPaymentInfoError": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "example": "RequestId non trovato"
+          }
+        }
+      },
+      "CcPaymentInfoAcceptedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "responseType": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "acsUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "responseType",
+          "requestId"
+        ]
       }
     }
   }
