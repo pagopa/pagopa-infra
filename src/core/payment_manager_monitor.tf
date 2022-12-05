@@ -53,18 +53,19 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_restapi_cd_availabili
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = module.app_gw.id
   description    = "Availability pm-restapi-cd greater than or equal 99%"
   enabled        = true
   query = (<<-QUERY
-requests
-| where url startswith 'https://api.platform.pagopa.it/pp-restapi-CD'
+AzureDiagnostics
+| where ResourceType == 'APPLICATIONGATEWAYS'
+    and OperationName == 'ApplicationGatewayAccess'
+    and requestUri_s startswith '/pp-restapi-CD'
 | summarize
     Total=count(),
-    Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 and toint(duration) < 2000)
-    by Time=bin(timestamp, 15m)
+    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500) and timeTaken_d < 2)
+    by Time=bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
   QUERY
   )
   severity    = 1
@@ -89,18 +90,19 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_wallet_availability" 
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = module.app_gw.id
   description    = "Availability pm-wallet greater than or equal 99%"
   enabled        = true
   query = (<<-QUERY
-requests
-| where url startswith 'https://api.platform.pagopa.it/wallet'
+AzureDiagnostics
+| where ResourceType == "APPLICATIONGATEWAYS"
+    and OperationName == "ApplicationGatewayAccess"
+    and requestUri_s startswith "/wallet"
 | summarize
     Total=count(),
-    Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 and toint(duration) < 2000)
-    by Time=bin(timestamp, 15m)
+    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500) and timeTaken_d < 2)
+    by Time=bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| extend Watermark=99
 | where toint(Availability) < 99
   QUERY
   )
