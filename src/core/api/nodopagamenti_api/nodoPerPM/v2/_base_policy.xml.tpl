@@ -17,7 +17,6 @@
     <inbound>
         <base />
         <set-backend-service base-url="${base-url}/v2" />
-
         <!-- onprem -->
         <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
         <choose>
@@ -26,7 +25,7 @@
             </when>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("uat.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("uat.platform.pagopa.it"))">
                 <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}" /> -->
-                <set-backend-service base-url="https://10.79.20.32" />
+                <set-backend-service base-url="${base-url}/v2" />
                 <!-- onprem -->
             </when>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("dev.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("dev.platform.pagopa.it"))">
