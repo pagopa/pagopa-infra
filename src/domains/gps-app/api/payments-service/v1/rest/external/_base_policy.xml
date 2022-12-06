@@ -1,0 +1,30 @@
+<policies>
+    <inbound>
+        <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
+        <set-variable name="sub" value="@(context.Subscription.Name)" />
+        <set-variable name="subid" value="@(context.Subscription.Id)" />
+        <set-variable name="subkey" value="@(context.Subscription.Key)" />
+        <set-variable name="fiscalCodeParam" value="@(context.Request.MatchedParameters["organizationfiscalcode"])">
+        <set-variable name="organizationFiscalCode" value="@{
+            return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;
+        }" />
+        <base />
+        <choose>
+            <when condition="@(context.User == null || !fiscalCodeParam.Equals(organizationFiscalCode))">
+                <return-response>
+                    <set-status code="403" reason="Unauthorized, you have read-only access" />
+                </return-response>
+            </when>
+        </choose>
+        <set-backend-service base-url="https://${hostname}/pagopa-gps-payments-receipts" />
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
