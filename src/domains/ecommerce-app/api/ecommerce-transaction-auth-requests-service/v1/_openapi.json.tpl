@@ -433,17 +433,23 @@
             "type": "string",
             "description": "Credit card expiry date. Note that only the month and year components are taken into account.",
             "format": "date"
+          },
+          "holderName": {
+            "type": "string",
+            "description": "The card holder name"
           }
         },
         "required": [
           "cvv",
           "pan",
-          "expiryDate"
+          "expiryDate",
+          "holderName"
         ],
         "example": {
           "cvv": 0,
           "pan": 123456789012345,
-          "expiryDate": "2099-01-01T00:00:00.000Z"
+          "expiryDate": "2099-01-01T00:00:00.000Z",
+          "holderName": "Name Surname"
         }
       },
       "AuthorizationResult": {
