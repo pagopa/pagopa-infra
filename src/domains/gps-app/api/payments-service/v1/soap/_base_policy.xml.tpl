@@ -1,14 +1,15 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-gps-payments-receipts-service" />
+        <rewrite-uri template="/" />
+        <set-backend-service base-url="https://${hostname}/partner" />
     </inbound>
-    <outbound>
-        <base />
-    </outbound>
     <backend>
         <base />
     </backend>
+    <outbound>
+        <base />
+    </outbound>
     <on-error>
         <base />
     </on-error>
