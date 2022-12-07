@@ -342,8 +342,8 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   operation_id        = "requestTransactionAuthorization"
 
   xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_auth_request.xml.tpl",
-  {ecommerce_xpay_psps_list=var.ecommerce_xpay_psps_list 
-  ecommerce_vpos_psps_list=var.ecommerce_vpos_psps_list})
+    { ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
+  ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list })
 }
 
 # pagopa-ecommerce APIs for EC

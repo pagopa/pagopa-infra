@@ -18,7 +18,7 @@
             return "";
         }" />
         <set-header name="x-pgs-id" exists-action="override">
-            <value>"@((string)context.Variables.GetValueOrDefault("pgsId",""))"</value>
+          <value>@((string)context.Variables.GetValueOrDefault("pgsId",""))</value>
         </set-header>
       </when>
     </choose>
