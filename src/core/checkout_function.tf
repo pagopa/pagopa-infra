@@ -38,7 +38,7 @@ module "checkout_function" {
   location            = var.location
   health_check_path   = "info"
   subnet_id           = module.checkout_function_snet[0].id
-  runtime_version     = "~3"
+  runtime_version     = "~4"
   os_type             = "linux"
 
   always_on                                = var.checkout_function_always_on
