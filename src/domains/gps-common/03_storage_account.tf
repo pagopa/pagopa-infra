@@ -1,5 +1,5 @@
 # storage
-module "payments_receipt" {
+module "payments_receipt_sa" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.8.0"
 
   name                       = replace(format("%s-payments-sa", local.project), "-", "")
@@ -23,5 +23,5 @@ module "payments_receipt" {
 ## table receipts storage
 resource "azurerm_storage_table" "payments_receipts_table" {
   name                 = format("%sreceiptstable", module.payments_receipt.name)
-  storage_account_name = module.payments_receipt.name
+  storage_account_name = module.payments_receipt_sa.name
 }
