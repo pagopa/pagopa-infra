@@ -600,7 +600,7 @@
       }
     },
     "/checkPosition": {
-      "get": {
+      "post": {
         "tags": [
           "Nodo"
         ],
