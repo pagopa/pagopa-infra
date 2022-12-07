@@ -27,13 +27,6 @@
         <when condition="@( context.Request.Url.Path.Contains("payment-requests") || context.Request.Url.Path.Contains("carts") )"> <!-- TODO use startWith -->
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
         </when>
-        <when condition="@( context.Request.Url.Path.Contains("auth-requests") )"> 
-          
-          <set-variable name="pspId" value="@(((string)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["pspId"]))" />
-          <set-header name="x-pgsId" exists-action="override">
-            <value>((string)context.Variables.GetValueOrDefault("pspId",""))</value>
-          </set-header>
-        </when>
       </choose>
   </inbound>
 
