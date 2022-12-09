@@ -51,11 +51,61 @@ module "cosmosdb_account_mongodb" {
   tags = var.tags
 }
 
+module "cosmosdb_strong_account_mongdb" {
+  
+  count = var.env_short == "p" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
+
+  name                = "${local.project}-cosmos-account"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+
+  offer_type           = var.cosmos_mongo_db_params_strong.offer_type
+  kind                 = var.cosmos_mongo_db_params_strong.kind
+  capabilities         = var.cosmos_mongo_db_params_strong.capabilities
+  mongo_server_version = var.cosmos_mongo_db_params_strong.server_version
+  enable_free_tier     = var.cosmos_mongo_db_params_strong.enable_free_tier
+
+  public_network_access_enabled      = var.cosmos_mongo_db_params_strong.public_network_access_enabled
+  private_endpoint_enabled           = var.cosmos_mongo_db_params_strong.private_endpoint_enabled
+  subnet_id                          = module.cosmosdb_ecommerce_snet.id
+  private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
+  is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params_strong.is_virtual_network_filter_enabled
+  allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params_strong.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+
+  consistency_policy               = var.cosmos_mongo_db_params_strong.consistency_policy
+  main_geo_location_location       = azurerm_resource_group.cosmosdb_ecommerce_rg.location
+  main_geo_location_zone_redundant = var.cosmos_mongo_db_params_strong.main_geo_location_zone_redundant
+  additional_geo_locations         = var.cosmos_mongo_db_params_strong.additional_geo_locations
+
+  backup_continuous_enabled = var.cosmos_mongo_db_params_strong.backup_continuous_enabled
+
+  tags = var.tags
+}
+
 resource "azurerm_cosmosdb_mongo_database" "ecommerce" {
 
   name                = "ecommerce"
   resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
   account_name        = module.cosmosdb_account_mongodb.name
+
+  throughput = var.cosmos_mongo_db_ecommerce_params.enable_autoscaling || var.cosmos_mongo_db_ecommerce_params.enable_serverless ? null : var.cosmos_mongo_db_ecommerce_params.throughput
+
+  dynamic "autoscale_settings" {
+    for_each = var.cosmos_mongo_db_ecommerce_params.enable_autoscaling && !var.cosmos_mongo_db_ecommerce_params.enable_serverless ? [""] : []
+    content {
+      max_throughput = var.cosmos_mongo_db_ecommerce_params.enable_serverless.max_throughput
+    }
+  }
+}
+
+resource "azurerm_strong_cosmosdb_mongo_database" "ecommerce" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce"
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+  account_name        = module.cosmosdb_strong_account_mongdb.name
 
   throughput = var.cosmos_mongo_db_ecommerce_params.enable_autoscaling || var.cosmos_mongo_db_ecommerce_params.enable_serverless ? null : var.cosmos_mongo_db_ecommerce_params.throughput
 
