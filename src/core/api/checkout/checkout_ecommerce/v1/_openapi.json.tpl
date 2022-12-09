@@ -920,7 +920,14 @@
               {
                 "$ref": "#/components/schemas/CardAuthRequestDetails"
               }
-            ]
+            ],
+            "discriminator": {
+              "propertyName": "detailType",
+              "mapping": {
+                "postepay": "#/components/schemas/PostePayAuthRequestDetails",
+                "card": "#/components/schemas/CardAuthRequestDetails"
+              }
+            }
           }
         },
         "required": [
@@ -936,6 +943,9 @@
         "type": "object",
         "description": "Additional payment authorization details for the PostePay payment method",
         "properties": {
+          "detailType": {
+            "type": "string"
+          },
           "accountEmail": {
             "type": "string",
             "format": "email",
@@ -943,9 +953,11 @@
           }
         },
         "required": [
+          "detailType",
           "accountEmail"
         ],
         "example": {
+          "detailType": "postepay",
           "accountEmail": "user@example.com"
         }
       },
@@ -953,6 +965,9 @@
         "type": "object",
         "description": "Additional payment authorization details for credit cards",
         "properties": {
+          "detailType": {
+            "type": "string"
+          },
           "cvv": {
             "type": "string",
             "description": "Credit card CVV",
@@ -974,12 +989,14 @@
           }
         },
         "required": [
+          "detailType",
           "cvv",
           "pan",
           "expiryDate",
           "holderName"
         ],
         "example": {
+          "detailType": "card",
           "cvv": 0,
           "pan": 123456789012345,
           "expiryDate": "2099-01-01T00:00:00.000Z",
