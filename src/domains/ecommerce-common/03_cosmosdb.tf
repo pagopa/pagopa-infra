@@ -52,7 +52,7 @@ module "cosmosdb_account_mongodb" {
 }
 
 module "cosmosdb_strong_account_mongdb" {
-  
+
   count = var.env_short == "p" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
