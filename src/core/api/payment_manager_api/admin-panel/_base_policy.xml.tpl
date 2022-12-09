@@ -31,6 +31,9 @@
           <value>${allowed_ip_4}</value>
           <value>${allowed_ip_5}</value>
           <value>${allowed_ip_6}</value>
+          <value>${allowed_ip_7}</value>
+          <value>${allowed_ip_8}</value>
+          <value>${allowed_ip_9}</value>
         </check-header>
       </when>
     </choose>
