@@ -22,6 +22,6 @@ module "payments_receipt_sa" {
 
 ## table receipts storage
 resource "azurerm_storage_table" "payments_receipts_table" {
-  name                 = format("%sreceiptstable", module.payments_receipt.name)
+  name                 = format("%sreceiptstable", module.payments_receipt_sa.name)
   storage_account_name = module.payments_receipt_sa.name
 }
