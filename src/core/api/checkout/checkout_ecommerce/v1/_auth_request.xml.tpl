@@ -1,5 +1,6 @@
 <policies>
   <inbound>
+    <set-header name="x-pgs-id" exists-action="delete" />
     <set-variable name="XPAYPspsList" value="${ecommerce_xpay_psps_list}" />
     <set-variable name="VPOSPspsList" value="${ecommerce_vpos_psps_list}" />
     <set-variable name="pspId" value="@(((string)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["pspId"]))" />
@@ -15,9 +16,13 @@
         }
         return "";
     }" />
-    <set-header name="x-pgs-id" exists-action="override">
-      <value>@((string)context.Variables.GetValueOrDefault("pgsId",""))</value>
-    </set-header>
+    <choose>
+      <when condition="@((string)context.Variables["pgsId"] != "")">
+        <set-header name="x-pgs-id" exists-action="override">
+          <value>@((string)context.Variables.GetValueOrDefault("pgsId",""))</value>
+        </set-header>
+      </when>
+    </choose>
     <base />
   </inbound>
   <outbound>
