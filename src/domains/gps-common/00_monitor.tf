@@ -44,7 +44,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payments_gpd_inconsisten
     | order by timestamp desc
     | where message contains "[getGPDCheckedReceiptsList] Non-blocking error"
   QUERY
-    , format("%s-gpd-payments-api-alert", var.env_short)
+    , format("pagopa-%s-gpd-payments-service", var.env_short) # from HELM's parameter WEBSITE_SITE_NAME
   )
   severity    = 1
   frequency   = 15
