@@ -31,10 +31,10 @@ module "apim_gpd_payments_rest_external_product" {
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
-  published             = local.published
-  subscription_required = local.subscription_required
-  approval_required     = local.approval_required
-  subscriptions_limit   = local.subscriptions_limit
+  published             = local.apim_gpd_payments_rest_external_api.published
+  subscription_required = local.apim_gpd_payments_rest_external_api.subscription_required
+  approval_required     = local.apim_gpd_payments_rest_external_api.approval_required
+  subscriptions_limit   = local.apim_gpd_payments_rest_external_api.subscriptions_limit
 
   policy_xml = file("./api_product/payments-service/external/_base_policy.xml")
 }
