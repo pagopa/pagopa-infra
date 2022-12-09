@@ -192,7 +192,7 @@ checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azureweb
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 
-ecommerce_xpay_psps_list = "testPSP1,testPSP2"
+ecommerce_xpay_psps_list = "CIPBITMM"
 ecommerce_vpos_psps_list = "testPSP3,testPSP4"
 
 # buyerbanks functions
