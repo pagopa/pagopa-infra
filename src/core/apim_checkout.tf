@@ -341,9 +341,11 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "requestTransactionAuthorization"
 
-  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_auth_request.xml.tpl",
-    { ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
-  ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list })
+  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_auth_request.xml.tpl", {
+    ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
+    ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
+    }
+  )
 }
 
 # pagopa-ecommerce APIs for EC
