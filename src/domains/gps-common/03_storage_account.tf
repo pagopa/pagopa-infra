@@ -1,6 +1,6 @@
 # storage
 module "payments_receipt_sa" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.8.0"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.18.10"
 
   name                       = replace(format("%s-payments-sa", local.project), "-", "")
   account_kind               = "StorageV2"

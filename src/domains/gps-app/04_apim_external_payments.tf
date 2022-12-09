@@ -8,7 +8,10 @@ locals {
     description           = "REST API del servizio Payments per Gestione Posizione Debitorie - for Auth"
     # temporary path for migration purpose - the official one will be payment-receipts/api
     path                  = "gps/gpd-payment-receipts-auth/api"
+    published             = true
     subscription_required = true
+    approval_required     = true
+    subscriptions_limit   = 1000
     service_url           = null
   }
 }
@@ -28,12 +31,12 @@ module "apim_gpd_payments_rest_external_product" {
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
-  published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
+  published             = local.published
+  subscription_required = local.subscription_required
+  approval_required     = local.approval_required
+  subscriptions_limit   = local.subscriptions_limit
 
-  policy_xml = file("./api_product/payments-service/_base_policy.xml")
+  policy_xml = file("./api_product/payments-service/external/_base_policy.xml")
 }
 
 ##############

@@ -54,6 +54,8 @@ data "azuread_service_principal" "iac_principal" {
   display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
 }
 
+# how is define gpd-payments-apiconfig-subkey on kv ?
+# manually by portal ?
 # apiconfig subscription key secret
 data "azurerm_key_vault_secret" "gpd_apiconfig_subkey" {
   name         = "gpd-payments-apiconfig-subkey"

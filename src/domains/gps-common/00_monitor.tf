@@ -36,7 +36,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payments_gpd_inconsisten
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Payments API Call Warning"
+  description    = "Payments API Call Error"
   enabled        = true
   query = format(<<-QUERY
   traces

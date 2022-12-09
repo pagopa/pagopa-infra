@@ -1,15 +1,12 @@
 <policies>
     <inbound>
         <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
-        <set-variable name="sub" value="@(context.Subscription.Name)" />
-        <set-variable name="subid" value="@(context.Subscription.Id)" />
-        <set-variable name="subkey" value="@(context.Subscription.Key)" />
         <set-variable name="organizationFiscalCode" value="@{
             return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;
         }" />
         <base />
         <!--
-            subset/restriced api of src/core/api/gpd_api/payments/v1/rest/_openapi.json.tpl (INTERNAL) without /payments/{organizationfiscalcode}
+            subset/restriced api of api/payments-service/v1/internal/rest/_openapi.json.tpl (INTERNAL) without /payments/{organizationfiscalcode}
         -->
         <rewrite-uri template="@("/payments/"+(string)context.Variables["organizationFiscalCode"]+"/"+(string)context.Variables["requestPath"])" copy-unmatched-params="true" />
         <set-backend-service base-url="https://${hostname}" />

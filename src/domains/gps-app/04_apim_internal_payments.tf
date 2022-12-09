@@ -8,7 +8,10 @@ locals {
     description           = "SOAP API del servizio Payments per Gestione Posizione Debitorie"
     # temporary path for migration purpose - the official one will be gpd-payments/api
     path                  = "gps/gpd-payments/api"
+    published             = true
     subscription_required = false
+    approval_required     = true
+    subscriptions_limit   = 1000
     service_url           = null
   }
   apim_gpd_payments_rest_internal_api = {
@@ -16,7 +19,10 @@ locals {
     description           = "REST API del servizio Payments per Gestione Posizione Debitorie"
     # temporary path for migration purpose - the official one will be gpd-payments/api
     path                  = "gps/payment-receipts/api"
+    published             = true
     subscription_required = true
+    approval_required     = true
+    subscriptions_limit   = 1000
     service_url           = null
   }
 }
@@ -36,10 +42,10 @@ module "apim_gpd_payments_soap_product" {
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
-  published             = true
-  subscription_required = true
-  approval_required     = true
-  # subscriptions_limit   = 1000
+  published               = local.apim_gpd_payments_soap_api.published
+  subscription_required   = local.apim_gpd_payments_soap_api.subscription_required
+  approval_required       = local.apim_gpd_payments_soap_api.approval_required
+  # subscriptions_limit   = local.apim_gpd_payments_soap_api.subscriptions_limit
 
   policy_xml = file("./api_product/payments-service/_base_policy.xml")
 }
@@ -100,10 +106,10 @@ module "apim_gpd_payments_rest_internal_product" {
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
-  published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
+  published               = local.apim_gpd_payments_rest_internal_api.published
+  subscription_required   = local.apim_gpd_payments_rest_internal_api.subscription_required
+  approval_required       = local.apim_gpd_payments_rest_internal_api.approval_required
+  subscriptions_limit     = local.apim_gpd_payments_rest_internal_api.subscriptions_limit
 
   policy_xml = file("./api_product/payments-service/_base_policy.xml")
 }
