@@ -1,0 +1,69 @@
+.create-merge table INTERMEDIARI_PA (
+    ID_INTERMEDIARIO_PA: string, 
+    INTERMEDIARIO_DESCR: string,
+    ENABLED: string
+    ) 
+
+.create-merge table INTERMEDIARI_PSP (
+    ID_INTERMEDIARIO_PSP: string, 
+    INTERMEDIARIO_DESCR: string,
+    ENABLED: string
+    ) 
+
+
+.create-merge table PA (
+    ID_DOMINIO: string, 
+    DESCRIZIONE: string,
+    RAGIONE_SOCIALE: string,
+    ENABLED: string,
+    RENDICONTAZIONE_FTP: string,
+    RENDICONTAZIONE_ZIP: string
+    ) 
+
+
+.create-merge table PSP (
+    ID_PSP: string, 
+    DESCRIZIONE: string,
+    RAGIONE_SOCIALE: string,
+    ENABLED: string
+    )
+
+
+.create-merge table PT_REL_PA (
+    ID_INTERMEDIARIO: string,
+    INTERMEDIARIO_DESCR: string,
+    ID_DOMINIO: string,
+    PA_DESCR: string,
+    PA_RAGIONE_SOCIALE: string,
+    STAZIONE: string,
+    VERSIONE: int,
+    STAZIONE_ENABLED: string,
+    TIMEOUT: int,
+    TIMEOUT_A: int,
+    TIMEOUT_B: int,
+    TIMEOUT_C: int,
+    AUX_DIGIT: string,
+    SEGREGAZIONE: string,
+    PROGRESSIVO: string,
+    BROADCAST: string
+)
+
+.create-merge table PT_REL_PSP (
+    ID_INTERMEDIARIO: string,
+    INTERMEDIARIO_DESCR: string,
+    CANALE: string,
+    CANALE_ENABLED: string,
+    ID_PSP: string,
+    PSP_DESCR: string,
+    PSP_RAGIONE_SOCIALE: string,
+    TIMEOUT: int,
+    TIMEOUT_A: int,
+    TIMEOUT_B: int,
+    TIMEOUT_C: int,
+    RT_PUSH: string,
+    ON_US: string,
+    CARRELLO_CARTE: string,
+    FLAG_IO: string,
+    TIPO_VERSAMENTO_DESCR: string,
+    TIPO_VERSAMENTO: string
+)

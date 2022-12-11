@@ -36,7 +36,14 @@
       </when> -->
 			<when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("prod"))">
 				<check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
-					<value>93.63.219.230</value>
+					<value>${allowed_ip_1}</value>
+					<value>${allowed_ip_2}</value>
+					<value>${allowed_ip_3}</value>
+					<value>${allowed_ip_4}</value>
+					<value>${allowed_ip_5}</value>
+					<value>${allowed_ip_6}</value>
+					<value>${allowed_ip_7}</value>
+					<value>${allowed_ip_8}</value>
 				</check-header>
 			</when>
 		</choose>
@@ -63,10 +70,10 @@
 		</choose>
 		<choose>
 			<when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\/bo-nodo/$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
-				<set-backend-service base-url="{{pm-host}}/bo-nodo/" />
+				<set-backend-service base-url="{{pm-onprem-hostname}}/bo-nodo/" />
 			</when>
 			<otherwise>
-				<set-backend-service base-url="{{pm-host}}/bo-nodo" />
+				<set-backend-service base-url="{{pm-onprem-hostname}}/bo-nodo" />
 			</otherwise>
 		</choose>
 	</inbound>
@@ -76,8 +83,8 @@
 	<outbound>
 		<base />
 		<choose>
-			<when condition="@(((string)context.Response.Headers.GetValueOrDefault("location","")).Contains("{{pm-host}}"))">
-				<set-variable name="locationIn" value=" @(Regex.Replace((string)context.Response.Headers.GetValueOrDefault("location",""), "{{pm-host}}", "https://{{wisp2-gov-it}}"))" />
+			<when condition="@(((string)context.Response.Headers.GetValueOrDefault("location","")).Contains("{{pm-onprem-hostname}}"))">
+				<set-variable name="locationIn" value=" @(Regex.Replace((string)context.Response.Headers.GetValueOrDefault("location",""), "{{pm-onprem-hostname}}", "https://{{wisp2-gov-it}}"))" />
 				<set-header name="location" exists-action="override">
 					<value>@(context.Variables.GetValueOrDefault<string>("locationIn"))</value>
 				</set-header>
