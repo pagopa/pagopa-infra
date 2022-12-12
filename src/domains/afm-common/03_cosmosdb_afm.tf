@@ -115,7 +115,7 @@ locals {
       partition_key_path = "/name"
     },
     {
-      name               = "cdi",
+      name               = "cdis",
       partition_key_path = "/idPsp"
     }
   ]
