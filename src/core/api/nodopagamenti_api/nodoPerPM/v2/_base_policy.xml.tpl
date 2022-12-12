@@ -3,7 +3,7 @@
         <base />
         <set-backend-service base-url="${base-url}/v2" />
         <!-- onprem -->
-        <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
+        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> <!-- -->
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
                 <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf" />
