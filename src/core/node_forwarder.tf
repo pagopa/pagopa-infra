@@ -92,7 +92,7 @@ module "node_forwarder_app_service" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
-  count  = var.env_short != "d" ? 1 : 0
+  count = var.env_short != "d" ? 1 : 0
 
   name                = format("%s-autoscale-node-forwarder", local.project)
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
