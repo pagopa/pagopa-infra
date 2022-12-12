@@ -115,6 +115,8 @@ app_gateway_deny_paths = [
   "/gps/donation-service/.*",             # internal use no sub-keys
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
+  "/gps/gpd-payments/.*",                 # internal use no sub-keys
+  "/gps/payment-receipts/.*",             # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   "/nodo-pagamenti/.*",

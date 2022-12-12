@@ -22,7 +22,12 @@ data "azurerm_monitor_action_group" "email" {
   name                = local.monitor_action_group_email_name
 }
 
-##Alert
+## Alert
+#
+# This alert cover two error cases:
+# 1. PaymentOption is not found after calling service.gpd.host
+# 2. Receipt is not in eligible because PaymentsOption and Receipt are not coherent each other
+#
 resource "azurerm_monitor_scheduled_query_rules_alert" "payments_gpd_inconsistency_error" {
   count = var.env_short == "p" ? 1 : 0
 
