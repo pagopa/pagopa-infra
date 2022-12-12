@@ -36,7 +36,7 @@ module "buyerbanks_function" {
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.buyerbanks_function_snet.id
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   always_on                                = true
   os_type                                  = "linux"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
