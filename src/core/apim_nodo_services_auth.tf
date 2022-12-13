@@ -112,6 +112,17 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_auth" {
 #   xml_content = file("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml")
 # }
 
+# resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy" { # activatePaymentNoticeV2 verificatore
+
+#   api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1.name
+#   api_management_name = module.apim.name
+#   resource_group_name = azurerm_resource_group.rg_api.name
+#   operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "TODO"
+
+#   #tfsec:ignore:GEN005
+#   xml_content = file("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml")
+# }
+
 ######################
 ## WS nodo per psp ##
 ######################
