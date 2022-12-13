@@ -653,7 +653,7 @@
           }
         }
       }
-    },    
+    }    
   },
   "definitions": {
     "CheckPosition" : {
@@ -666,7 +666,7 @@
             "minItems": 1, 
             "maxItems": 5
           }
-        },
+        }
     },
     "listelement": {
       "type": "object",
