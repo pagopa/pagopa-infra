@@ -76,6 +76,28 @@
             var amount = result[1].Substring(1,result[1].Length-3);
             return amount;
         }" />
+        <set-variable name="dueDate" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"dueDate"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var dueDate = result[1].Substring(1,result[1].Length-3);
+                return "<dueDate>"+dueDate+"</dueDate>";
+            } else {
+                return "";
+            }
+        }" />
+        <set-variable name="paymentNote" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"paymentNote"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var paymentNote = result[1].Substring(1,result[1].Length-3);
+                return "<paymentNote>"+paymentNote+"</paymentNote>";
+            } else {
+                return "";
+            }
+        }" />
         <!--
         if attvazionePrenotata then sent PPT_ATTIVAZIONE_IN_CORSO
         else store PPT_ATTIVAZIONE_IN_CORSO in attvazionePrenotata for fiscalCode and noticeNumber
@@ -140,7 +162,7 @@
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
-                            <set-url>{{urlnodo}}</set-url>
+                            <set-url>http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
                                 <value>text/xml</value>
@@ -223,6 +245,8 @@
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 														<amount>{{context.Variables["amount"]}}</amount>
+                                                        {{context.Variables["dueDate"]}}
+                                                        {{context.Variables["paymentNote"]}}
 													</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
@@ -247,6 +271,8 @@
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 														<amount>{{context.Variables["amount"]}}</amount>
+                                                        {{context.Variables["dueDate"]}}
+                                                        {{context.Variables["paymentNote"]}}
 													</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
@@ -271,6 +297,8 @@
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
 														<amount>{{context.Variables["amount"]}}</amount>
+                                                        {{context.Variables["dueDate"]}}
+                                                        {{context.Variables["paymentNote"]}}
 													</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
@@ -295,6 +323,8 @@
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
 														<amount>{{context.Variables["amount"]}}</amount>
+                                                        {{context.Variables["dueDate"]}}
+                                                        {{context.Variables["paymentNote"]}}                                                        
 													</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
@@ -460,6 +490,8 @@
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 												<amount>{{context.Variables["amount"]}}</amount>
+                                                {{context.Variables["dueDate"]}}
+                                                {{context.Variables["paymentNote"]}}                                                
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
@@ -484,6 +516,8 @@
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 												<amount>{{context.Variables["amount"]}}</amount>
+                                                {{context.Variables["dueDate"]}}
+                                                {{context.Variables["paymentNote"]}}                                                
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
@@ -508,6 +542,8 @@
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
 												<amount>{{context.Variables["amount"]}}</amount>
+                                                {{context.Variables["dueDate"]}}
+                                                {{context.Variables["paymentNote"]}}                                                
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
@@ -532,6 +568,8 @@
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
 												<amount>{{context.Variables["amount"]}}</amount>
+                                                {{context.Variables["dueDate"]}}
+                                                {{context.Variables["paymentNote"]}}                                                
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
@@ -542,33 +580,15 @@
                 </choose>
             </otherwise>
         </choose>
-        <!-- <set-backend-service base-url="{{urlnodo}}" /> -->
+
+        <!-- <set-backend-service base-url="{{urlnodo}}" />  onprem -->
+        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
                 <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
             </when>
-            <otherwise>
-                <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
-                <set-backend-service base-url="{{urlnodo}}" /> <!-- onprem -->
-                <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
-                <choose>
-
-                    <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                        <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
-                    </when>
-
-                    <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("uat.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("uat.platform.pagopa.it"))">
-                        <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
-                        <set-backend-service base-url="{{urlnodo}}" /> <!-- onprem -->
-                    </when>
-
-                    <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("dev.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("dev.platform.pagopa.it"))">
-                        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
-                    </when>
-
-                </choose>
-            </otherwise>
         </choose>
+        
     </inbound>
     <backend>
         <base />
