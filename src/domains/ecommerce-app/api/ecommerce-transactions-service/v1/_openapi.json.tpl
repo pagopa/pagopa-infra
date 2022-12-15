@@ -32,18 +32,18 @@
         }
       }
     },
-    "/transactions/{paymentToken}": {
+    "/transactions/{transactionId}": {
       "get": {
         "operationId": "getTransactionInfo",
         "parameters": [
           {
             "in": "path",
-            "name": "paymentToken",
+            "name": "transactionId",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "Payment token associated to transaction"
+            "description": "Transaction ID"
           }
         ],
         "summary": "Get information about a specific transaction",
@@ -88,32 +88,39 @@
         "type": "string",
         "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
       },
-      "Iban": {
+      "PaymentContextCode": {
+        "description": "Payment context code used for verifivaRPT/attivaRPT",
         "type": "string",
-        "pattern": "[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}"
+        "minLength": 32,
+        "maxLength": 32
       },
-      "NewTransactionRequest": {
+      "PaymentNoticeInfo": {
+        "description": "Informations about a single payment notice",
         "type": "object",
-        "description": "Request body for creating a new transaction",
         "properties": {
           "rptId": {
             "$ref": "#/components/schemas/RptId"
           },
-          "email": {
-            "type": "string"
+          "paymentContextCode": {
+            "$ref": "#/components/schemas/PaymentContextCode"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
           }
         },
         "required": [
           "rptId",
-          "email"
+          "amount"
         ],
         "example": {
-          "rptId": "string"
+          "rptId": "string",
+          "paymentContextCode": "paymentContextCode",
+          "amount": 100
         }
       },
-      "NewTransactionResponse": {
+      "PaymentInfo": {
+        "description": "Informations about transaction payments",
         "type": "object",
-        "description": "Transaction data returned when creating a new transaction",
         "properties": {
           "paymentToken": {
             "type": "string"
@@ -125,20 +132,98 @@
             "type": "string"
           },
           "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents",
-            "minLength": 1,
-            "maxLength": 140
+            "$ref": "#/components/schemas/AmountEuroCents"
           },
           "authToken": {
             "type": "string"
           }
         },
         "required": [
+          "rptId",
           "amount"
         ],
         "example": {
-          "amount": 200
+          "rptId": "77777777777302012387654312384",
+          "paymentToken": "paymentToken1",
+          "reason": "reason1",
+          "amount": 100,
+          "authToken": "authToken1"
         }
+      },
+      "NewTransactionRequest": {
+        "type": "object",
+        "description": "Request body for creating a new transaction",
+        "properties": {
+          "paymentNotices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentNoticeInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentContextCode": "paymentContextCode1",
+                "amount": 100
+              },
+              {
+                "rptId": "77777777777302012387654312385",
+                "paymentContextCode": "paymentContextCode2",
+                "amount": 200
+              }
+            ]
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentNotices",
+          "email"
+        ]
+      },
+      "NewTransactionResponse": {
+        "type": "object",
+        "description": "Transaction data returned when creating a new transaction",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentToken": "paymentToken1",
+                "reason": "reason1",
+                "amount": 100,
+                "authToken": "authToken1"
+              },
+              {
+                "rptId": "77777777777302012387654312385",
+                "paymentToken": "paymentToken2",
+                "reason": "reason2",
+                "amount": 100,
+                "authToken": "authToken2"
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          }
+        },
+        "required": [
+          "transactionId",
+          "amount",
+          "status",
+          "payments"
+        ]
       },
       "TransactionInfo": {
         "description": "Transaction data returned when querying for an existing transaction",
@@ -157,11 +242,7 @@
               "status"
             ]
           }
-        ],
-        "example": {
-          "amount": 200,
-          "status": "INITIALIZED"
-        }
+        ]
       },
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
@@ -169,105 +250,21 @@
         "minimum": 0,
         "maximum": 99999999
       },
-      "Beneficiary": {
-        "description": "Beneficiary institution related to a payment",
-        "type": "object",
-        "properties": {
-          "beneficiaryId": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "denominazioneBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "codiceUnitOperBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "denomUnitOperBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "address": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "streetNumber": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "postalCode": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "city": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "province": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "country": {
-            "type": "string",
-            "pattern": "[A-Z]{2}"
-          }
-        },
-        "required": [
-          "beneficiaryId",
-          "denominazioneBeneficiario"
-        ]
-      },
-      "PaymentInstallments": {
-        "description": "Payment installments (optional)",
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Installment"
-        }
-      },
-      "Installment": {
-        "description": "Payment installment",
-        "type": "object",
-        "properties": {
-          "installment": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "data": {
-            "$ref": "#/components/schemas/InstallmentDetails"
-          }
-        }
-      },
-      "InstallmentDetails": {
-        "description": "Amount and reason related to a payment installment",
-        "type": "object",
-        "properties": {
-          "reason": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 25
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        }
-      },
       "TransactionStatus": {
         "type": "string",
         "description": "Possible statuses a transaction can be in",
         "enum": [
-          "INITIALIZED"
+          "ACTIVATION_REQUESTED",
+          "ACTIVATED",
+          "AUTHORIZATION_REQUESTED",
+          "AUTHORIZED",
+          "AUTHORIZATION_FAILED",
+          "CLOSED",
+          "CLOSURE_FAILED",
+          "NOTIFIED",
+          "NOTIFIED_FAILED",
+          "EXPIRED",
+          "REFUNDED"
         ]
       },
       "ProblemJson": {

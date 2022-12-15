@@ -821,9 +821,9 @@
         "minLength": 32,
         "maxLength": 32
       },
-      "NewTransactionRequest": {
+      "PaymentNoticeInfo": {
+        "description": "Informations about a single payment notice",
         "type": "object",
-        "description": "Request body for creating a new transaction",
         "properties": {
           "rptId": {
             "$ref": "#/components/schemas/RptId"
@@ -831,37 +831,29 @@
           "paymentContextCode": {
             "$ref": "#/components/schemas/PaymentContextCode"
           },
-          "email": {
-            "type": "string"
-          },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           }
         },
         "required": [
           "rptId",
-          "email",
           "amount"
         ],
         "example": {
-          "rptId": "string"
+          "rptId": "string",
+          "paymentContextCode": "paymentContextCode",
+          "amount": 100
         }
       },
-      "NewTransactionResponse": {
+      "PaymentInfo": {
+        "description": "Informations about transaction payments",
         "type": "object",
-        "description": "Transaction data returned when creating a new transaction",
         "properties": {
-          "transactionId": {
-            "type": "string"
-          },
           "paymentToken": {
             "type": "string"
           },
           "rptId": {
             "$ref": "#/components/schemas/RptId"
-          },
-          "status": {
-            "$ref": "#/components/schemas/TransactionStatus"
           },
           "reason": {
             "type": "string"
@@ -874,13 +866,91 @@
           }
         },
         "required": [
-          "transactionId",
-          "amount",
-          "status"
+          "rptId",
+          "amount"
         ],
         "example": {
-          "amount": 200
+          "rptId": "77777777777302012387654312384",
+          "paymentToken": "paymentToken1",
+          "reason": "reason1",
+          "amount": 100,
+          "authToken": "authToken1"
         }
+      },
+      "NewTransactionRequest": {
+        "type": "object",
+        "description": "Request body for creating a new transaction",
+        "properties": {
+          "paymentNotices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentNoticeInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentContextCode": "paymentContextCode1",
+                "amount": 100
+              },
+              {
+                "rptId": "77777777777302012387654312385",
+                "paymentContextCode": "paymentContextCode2",
+                "amount": 200
+              }
+            ]
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentNotices",
+          "email"
+        ]
+      },
+      "NewTransactionResponse": {
+        "type": "object",
+        "description": "Transaction data returned when creating a new transaction",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentToken": "paymentToken1",
+                "reason": "reason1",
+                "amount": 100,
+                "authToken": "authToken1"
+              },
+              {
+                "rptId": "77777777777302012387654312385",
+                "paymentToken": "paymentToken2",
+                "reason": "reason2",
+                "amount": 100,
+                "authToken": "authToken2"
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          }
+        },
+        "required": [
+          "transactionId",
+          "amount",
+          "status",
+          "payments"
+        ]
       },
       "RequestAuthorizationRequest": {
         "type": "object",
@@ -981,11 +1051,7 @@
               "status"
             ]
           }
-        ],
-        "example": {
-          "amount": 200,
-          "status": "ACTIVATED"
-        }
+        ]
       },
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
@@ -1013,7 +1079,9 @@
           "CLOSED",
           "CLOSURE_FAILED",
           "NOTIFIED",
-          "NOTIFIED_FAILED"
+          "NOTIFIED_FAILED",
+          "EXPIRED",
+          "REFUNDED"
         ]
       },
       "PaymentMethodResponse": {
