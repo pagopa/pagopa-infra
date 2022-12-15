@@ -335,6 +335,19 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_request_info
   xml_content = file("./api/checkout/checkout_ecommerce/v1/_recaptcha_check.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "transaction_authorization_request" {
+  api_name            = "${local.project}-checkout-ecommerce-api-v1"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "requestTransactionAuthorization"
+
+  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_auth_request.xml.tpl", {
+    ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
+    ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
+    }
+  )
+}
+
 # pagopa-ecommerce APIs for EC
 locals {
   apim_checkout_ec_api = {
