@@ -85,8 +85,8 @@ module "api_config_app_service" {
     XSD_CDI                    = var.xsd_cdi
     LOGGING_LEVEL              = var.apiconfig_logging_level
 
-    COSMOS_URI = data.azurerm_key_vault_secret.cosmos_uri.value
-    COSMOS_KEY = data.azurerm_key_vault_secret.cosmos_key.value
+    COSMOS_URI = azurerm_key_vault_secret.apiconfig_cosmos_uri.value
+    COSMOS_KEY = azurerm_key_vault_secret.apiconfig_cosmos_key.value
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
