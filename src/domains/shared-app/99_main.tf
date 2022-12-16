@@ -20,6 +20,10 @@ terraform {
       source  = "hashicorp/helm"
       version = "= 2.5.1"
     }
+    influxdb = {
+      source  = "DrFaust92/influxdb"
+      version = "1.6.1"
+    }
   }
 
   backend "azurerm" {}
@@ -45,4 +49,10 @@ provider "helm" {
   kubernetes {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
+}
+
+provider "influxdb" {
+  url      = "https://api.${local.apim_dns_zone_prefix}.${external_domain}/shared/influxdb/v1"
+  username = "admin"
+  password = random_password.admin_influxdb_password.result
 }

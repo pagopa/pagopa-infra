@@ -2,7 +2,8 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/drfaust92/influxdb" {
-  version = "1.6.1"
+  version     = "1.6.1"
+  constraints = "1.6.1"
   hashes = [
     "h1:Tud2Y1L5CNvPBztrpeIY8P/+Dq5eOPKcqbMVXRa28ho=",
     "zh:04e18ddcd5d6c130cbbc7419587aed8afdf40d5ee92cd225be695e0136f11fed",
