@@ -276,6 +276,47 @@
           }
         }
       }
+    },
+    "/cards": {
+      "get": {
+        "tags": [
+          "restricted"
+        ],
+        "summary": "Get instrument par/token info",
+        "operationId": "getInstrumentInfo",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "hpan",
+            "description": "Payment instrument hpan",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentInstrumentUpdateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -443,6 +484,26 @@
           "FA",
           "BPD"
         ]
+      },
+      "PaymentInstrumentUpdateResponse": {
+        "type": "object",
+        "required": [
+          "hpan"
+        ],
+        "properties": {
+          "hpan": {
+            "type": "string"
+          },
+          "par": {
+            "type": "string"
+          },
+          "htokens": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       }
     }
   }

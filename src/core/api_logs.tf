@@ -19,14 +19,6 @@ locals {
   ]
 
   api_info_log = [
-    module.apim_pm_restapi_api_v4.name,
-    module.apim_pm_restapirtd_api_v1.name,
-    module.apim_pm_restapirtd_api_v2.name,
-    module.apim_pm_auth_rtd_api_v1.name,
-    module.apim_pm_auth_rtd_api_v2.name,
-    module.apim_pm_restapicd_api_v1.name,
-    module.apim_pm_restapicd_api_v2.name,
-    module.apim_pm_restapicd_api_v3.name,
     module.apim_pm_restapicd_internal_api_v1.name,
     module.apim_pm_restapicd_internal_api_v2.name,
     module.apim_pm_ptg_api_v1.name,

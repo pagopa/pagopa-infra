@@ -7,49 +7,49 @@
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoPSP"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoPSP = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
+            var identificativoPSP = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "identificativoPSP";
             return identificativoPSP;
         }" />
         <set-variable name="identificativoIntermediarioPSP" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoIntermediarioPSP"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoIntermediarioPSP = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
+            var identificativoIntermediarioPSP = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
             return identificativoIntermediarioPSP;
         }" />
         <set-variable name="identificativoCanale" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoCanale"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoCanale = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
+            var identificativoCanale = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
             return identificativoCanale;
         }" />
         <set-variable name="identificativoDominio" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoDominio"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoDominio = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
+            var identificativoDominio = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
             return identificativoDominio;
         }" />
         <set-variable name="identificativoFlusso" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"identificativoFlusso"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var identificativoFlusso = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
+            var identificativoFlusso = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
             return identificativoFlusso;
         }" />
         <set-variable name="dataOraFlusso" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"dataOraFlusso"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var dataOraFlusso = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
+            var dataOraFlusso = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "";
             return dataOraFlusso;
         }" />
         <set-variable name="xmlRendicontazione" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"xmlRendicontazione"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var xmlRendicontazione = result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "");
+            var xmlRendicontazione = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "xmlRendicontazione";
             return xmlRendicontazione;
         }" />
         <cache-store-value key="@{
@@ -57,24 +57,14 @@
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
 
-        <set-backend-service base-url="{{urlnodo}}" /> <!-- onprem -->
-        <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
+        <!-- <set-backend-service base-url="{{urlnodo}}" />  onprem -->
+        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
         <choose>
-
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
                 <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
             </when>
-
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("uat.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("uat.platform.pagopa.it"))">
-                <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
-                <set-backend-service base-url="{{urlnodo}}" /> <!-- onprem -->
-            </when>
-
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("dev.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("dev.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
-            </when>
-
         </choose>
+        
     </inbound>
     <backend>
         <base />

@@ -1,0 +1,26 @@
+.create-merge table NM3_STATE (
+  INSERTEDTIMESTAMP: datetime,
+    PAFISCALCODE: string,
+    CREDITORREFERENCEID: string,
+    PAYMENTTOKEN: string,
+    STATUS: string,
+    STAZIONE: string,
+    CANALE: string,
+    PSP: string,
+    INSERTEDY_BY: string
+    )    
+
+.alter table NM3_STATE policy partitioning ```
+{
+  "PartitionKeys": [
+    {
+      "ColumnName": "INSERTEDTIMESTAMP",
+      "Kind": "UniformRange",
+      "Properties": {
+        "Reference": "2022-09-01T00:00:00",
+        "RangeSize": "1.00:00:00",
+        "OverrideCreationTime": false
+      }
+    }
+  ]
+}```
