@@ -11,4 +11,6 @@
     <include file="./db.changelog-202211140000_views_payments_mbd.xml"/>
     <include file="./db.changelog-202211161046_insert_elenco_servizi_psp.xml" context="dev"/>
 
+    <!-- 3.10.0 -->
+    <include file="./db.changelog-202212120933_drop_view_storni_revoche.xml"/>
 </databaseChangeLog> 
