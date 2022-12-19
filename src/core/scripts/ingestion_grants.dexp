@@ -1,0 +1,12 @@
+# abilita lo streaming sul database
+# where <database> = re
+.alter database <database> policy streamingingestion enable
+
+# abilita l'applicazione ad andare in lettura sul database
+.add database <database> viewers ('aadapp=<client-id>;<tenant_id>')
+
+# abilita l'applicazione a fare ingestion sulle tabelle del database
+.add database <database> ingestors ('aadapp=<client-id>;<tenant_id>')
+
+# abilita l'applicazione alle query di mgmt (.set, .drop, .clear, etc)
+.add database <database> admins ('aadapp=<client-id>;<tenant_id>')
