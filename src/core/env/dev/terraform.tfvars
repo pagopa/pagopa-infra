@@ -11,6 +11,11 @@ tags = {
 
 lock_enable = false
 
+# monitoring
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = 10
+
 # networking
 # main vnet
 cidr_vnet = ["10.1.0.0/16"]
@@ -54,6 +59,54 @@ external_domain   = "pagopa.it"
 dns_zone_prefix   = "dev.platform"
 dns_zone_checkout = "dev.checkout"
 dns_zone_wisp2    = "dev.wisp2"
+
+test_urls = [
+  {
+    host = "api.env.platform.pagopa.it",
+    path = "/status-0123456789abcdef",
+  },
+  # portal.env.platform.pagopa.it
+  {
+    host = join(".",
+    compact(["portal", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+    path = "",
+  },
+  # management.env.platform.pagopa.it
+  {
+    host = join(".",
+    compact(["management", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+    path = "/ServiceStatus",
+  },
+  # config.env.platform.pagopa.it
+  {
+    host = join(".",
+    compact(["config", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+    path = "",
+  },
+  # env.checkout.pagopa.it
+  {
+    host = join(".",
+    compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "checkout.pagopa.it"])),
+    path = "",
+  },
+  # env.wisp2.pagopa.it
+  {
+    host = join(".",
+    compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "wisp2.pagopa.it"])),
+    path = "",
+  },
+  # env.wisp2.pagopa.gov.it
+  {
+    host = join(".",
+    compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "wisp2.pagopa.gov.it"])),
+    path = "",
+  },
+  # status.pagopa.gov.it
+  {
+    host = "status.pagopa.gov.it",
+    path = "",
+  },
+]
 
 # azure devops
 azdo_sp_tls_cert_enabled = true

@@ -146,7 +146,7 @@ tls_cert_check_helm = {
 tls_checker_https_endpoints_to_check = [
   {
     https_endpoint = "api.platform.pagopa.it",
-    alert_name     = "api-dev-platform-pagopa-it"
+    alert_name     = "api-dev-platform-pagopa-it",
     alert_enabled  = true,
     helm_present   = true,
   },
@@ -168,16 +168,4 @@ tls_checker_https_endpoints_to_check = [
     alert_enabled  = true,
     helm_present   = true,
   },
-  {
-    https_endpoint = "checkout.pagopa.it",
-    alert_name     = "dev-checkout-pagopa-it",
-    alert_enabled  = true,
-    helm_present   = true,
-  },
-  {
-    https_endpoint = "selfcare.pagopa.it",
-    alert_name     = "prod-selfcare-pagopa-it",
-    alert_enabled  = true,
-    helm_present   = true,
-  }
 ]
