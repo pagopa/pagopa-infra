@@ -146,25 +146,19 @@ tls_cert_check_helm = {
 tls_checker_https_endpoints_to_check = [
   {
     https_endpoint = "api.platform.pagopa.it",
-    alert_name     = "api-dev-platform-pagopa-it",
+    alert_name     = "api-platform-pagopa-it",
     alert_enabled  = true,
     helm_present   = true,
   },
   {
     https_endpoint = "management.platform.pagopa.it",
-    alert_name     = "management-dev-platform-pagopa-it",
+    alert_name     = "management-platform-pagopa-it",
     alert_enabled  = true,
     helm_present   = true,
   },
   {
     https_endpoint = "portal.platform.pagopa.it",
-    alert_name     = "portal-dev-platform-pagopa-it",
-    alert_enabled  = true,
-    helm_present   = true,
-  },
-  {
-    https_endpoint = "config.platform.pagopa.it",
-    alert_name     = "config-dev-platform-pagopa-it",
+    alert_name     = "portal-platform-pagopa-it",
     alert_enabled  = true,
     helm_present   = true,
   },
