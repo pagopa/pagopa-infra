@@ -79,3 +79,5 @@ elastic_cluster_config = {
 }
 
 enable_iac_pipeline = true
+
+ingress_load_balancer_ip = "10.1.100.250"

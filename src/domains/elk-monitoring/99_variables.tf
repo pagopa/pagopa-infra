@@ -177,3 +177,6 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
+variable "ingress_load_balancer_ip" {
+  type = string
+}
