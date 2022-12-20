@@ -67,7 +67,7 @@ elastic_cold_storage = {
 
 elastic_cluster_config = {
   num_node_balancer     = "1"
-  num_node_master       = "1"
+  num_node_master       = "2"
   num_node_hot          = "1"
   num_node_warm         = "1"
   num_node_cold         = "1"

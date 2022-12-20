@@ -12,9 +12,16 @@ spec:
       node.store.allow_mmap: false
     podTemplate:
       spec:
-        nodeSelector:
-          elastic: eck
-        affinity: {}
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: elastic
+                      operator: In
+                      values:
+                        - eck
+                topologyKey: zone
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data
@@ -32,9 +39,16 @@ spec:
       node.store.allow_mmap: false
     podTemplate:
       spec:
-        nodeSelector:
-          elastic: eck
-        affinity: {}
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: elastic
+                      operator: In
+                      values:
+                        - eck
+                topologyKey: zone
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data
@@ -52,9 +66,16 @@ spec:
       node.store.allow_mmap: false
     podTemplate:
       spec:
-        nodeSelector:
-          elastic: eck
-        affinity: {}
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: elastic
+                      operator: In
+                      values:
+                        - eck
+                topologyKey: zone
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data
@@ -72,9 +93,16 @@ spec:
       node.store.allow_mmap: false
     podTemplate:
       spec:
-        nodeSelector:
-          elastic: eck
-        affinity: {}
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: elastic
+                      operator: In
+                      values:
+                        - eck
+                topologyKey: zone
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data
@@ -92,9 +120,16 @@ spec:
       node.store.allow_mmap: false
     podTemplate:
       spec:
-        nodeSelector:
-          elastic: eck
-        affinity: {}
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: elastic
+                      operator: In
+                      values:
+                        - eck
+                topologyKey: zone
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data
