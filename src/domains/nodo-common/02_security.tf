@@ -32,4 +32,3 @@ resource "azurerm_key_vault_secret" "db_nodo_cfg_login_password" {
     ]
   }
 }
-

@@ -84,43 +84,72 @@ resource "azurerm_monitor_action_group" "error_action_group" {
 # web availability test
 #
 locals {
-
   test_urls = [
+    # api.env.platform.pagopa.it
     {
-      host = trimsuffix(azurerm_dns_a_record.dns_a_api.fqdn, "."),
+      host = join(".",
+      compact(["api", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "/status-0123456789abcdef",
     },
+    # portal.env.platform.pagopa.it
     {
-      host = trimsuffix(azurerm_dns_a_record.dns_a_portal.fqdn, "."),
+      host = join(".",
+      compact(["portal", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
     },
+    # management.env.platform.pagopa.it
     {
-      host = trimsuffix(azurerm_dns_a_record.dns_a_management.fqdn, "."),
+      host = join(".",
+      compact(["management", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "/ServiceStatus",
     },
+    # config.env.platform.pagopa.it
     {
       host = join(".",
       compact(["config", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
     },
+    # env.checkout.pagopa.it
     {
       host = join(".",
       compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "checkout.pagopa.it"])),
       path = "",
     },
+    # env.wisp2.pagopa.it
     {
       host = join(".",
       compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "wisp2.pagopa.it"])),
       path = "",
     },
-    # TODO enable after Payment Manager migration on cloud
-    # {
-    #   host = join(".",
-    #   compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "wisp2.pagopa.gov.it"])),
-    #   path = "",
-    # },
+    # selfcare.env.platform.pagopa.it
+    {
+      host = join(".",
+      compact(["selfcare", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+      path = "",
+    },
+    # api.prf.platform.pagopa.it
+    {
+      host = "api.prf.platform.pagopa.it"
+      path = "",
+    },
+    # wisp2.pagopa.gov.it
+    {
+      host = "wisp2.pagopa.gov.it",
+      path = "",
+    },
+    # uat.wisp2.pagopa.gov.it
+    {
+      host = "uat.wisp2.pagopa.gov.it",
+      path = "",
+    },
+    # status.pagopa.gov.it
     {
       host = "status.pagopa.gov.it",
+      path = "",
+    },
+    # assets.cdn.platform.pagopa.it
+    {
+      host = "assets.cdn.platform.pagopa.it",
       path = "",
     },
   ]
