@@ -55,7 +55,7 @@ terraform apply
 ## Terraform lock.hcl
 
 We have both developers who work with your Terraform configuration on their Linux, macOS or Windows workstations and automated systems that apply the configuration while running on Linux.
-https://www.terraform.io/docs/cli/commands/providers/lock.html#specifying-target-platforms
+<https://www.terraform.io/docs/cli/commands/providers/lock.html#specifying-target-platforms>
 
 So we need to specify this in terraform lock providers:
 
@@ -65,17 +65,17 @@ terraform init
 rm .terraform.lock.hcl
 
 terraform providers lock \
-  -platform=windows_amd64 \
+  -platform=linux_arm64 \
+  -platform=linux_amd64 \
   -platform=darwin_amd64 \
-  -platform=darwin_arm64 \
-  -platform=linux_amd64
+  -platform=windows_amd64
 ```
 
 ## Precommit checks
 
 Check your code before commit.
 
-https://github.com/antonbabenko/pre-commit-terraform#how-to-install
+<https://github.com/antonbabenko/pre-commit-terraform#how-to-install>
 
 ```sh
 pre-commit run -a
@@ -85,14 +85,14 @@ pre-commit run -a
 
 Autogenerate Terraform documentation
 
-https://github.com/terraform-docs/terraform-docs#installation
+<https://github.com/terraform-docs/terraform-docs#installation>
 
 ```sh
 terraform-docs markdown . --sort-by required > README.md
 ```
 
-
 ## Utils
+
 Extract cidr subnet from AZ vnet:
 
 `az network vnet subnet list -g pagopa-d-vnet-rg --vnet-name pagopa-d-vnet | grep "\"addressPrefix\""`
