@@ -1,18 +1,18 @@
 <policies>
     <inbound>
-        <set-variable name="fiscalCodeParam" value="@(context.Request.MatchedParameters["organizationfiscalcode"])">
+        <base />
+        <set-variable name="fiscalCodeParam" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
         <set-variable name="organizationFiscalCode" value="@{
             return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;
         }" />
-        <base />
         <choose>
-            <when condition="@(!fiscalCodeParam.Equals(organizationFiscalCode))">
+            <when condition="@(!context.Variables.GetValueOrDefault<string>("fiscalCodeParam").Equals(context.Variables.GetValueOrDefault<string>("organizationFiscalCode")))">
                 <return-response>
                     <set-status code="403" reason="Unauthorized, you have not permission access rights" />
                 </return-response>
             </when>
         </choose>
-        <set-backend-service base-url="https://${hostname}/pagopa-gps-payments-receipts" />
+        <set-backend-service base-url="https://${hostname}/pagopa-gpd-payments" />
     </inbound>
     <outbound>
         <base />

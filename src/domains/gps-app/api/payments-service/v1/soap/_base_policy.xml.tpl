@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <rewrite-uri template="/" />
-        <set-backend-service base-url="https://${hostname}/partner" />
+        <set-backend-service base-url="https://${hostname}/pagopa-gpd-payments/partner" />
     </inbound>
     <backend>
         <base />

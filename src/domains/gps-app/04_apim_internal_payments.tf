@@ -4,24 +4,24 @@
 
 locals {
   apim_gpd_payments_soap_api = {
-    display_name          = "GPD Payments pagoPA - SOAP"
+    display_name          = "GPD Payments pagoPA - SOAP - aks"
     description           = "SOAP API del servizio Payments per Gestione Posizione Debitorie"
     # temporary path for migration purpose - the official one will be gpd-payments/api
     path                  = "gps/gpd-payments/api"
     published             = true
     subscription_required = false
-    approval_required     = true
+    approval_required     = false
     subscriptions_limit   = 1000
-    service_url           = null
+    service_url           = format("https://%s/pagopa-gpd-payments/partner", local.gps_hostname)
   }
   apim_gpd_payments_rest_internal_api = {
-    display_name          = "GPD Payments pagoPA - REST"
-    description           = "REST API del servizio Payments per Gestione Posizione Debitorie"
+    display_name = "GPD Payments pagoPA - REST - aks"
+    description  = "REST API del servizio Payments per Gestione Posizione Debitorie"
     # temporary path for migration purpose - the official one will be gpd-payments/api
-    path                  = "gps/payment-receipts/api"
+    path                  = "gps/gpd-payment-receipts/api"
     published             = true
-    subscription_required = true
-    approval_required     = true
+    subscription_required = false
+    approval_required     = false
     subscriptions_limit   = 1000
     service_url           = null
   }
@@ -35,17 +35,17 @@ locals {
 module "apim_gpd_payments_soap_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
-  product_id   = "gpd-payments-soap"
-  display_name = "GPD Payments pagoPA - SOAP"
-  description  = "API Prodotto Payments gestione posizioni debitorie - SOAP"
+  product_id            = "gpd-payments-soap"
+  display_name          = "GPD Payments pagoPA - SOAP - aks"
+  description           = "API Prodotto Payments gestione posizioni debitorie - SOAP"
 
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  api_management_name   = local.pagopa_apim_name
 
-  published               = local.apim_gpd_payments_soap_api.published
-  subscription_required   = local.apim_gpd_payments_soap_api.subscription_required
-  approval_required       = local.apim_gpd_payments_soap_api.approval_required
-  # subscriptions_limit   = local.apim_gpd_payments_soap_api.subscriptions_limit
+  published             = local.apim_gpd_payments_soap_api.published
+  subscription_required = local.apim_gpd_payments_soap_api.subscription_required
+  approval_required     = local.apim_gpd_payments_soap_api.approval_required
+  subscriptions_limit   = local.apim_gpd_payments_soap_api.subscriptions_limit
 
   policy_xml = file("./api_product/payments-service/_base_policy.xml")
 }
@@ -99,17 +99,17 @@ resource "azurerm_api_management_api" "apim_api_gpd_payments_soap_api_v1" {
 module "apim_gpd_payments_rest_internal_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
-  product_id   = "product-gpd-payments-rest"
-  display_name = "GPD Payments pagoPA - REST"
+  product_id   = "product-gpd-payments-rest-aks"
+  display_name = "GPD Payments pagoPA - REST - aks"
   description  = "Prodotto Payments gestione posizioni debitorie - REST"
 
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
-  published               = local.apim_gpd_payments_rest_internal_api.published
-  subscription_required   = local.apim_gpd_payments_rest_internal_api.subscription_required
-  approval_required       = local.apim_gpd_payments_rest_internal_api.approval_required
-  subscriptions_limit     = local.apim_gpd_payments_rest_internal_api.subscriptions_limit
+  published             = local.apim_gpd_payments_rest_internal_api.published
+  subscription_required = local.apim_gpd_payments_rest_internal_api.subscription_required
+  approval_required     = local.apim_gpd_payments_rest_internal_api.approval_required
+  subscriptions_limit   = local.apim_gpd_payments_rest_internal_api.subscriptions_limit
 
   policy_xml = file("./api_product/payments-service/_base_policy.xml")
 }
@@ -119,7 +119,7 @@ module "apim_gpd_payments_rest_internal_product" {
 ##############
 
 resource "azurerm_api_management_api_version_set" "api_gpd_payments_rest_internal_api" {
-  name                = format("%s-api-gpd-payments-rest-api", var.env_short)
+  name                = format("%s-api-gpd-payments-rest-api-aks", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_gpd_payments_rest_internal_api.display_name
@@ -129,11 +129,11 @@ resource "azurerm_api_management_api_version_set" "api_gpd_payments_rest_interna
 module "apim_api_gpd_payments_rest_internal_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
-  name                  = format("%s-api-gpd-payments-rest-api", var.env_short)
+  name                  = format("%s-api-gpd-payments-rest-api-aks", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_gpd_payments_rest_internal_product.product_id]
-  subscription_required = true
+  subscription_required = local.apim_gpd_payments_rest_internal_api.subscription_required
   api_version           = "v1"
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_payments_rest_internal_api.id
   service_url           = local.apim_gpd_payments_rest_internal_api.service_url

@@ -4,11 +4,11 @@
         "title": "PagoPA API Payments",
         "description": "Payments",
         "termsOfService": "https://www.pagopa.gov.it/",
-        "version": "0.0.13"
+        "version": "0.0.16-4"
     },
     "servers": [
         {
-            "url": "http://localhost:8080",
+            "url": "${host}/gps/gpd-payment-receipts/api/v1",
             "description": "Generated server url"
         }
     ],
@@ -18,7 +18,124 @@
         }
     ],
     "paths": {
-        "/receipts": {
+        "/info": {
+            "get": {
+                "tags": [
+                    "Home"
+                ],
+                "summary": "health check",
+                "description": "Return OK if application is started",
+                "operationId": "healthCheck",
+                "responses": {
+                    "429": {
+                        "description": "Too many requests",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AppInfo"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKey": []
+                    },
+                    {
+                        "Authorization": []
+                    }
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "X-Request-Id",
+                    "in": "header",
+                    "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "/payments/{organizationfiscalcode}/receipts": {
             "get": {
                 "tags": [
                     "Payments receipts API"
@@ -26,6 +143,15 @@
                 "summary": "Return the list of the organization receipts.",
                 "operationId": "getOrganizationReceipts",
                 "parameters": [
+                    {
+                        "name": "organizationfiscalcode",
+                        "in": "path",
+                        "description": "Organization fiscal code, the fiscal code of the Organization.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "limit",
                         "in": "query",
@@ -69,19 +195,8 @@
                     }
                 ],
                 "responses": {
-                    "401": {
-                        "description": "Wrong or missing function key.",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "Obtained all organization payment positions.",
+                    "500": {
+                        "description": "Service unavailable.",
                         "headers": {
                             "X-Request-Id": {
                                 "description": "This header identifies the call",
@@ -93,7 +208,18 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ReceiptsInfo"
+                                    "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong or missing function key.",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
                                 }
                             }
                         }
@@ -116,19 +242,8 @@
                             }
                         }
                     },
-                    "429": {
-                        "description": "Too many requests",
-                        "headers": {
-                        "X-Request-Id": {
-                            "description": "This header identifies the call",
-                            "schema": {
-                            "type": "string"
-                            }
-                        }
-                        }
-                    },                    
-                    "500": {
-                        "description": "Service unavailable.",
+                    "200": {
+                        "description": "Obtained all organization payment positions.",
                         "headers": {
                             "X-Request-Id": {
                                 "description": "This header identifies the call",
@@ -140,7 +255,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
+                                    "$ref": "#/components/schemas/ReceiptsInfo"
                                 }
                             }
                         }
@@ -166,7 +281,7 @@
                 }
             ]
         },
-        "/receipts/{iuv}": {
+        "/payments/{organizationfiscalcode}/receipts/{iuv}": {
             "get": {
                 "tags": [
                     "Payments receipts API"
@@ -174,6 +289,15 @@
                 "summary": "Return the details of a specific receipt.",
                 "operationId": "getReceiptByIUV",
                 "parameters": [
+                    {
+                        "name": "organizationfiscalcode",
+                        "in": "path",
+                        "description": "Organization fiscal code, the fiscal code of the Organization.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "iuv",
                         "in": "path",
@@ -185,11 +309,18 @@
                     }
                 ],
                 "responses": {
-                    "401": {
-                        "description": "Wrong or missing function key.",
+                    "200": {
+                        "description": "Obtained receipt details.",
                         "headers": {
                             "X-Request-Id": {
                                 "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/xml": {
                                 "schema": {
                                     "type": "string"
                                 }
@@ -242,35 +373,6 @@
                             }
                         }
                     },
-                    "200": {
-                        "description": "Obtained receipt details.",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "content": {
-                            "application/xml": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "429": {
-                        "description": "Too many requests",
-                        "headers": {
-                        "X-Request-Id": {
-                            "description": "This header identifies the call",
-                            "schema": {
-                            "type": "string"
-                            }
-                        }
-                        }
-                    },                    
                     "500": {
                         "description": "Service unavailable.",
                         "headers": {
@@ -285,6 +387,17 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ProblemJson"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong or missing function key.",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
                                 }
                             }
                         }
@@ -313,6 +426,28 @@
     },
     "components": {
         "schemas": {
+            "ProblemJson": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+                    },
+                    "status": {
+                        "maximum": 600,
+                        "minimum": 100,
+                        "type": "integer",
+                        "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+                        "format": "int32",
+                        "example": 200
+                    },
+                    "detail": {
+                        "type": "string",
+                        "description": "A human readable explanation specific to this occurrence of the problem.",
+                        "example": "There was an error processing the request"
+                    }
+                }
+            },
             "PageInfo": {
                 "required": [
                     "items_found",
@@ -374,28 +509,20 @@
                     }
                 }
             },
-            "ProblemJson": {
+            "AppInfo": {
                 "type": "object",
                 "properties": {
-                    "title": {
-                        "type": "string",
-                        "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+                    "name": {
+                        "type": "string"
                     },
-                    "status": {
-                        "maximum": 600,
-                        "minimum": 100,
-                        "type": "integer",
-                        "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-                        "format": "int32",
-                        "example": 200
+                    "version": {
+                        "type": "string"
                     },
-                    "detail": {
-                        "type": "string",
-                        "description": "A human readable explanation specific to this occurrence of the problem.",
-                        "example": "There was an error processing the request"
+                    "environment": {
+                        "type": "string"
                     }
                 }
-            },
+            }
         },
         "securitySchemes": {
             "ApiKey": {
