@@ -138,3 +138,8 @@ variable "aks_cidr_subnet" {
   type        = list(string)
   description = "Aks network address space."
 }
+
+variable "cname_record_name" {
+  type = string
+  default = "config"
+}
