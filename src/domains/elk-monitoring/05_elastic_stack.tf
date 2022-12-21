@@ -111,9 +111,14 @@ resource "local_file" "elastic_file" {
 }
 
 resource "kubernetes_manifest" "kibana_manifest" {
+  field_manager {
+    force_conflicts = true
+  }
+  computed_fields = ["metadata.labels", "metadata.annotations", "spec", "status"]
+  manifest = yamldecode(templatefile("${path.module}/elk/kibana.yaml", {
+    external_domain = "https://dev-pagopa.westeurope.cloudapp.azure.com/kibana" ####TEMP "${local.apim_hostname}/kibana"
 
-  manifest = yamldecode(file("${path.module}/elk/kibana.yaml"))
-
+  }))
 
 }
 
@@ -123,8 +128,11 @@ resource "kubernetes_manifest" "ingress_manifest" {
 }
 
 resource "kubernetes_manifest" "apm_manifest" {
-
-  manifest = yamldecode(file("${path.module}/elk/apm.yaml"))
+  field_manager {
+    force_conflicts = true
+  }
+  computed_fields = ["metadata.labels", "metadata.annotations", "spec", "status"]
+  manifest        = yamldecode(file("${path.module}/elk/apm.yaml"))
 
 
 }

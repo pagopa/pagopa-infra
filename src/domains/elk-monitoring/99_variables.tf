@@ -180,3 +180,8 @@ variable "enable_iac_pipeline" {
 variable "ingress_load_balancer_ip" {
   type = string
 }
+
+variable "subscription_name" {
+  type        = string
+  description = "Subscription name"
+}

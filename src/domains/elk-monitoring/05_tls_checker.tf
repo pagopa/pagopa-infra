@@ -16,3 +16,11 @@ module "tls_checker" {
   application_insights_action_group_slack_id = data.azurerm_monitor_action_group.slack.id
   application_insights_action_group_email_id = data.azurerm_monitor_action_group.email.id
 }
+module "letsencrypt_dev_elk" {
+  source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
+
+  prefix            = var.prefix
+  env               = "d"
+  key_vault_name    = "${local.product}-${var.domain}-kv"
+  subscription_name = var.subscription_name
+}
