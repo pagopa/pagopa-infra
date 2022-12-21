@@ -50,39 +50,6 @@ resource "kubernetes_storage_class" "kubernetes_storage_class_cold" {
 
 }
 
-### ECK CRDS YAML
-#data "template_file" "crds_tpl" {
-#  template = "${file("${path.module}/elk/crds.yaml.tpl")}"
-#}
-#resource "local_file" "crds_file" {
-#  filename = "${path.module}/elk/crds.yaml"
-#  content  = templatefile("${path.module}/elk/crds.yaml.tpl",{})
-
-#    provisioner "local-exec" {
-#    command = "kubectl apply -f ${self.filename}"
-#  }
-#}
-#resource "local_file" "operator_file" {
-#  filename = "${path.module}/elk/operator.yaml"
-#  content  = templatefile("${path.module}/elk/operator.yaml.tpl",{})
-#  
-#    provisioner "local-exec" {
-#    command = "kubectl apply -f ${self.filename}"
-#  }
-#}
-#resource "null_resource" "crds_null" {
-
-#  provisioner "local-exec" {
-#    command = "kubectl -n elastic-system apply -f ${path.module}/elk/crds.yaml"
-#  }
-#}
-
-#resource "null_resource" "operator_null" {
-#
-#  provisioner "local-exec" {
-#    command = "kubectl -n elastic-system apply -f ${path.module}/elk/operator.yaml"
-#  }
-#}
 
 resource "local_file" "elastic_file" {
   filename = "${path.module}/elk/elastic.yaml"
