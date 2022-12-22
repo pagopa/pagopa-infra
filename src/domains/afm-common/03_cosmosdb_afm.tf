@@ -113,6 +113,10 @@ locals {
     {
       name               = "paymenttypes",
       partition_key_path = "/name"
+    },
+    {
+      name               = "cdis",
+      partition_key_path = "/idPsp"
     }
   ]
 }
