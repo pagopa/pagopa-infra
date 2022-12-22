@@ -133,9 +133,6 @@
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
-          },
-          "authToken": {
-            "type": "string"
           }
         },
         "required": [
@@ -146,8 +143,7 @@
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
-          "amount": 100,
-          "authToken": "authToken1"
+          "amount": 100
         }
       },
       "NewTransactionRequest": {
@@ -202,25 +198,40 @@
                 "rptId": "77777777777302012387654312384",
                 "paymentToken": "paymentToken1",
                 "reason": "reason1",
-                "amount": 100,
-                "authToken": "authToken1"
+                "amount": 100
               },
               {
                 "rptId": "77777777777302012387654312385",
                 "paymentToken": "paymentToken2",
                 "reason": "reason2",
-                "amount": 100,
-                "authToken": "authToken2"
+                "amount": 100
               }
             ]
           },
           "status": {
             "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "amountTotal": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "feeTotal": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "origin": {
+            "description": "cart origin",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART"
+            ]
+          },
+          "authToken": {
+            "type": "string"
           }
         },
         "required": [
           "transactionId",
-          "amount",
+          "amountTotal",
           "status",
           "payments"
         ]
