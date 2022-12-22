@@ -619,7 +619,7 @@
               "$ref": "#/definitions/CheckPosition"
             }
           }
-        ],        
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -653,24 +653,31 @@
           }
         }
       }
-    },    
+    }
   },
   "definitions": {
-    "CheckPosition" : {
-        "type": "object",
-        "required": ["positionslist"],
-        "properties": {
-          "positionslist": {
-            "type": "array",
-            "items": { "$ref": "#/definitions/listelement" },
-            "minItems": 1, 
-            "maxItems": 5
-          }
-        },
+    "CheckPosition": {
+      "type": "object",
+      "required": [
+        "positionslist"
+      ],
+      "properties": {
+        "positionslist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/listelement"
+          },
+          "minItems": 1,
+          "maxItems": 5
+        }
+      }
     },
     "listelement": {
       "type": "object",
-      "required": [ "fiscalCode", "noticeNumber" ],
+      "required": [
+        "fiscalCode",
+        "noticeNumber"
+      ],
       "properties": {
         "fiscalCode": {
           "type": "string",
@@ -679,6 +686,16 @@
         "noticeNumber": {
           "type": "string",
           "pattern": "^[0-9]{18}$"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "KO"
+          ]
+        },
+        "description": {
+          "type": "string"
         }
       }
     },
@@ -1229,17 +1246,21 @@
     "CheckPositionResponse": {
       "type": "object",
       "required": [
-        "esito"
+        "esito",
+        "positionslist"
       ],
       "properties": {
-        "esito": {
+        "outcome": {
           "type": "string",
           "enum": [
             "OK",
             "KO"
           ]
+        },
+        "positionslist": {
+          "$ref": "#/definitions/listelement"
         }
       }
-    }    
+    }
   }
 }
