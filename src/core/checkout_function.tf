@@ -31,15 +31,16 @@ module "checkout_function_snet" {
 
 module "checkout_function" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.2.5"
 
   resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   name                = format("%s-fn-checkout", local.project)
   location            = var.location
-  health_check_path   = "info"
+  health_check_path   = "/info"
   subnet_id           = module.checkout_function_snet[0].id
   runtime_version     = "~4"
   os_type             = "linux"
+  linux_fx_version    = "NODE|14"
 
   always_on                                = var.checkout_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -55,8 +56,6 @@ module "checkout_function" {
   storage_account_name = replace(format("%s-st-fncheckout", local.project), "-", "")
 
   app_settings = {
-    linux_fx_version = "NODE|14-lts"
-
     FUNCTIONS_WORKER_RUNTIME       = "node"
     WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
@@ -79,6 +78,14 @@ module "checkout_function" {
     IO_PAY_XPAY_REDIRECT        = format("https://%s.%s/%s?id=_id_&resumeType=_resumeType_&_queryParams_", var.dns_zone_checkout, var.external_domain, "esito")
 
     PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret.value
+  }
+
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
   }
 
   allowed_subnets = [module.apim_snet.id]
