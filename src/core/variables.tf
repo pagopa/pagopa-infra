@@ -824,6 +824,18 @@ variable "ecommerce_ingress_hostname" {
   default     = null
 }
 
+variable "ecommerce_xpay_psps_list" {
+  type        = string
+  description = "psps list using xpay as comma separated value"
+  default     = ""
+}
+
+variable "ecommerce_vpos_psps_list" {
+  type        = string
+  description = "psps list using vpos as comma separated value"
+  default     = ""
+}
+
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
