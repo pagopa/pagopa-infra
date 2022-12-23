@@ -1275,7 +1275,12 @@
           ]
         },
         "positionslist": {
-          "$ref": "#/definitions/listelement"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/listelement"
+          },
+          "minItems": 1,
+          "maxItems": 5
         }
       }
     }
