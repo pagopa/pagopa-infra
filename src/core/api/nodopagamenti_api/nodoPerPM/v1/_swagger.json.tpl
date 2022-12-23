@@ -665,7 +665,7 @@
         "positionslist": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/listelement"
+            "$ref": "#/definitions/listelementRequest"
           },
           "minItems": 1,
           "maxItems": 5
@@ -696,6 +696,23 @@
         },
         "description": {
           "type": "string"
+        }
+      }
+    },
+    "listelementRequest": {
+      "type": "object",
+      "required": [
+        "fiscalCode",
+        "noticeNumber"
+      ],
+      "properties": {
+        "fiscalCode": {
+          "type": "string",
+          "pattern": "^[0-9]{11}$"
+        },
+        "noticeNumber": {
+          "type": "string",
+          "pattern": "^[0-9]{18}$"
         }
       }
     },
