@@ -1263,7 +1263,7 @@
     "CheckPositionResponse": {
       "type": "object",
       "required": [
-        "esito",
+        "outcome",
         "positionslist"
       ],
       "properties": {
