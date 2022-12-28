@@ -378,7 +378,7 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-biz-evt-enrich"
-    partitions        = 32
+    partitions        = 30
     message_retention = 7
     consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
     keys = [
