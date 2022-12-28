@@ -15,6 +15,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_elastic_stack"></a> [elastic\_stack](#module\_elastic\_stack) | git::https://github.com/pagopa/azurerm.git//elastic_stack | v3.12.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
 | <a name="module_letsencrypt_dev_elk"></a> [letsencrypt\_dev\_elk](#module\_letsencrypt\_dev\_elk) | git::https://github.com/pagopa/azurerm.git//letsencrypt_credential | v3.8.1 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/azurerm.git//kubernetes_pod_identity | v2.13.1 |
@@ -32,13 +33,9 @@
 | [azurerm_private_dns_a_record.kibana_ingress](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
-| [kubernetes_manifest.apm_manifest](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/manifest) | resource |
-| [kubernetes_manifest.ingress_manifest](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/manifest) | resource |
-| [kubernetes_manifest.kibana_manifest](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/manifest) | resource |
 | [kubernetes_storage_class.kubernetes_storage_class_cold](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/storage_class) | resource |
 | [kubernetes_storage_class.kubernetes_storage_class_hot](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/storage_class) | resource |
 | [kubernetes_storage_class.kubernetes_storage_class_warm](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/storage_class) | resource |
-| [local_file.elastic_file](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
