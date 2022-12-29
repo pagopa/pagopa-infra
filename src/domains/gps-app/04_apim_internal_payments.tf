@@ -4,8 +4,8 @@
 
 locals {
   apim_gpd_payments_soap_api = {
-    display_name          = "GPD Payments pagoPA - SOAP - aks"
-    description           = "SOAP API del servizio Payments per Gestione Posizione Debitorie"
+    display_name = "GPD Payments pagoPA - SOAP - aks"
+    description  = "SOAP API del servizio Payments per Gestione Posizione Debitorie"
     # temporary path for migration purpose - the official one will be gpd-payments/api
     path                  = "gps/gpd-payments/api"
     published             = true
@@ -35,12 +35,12 @@ locals {
 module "apim_gpd_payments_soap_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
-  product_id            = "gpd-payments-soap"
-  display_name          = "GPD Payments pagoPA - SOAP - aks"
-  description           = "API Prodotto Payments gestione posizioni debitorie - SOAP"
+  product_id   = "gpd-payments-soap"
+  display_name = "GPD Payments pagoPA - SOAP - aks"
+  description  = "API Prodotto Payments gestione posizioni debitorie - SOAP"
 
-  resource_group_name   = local.pagopa_apim_rg
-  api_management_name   = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
 
   published             = local.apim_gpd_payments_soap_api.published
   subscription_required = local.apim_gpd_payments_soap_api.subscription_required
