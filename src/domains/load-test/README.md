@@ -13,7 +13,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_grafana_managed"></a> [grafana\_managed](#module\_grafana\_managed) | git::https://github.com/pagopa/terraform-azurerm-v3.git//grafana | feature/new_output_grafana |
+| <a name="module_grafana_managed"></a> [grafana\_managed](#module\_grafana\_managed) | git::https://github.com/pagopa/terraform-azurerm-v3.git//grafana | v3.4.3 |
 
 ## Resources
 
