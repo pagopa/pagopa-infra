@@ -39,6 +39,9 @@ function rm_terraform {
     find . \( -iname ".terraform*" ! -iname ".terraform-docs*" ! -iname ".terraform-version" \) -print0 | xargs -0 rm -rf
 }
 
+echo "[INFO] 🪚  Delete all .terraform folders"
+rm_terraform
+
 echo "[INFO] 🏁 Init all terraform repos"
 for index in "${array[@]}" ; do
     FOLDER="${index%%::*}"
