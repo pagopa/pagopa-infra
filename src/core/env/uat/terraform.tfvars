@@ -111,7 +111,7 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
-  "/ppt-lmi/.*",
+  # "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
