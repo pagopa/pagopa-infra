@@ -165,3 +165,19 @@ resource "azurerm_key_vault_secret" "gpd_donations_subscription_key" {
     ]
   }
 }
+
+## Used for integration test only ##
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_payments_subscription_key" {
+  name         = format("gpd-%s-payments-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
