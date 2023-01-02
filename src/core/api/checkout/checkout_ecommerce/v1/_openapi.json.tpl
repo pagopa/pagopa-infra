@@ -910,6 +910,24 @@
               "SL"
             ],
             "description": "Requested language"
+          },
+          "details": {
+            "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PostePayAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/CardAuthRequestDetails"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "detailType",
+              "mapping": {
+                "postepay": "#/components/schemas/PostePayAuthRequestDetails",
+                "card": "#/components/schemas/CardAuthRequestDetails"
+              }
+            }
           }
         },
         "required": [
@@ -917,8 +935,73 @@
           "fee",
           "paymentInstrumentId",
           "pspId",
-          "language"
+          "language",
+          "details"
         ]
+      },
+      "PostePayAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for the PostePay payment method",
+        "properties": {
+          "detailType": {
+            "type": "string"
+          },
+          "accountEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "PostePay account email"
+          }
+        },
+        "required": [
+          "detailType",
+          "accountEmail"
+        ],
+        "example": {
+          "detailType": "postepay",
+          "accountEmail": "user@example.com"
+        }
+      },
+      "CardAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for credit cards",
+        "properties": {
+          "detailType": {
+            "type": "string"
+          },
+          "cvv": {
+            "type": "string",
+            "description": "Credit card CVV",
+            "pattern": "^[0-9]{3,4}$"
+          },
+          "pan": {
+            "type": "string",
+            "description": "Credit card PAN",
+            "pattern": "^[0-9]{14,16}$"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "Credit card expiry date. The date format is `YYYYMM`",
+            "pattern": "^\\d{6}$"
+          },
+          "holderName": {
+            "type": "string",
+            "description": "The card holder name"
+          }
+        },
+        "required": [
+          "detailType",
+          "cvv",
+          "pan",
+          "expiryDate",
+          "holderName"
+        ],
+        "example": {
+          "detailType": "card",
+          "cvv": 0,
+          "pan": "0123456789012345",
+          "expiryDate": "209901",
+          "holderName": "Name Surname"
+        }
       },
       "UpdateAuthorizationRequest": {
         "type": "object",
