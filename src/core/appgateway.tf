@@ -70,6 +70,23 @@ locals {
         )
       }
     }
+
+    kibana = {
+      protocol           = "Https"
+      host               = format("kibana.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_kibana_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.kibana.secret_id,
+          "/${data.azurerm_key_vault_certificate.kibana.version}",
+          ""
+        )
+      }
+    }
   }
 
   listeners_apiprf = {
@@ -106,7 +123,6 @@ locals {
         )
       }
     }
-  }
 
   listeners_wfespgovit = {
     wfespgovit = {
@@ -151,6 +167,12 @@ locals {
       listener              = "wisp2"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+
+    kibana = {
+      listener              = "kibana"
+      backend               = "kibana"
+      rewrite_rule_set_name = null
     }
   }
 
@@ -256,6 +278,18 @@ module "app_gw" {
       probe                       = "/ServiceStatus"
       probe_name                  = "probe-management"
       request_timeout             = 8
+      pick_host_name_from_backend = false
+    }
+
+    kibana = {
+      protocol                    = "Https"
+      host                        = "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
+      port                        = 443
+      ip_addresses                = [var.ingress_load_balancer_ip]
+      fqdns                       = ["weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
+      probe                       = "/kibana"
+      probe_name                  = "probe-kibana"
+      request_timeout             = 10
       pick_host_name_from_backend = false
     }
   }
