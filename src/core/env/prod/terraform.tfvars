@@ -89,6 +89,7 @@ app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
+app_gateway_wfespgovit_certificate_name = ""
 app_gateway_min_capacity                = 5 # TODO tuning, probably 3 it's more indicate value
 app_gateway_max_capacity                = 10
 app_gateway_sku_name                    = "WAF_v2"
