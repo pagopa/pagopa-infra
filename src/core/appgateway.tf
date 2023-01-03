@@ -108,6 +108,24 @@ locals {
     }
   }
 
+  listeners_wfespgovit = {
+    wfespgovit = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_wisp2, "pagopa.gov.it")
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+      certificate = {
+        name = var.app_gateway_wfespgovit_certificate_name
+        id = var.app_gateway_wfespgovit_certificate_name == "" ? null : replace(
+          data.azurerm_key_vault_certificate.wfespgovit[0].secret_id,
+          "/${data.azurerm_key_vault_certificate.wfespgovit[0].version}",
+          ""
+        )
+      }
+    }
+  }
+
   # routes
 
   routes = {
