@@ -1,7 +1,7 @@
 <policies>
   <inbound>
     <set-header name="x-transaction-origin" exists-action="override" >
-      <value>"CHECKOUT"</value>
+      <value>CHECKOUT</value>
     </set-header>
     <base />
   </inbound>
