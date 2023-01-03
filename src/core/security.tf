@@ -167,6 +167,13 @@ data "azurerm_key_vault_certificate" "wisp2govit" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "wfespgovit" {
+  count = (var.app_gateway_wfespgovit_certificate_name == "") ? 0 : 1
+
+  name         = var.app_gateway_wfespgovit_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "apim_publisher_email" {
   name         = "apim-publisher-email"
   key_vault_id = module.key_vault.id
