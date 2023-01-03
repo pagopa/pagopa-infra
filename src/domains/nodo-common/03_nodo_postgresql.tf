@@ -1,5 +1,5 @@
-resource "azurerm_resource_group" "db_rg" {
-  name     = format("%s-db-rg", local.project)
+resource "azurerm_resource_group" "db_rg_2" {
+  name     = format("%s-db-rg-2", local.project)
   location = var.location
 
   tags = var.tags
@@ -39,8 +39,8 @@ module "postgres_flexible_snet_2" {
 module "postgres_flexible_server_2" {
   source              = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.12.3"
   name                = format("%s-flexible-postgresql-2", local.project)
-  location            = azurerm_resource_group.db_rg.location
-  resource_group_name = azurerm_resource_group.db_rg.name
+  location            = azurerm_resource_group.db_rg_2.location
+  resource_group_name = azurerm_resource_group.db_rg_2.name
 
   private_endpoint_enabled    = var.pgres_flex_private_endpoint_enabled
   private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
