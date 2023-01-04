@@ -750,16 +750,15 @@
           "VPOS Controller"
         ],
         "operationId": "vposAuthorize",
-        "parameters": [
-          {
-            "name": "data",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "string"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK",
