@@ -11,6 +11,11 @@ tags = {
 
 lock_enable = true
 
+# monitoring
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = 10
+
 # networking
 # main vnet
 cidr_vnet = ["10.1.0.0/16"]
@@ -101,10 +106,12 @@ app_gateway_deny_paths = [
   "/gps/donation-service/.*",             # internal use no sub-keys
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
+  "/gps/gpd-payments/.*",                 # internal use no sub-keys
+  "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
-  "/ppt-lmi/.*",
+  # "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
@@ -378,9 +385,9 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-biz-evt-enrich"
-    partitions        = 32
+    partitions        = 30
     message_retention = 7
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -396,6 +403,12 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pn"
         listen = true
         send   = false
         manage = false

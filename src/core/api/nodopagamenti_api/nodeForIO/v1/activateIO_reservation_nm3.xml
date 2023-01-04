@@ -6,14 +6,14 @@
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"fiscalCode"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var fiscalCode = result[1].Substring(1,result[1].Length-3);
+            var fiscalCode = result.Length > 2 ? result[1].Substring(1,result[1].Length-3) : "fiscalCode";
             return fiscalCode;
         }" />
         <set-variable name="noticeNumber" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
             String[] spearator = {"noticeNumber"};
             String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-            var noticeNumber = result[1].Substring(1,result[1].Length-3);
+            var noticeNumber = result.Length > 2 ? result[1].Substring(1,result[1].Length-3) : "noticeNumber";
             return noticeNumber;
         }" />
         <!--
