@@ -300,6 +300,86 @@
           }
         }
       }
+    },
+    "/request-payments/creditCard/{requestId}/resume/method": {
+      "post": {
+        "summary": "resume CreditCard payment request",
+        "tags": [
+          "CreditCard-external"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "MDC-Fields",
+            "description": "MDC information",
+            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreditCardResumeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "302": {
+            "description": "FOUND, Redirect to url"
+          }
+        }
+      }
+    },
+    "/request-payments/creditCard/{requestId}/resume/challenge": {
+      "post": {
+        "summary": "resume CreditCard payment request",
+        "tags": [
+          "CreditCard-external"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "MDC-Fields",
+            "description": "MDC information",
+            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "FOUND, Redirect to url"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -454,6 +534,18 @@
           "responseType",
           "requestId"
         ]
+      },
+      "CreditCardResumeRequest": {
+        "type": "object",
+        "required": [
+          "methodCompleted"
+        ],
+        "properties": {
+          "methodCompleted": {
+            "type": "string",
+            "example": "Y"
+          }
+        }
       }
     }
   }
