@@ -13,26 +13,8 @@ services:
       - db-nodo-net
     command: >
       --defaultsFile=/liquibase/config/liquibase.properties
-      update
+      update-to-tag ${NODO_VERSION}
     
-
-  liquibase-cfg-update-dev:
-    image: liquibase/liquibase:4.17
-    env_file:
-      - ./dev.env
-    depends_on:
-      liquibase-cfg-update:
-        condition: service_completed_successfully
-    volumes:
-      - ./liquibase/docker-entrypoint.sh:/liquibase/docker-entrypoint.sh
-      - ./liquibase/changelog/cfg:/liquibase/changelog/
-      - ./liquibase/properties/cfg.properties:/liquibase/config/liquibase.properties
-    networks:
-      - db-nodo-net
-    command: >
-      --defaultsFile=/liquibase/config/liquibase.properties
-      --contexts=dev
-      update
 
   liquibase-online-update:
     image: liquibase/liquibase:4.17
@@ -46,7 +28,7 @@ services:
       - db-nodo-net
     command: >
       --defaultsFile=/liquibase/config/liquibase.properties
-      update
+      update-to-tag ${NODO_VERSION}
 
   liquibase-offline-update:
     image: liquibase/liquibase:4.17
@@ -63,25 +45,7 @@ services:
       - db-nodo-net
     command: >
       --defaultsFile=/liquibase/config/liquibase.properties
-      update
-  
-  liquibase-offline-update-dev:
-    image: liquibase/liquibase:4.17
-    env_file:
-      - ./dev.env
-    depends_on:
-      liquibase-offline-update:
-        condition: service_completed_successfully
-    volumes:
-      - ./liquibase/docker-entrypoint.sh:/liquibase/docker-entrypoint.sh
-      - ./liquibase/changelog/offline:/liquibase/changelog/
-      - ./liquibase/properties/offline.properties:/liquibase/config/liquibase.properties
-    networks:
-      - db-nodo-net
-    command: >
-      --defaultsFile=/liquibase/config/liquibase.properties
-      --contexts=dev
-      update
+      update-to-tag ${NODO_VERSION}
   
   liquibase-re-update:
     image: liquibase/liquibase:4.17
@@ -95,7 +59,7 @@ services:
       - db-nodo-net
     command: >
       --defaultsFile=/liquibase/config/liquibase.properties
-      update
+      update-to-tag ${NODO_VERSION}
 
   liquibase-wfesp-update:
     image: liquibase/liquibase:4.17
@@ -109,7 +73,7 @@ services:
       - db-nodo-net
     command: >
       --defaultsFile=/liquibase/config/liquibase.properties
-      update
+      update-to-tag ${NODO_VERSION}
 
 networks:
   db-nodo-net:

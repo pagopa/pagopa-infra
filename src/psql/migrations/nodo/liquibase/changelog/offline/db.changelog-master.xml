@@ -6,11 +6,26 @@
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
     <include file="./db.changelog-0.xml"/>
+    <changeSet author="liquibase" id="tagDatabase-init">
+      <tagDatabase tag="init"/>
+    </changeSet>
+
+    <!-- 3.8.0 -->
+    <changeSet author="liquibase" id="tagDatabase-3.8">
+        <tagDatabase tag="3.8"/>
+    </changeSet>
 
     <!-- 3.9.0 -->
     <include file="./db.changelog-202211140000_views_payments_mbd.xml"/>
     <include file="./db.changelog-202211161046_insert_elenco_servizi_psp.xml" context="dev"/>
+    <changeSet author="liquibase" id="tagDatabase-3.9">
+      <tagDatabase tag="3.9"/>
+    </changeSet>
 
     <!-- 3.10.0 -->
     <include file="./db.changelog-202212120933_drop_view_storni_revoche.xml"/>
+    <changeSet author="liquibase" id="tagDatabase-3.10">
+      <tagDatabase tag="3.10"/>
+    </changeSet>
+
 </databaseChangeLog> 

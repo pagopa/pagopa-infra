@@ -158,9 +158,9 @@
         <createSequence cacheSize="20000" maxValue="9223372036854775807" sequenceName="VERIFICA_BOLLETTINO_SEQ" startValue="1020001"/>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-53">
-        <createTable  tableName="ANAGRAFICA_NOTIFICA_RT">
+        <createTable tableName="ANAGRAFICA_NOTIFICA_RT">
             <column defaultValueSequenceNext="ANAGRAFICA_NOTIFICA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="ANAGRAFICA_NOTIFICA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="ANAGRAFICA_NOTIFICA_RT_PK"/>
             </column>
             <column name="HASH_CF" type="VARCHAR2(100 BYTE)">
                 <constraints nullable="false"/>
@@ -168,9 +168,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-54">
-        <createTable  tableName="CARRELLO">
+        <createTable tableName="CARRELLO">
             <column defaultValueSequenceNext="CARRELLO_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="CARRELLO_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="CARRELLO_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -211,9 +211,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-55">
-        <createTable  tableName="CD_INFO_PAGAMENTO">
+        <createTable tableName="CD_INFO_PAGAMENTO">
             <column defaultValueSequenceNext="CD_INFO_PAGAMENTO_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="CD_INFO_PAGAMENTO_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="CD_INFO_PAGAMENTO_PK"/>
             </column>
             <column name="IDENT_DOMINIO" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -234,9 +234,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-56">
-        <createTable  tableName="IDEMPOTENCY_CACHE">
+        <createTable tableName="IDEMPOTENCY_CACHE">
             <column defaultValueSequenceNext="IDEMPOTENCY_CACHE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="IDEMPOTENCY_CACHE_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="IDEMPOTENCY_CACHE_PK"/>
             </column>
             <column name="PRIMITIVA" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -266,9 +266,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-57">
-        <createTable  tableName="MESSAGGI">
+        <createTable tableName="MESSAGGI">
             <column defaultValueSequenceNext="MESSAGGI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="MESSAGGI_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="MESSAGGI_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -284,9 +284,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-58">
-        <createTable  tableName="NEXT_RETRY_NOTIFICA_RT">
+        <createTable tableName="NEXT_RETRY_NOTIFICA_RT">
             <column defaultValueSequenceNext="NEXT_RETRY_NOTIFICA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="NEXT_RETRY_NOTIFICA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="NEXT_RETRY_NOTIFICA_RT_PK"/>
             </column>
             <column name="NEXT_RETRY" type="TIMESTAMP(6)">
                 <constraints nullable="false"/>
@@ -294,7 +294,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-59">
-        <createTable  tableName="NMU_CANCEL_UTILITY">
+        <createTable tableName="NMU_CANCEL_UTILITY">
             <column name="TRANSACTION_ID" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
             </column>
@@ -316,9 +316,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-60">
-        <createTable  tableName="NOTIFICA_RT">
+        <createTable tableName="NOTIFICA_RT">
             <column defaultValueSequenceNext="NOTIFICA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="NOTIFICA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="NOTIFICA_RT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -363,9 +363,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-61">
-        <createTable  tableName="PM_METADATA">
+        <createTable tableName="PM_METADATA">
             <column defaultValueSequenceNext="SQ_PM_METADATA_ID" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PM_METADATA"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_PM_METADATA"/>
             </column>
             <column name="TRANSACTION_ID" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -391,9 +391,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-62">
-        <createTable  tableName="PM_SESSION_DATA">
+        <createTable tableName="PM_SESSION_DATA">
             <column defaultValueSequenceNext="PM_SESSION_DATA_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_PM_DATA_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RPT_PM_DATA_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -427,9 +427,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-63">
-        <createTable  tableName="POSITION_ACTIVATE">
+        <createTable tableName="POSITION_ACTIVATE">
             <column defaultValueSequenceNext="POSITION_ACTIVATE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_ACTIVATE_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_ACTIVATE_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -454,9 +454,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-64">
-        <createTable  tableName="POSITION_PAYMENT">
+        <createTable tableName="POSITION_PAYMENT">
             <column defaultValueSequenceNext="POSITION_PAYMENT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_PAYMENT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_PAYMENT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -502,9 +502,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-65">
-        <createTable  tableName="POSITION_PAYMENT_PLAN">
+        <createTable tableName="POSITION_PAYMENT_PLAN">
             <column defaultValueSequenceNext="POSITION_PAYMENT_PLAN_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="PPP_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PPP_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -522,9 +522,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-66">
-        <createTable  tableName="POSITION_PAYMENT_STATUS">
+        <createTable tableName="POSITION_PAYMENT_STATUS">
             <column defaultValueSequenceNext="POSITION_PAYMENT_STATUS_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_PAYMENT_STATUS_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_PAYMENT_STATUS_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -536,9 +536,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-67">
-        <createTable  tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
+        <createTable tableName="POSITION_PAYMENT_STATUS_SNAPSHOT">
             <column defaultValueSequenceNext="POSITION_PAYMENT_STATUS_SNAPSHOT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_PAYMENT_STATUS_SNAPSHOT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_PAYMENT_STATUS_SNAPSHOT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -553,9 +553,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-68">
-        <createTable  tableName="POSITION_RECEIPT">
+        <createTable tableName="POSITION_RECEIPT">
             <column defaultValueSequenceNext="POSITION_RECEIPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RECEIPT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_RECEIPT_PK"/>
             </column>
             <column name="RECEIPT_ID" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -593,9 +593,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-69">
-        <createTable  tableName="POSITION_RECEIPT_RECIPIENT">
+        <createTable tableName="POSITION_RECEIPT_RECIPIENT">
             <column defaultValueSequenceNext="POSITION_RECEIPT_RECIPIENT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RECEIPT_RECIPIENT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_RECEIPT_RECIPIENT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -616,9 +616,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-70">
-        <createTable  tableName="POSITION_RECEIPT_RECIPIENT_STATUS">
+        <createTable tableName="POSITION_RECEIPT_RECIPIENT_STATUS">
             <column defaultValueSequenceNext="POSITION_RECEIPT_RECIPIENT_STATUS_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RECEIPT_RECIPIENT_STATUS_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_RECEIPT_RECIPIENT_STATUS_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -636,7 +636,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-71">
-        <createTable  tableName="POSITION_RECEIPT_TRANSFER">
+        <createTable tableName="POSITION_RECEIPT_TRANSFER">
             <column name="FK_POSITION_RECEIPT" type="NUMBER">
                 <constraints nullable="false"/>
             </column>
@@ -650,9 +650,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-72">
-        <createTable  tableName="POSITION_RECEIPT_XML">
+        <createTable tableName="POSITION_RECEIPT_XML">
             <column defaultValueSequenceNext="POSITION_RECEIPT_XML_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RECEIPT_XML_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_RECEIPT_XML_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -672,9 +672,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-73">
-        <createTable  tableName="POSITION_RETRY_PA_SEND_RT">
+        <createTable tableName="POSITION_RETRY_PA_SEND_RT">
             <column defaultValueSequenceNext="POSITION_RETRY_PA_SEND_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RETRY_PA_SEND_RT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_RETRY_PA_SEND_RT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -696,9 +696,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-74">
-        <createTable  tableName="POSITION_RETRY_PSP_SEND_PAYMENT">
+        <createTable tableName="POSITION_RETRY_PSP_SEND_PAYMENT">
             <column defaultValueSequenceNext="POSITION_RETRY_PSP_SEND_PAYMENT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_RETRY_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_RETRY_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="IUV" type="VARCHAR2(50)"/>
@@ -715,9 +715,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-75">
-        <createTable  tableName="POSITION_RETRY_SENDPAYMENTRESULT">
+        <createTable tableName="POSITION_RETRY_SENDPAYMENTRESULT">
             <column defaultValueSequenceNext="SQ_POSITION_RETRY_SENDPAYMENTRESULT_ID" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_POSITION_RETRY_SENDPAYMENTRESULT"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_POSITION_RETRY_SENDPAYMENTRESULT"/>
             </column>
             <column name="PAYMENT_TOKEN" type="VARCHAR2(255)">
                 <constraints nullable="false"/>
@@ -775,9 +775,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-76">
-        <createTable  tableName="POSITION_SERVICE">
+        <createTable tableName="POSITION_SERVICE">
             <column defaultValueSequenceNext="POSITION_SERVICE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="PS_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PS_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -792,9 +792,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-77">
-        <createTable  tableName="POSITION_STATUS">
+        <createTable tableName="POSITION_STATUS">
             <column defaultValueSequenceNext="POSITION_STATUS_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_STATUS_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_STATUS_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -804,9 +804,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-78">
-        <createTable  tableName="POSITION_STATUS_SNAPSHOT">
+        <createTable tableName="POSITION_STATUS_SNAPSHOT">
             <column defaultValueSequenceNext="POSITION_STATUS_SNAPSHOT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_STATUS_SNAPSHOT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_STATUS_SNAPSHOT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
@@ -820,9 +820,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-79">
-        <createTable  tableName="POSITION_SUBJECT">
+        <createTable tableName="POSITION_SUBJECT">
             <column defaultValueSequenceNext="POSITION_SUBJECT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_SUBJECT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_SUBJECT_PK"/>
             </column>
             <column name="SUBJECT_TYPE" type="VARCHAR2(50)"/>
             <column name="ENTITY_UNIQUE_IDENTIFIER_TYPE" type="VARCHAR2(1)"/>
@@ -846,9 +846,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-80">
-        <createTable  tableName="POSITION_TRANSFER">
+        <createTable tableName="POSITION_TRANSFER">
             <column defaultValueSequenceNext="POSITION_TRANSFER_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="POSITION_TRANSFER_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="POSITION_TRANSFER_PK"/>
             </column>
             <column name="NOTICE_ID" type="VARCHAR2(50)"/>
             <column name="CREDITOR_REFERENCE_ID" type="VARCHAR2(50)"/>
@@ -873,9 +873,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-81">
-        <createTable  tableName="POSITION_TRANSFER_MBD">
+        <createTable tableName="POSITION_TRANSFER_MBD">
             <column defaultValueSequenceNext="SQ_POSITION_TRANSFER_MBD_ID" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_POSITION_TRANSFER_MBD"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="PK_POSITION_TRANSFER_MBD"/>
             </column>
             <column name="FK_POSITION_TRANSFER" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -913,9 +913,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-82">
-        <createTable  tableName="REGISTRO_CHIAMATE_NOTIFICA_RT">
+        <createTable tableName="REGISTRO_CHIAMATE_NOTIFICA_RT">
             <column defaultValueSequenceNext="REGISTRO_CHIAMATE_NOTIFICA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="REGISTRO_CHIAMATE_NOTIFICA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="REGISTRO_CHIAMATE_NOTIFICA_RT_PK"/>
             </column>
             <column name="DATA" type="TIMESTAMP(6)">
                 <constraints nullable="false"/>
@@ -926,9 +926,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-83">
-        <createTable  tableName="RETRY_PA_ATTIVA_RPT">
+        <createTable tableName="RETRY_PA_ATTIVA_RPT">
             <column defaultValueSequenceNext="RETRY_PA_ATTIVA_RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_PA_ATTIVA_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RETRY_PA_ATTIVA_RPT_PK"/>
             </column>
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -950,9 +950,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-84">
-        <createTable  tableName="RETRY_PA_INVIA_RT">
+        <createTable tableName="RETRY_PA_INVIA_RT">
             <column defaultValueSequenceNext="RETRY_PA_INVIA_RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_PA_INVIA_RT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RETRY_PA_INVIA_RT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -998,9 +998,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-85">
-        <createTable  tableName="RETRY_PSP_ACK">
+        <createTable tableName="RETRY_PSP_ACK">
             <column defaultValueSequenceNext="RETRY_PSP_ACK_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_PSP_ACK_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RETRY_PSP_ACK_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1041,9 +1041,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-86">
-        <createTable  tableName="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT">
+        <createTable tableName="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT">
             <column defaultValueSequenceNext="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RETRY_PSP_NOTIFICA_CANCELLAZIONE_RPT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1086,9 +1086,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-87">
-        <createTable  tableName="RETRY_RPT">
+        <createTable tableName="RETRY_RPT">
             <column defaultValueSequenceNext="RETRY_RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RETRY_RPT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1126,9 +1126,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-88">
-        <createTable  tableName="RETRY_RPT_NOTIFICA_CANCELLAZIONE">
+        <createTable tableName="RETRY_RPT_NOTIFICA_CANCELLAZIONE">
             <column defaultValueSequenceNext="RETRY_RPT_NOTIFICA_CANCELLAZIONE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RETRY_RPT_NOTIFICA_CANCELLAZIONE_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RETRY_RPT_NOTIFICA_CANCELLAZIONE_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1171,9 +1171,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-89">
-        <createTable  tableName="REVOCA_ESITI">
+        <createTable tableName="REVOCA_ESITI">
             <column defaultValueSequenceNext="REVOCA_ESITI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="REVOCA_ESITI_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="REVOCA_ESITI_PK"/>
             </column>
             <column name="ID_MESSAGGIO_ESITO" type="VARCHAR2(255)"/>
             <column name="DATA_ORA_MESSAGGIO_ESITO" type="TIMESTAMP(6) WITH TIME ZONE"/>
@@ -1192,9 +1192,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-90">
-        <createTable  tableName="REVOCA_RICHIESTE">
+        <createTable tableName="REVOCA_RICHIESTE">
             <column defaultValueSequenceNext="REVOCA_RICHIESTE_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="REVOCA_RICHIESTE_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="REVOCA_RICHIESTE_PK"/>
             </column>
             <column name="ID_MESSAGGIO_REVOCA" type="VARCHAR2(255)"/>
             <column name="DATA_ORA_REVOCA" type="TIMESTAMP(6) WITH TIME ZONE"/>
@@ -1219,9 +1219,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-91">
-        <createTable  tableName="RPT">
+        <createTable tableName="RPT">
             <column defaultValueSequenceNext="RPT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RPT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1292,7 +1292,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-92">
-        <createTable  tableName="RPT_ACTIVATIONS">
+        <createTable tableName="RPT_ACTIVATIONS">
             <column name="PA_FISCAL_CODE" type="VARCHAR2(50 BYTE)"/>
             <column name="NOTICE_ID" type="VARCHAR2(50 BYTE)"/>
             <column name="CREDITOR_REFERENCE_ID" type="VARCHAR2(50 BYTE)"/>
@@ -1307,12 +1307,12 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-93">
-        <createTable  tableName="RPT_SOGGETTI">
+        <createTable tableName="RPT_SOGGETTI">
             <column name="RPT_ID" type="NUMBER(19, 0)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_SOGGETTI_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RPT_SOGGETTI_PK"/>
             </column>
             <column name="TIPO_SOGGETTO" type="CHAR(1)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_SOGGETTI_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RPT_SOGGETTI_PK"/>
             </column>
             <column name="TIPO_IDENTIFICATIVO_UNIVOCO" type="CHAR(1)">
                 <constraints nullable="false"/>
@@ -1341,9 +1341,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-94">
-        <createTable  tableName="RPT_VERSAMENTI">
+        <createTable tableName="RPT_VERSAMENTI">
             <column defaultValueSequenceNext="RPT_VERSAMENTI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_VERSAMENTI_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RPT_VERSAMENTI_PK"/>
             </column>
             <column name="PROGRESSIVO" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -1378,9 +1378,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-95">
-        <createTable  tableName="RPT_VERSAMENTI_BOLLO">
+        <createTable tableName="RPT_VERSAMENTI_BOLLO">
             <column defaultValueSequenceNext="RPT_VERSAMENTI_BOLLO_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_VERSAMENTI_BOLLO_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RPT_VERSAMENTI_BOLLO_PK"/>
             </column>
             <column name="PROGRESSIVO" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -1406,9 +1406,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-96">
-        <createTable  tableName="RPT_XML">
+        <createTable tableName="RPT_XML">
             <column defaultValueSequenceNext="RPT_XML_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_XML_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RPT_XML_PK"/>
             </column>
             <column name="CCP" type="VARCHAR2(35)">
                 <constraints nullable="false"/>
@@ -1435,9 +1435,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-97">
-        <createTable  tableName="RT">
+        <createTable tableName="RT">
             <column defaultValueSequenceNext="RT_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RT_PK"/>
             </column>
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
@@ -1486,9 +1486,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-98">
-        <createTable  tableName="RT_VERSAMENTI">
+        <createTable tableName="RT_VERSAMENTI">
             <column defaultValueSequenceNext="RT_VERSAMENTI_SEQ" name="ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RT_VERSAMENTI_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RT_VERSAMENTI_PK"/>
             </column>
             <column name="PROGRESSIVO" type="NUMBER(19, 0)">
                 <constraints nullable="false"/>
@@ -1518,7 +1518,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-99">
-        <createTable  tableName="RT_VERSAMENTI_BOLLO">
+        <createTable tableName="RT_VERSAMENTI_BOLLO">
             <column defaultValueSequenceNext="RT_VERSAMENTI_BOLLO_SEQ" name="ID" type="NUMBER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="RT_VERSAMENTI_BOLLO_PK"/>
             </column>
@@ -1559,7 +1559,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-100">
-        <createTable  tableName="RT_XML">
+        <createTable tableName="RT_XML">
             <column defaultValueSequenceNext="RT_XML_SEQ" name="ID" type="NUMBER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="RT_XML_PK"/>
             </column>
@@ -1589,7 +1589,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-101">
-        <createTable  tableName="STATI_CARRELLO">
+        <createTable tableName="STATI_CARRELLO">
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
             </column>
@@ -1612,7 +1612,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-102">
-        <createTable  tableName="STATI_CARRELLO_SNAPSHOT">
+        <createTable tableName="STATI_CARRELLO_SNAPSHOT">
             <column name="ID_SESSIONE" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
             </column>
@@ -1637,7 +1637,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-103">
-        <createTable  tableName="STATI_RPT">
+        <createTable tableName="STATI_RPT">
             <column defaultValueSequenceNext="STATI_RPT_SEQ" name="ID" type="NUMBER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="STATI_RPT_PK"/>
             </column>
@@ -1666,7 +1666,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-104">
-        <createTable  tableName="STATI_RPT_SNAPSHOT">
+        <createTable tableName="STATI_RPT_SNAPSHOT">
             <column name="ID_DOMINIO" type="VARCHAR2(35)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="STATI_RPT_SNAPSHOT_PK"/>
             </column>
@@ -1698,7 +1698,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-105">
-        <createTable  tableName="STORNO_ESITI">
+        <createTable tableName="STORNO_ESITI">
             <column defaultValueSequenceNext="STORNO_ESITI_SEQ" name="ID" type="NUMBER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="STORNO_ESITI_PK"/>
             </column>
@@ -1719,7 +1719,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-106">
-        <createTable  tableName="STORNO_RICHIESTE">
+        <createTable tableName="STORNO_RICHIESTE">
             <column defaultValueSequenceNext="STORNO_RICHIESTE_SEQ" name="ID" type="NUMBER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="STORNO_RICHIESTE_PK"/>
             </column>
@@ -1743,7 +1743,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-107">
-        <createTable  tableName="TOKEN_UTILITY">
+        <createTable tableName="TOKEN_UTILITY">
             <column defaultValueSequenceNext="TOKEN_UTILITY_SEQ" name="ID" type="NUMBER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="TOKEN_UTILITY_PK"/>
             </column>
@@ -1763,7 +1763,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-108">
-        <createTable  tableName="T_SOGLIE_MON">
+        <createTable tableName="T_SOGLIE_MON">
             <column name="GIORNO" type="VARCHAR2(5 BYTE)"/>
             <column name="ORA" type="NUMBER"/>
             <column name="MONITOR" type="VARCHAR2(100 BYTE)"/>
@@ -1772,7 +1772,7 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666267273412-109">
-        <createTable  tableName="VERIFICA_BOLLETTINO">
+        <createTable tableName="VERIFICA_BOLLETTINO">
             <column defaultValueSequenceNext="VERIFICA_BOLLETTINO_SEQ" name="ID" type="NUMBER">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="VB_PK"/>
             </column>

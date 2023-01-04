@@ -11,9 +11,9 @@
         <createSequence cacheSize="20000" maxValue="9223372036854775807" sequenceName="RPT_SEQ" startValue="1"/>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-4">
-        <createTable  tableName="CARRELLO_RPT">
+        <createTable tableName="CARRELLO_RPT">
             <column defaultValueSequenceNext="CARRELLO_RPT_SEQ" name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="CARRELLO_RPT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="CARRELLO_RPT_PK"/>
             </column>
             <column name="ID_CARRELLO" type="VARCHAR2(35 )"/>
             <column name="CODICE_CARRELLO" type="VARCHAR2(128 )"/>
@@ -57,9 +57,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-5">
-        <createTable  tableName="REDIRECT_MY_BANK">
+        <createTable tableName="REDIRECT_MY_BANK">
             <column defaultValueSequenceNext="REDIRECT_MY_BANK_SEQ"  name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="REDIRECT_MY_BANK_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="REDIRECT_MY_BANK_PK"/>
             </column>
             <column name="ID_DOMINIO" type="VARCHAR2(35 )"/>
             <column name="IUV" type="VARCHAR2(35 )"/>
@@ -100,9 +100,9 @@
         </createTable>
     </changeSet>
     <changeSet author="liquibase" id="1666281417321-6">
-        <createTable  tableName="RPT">
+        <createTable tableName="RPT">
             <column defaultValueSequenceNext="RPT_SEQ"  name="OBJ_ID" type="NUMBER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="RPT_PK"/>
+                <constraints nullable="false" primaryKey="true"  primaryKeyName="RPT_PK"/>
             </column>
             <column name="ID_DOMINIO" type="VARCHAR2(35)">
                 <constraints nullable="false"/>

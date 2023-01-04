@@ -8,18 +8,32 @@
   <include file="./db.changelog-0.xml" />
   <include file="./db.changelog-dev-data.xml" context="dev" />
   <include file="./db.changelog-dev-data-psp-pa.xml" context="dev" />
+  <changeSet author="liquibase" id="tagDatabase-init">
+    <tagDatabase tag="init"/>
+  </changeSet>
 
   <!-- 3.8 -->
   <include file="./db.changelog-20221104000000_target_columns.xml"/>
   <include file="./db.changelog-20221107102800_view_gestione_cdi.xml"/>
-  <include file="./db.changelog-dev-data-ftp_server.xml"/>
+  <include file="./db.changelog-dev-data-ftp_server.xml" context="dev" />
+  <changeSet author="liquibase" id="tagDatabase-3.8">
+    <tagDatabase tag="3.8"/>
+  </changeSet>
 
   <!-- 3.9 -->
   <include file="./db.changelog-20221128151200_view canali_canali_nodo.xml"/>
+  <changeSet author="liquibase" id="tagDatabase-3.9">
+    <tagDatabase tag="3.9"/>
+  </changeSet>
 
   <!-- 3.10 -->
   <include file="./db.changelog-20221205102000_replace_elenco_servizi_view_canali_nodo.xml"/>
   <include file="./db.changelog-20221205102100_delete_unused_keys_column.xml"/>
   <include file="./db.changelog-20221205161400_delete_key_chiediElencoFlussiRendicontazioneDayLimit.xml"/>
   <include file="./db.changelog-20221212091400_delete_unused_keys_column-2.xml"/>
+  <include file="./db.changelog-20221220095600_lispay.xml"/>
+  <changeSet author="liquibase" id="tagDatabase-3.10">
+    <tagDatabase tag="3.10"/>
+  </changeSet>
+
 </databaseChangeLog>

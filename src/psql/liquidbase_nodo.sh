@@ -4,7 +4,7 @@
 # Apply the configuration relative to a given subscription
 # Subscription are defined in ./subscription
 # Usage:
-#  ./liquidbase_nodo.sh DEV-pagoPA
+#  ./liquidbase_nodo.sh DEV-pagoPA 3.9
 
 
 BASHDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -13,12 +13,18 @@ WORKDIR="$BASHDIR"
 set -e
 
 SUBSCRIPTION=$1
+NODO_VERSION=$2
 DATABASE=nodo
-shift 1
+shift 2
 other=$@
 
 if [ -z "${SUBSCRIPTION}" ]; then
     printf "\e[1;31mYou must provide a subscription as first argument.\n"
+    exit 1
+fi
+
+if [ -z "${NODO_VERSION}" ]; then
+    printf "\e[1;31mYou must provide a version as second argument.\n"
     exit 1
 fi
 
@@ -53,7 +59,7 @@ nodo_cfg_user=$(az keyvault secret show --name db-nodo-cfg-login --vault-name "$
 nodo_cfg_user_password=$(az keyvault secret show --name db-nodo-cfg-login-password --vault-name "${keyvault_name}" -o tsv --query value)
 
 printf "Creating env file"
-cd migrations/${SUBSCRIPTION}/nodo
+cd migrations/nodo
 
 echo 'POSTGRES_DB_HOST="'${psql_server_private_fqdn}'"
 POSTGRES_DB_PORT=5432
@@ -90,7 +96,7 @@ NODO_RE_SCHEMA="re_dev"
 NODO_RE_TABLESPACE_DATA="re_dev_data"
 NODO_RE_TABLESPACE_LOB="re_dev_lob"
 NODO_RE_TABLESPACE_IDX="re_dev_idx"
-LQB_CONTEXTS="!dev"
+LQB_CONTEXTS="dev"
 ' > dev.env
 
 cat dev.env
@@ -100,6 +106,7 @@ sh postgres-scripts/100-nodo-create.sh
 echo "<<<<<<<<<<<<<<<<<<<<<<<<<<< done!"
 
 
-echo ">>>>>>>>>>>>>>>>>>>>>>>>>>> STEP#2 Executing docker compose ( liquibase Migration ) "
+echo ">>>>>>>>>>>>>>>>>>>>>>>>>>> STEP#2 Executing docker compose ( liquibase Migration to version $NODO_VERSION) "
+export NODO_VERSION=$NODO_VERSION
 docker compose -f docker-compose-liquibase.yml up
 echo "<<<<<<<<<<<<<<<<<<<<<<<<<<< Migration done!"

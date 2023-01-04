@@ -7,8 +7,15 @@
        >
 
     <include file="./db.changelog-0.xml" />
-
     <include file="./db.changelog-20221026150200_add_fee_spo_positionPayment.xml" />
+    <changeSet author="liquibase" id="tagDatabase-init">
+        <tagDatabase tag="init"/>
+    </changeSet>
+
+    <!-- 3.8.0 -->
+    <changeSet author="liquibase" id="tagDatabase-3.8">
+        <tagDatabase tag="3.8"/>
+    </changeSet>
 
     <!-- 3.9.0 -->
     <include file="./db.changelog-20221110162200_modify_positionRetrySendPaymentResult_table.xml" />
@@ -17,7 +24,14 @@
     <include file="./db.changelog-202211210000000_busy_column.xml" />
     <include file="./db.changelog-20221122142200_retryPending_rptActivations.xml" />
     <include file="./db.changelog-202211301458000_index_transactionId_payment.xml" />
+    <changeSet author="liquibase" id="tagDatabase-3.9">
+      <tagDatabase tag="3.9"/>
+    </changeSet>
+
 
     <!-- 3.10 -->
     <include file="./db.changelog-2022120510210000_delete_unused_column_table.xml" />
+    <changeSet author="liquibase" id="tagDatabase-3.10">
+        <tagDatabase tag="3.10"/>
+    </changeSet>
 </databaseChangeLog>
