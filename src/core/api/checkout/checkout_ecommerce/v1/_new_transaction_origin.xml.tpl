@@ -1,6 +1,6 @@
 <policies>
   <inbound>
-    <set-header name="x-transaction-origin" exists-action="override" >
+    <set-header name="X-Client-Id" exists-action="override" >
       <value>CHECKOUT</value>
     </set-header>
     <base />

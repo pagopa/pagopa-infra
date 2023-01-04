@@ -114,7 +114,7 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-transaction-origin",
+            "name": "X-Client-Id",
             "schema": {
               "type": "string",
               "pattern": "IO|CHECKOUT|CHECKOUT_CART"
