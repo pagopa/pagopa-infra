@@ -348,15 +348,6 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   )
 }
 
-resource "azurerm_api_management_api_operation_policy" "new_transaction_origin" {
-  api_name            = "${local.project}-checkout-ecommerce-api-v1"
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "newTransaction"
-
-  xml_content = file("./api/checkout/checkout_ecommerce/v1/_new_transaction_origin.xml.tpl")
-}
-
 # pagopa-ecommerce APIs for EC
 locals {
   apim_checkout_ec_api = {

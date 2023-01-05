@@ -15,18 +15,6 @@
       "post": {
         "operationId": "newTransaction",
         "summary": "Make a new transaction",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "X-Client-Id",
-            "schema": {
-              "type": "string",
-              "pattern": "IO|CHECKOUT|CHECKOUT_CART"
-            },
-            "required": false,
-            "description": "Transaction origin (populated by APIM policy)"
-          }
-        ],
         "requestBody": {
           "$ref": "#/components/requestBodies/NewTransactionRequest"
         },
