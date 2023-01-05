@@ -1,0 +1,82 @@
+version: '3.8'
+services:
+  
+  liquibase-cfg-update:
+    image: liquibase/liquibase:4.17
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./liquibase/docker-entrypoint.sh:/liquibase/docker-entrypoint.sh
+      - ./liquibase/changelog/cfg:/liquibase/changelog/
+      - ./liquibase/properties/cfg.properties:/liquibase/config/liquibase.properties
+    networks:
+      - db-nodo-net
+    command: >
+      --defaultsFile=/liquibase/config/liquibase.properties
+      --changelogFile=db.changelog-master-$NODO_VERSION.xml
+      update
+  liquibase-online-update:
+    image: liquibase/liquibase:4.17
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./liquibase/docker-entrypoint.sh:/liquibase/docker-entrypoint.sh
+      - ./liquibase/changelog/online:/liquibase/changelog/
+      - ./liquibase/properties/online.properties:/liquibase/config/liquibase.properties
+    networks:
+      - db-nodo-net
+    command: >
+      --defaultsFile=/liquibase/config/liquibase.properties
+      --changelogFile=db.changelog-master-$NODO_VERSION.xml
+      update
+
+  liquibase-offline-update:
+    image: liquibase/liquibase:4.17
+    env_file:
+      - ./dev.env
+    depends_on:
+      liquibase-online-update:
+        condition: service_completed_successfully
+    volumes:
+      - ./liquibase/docker-entrypoint.sh:/liquibase/docker-entrypoint.sh
+      - ./liquibase/changelog/offline:/liquibase/changelog/
+      - ./liquibase/properties/offline.properties:/liquibase/config/liquibase.properties
+    networks:
+      - db-nodo-net
+    command: >
+      --defaultsFile=/liquibase/config/liquibase.properties
+      --changelogFile=db.changelog-master-$NODO_VERSION.xml
+      update
+  
+  liquibase-re-update:
+    image: liquibase/liquibase:4.17
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./liquibase/docker-entrypoint.sh:/liquibase/docker-entrypoint.sh
+      - ./liquibase/changelog/re:/liquibase/changelog/
+      - ./liquibase/properties/re.properties:/liquibase/config/liquibase.properties
+    networks:
+      - db-nodo-net
+    command: >
+      --defaultsFile=/liquibase/config/liquibase.properties
+      --changelogFile=db.changelog-master-$NODO_VERSION.xml
+      update
+
+  liquibase-wfesp-update:
+    image: liquibase/liquibase:4.17
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./liquibase/docker-entrypoint.sh:/liquibase/docker-entrypoint.sh
+      - ./liquibase/changelog/wfesp:/liquibase/changelog/
+      - ./liquibase/properties/wfesp.properties:/liquibase/config/liquibase.properties
+    networks:
+      - db-nodo-net
+    command: >
+      --defaultsFile=/liquibase/config/liquibase.properties
+      --changelogFile=db.changelog-master-$NODO_VERSION.xml
+      update
+
+networks:
+  db-nodo-net:
