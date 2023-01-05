@@ -217,8 +217,8 @@
           "feeTotal": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
-          "origin": {
-            "description": "cart origin",
+          "clientId": {
+            "description": "transaction client id",
             "enum": [
               "IO",
               "CHECKOUT",
