@@ -46,11 +46,11 @@ module "postgres_flexible_server_2" {
 }
 
 # Nodo database
-# resource "azurerm_postgresql_flexible_server_database" "nodo_db_2" {
-#   count = var.env_short == "d" ? 1 : 0
+resource "azurerm_postgresql_flexible_server_database" "nodo_db_2" {
+  count = var.env_short == "d" ? 1 : 0
 
-#   name      = var.pgres_flex_nodo_db_name
-#   server_id = module.postgres_flexible_server_2[0].id
-#   collation = "en_US.utf8"
-#   charset   = "utf8"
-# }
+  name      = var.pgres_flex_nodo_db_name
+  server_id = module.postgres_flexible_server_2[0].id
+  collation = "en_US.utf8"
+  charset   = "utf8"
+}
