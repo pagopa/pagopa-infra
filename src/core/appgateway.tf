@@ -169,6 +169,14 @@ locals {
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
   }
+
+  routes_wfespgovit = {
+    wfespgovit = {
+      listener              = "wfespgovit"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+  }
 }
 
 ## Application gateway public ip ##
@@ -275,6 +283,7 @@ module "app_gw" {
     local.listeners,
     var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
     var.app_gateway_wisp2govit_certificate_name != "" ? local.listeners_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.listeners_wfespgovit : {},
   )
 
   # maps listener to backend
@@ -282,6 +291,7 @@ module "app_gw" {
     local.routes,
     var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
     var.app_gateway_wisp2govit_certificate_name != "" ? local.routes_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.routes_wfespgovit : {},
   )
 
   rewrite_rule_sets = [
