@@ -7,9 +7,9 @@ services:
       - ./dev.env
     ports:
       - '5432:5432'
-    volumes: 
+    volumes:
       - db-nodo-data:/var/lib/postgresql/data
-      - ./postgres-scripts/100-nodo-create.sh:/docker-entrypoint-initdb.d/100-nodo-create.sh
+      - ./postgres-scripts/100-nodo-create-local.sh:/docker-entrypoint-initdb.d/100-nodo-create.sh
     networks:
       - db-nodo-net
 
