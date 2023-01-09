@@ -58,6 +58,7 @@ external_domain   = "pagopa.it"
 dns_zone_prefix   = "platform"
 dns_zone_checkout = "checkout"
 dns_zone_wisp2    = "wisp2"
+dns_zone_wfesp    = "wfesp"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true

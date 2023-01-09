@@ -62,6 +62,7 @@ dns_zone_prefix_prf = "prf.platform"
 dns_zone_checkout   = "uat.checkout"
 dns_zone_selc       = "selfcare.uat.platform"
 dns_zone_wisp2      = "uat.wisp2"
+dns_zone_wfesp      = "wfesp.test"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true

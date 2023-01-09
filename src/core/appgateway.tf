@@ -111,7 +111,7 @@ locals {
   listeners_wfespgovit = {
     wfespgovit = {
       protocol           = "Https"
-      host               = format("%s.%s", var.dns_zone_wisp2, "pagopa.gov.it")
+      host               = format("%s.%s", var.dns_zone_wfesp, "pagopa.gov.it")
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null

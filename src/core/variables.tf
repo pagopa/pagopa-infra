@@ -420,6 +420,12 @@ variable "dns_zone_wisp2" {
   description = "The wisp2 dns subdomain."
 }
 
+variable "dns_zone_wfesp" {
+  type        = string
+  default     = null
+  description = "The wfesp dns subdomain."
+}
+
 # vpn
 
 variable "cidr_subnet_vpn" {
