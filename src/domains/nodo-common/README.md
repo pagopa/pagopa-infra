@@ -15,7 +15,6 @@
 | <a name="module_postgres_flexible_server"></a> [postgres\_flexible\_server](#module\_postgres\_flexible\_server) | git::https://github.com/pagopa/azurerm.git//postgres_flexible_server | v2.12.3 |
 | <a name="module_postgres_flexible_server_2"></a> [postgres\_flexible\_server\_2](#module\_postgres\_flexible\_server\_2) | git::https://github.com/pagopa/azurerm.git//postgres_flexible_server | v2.12.3 |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.1.13 |
-| <a name="module_postgres_flexible_snet_2"></a> [postgres\_flexible\_snet\_2](#module\_postgres\_flexible\_snet\_2) | git::https://github.com/pagopa/azurerm.git//subnet | v2.1.13 |
 
 ## Resources
 
@@ -24,7 +23,6 @@
 | [azurerm_key_vault_secret.db_nodo_cfg_login](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.db_nodo_cfg_login_password](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_postgresql_flexible_server_database.nodo_db](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/postgresql_flexible_server_database) | resource |
-| [azurerm_postgresql_flexible_server_database.nodo_db_2](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/postgresql_flexible_server_database) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.db_rg_2](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
