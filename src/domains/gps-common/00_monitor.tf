@@ -36,7 +36,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payments_gpd_inconsisten
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.name, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Payments] call GPD payment position error"
     custom_webhook_payload = "{}"
   }
