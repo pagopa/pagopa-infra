@@ -64,59 +64,73 @@
       "PaymentEvent": {
         "type": "object",
         "properties": {
-          "transactionDetails": {
-            "$ref": "#/components/schemas/TransactionDetails"
-          }
-        }
-      },
-      "TransactionDetails": {
-        "type": "object",
-        "properties": {
-          "user": {
-            "$ref": "#/components/schemas/UserEvent"
-          },
-          "paymentAuthorizationRequest": {
-            "$ref": "#/components/schemas/PaymentAuthorizationRequest"
+          "transaction": {
+            "$ref": "#/components/schemas/TransactionEvent"
           },
           "wallet": {
             "$ref": "#/components/schemas/WalletEvent"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserEvent"
           }
         }
       },
-      "PaymentAuthorizationRequest": {
+      "TransactionEvent": {
         "type": "object",
         "properties": {
-          "authOutcome": {
+          "idTransaction": {
+            "type": "number"
+          },
+          "grandTotal": {
+            "type": "number"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "fee": {
+            "type": "number"
+          },
+          "transactionStatus": {
+            "type": "string"
+          },
+          "accountingStatus": {
+            "type": "string"
+          },
+          "rrn": {
+            "type": "string"
+          },
+          "authorizationCode": {
+            "type": "string"
+          },
+          "creationDate": {
             "type": "string",
-            "enum": [
-              "OK",
-              "KO"
-            ]
+            "format": "date-time"
           },
-          "requestId": {
+          "numaut": {
             "type": "string"
           },
-          "correlationId": {
+          "accountCode": {
             "type": "string"
           },
-          "authCode": {
-            "type": "string"
-          },
-          "paymentMethodType": {
-            "type": "string",
-            "example": "CP or PPAY or PPAL, so paymentTypeCode of Nodo"
-          },
-          "details": {
-            "type": "object",
-            "description": "details related to paymentMethodType",
-            "example": {
-              "blurredNumber": "************1234",
-              "holder": "M**** *****I",
-              "circuit": "VISA"
-            }
+          "psp": {
+            "$ref": "#/components/schemas/PspEvent"
           }
         }
       },
+      "PspEvent": {
+        "type": "object",
+        "properties": {
+          "idChannel": {
+            "type": "string"
+          },
+          "businessName": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          }
+        }
+      },      
       "WalletEvent": {
         "type": "object",
         "properties": {
@@ -163,7 +177,7 @@
             "type": "string"
           }
         }
-      }
+      },      
     },
     "securitySchemes": {
       "ApiKey": {
