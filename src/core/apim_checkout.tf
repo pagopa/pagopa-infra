@@ -346,4 +346,3 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
     ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
     }
   )
-}
