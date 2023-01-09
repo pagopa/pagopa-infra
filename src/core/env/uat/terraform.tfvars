@@ -99,7 +99,7 @@ app_gateway_deny_paths = [
   "/payment-manager/internal/.*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd/.*",           # internal use no sub-keys
+  #"/gpd/.*",           # internal use no sub-keys
   "/gpd-payments/.*",  # internal use no sub-keys
   "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmacquirermanager/.*",
