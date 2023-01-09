@@ -1,29 +1,29 @@
 prefix          = "pagopa"
-env_short       = "d"
-env             = "dev"
+env_short       = "u"
+env             = "uat"
 domain          = "elk"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
-instance        = "dev"
+instance        = "uat"
 
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
   Owner       = "IO"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/bizevents"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/elk-monitoring"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+monitor_resource_group_name                 = "pagopa-u-monitor-rg"
+log_analytics_workspace_name                = "pagopa-u-law"
+log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.platform"
-apim_dns_zone_prefix     = "dev.platform"
+dns_zone_internal_prefix = "internal.uat.platform"
+apim_dns_zone_prefix     = "uat.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -36,7 +36,7 @@ tls_cert_check_helm = {
 elastic_node_pool = {
   enabled         = true
   name            = "elastic01"
-  vm_size         = "Standard_B8ms"
+  vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
   node_count_min  = "1" #TODO change to 2 or 3 in prod
@@ -50,7 +50,7 @@ elastic_node_pool = {
 }
 
 elastic_hot_storage = {
-  storage_type           = "StandardSSD_LRS"
+  storage_type           = "StandardSSD_ZRS"
   allow_volume_expansion = true
   initialStorageSize     = "100Gi"
 }
@@ -73,12 +73,12 @@ elastic_cluster_config = {
   num_node_cold         = "1"
   storage_size_balancer = "20Gi"
   storage_size_master   = "20Gi"
-  storage_size_hot      = "70Gi"
-  storage_size_warm     = "100Gi"
-  storage_size_cold     = "100Gi"
+  storage_size_hot      = "100Gi"
+  storage_size_warm     = "150Gi"
+  storage_size_cold     = "150Gi"
 }
 
 enable_iac_pipeline = true
 
 ingress_load_balancer_ip = "10.1.100.250"
-subscription_name        = "dev-pagopa"
+subscription_name        = "uat-pagopa"

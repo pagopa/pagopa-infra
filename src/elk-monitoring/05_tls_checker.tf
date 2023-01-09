@@ -20,7 +20,7 @@ module "letsencrypt_dev_elk" {
   source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
 
   prefix            = var.prefix
-  env               = "d"
+  env               = var.env_short
   key_vault_name    = "${local.product}-${var.domain}-kv"
   subscription_name = var.subscription_name
 }

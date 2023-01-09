@@ -17,15 +17,12 @@ module "elastic_stack" {
   warm_storage_class     = "${local.project}-elastic-aks-storage-warm"
   cold_storage_class     = "${local.project}-elastic-aks-storage-cold"
 
-  kibana_external_domain = "https://dev-pagopa.westeurope.cloudapp.azure.com/kibana" ####TEMP "${local.apim_hostname}/kibana"
+  kibana_external_domain = "https://kibana.dev.platform.pagopa.it/kibana" ####TEMP "${local.apim_hostname}/kibana"
 
   secret_name   = "weu${var.env}-kibana-internal-${var.env}-platform-pagopa-it"
   keyvault_name = module.key_vault.name
 
   kibana_internal_hostname = local.kibana_hostname
 }
-
-
-
 
 
