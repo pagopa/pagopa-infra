@@ -111,10 +111,10 @@ stages:
                   IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_USERNAME') THEN
                     RAISE NOTICE 'Role "$CFG_USERNAME" already exists. Skipping.';
                   ELSE
-                    CREATE ROLE $USERNAME LOGIN PASSWORD '$CFG_PASSWORD';
-                    GRANT ALL PRIVILEGES ON DATABASE "nodo" TO $CFG_USERNAME;
+                    CREATE ROLE $CFG_USERNAME LOGIN PASSWORD '$CFG_PASSWORD';
+                    GRANT ALL PRIVILEGES ON DATABASE "$POSTGRES_DB" TO $CFG_USERNAME;
                     GRANT $CFG_USERNAME to $POSTGRES_USER;
-                    CREATE SCHEMA IF NOT EXISTS $SCHEMA AUTHORIZATION $CFG_USERNAME;
+                    CREATE SCHEMA IF NOT EXISTS $CFG_SCHEMA AUTHORIZATION $CFG_USERNAME;
                   END IF;
                 END
                 \$\$;
