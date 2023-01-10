@@ -52,8 +52,8 @@ stages:
           - task: AzureKeyVault@2
             displayName: "Get ${{ parameters.k8sEnv }} secrets"
             inputs:
-              azureSubscription: $AZURE_SERVICE_CONNECTION
-              keyVaultName: $KEY_VAULT_NAME
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: '*'
               runAsPreJob: true
           - task: AzureCLI@2
