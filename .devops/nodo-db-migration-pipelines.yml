@@ -86,8 +86,9 @@ stages:
                   runAsPreJob: true
 
           - script: |
+              echo "url is $[ jdbUrl-${{ parameters.k8sEnv }} ]"
               liquibase \
-              --url=$[ jdbUrl-${{ parameters.k8sEnv }} ] \
+              --url=${{ jdbUrl-dev }} \
               --username=cfg \
               --password=$(db-cfg-password) \
               --classpath=src/psql/nodo/liquibase/changelog/cfg \
