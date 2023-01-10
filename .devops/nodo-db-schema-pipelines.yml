@@ -52,9 +52,6 @@ stages:
       - job: initialization
         displayName: "Init DB Nodo"
         steps:
-          - checkout: self
-            clean: true
-            persistCredentials: true
           - ${{ if eq(parameters.k8sEnv, 'dev') }}:
               - task: AzureKeyVault@2
                 displayName: "Get dev secrets"
@@ -87,6 +84,7 @@ stages:
             inputs:
               azureSubscription: $(DEV_AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
+              scriptType: bash
               arguments:
                 -POSTGRES_PASSWORD=$(db-administrator-login-password)
                 -POSTGRES_DB_HOST=pagopa-p-weu-nodo-flexible-postgresql-2.postgres.database.azure.com
