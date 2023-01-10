@@ -106,6 +106,7 @@ stages:
                 az postgres flexible-server execute --name $(HOST) --admin-user $(POSTGRES_USER) \
                 --admin-password '$(db-administrator-login-password)'  --database-name $(POSTGRES_DB) \
                 --querytext "
+                do \$\$
                 BEGIN
                   IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_USERNAME') THEN
                     RAISE NOTICE 'Role "$CFG_USERNAME" already exists. Skipping.';
@@ -115,7 +116,9 @@ stages:
                     GRANT $CFG_USERNAME to $POSTGRES_USER;
                     CREATE SCHEMA IF NOT EXISTS $SCHEMA AUTHORIZATION $USERNAME;
                   END IF;
-                END"
+                END
+                \$\$;
+                "
 #          - task: AzureCLI@2
 #            displayName: "Azure CLI DB Nodo offline"
 #            inputs:
