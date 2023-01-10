@@ -35,16 +35,13 @@ tls_cert_check_helm = {
 
 nodo_user_node_pool = {
   enabled         = true
-  name            = "nodo01"
+  name            = "nodocron01"
   vm_size         = "Standard_B8ms"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
   node_count_min  = "1" #TODO change to 2 or 3 in prod
   node_count_max  = "2"
   node_labels = {
-    "nodo-dev"      = "true",
-    "nodo-cron-dev" = "true",
-    "nodo"          = "true",
   "nodo-cron" = "true", },
   node_taints        = [],
   node_tags          = { node_tag_1 : "1" },
