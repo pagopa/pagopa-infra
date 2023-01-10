@@ -102,7 +102,7 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-                az login --allow-no-subscription
+                az account show
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(HOST) --admin-user $(POSTGRES_USER) \
                 --admin-password '$(db-administrator-login-password)'  --database-name $(POSTGRES_DB) \
