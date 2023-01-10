@@ -25,7 +25,7 @@ requests
 | where url startswith 'https://api.platform.pagopa.it/payment-manager/pp-restapi'
 | summarize
     Total=count(),
-    Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500)
+    Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 and toint(duration) < 2000)
     by Time=bin(timestamp, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | extend Watermark=99
@@ -63,7 +63,7 @@ AzureDiagnostics
     and requestUri_s startswith '/pp-restapi-CD'
 | summarize
     Total=count(),
-    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500))
+    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500 and timeTaken_d < 2))
     by Time=bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
@@ -101,7 +101,7 @@ AzureDiagnostics
     and requestUri_s startswith "/wallet"
 | summarize
     Total=count(),
-    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500))
+    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500 and timeTaken_d < 3))
     by Time=bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
