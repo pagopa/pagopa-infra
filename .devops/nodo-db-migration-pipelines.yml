@@ -86,7 +86,7 @@ stages:
                   runAsPreJob: true
 
           - script: |
-              echo "url is $(variables.['jdbUrl-dev'])"
+              echo "url is $[ variables.['jdbUrl-dev'] ]"
               liquibase \
               --url=jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require \
               --username=cfg \
