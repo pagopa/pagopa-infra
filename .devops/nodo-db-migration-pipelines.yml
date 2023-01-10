@@ -90,8 +90,8 @@ stages:
               --url=$[ jdbUrl-${{ parameters.k8sEnv }} ] \
               --username=cfg \
               --password=$(db-cfg-password) \
-              --classpath=$(Pipeline.Workspace)/src/psql/nodo/liquibase/changelog \
-              --changeLogFile=$(Pipeline.Workspace)/src/psql/nodo/liquibase/changelog/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --classpath=src/psql/nodo/liquibase/changelog/cfg \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=cfg \
               --defaultSchemaName=cfg \
               --contexts=${{ parameters.k8sEnv }} \
