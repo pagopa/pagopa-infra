@@ -55,7 +55,6 @@ stages:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: '*'
-              runAsPreJob: true
           - task: AzureCLI@2
             displayName: "cfg schema"
             inputs:
