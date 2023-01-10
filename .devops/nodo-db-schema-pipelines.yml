@@ -19,6 +19,10 @@ parameters:
 variables:
   - name: DEV_AZURE_SERVICE_CONNECTION
     value: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
+  - name: UAT_AZURE_SERVICE_CONNECTION
+    value: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
+  - name: PRD_AZURE_SERVICE_CONNECTION
+    value: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
   - name: POSTGRES_USER
     value: azureuser
   - name: POSTGRES_DB
@@ -43,6 +47,12 @@ variables:
     value: wfesp
   - name: WFESP_SCHEMA
     value: wfesp
+  - name: host-dev
+    value: pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com
+  - name: host-uat
+    value: pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com
+  - name: host-prd
+    value: pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com
 
 stages:
   ## GET INFO
@@ -76,24 +86,25 @@ stages:
                   keyVaultName: 'pagopa-p-nodo-kv'
                   secretsFilter: '*'
                   runAsPreJob: true
-          - checkout: self
-            clean: true
-            persistCredentials: true
+          - ${{ if eq(parameters.k8sEnv, 'dev') }}:
+              - script:
+                  echo "##vso[task.setvariable variable=HOST;]$(host-dev)"
+          - ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
+              - script:
+                  echo "##vso[task.setvariable variable=HOST;]$(host-uat)"
+          - ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
+              - script:
+                  echo "##vso[task.setvariable variable=HOST;]$(host-prd)"
           - task: AzureCLI@2
             displayName: "Azure CLI DB Nodo cfg"
             inputs:
               azureSubscription: $(DEV_AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
               scriptType: bash
-              arguments:
-                -POSTGRES_PASSWORD=$(db-administrator-login-password)
-                -POSTGRES_DB_HOST=pagopa-p-weu-nodo-flexible-postgresql-2.postgres.database.azure.com
-                -CFG_PASSWORD=$(db-cfg-password)
-                -INLINESCRIPT
               inlineScript: |
                 #az login --allow-no-subscription
-                az postgres flexible-server execute --name $(POSTGRES_DB_HOST) --admin-user $(POSTGRES_USER) \
-                --admin-password '$(POSTGRES_PASSWORD)'  --database-name $(POSTGRES_DB) \
+                az postgres flexible-server execute --name $(HOST) --admin-user $(POSTGRES_USER) \
+                --admin-password '$(db-administrator-login-password)'  --database-name $(POSTGRES_DB) \
                 --querytext "
                 BEGIN
                   IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_USERNAME') THEN
