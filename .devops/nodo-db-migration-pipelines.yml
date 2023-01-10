@@ -32,15 +32,15 @@ variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
     JDBCURL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
-    KEY-VAULT-NAME: pagopa-d-nodo-kv
+    KEY_VAULT_NAME: pagopa-d-nodo-kv
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     JDBCURL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
-    KEY-VAULT-NAME: pagopa-u-nodo-kv
+    KEY_VAULT_NAME: pagopa-u-nodo-kv
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
     JDBCURL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
-    KEY-VAULT-NAME: pagopa-p-nodo-kv
+    KEY_VAULT_NAME: pagopa-p-nodo-kv
   POSTGRES_USER: azureuser
   POSTGRES_DB: nodo
   CFG_USERNAME: cfg
@@ -74,10 +74,10 @@ stages:
               echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
             displayName: "Install Liquibase"
           - task: AzureKeyVault@2
-            displayName: "Get $(KEY-VAULT-NAME) secrets"
+            displayName: "Get $(KEY_VAULT_NAME) secrets"
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
-              keyVaultName: $(KEY-VAULT-NAME)
+              keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: '*'
               runAsPreJob: true
           - ${{ if eq(parameters.k8sEnv, 'dev') }}:
