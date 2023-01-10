@@ -41,7 +41,7 @@ variables:
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
     JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
     KEY_VAULT_NAME: pagopa-p-nodo-kv
-  POSTGRES_USER: azureuser
+  CFG_USERNAME: cfg
   CFG_SCHEMA: cfg
   OFFLINE_USERNAME: offline
   OFFLINE_SCHEMA: offline
