@@ -33,11 +33,11 @@ variables:
     value: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
   - name: changelogRoot
     value: $(Pipeline.Workspace)/src/psql/nodo/liquibase/changelog
-  - name: jdbUrl_dev
+  - name: jdbUrl-dev
     value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
-  - name: jdbUrl_uat
+  - name: jdbUrl-uat
     value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
-  - name: jdbUrl_prd
+  - name: jdbUrl-prd
     value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
 
 stages:
