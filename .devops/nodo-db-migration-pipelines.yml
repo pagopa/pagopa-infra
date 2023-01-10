@@ -35,11 +35,11 @@ variables:
     value: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
   - name: PRD_AZURE_SERVICE_CONNECTION
     value: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
-  - name: jdbUrl-dev
+  - name: JDBCURL-DEV
     value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
-  - name: jdbUrl-uat
+  - name: JDBCURL-UAT
     value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
-  - name: jdbUrl-prd
+  - name: JDBCURL-PRD
     value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
   - name: POSTGRES_USER
     value: azureuser
@@ -112,13 +112,13 @@ stages:
                   runAsPreJob: true
           - ${{ if eq(parameters.k8sEnv, 'dev') }}:
               - script:
-                  echo "##vso[task.setvariable variable=JDBC_URL;]$(jdbUrl-dev)"
+                  echo "##vso[task.setvariable variable=JDBC_URL;]$(JDBCURL-DEV)"
           - ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
               - script:
-                  echo "##vso[task.setvariable variable=JDBC_URL;]$(jdbUrl-uat)"
+                  echo "##vso[task.setvariable variable=JDBC_URL;]$(JDBCURL-UAT)"
           - ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
               - script:
-                  echo "##vso[task.setvariable variable=JDBC_URL;]$(jdbUrl-prd)"
+                  echo "##vso[task.setvariable variable=JDBC_URL;]$(JDBCURL-PRD)"
           - script: |
               liquibase \
               --url=$(JDBC_URL) \
@@ -135,6 +135,19 @@ stages:
           - script: |
               liquibase \
               --url=$(JDBC_URL) \
+              --username=$(CFG_USERNAME) \
+              --password=$(db-cfg-password) \
+              --classpath=src/psql/nodo/liquibase/changelog/cfg \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName=$(CFG_SCHEMA) \
+              --defaultSchemaName=$(CFG_SCHEMA) \
+              --contexts=${{ parameters.k8sEnv }} \
+              --log-level=${{ parameters.lbLogLevel }} \
+              tag ${{ parameters.dbVersion }}
+            displayName: "Tag cfg"
+          - script: |
+              liquibase \
+              --url=$(JDBC_URL) \
               --username=$(ONLINE_USERNAME) \
               --password=$(db-online-password) \
               --classpath=src/psql/nodo/liquibase/changelog/online \
@@ -145,6 +158,19 @@ stages:
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
             displayName: "Run Liquibase online"
+          - script: |
+              liquibase \
+              --url=$(JDBC_URL) \
+              --username=$(ONLINE_USERNAME) \
+              --password=$(db-online-password) \
+              --classpath=src/psql/nodo/liquibase/changelog/online \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName=$(ONLINE_SCHEMA) \
+              --defaultSchemaName=$(ONLINE_SCHEMA) \
+              --contexts=${{ parameters.k8sEnv }} \
+              --log-level=${{ parameters.lbLogLevel }} \
+              tag ${{ parameters.dbVersion }}
+            displayName: "Tag online"
           - script: |
               liquibase \
               --url=$(JDBC_URL) \
@@ -161,6 +187,19 @@ stages:
           - script: |
               liquibase \
               --url=$(JDBC_URL) \
+              --username=$(OFFLINE_USERNAME) \
+              --password=$(db-offline-password) \
+              --classpath=src/psql/nodo/liquibase/changelog/offline \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName=$(OFFLINE_SCHEMA) \
+              --defaultSchemaName=$(OFFLINE_SCHEMA) \
+              --contexts=${{ parameters.k8sEnv }} \
+              --log-level=${{ parameters.lbLogLevel }} \
+              tag ${{ parameters.dbVersion }}
+            displayName: "Tag offline"
+          - script: |
+              liquibase \
+              --url=$(JDBC_URL) \
               --username=$(RE_USERNAME) \
               --password=$(db-re-password) \
               --classpath=src/psql/nodo/liquibase/changelog/re \
@@ -174,6 +213,19 @@ stages:
           - script: |
               liquibase \
               --url=$(JDBC_URL) \
+              --username=$(RE_USERNAME) \
+              --password=$(db-re-password) \
+              --classpath=src/psql/nodo/liquibase/changelog/re \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName=$(RE_SCHEMA) \
+              --defaultSchemaName=$(RE_SCHEMA) \
+              --contexts=${{ parameters.k8sEnv }} \
+              --log-level=${{ parameters.lbLogLevel }} \
+              tag ${{ parameters.dbVersion }}
+            displayName: "Tag re"
+          - script: |
+              liquibase \
+              --url=$(JDBC_URL) \
               --username=$(WFESP_USERNAME) \
               --password=$(db-wfesp-password) \
               --classpath=src/psql/nodo/liquibase/changelog/wfesp \
@@ -184,3 +236,16 @@ stages:
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(WFESP_SCHEMA)
             displayName: "Run Liquibase wfesp"
+          - script: |
+              liquibase \
+              --url=$(JDBC_URL) \
+              --username=$(WFESP_USERNAME) \
+              --password=$(db-wfesp-password) \
+              --classpath=src/psql/nodo/liquibase/changelog/wfesp \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName=$(WFESP_SCHEMA) \
+              --defaultSchemaName=$(WFESP_SCHEMA) \
+              --contexts=${{ parameters.k8sEnv }} \
+              --log-level=${{ parameters.lbLogLevel }} \
+              tag ${{ parameters.dbVersion }}
+            displayName: "Tag wfesp"
