@@ -71,7 +71,7 @@ stages:
                 inputs:
                   azureSubscription: $(DEV_AZURE_SERVICE_CONNECTION)
                   keyVaultName: 'pagopa-d-nodo-kv'
-                  secretsFilter: 'db-*'
+                  secretsFilter: '*'
                   runAsPreJob: true
           - ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
               - task: AzureKeyVault@2
@@ -79,7 +79,7 @@ stages:
                 inputs:
                   azureSubscription: 'UAT-pagoPA'
                   keyVaultName: 'pagopa-u-nodo-kv'
-                  secretsFilter: 'db-*'
+                  secretsFilter: '*'
                   runAsPreJob: true
           - ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
               - task: AzureKeyVault@2
@@ -87,7 +87,7 @@ stages:
                 inputs:
                   azureSubscription: 'PRD-pagoPA'
                   keyVaultName: 'pagopa-p-nodo-kv'
-                  secretsFilter: 'db-*'
+                  secretsFilter: '*'
                   runAsPreJob: true
 
           - script: |
