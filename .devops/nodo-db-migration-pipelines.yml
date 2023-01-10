@@ -21,7 +21,7 @@ parameters:
   - name: lbContexts
     displayName: Liquibase Contexts
     type: string
-    default: ''
+    default: '_'
   - name: lbLogLevel
     displayName: Liquibase Log Level
     type: string
