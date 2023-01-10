@@ -67,7 +67,7 @@ stages:
               - task: AzureKeyVault@2
                 displayName: "Get dev secrets"
                 inputs:
-                  azureSubscription: 'DEV-pagoPA'
+                  azureSubscription: 'bbe47ad4-08b3-4925-94c5-1278e5819b86'
                   keyVaultName: 'pagopa-d-nodo-kv'
                   secretsFilter: 'db-*'
                   runAsPreJob: true
