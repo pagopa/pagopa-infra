@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd"
+       >
+
+    <include file="./db.changelog-0.xml" />
+
+    <include file="./db.changelog-20221026150200_add_fee_spo_positionPayment.xml" />
+
+    <!-- 3.9.0 -->
+    <include file="./db.changelog-20221110162200_modify_positionRetrySendPaymentResult_table.xml" />
+    <include file="./db.changelog-20221111115000_modify_outcome_positionRetrySendPaymentResult_table.xml" />
+    <include file="./db.changelog-202211140000000_views_payments_mbd_grants.xml" />
+    <include file="./db.changelog-202211210000000_busy_column.xml" />
+    <include file="./db.changelog-20221122142200_retryPending_rptActivations.xml" />
+    <include file="./db.changelog-202211301458000_index_transactionId_payment.xml" />
+
+    <!-- 3.10 -->
+    <include file="./db.changelog-2022120510210000_delete_unused_column_table.xml" />
+</databaseChangeLog>

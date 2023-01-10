@@ -52,6 +52,7 @@ module "buyerbanks_function" {
   storage_account_name = replace(format("%s-st-fnbuyerbanks", local.project), "-", "")
 
   app_settings = {
+    linux_fx_version                  = "NODE|14-lts"
     FUNCTIONS_WORKER_RUNTIME          = "node"
     WEBSITE_NODE_DEFAULT_VERSION      = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT    = 4
@@ -212,6 +213,7 @@ resource "azurerm_storage_container" "banks" {
   container_access_type = "private"
 }
 
+# 🐞https://github.com/hashicorp/terraform-provider-azurerm/pull/15832
 ## blob lifecycle policy
 resource "azurerm_storage_management_policy" "buyerbanks_storage_lifeclycle_policies" {
   storage_account_id = module.buyerbanks_storage.id
@@ -225,13 +227,15 @@ resource "azurerm_storage_management_policy" "buyerbanks_storage_lifeclycle_poli
     }
     actions {
       base_blob {
-        delete_after_days_since_modification_greater_than = 30
+        delete_after_days_since_modification_greater_than           = 30
+        tier_to_cool_after_days_since_last_access_time_greater_than = 0
       }
       snapshot {
         delete_after_days_since_creation_greater_than = 30
       }
     }
   }
+
 }
 
 /*

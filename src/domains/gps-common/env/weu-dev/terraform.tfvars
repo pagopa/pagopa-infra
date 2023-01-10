@@ -52,3 +52,5 @@ cosmos_gps_db_params = {
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
+
+enable_iac_pipeline = true

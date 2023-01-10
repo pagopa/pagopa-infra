@@ -24,7 +24,7 @@ module "node_forwarder_snet" {
 }
 
 module "node_forwarder_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.4.0"
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
@@ -92,6 +92,8 @@ module "node_forwarder_app_service" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
+  count = var.env_short != "d" ? 1 : 0
+
   name                = format("%s-autoscale-node-forwarder", local.project)
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
   location            = azurerm_resource_group.node_forwarder_rg.location
@@ -103,7 +105,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     capacity {
       default = 1
       minimum = 1
-      maximum = 3
+      maximum = 15
     }
 
     rule {
@@ -116,14 +118,14 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 250
+        threshold                = 300
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "1"
+        value     = "3"
         cooldown  = "PT5M"
       }
     }
@@ -138,7 +140,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 250
+        threshold                = 200
         divide_by_instance_count = false
       }
 
@@ -146,7 +148,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT15M"
       }
     }
   }
@@ -189,4 +191,20 @@ data "azurerm_key_vault_secret" "certificate_crt_node_forwarder" {
 data "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
   name         = "certificate-key-node-forwarder"
   key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "node_forwarder_subscription_key" {
+  count        = var.env_short != "p" ? 1 : 0 # only in DEV and UAT
+  name         = "node-forwarder-api-subscription-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }

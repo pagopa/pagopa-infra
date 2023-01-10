@@ -62,6 +62,24 @@ variable "tags" {
   }
 }
 
+variable "gpd_payments_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "gpd_payments_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "gpd_payments_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -130,4 +148,10 @@ variable "cidr_subnet_gps_cosmosdb" {
   type        = list(string)
   description = "Cosmos DB address space"
   default     = null
+}
+
+variable "enable_iac_pipeline" {
+  type        = bool
+  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
+  default     = false
 }

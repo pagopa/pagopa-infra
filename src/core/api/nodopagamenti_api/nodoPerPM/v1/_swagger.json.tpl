@@ -547,10 +547,10 @@
         }
       }
     },
-    "/v1/closepayment": {
+    "/closepayment": {
       "post": {
         "tags": [
-          "nodo"
+          "Nodo"
         ],
         "summary": "closePayment",
         "description": "TBD",
@@ -598,9 +598,90 @@
           }
         }
       }
-    }
+    },
+    "/checkPosition": {
+      "post": {
+        "tags": [
+          "Nodo"
+        ],
+        "summary": "checkPosition",
+        "description": "Ha lo scopo di consentire al Payment Manager di fare il check di positions",
+        "operationId": "checkPosition",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CheckPosition"
+            }
+          }
+        ],        
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CheckPositionResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Unprocessable entry",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },    
   },
   "definitions": {
+    "CheckPosition" : {
+        "type": "object",
+        "required": ["positionslist"],
+        "properties": {
+          "positionslist": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/listelement" },
+            "minItems": 1, 
+            "maxItems": 5
+          }
+        },
+    },
+    "listelement": {
+      "type": "object",
+      "required": [ "fiscalCode", "noticeNumber" ],
+      "properties": {
+        "fiscalCode": {
+          "type": "string",
+          "pattern": "^[0-9]{11}$"
+        },
+        "noticeNumber": {
+          "type": "string",
+          "pattern": "^[0-9]{18}$"
+        }
+      }
+    },
     "InformazioniPagamento": {
       "type": "object",
       "required": [
@@ -1144,6 +1225,21 @@
           ]
         }
       }
-    }
+    },
+    "CheckPositionResponse": {
+      "type": "object",
+      "required": [
+        "esito"
+      ],
+      "properties": {
+        "esito": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "KO"
+          ]
+        }
+      }
+    }    
   }
 }

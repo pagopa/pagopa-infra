@@ -28,15 +28,14 @@
     </inbound>
     <outbound>
       <base />
-      <set-variable name="http-pm-host" value="@(Regex.Replace("{{pm-host}}", "https", "http"))" />
-        <choose>
-            <when condition="@(((string)context.Response.Headers.GetValueOrDefault("location","")).Contains((string)context.Variables.GetValueOrDefault("http-pm-host","")))">
-                <set-variable name="locationIn" value=" @(Regex.Replace((string)context.Response.Headers.GetValueOrDefault("location",""), (string)context.Variables.GetValueOrDefault("http-pm-host",""), "https://{{wisp2-it}}"))" />
-                <set-header name="location" exists-action="override">
-                    <value>@(context.Variables.GetValueOrDefault<string>("locationIn"))</value>
-                </set-header>
-            </when>
-        </choose>
+      <choose>
+        <when condition="@(((string)context.Response.Headers.GetValueOrDefault("location","")).Contains("{{pm-host}}"))">
+          <set-variable name="locationIn" value=" @(Regex.Replace((string)context.Response.Headers.GetValueOrDefault("location",""), "{{pm-host}}", "https://{{wisp2-gov-it}}"))" />
+          <set-header name="location" exists-action="override">
+              <value>@(context.Variables.GetValueOrDefault<string>("locationIn"))</value>
+          </set-header>
+        </when>
+      </choose>
     </outbound>
     <backend>
       <base />

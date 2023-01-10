@@ -9,7 +9,8 @@
 crash.log
 
 # Ignore any .tfvars files that are generated automatically for each Terraform run. Most
-# .tfvars files are managed as part of configuration and so should be included in
+# .tfvars files are managed as part of configuration and so should be included in Massimo Scattarella - Nexi
+Just you in the huddle
 # version control.
 #
 # example.tfvars
@@ -38,3 +39,8 @@ __azurite_*
 /.idea
 
 __*.sh
+
+#sops decrypted files
+*_decrypted.json
+*.env
+**/nodo-secret/env/dev

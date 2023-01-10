@@ -99,6 +99,66 @@
           }
         }
       }
+    },
+    "/carts/{id_cart}": {
+      "get": {
+        "operationId": "GetCarts",
+        "description": "Get a cart data",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id_cart",
+            "description": "Unique identifier for cart",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cart not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -347,6 +407,103 @@
           "PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO",
           "GENERIC_ERROR"
         ]
+      },
+      "CartRequest": {
+        "type": "object",
+        "required": [
+          "paymentNotices",
+          "returnUrls"
+        ],
+        "properties": {
+          "emailNotice": {
+            "type": "string",
+            "format": "email",
+            "example": "my_email@mail.it"
+          },
+          "paymentNotices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentNotice"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "noticeNumber": "302012387654312384",
+                "fiscalCode": "77777777777",
+                "amount": 10000,
+                "companyName": "companyName",
+                "description": "description"
+              },
+              {
+                "noticeNumber": "302012387654312385",
+                "fiscalCode": "77777777777",
+                "amount": 5000,
+                "companyName": "companyName",
+                "description": "description"
+              }
+            ]
+          },
+          "returnUrls": {
+            "type": "object",
+            "required": [
+              "returnOkUrl",
+              "returnCancelUrl",
+              "returnErrorUrl"
+            ],
+            "properties": {
+              "returnOkUrl": {
+                "type": "string",
+                "format": "uri",
+                "example": "www.comune.di.prova.it/pagopa/success.html"
+              },
+              "returnCancelUrl": {
+                "type": "string",
+                "format": "uri",
+                "example": "www.comune.di.prova.it/pagopa/cancel.html"
+              },
+              "returnErrorUrl": {
+                "type": "string",
+                "format": "uri",
+                "example": "www.comune.di.prova.it/pagopa/error.html"
+              }
+            }
+          }
+        }
+      },
+      "PaymentNotice": {
+        "type": "object",
+        "required": [
+          "noticeNumber",
+          "fiscalCode",
+          "amount",
+          "companyName",
+          "description"
+        ],
+        "properties": {
+          "noticeNumber": {
+            "type": "string",
+            "minLength": 18,
+            "maxLength": 18
+          },
+          "fiscalCode": {
+            "type": "string",
+            "minLength": 11,
+            "maxLength": 11
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "companyName": {
+            "type": "string",
+            "maxLength": 140
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 140
+          }
+        }
       }
     }
   }

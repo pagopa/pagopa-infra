@@ -265,7 +265,7 @@ variable "nodo_pagamenti_subkey_required" {
 # 3. WFESP
 # 4. Fatturazione
 # 5. Web-BO
-# 6. Web-BO History 
+# 6. Web-BO History
 
 variable "base_path_nodo_ppt_lmi" {
   type        = string
@@ -822,6 +822,18 @@ variable "ecommerce_ingress_hostname" {
   type        = string
   description = "ecommerce ingress hostname"
   default     = null
+}
+
+variable "ecommerce_xpay_psps_list" {
+  type        = string
+  description = "psps list using xpay as comma separated value"
+  default     = ""
+}
+
+variable "ecommerce_vpos_psps_list" {
+  type        = string
+  description = "psps list using vpos as comma separated value"
+  default     = ""
 }
 
 variable "ehns_auto_inflate_enabled" {
@@ -1685,13 +1697,13 @@ variable "cidr_subnet_node_forwarder" {
 variable "node_forwarder_tier" {
   type        = string
   description = "Node Forwarder plan tier"
-  default     = "Standard"
+  default     = "Basic"
 }
 
 variable "node_forwarder_size" {
   type        = string
   description = "Node Forwarder plan size"
-  default     = "S1"
+  default     = "B1"
 }
 
 variable "node_forwarder_always_on" {

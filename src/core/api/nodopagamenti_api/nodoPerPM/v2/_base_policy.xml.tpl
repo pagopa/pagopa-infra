@@ -1,15 +1,20 @@
 <policies>
     <inbound>
-      <base />
-      <set-backend-service base-url="${base-url}/v2" />
+        <base />
+        <set-backend-service base-url="${base-url}/v2" />
+        <choose>
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
+                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/v2" /> <!-- PRF -->
+            </when>
+        </choose>
     </inbound>
-    <outbound>
-      <base />
-    </outbound>
     <backend>
-      <base />
+        <base />
     </backend>
+    <outbound>
+        <base />
+    </outbound>
     <on-error>
-      <base />
+        <base />
     </on-error>
-  </policies>
+</policies>
