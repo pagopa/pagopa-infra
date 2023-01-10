@@ -48,11 +48,11 @@ variables:
   - name: WFESP_SCHEMA
     value: wfesp
   - name: DB-HOST-DEV
-    value: pagopa-d-weu-nodo-flexible-postgresql-2
+    value: pagopa-d-weu-nodo-flexible-postgresql
   - name: DB-HOST-UAT
-    value: pagopa-u-weu-nodo-flexible-postgresql-2
+    value: pagopa-u-weu-nodo-flexible-postgresql
   - name: DB-HOST-PRD
-    value: pagopa-p-weu-nodo-flexible-postgresql-2
+    value: pagopa-p-weu-nodo-flexible-postgresql
 
 stages:
   ## GET INFO
