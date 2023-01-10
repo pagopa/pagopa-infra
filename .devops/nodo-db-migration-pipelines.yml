@@ -33,11 +33,11 @@ variables:
     value: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
   - name: changelogRoot
     value: $(Pipeline.Workspace)/src/psql/nodo/liquibase/changelog
-  - name: jdbUrl-dev
+  - name: jdbUrl_dev
     value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
-  - name: jdbUrl-uat
+  - name: jdbUrl_uat
     value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
-  - name: jdbUrl-prd
+  - name: jdbUrl_prd
     value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
 
 stages:
@@ -86,7 +86,7 @@ stages:
                   runAsPreJob: true
 
           - script: |
-              echo "url is $[ variables.['jdbUrl-dev'] ]"
+              echo "url is $( variables.jdbUrl_dev)"
               liquibase \
               --url=jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require \
               --username=cfg \
