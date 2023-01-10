@@ -31,15 +31,15 @@ parameters:
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
-    JDBCURL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
+    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
     KEY_VAULT_NAME: pagopa-d-nodo-kv
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
-    JDBCURL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
+    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
     KEY_VAULT_NAME: pagopa-u-nodo-kv
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
-    JDBCURL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
+    JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
     KEY_VAULT_NAME: pagopa-p-nodo-kv
   POSTGRES_USER: azureuser
   POSTGRES_DB: nodo
@@ -80,15 +80,6 @@ stages:
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: '*'
               runAsPreJob: true
-          - ${{ if eq(parameters.k8sEnv, 'dev') }}:
-              - script:
-                  echo "##vso[task.setvariable variable=JDBC_URL;]$(JDBCURL-DEV)"
-          - ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
-              - script:
-                  echo "##vso[task.setvariable variable=JDBC_URL;]$(JDBCURL-UAT)"
-          - ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
-              - script:
-                  echo "##vso[task.setvariable variable=JDBC_URL;]$(JDBCURL-PRD)"
           - script: |
               liquibase \
               --url=$(JDBC_URL) \
