@@ -94,7 +94,6 @@ stages:
               - script:
                   echo "##vso[task.setvariable variable=JDBC_URL;]$(jdbUrl-prd)"
           - script: |
-              echo "url $(JDBC_URL)"
               liquibase \
               --url=$(JDBC_URL) \
               --username=cfg \
@@ -106,4 +105,56 @@ stages:
               --contexts=${{ parameters.k8sEnv }} \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=cfg
-            displayName: "Run Liquibase CFG"
+            displayName: "Run Liquibase cfg"
+          - script: |
+              liquibase \
+              --url=$(JDBC_URL) \
+              --username=online \
+              --password=$(db-online-password) \
+              --classpath=src/psql/nodo/liquibase/changelog/online \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName=online \
+              --defaultSchemaName=online \
+              --contexts=${{ parameters.k8sEnv }} \
+              --log-level=${{ parameters.lbLogLevel }} \
+              update -Dschema=online -DschemaOffline=offline
+            displayName: "Run Liquibase online"
+          - script: |
+              liquibase \
+              --url=$(JDBC_URL) \
+              --username=offline \
+              --password=$(db-offline-password) \
+              --classpath=src/psql/nodo/liquibase/changelog/offline \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName=offline \
+              --defaultSchemaName=offline \
+              --contexts=${{ parameters.k8sEnv }} \
+              --log-level=${{ parameters.lbLogLevel }} \
+              update -Dschema=offline -DschemaOnline=online
+            displayName: "Run Liquibase offline"
+          - script: |
+              liquibase \
+              --url=$(JDBC_URL) \
+              --username=re \
+              --password=$(db-re-password) \
+              --classpath=src/psql/nodo/liquibase/changelog/re \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName=re \
+              --defaultSchemaName=re \
+              --contexts=${{ parameters.k8sEnv }} \
+              --log-level=${{ parameters.lbLogLevel }} \
+              update -Dschema=re
+            displayName: "Run Liquibase re"
+          - script: |
+              liquibase \
+              --url=$(JDBC_URL) \
+              --username=wfesp \
+              --password=$(db-wfesp-password) \
+              --classpath=src/psql/nodo/liquibase/changelog/wfesp \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName=wfesp \
+              --defaultSchemaName=wfesp \
+              --contexts=${{ parameters.k8sEnv }} \
+              --log-level=${{ parameters.lbLogLevel }} \
+              update -Dschema=wfesp -DschemaOnline=online
+            displayName: "Run Liquibase wfesp"
