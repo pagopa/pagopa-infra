@@ -88,7 +88,7 @@ stages:
           - script: |
               echo "url is $[ jdbUrl-${{ parameters.k8sEnv }} ]"
               liquibase \
-              --url=${{ variables.jdbUrl-dev }} \
+              --url=$[ variables.jdbUrl-dev ] \
               --username=cfg \
               --password=$(db-cfg-password) \
               --classpath=src/psql/nodo/liquibase/changelog/cfg \
