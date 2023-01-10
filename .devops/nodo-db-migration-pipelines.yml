@@ -57,6 +57,7 @@ stages:
               wget -c https://github.com/liquibase/liquibase/releases/download/v4.10.0/liquibase-4.10.0.tar.gz
               tar -xzf liquibase-4.10.0.tar.gz -C liquibase-app
               rm -rf liquibase-4.10.0.tar.gz
+              ls -la liquibase-app
               echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
             displayName: "Install Liquibase"
       - job: run
