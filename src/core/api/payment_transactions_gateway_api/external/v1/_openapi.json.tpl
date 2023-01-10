@@ -195,7 +195,7 @@
         "tags": [
           "XPay-external"
         ],
-        "operationId": "auth-response-xpay",
+        "operationId": "authResponseXpay",
         "parameters": [
           {
             "in": "path",
