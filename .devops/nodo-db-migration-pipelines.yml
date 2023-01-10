@@ -46,9 +46,7 @@ stages:
     displayName: "Initialization"
     jobs:
       - job: initialization
-        variables:
-          jdbcUrlVar: jdbUrl-${{ parameters.k8sEnv }}
-        displayName: "Update nodo DB"
+        displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
         steps:
           - checkout: self
             clean: true
@@ -86,11 +84,19 @@ stages:
                   keyVaultName: 'pagopa-p-nodo-kv'
                   secretsFilter: '*'
                   runAsPreJob: true
-
+          - ${{ if eq(parameters.k8sEnv, 'dev') }}:
+              - script:
+                  echo "##vso[task.setvariable variable=JDBC_URL;]$(jdbUrl-dev)"
+          - ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
+              - script:
+                  echo "##vso[task.setvariable variable=JDBC_URL;]$(jdbUrl-uat)"
+          - ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
+              - script:
+                  echo "##vso[task.setvariable variable=JDBC_URL;]$(jdbUrl-prd)"
           - script: |
-              echo "url $(jdbcUrlVar) is $[variables.['$(jdbcUrlVar)']]"
+              echo "url $(JDBC_URL)"
               liquibase \
-              --url=jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require \
+              --url=$(JDBC_URL) \
               --username=cfg \
               --password=$(db-cfg-password) \
               --classpath=src/psql/nodo/liquibase/changelog/cfg \
