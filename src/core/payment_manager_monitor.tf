@@ -13,7 +13,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_restapi_availability"
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -25,7 +25,7 @@ requests
 | where url startswith 'https://api.platform.pagopa.it/payment-manager/pp-restapi'
 | summarize
     Total=count(),
-    Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500)
+    Success=count(toint(resultCode) >= 200 and toint(resultCode) < 500 and toint(duration) < 2000)
     by Time=bin(timestamp, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | extend Watermark=99
@@ -49,7 +49,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_restapi_cd_availabili
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -63,7 +63,7 @@ AzureDiagnostics
     and requestUri_s startswith '/pp-restapi-CD'
 | summarize
     Total=count(),
-    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500))
+    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500 and timeTaken_d < 2))
     by Time=bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
@@ -87,7 +87,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_wallet_availability" 
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -101,7 +101,7 @@ AzureDiagnostics
     and requestUri_s startswith "/wallet"
 | summarize
     Total=count(),
-    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500))
+    Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500 and timeTaken_d < 3))
     by Time=bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
