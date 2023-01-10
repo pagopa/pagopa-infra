@@ -46,7 +46,7 @@ stages:
     displayName: "Initialization"
     jobs:
       - job: initialization
-        displayName: "Install liquibase"
+        displayName: "Update nodo DB"
         steps:
           - checkout: self
             clean: true
@@ -86,13 +86,12 @@ stages:
                   runAsPreJob: true
 
           - script: |
-              ls -la src/psql/nodo/liquibase/changelog
               liquibase \
               --url=$[ jdbUrl-${{ parameters.k8sEnv }} ] \
               --username=cfg \
               --password=$(db-cfg-password) \
-              --classpath=${{ variables.changelogRoot }} \
-              --changeLogFile=${{ variables.changelogRoot }}/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --classpath=$(Pipeline.Workspace)/src/psql/nodo/liquibase/changelog \
+              --changeLogFile=$(Pipeline.Workspace)/src/psql/nodo/liquibase/changelog/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=cfg \
               --defaultSchemaName=cfg \
               --contexts=${{ parameters.k8sEnv }} \
