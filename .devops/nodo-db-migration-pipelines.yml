@@ -52,6 +52,7 @@ stages:
             clean: true
             persistCredentials: true
           - script: |
+              ls -la
               cd $(Pipeline.Workspace)
               mkdir liquibase-app
               wget -c https://github.com/liquibase/liquibase/releases/download/v4.10.0/liquibase-4.10.0.tar.gz
@@ -86,6 +87,7 @@ stages:
                   runAsPreJob: true
 
           - script: |
+              ls -la
               liquibase \
               --url=$[ jdbUrl-${{ parameters.k8sEnv }} ] \
               --username=cfg \
