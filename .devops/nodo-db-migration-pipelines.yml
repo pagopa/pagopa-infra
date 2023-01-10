@@ -55,7 +55,7 @@ variables:
   WFESP_SCHEMA: wfesp
 
 stages:
-  - stage: db-migration
+  - stage: db_migration
     displayName: "DB Migration"
     jobs:
       - job: initialization
