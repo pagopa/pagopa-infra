@@ -1,0 +1,188 @@
+pr: none
+trigger: none
+#trigger:
+#  - develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+  - name: k8sEnv
+    displayName: K8s Environment
+    type: string
+    default: dev
+    values:
+      - dev
+      - uat
+      - prd
+
+variables:
+  - name: DEV_AZURE_SERVICE_CONNECTION
+    value: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
+  - name: POSTGRES_USER
+    value: azureuser
+  - name: POSTGRES_DB
+    value: nodo
+  - name: CFG_USERNAME
+    value: cfg
+  - name: CFG_SCHEMA
+    value: cfg
+  - name: OFFLINE_USERNAME
+    value: offline
+  - name: OFFLINE_SCHEMA
+    value: offline
+  - name: ONLINE_USERNAME
+    value: online
+  - name: ONLINE_SCHEMA
+    value: online
+  - name: RE_USERNAME
+    value: re
+  - name: RE_SCHEMA
+    value: re
+  - name: WFESP_USERNAME
+    value: wfesp
+  - name: WFESP_SCHEMA
+    value: wfesp
+
+stages:
+  ## GET INFO
+  - stage: get_info
+    displayName: "Initialization"
+    jobs:
+      - job: initialization
+        displayName: "Init DB Nodo"
+        steps:
+          - checkout: self
+            clean: true
+            persistCredentials: true
+          - ${{ if eq(parameters.k8sEnv, 'dev') }}:
+              - task: AzureKeyVault@2
+                displayName: "Get dev secrets"
+                inputs:
+                  azureSubscription: $(DEV_AZURE_SERVICE_CONNECTION)
+                  keyVaultName: 'pagopa-d-nodo-kv'
+                  secretsFilter: '*'
+                  runAsPreJob: true
+          - ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
+              - task: AzureKeyVault@2
+                displayName: "Get uat secrets"
+                inputs:
+                  azureSubscription: 'UAT-pagoPA'
+                  keyVaultName: 'pagopa-u-nodo-kv'
+                  secretsFilter: '*'
+                  runAsPreJob: true
+          - ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
+              - task: AzureKeyVault@2
+                displayName: "Get prd secrets"
+                inputs:
+                  azureSubscription: 'PRD-pagoPA'
+                  keyVaultName: 'pagopa-p-nodo-kv'
+                  secretsFilter: '*'
+                  runAsPreJob: true
+          - checkout: self
+            clean: true
+            persistCredentials: true
+          - task: AzureCLI@2
+            displayName: "Azure CLI DB Nodo cfg"
+            inputs:
+              azureSubscription: $(DEV_AZURE_SERVICE_CONNECTION)
+              scriptLocation: inlineScript
+              arguments:
+                -POSTGRES_PASSWORD=$(db-administrator-login-password)
+                -POSTGRES_DB_HOST=pagopa-p-weu-nodo-flexible-postgresql-2.postgres.database.azure.com
+                -CFG_PASSWORD=$(db-cfg-password)
+                -INLINESCRIPT
+              inlineScript: |
+                #az login --allow-no-subscription
+                az postgres flexible-server execute --name $(POSTGRES_DB_HOST) --admin-user $(POSTGRES_USER) \
+                --admin-password '$(POSTGRES_PASSWORD)'  --database-name $(POSTGRES_DB) \
+                --querytext "
+                BEGIN
+                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_USERNAME') THEN
+                    RAISE NOTICE 'Role "$CFG_USERNAME" already exists. Skipping.';
+                  ELSE
+                    CREATE ROLE $USERNAME LOGIN PASSWORD '$CFG_PASSWORD';
+                    GRANT ALL PRIVILEGES ON DATABASE "nodo" TO $CFG_USERNAME;
+                    GRANT $CFG_USERNAME to $POSTGRES_USER;
+                    CREATE SCHEMA IF NOT EXISTS $SCHEMA AUTHORIZATION $USERNAME;
+                  END IF;
+                END"
+#          - task: AzureCLI@2
+#            displayName: "Azure CLI DB Nodo offline"
+#            inputs:
+#              azureSubscription: $(DEV_AZURE_SERVICE_CONNECTION)
+#              scriptLocation: inlineScript
+#              arguments:
+#                -POSTGRES_PASSWORD=$(db-administrator-login-password)
+#                -POSTGRES_DB_HOST=pagopa-p-weu-nodo-flexible-postgresql-2.postgres.database.azure.com
+#                -CFG_PASSWORD=$(db-cfg-password)
+#                -OFFLINE_PASSWORD=$(db-offline-password)
+#                -ONLINE_PASSWORD=$(db-online-password)
+#                -RE_PASSWORD=$(db-re-password)
+#                -WFESP_PASSWORD=$(db-wfesp-password)
+#                -INLINESCRIPT
+#              inlineScript: |
+#                #az login --allow-no-subscription
+#                az postgres flexible-server execute --name $(POSTGRES_DB_HOST) --admin-user $(POSTGRES_USER) \
+#                --admin-password '$(POSTGRES_PASSWORD)'  --database-name $(POSTGRES_DB) \
+#                --querytext "
+#                BEGIN
+#                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_USERNAME') THEN
+#                    RAISE NOTICE 'Role "$CFG_USERNAME" already exists. Skipping.';
+#                  ELSE
+#                    CREATE ROLE $USERNAME LOGIN PASSWORD '$OFFLINE_PASSWORD';
+#                    GRANT ALL PRIVILEGES ON DATABASE "nodo" TO $CFG_USERNAME;
+#                    GRANT $CFG_USERNAME to $POSTGRES_USER;
+#                    CREATE SCHEMA IF NOT EXISTS $SCHEMA AUTHORIZATION $USERNAME;
+#                  END IF;
+#                END"
+#          - script: |
+#              init () {
+#                USERNAME=$1
+#                PASSWORD=$2
+#                SCHEMA=$3
+#
+#                echo "Creating '$SCHEMA' ... $1 $2 $3"
+#
+#                set -e
+#
+#                PGPASSWORD="$POSTGRES_PASSWORD" psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d $POSTGRES_DB -h $POSTGRES_DB_HOST <<-EOSQL
+#
+#                DO \$do\$
+#                BEGIN
+#                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE  rolname = '$USERNAME') THEN
+#                    RAISE NOTICE 'Role "$USERNAME" already exists. Skipping.';
+#                  ELSE
+#                    CREATE ROLE $USERNAME LOGIN PASSWORD '$PASSWORD';
+#                    GRANT ALL PRIVILEGES ON DATABASE "nodo" TO $USERNAME;
+#                    GRANT $USERNAME to $POSTGRES_USER;
+#                    CREATE SCHEMA IF NOT EXISTS $SCHEMA AUTHORIZATION $USERNAME;
+#                  END IF;
+#                END
+#                \$do\$;
+#
+#                EOSQL
+#
+#                echo "Created '$SCHEMA'."
+#              }
+#
+#              init $NODO_CFG_USERNAME $NODO_CFG_PASSWORD $NODO_CFG_SCHEMA
+#
+#              init $NODO_ONLINE_USERNAME $NODO_ONLINE_PASSWORD $NODO_ONLINE_SCHEMA
+#
+#              echo "Creating function trunc on '$NODO_ONLINE_SCHEMA' ..."
+#              PGPASSWORD="$POSTGRES_PASSWORD" psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d $POSTGRES_DB -h $POSTGRES_DB_HOST <<-EOSQL
+#              CREATE or REPLACE FUNCTION trunc(timestamp without time zone) RETURNS date
+#              AS 'select DATE_TRUNC(''day'',\$1);'
+#              LANGUAGE SQL
+#              IMMUTABLE
+#              RETURNS NULL ON NULL INPUT;
+#              EOSQL
+#              echo "Created function trunc on '$NODO_ONLINE_SCHEMA'"
+#
+#              init $NODO_OFFLINE_USERNAME $NODO_OFFLINE_PASSWORD $NODO_OFFLINE_SCHEMA
+#
+#              init $NODO_WFESP_USERNAME $NODO_WFESP_PASSWORD $NODO_WFESP_SCHEMA
+#
+#              init $NODO_RE_USERNAME $NODO_RE_PASSWORD $NODO_RE_SCHEMA
+#            displayName: "Execute init script"
