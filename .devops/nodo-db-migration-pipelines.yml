@@ -36,11 +36,11 @@ variables:
   - name: PRD_AZURE_SERVICE_CONNECTION
     value: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
   - name: JDBCURL-DEV
-    value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
+    value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
   - name: JDBCURL-UAT
-    value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
+    value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
   - name: JDBCURL-PRD
-    value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
+    value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
   - name: POSTGRES_USER
     value: azureuser
   - name: POSTGRES_DB
