@@ -42,8 +42,6 @@ variables:
     JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
     KEY_VAULT_NAME: pagopa-p-nodo-kv
   POSTGRES_USER: azureuser
-  POSTGRES_DB: nodo
-  CFG_USERNAME: cfg
   CFG_SCHEMA: cfg
   OFFLINE_USERNAME: offline
   OFFLINE_SCHEMA: offline
@@ -78,7 +76,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: '*'
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
               runAsPreJob: true
           - script: |
               liquibase \
