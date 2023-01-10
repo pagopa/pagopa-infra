@@ -29,6 +29,8 @@ parameters:
       - SEVERE
 
 variables:
+  - name: DEV_AZURE_SERVICE_CONNECTION
+    value: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
   - name: changelogRoot
     value: $(Pipeline.Workspace)/src/psql/nodo/liquibase/changelog
   - name: jdbUrl-dev
@@ -67,7 +69,7 @@ stages:
               - task: AzureKeyVault@2
                 displayName: "Get dev secrets"
                 inputs:
-                  azureSubscription: 'bbe47ad4-08b3-4925-94c5-1278e5819b86'
+                  azureSubscription: $(DEV_AZURE_SERVICE_CONNECTION)
                   keyVaultName: 'pagopa-d-nodo-kv'
                   secretsFilter: 'db-*'
                   runAsPreJob: true
