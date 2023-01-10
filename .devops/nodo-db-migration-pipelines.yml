@@ -63,7 +63,7 @@ stages:
           - checkout: self
             clean: true
             persistCredentials: true
-          - ${{ if or(eq(parameters.k8sEnv, 'dev')) }}:
+          - ${{ if eq(parameters.k8sEnv, 'dev') }}:
               - task: AzureKeyVault@2
                 displayName: "Get dev secrets"
                 inputs:
@@ -71,7 +71,7 @@ stages:
                   keyVaultName: 'pagopa-d-nodo-kv'
                   secretsFilter: 'db-*'
                   runAsPreJob: true
-          - ${{ elseif or(eq(parameters.k8sEnv, 'uat')) }}:
+          - ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
               - task: AzureKeyVault@2
                 displayName: "Get uat secrets"
                 inputs:
