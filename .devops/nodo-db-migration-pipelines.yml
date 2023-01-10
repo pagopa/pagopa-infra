@@ -117,7 +117,7 @@ stages:
               --defaultSchemaName=online \
               --contexts=${{ parameters.k8sEnv }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              update -Dschema=online -DschemaOffline=offline
+              update -Dschema=online -DschemaOffline=offline -DusernameOffline=offline
             displayName: "Run Liquibase online"
           - script: |
               liquibase \
