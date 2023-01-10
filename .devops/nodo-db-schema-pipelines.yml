@@ -48,7 +48,7 @@ variables:
   - name: WFESP_SCHEMA
     value: wfesp
   - name: host-dev
-    value: pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com
+    value: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com:5432/nodo?sslmode=require
   - name: host-uat
     value: pagopa-d-weu-nodo-flexible-postgresql-2.postgres.database.azure.com
   - name: host-prd
@@ -102,7 +102,7 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-                #az login --allow-no-subscription
+                az login --allow-no-subscription
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(HOST) --admin-user $(POSTGRES_USER) \
                 --admin-password '$(db-administrator-login-password)'  --database-name $(POSTGRES_DB) \
