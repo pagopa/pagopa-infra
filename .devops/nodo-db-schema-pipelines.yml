@@ -23,9 +23,9 @@ variables:
     value: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
   - name: PRD_AZURE_SERVICE_CONNECTION
     value: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
-  - name: POSTGRES_USER
+  - name: ADMIN_USERNAME
     value: azureuser
-  - name: POSTGRES_DB
+  - name: DATABASE_NAME
     value: nodo
   - name: CFG_USERNAME
     value: cfg
@@ -47,12 +47,12 @@ variables:
     value: wfesp
   - name: WFESP_SCHEMA
     value: wfesp
-  - name: host-dev
+  - name: DB-HOST-DEV
     value: pagopa-d-weu-nodo-flexible-postgresql-2
-  - name: host-uat
-    value: pagopa-d-weu-nodo-flexible-postgresql-2
-  - name: host-prd
-    value: pagopa-d-weu-nodo-flexible-postgresql-2
+  - name: DB-HOST-UAT
+    value: pagopa-u-weu-nodo-flexible-postgresql-2
+  - name: DB-HOST-PRD
+    value: pagopa-p-weu-nodo-flexible-postgresql-2
 
 stages:
   ## GET INFO
@@ -88,13 +88,13 @@ stages:
                   runAsPreJob: true
           - ${{ if eq(parameters.k8sEnv, 'dev') }}:
               - script:
-                  echo "##vso[task.setvariable variable=HOST;]$(host-dev)"
+                  echo "##vso[task.setvariable variable=DB-HOST;]$(DB-HOST-DEV)"
           - ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
               - script:
-                  echo "##vso[task.setvariable variable=HOST;]$(host-uat)"
+                  echo "##vso[task.setvariable variable=DB-HOST;]$(DB-HOST-UAT)"
           - ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
               - script:
-                  echo "##vso[task.setvariable variable=HOST;]$(host-prd)"
+                  echo "##vso[task.setvariable variable=DB-HOST;]$(DB-HOST-PRD)"
           - task: AzureCLI@2
             displayName: "cfg schema"
             inputs:
@@ -103,8 +103,8 @@ stages:
               scriptType: bash
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(HOST) --admin-user $(POSTGRES_USER) \
-                --admin-password '$(db-administrator-login-password)'  --database-name $(POSTGRES_DB) \
+                az postgres flexible-server execute --name $(DB-HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -112,8 +112,8 @@ stages:
                     RAISE NOTICE 'Role "$CFG_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $CFG_USERNAME LOGIN PASSWORD '$(db-cfg-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$POSTGRES_DB" TO $CFG_USERNAME;
-                    GRANT $CFG_USERNAME to $POSTGRES_USER;
+                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $CFG_USERNAME;
+                    GRANT $CFG_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $CFG_SCHEMA AUTHORIZATION $CFG_USERNAME;
                   END IF;
                 END
@@ -127,8 +127,8 @@ stages:
               scriptType: bash
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(HOST) --admin-user $(POSTGRES_USER) \
-                --admin-password '$(db-administrator-login-password)'  --database-name $(POSTGRES_DB) \
+                az postgres flexible-server execute --name $(DB-HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -136,8 +136,8 @@ stages:
                     RAISE NOTICE 'Role "$ONLINE_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $ONLINE_USERNAME LOGIN PASSWORD '$(db-online-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$POSTGRES_DB" TO $ONLINE_USERNAME;
-                    GRANT $ONLINE_USERNAME to $POSTGRES_USER;
+                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $ONLINE_USERNAME;
+                    GRANT $ONLINE_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $ONLINE_SCHEMA AUTHORIZATION $ONLINE_USERNAME;
                   END IF;
 
@@ -157,8 +157,8 @@ stages:
               scriptType: bash
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(HOST) --admin-user $(POSTGRES_USER) \
-                --admin-password '$(db-administrator-login-password)'  --database-name $(POSTGRES_DB) \
+                az postgres flexible-server execute --name $(DB-HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -166,8 +166,8 @@ stages:
                     RAISE NOTICE 'Role "$OFFLINE_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $OFFLINE_USERNAME LOGIN PASSWORD '$(db-offline-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$POSTGRES_DB" TO $OFFLINE_USERNAME;
-                    GRANT $OFFLINE_USERNAME to $POSTGRES_USER;
+                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $OFFLINE_USERNAME;
+                    GRANT $OFFLINE_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $OFFLINE_SCHEMA AUTHORIZATION $OFFLINE_USERNAME;
                   END IF;
                 END
@@ -181,8 +181,8 @@ stages:
               scriptType: bash
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(HOST) --admin-user $(POSTGRES_USER) \
-                --admin-password '$(db-administrator-login-password)'  --database-name $(POSTGRES_DB) \
+                az postgres flexible-server execute --name $(DB-HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -190,8 +190,8 @@ stages:
                     RAISE NOTICE 'Role "$RE_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $RE_USERNAME LOGIN PASSWORD '$(db-re-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$POSTGRES_DB" TO $RE_USERNAME;
-                    GRANT $RE_USERNAME to $POSTGRES_USER;
+                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $RE_USERNAME;
+                    GRANT $RE_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $RE_SCHEMA AUTHORIZATION $RE_USERNAME;
                   END IF;
                 END
@@ -205,8 +205,8 @@ stages:
               scriptType: bash
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(HOST) --admin-user $(POSTGRES_USER) \
-                --admin-password '$(db-administrator-login-password)'  --database-name $(POSTGRES_DB) \
+                az postgres flexible-server execute --name $(DB-HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -214,8 +214,8 @@ stages:
                     RAISE NOTICE 'Role "$WFESP_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $WFESP_USERNAME LOGIN PASSWORD '$(db-wfesp-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$POSTGRES_DB" TO $WFESP_USERNAME;
-                    GRANT $WFESP_USERNAME to $POSTGRES_USER;
+                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $WFESP_USERNAME;
+                    GRANT $WFESP_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $WFESP_SCHEMA AUTHORIZATION $WFESP_USERNAME;
                   END IF;
                 END
