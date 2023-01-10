@@ -219,6 +219,7 @@
           },
           "clientId": {
             "description": "transaction client id",
+            "type": "string",
             "enum": [
               "IO",
               "CHECKOUT",
