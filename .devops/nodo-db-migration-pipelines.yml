@@ -59,13 +59,8 @@ stages:
               rm -rf liquibase-4.10.0.tar.gz
               ls -la liquibase-app
               echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
+              liquibase -v
             displayName: "Install Liquibase"
-      - job: run
-        displayName: "Run liquibase"
-        steps:
-          - checkout: self
-            clean: true
-            persistCredentials: true
           - ${{ if eq(parameters.k8sEnv, 'dev') }}:
               - task: AzureKeyVault@2
                 displayName: "Get dev secrets"
