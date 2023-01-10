@@ -18,6 +18,10 @@ parameters:
   - name: dbVersion
     displayName: Database Version
     type: string
+  - name: lbContexts
+    displayName: Liquibase Contexts
+    type: string
+    default: ''
   - name: lbLogLevel
     displayName: Liquibase Log Level
     type: string
@@ -87,7 +91,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(CFG_SCHEMA) \
               --defaultSchemaName=$(CFG_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(CFG_SCHEMA)
             displayName: "Run Liquibase cfg"
@@ -100,7 +104,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(CFG_SCHEMA) \
               --defaultSchemaName=$(CFG_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag cfg"
@@ -113,7 +117,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(ONLINE_SCHEMA) \
               --defaultSchemaName=$(ONLINE_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
             displayName: "Run Liquibase online"
@@ -126,7 +130,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(ONLINE_SCHEMA) \
               --defaultSchemaName=$(ONLINE_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag online"
@@ -139,7 +143,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(OFFLINE_SCHEMA) \
               --defaultSchemaName=$(OFFLINE_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
             displayName: "Run Liquibase offline"
@@ -152,7 +156,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(OFFLINE_SCHEMA) \
               --defaultSchemaName=$(OFFLINE_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag offline"
@@ -165,7 +169,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(RE_SCHEMA) \
               --defaultSchemaName=$(RE_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(RE_SCHEMA)
             displayName: "Run Liquibase re"
@@ -178,7 +182,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(RE_SCHEMA) \
               --defaultSchemaName=$(RE_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag re"
@@ -191,7 +195,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(WFESP_SCHEMA) \
               --defaultSchemaName=$(WFESP_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(WFESP_SCHEMA)
             displayName: "Run Liquibase wfesp"
@@ -204,7 +208,7 @@ stages:
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName=$(WFESP_SCHEMA) \
               --defaultSchemaName=$(WFESP_SCHEMA) \
-              --contexts=${{ parameters.k8sEnv }} \
+              --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag wfesp"
