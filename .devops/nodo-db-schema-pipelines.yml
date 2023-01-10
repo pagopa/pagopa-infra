@@ -114,7 +114,7 @@ stages:
                     CREATE ROLE $USERNAME LOGIN PASSWORD '$CFG_PASSWORD';
                     GRANT ALL PRIVILEGES ON DATABASE "nodo" TO $CFG_USERNAME;
                     GRANT $CFG_USERNAME to $POSTGRES_USER;
-                    CREATE SCHEMA IF NOT EXISTS $SCHEMA AUTHORIZATION $USERNAME;
+                    CREATE SCHEMA IF NOT EXISTS $SCHEMA AUTHORIZATION $CFG_USERNAME;
                   END IF;
                 END
                 \$\$;
