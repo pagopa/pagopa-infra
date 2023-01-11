@@ -95,7 +95,7 @@ stages:
               notifyUsers: |
                 $(NOTIFICATION_EMAIL)
                 $(NOTIFICATION_SLACK)
-              instructions: "Running in PROD,continue? $(NOTIFICATION_SLACK)"
+              instructions: "Running in PROD,continue?"
               onTimeout: 'reject'
   - stage: db_migration
     displayName: "DB Migration"
