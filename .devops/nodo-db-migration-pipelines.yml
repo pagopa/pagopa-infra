@@ -66,6 +66,7 @@ stages:
         pool: server
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
         displayName: "Approval"
+        timeoutInMinutes: 6
         steps:
           - task: ManualValidation@0
             timeoutInMinutes: 5
