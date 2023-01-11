@@ -330,8 +330,12 @@ variable "base_path_nodo_web_bo_history_dev" {
 }
 variable "nodo_pagamenti_auth_password" {
   type        = string
-  description = "Default passowrd used for nodo-auth"
+  description = "Default password used for nodo-auth"
   default     = "PLACEHOLDER"
+}
+variable "nodo_pagamenti_x_forwarded_for" {
+  type        = string
+  description = "X-Forwarded-For IP address used for nodo-auth"
 }
 
 
