@@ -60,6 +60,18 @@ stages:
   - stage: db_migration
     displayName: "DB Migration"
     jobs:
+      ${{ if eq(parameters.k8sEnv, 'prd') }}:
+      - job: prd_approval
+        displayName: "Manual approval for prod"
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 5
+            inputs:
+              notifyUsers: |
+                test@test.com
+                example@example.com
+              instructions: 'Running in PROD,continue?'
+              onTimeout: 'reject'
       - job: initialization
         displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
         steps:
