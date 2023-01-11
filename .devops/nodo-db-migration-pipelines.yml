@@ -61,7 +61,7 @@ variables:
 
 stages:
   - stage: get_secrets
-    displayName: "Manual approval for prod only"
+    displayName: "Get secrets for email notification"
     condition: eq('${{ parameters.k8sEnv }}', 'dev')
     jobs:
       - job: retrieve_secrets
@@ -91,7 +91,7 @@ stages:
               onTimeout: 'reject'
   - stage: db_migration
     displayName: "DB Migration"
-    condition: or(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'uat'),not(failed('prd_approval')))
+    condition: or(eq('${{ parameters.k8sEnv }}', 'AAA'),eq('${{ parameters.k8sEnv }}', 'uat'),not(failed('prd_approval')))
     jobs:
       - job: initialization
         displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
