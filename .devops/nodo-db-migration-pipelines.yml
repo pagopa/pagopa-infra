@@ -84,16 +84,13 @@ stages:
         displayName: "Approval"
         timeoutInMinutes: 6
         steps:
-          - script: |
-              echo "$(NOTIFICATION_EMAIL)"
-              echo "$(NOTIFICATION_SLACK)"
           - task: ManualValidation@0
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
                 $(NOTIFICATION_EMAIL)
                 $(NOTIFICATION_SLACK)
-              instructions: 'Running in PROD,continue?($(NOTIFICATION_SLACK))'
+              instructions: 'Running in PROD,continue?(${{ NOTIFICATION_SLACK }})'
               onTimeout: 'reject'
   - stage: db_migration
     displayName: "DB Migration"
