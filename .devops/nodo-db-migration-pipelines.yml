@@ -59,7 +59,7 @@ variables:
 stages:
   - stage: prd_approval
     pool: server
-    displayName: "Manual approval for prod only"
+    displayName: "Manual approval for prod"
     condition: eq('${{ parameters.k8sEnv }}', 'prd')
     jobs:
       - job: prd_approval
