@@ -24,3 +24,16 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 input_file = "./secret/weu-dev/configs.json"
 
 enable_iac_pipeline = true
+
+### SP for use keyvault with access read only
+az_nodo_app_kv_ro_policy_name = "app-kv-ro-nodo-dev"
+
+az_nodo_sa_share_name_cert      = "certificates"
+az_nodo_sa_share_name_firmatore = "firmatore"
+upload_certificates = {
+  "java_cacerts" = "./env/dev/resources/cacerts"
+}
+
+upload_firmatore = {
+  "firmatore.zip" = "./env/dev/resources/firmatore-sit.zip"
+}

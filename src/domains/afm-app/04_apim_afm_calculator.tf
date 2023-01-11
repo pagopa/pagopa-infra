@@ -122,7 +122,7 @@ module "apim_api_afm_calculator_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_afm_calculator_product.product_id]
   subscription_required = local.apim_afm_calculator_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_api[0].id
   api_version           = "v1"
 
   description  = local.apim_afm_calculator_service_api.description
