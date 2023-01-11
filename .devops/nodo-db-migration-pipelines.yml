@@ -91,7 +91,7 @@ stages:
               notifyUsers: |
                 stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL']
                 stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_SLACK']
-              instructions: "Running in PROD,continue? (${{ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL'] }})"
+              instructions: "Running in PROD,continue? ($[ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL'] ])"
               onTimeout: 'reject'
   - stage: db_migration
     displayName: "DB Migration"
