@@ -44,10 +44,10 @@ variables:
 
 stages:
   - stage: initialization_jobs
-    displayName: "Initialization ${{ parameters.k8sEnv }}"
+    displayName: "Init ${{ parameters.k8sEnv }}"
     jobs:
       - job: initialization
-        displayName: "Init DB $(DATABASE_NAME)"
+        displayName: "Init DB $DATABASE_NAME"
         steps:
           - task: AzureKeyVault@2
             displayName: "Get secrets"
