@@ -62,7 +62,7 @@ variables:
 stages:
   - stage: get_secrets
     displayName: "Get secrets for email notification"
-    condition: eq('${{ parameters.k8sEnv }}', 'dev')
+    condition: eq('${{ parameters.k8sEnv }}', 'prd')
     jobs:
       - job: retrieve_secrets
         steps:
@@ -77,11 +77,12 @@ stages:
               echo "##vso[task.setvariable variable=NOTIFICATION_SLACK;isOutput=true]$(monitor-notification-slack-email)"
             name: out
   - stage: prd_approval
+    dependsOn: get_secrets
     displayName: "Manual approval for prod only"
     variables:
       NOTIFICATION_EMAIL: $[ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL'] ]
       NOTIFICATION_SLACK: $[ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_SLACK'] ]
-    condition: eq('${{ parameters.k8sEnv }}', 'dev')
+    condition: eq('${{ parameters.k8sEnv }}', 'prd')
     jobs:
       - job: prd_approval
         pool: server
@@ -98,7 +99,7 @@ stages:
               onTimeout: 'reject'
   - stage: db_migration
     displayName: "DB Migration"
-    condition: eq('${{ parameters.k8sEnv }}', 'CHANGEME')
+    condition: or(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'uat'),and(eq('${{ parameters.k8sEnv }}', 'prd'),not(failed('prd_approval'))))
     jobs:
       - job: initialization
         displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
