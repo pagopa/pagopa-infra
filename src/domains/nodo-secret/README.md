@@ -40,7 +40,6 @@
 | [azurerm_storage_share.certs](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_share) | resource |
 | [azurerm_storage_share.firmatore](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_share) | resource |
 | [azurerm_storage_share_file.upload_certs](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_share_file) | resource |
-| [azurerm_storage_share_file.upload_firmatore](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_share_file) | resource |
 | [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/client_config) | data source |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |

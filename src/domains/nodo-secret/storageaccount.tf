@@ -40,12 +40,12 @@ resource "azurerm_storage_share" "firmatore" {
   quota                = 50
 }
 
-resource "azurerm_storage_share_file" "upload_firmatore" {
-  for_each         = var.upload_firmatore
-  name             = each.key
-  source           = each.value
-  storage_share_id = azurerm_storage_share.firmatore.id
-}
+#resource "azurerm_storage_share_file" "upload_firmatore" {
+#  for_each         = var.upload_firmatore
+#  name             = each.key
+#  source           = each.value
+#  storage_share_id = azurerm_storage_share.firmatore.id
+#}
 
 
 
