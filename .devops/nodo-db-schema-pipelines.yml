@@ -47,7 +47,7 @@ stages:
     displayName: "Init ${{ parameters.k8sEnv }}"
     jobs:
       - job: initialization
-        displayName: "Init DB $DATABASE_NAME"
+        displayName: "Schemas creation job"
         steps:
           - task: AzureKeyVault@2
             displayName: "Get secrets"
