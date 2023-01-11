@@ -54,7 +54,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: '*'
+              secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
           - task: AzureCLI@2
             displayName: "cfg schema"
             inputs:
