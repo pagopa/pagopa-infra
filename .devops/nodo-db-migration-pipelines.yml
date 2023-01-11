@@ -84,6 +84,9 @@ stages:
         displayName: "Approval"
         timeoutInMinutes: 6
         steps:
+          - script: |
+              echo "$(NOTIFICATION_EMAIL)"
+              echo "$(NOTIFICATION_SLACK)"
           - task: ManualValidation@0
             timeoutInMinutes: 5
             inputs:
