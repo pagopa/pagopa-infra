@@ -57,8 +57,9 @@ variables:
   WFESP_SCHEMA: wfesp
 
 stages:
-  - stage: db_migration
-    displayName: "DB Migration"
+  - stage: prd_approval
+    diplayName: "Manual approval for prod"
+    condition: eq('${{ parameters.k8sEnv }}', 'prd')
     jobs:
       - job: prd_approval
         pool: server
@@ -73,6 +74,9 @@ stages:
                 example@example.com
               instructions: 'Running in PROD,continue?'
               onTimeout: 'reject'
+  - stage: db_migration
+    displayName: "DB Migration"
+    jobs:
       - job: initialization
         displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
         steps:
