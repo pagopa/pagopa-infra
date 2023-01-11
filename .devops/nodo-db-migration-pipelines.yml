@@ -65,6 +65,7 @@ stages:
     condition: eq('${{ parameters.k8sEnv }}', 'dev')
     jobs:
       - job: prd_approval
+        pool: server
         displayName: "Approval"
         timeoutInMinutes: 6
         steps:
