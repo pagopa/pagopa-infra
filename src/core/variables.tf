@@ -186,18 +186,19 @@ variable "apiconfig_logging_level" {
 variable "xsd_ica" {
   type        = string
   description = "XML Schema of Informatica Conto Accredito"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/InformativaContoAccredito_1_2_1.xsd"
 }
 
 variable "xsd_counterpart" {
   type        = string
   description = "XML Schema of Tabelle delle Controparti"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/TabellaDelleControparti_1_0_8.xsd"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/TabellaDelleControparti_1_0_8.xsd"
 }
 
 variable "xsd_cdi" {
   type        = string
   description = "XML Schema of Catalogo Dati Informativi"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/CatalogoDatiInformativiPSP.xsd"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/CatalogoDatiInformativiPSP.xsd"
 }
 
 
@@ -329,8 +330,12 @@ variable "base_path_nodo_web_bo_history_dev" {
 }
 variable "nodo_pagamenti_auth_password" {
   type        = string
-  description = "Default passowrd used for nodo-auth"
+  description = "Default password used for nodo-auth"
   default     = "PLACEHOLDER"
+}
+variable "nodo_pagamenti_x_forwarded_for" {
+  type        = string
+  description = "X-Forwarded-For IP address used for nodo-auth"
 }
 
 
