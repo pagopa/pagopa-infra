@@ -61,6 +61,7 @@ stages:
     displayName: "DB Migration"
     jobs:
       - job: prd_approval
+        pool: server
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
         displayName: "Manual approval for prod"
         steps:
