@@ -69,6 +69,12 @@ stages:
         displayName: "Approval"
         timeoutInMinutes: 6
         steps:
+          - task: AzureKeyVault@2
+            displayName: "Get $(KEY_VAULT_NAME) secrets"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              keyVaultName: $(KEY_VAULT_NAME)
+              secretsFilter: 'monitor-notification-email,monitor-notification-slack-email'
           - task: ManualValidation@0
             timeoutInMinutes: 5
             inputs:
@@ -101,8 +107,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'monitor-notification-email,monitor-notification-slack-email,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
-              runAsPreJob: true
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
           - script: |
               liquibase \
               --url=$(JDBC_URL) \
