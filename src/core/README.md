@@ -935,9 +935,9 @@
 | <a name="input_vpn_pip_sku"></a> [vpn\_pip\_sku](#input\_vpn\_pip\_sku) | VPN GW PIP SKU | `string` | `"Basic"` | no |
 | <a name="input_vpn_sku"></a> [vpn\_sku](#input\_vpn\_sku) | VPN Gateway SKU | `string` | `"VpnGw1"` | no |
 | <a name="input_xpay_hostname"></a> [xpay\_hostname](#input\_xpay\_hostname) | Nexi xpay hostname | `string` | `""` | no |
-| <a name="input_xsd_cdi"></a> [xsd\_cdi](#input\_xsd\_cdi) | XML Schema of Catalogo Dati Informativi | `string` | `"https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/CatalogoDatiInformativiPSP.xsd"` | no |
-| <a name="input_xsd_counterpart"></a> [xsd\_counterpart](#input\_xsd\_counterpart) | XML Schema of Tabelle delle Controparti | `string` | `"https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/TabellaDelleControparti_1_0_8.xsd"` | no |
-| <a name="input_xsd_ica"></a> [xsd\_ica](#input\_xsd\_ica) | XML Schema of Informatica Conto Accredito | `string` | n/a | yes |
+| <a name="input_xsd_cdi"></a> [xsd\_cdi](#input\_xsd\_cdi) | XML Schema of Catalogo Dati Informativi | `string` | `"https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/CatalogoDatiInformativiPSP.xsd"` | no |
+| <a name="input_xsd_counterpart"></a> [xsd\_counterpart](#input\_xsd\_counterpart) | XML Schema of Tabelle delle Controparti | `string` | `"https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/TabellaDelleControparti_1_0_8.xsd"` | no |
+| <a name="input_xsd_ica"></a> [xsd\_ica](#input\_xsd\_ica) | XML Schema of Informatica Conto Accredito | `string` | `"https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/InformativaContoAccredito_1_2_1.xsd"` | no |
 
 ## Outputs
 

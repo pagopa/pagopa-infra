@@ -72,8 +72,8 @@ stages:
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
-                test@test.com
-                example@example.com
+                $(monitor-notification-email)
+                $(monitor-notification-slack-email)
               instructions: 'Running in PROD,continue?'
               onTimeout: 'reject'
   - stage: db_migration
@@ -100,7 +100,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
+              secretsFilter: 'monitor-notification-email,monitor-notification-slack-email,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
               runAsPreJob: true
           - script: |
               liquibase \
