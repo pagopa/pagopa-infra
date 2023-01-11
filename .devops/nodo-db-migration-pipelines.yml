@@ -60,7 +60,7 @@ variables:
   WFESP_SCHEMA: wfesp
 
 stages:
-  - stage: prd_approval
+  - stage: get_secrets
     displayName: "Manual approval for prod only"
     condition: eq('${{ parameters.k8sEnv }}', 'dev')
     jobs:
@@ -72,6 +72,10 @@ stages:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'monitor-notification-email,monitor-notification-slack-email'
+  - stage: prd_approval
+    displayName: "Manual approval for prod only ${{ monitor-notification-slack-email }}"
+    condition: eq('${{ parameters.k8sEnv }}', 'dev')
+    jobs:
       - job: prd_approval
         pool: server
         displayName: "Approval"
