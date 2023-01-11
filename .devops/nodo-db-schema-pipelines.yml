@@ -43,11 +43,11 @@ variables:
   WFESP_SCHEMA: wfesp
 
 stages:
-  - stage: get_info
-    displayName: "Database ${{ DATABASE_NAME }} ${{ parameters.k8sEnv }}"
+  - stage: initialization_jobs
+    displayName: "Init ${{ parameters.k8sEnv }}"
     jobs:
       - job: initialization
-        displayName: "Init"
+        displayName: "Init DB $DATABASE_NAME"
         steps:
           - task: AzureKeyVault@2
             displayName: "Get secrets"
