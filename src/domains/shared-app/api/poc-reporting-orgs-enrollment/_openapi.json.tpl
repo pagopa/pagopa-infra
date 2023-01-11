@@ -16,9 +16,6 @@
                 "tags": [
                     "Home Controller"
                 ],
-                "summary": "Health check",
-                "description": "Return OK if application is started",
-                "operationId": "healthCheck",
                 "responses": {
                     "200": {
                         "description": "OK",
