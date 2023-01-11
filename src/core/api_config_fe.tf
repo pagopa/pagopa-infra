@@ -82,3 +82,11 @@ module "api_config_fe_cdn" {
 
   tags = var.tags
 }
+
+resource "azurerm_key_vault_secret" "storage_account_key" {
+  name         = "api-config-fe-storage-account-key"
+  value        = module.api_config_fe_cdn[0].storage_primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}

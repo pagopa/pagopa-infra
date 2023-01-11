@@ -593,3 +593,5 @@ dexp_db = {
 dexp_re_db_linkes_service = {
   enable = true
 }
+
+nodo_pagamenti_x_forwarded_for="10.230.9.5"
