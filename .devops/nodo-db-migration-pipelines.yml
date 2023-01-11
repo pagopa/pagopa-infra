@@ -93,9 +93,7 @@ stages:
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
-                cesare.caccuri@gmail.com
-                $(NOTIFICATION_EMAIL)
-                $(NOTIFICATION_SLACK)
+                [pagopaspa]pagopa-iac-externals-team
               instructions: "Running in PROD,continue?"
               onTimeout: 'reject'
   - stage: db_migration
