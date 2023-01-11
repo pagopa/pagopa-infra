@@ -60,7 +60,7 @@ stages:
   - stage: db_migration
     displayName: "DB Migration"
     jobs:
-      ${{ if eq(parameters.k8sEnv, 'dev') }}:
+      ${{ if eq(parameters.k8sEnv, 'prd') }}:
       - job: prd_approval
         displayName: "Manual approval for prod"
         steps:
