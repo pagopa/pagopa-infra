@@ -64,10 +64,7 @@ stages:
     displayName: "Manual approval for prod only"
     condition: eq('${{ parameters.k8sEnv }}', 'dev')
     jobs:
-      - job: prd_approval
-        pool: server
-        displayName: "Approval"
-        timeoutInMinutes: 6
+      - job: retrieve_secrets
         steps:
           - task: AzureKeyVault@2
             displayName: "Get $(KEY_VAULT_NAME) secrets"
@@ -75,6 +72,11 @@ stages:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'monitor-notification-email,monitor-notification-slack-email'
+      - job: prd_approval
+        pool: server
+        displayName: "Approval"
+        timeoutInMinutes: 6
+        steps:
           - task: ManualValidation@0
             timeoutInMinutes: 5
             inputs:
