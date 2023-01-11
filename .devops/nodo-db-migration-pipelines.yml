@@ -73,7 +73,7 @@ stages:
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'monitor-notification-email,monitor-notification-slack-email'
   - stage: prd_approval
-    displayName: "Manual approval for prod only ${{ monitor-notification-slack-email }}"
+    displayName: "Manual approval for prod only"
     condition: eq('${{ parameters.k8sEnv }}', 'dev')
     jobs:
       - job: prd_approval
