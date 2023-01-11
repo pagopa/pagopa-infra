@@ -62,6 +62,7 @@ dns_zone_prefix_prf = "prf.platform"
 dns_zone_checkout   = "uat.checkout"
 dns_zone_selc       = "selfcare.uat.platform"
 dns_zone_wisp2      = "uat.wisp2"
+dns_zone_wfesp      = "wfesp.test"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
@@ -80,6 +81,7 @@ app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
+app_gateway_wfespgovit_certificate_name = "wfesp-test-pagopa-gov-it"
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true
@@ -97,7 +99,7 @@ app_gateway_deny_paths = [
   "/payment-manager/internal/.*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd/.*",           # internal use no sub-keys
+  #"/gpd/.*",           # internal use no sub-keys
   "/gpd-payments/.*",  # internal use no sub-keys
   "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmacquirermanager/.*",
@@ -594,4 +596,4 @@ dexp_re_db_linkes_service = {
   enable = true
 }
 
-nodo_pagamenti_x_forwarded_for="10.230.9.5"
+nodo_pagamenti_x_forwarded_for = "10.230.9.5"

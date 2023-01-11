@@ -58,6 +58,7 @@ external_domain   = "pagopa.it"
 dns_zone_prefix   = "platform"
 dns_zone_checkout = "checkout"
 dns_zone_wisp2    = "wisp2"
+dns_zone_wfesp    = "wfesp"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
@@ -89,6 +90,7 @@ app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
+app_gateway_wfespgovit_certificate_name = ""
 app_gateway_min_capacity                = 5 # TODO tuning, probably 3 it's more indicate value
 app_gateway_max_capacity                = 10
 app_gateway_sku_name                    = "WAF_v2"
@@ -586,4 +588,4 @@ dexp_re_db_linkes_service = {
 node_forwarder_tier = "Basic" # TODO change to "PremiumV3"
 node_forwarder_size = "B1"    # TODO change to "P1v3"
 
-nodo_pagamenti_x_forwarded_for="10.230.10.5"
+nodo_pagamenti_x_forwarded_for = "10.230.10.5"

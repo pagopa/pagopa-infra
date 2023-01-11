@@ -425,6 +425,12 @@ variable "dns_zone_wisp2" {
   description = "The wisp2 dns subdomain."
 }
 
+variable "dns_zone_wfesp" {
+  type        = string
+  default     = null
+  description = "The wfesp dns subdomain."
+}
+
 # vpn
 
 variable "cidr_subnet_vpn" {
@@ -567,6 +573,11 @@ variable "app_gateway_wisp2_certificate_name" {
 variable "app_gateway_wisp2govit_certificate_name" {
   type        = string
   description = "Application gateway wisp2govit certificate name on Key Vault"
+}
+
+variable "app_gateway_wfespgovit_certificate_name" {
+  type        = string
+  description = "Application gateway wfespgovit certificate name on Key Vault"
 }
 
 variable "app_gateway_sku_name" {
