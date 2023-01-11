@@ -15,13 +15,16 @@ parameters:
       - dev
       - uat
       - prd
+# version of liquibase db.changelog-master-*.xml
   - name: dbVersion
     displayName: Database Version
     type: string
+# liquibase context to run specific changelogs,default to '_' to run only uncontexted changelogs
   - name: lbContexts
     displayName: Liquibase Contexts
     type: string
     default: '_'
+  # liquibase log level if needed finer logs
   - name: lbLogLevel
     displayName: Liquibase Log Level
     type: string
@@ -58,7 +61,6 @@ variables:
 
 stages:
   - stage: prd_approval
-    pool: server
     displayName: "Manual approval for prod only"
     condition: eq('${{ parameters.k8sEnv }}', 'prd')
     jobs:
