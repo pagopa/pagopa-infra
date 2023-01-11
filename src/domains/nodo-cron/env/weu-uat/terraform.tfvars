@@ -32,3 +32,20 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
+
+nodo_user_node_pool = {
+  enabled         = true
+  name            = "nodocron01"
+  vm_size         = "Standard_D8ds_v5"
+  os_disk_type    = "Managed"
+  os_disk_size_gb = "300"
+  node_count_min  = "1" #TODO change to 2 or 3 in prod
+  node_count_max  = "2"
+  node_labels = {
+  "nodo-cron" = "true", },
+  node_taints        = [],
+  node_tags          = { node_tag_1 : "1" },
+  nodo_pool_max_pods = "250",
+}
+
+aks_cidr_subnet = ["10.1.0.0/17"]
