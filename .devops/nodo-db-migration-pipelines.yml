@@ -75,9 +75,10 @@ stages:
           - script: |
               echo "##vso[task.setvariable variable=NOTIFICATION_EMAIL;isOutput=true]$(monitor-notification-email)"
               echo "##vso[task.setvariable variable=NOTIFICATION_SLACK;isOutput=true]$(monitor-notification-slack-email)"
+            name: out
   - stage: prd_approval
     displayName: "Manual approval for prod only"
-    condition: and(eq('${{ parameters.k8sEnv }}', 'dev'),endsWith('$NOTIFICATION_SLACK', '@pagopaspa.slack.com'))
+    condition: eq('${{ parameters.k8sEnv }}', 'dev')
     jobs:
       - job: prd_approval
         pool: server
@@ -88,8 +89,8 @@ stages:
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
-                $(NOTIFICATION_EMAIL)
-                $(NOTIFICATION_SLACK)
+                stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL']
+                stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_SLACK']
               instructions: 'Running in PROD,continue?'
               onTimeout: 'reject'
   - stage: db_migration
