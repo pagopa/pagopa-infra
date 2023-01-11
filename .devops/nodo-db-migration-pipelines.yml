@@ -15,7 +15,7 @@ parameters:
       - dev
       - uat
       - prd
-# version of liquibase db.changelog-master-*.xml
+# version of liquibase db.changelog-master-*.xml to run
   - name: dbVersion
     displayName: Database Version
     type: string
