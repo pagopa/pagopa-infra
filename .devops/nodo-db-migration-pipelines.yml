@@ -76,6 +76,14 @@ stages:
               echo "##vso[task.setvariable variable=NOTIFICATION_EMAIL;isOutput=true]$(monitor-notification-email)"
               echo "##vso[task.setvariable variable=NOTIFICATION_SLACK;isOutput=true]$(monitor-notification-slack-email)"
             name: out
+  - stage: test
+    displayName: "Print email notification"
+    jobs:
+      - job: test1
+        steps:
+          - script: |
+              echo ${{ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL'] }}
+              echo ${{ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_SLACK'] }}
   - stage: prd_approval
     displayName: "Manual approval for prod only"
     condition: eq('${{ parameters.k8sEnv }}', 'dev')
@@ -89,8 +97,8 @@ stages:
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
-                stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL']
-                stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_SLACK']
+                ${{ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL'] }}
+                ${{ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_SLACK'] }}
               instructions: "Running in PROD,continue? ($[ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL'] ])"
               onTimeout: 'reject'
   - stage: db_migration
