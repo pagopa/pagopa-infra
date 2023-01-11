@@ -72,6 +72,9 @@ stages:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'monitor-notification-email,monitor-notification-slack-email'
+          - script: |
+              echo "##vso[task.setvariable variable=NOTIFICATION_EMAIL;isOutput=true]$(monitor-notification-email)"
+              echo "##vso[task.setvariable variable=NOTIFICATION_SLACK;isOutput=true]$(monitor-notification-slack-email)"
   - stage: prd_approval
     displayName: "Manual approval for prod only"
     condition: eq('${{ parameters.k8sEnv }}', 'dev')
@@ -85,8 +88,8 @@ stages:
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
-                $(monitor-notification-email)
-                $(monitor-notification-slack-email)
+                $(NOTIFICATION_EMAIL)
+                $(NOTIFICATION_SLACK)
               instructions: 'Running in PROD,continue?'
               onTimeout: 'reject'
   - stage: db_migration
