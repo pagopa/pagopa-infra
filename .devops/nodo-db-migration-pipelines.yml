@@ -77,6 +77,7 @@ stages:
               onTimeout: 'reject'
   - stage: db_migration
     displayName: "DB Migration"
+    condition: or(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'uat'),not(failed('prd_approval'))
     jobs:
       - job: initialization
         displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
