@@ -93,7 +93,7 @@ stages:
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
-                [pagopaspa]\pagopa-iac-externals-team
+                [pagoPA-iac]\pagopa-iac-externals-team
               instructions: "Running in PROD,continue?"
               onTimeout: 'reject'
   - stage: db_migration
