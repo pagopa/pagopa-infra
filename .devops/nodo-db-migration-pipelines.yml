@@ -65,7 +65,7 @@ stages:
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
         displayName: "Manual approval for prod"
         steps:
-          - task: ManualValidation@0
+          - task: ManualIntervention@8
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
