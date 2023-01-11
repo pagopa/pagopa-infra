@@ -92,6 +92,7 @@ stages:
     variables:
       NOTIFICATION_EMAIL: $[ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_EMAIL'] ]
       NOTIFICATION_SLACK: $[ stageDependencies.get_secrets.retrieve_secrets.outputs['out.NOTIFICATION_SLACK'] ]
+      NOTIFICATION_AAA: pippo
     condition: eq('${{ parameters.k8sEnv }}', 'dev')
     jobs:
       - job: prd_approval
@@ -103,9 +104,9 @@ stages:
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
-                $(NOTIFICATION_EMAIL)
-                $(NOTIFICATION_SLACK)
-              instructions: "Running in PROD,continue? $(NOTIFICATION_SLACK)"
+                $[NOTIFICATION_EMAIL]
+                $[NOTIFICATION_SLACK]
+              instructions: "Running in PROD,continue? $[NOTIFICATION_SLACK] $(NOTIFICATION_AAA)"
               onTimeout: 'reject'
   - stage: db_migration
     displayName: "DB Migration"
