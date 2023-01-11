@@ -261,6 +261,7 @@
       </xsd:complexType>
 
     </xsd:schema>
+
   </wsdl:types>
   <wsdl:message name="nodoChiediElencoFlussiRendicontazione">
     <wsdl:part name="bodyrequest"
