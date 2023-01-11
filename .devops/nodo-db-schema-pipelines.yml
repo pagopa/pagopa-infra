@@ -44,10 +44,10 @@ variables:
 
 stages:
   - stage: get_info
-    displayName: "Initialization"
+    displayName: "Database $DATABASE_NAME ${{ parameters.k8sEnv }}"
     jobs:
       - job: initialization
-        displayName: "Init db ${{ parameters.k8sEnv }}"
+        displayName: "Init"
         steps:
           - task: AzureKeyVault@2
             displayName: "Get secrets"
@@ -55,7 +55,6 @@ stages:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: '*'
-              runAsPreJob: true
           - task: AzureCLI@2
             displayName: "cfg schema"
             inputs:
