@@ -1,7 +1,14 @@
 <policies>
     <inbound>
+      <choose>
+        <when condition="@(context.Request.Url.Query.GetValueOrDefault("frameworkType") == "micronaut")">
+          <set-backend-service base-url="https://${hostname}/pagopa-poc-micronaut-service" />
+        </when>
+        <when condition="@(context.Request.Url.Query.GetValueOrDefault("frameworkType") == "quarkus")">
+          <set-backend-service base-url="https://${hostname}/pagopa-poc-quarkus-service" />
+        </when>
+      </choose>
       <base />
-      <set-backend-service base-url="https://${hostname}/pagopa-${service_name}" />
     </inbound>
     <outbound>
       <base />
@@ -12,4 +19,4 @@
     <on-error>
       <base />
     </on-error>
-  </policies>
+</policies>
