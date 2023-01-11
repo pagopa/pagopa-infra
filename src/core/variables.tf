@@ -330,8 +330,12 @@ variable "base_path_nodo_web_bo_history_dev" {
 }
 variable "nodo_pagamenti_auth_password" {
   type        = string
-  description = "Default passowrd used for nodo-auth"
+  description = "Default password used for nodo-auth"
   default     = "PLACEHOLDER"
+}
+variable "nodo_pagamenti_x_forwarded_for" {
+  type        = string
+  description = "X-Forwarded-For IP address used for nodo-auth"
 }
 
 
@@ -419,6 +423,12 @@ variable "dns_zone_wisp2" {
   type        = string
   default     = null
   description = "The wisp2 dns subdomain."
+}
+
+variable "dns_zone_wfesp" {
+  type        = string
+  default     = null
+  description = "The wfesp dns subdomain."
 }
 
 # vpn
@@ -563,6 +573,11 @@ variable "app_gateway_wisp2_certificate_name" {
 variable "app_gateway_wisp2govit_certificate_name" {
   type        = string
   description = "Application gateway wisp2govit certificate name on Key Vault"
+}
+
+variable "app_gateway_wfespgovit_certificate_name" {
+  type        = string
+  description = "Application gateway wfespgovit certificate name on Key Vault"
 }
 
 variable "app_gateway_sku_name" {
