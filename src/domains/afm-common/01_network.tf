@@ -26,3 +26,10 @@ data "azurerm_private_dns_zone" "cosmos" {
   name                = local.cosmos_dns_zone_name
   resource_group_name = local.cosmos_dns_zone_resource_group_name
 }
+
+data "azurerm_subnet" "apiconfig_subnet" {
+  # pagopa-u-<...>
+  name                 = format("%s-%s-api-config-snet", var.prefix, var.env_short)
+  virtual_network_name = format("%s-%s-vnet-integration", var.prefix, var.env_short)
+  resource_group_name  = format("%s-%s-vnet-rg", var.prefix, var.env_short)
+}

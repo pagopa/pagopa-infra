@@ -67,7 +67,6 @@ variable "tags" {
   }
 }
 
-
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -85,58 +84,57 @@ variable "log_analytics_workspace_resource_group_name" {
   description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
-variable "input_file" {
+### Aks
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
+
+variable "external_domain" {
   type        = string
-  description = "secret json file"
+  default     = null
+  description = "Domain for delegation"
 }
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-
-variable "az_nodo_app_kv_ro_policy_name" {
+variable "dns_zone_internal_prefix" {
   type        = string
-  description = "APP for use key vault with access read only"
+  default     = null
+  description = "The dns subdomain."
 }
 
-variable "kv-key-permissions-read" {
-  type        = list(string)
-  description = "List of read key permissions"
-  default     = ["Get", "List"]
-}
-
-variable "kv-secret-permissions-read" {
-  type        = list(string)
-  description = "List of read secret permissions"
-  default     = ["Get", "List"]
-}
-
-variable "kv-certificate-permissions-read" {
-  type        = list(string)
-  description = "List of read certificate permissions"
-  default     = ["Get", "GetIssuers", "List", "ListIssuers"]
-}
-
-variable "kv-storage-permissions-read" {
-  type        = list(string)
-  description = "List of read storage permissions"
-  default     = ["Get", "GetSAS", "List", "ListSAS"]
-}
-
-variable "az_nodo_sa_share_name_cert" {
+variable "apim_dns_zone_prefix" {
   type        = string
-  description = "Azure storage account share name"
-}
-variable "az_nodo_sa_share_name_firmatore" {
-  type        = string
-  description = "Azure storage account share name"
+  default     = null
+  description = "The dns subdomain for apim."
 }
 
-variable "upload_certificates" {
-  type = map(string)
+variable "tls_cert_check_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
 }
-variable "upload_firmatore" {
-  type = map(string)
+variable "nodo_user_node_pool" {
+  type = object({
+    enabled            = bool,
+    name               = string,
+    vm_size            = string,
+    os_disk_type       = string,
+    os_disk_size_gb    = string,
+    node_count_min     = number,
+    node_count_max     = number,
+    node_labels        = map(any),
+    node_taints        = list(string),
+    node_tags          = map(any),
+    nodo_pool_max_pods = number,
+  })
+  description = "AKS node pool user configuration"
+}
+
+variable "aks_cidr_subnet" {
+  type        = list(string)
+  description = "Aks network address space."
 }
