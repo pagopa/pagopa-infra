@@ -70,7 +70,6 @@ stages:
                 BEGIN
                   IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_USERNAME') THEN
                     RAISE NOTICE 'Role "$CFG_USERNAME" already exists. Skipping.';
-                '|| PRINT N'##vso[task.logissue type=warning]Role "$CFG_USERNAME" already exists. Skipping.'; ||'
                   ELSE
                     CREATE ROLE $CFG_USERNAME LOGIN PASSWORD '$(db-cfg-password)';
                     GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $CFG_USERNAME;
