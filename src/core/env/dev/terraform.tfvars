@@ -11,6 +11,11 @@ tags = {
 
 lock_enable = false
 
+# monitoring
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = 10
+
 # networking
 # main vnet
 cidr_vnet = ["10.1.0.0/16"]
@@ -54,6 +59,7 @@ external_domain   = "pagopa.it"
 dns_zone_prefix   = "dev.platform"
 dns_zone_checkout = "dev.checkout"
 dns_zone_wisp2    = "dev.wisp2"
+dns_zone_wfesp    = ""
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
@@ -74,6 +80,7 @@ app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = ""
+app_gateway_wfespgovit_certificate_name = ""
 app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
@@ -132,7 +139,7 @@ nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,08658331007,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725"
 nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571"
 nodo_pagamenti_url     = "http://10.70.66.200/nodo-sit/webservices/input"
-ip_nodo                = "x.x.x.x"      # disabled in DEV allOnCloud shall use lb_aks
+ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/sit/webservices/input shall use lb_aks
 lb_aks                 = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
 
 base_path_nodo_oncloud        = "/nodo-sit"
@@ -160,6 +167,9 @@ checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azureweb
 
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
+
+ecommerce_xpay_psps_list = "testPSP1,testPSP2"
+ecommerce_vpos_psps_list = "testPSP3,testPSP4"
 
 ehns_sku_name = "Standard"
 
@@ -312,7 +322,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -334,6 +344,12 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pn"
         listen = true
         send   = false
         manage = false
@@ -374,11 +390,10 @@ acr_enabled = true
 # db nodo dei pagamenti
 db_port                            = 1522
 db_service_name                    = "NDPSPCT_PP_NODO4_CFG"
-dns_a_reconds_dbnodo_ips           = ["10.70.67.18"]
+dns_a_reconds_dbnodo_ips           = ["10.70.67.18"] # db onCloud
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
 
 # API Config
-xsd_ica                 = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
 api_config_always_on    = false
 apiconfig_logging_level = "DEBUG"
 
@@ -564,3 +579,5 @@ dexp_db = {
 dexp_re_db_linkes_service = {
   enable = true
 }
+
+nodo_pagamenti_x_forwarded_for = "10.230.8.5"

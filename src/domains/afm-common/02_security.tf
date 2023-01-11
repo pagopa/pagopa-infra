@@ -51,7 +51,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
 # azure devops policy
 data "azuread_service_principal" "iac_principal" {
   count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
+  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
 }
 
 resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
@@ -68,7 +68,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
 }
 
 resource "azurerm_key_vault_secret" "afm_marketplace_cosmos_pkey" {
-  name         = format("afm-marketplace-%s-cosmos-pkey", var.env_short)
+  name         = "afm-marketplace-${var.env_short}-cosmos-pkey"
   value        = module.afm_marketplace_cosmosdb_account.primary_key
   content_type = "text/plain"
 
@@ -76,7 +76,7 @@ resource "azurerm_key_vault_secret" "afm_marketplace_cosmos_pkey" {
 }
 
 resource "azurerm_key_vault_secret" "ai_connection_string" {
-  name         = format("ai-%s-connection-string", var.env_short)
+  name         = "ai-${var.env_short}-connection-string"
   value        = data.azurerm_application_insights.application_insights.connection_string
   content_type = "text/plain"
 
@@ -97,3 +97,19 @@ resource "azurerm_key_vault_secret" "afm_marketplace_subscription_key" {
     ]
   }
 }
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "afm_calculator_subscription_key" {
+  name         = "afm-calculator-api-subscription-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+

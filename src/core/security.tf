@@ -167,6 +167,13 @@ data "azurerm_key_vault_certificate" "wisp2govit" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "wfespgovit" {
+  count = (var.app_gateway_wfespgovit_certificate_name == "") ? 0 : 1
+
+  name         = var.app_gateway_wfespgovit_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "apim_publisher_email" {
   name         = "apim-publisher-email"
   key_vault_id = module.key_vault.id
@@ -228,6 +235,11 @@ data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "monitor_mo_notification_email" {
+  name         = "monitor-mo-notification-email"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "db_nodo_usr" {
   name         = "db-nodo-usr"
   key_vault_id = module.key_vault.id
@@ -275,4 +287,49 @@ data "azurerm_key_vault_secret" "alert_error_notification_email" {
 data "azurerm_key_vault_secret" "alert_error_notification_slack" {
   name         = "alert-error-notification-slack"
   key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "apiconfig_cosmos_uri" {
+  name         = "apiconfig-cosmos-uri"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "apiconfig_cosmos_key" {
+  name         = "apiconfig-cosmos-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "apiconfig_afm_marketplace_subscription_key" {
+  name         = "apiconfig-afm-marketplace-subscription-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }

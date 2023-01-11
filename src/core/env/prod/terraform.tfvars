@@ -11,6 +11,11 @@ tags = {
 
 lock_enable = true
 
+# monitoring
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = -1
+
 # networking
 # main vnet
 cidr_vnet = ["10.1.0.0/16"]
@@ -53,6 +58,7 @@ external_domain   = "pagopa.it"
 dns_zone_prefix   = "platform"
 dns_zone_checkout = "checkout"
 dns_zone_wisp2    = "wisp2"
+dns_zone_wfesp    = "wfesp"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
@@ -84,6 +90,7 @@ app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
+app_gateway_wfespgovit_certificate_name = ""
 app_gateway_min_capacity                = 5 # TODO tuning, probably 3 it's more indicate value
 app_gateway_max_capacity                = 10
 app_gateway_sku_name                    = "WAF_v2"
@@ -110,6 +117,8 @@ app_gateway_deny_paths = [
   "/gps/donation-service/.*",             # internal use no sub-keys
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
+  "/gps/gpd-payments/.*",                 # internal use no sub-keys
+  "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   "/nodo-pagamenti/.*",
@@ -371,9 +380,9 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-biz-evt-enrich"
-    partitions        = 32
+    partitions        = 30
     message_retention = 7
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -389,6 +398,12 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pn"
         listen = true
         send   = false
         manage = false
@@ -572,3 +587,5 @@ dexp_re_db_linkes_service = {
 # node forwarder
 node_forwarder_tier = "Basic" # TODO change to "PremiumV3"
 node_forwarder_size = "B1"    # TODO change to "P1v3"
+
+nodo_pagamenti_x_forwarded_for = "10.230.10.5"

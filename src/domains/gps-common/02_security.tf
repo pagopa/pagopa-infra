@@ -51,7 +51,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
 # azure devops policy
 data "azuread_service_principal" "iac_principal" {
   count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
+  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
 }
 
 resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
@@ -74,10 +74,125 @@ resource "azurerm_key_vault_secret" "cosmos_gps_pkey" {
 
   key_vault_id = module.key_vault.id
 }
+
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = format("ai-%s-connection-string", var.env_short)
   value        = data.azurerm_application_insights.application_insights.connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "storage_connection_string" {
+  name         = format("gpd-payments-%s-sa-connection-string", var.env_short)
+  value        = module.payments_receipt_sa.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_apiconfig_subscription_key" {
+  name         = format("gpd-%s-apiconfig-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_gps_subscription_key" {
+  name         = format("gpd-%s-gps-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_gpd_subscription_key" {
+  name         = format("gpd-%s-gpd-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_iuv_generator_subscription_key" {
+  name         = format("gpd-%s-iuv-generator-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_donations_subscription_key" {
+  name         = format("gpd-%s-donations-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+## Used for integration test only ##
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_payments_rest_subscription_key" {
+  name         = format("gpd-%s-payments-rest-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_payments_soap_subscription_key" {
+  name         = format("gpd-%s-payments-soap-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
