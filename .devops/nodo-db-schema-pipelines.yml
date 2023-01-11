@@ -44,7 +44,7 @@ variables:
 
 stages:
   - stage: get_info
-    displayName: "Database $(DATABASE_NAME) ${{ parameters.k8sEnv }}"
+    displayName: "Database ${{ DATABASE_NAME }} ${{ parameters.k8sEnv }}"
     jobs:
       - job: initialization
         displayName: "Init"
