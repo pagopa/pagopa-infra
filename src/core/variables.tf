@@ -761,11 +761,6 @@ variable "ehns_maximum_throughput_units" {
   description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
   default     = null
 }
-// checkout
-variable "checkout_enabled" {
-  type    = bool
-  default = false
-}
 
 variable "allow_blob_public_access" {
   description = "Allow or disallow public access to all blobs or containers in the storage account."

@@ -3,7 +3,6 @@
 ##############
 
 module "apim_checkout_product" {
-  count  = var.checkout_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "checkout"
@@ -240,8 +239,6 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_transactions_api" {
-  count = var.checkout_enabled ? 1 : 0
-
   name                = format("%s-checkout-transactions-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -250,8 +247,6 @@ resource "azurerm_api_management_api_version_set" "checkout_transactions_api" {
 }
 
 module "apim_checkout_transactions_api_v1" {
-  count = var.checkout_enabled ? 1 : 0
-
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-checkout-transactions-api", var.env_short)
@@ -259,7 +254,7 @@ module "apim_checkout_transactions_api_v1" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_checkout_product[0].product_id]
   subscription_required = local.apim_checkout_transactions_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.checkout_transactions_api[0].id
+  version_set_id        = azurerm_api_management_api_version_set.checkout_transactions_api.id
   api_version           = "v1"
   service_url           = local.apim_checkout_transactions_api.service_url
 
@@ -344,5 +339,5 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_auth_request.xml.tpl", {
     ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
     ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
-    }
-  )
+  })
+}

@@ -2,7 +2,6 @@
  * Checkout resource group
  **/
 resource "azurerm_resource_group" "checkout_fe_rg" {
-  count    = var.checkout_enabled ? 1 : 0
   name     = format("%s-checkout-fe-rg", local.project)
   location = var.location
 
@@ -15,10 +14,9 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
 module "checkout_cdn" {
   source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.28"
 
-  count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"
   prefix                = local.project
-  resource_group_name   = azurerm_resource_group.checkout_fe_rg[0].name
+  resource_group_name   = azurerm_resource_group.checkout_fe_rg.name
   location              = var.location
   hostname              = format("%s.%s", var.dns_zone_checkout, var.external_domain)
   https_rewrite_enabled = true
@@ -104,7 +102,7 @@ module "checkout_cdn" {
 }
 
 resource "azurerm_application_insights_web_test" "checkout_fe_web_test" {
-  count                   = var.checkout_enabled && var.env_short == "p" ? 1 : 0
+  count                   = var.env_short == "p" ? 1 : 0
   name                    = format("%s-checkout-fe-web-test", local.project)
   location                = var.location
   resource_group_name     = azurerm_resource_group.monitor_rg.name

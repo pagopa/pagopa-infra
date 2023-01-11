@@ -153,9 +153,6 @@ base_path_nodo_web_bo_history = "/web-bo-history-sit"
 # eventhub
 eventhub_enabled = true
 
-# checkout
-checkout_enabled = true
-
 # checkout function
 checkout_function_kind              = "Linux"
 checkout_function_sku_tier          = "Standard"
