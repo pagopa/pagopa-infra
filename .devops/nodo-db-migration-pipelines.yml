@@ -61,7 +61,7 @@ stages:
     displayName: "DB Migration"
     jobs:
       - job: prd_approval
-        condition: eq(${{ parameters.k8sEnv }}, 'prd')
+        condition: eq('${{ parameters.k8sEnv }}', 'prd')
         displayName: "Manual approval for prod"
         steps:
           - task: ManualValidation@0
