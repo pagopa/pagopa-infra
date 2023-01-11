@@ -48,7 +48,7 @@ variables:
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
     JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
     KEY_VAULT_NAME: pagopa-d-nodo-kv
-  APPROVE_NOTIFY_GROUP: "[pagoPA-iac]\pagopa-iac-externals-team"
+  APPROVE_NOTIFY_GROUP: '[pagoPA-iac]\pagopa-iac-externals-team'
   CFG_USERNAME: cfg
   CFG_SCHEMA: cfg
   OFFLINE_USERNAME: offline
