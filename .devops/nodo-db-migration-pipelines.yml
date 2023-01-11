@@ -93,6 +93,7 @@ stages:
             timeoutInMinutes: 5
             inputs:
               notifyUsers: |
+                cesare.caccuri@gmail.com
                 $(NOTIFICATION_EMAIL)
                 $(NOTIFICATION_SLACK)
               instructions: "Running in PROD,continue?"
