@@ -59,13 +59,13 @@ variables:
 stages:
   - stage: prd_approval
     pool: server
-    displayName: "Manual approval for prod"
+    displayName: "Manual approval for prod only"
     condition: eq('${{ parameters.k8sEnv }}', 'prd')
     jobs:
       - job: prd_approval
         pool: server
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
-        displayName: "Manual approval for prod"
+        displayName: "Approval"
         steps:
           - task: ManualValidation@0
             timeoutInMinutes: 5
