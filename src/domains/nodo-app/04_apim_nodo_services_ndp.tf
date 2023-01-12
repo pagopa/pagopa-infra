@@ -482,7 +482,7 @@ module "apim_nodo_per_pm_api_v1_ndp" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
-    host = "azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name"
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
@@ -519,7 +519,7 @@ module "apim_nodo_per_pm_api_v2_ndp" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_swagger.json.tpl", {
-    host = "azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name"
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
