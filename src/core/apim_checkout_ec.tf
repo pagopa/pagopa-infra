@@ -3,7 +3,6 @@
 ##############
 
 module "apim_checkout_ec_product" {
-  count  = var.checkout_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "checkout-ec"
@@ -46,7 +45,7 @@ module "apim_checkout_ec_api_v1" {
   name                  = "${local.project}-checkout-ec-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_checkout_ec_product[0].product_id]
+  product_ids           = [module.apim_checkout_ec_product.product_id]
   subscription_required = local.apim_checkout_ec_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.checkout_ec_api_v1.id
   api_version           = "v1"
