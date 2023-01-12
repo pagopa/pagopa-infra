@@ -35,10 +35,14 @@ parameters:
       - WARNING
       - SEVERE
   - name: databases
+    displayName: DB to upgrade
     type: object
-    default: {}
-    values:
+    default:
       - cfg
+      - offline
+      - online
+      - re
+      - wfesp
 
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
