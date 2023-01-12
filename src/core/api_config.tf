@@ -22,6 +22,12 @@ module "api_config_snet" {
   virtual_network_name                           = module.vnet_integration.name
   enforce_private_link_endpoint_network_policies = true
 
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
+
   delegation = {
     name = "default"
     service_delegation = {
