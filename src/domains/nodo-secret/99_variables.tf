@@ -96,10 +96,6 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-variable "az_nodo_app_kv_ro_policy_name" {
-  type        = string
-  description = "APP for use key vault with access read only"
-}
 
 variable "kv-key-permissions-read" {
   type        = list(string)
