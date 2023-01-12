@@ -1,14 +1,8 @@
 <policies>
     <inbound>
-      <choose>
-        <when condition="@(context.Request.Url.Query.GetValueOrDefault("frameworkType") == "micronaut")">
-          <set-backend-service base-url="https://${hostname}/pagopa-poc-micronaut-service" />
-        </when>
-        <when condition="@(context.Request.Url.Query.GetValueOrDefault("frameworkType") == "quarkus")">
-          <set-backend-service base-url="https://${hostname}/pagopa-poc-quarkus-service" />
-        </when>
-      </choose>
       <base />
+      <set-variable name="betocall" value="@(context.Request.Url.Query.GetValueOrDefault("frameworkType")" />
+      <set-backend-service base-url="@("https://${hostname}/pagopa-poc-"+(string) context.Variables["betocall"]+"-service")" /> <!-- micronaut OR quarkus -->
     </inbound>
     <outbound>
       <base />
