@@ -34,11 +34,7 @@ parameters:
       - FINE
       - WARNING
       - SEVERE
-  - name: databases
-    type: object
-    default:
-      - cfg
-      - re
+
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
