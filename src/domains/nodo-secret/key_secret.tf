@@ -40,7 +40,7 @@ locals {
 }
 
 
-## Upload all encryted secrets
+## Upload all encrypted secrets
 resource "azurerm_key_vault_secret" "secret" {
   for_each = { for i, v in local.all_secrets_value : local.all_secrets_value[i].chiave => i }
 

@@ -17,19 +17,18 @@ module "nodocerts_sa" {
 
   tags = var.tags
 }
-
-
-resource "azurerm_storage_share" "certs" {
-  name                 = var.az_nodo_sa_share_name
+resource "azurerm_storage_share" "firmatore" {
+  name                 = var.az_nodo_sa_share_name_firmatore
   storage_account_name = module.nodocerts_sa.name
   quota                = 50
 }
-
-resource "azurerm_storage_share_file" "upload_certs" {
-  for_each         = var.upload_certificates
+resource "azurerm_storage_share_file" "upload_firmatore" {
+  for_each         = var.upload_firmatore
   name             = each.key
   source           = each.value
-  storage_share_id = azurerm_storage_share.certs.id
+  storage_share_id = azurerm_storage_share.firmatore.id
 }
+
+
 
 

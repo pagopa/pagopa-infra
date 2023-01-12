@@ -43,4 +43,4 @@ __*.sh
 #sops decrypted files
 *_decrypted.json
 *.env
-**/nodo-secret/env/dev
+**/nodo-secret/**/*.zip
