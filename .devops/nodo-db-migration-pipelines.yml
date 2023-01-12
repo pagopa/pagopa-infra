@@ -88,7 +88,7 @@ stages:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
-          - ${{ each DB in parameters.databases.databases }}:
+          - ${{ each DB in parameters.databases }}:
             - template: ./templates/run_liquibase.yml
               parameters:
                 url: $(JDBC_URL)
