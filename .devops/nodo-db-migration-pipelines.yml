@@ -95,7 +95,7 @@ stages:
               --defaultSchemaName=$(CFG_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              status
+              status -Dschema=$(CFG_SCHEMA)
             displayName: "cfg db status"
           - script: |
               liquibase \
@@ -108,7 +108,7 @@ stages:
               --defaultSchemaName=$(ONLINE_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              status
+              status -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
             displayName: "online db status"
           - script: |
               liquibase \
@@ -121,7 +121,7 @@ stages:
               --defaultSchemaName=$(OFFLINE_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              status
+              status -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
             displayName: "offline db status"
           - script: |
               liquibase \
@@ -134,7 +134,7 @@ stages:
               --defaultSchemaName=$(RE_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              status
+              status -Dschema=$(RE_SCHEMA)
             displayName: "re db status"
           - script: |
               liquibase \
@@ -147,7 +147,7 @@ stages:
               --defaultSchemaName=$(WFESP_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              status
+              status -Dschema=$(WFESP_SCHEMA)
             displayName: "wfeps db status"
           - script: |
               liquibase \
