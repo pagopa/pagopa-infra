@@ -66,7 +66,7 @@ stages:
     displayName: "Liquibase status"
     jobs:
       - job: liquibase_status_job
-        displayName: "Download liquibase"
+        displayName: "Liquibase status and validation"
         steps:
           - checkout: self
           - script: |
@@ -160,7 +160,7 @@ stages:
               --defaultSchemaName=$(CFG_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate
+              validate -Dschema=$(CFG_SCHEMA)
             displayName: "cfg db validate"
           - script: |
               liquibase \
@@ -173,7 +173,7 @@ stages:
               --defaultSchemaName=$(ONLINE_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate
+              validate -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
             displayName: "online db validate"
           - script: |
               liquibase \
@@ -186,7 +186,7 @@ stages:
               --defaultSchemaName=$(OFFLINE_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate
+              validate -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
             displayName: "offline db validate"
           - script: |
               liquibase \
@@ -199,7 +199,7 @@ stages:
               --defaultSchemaName=$(RE_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate
+              validate -Dschema=$(RE_SCHEMA)
             displayName: "re db validate"
           - script: |
               liquibase \
@@ -212,7 +212,7 @@ stages:
               --defaultSchemaName=$(WFESP_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate
+              validate -Dschema=$(WFESP_SCHEMA)
             displayName: "wfeps db validate"
       - job: prd_approval
         dependsOn: liquibase_status_job
