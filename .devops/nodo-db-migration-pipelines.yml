@@ -34,6 +34,10 @@ parameters:
       - FINE
       - WARNING
       - SEVERE
+  - name: databases
+    type: object
+    default:
+      - cfg
 
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
@@ -84,21 +88,22 @@ stages:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
-          - template: ./templates/run_liquibase.yml
-            parameters:
-              url: $(JDBC_URL)
-              username: $(CFG_USERNAME)
-              password: $(db-cfg-password)
-              classpath: src/psql/nodo/liquibase/changelog/cfg
-              changeLogFile: db.changelog-master-${{ parameters.dbVersion }}.xml
-              liquibaseSchemaName: $(CFG_SCHEMA)
-              defaultSchemaName: $(CFG_SCHEMA)
-              schema: $(CFG_SCHEMA)
-              liquibaseArgs: "-Dschema=$(CFG_SCHEMA)"
-              contexts: ${{ parameters.lbContexts }}
-              logLevel: ${{ parameters.lbLogLevel }}
-              liquibaseCommand: status
-              title: "status DB cfg"
+          - ${{ each DB in parameters.databases }}:
+            - template: ./templates/run_liquibase.yml
+              parameters:
+                url: $(JDBC_URL)
+                username: $(CFG_USERNAME)
+                password: $(db-${{ DB }}-password)
+                classpath: src/psql/nodo/liquibase/changelog/${{ DB }}
+                changeLogFile: db.changelog-master-${{ parameters.dbVersion }}.xml
+                liquibaseSchemaName: $(CFG_SCHEMA)
+                defaultSchemaName: $(CFG_SCHEMA)
+                schema: $(CFG_SCHEMA)
+                liquibaseArgs: "-Dschema=$(CFG_SCHEMA)"
+                contexts: ${{ parameters.lbContexts }}
+                logLevel: ${{ parameters.lbLogLevel }}
+                liquibaseCommand: status
+                title: "status of DB ${{ DB }}"
       - job: prd_approval
         dependsOn: liquibase_status_job
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
