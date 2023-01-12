@@ -3,6 +3,7 @@
 ##############
 
 module "apim_checkout_ec_product" {
+  count  = var.checkout_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "checkout-ec"

@@ -1,4 +1,5 @@
 resource "azurerm_resource_group" "checkout_be_rg" {
+  count    = var.checkout_enabled ? 1 : 0
   name     = format("%s-checkout-be-rg", local.project)
   location = var.location
 
@@ -7,7 +8,7 @@ resource "azurerm_resource_group" "checkout_be_rg" {
 
 # Subnet to host checkout function
 module "checkout_function_snet" {
-  count                                          = var.cidr_subnet_checkout_be != null ? 1 : 0
+  count                                          = var.checkout_enabled && var.cidr_subnet_checkout_be != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-checkout-be-snet", local.project)
   address_prefixes                               = var.cidr_subnet_checkout_be
@@ -29,9 +30,10 @@ module "checkout_function_snet" {
 }
 
 module "checkout_function" {
+  count  = var.checkout_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
-  resource_group_name = azurerm_resource_group.checkout_be_rg.name
+  resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   name                = format("%s-fn-checkout", local.project)
   location            = var.location
   health_check_path   = "info"
@@ -87,10 +89,10 @@ module "checkout_function" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "checkout_function" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.checkout_enabled && var.env_short != "d" ? 1 : 0
 
   name                = format("%s-autoscale", module.checkout_function[0].name)
-  resource_group_name = azurerm_resource_group.checkout_be_rg.name
+  resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   location            = var.location
   target_resource_id  = module.checkout_function[0].app_service_plan_id
 
@@ -151,10 +153,10 @@ resource "azurerm_monitor_autoscale_setting" "checkout_function" {
 
 # Availability: Checkout functions & pagopa-proxy
 resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
-  count = var.env_short == "p" ? 1 : 0
+  count = var.checkout_enabled && var.env_short == "p" ? 1 : 0
 
   name                = format("%s-availability-alert", module.checkout_function[0].name)
-  resource_group_name = azurerm_resource_group.checkout_be_rg.name
+  resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   location            = var.location
 
   action {
@@ -183,7 +185,7 @@ requests
 }
 
 resource "azurerm_monitor_metric_alert" "checkout_fn_5xx" {
-  count = var.env_short == "p" ? 1 : 0
+  count = var.checkout_enabled && var.env_short == "p" ? 1 : 0
 
   name                = format("%s-%s", module.checkout_function[0].name, "5xx")
   resource_group_name = azurerm_resource_group.monitor_rg.name

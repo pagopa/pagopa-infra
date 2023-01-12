@@ -186,6 +186,9 @@ nodo_auth_subscription_limit = 10000
 # eventhub
 eventhub_enabled = true
 
+# checkout
+checkout_enabled = true
+
 # checkout function
 checkout_function_kind              = "Linux"
 checkout_function_sku_tier          = "Standard"
