@@ -230,7 +230,7 @@ stages:
               notifyUsers: |
                 $(APPROVE_NOTIFY_GROUP)
                 $(APPROVE_NOTIFY_ADMIN)
-              instructions: "Running in PROD,continue?"
+              instructions: "Please check liquibase status and validation for each database and resume if correct"
               onTimeout: 'reject'
       - job: initialization
         dependsOn: prd_approval
