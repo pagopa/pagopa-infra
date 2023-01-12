@@ -36,14 +36,8 @@ parameters:
       - SEVERE
   - name: databases
     displayName: DB to upgrade
-    type: object
-    default:
-      - cfg
-      - offline
-      - online
-      - re
-      - wfesp
-    values:
+    type: array
+    options:
       - cfg
       - offline
       - online
