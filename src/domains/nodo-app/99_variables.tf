@@ -139,7 +139,16 @@ variable "aks_cidr_subnet" {
   description = "Aks network address space."
 }
 
+<<<<<<< HEAD
 variable "cname_record_name" {
   type = string
   default = "config"
 }
+=======
+# nodo dei pagamenti - ndp
+variable "nodo_ndp_subscription_limit" {
+  type        = number
+  description = "subscriptions limit"
+  default     = 1000
+}
+>>>>>>> 62ce7243 (add apim NDP)
