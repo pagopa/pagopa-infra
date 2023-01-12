@@ -153,3 +153,24 @@ resource "azurerm_key_vault_secret" "dev_sa_key" {
 
   # depends_on = [azurerm_key_vault_access_policy.owner_policy]
 }
+
+resource "kubernetes_config_map" "nodo_cacerts" {
+  metadata {
+    name = "nodo-cacerts"
+    namespace = "nodo"
+  }
+
+  binary_data = {
+    "cacerts" = var.cacerts_path
+  }
+}
+resource "kubernetes_config_map" "nodo_cron_cacerts" {
+  metadata {
+    name = "nodo-cacerts"
+    namespace = "nodo-cron"
+  }
+
+  binary_data = {
+    "cacerts" = var.cacerts_path
+  }
+}
