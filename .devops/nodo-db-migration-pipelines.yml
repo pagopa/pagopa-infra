@@ -35,15 +35,11 @@ parameters:
       - WARNING
       - SEVERE
   - name: databases
-    displayName: DB to upgrade
-    type: array
-    options:
-      - cfg
-      - offline
-      - online
-      - re
-      - wfesp
-
+    type: object
+    default:
+      databases:
+        - cfg
+        - re
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
