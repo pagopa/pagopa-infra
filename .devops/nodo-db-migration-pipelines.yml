@@ -61,27 +61,59 @@ variables:
   WFESP_SCHEMA: wfesp
 
 stages:
-  - stage: prd_approval
-    displayName: "Manual approval for prod only"
-    condition: eq('${{ parameters.k8sEnv }}', 'prd')
+  - stage: liquibase_status
+    displayName: "Liquibase status"
     jobs:
+      - job: liquibase_status_job
+        displayName: "Download liquibase"
+        steps:
+          - checkout: self
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir liquibase-app
+              wget -c https://github.com/liquibase/liquibase/releases/download/v4.17.1/liquibase-4.17.1.tar.gz
+              tar -xzf liquibase-4.17.1.tar.gz -C liquibase-app
+              rm -rf liquibase-4.17.1.tar.gz
+              ls -la liquibase-app
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
+            displayName: "Install Liquibase"
+          - task: AzureKeyVault@2
+            displayName: "Get $(KEY_VAULT_NAME) secrets"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              keyVaultName: $(KEY_VAULT_NAME)
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
+          - template: ./templates/run_liquibase.yml
+            parameters:
+              url: $(JDBC_URL)
+              username: $(CFG_USERNAME)
+              password: $(db-cfg-password)
+              classpath: src/psql/nodo/liquibase/changelog/cfg
+              liquibaseSchemaName: $(CFG_SCHEMA)
+              defaultSchemaName: $(CFG_SCHEMA)
+              schema: $(CFG_SCHEMA)
+              liquibaseArgs: "-Dschema=$(CFG_SCHEMA)"
+              contexts: ${{ parameters.lbContexts }}
+              logLevel: ${{ parameters.lbLogLevel }}
+              liquibaseCommand: status
+              title: "Update DB cfg"
       - job: prd_approval
+        dependsOn: liquibase_status_job
+        condition: eq('${{ parameters.k8sEnv }}', 'prd')
         pool: server
         displayName: "Approval"
-        timeoutInMinutes: 6
+        timeoutInMinutes: 16
         steps:
           - task: ManualValidation@0
-            timeoutInMinutes: 5
+            timeoutInMinutes: 15
             inputs:
               notifyUsers: |
                 $(APPROVE_NOTIFY_GROUP)
               instructions: "Running in PROD,continue?"
               onTimeout: 'reject'
-  - stage: db_migration
-    displayName: "DB Migration"
-    condition: or(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'uat'),and(eq('${{ parameters.k8sEnv }}', 'prd'),not(failed('prd_approval'))))
-    jobs:
       - job: initialization
+        dependsOn: prd_approval
+        condition: or(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'uat'),and(eq('${{ parameters.k8sEnv }}', 'prd'),not(failed('prd_approval'))))
         displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
         steps:
           - checkout: self

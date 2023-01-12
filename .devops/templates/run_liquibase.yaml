@@ -1,0 +1,42 @@
+parameters:
+  - name: url
+    default: ''
+  - name: username
+    default: ''
+  - name: password
+    default: ''
+  - name: classpath
+    default: ''
+  - name: changeLogFile
+    default: ''
+  - name: liquibaseSchemaName
+    default: ''
+  - name: defaultSchemaName
+    default: ''
+  - name: contexts
+    default: '_'
+  - name: logLevel
+    default: 'info'
+  - name: schema
+    default: ''
+  - name: title
+    default: ''
+  - name: liquibaseCommand
+    default: ''
+  - name: liquibaseArgs
+    default: ''
+steps:
+  - script: |
+      liquibase \
+        --url=${{ parameters.url }} \
+        --username=${{ parameters.username }} \
+        --password=${{ parameters.password }} \
+        --classpath=${{ parameters.classpath }} \
+        --changeLogFile=${{ parameters.changeLogFile }} \
+        --liquibaseSchemaName=${{ parameters.liquibaseSchemaName }} \
+        --defaultSchemaName=${{ parameters.defaultSchemaName }} \
+        --contexts=${{ parameters.contexts }} \
+        --log-level=${{ parameters.logLevel }} \
+        --liquibase-tablespace-name=${{ parameters.liquibaseTablespaceName }} \
+        ${{ parameters.liquibaseCommand }} ${{ parameters.liquibaseArgs }}
+    displayName: ${{ parameters.title }}
