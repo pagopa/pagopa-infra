@@ -49,6 +49,7 @@ variables:
     JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
     KEY_VAULT_NAME: pagopa-p-nodo-kv
   APPROVE_NOTIFY_GROUP: '[pagoPA-iac]\pagopa-iac-externals-team'
+  APPROVE_NOTIFY_ADMIN: '[pagoPA-iac]\Project Administrators'
   CFG_USERNAME: cfg
   CFG_SCHEMA: cfg
   OFFLINE_USERNAME: offline
@@ -89,6 +90,7 @@ stages:
               username: $(CFG_USERNAME)
               password: $(db-cfg-password)
               classpath: src/psql/nodo/liquibase/changelog/cfg
+              changeLogFile: db.changelog-master-${{ parameters.dbVersion }}.xml
               liquibaseSchemaName: $(CFG_SCHEMA)
               defaultSchemaName: $(CFG_SCHEMA)
               schema: $(CFG_SCHEMA)
@@ -96,7 +98,7 @@ stages:
               contexts: ${{ parameters.lbContexts }}
               logLevel: ${{ parameters.lbLogLevel }}
               liquibaseCommand: status
-              title: "Update DB cfg"
+              title: "status DB cfg"
       - job: prd_approval
         dependsOn: liquibase_status_job
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
@@ -109,6 +111,7 @@ stages:
             inputs:
               notifyUsers: |
                 $(APPROVE_NOTIFY_GROUP)
+                $(APPROVE_NOTIFY_ADMIN)
               instructions: "Running in PROD,continue?"
               onTimeout: 'reject'
       - job: initialization
