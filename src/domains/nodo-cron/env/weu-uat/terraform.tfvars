@@ -32,7 +32,6 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
-<<<<<<< HEAD
 
 nodo_user_node_pool = {
   enabled         = true
@@ -50,5 +49,3 @@ nodo_user_node_pool = {
 }
 
 aks_cidr_subnet = ["10.1.0.0/17"]
-=======
->>>>>>> 5509c01a (feat: New nodo-cron domain and nodo secret value (#615))

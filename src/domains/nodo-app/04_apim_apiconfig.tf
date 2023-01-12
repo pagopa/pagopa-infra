@@ -86,14 +86,14 @@ resource "azurerm_api_management_api_version_set" "api_config_oauth_api" {
   name                = format("%s-%s", var.env_short, format(local.apim_api_config_service_api.name, "oauth"))
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name = format(local.apim_api_config_service_api.display_name, "OAuth")
+  display_name        = format(local.apim_api_config_service_api.display_name, "OAuth")
   versioning_scheme   = "Segment"
 }
 
 module "apim_api_config_oauth_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                = format("%s-%s", var.env_short, format(local.apim_api_config_service_api.name, "oauth"))
+  name                  = format("%s-%s", var.env_short, format(local.apim_api_config_service_api.name, "oauth"))
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_api_config_oauth_product.product_id]
@@ -102,8 +102,8 @@ module "apim_api_config_oauth_api" {
     authorization_server_name = "apiconfig-oauth2"
   }
 
-  version_set_id        = azurerm_api_management_api_version_set.api_config_oauth_api.id
-  api_version           = "v1"
+  version_set_id = azurerm_api_management_api_version_set.api_config_oauth_api.id
+  api_version    = "v1"
 
   display_name = format(local.apim_api_config_service_api.display_name, "OAuth")
   description  = format(local.apim_api_config_service_api.description, "OAuth")
@@ -133,7 +133,7 @@ resource "azurerm_api_management_api_version_set" "api_config_subkey_api" {
   name                = format("%s-%s", var.env_short, format(local.apim_api_config_service_api.name, "subkey"))
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name = format(local.apim_api_config_service_api.display_name, "SubKey")
+  display_name        = format(local.apim_api_config_service_api.display_name, "SubKey")
   versioning_scheme   = "Segment"
 }
 
@@ -141,8 +141,8 @@ module "apim_api_config_subkey_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                = format("%s-%s", var.env_short, format(local.apim_api_config_service_api.name, "subkey"))
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   product_ids         = [module.apim_api_config_subkey_product.product_id]
 
   subscription_required = false
@@ -155,7 +155,7 @@ module "apim_api_config_subkey_api" {
   path         = format(local.apim_api_config_service_api.path, "subkey")
   protocols    = ["https"]
 
-  service_url  = local.apim_api_config_service_api.service_url
+  service_url = local.apim_api_config_service_api.service_url
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig-service/subkey/v1/_openapi.json.tpl", {
@@ -163,7 +163,7 @@ module "apim_api_config_subkey_api" {
   })
 
   xml_content = templatefile("./api/apiconfig-service/subkey/v1/_base_policy.xml.tpl", {
-    hostname                = local.nodo_hostname
+    hostname               = local.nodo_hostname
     origin                 = "*"
     pagopa_tenant_id       = local.apim_api_config_service_api.pagopa_tenant_id
     apiconfig_be_client_id = local.apim_api_config_service_api.apiconfig_be_client_id
