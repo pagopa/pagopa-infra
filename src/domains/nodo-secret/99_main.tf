@@ -16,6 +16,10 @@ terraform {
       source  = "hashicorp/external"
       version = "= 2.2.3"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.16.1"
+    }
   }
 
   backend "azurerm" {}
@@ -27,6 +31,11 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = false
     }
   }
+}
+
+provider "kubernetes" {
+  config_path    = "~/.kube/config-${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
+  config_context = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
 }
 
 data "azurerm_subscription" "current" {}
