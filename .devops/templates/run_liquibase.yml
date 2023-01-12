@@ -37,6 +37,5 @@ steps:
         --defaultSchemaName=${{ parameters.defaultSchemaName }} \
         --contexts=${{ parameters.contexts }} \
         --log-level=${{ parameters.logLevel }} \
-        --liquibase-tablespace-name=${{ parameters.liquibaseTablespaceName }} \
         ${{ parameters.liquibaseCommand }} ${{ parameters.liquibaseArgs }}
     displayName: ${{ parameters.title }}
