@@ -43,6 +43,12 @@ parameters:
       - online
       - re
       - wfesp
+    values:
+      - cfg
+      - offline
+      - online
+      - re
+      - wfesp
 
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
