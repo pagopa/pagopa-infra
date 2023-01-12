@@ -36,7 +36,8 @@ parameters:
       - SEVERE
   - name: databases
     type: object
-    default:
+    default: {}
+    values:
       - cfg
 
 variables:
