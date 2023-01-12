@@ -91,7 +91,6 @@
 | <a name="module_apim_nodo_sync_dev_api"></a> [apim\_nodo\_sync\_dev\_api](#module\_apim\_nodo\_sync\_dev\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_sync_dev_product"></a> [apim\_nodo\_sync\_dev\_product](#module\_apim\_nodo\_sync\_dev\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_sync_product"></a> [apim\_nodo\_sync\_product](#module\_apim\_nodo\_sync\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_nodo_web_bo_api"></a> [apim\_nodo\_web\_bo\_api](#module\_apim\_nodo\_web\_bo\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_api_history"></a> [apim\_nodo\_web\_bo\_api\_history](#module\_apim\_nodo\_web\_bo\_api\_history) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_api_onprem"></a> [apim\_nodo\_web\_bo\_api\_onprem](#module\_apim\_nodo\_web\_bo\_api\_onprem) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_dev_api"></a> [apim\_nodo\_web\_bo\_dev\_api](#module\_apim\_nodo\_web\_bo\_dev\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
@@ -542,6 +541,7 @@
 | [azurerm_private_dns_zone_virtual_network_link.platform_vnetlink_vnet_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.postgres_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.privatelink_documents_azure_com_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.privatelink_documents_azure_com_vnet_integration](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.privatelink_redis_cache_windows_net_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.vnet_link_privatelink_queue_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
