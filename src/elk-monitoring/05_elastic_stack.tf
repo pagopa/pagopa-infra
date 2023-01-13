@@ -1,5 +1,5 @@
 module "elastic_stack" {
-  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.2.0"
 
   balancer_node_number   = var.elastic_cluster_config.num_node_balancer
   master_node_number     = var.elastic_cluster_config.num_node_master
