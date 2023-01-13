@@ -1,5 +1,6 @@
 # general
 env_short = "u"
+env       = "dev"
 
 tags = {
   CreatedBy   = "Terraform"
