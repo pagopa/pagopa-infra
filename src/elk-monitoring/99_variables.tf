@@ -185,3 +185,34 @@ variable "subscription_name" {
   type        = string
   description = "Subscription name"
 }
+
+variable "nginx_helm" {
+  type = object({
+    version = string,
+    controller = object({
+      image = object({
+        registry     = string,
+        image        = string,
+        tag          = string,
+        digest       = string,
+        digestchroot = string,
+      }),
+      config = object({
+        proxy-body-size : string
+      })
+    })
+  })
+  description = "nginx ingress helm chart configuration"
+}
+
+variable "ingress_elk_load_balancer_ip" {
+  type = string
+}
+
+variable "ingress_min_replica_count" {
+  type = string
+}
+
+variable "ingress_max_replica_count" {
+  type = string
+}
