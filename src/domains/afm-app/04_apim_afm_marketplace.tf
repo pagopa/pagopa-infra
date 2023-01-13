@@ -25,6 +25,14 @@ locals {
     subscription_required = true
     service_url           = null
   }
+
+  apim_afm_utils_service_api = {
+    display_name          = "AFM Utils pagoPA - utilities tool of advanced fees management service API"
+    description           = "Utilities API to support advanced fees management service"
+    path                  = "afm/utils-service"
+    subscription_required = true
+    service_url           = null
+  }
 }
 module "apim_afm_marketplace_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
@@ -42,6 +50,10 @@ module "apim_afm_marketplace_product" {
 
   policy_xml = file("./api_product/marketplace/_base_policy.xml")
 }
+
+###########################
+##  API AFM Marketplace  ##
+###########################
 
 resource "azurerm_api_management_api_version_set" "api_afm_marketplace_api" {
 
@@ -76,6 +88,47 @@ module "apim_api_afm_marketplace_api_v1" {
   })
 
   xml_content = templatefile("./api/marketplace-service/v1/_base_policy.xml", {
+    hostname = local.afm_hostname
+  })
+}
+
+###########################
+##  API AFM Utils        ##
+###########################
+
+resource "azurerm_api_management_api_version_set" "api_afm_utils_api" {
+
+  name                = format("%s-afm-utils-service-api", var.env_short)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_afm_utils_service_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+
+module "apim_api_afm_utils_api_v1" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+
+  name                  = format("%s-afm-utils-service-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_afm_marketplace_product.product_id]
+  subscription_required = local.apim_afm_utils_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_utils_api.id
+  api_version           = "v1"
+
+  description  = local.apim_afm_utils_service_api.description
+  display_name = local.apim_afm_utils_service_api.display_name
+  path         = local.apim_afm_utils_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_afm_marketplace_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/utils-service/v1/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/utils-service/v1/_base_policy.xml", {
     hostname = local.afm_hostname
   })
 }
