@@ -192,7 +192,9 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_ndp" {
 #   resource_group_name = azurerm_resource_group.rg_api.name
 #   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
 
-#   xml_content = file("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml")
+#   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
+#     base-url = var.env_short == "p" ? "https://{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+#   })
 # }
 
 ######################################
