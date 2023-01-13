@@ -17,7 +17,10 @@ module "apim_nodo_dei_pagamenti_product_ndp" {
   approval_required     = true
   subscriptions_limit   = var.nodo_ndp_subscription_limit
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 locals {

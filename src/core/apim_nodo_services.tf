@@ -16,7 +16,11 @@ module "apim_nodo_dei_pagamenti_product" {
   subscription_required = var.nodo_pagamenti_subkey_required
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
+
 }
 
 locals {
