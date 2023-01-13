@@ -6,11 +6,10 @@
   Versione 6.2.0 di RPT/RT.
   Renaming delle primitive.
 -->
-<wsdl:definitions xmlns:ppt="http://ws.pagamenti.telematici.gov/"
+<wsdl:definitions
   xmlns:nfpa="http://ws.pagamenti.telematici.gov/"
   xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT"
-  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
-  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+  xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/"
   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="PagamentiTelematiciRPTservice"
@@ -18,10 +17,10 @@
 
   <wsdl:types>
 
-    <xsd:schema version="1.0.0" xmlns="http://www.w3.org/2001/XMLSchema"
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="http://ws.pagamenti.telematici.gov/"
-            xmlns:tns="http://ws.pagamenti.telematici.gov/">
+    <xsd:schema version="1.0"
+                targetNamespace="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/">
 
       <xsd:complexType name="ctRichiestaMarcaDaBollo">
         <xsd:sequence>
@@ -54,6 +53,13 @@
       <xsd:simpleType name="stNazioneProvincia">
         <xsd:restriction base="xsd:string">
           <xsd:pattern value="[A-Z]{2,2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stPassword">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="8" />
+          <xsd:maxLength value="15" />
         </xsd:restriction>
       </xsd:simpleType>
 
@@ -189,11 +195,18 @@
         </xsd:sequence>
       </xsd:complexType>
 
+    </xsd:schema>
+
+
+    <xsd:schema version="1.0.0" xmlns="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://ws.pagamenti.telematici.gov/">
+
       <xsd:complexType name="tipoElencoFlussiRendicontazione">
         <xsd:sequence>
           <xsd:element name="totRestituiti" type="xsd:int" />
           <xsd:element name="idRendicontazione"
-                       type="tns:tipoIdRendicontazione" nillable="true" minOccurs="0"
+                       type="nfpa:tipoIdRendicontazione" nillable="true" minOccurs="0"
                        maxOccurs="unbounded" />
         </xsd:sequence>
       </xsd:complexType>
@@ -210,23 +223,23 @@
         name="nodoChiediElencoFlussiRendicontazione">
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA"
-                       type="stText35" />
+                       type="common:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA"
-                       type="stText35" />
+                       type="common:stText35" />
           <xsd:element name="identificativoDominio"
-                       type="stText35" minOccurs="0" />
+                       type="common:stText35" minOccurs="0" />
           <xsd:element name="identificativoPSP"
-                       type="stText35" minOccurs="0" />
+                       type="common:stText35" minOccurs="0" />
         </xsd:sequence>
       </xsd:complexType>
 
       <xsd:complexType
         name="nodoChiediElencoFlussiRendicontazioneRisposta">
         <xsd:complexContent>
-          <xsd:extension base="ctRisposta">
+          <xsd:extension base="common:ctRisposta">
             <xsd:sequence>
               <xsd:element name="elencoFlussiRendicontazione"
-                           type="tns:tipoElencoFlussiRendicontazione" minOccurs="0" />
+                           type="nfpa:tipoElencoFlussiRendicontazione" minOccurs="0" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -235,13 +248,13 @@
       <xsd:complexType name="nodoChiediFlussoRendicontazioneRequest">
         <xsd:sequence>
           <xsd:element name="identificativoIntermediarioPA"
-                       type="stText35" />
+                       type="common:stText35" />
           <xsd:element name="identificativoStazioneIntermediarioPA"
-                       type="stText35" />
+                       type="common:stText35" />
           <xsd:element name="identificativoDominio"
-                       type="stText35" minOccurs="0" />
+                       type="common:stText35" minOccurs="0" />
           <xsd:element name="identificativoPSP"
-                       type="stText35" minOccurs="0" />
+                       type="common:stText35" minOccurs="0" />
           <xsd:element name="identificativoFlusso"
                        type="xsd:string" />
         </xsd:sequence>
@@ -250,7 +263,7 @@
       <xsd:complexType
         name="nodoChiediFlussoRendicontazioneResponse">
         <xsd:complexContent>
-          <xsd:extension base="ctRisposta">
+          <xsd:extension base="common:ctRisposta">
             <xsd:sequence>
               <xsd:element name="xmlRendicontazione"
                            type="xsd:base64Binary" minOccurs="0"
@@ -261,10 +274,10 @@
         </xsd:complexContent>
       </xsd:complexType>
 
-      <xsd:element name="nodoChiediElencoFlussiRendicontazione" type="tns:nodoChiediElencoFlussiRendicontazione" />
-      <xsd:element name="nodoChiediElencoFlussiRendicontazioneRisposta" type="tns:nodoChiediElencoFlussiRendicontazioneRisposta" />
-      <xsd:element name="nodoChiediFlussoRendicontazioneRequest" type="tns:nodoChiediFlussoRendicontazioneRequest" />
-      <xsd:element name="nodoChiediFlussoRendicontazioneResponse" type="tns:nodoChiediFlussoRendicontazioneResponse" />
+      <xsd:element name="nodoChiediElencoFlussiRendicontazione" type="nfpa:nodoChiediElencoFlussiRendicontazione" />
+      <xsd:element name="nodoChiediElencoFlussiRendicontazioneRisposta" type="nfpa:nodoChiediElencoFlussiRendicontazioneRisposta" />
+      <xsd:element name="nodoChiediFlussoRendicontazioneRequest" type="nfpa:nodoChiediFlussoRendicontazioneRequest" />
+      <xsd:element name="nodoChiediFlussoRendicontazioneResponse" type="nfpa:nodoChiediFlussoRendicontazioneResponse" />
     </xsd:schema>
 
   </wsdl:types>
