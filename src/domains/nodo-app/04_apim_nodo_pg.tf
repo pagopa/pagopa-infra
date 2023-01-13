@@ -6,8 +6,8 @@ module "apim_nodopg_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
   product_id   = "nodopg"
-  display_name = "Nodo dei Pagamenti PGFLEX"
-  description  = "Nodo dei Pagamenti PGFLEX"
+  display_name = "Nodo dei Pagamenti NDP AllInOne"
+  description  = "Nodo dei Pagamenti NDP AllInOne"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -21,13 +21,13 @@ module "apim_nodopg_product" {
 }
 
 ########################
-##    Nodo  PGFLEX    ##
+##    Nodo  NDP    ##
 ########################
 locals {
   apim_nodopg_service_api = {
-    display_name          = "Nodo dei Pagamenti PGFLEX"
-    description           = "API Nodo dei Pagamenti PGFLEX"
-    path                  = "nodopg/service"
+    display_name          = "Nodo dei Pagamenti NDP AllInOne"
+    description           = "API Nodo dei Pagamenti NDP AllInOne"
+    path                  = "ndp/service"
     subscription_required = false
     service_url           = null
   }
