@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  db-nodo-init:
+    image: postgres:15
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./postgres-scripts/100-nodo-create.sh:/tmp/100-nodo-create.sh
+    entrypoint: /tmp/100-nodo-create.sh
+    networks:
+      - db-nodo-net
+
+networks:
+  db-nodo-net:

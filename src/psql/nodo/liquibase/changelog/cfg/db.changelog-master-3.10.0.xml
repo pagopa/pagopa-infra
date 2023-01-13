@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+  <property name="version" value="3.10.0" global="false"/>
+
+  <include file="./db.changelog-master-3.9.0.xml"/>
+
+  <!-- 3.10.0 -->
+  <include file="./${version}/db.changelog-20221205102000_replace_elenco_servizi_view_canali_nodo.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20221205102100_delete_unused_keys_column.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20221205161400_delete_key_chiediElencoFlussiRendicontazioneDayLimit.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20221212091400_delete_unused_keys_column-2.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20221220095600_lispay.xml" labels="${version}"/>
+
+</databaseChangeLog>

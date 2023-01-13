@@ -2,9 +2,9 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.5
+  version: 0.0.37
 servers:
-  - url: 'https://${host}/${basePath}'
+  - url:  'https://${host}/${basePath}'
 tags:
   - name: institution
     description: Institution operations
@@ -122,7 +122,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiKeysResource'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiKeysResource'
         '400':
           description: Bad Request
           content:
@@ -164,91 +166,22 @@ paths:
           style: simple
           schema:
             type: string
+        - name: subscriptionCode
+          in: query
+          description: subscription's unique internal identifier
+          required: true
+          style: form
+          schema:
+            type: string
       responses:
         '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiKeysResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  '/institutions/{institutionId}/api-keys/primary/regenerate':
-    post:
-      tags:
-        - institution
-      summary: regeneratePrimaryKey
-      description: Regenerates the institution's primary key
-      operationId: regeneratePrimaryKeyUsingPOST
-      parameters:
-        - name: institutionId
-          in: path
-          description: Institution's unique internal identifier
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  /institutions/{institutionId}/api-keys/secondary/regenerate:
-    post:
-      tags:
-        - institution
-      summary: regenerateSecondaryKey
-      description: Regenerates the institution's secondary key
-      operationId: regenerateSecondaryKeyUsingPOST
-      parameters:
-        - name: institutionId
-          in: path
-          description: Institution's unique internal identifier
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '204':
-          description: No Content
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiKeysResource'
         '400':
           description: Bad Request
           content:
@@ -321,15 +254,101 @@ paths:
       security:
         - bearerAuth:
             - global
+  '/institutions/{subscriptionid}/api-keys/primary/regenerate':
+    post:
+      tags:
+        - institution
+      summary: regeneratePrimaryKey
+      description: Regenerates the subscription's primary key
+      operationId: regeneratePrimaryKeyUsingPOST
+      parameters:
+        - name: subscriptionid
+          in: path
+          description: Institution's subscription id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  '/institutions/{subscriptionid}/api-keys/secondary/regenerate':
+    post:
+      tags:
+        - institution
+      summary: regenerateSecondaryKey
+      description: Regenerates the subscription's secondary key
+      operationId: regenerateSecondaryKeyUsingPOST
+      parameters:
+        - name: subscriptionid
+          in: path
+          description: Institution's subscription id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
 components:
   schemas:
     ApiKeysResource:
       title: ApiKeysResource
       required:
+        - displayName
+        - id
         - primaryKey
         - secondaryKey
       type: object
       properties:
+        displayName:
+          type: string
+          description: Institution's name Api Key
+        id:
+          type: string
+          description: Institution's subscription id
         primaryKey:
           type: string
           description: Institution's primary Api Key
@@ -395,6 +414,7 @@ components:
           enum:
             - GSP
             - PA
+            - PSP
             - PT
             - SCP
         origin:
@@ -422,7 +442,6 @@ components:
         - originId
         - status
         - userProductRoles
-        - userRole
       type: object
       properties:
         address:
@@ -443,6 +462,7 @@ components:
           enum:
             - GSP
             - PA
+            - PSP
             - PT
             - SCP
         mailAddress:
@@ -465,9 +485,6 @@ components:
           description: Logged user's roles on product
           items:
             type: string
-        userRole:
-          type: string
-          description: Logged user's role
     InvalidParam:
       title: InvalidParam
       required:
