@@ -134,13 +134,6 @@
         </xsd:restriction>
       </xsd:simpleType>
 
-      <xsd:simpleType name="stPassword">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="8" />
-          <xsd:maxLength value="15" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
       <xsd:simpleType name="stFiscalCodePA">
         <xsd:restriction base="xsd:string">
           <xsd:length value="11" />
