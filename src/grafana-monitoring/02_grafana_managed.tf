@@ -13,13 +13,13 @@ resource "azurerm_resource_group" "grafana_rg" {
 ## Azure Managed Grafana:-
 ##############################
 resource "azapi_resource" "azgrafana" {
-  type        = "Microsoft.Dashboard/grafana@2022-08-01" 
-  name        = format("%s", local.project)
-  parent_id   = azurerm_resource_group.grafana_rg.id
-  location    = azurerm_resource_group.grafana_rg.location
+  type      = "Microsoft.Dashboard/grafana@2022-08-01"
+  name      = format("%s", local.project)
+  parent_id = azurerm_resource_group.grafana_rg.id
+  location  = azurerm_resource_group.grafana_rg.location
 
   identity {
-    type      = "SystemAssigned"
+    type = "SystemAssigned"
   }
 
   body = jsonencode({
@@ -27,9 +27,9 @@ resource "azapi_resource" "azgrafana" {
       name = "Standard"
     }
     properties = {
-      publicNetworkAccess = "Enabled",
-      zoneRedundancy = "Disabled",
-      apiKey = "Enabled",
+      publicNetworkAccess     = "Enabled",
+      zoneRedundancy          = "Disabled",
+      apiKey                  = "Enabled",
       deterministicOutboundIP = "Disabled"
     }
   })
