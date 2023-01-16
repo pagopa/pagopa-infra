@@ -162,7 +162,7 @@
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
-                            <set-url>{base-url}</set-url>
+                            <set-url>${base-url}</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
                                 <value>text/xml</value>

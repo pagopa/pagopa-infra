@@ -99,7 +99,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "https://{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 }
 
@@ -113,23 +113,23 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
-    base-url = var.env_short == "p" ? "https://{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy" { # activatePaymentNoticeV2 verificatore
+# resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy" { # activatePaymentNoticeV2 verificatore
 
-  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1.name
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "TODO"
+#   api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1.name
+#   api_management_name = module.apim.name
+#   resource_group_name = azurerm_resource_group.rg_api.name
+#   operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "TODO"
 
-  #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
-    base-url = var.env_short == "p" ? "https://{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-  })
+#   #tfsec:ignore:GEN005
+#   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
+#     base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+#   })
 
-}
+# }
 
 ######################
 ## WS nodo per psp ##
@@ -186,7 +186,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "https://{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 }
 
@@ -198,7 +198,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
-    base-url = var.env_short == "p" ? "https://{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 }
 
@@ -257,7 +257,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "https://{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 
 }
@@ -318,7 +318,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodeForIO/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "https://{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 
 }
@@ -447,7 +447,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "https://{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 }
 
