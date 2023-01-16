@@ -551,6 +551,7 @@
           "orderStatusOutcome",
           "step0Outcome",
           "step1Outcome",
+          "step2Outcome",
           "transactionStatusOutcome"
         ],
         "type": "object",
@@ -591,6 +592,21 @@
               "THREEDSTRANSID_NOT_FOUND",
               "MAXIMUM_TIME_LIMIT_FOR_FORWARDING_THE_VBV",
               "A_CHALLENGE_FLOW",
+              "EMPTY_XML_OR_MISSING_DATA_PARAMETER",
+              "XML_NOT_PARSABLE",
+              "TRANSACTION_FAILED_SEE_SPECIFIC_OUTCOME"
+            ]
+          },
+          "step2Outcome": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "REQREFNUM_DUPLICATED_OR_INCORRECT",
+              "INCORRECT_MESSAGE_FORMAT_MISSING_OR_INCORRECT_FIELD",
+              "INCORRECT_API_AUTHENTICATION_INCORRECT_MAC",
+              "UNFORESEEN_ERROR_DURING_PROCESSING_OF_REQUEST",
+              "THREEDSTRANSID_NOT_FOUND",
+              "MAXIMUM_TIME_LIMIT_FOR_FORWARDING_THE_VBV",
               "EMPTY_XML_OR_MISSING_DATA_PARAMETER",
               "XML_NOT_PARSABLE",
               "TRANSACTION_FAILED_SEE_SPECIFIC_OUTCOME"
