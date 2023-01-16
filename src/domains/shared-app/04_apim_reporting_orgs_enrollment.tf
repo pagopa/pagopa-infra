@@ -6,7 +6,7 @@ locals {
   apim_poc_service_api = {
     display_name          = "Reporting orgs enrollment - POC pagoPA"
     description           = "API to support POC"
-    path                  = "shared/poc-reporting-orgs-enrollment"
+    path                  = "shared/poc/reporting-orgs-enrollment"
     subscription_required = true
     service_url           = null
   }
@@ -17,6 +17,8 @@ locals {
 ##############
 
 module "apim_poc_product" {
+  count = var.env_short == "d" ? 1 : 0
+
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v4.0.0"
 
   product_id   = "poc"
