@@ -721,29 +721,6 @@
         }
       }
     },
-    "/3ds2.0-manager/challenge/save/response": {
-      "post": {
-        "tags": [
-          "Manager Controller"
-        ],
-        "operationId": "saveChallengeOutcome",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SaveResponseChallenge3Ds2"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/vpos/authorize3dsV2": {
       "post": {
         "tags": [
@@ -1623,17 +1600,6 @@
             "type": "string"
           },
           "idContabParzialePayPal": {
-            "type": "string"
-          }
-        }
-      },
-      "SaveResponseChallenge3Ds2": {
-        "type": "object",
-        "properties": {
-          "outcome": {
-            "type": "string"
-          },
-          "threeDSServerTransID": {
             "type": "string"
           }
         }
