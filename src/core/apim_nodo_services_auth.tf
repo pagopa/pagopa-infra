@@ -534,3 +534,11 @@ resource "azurerm_api_management_named_value" "nodo_auth_password_value" {
   display_name        = "nodoAuthPassword"
   value               = var.nodo_pagamenti_auth_password
 }
+
+resource "azurerm_api_management_named_value" "x_forwarded_for_value" {
+  name                = "xForwardedFor"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "xForwardedFor"
+  value               = var.nodo_pagamenti_x_forwarded_for
+}
