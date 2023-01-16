@@ -1,5 +1,7 @@
 # storage
 module "poc_reporting_enrollment_sa" {
+  count = var.env_short == "d" ? 1 : 0
+
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v4.0.0"
 
   name                       = replace(format("%s-penrol-sa", local.project), "-", "")

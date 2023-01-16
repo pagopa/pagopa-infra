@@ -50,6 +50,8 @@ resource "azurerm_api_management_api_version_set" "api_poc_api" {
 
 
 module "apim_api_poc_api_v1" {
+  count = var.env_short == "d" ? 1 : 0
+
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v4.0.0"
 
   name                  = format("%s-poc-service-api", local.project)
