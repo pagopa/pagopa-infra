@@ -61,9 +61,9 @@ stages:
                 do \$\$
                 BEGIN
                   IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE  rolname = '$USERNAME') THEN
-                  RAISE NOTICE 'Role "$USERNAME" already exists. Skipping.';
+                  RAISE NOTICE 'Role \"$WEB_BO_USERNAME\" already exists. Skipping.';
                   ELSE
-                  CREATE ROLE \"$USERNAME\" LOGIN PASSWORD '$(db-web-bo-password)';
+                  CREATE ROLE \"$WEB_BO_USERNAME\" LOGIN PASSWORD '$(db-web-bo-password)';
                   GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO \"$WEB_BO_USERNAME\";
                   GRANT \"$WEB_BO_USERNAME\" to $ADMIN_USERNAME;
                   CREATE SCHEMA IF NOT EXISTS \"$WEB_BO_SCHEMA\" AUTHORIZATION \"$WEB_BO_USERNAME\";
