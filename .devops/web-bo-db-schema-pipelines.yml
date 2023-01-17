@@ -60,7 +60,7 @@ stages:
                 --querytext "
                 do \$\$
                 BEGIN
-                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE  rolname = '$USERNAME') THEN
+                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE  rolname = '$WEB_BO_USERNAME') THEN
                   RAISE NOTICE 'Role \"$WEB_BO_USERNAME\" already exists. Skipping.';
                   ELSE
                   CREATE ROLE \"$WEB_BO_USERNAME\" LOGIN PASSWORD '$(db-web-bo-password)';
