@@ -57,17 +57,17 @@ stages:
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                 --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
-                --querytext `
+                --querytext "
                 do \$\$
                 BEGIN
                   IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE  rolname = '$USERNAME') THEN
                   RAISE NOTICE 'Role "$USERNAME" already exists. Skipping.';
                   ELSE
-                  CREATE ROLE "$USERNAME" LOGIN PASSWORD '$(db-web-bo-password)';
-                  GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO "$WEB_BO_USERNAME";
-                  GRANT "$WEB_BO_USERNAME" to $ADMIN_USERNAME;
-                  CREATE SCHEMA IF NOT EXISTS "$WEB_BO_SCHEMA" AUTHORIZATION "$WEB_BO_USERNAME";
+                  CREATE ROLE \"$USERNAME\" LOGIN PASSWORD '$(db-web-bo-password)';
+                  GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO \"$WEB_BO_USERNAME\";
+                  GRANT \"$WEB_BO_USERNAME\" to $ADMIN_USERNAME;
+                  CREATE SCHEMA IF NOT EXISTS \"$WEB_BO_SCHEMA\" AUTHORIZATION \"$WEB_BO_USERNAME\";
                   END IF;
                 END
                 \$\$;
-                `
+                "
