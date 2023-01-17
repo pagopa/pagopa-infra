@@ -997,6 +997,7 @@
           },
           "details": {
             "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
+            "type": "object",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/PostePayAuthRequestDetails"
