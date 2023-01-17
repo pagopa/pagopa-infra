@@ -12,8 +12,6 @@
     <xsd:schema version="1.0.0" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd"
                 xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 
-      <!--      <xs:import namespace="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" schemaLocation="sac-common-types-1.0.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" />-->
-
       <xsd:simpleType name="stIBAN">
         <xsd:restriction base="xsd:string">
           <xsd:pattern value="[a-zA-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}" />
