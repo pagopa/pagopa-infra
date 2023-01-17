@@ -1,197 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!-- SANP 3.2.0 -->
-
-<wsdl:definitions name="nodeForPsp"
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://pagopa-api.pagopa.gov.it/nodeForPsp"
   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
   xmlns:nfp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd"
-  xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl"
   xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/"
-  targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl">
-
+  targetNamespace="http://pagopa-api.pagopa.gov.it/nodeForPsp">
   <wsdl:types>
+    <!-- node for psp xsd -->
+    <xsd:schema version="1.0.0" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd"
+                xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 
-    <xsd:schema version="1.0"
-                targetNamespace="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/">
-
-      <xsd:complexType name="ctRichiestaMarcaDaBollo">
-        <xsd:sequence>
-          <xsd:element name="hashDocumento" type="stBase64Binary72" />
-          <xsd:element name="tipoBollo" type="stTipoBolloDigitale" />
-          <xsd:element name="provinciaResidenza" type="stNazioneProvincia" />
-        </xsd:sequence>
-      </xsd:complexType>
-
-      <xsd:simpleType name="stPaymentToken">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="1"/>
-          <xsd:maxLength value="35"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stBase64Binary72">
-        <xsd:restriction base="xsd:base64Binary">
-          <xsd:pattern value=".{4,72}" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stTipoBolloDigitale">
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="01" />
-          <xsd:length value="2" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stNazioneProvincia">
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="[A-Z]{2,2}" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stFiscalCodePA">
-        <xsd:restriction base="xsd:string">
-          <xsd:length value="11" />
-          <xsd:pattern value="[0-9]{11}" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stNoticeNumber">
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="[0-9]{18}" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stOutcome">
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="OK" />
-          <xsd:enumeration value="KO" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stAmount">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:pattern value="\d+\.\d{2}" />
-          <xsd:maxInclusive value="999999999.99" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stText16">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="1" />
-          <xsd:maxLength value="16" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stText35">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="1" />
-          <xsd:maxLength value="35" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stText70">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="1" />
-          <xsd:maxLength value="70" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stText140">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="1" />
-          <xsd:maxLength value="140" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:complexType name="ctMapEntry">
-        <xsd:sequence>
-          <xsd:element name="key" type="stText140" />
-          <xsd:element name="value" type="stText140" />
-        </xsd:sequence>
-      </xsd:complexType>
-
-      <xsd:complexType name="ctMetadata">
-        <xsd:sequence>
-          <xsd:element name="mapEntry" type="ctMapEntry" minOccurs="1" maxOccurs="10"></xsd:element>
-        </xsd:sequence>
-      </xsd:complexType>
-
-      <xsd:simpleType name="stISODate">
-        <xsd:restriction base="xsd:date" />
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stISODateTime">
-        <xsd:restriction base="xsd:dateTime" />
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stEMail">
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="[a-zA-Z0-9_\.\+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)*" />
-          <xsd:maxLength value="256" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stIdentificativoFlusso">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="1" />
-          <xsd:maxLength value="70" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stCodiceAvviso">
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="[0-9]{18,18}" />
-        </xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:simpleType name="stFaultCode">
-        <xsd:annotation>
-          <xsd:documentation>
-            All fault codes are described
-            <a href="https://docs.google.com/spreadsheets/d/15sJplTLu6kWPomW3jbBzZYvD7QyIswERKktFG0bk1IQ/edit?usp=sharing" target="_blank">here</a>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string"></xsd:restriction>
-      </xsd:simpleType>
-
-      <xsd:complexType name="ctFaultBean">
-        <xsd:sequence>
-          <xsd:element name="faultCode" type="stFaultCode" />
-          <xsd:element name="faultString" type="xsd:string" />
-          <xsd:element name="id" type="xsd:string" />
-          <xsd:element name="description" type="xsd:string" minOccurs="0" />
-          <xsd:element name="serial" type="xsd:int" minOccurs="0" />
-          <xsd:element name="originalFaultCode" type="xsd:string" minOccurs="0" />
-          <xsd:element name="originalFaultString" type="xsd:string" minOccurs="0" />
-          <xsd:element name="originalDescription" type="xsd:string" minOccurs="0" />
-        </xsd:sequence>
-      </xsd:complexType>
-
-      <xsd:complexType name="ctResponse">
-        <xsd:sequence>
-          <xsd:element name="outcome" type="stOutcome" />
-          <xsd:element name="fault" type="ctFaultBean" minOccurs="0" />
-        </xsd:sequence>
-      </xsd:complexType>
-
-      <xsd:complexType name="ctRisposta">
-        <xsd:sequence>
-          <xsd:element name="fault" type="ctFaultBean" minOccurs="0" />
-        </xsd:sequence>
-      </xsd:complexType>
-
-    </xsd:schema>
-
-
-    <schema version="1.0.0"
-            xmlns="http://www.w3.org/2001/XMLSchema"
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd"
-            xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+      <!--      <xs:import namespace="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" schemaLocation="sac-common-types-1.0.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" />-->
 
       <xsd:simpleType name="stIBAN">
         <xsd:restriction base="xsd:string">
@@ -370,7 +191,6 @@
         </xsd:sequence>
       </xsd:complexType>
 
-
       <xsd:complexType name="risposta">
         <xsd:sequence>
           <xsd:element name="fault" type="tns:faultBean" minOccurs="0" />
@@ -545,7 +365,6 @@
         </xsd:complexContent>
       </xsd:complexType>
 
-
       <xsd:complexType name="activatePaymentNoticeReq">
         <xsd:sequence>
           <xsd:element name="idPSP" type="tns:stIdPSP" />
@@ -556,7 +375,7 @@
           <!-- expirationTime related to TOKEN generated by nodoSPC -->
           <!-- expirationTime is set to 30min as default by NodoSPC -->
           <xsd:element name="expirationTime" type="tns:stExpirationTime" minOccurs="0" />
-          <!-- required , neeed to importoSingoloVersamento present in to paaAttivaRPT -->
+          <!-- required , need to importoSingoloVersamento present in to paaAttivaRPT -->
           <xsd:element name="amount" type="common:stAmount" />
           <!-- Data di scadenza del pagamento -->
           <xsd:element name="dueDate" type="common:stISODate" minOccurs="0" />
@@ -575,7 +394,7 @@
               <xsd:element name="fiscalCodePA" type="common:stFiscalCodePA" minOccurs="0" />
               <xsd:element name="companyName" type="common:stText140" minOccurs="0" />
               <xsd:element name="officeName" type="common:stText140" minOccurs="0" />
-              <!-- <xsd:element name="chargePA" type="stAmount" minOccurs="0"
+              <!-- <xsd:element name="chargePA" type="common:stAmount" minOccurs="0"
                 /> -->
               <xsd:element name="paymentToken" type="common:stPaymentToken" minOccurs="0" />
               <xsd:element name="transferList" type="tns:ctTransferListPSP" minOccurs="0" />
@@ -700,7 +519,6 @@
         </xsd:sequence>
       </xsd:complexType>
 
-
       <xsd:complexType name="demandPaymentNoticeResponse">
         <xsd:complexContent>
           <xsd:extension base="common:ctResponse">
@@ -824,10 +642,177 @@
       <xsd:element name="nodoChiediCatalogoServiziV2Request" type="tns:nodoChiediCatalogoServiziV2Request" />
       <xsd:element name="nodoChiediCatalogoServiziV2Response" type="tns:nodoChiediCatalogoServiziV2Response" />
 
-    </schema>
-  </wsdl:types>
+    </xsd:schema>
 
-  <!-- step#3 -->
+    <!-- common xsd -->
+    <xsd:schema attributeFormDefault="unqualified"
+                targetNamespace="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/"
+                version="1.0"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/">
+
+      <xsd:complexType name="ctRichiestaMarcaDaBollo">
+        <xsd:sequence>
+          <xsd:element name="hashDocumento" type="stBase64Binary72" />
+          <xsd:element name="tipoBollo" type="stTipoBolloDigitale" />
+          <xsd:element name="provinciaResidenza" type="stNazioneProvincia" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:simpleType name="stPaymentToken">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1"/>
+          <xsd:maxLength value="35"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stBase64Binary72">
+        <xsd:restriction base="xsd:base64Binary">
+          <xsd:pattern value=".{4,72}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stTipoBolloDigitale">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="01" />
+          <xsd:length value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stNazioneProvincia">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="[A-Z]{2,2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stFiscalCodePA">
+        <xsd:restriction base="xsd:string">
+          <xsd:length value="11" />
+          <xsd:pattern value="[0-9]{11}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stNoticeNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="[0-9]{18}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stOutcome">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="OK" />
+          <xsd:enumeration value="KO" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stAmount">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d+\.\d{2}" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stText16">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="16" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="35" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stText70">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="70" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stText140">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="140" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:complexType name="ctMapEntry">
+        <xsd:sequence>
+          <xsd:element name="key" type="stText140" />
+          <xsd:element name="value" type="stText140" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ctMetadata">
+        <xsd:sequence>
+          <xsd:element name="mapEntry" type="ctMapEntry" minOccurs="1" maxOccurs="10"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:simpleType name="stISODate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stISODateTime">
+        <xsd:restriction base="xsd:dateTime" />
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stEMail">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="[a-zA-Z0-9_\.\+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)*" />
+          <xsd:maxLength value="256" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stIdentificativoFlusso">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="70" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stCodiceAvviso">
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="[0-9]{18,18}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:simpleType name="stFaultCode">
+        <xsd:restriction base="xsd:string"></xsd:restriction>
+      </xsd:simpleType>
+
+      <xsd:complexType name="ctFaultBean">
+        <xsd:sequence>
+          <xsd:element name="faultCode" type="stFaultCode" />
+          <xsd:element name="faultString" type="xsd:string" />
+          <xsd:element name="id" type="xsd:string" />
+          <xsd:element name="description" type="xsd:string" minOccurs="0" />
+          <xsd:element name="serial" type="xsd:int" minOccurs="0" />
+          <xsd:element name="originalFaultCode" type="xsd:string" minOccurs="0" />
+          <xsd:element name="originalFaultString" type="xsd:string" minOccurs="0" />
+          <xsd:element name="originalDescription" type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ctResponse">
+        <xsd:sequence>
+          <xsd:element name="outcome" type="stOutcome" />
+          <xsd:element name="fault" type="ctFaultBean" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ctRisposta">
+        <xsd:sequence>
+          <xsd:element name="fault" type="ctFaultBean" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+    </xsd:schema>
+  </wsdl:types>
   <wsdl:message name="demandPaymentNotice">
     <wsdl:part name="bodyrequest"
                element="nfp:demandPaymentNoticeRequest"></wsdl:part>
@@ -919,8 +904,6 @@
     <wsdl:part name="bodyresponse"
                element="nfp:nodoChiediCatalogoServiziV2Response"></wsdl:part>
   </wsdl:message>
-
-  <!-- step#2 -->
   <wsdl:portType name="nodeForPsp">
     <wsdl:operation name="demandPaymentNotice">
       <wsdl:input message="tns:demandPaymentNotice" />
@@ -973,8 +956,6 @@
         message="tns:nodoChiediCatalogoServiziV2Response"></wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
-
-  <!-- step#1 -->
   <wsdl:binding name="nodeForPspBinding"
                 type="tns:nodeForPsp">
     <soap:binding style="document"
@@ -1097,5 +1078,4 @@
         location="http://pagopa-api.pagopa.gov.it/service/node/NodeForPsp" />
     </wsdl:port>
   </wsdl:service>
-
 </wsdl:definitions>
