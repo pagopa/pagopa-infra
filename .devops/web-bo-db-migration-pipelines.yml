@@ -87,6 +87,7 @@ stages:
               --defaultSchemaName=$(WEB_BO_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
+              --preserve-schema-case=true \
               status -Dschema=$(WEB_BO_SCHEMA)
             displayName: "web-bo db status"
           - script: |
@@ -100,6 +101,7 @@ stages:
               --defaultSchemaName=$(WEB_BO_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
+              --preserve-schema-case=true \
               validate -Dschema=$(WEB_BO_SCHEMA)
             displayName: "web-bo db validate"
       - job: prd_approval
@@ -151,6 +153,7 @@ stages:
               --defaultSchemaName=$(WEB_BO_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
+              --preserve-schema-case=true \
               update -Dschema=$(WEB_BO_SCHEMA)
             displayName: "Run Liquibase web-bo"
           - script: |
@@ -164,5 +167,6 @@ stages:
               --defaultSchemaName=$(WEB_BO_SCHEMA) \
               --contexts=${{ parameters.lbContexts }} \
               --log-level=${{ parameters.lbLogLevel }} \
+              --preserve-schema-case=true \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag web-bo"
