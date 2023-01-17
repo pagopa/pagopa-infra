@@ -558,8 +558,8 @@ module "apim_nodo_monitoring_api_ndp" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-monitoring-api-ndp", var.env_short)
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  api_management_name   = local.pagopa_apim_name
   product_ids           = [module.apim_nodo_dei_pagamenti_product_ndp.product_id]
   subscription_required = local.apim_nodo_monitoring_api_ndp.subscription_required
 
@@ -579,6 +579,6 @@ module "apim_nodo_monitoring_api_ndp" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
-    base-url = "https://${local.nodo_hostname}/monitor"
+    base-url = "https://${local.nodo_hostname}/nodo/monitor"
   })
 }
