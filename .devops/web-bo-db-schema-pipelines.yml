@@ -57,7 +57,7 @@ stages:
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
                 --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
-                --querytext "
+                --querytext `
                 do \$\$
                 BEGIN
                   IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE  rolname = '$USERNAME') THEN
@@ -70,4 +70,4 @@ stages:
                   END IF;
                 END
                 \$\$;
-                "
+                `
