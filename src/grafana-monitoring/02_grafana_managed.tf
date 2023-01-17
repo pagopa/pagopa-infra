@@ -1,6 +1,3 @@
-#####################
-## Resource Group:-
-#####################
 resource "azurerm_resource_group" "grafana_rg" {
   name     = format("%s-rg", local.project)
   location = var.location
@@ -9,38 +6,24 @@ resource "azurerm_resource_group" "grafana_rg" {
 }
 
 
-##############################
-## Azure Managed Grafana:-
-##############################
-resource "azapi_resource" "azgrafana" {
-  type      = "Microsoft.Dashboard/grafana@2022-08-01"
-  name      = format("%s", local.project)
-  parent_id = azurerm_resource_group.grafana_rg.id
-  location  = azurerm_resource_group.grafana_rg.location
+resource "azurerm_dashboard_grafana" "grafana_dashboard" {
+  name                              = local.project
+  resource_group_name               = azurerm_resource_group.grafana_rg.name
+  location                          = var.location
+  api_key_enabled                   = false
+  deterministic_outbound_ip_enabled = true
+  public_network_access_enabled     = true
+  zone_redundancy_enabled           = true
 
   identity {
     type = "SystemAssigned"
   }
 
-  body = jsonencode({
-    sku = {
-      name = "Standard"
-    }
-    properties = {
-      publicNetworkAccess     = "Enabled",
-      zoneRedundancy          = "Disabled",
-      apiKey                  = "Enabled",
-      deterministicOutboundIP = "Disabled"
-    }
-  })
-  response_export_values = ["properties.endpoint", "identity.principalId"]
+  tags = var.tags
 }
 
-
-resource "azurerm_role_assignment" "grafana_rg" {
-  scope = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
-  // Moniroting Reader
-  // https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#monitoring-reader
-  role_definition_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Authorization/roleDefinitions/43d0d8ad-25c7-4714-9337-8ba259a9fe05"
-  principal_id       = jsondecode(azapi_resource.azgrafana.output).identity.principalId
+resource "azurerm_role_assignment" "grafana_dashboard_monitoring_reader" {
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = "Monitoring Reader"
+  principal_id         = azurerm_dashboard_grafana.grafana_dashboard.identity[0].principal_id
 }
