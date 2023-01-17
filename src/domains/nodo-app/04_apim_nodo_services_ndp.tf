@@ -536,6 +536,9 @@ module "apim_nodo_per_pm_api_v2_ndp" {
 ######################
 ## NODO monitoring  ##
 ######################
+
+# https://api.<env>.platform.pagopa.it/nodo-ndp/monitoring/v1/monitor
+
 locals {
   apim_nodo_monitoring_api_ndp = {
     display_name          = "Nodo monitoring NDP"
@@ -579,6 +582,6 @@ module "apim_nodo_monitoring_api_ndp" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
-    base-url = "https://${local.nodo_hostname}/nodo/monitor"
+    base-url = "https://${local.nodo_hostname}/nodo"
   })
 }
