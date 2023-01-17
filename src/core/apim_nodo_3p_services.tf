@@ -168,6 +168,10 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
   versioning_scheme   = "Segment"
 }
 
+
+# https://wfesp.test.pagopa.gov.it/redirect/wpl02/get?idSession=e53cf112-1f10-4dea-80df-d3c[…]v.it/wallet/resume&MD=NzA5MDE0MjY4Mg==&psp=03069&lang=it
+# https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession=a55fbb3b-0ffa-486d-a9fe-80046[…]gopa.gov.it/wallet/resume&MD=MTM3NjE3NzU2&psp=36042&lang=it
+
 module "apim_nodo_wfesp_api" {
   count  = var.env_short == "p" ? 0 : 1
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
@@ -179,11 +183,11 @@ module "apim_nodo_wfesp_api" {
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.nodo_wfesp_api[0].id
-  api_version    = "v1"
+  # api_version    = "v1"
 
   description  = "NodeDeiPagamenti (wfesp)"
   display_name = "NodeDeiPagamenti (wfesp)"
-  path         = "wfesp/api"
+  path         = "redirect/wpl02"
   protocols    = ["https"]
 
   service_url = null
@@ -195,7 +199,7 @@ module "apim_nodo_wfesp_api" {
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path      = "/wfesp/api/v1"
+    apim_base_path      = "/redirect/wpl02"
   })
 
 }
