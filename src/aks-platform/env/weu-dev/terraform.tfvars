@@ -107,32 +107,45 @@ reloader_helm = {
 # quay.io/prometheus/node-exporter image tags: https://quay.io/repository/prometheus/node-exporter?tab=tags
 # quay.io/prometheus/prometheus image tags: https://quay.io/repository/prometheus/prometheus?tab=tags
 # prom/pushgateway image tags:https://hub.docker.com/r/prom/pushgateway/tags
-prometheus_helm = {
-  chart_version = "15.12.0"
+kube_prometheus_stack_helm = {
+  chart_version = "44.2.1"
+
   alertmanager = {
-    image_name = "quay.io/prometheus/alertmanager"
-    image_tag  = "v0.24.0@sha256:088464f949de8065b9da7dfce7302a633d700e9d598e2bebc03310712f083b31"
+    image_registry = "quay.io"
+    image_name = "prometheus/alertmanager"
+    image_tag  = "v0.25.0@sha256:fd4d9a3dd1fd0125108417be21be917f19cc76262347086509a0d43f29b80e98"
   }
-  configmap_reload_prometheus = {
-    image_name = "jimmidyson/configmap-reload"
-    image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
+
+  kube_webhook_certgen = {
+    image_registry = "registry.k8s.io"
+    image_name = "ingress-nginx/kube-webhook-certgen"
+    image_tag  = "v1.3.0"
   }
-  configmap_reload_alertmanager = {
-    image_name = "jimmidyson/configmap-reload"
-    image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
+
+  prometheus_operator = {
+    image_registry = "quay.io"
+    image_name = "prometheus-operator/prometheus-operator"
+    image_tag  = ""
   }
-  node_exporter = {
-    image_name = "quay.io/prometheus/node-exporter"
-    image_tag  = "v1.3.1@sha256:f2269e73124dd0f60a7d19a2ce1264d33d08a985aed0ee6b0b89d0be470592cd"
+
+  prometheus_config_reloader = {
+    image_registry = "quay.io"
+    image_name = "prometheus-operator/prometheus-config-reloader"
+    image_tag  = ""
   }
-  server = {
-    image_name = "quay.io/prometheus/prometheus"
-    image_tag  = "v2.36.2@sha256:df0cd5887887ec393c1934c36c1977b69ef3693611932c3ddeae8b7a412059b9"
+
+  thanos = {
+    image_registry = "quay.io"
+    image_name = "thanos/thanos"
+    image_tag  = "v0.30.1"
   }
-  pushgateway = {
-    image_name = "prom/pushgateway"
-    image_tag  = "v1.4.3@sha256:9e4e2396009751f1dc66ebb2b59e07d5abb009eb26d637eb0cf89b9a3738f146"
+
+  prometheus = {
+    image_registry = "quay.io"
+    image_name = "prometheus/prometheus"
+    image_tag  = "v2.41.0"
   }
+
 }
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
