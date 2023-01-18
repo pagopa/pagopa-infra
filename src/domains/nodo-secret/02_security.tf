@@ -87,7 +87,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
 
 resource "kubernetes_config_map" "nodo_cacerts" {
   metadata {
-    name = "nodo-cacerts"
+    name      = "nodo-cacerts"
     namespace = "nodo"
   }
 
@@ -97,7 +97,7 @@ resource "kubernetes_config_map" "nodo_cacerts" {
 }
 resource "kubernetes_config_map" "nodo_cron_cacerts" {
   metadata {
-    name = "nodo-cacerts"
+    name      = "nodo-cacerts"
     namespace = "nodo-cron"
   }
 

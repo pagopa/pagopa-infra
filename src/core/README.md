@@ -91,6 +91,7 @@
 | <a name="module_apim_nodo_sync_dev_api"></a> [apim\_nodo\_sync\_dev\_api](#module\_apim\_nodo\_sync\_dev\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_sync_dev_product"></a> [apim\_nodo\_sync\_dev\_product](#module\_apim\_nodo\_sync\_dev\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_sync_product"></a> [apim\_nodo\_sync\_product](#module\_apim\_nodo\_sync\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
+| <a name="module_apim_nodo_web_bo_api"></a> [apim\_nodo\_web\_bo\_api](#module\_apim\_nodo\_web\_bo\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_api_history"></a> [apim\_nodo\_web\_bo\_api\_history](#module\_apim\_nodo\_web\_bo\_api\_history) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_api_onprem"></a> [apim\_nodo\_web\_bo\_api\_onprem](#module\_apim\_nodo\_web\_bo\_api\_onprem) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_web_bo_dev_api"></a> [apim\_nodo\_web\_bo\_dev\_api](#module\_apim\_nodo\_web\_bo\_dev\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
@@ -790,6 +791,7 @@
 | <a name="input_cstar_outbound_ip_2"></a> [cstar\_outbound\_ip\_2](#input\_cstar\_outbound\_ip\_2) | CSTAR ip 2 | `string` | n/a | yes |
 | <a name="input_db_port"></a> [db\_port](#input\_db\_port) | Port number of the DB | `number` | `1521` | no |
 | <a name="input_db_service_name"></a> [db\_service\_name](#input\_db\_service\_name) | Service Name of DB | `string` | `null` | no |
+| <a name="input_ddos_protection_plan"></a> [ddos\_protection\_plan](#input\_ddos\_protection\_plan) | Network | <pre>object({<br>    id     = string<br>    enable = bool<br>  })</pre> | `null` | no |
 | <a name="input_dexp_db"></a> [dexp\_db](#input\_dexp\_db) | n/a | <pre>object({<br>    enable             = bool<br>    hot_cache_period   = string<br>    soft_delete_period = string<br>  })</pre> | n/a | yes |
 | <a name="input_dexp_params"></a> [dexp\_params](#input\_dexp\_params) | n/a | <pre>object({<br>    enabled = bool<br>    sku = object({<br>      name     = string<br>      capacity = number<br>    })<br>    autoscale = object({<br>      enabled       = bool<br>      min_instances = number<br>      max_instances = number<br>    })<br>    public_network_access_enabled = bool<br>    double_encryption_enabled     = bool<br>    disk_encryption_enabled       = bool<br>    purge_enabled                 = bool<br>  })</pre> | n/a | yes |
 | <a name="input_dexp_re_db_linkes_service"></a> [dexp\_re\_db\_linkes\_service](#input\_dexp\_re\_db\_linkes\_service) | n/a | <pre>object({<br>    enable = bool<br>  })</pre> | n/a | yes |

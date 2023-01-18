@@ -22,6 +22,7 @@
 | <a name="module_apim_api_config_subkey_product"></a> [apim\_api\_config\_subkey\_product](#module\_apim\_api\_config\_subkey\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_api_nodopg_api_v1"></a> [apim\_api\_nodopg\_api\_v1](#module\_apim\_api\_nodopg\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_nodo_dei_pagamenti_product_ndp"></a> [apim\_nodo\_dei\_pagamenti\_product\_ndp](#module\_apim\_nodo\_dei\_pagamenti\_product\_ndp) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
+| <a name="module_apim_nodo_monitoring_api_ndp"></a> [apim\_nodo\_monitoring\_api\_ndp](#module\_apim\_nodo\_monitoring\_api\_ndp) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_per_pm_api_v1_ndp"></a> [apim\_nodo\_per\_pm\_api\_v1\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v1\_ndp) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_nodo_per_pm_api_v2_ndp"></a> [apim\_nodo\_per\_pm\_api\_v2\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v2\_ndp) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_nodopg_product"></a> [apim\_nodopg\_product](#module\_apim\_nodopg\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
@@ -50,6 +51,7 @@
 | [azurerm_api_management_api_version_set.api_nodopg_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.node_for_io_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.node_for_psp_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.nodo_monitoring_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pa_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pm_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_psp_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -60,6 +62,7 @@
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_kubernetes_cluster_node_pool.nodo_pool](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/kubernetes_cluster_node_pool) | resource |
+| [helm_release.cert-mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
