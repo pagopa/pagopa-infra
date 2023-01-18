@@ -246,7 +246,7 @@
       "get": {
         "summary": "retrieve CreditCard payment request",
         "tags": [
-          "CreditCard-external"
+          "Vpos-external"
         ],
         "parameters": [
           {
@@ -276,14 +276,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/PaymentRequestVposResponse"
                 }
               }
             }
@@ -293,7 +286,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CcPaymentInfoError"
+                  "$ref": "#/components/schemas/PaymentRequestVposErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentRequestVposErrorResponse"
                 }
               }
             }
@@ -305,7 +308,7 @@
       "post": {
         "summary": "resume CreditCard payment request",
         "tags": [
-          "CreditCard-external"
+          "Vpos-external"
         ],
         "parameters": [
           {
@@ -350,7 +353,7 @@
       "post": {
         "summary": "resume CreditCard payment request",
         "tags": [
-          "CreditCard-external"
+          "Vpos-external"
         ],
         "parameters": [
           {
@@ -481,19 +484,28 @@
           }
         }
       },
-      "CcPaymentInfoAcsResponse": {
+      "PaymentRequestVposResponse": {
         "type": "object",
         "properties": {
           "status": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED"
+            ]
           },
           "responseType": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "METHOD",
+              "CHALLENGE"
+            ]
           },
           "requestId": {
             "type": "string"
           },
-          "acsUrl": {
+          "vposUrl": {
             "type": "string"
           }
         },
@@ -501,39 +513,17 @@
           "status",
           "responseType",
           "requestId",
-          "acsUrl"
+          "vposUrl"
         ]
       },
-      "CcPaymentInfoError": {
+      "PaymentRequestVposErrorResponse": {
         "type": "object",
         "properties": {
           "reason": {
             "type": "string",
-            "example": "RequestId non trovato"
+            "example": "Error for RequestId"
           }
         }
-      },
-      "CcPaymentInfoAcceptedResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string"
-          },
-          "responseType": {
-            "type": "string"
-          },
-          "requestId": {
-            "type": "string"
-          },
-          "acsUrl": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "status",
-          "responseType",
-          "requestId"
-        ]
       },
       "CreditCardResumeRequest": {
         "type": "object",
