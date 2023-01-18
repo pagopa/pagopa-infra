@@ -24,6 +24,6 @@ module "poc_reporting_enrollment_sa" {
 
 ## table receipts storage
 resource "azurerm_storage_table" "poc_reporting_enrollment_table" {
-  name                 = format("%sorganizations", module.poc_reporting_enrollment_sa.name)
-  storage_account_name = module.poc_reporting_enrollment_sa.name
+  name                 = format("%sorganizations", module.poc_reporting_enrollment_sa[0].name)
+  storage_account_name = module.poc_reporting_enrollment_sa[0].name
 }

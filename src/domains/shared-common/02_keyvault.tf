@@ -60,7 +60,7 @@ resource "azurerm_key_vault_secret" "iuv_generator_cosmos_connection_string" {
 
 resource "azurerm_key_vault_secret" "storage_connection_string" {
   name         = format("poc-reporting-enrollment-%s-sa-connection-string", var.env_short)
-  value        = module.poc_reporting_enrollment_sa.primary_connection_string
+  value        = module.poc_reporting_enrollment_sa[0].primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
