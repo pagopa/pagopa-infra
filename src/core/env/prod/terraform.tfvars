@@ -17,6 +17,11 @@ law_retention_in_days = 30
 law_daily_quota_gb    = -1
 
 # networking
+ddos_protection_plan = {
+  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
+  enable = true
+}
+
 # main vnet
 cidr_vnet = ["10.1.0.0/16"]
 
