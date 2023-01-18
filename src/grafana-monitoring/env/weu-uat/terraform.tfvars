@@ -17,9 +17,9 @@ tags = {
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+monitor_resource_group_name                 = "pagopa-u-monitor-rg"
+log_analytics_workspace_name                = "pagopa-u-law"
+log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
