@@ -76,7 +76,7 @@ apim_sku            = "Premium_1"
 apim_alerts_enabled = true
 apim_autoscale = {
   enabled                       = true
-  default_instances             = 1
+  default_instances             = 3
   minimum_instances             = 1
   maximum_instances             = 5
   scale_out_capacity_percentage = 45
@@ -86,7 +86,7 @@ apim_autoscale = {
   scale_in_capacity_percentage  = 30
   scale_in_time_window          = "PT30M"
   scale_in_value                = "1"
-  scale_in_cooldown             = "PT30M"
+  scale_in_cooldown             = "PT4H"
 }
 
 # app_gateway
@@ -96,8 +96,8 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = ""
-app_gateway_min_capacity                = 5 # TODO tuning, probably 3 it's more indicate value
-app_gateway_max_capacity                = 10
+app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_max_capacity                = 50
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true
