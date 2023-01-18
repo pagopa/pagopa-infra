@@ -507,11 +507,14 @@
           },
           "vposUrl": {
             "type": "string"
+          },
+          "clientReturnUrl": {
+            "type": "string"
           }
         },
         "required": [
           "status",
-          "requestId",
+          "requestId"
         ]
       },
       "PaymentRequestVposErrorResponse": {
