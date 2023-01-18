@@ -96,10 +96,6 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-variable "az_nodo_app_kv_ro_policy_name" {
-  type        = string
-  description = "APP for use key vault with access read only"
-}
 
 variable "kv-key-permissions-read" {
   type        = list(string)
@@ -124,19 +120,15 @@ variable "kv-storage-permissions-read" {
   description = "List of read storage permissions"
   default     = ["Get", "GetSAS", "List", "ListSAS"]
 }
-
-variable "az_nodo_sa_share_name_cert" {
-  type        = string
-  description = "Azure storage account share name"
-}
 variable "az_nodo_sa_share_name_firmatore" {
   type        = string
   description = "Azure storage account share name"
 }
-
-variable "upload_certificates" {
-  type = map(string)
-}
 variable "upload_firmatore" {
   type = map(string)
+}
+
+variable "cacerts_path" {
+  type        = string
+  description = "Java cacerts"
 }

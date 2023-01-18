@@ -354,6 +354,14 @@ variable "nodo_auth_subscription_limit" {
 }
 
 # Network
+variable "ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
+}
+
 variable "cidr_vnet" {
   type        = list(string)
   description = "Virtual network address space."

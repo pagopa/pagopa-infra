@@ -1064,8 +1064,8 @@
           },
           "expiryDate": {
             "type": "string",
-            "description": "Credit card expiry date. Note that only the month and year components are taken into account.",
-            "format": "date"
+            "description": "Credit card expiry date. The date format is `YYYYMM`",
+            "pattern": "^\\d{6}$"
           },
           "holderName": {
             "type": "string",
@@ -1082,8 +1082,8 @@
         "example": {
           "detailType": "card",
           "cvv": 0,
-          "pan": 123456789012345,
-          "expiryDate": "2099-01-01T00:00:00.000Z",
+          "pan": "0123456789012345",
+          "expiryDate": "209901",
           "holderName": "Name Surname"
         }
       },

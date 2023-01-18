@@ -17,6 +17,11 @@ law_retention_in_days = 30
 law_daily_quota_gb    = -1
 
 # networking
+ddos_protection_plan = {
+  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
+  enable = true
+}
+
 # main vnet
 cidr_vnet = ["10.1.0.0/16"]
 
@@ -74,7 +79,7 @@ apim_autoscale = {
   default_instances             = 1
   minimum_instances             = 1
   maximum_instances             = 5
-  scale_out_capacity_percentage = 60
+  scale_out_capacity_percentage = 45
   scale_out_time_window         = "PT10M"
   scale_out_value               = "2"
   scale_out_cooldown            = "PT45M"
@@ -114,11 +119,6 @@ app_gateway_deny_paths = [
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
-  "/gps/donation-service/.*",             # internal use no sub-keys
-  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
-  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
-  "/gps/gpd-payments/.*",                 # internal use no sub-keys
-  "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   "/nodo-pagamenti/.*",
@@ -127,7 +127,12 @@ app_gateway_deny_paths_2 = [
   "/wfesp/.*",
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
-  "/pagopa-node-forwarder/.*"
+  "/pagopa-node-forwarder/.*",
+  "/gps/donation-service/.*",             # internal use no sub-keys
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
+  "/gps/gpd-payments/.*",                 # internal use no sub-keys
+  "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -380,7 +385,7 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-biz-evt-enrich"
-    partitions        = 30
+    partitions        = 32
     message_retention = 7
     consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
@@ -585,7 +590,7 @@ dexp_re_db_linkes_service = {
 }
 
 # node forwarder
-node_forwarder_tier = "Basic" # TODO change to "PremiumV3"
-node_forwarder_size = "B1"    # TODO change to "P1v3"
+node_forwarder_tier = "PremiumV3"
+node_forwarder_size = "P1v3"
 
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"

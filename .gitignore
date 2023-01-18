@@ -44,3 +44,4 @@ __*.sh
 *_decrypted.json
 *.env
 **/nodo-secret/**/*.zip
+**/*copy.xml
