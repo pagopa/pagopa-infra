@@ -511,9 +511,7 @@
         },
         "required": [
           "status",
-          "responseType",
           "requestId",
-          "vposUrl"
         ]
       },
       "PaymentRequestVposErrorResponse": {
