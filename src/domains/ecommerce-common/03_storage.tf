@@ -83,3 +83,8 @@ resource "azurerm_storage_queue" "activated_events_queue" {
   name                 = "${local.project}-activated-events-queue"
   storage_account_name = module.ecommerce_storage.name
 }
+
+resource "azurerm_storage_queue" "closed_events_queue" {
+  name                 = "${local.project}-closed-events-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
