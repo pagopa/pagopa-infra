@@ -30,13 +30,12 @@
     -->
 
     <!-- https://weudev.nodo.internal.dev.platform.pagopa.it/web-bo(/|$)(.*) -->
-    <set-backend-service base-url="https://${hostname}/bo-nodo" />
+    <set-backend-service base-url="https://${hostname}/web-bo" />
     
     <set-variable name="external-scheme" value="https" />
     <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.<ENV>.platform.pagopa.it -->
-    <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /bo-nodo -->
+    <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /web-bo-ndp/service/v1 -->
 
-    <!-- /web-bo/api/v1 -->
     <choose>
       <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\${apim_base_path}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
         <return-response>
@@ -60,6 +59,7 @@
   </backend>
   <outbound>
     <base />
+    <!--
     <find-and-replace from="src=&quot;/" to="@{
             string str = "src=\"";
             str += (string)context.Variables["external-context-path"];
@@ -78,11 +78,21 @@
             str += "/";
             return str;
         }" />
+    -->
+    <find-and-replace from="onclick=&quot;javascript:window.location.href = '/bo-nodo/" to="@{
+            string str = "onclick=\"javascript:window.location.href = '";
+            str += (string)context.Variables["external-context-path"];
+            str += "/";
+            return str;
+        }" />
     <set-header name="location" exists-action="override">
-      <value>@(context.Response.Headers.GetValueOrDefault("location","").Replace(context.Request.Url.Scheme + "://" + context.Request.Url.Host + "/", (string)context.Variables["external-scheme"] + "://" + (string)context.Variables["external-host"] + (string)context.Variables["external-context-path"] + "/"))</value>
+      <!--<value>@(context.Response.Headers.GetValueOrDefault("location","").Replace(context.Request.Url.Scheme + "://" + context.Request.Url.Host + "/", (string)context.Variables["external-scheme"] + "://" + (string)context.Variables["external-host"] + (string)context.Variables["external-context-path"] + "/"))</value>-->
+      <value>@(context.Response.Headers.GetValueOrDefault("location","").Replace("http" + "://" + context.Request.Url.Host + "/", (string)context.Variables["external-scheme"] + "://" + (string)context.Variables["external-host"] + (string)context.Variables["external-context-path"] + "/"))</value>
     </set-header>
+    
   </outbound>
   <on-error>
     <base />
   </on-error>
 </policies>
+
