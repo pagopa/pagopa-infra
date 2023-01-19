@@ -13,8 +13,9 @@ WORKDIR="$BASHDIR"
 set -e
 
 NODO_VERSION=$1
+WEB_BO_VERSION=$2
 DATABASE=nodo
-shift 1
+shift 2
 other=$@
 
 if [ -z "${NODO_VERSION}" ]; then
@@ -23,7 +24,6 @@ if [ -z "${NODO_VERSION}" ]; then
 fi
 
 printf "Creating env file"
-cd nodo
 
 echo 'POSTGRES_DB_HOST="db-nodo"
 POSTGRES_DB_PORT=5432
@@ -45,20 +45,29 @@ NODO_WFESP_SCHEMA="wfesp"
 NODO_RE_USERNAME="re"
 NODO_RE_PASSWORD="re"
 NODO_RE_SCHEMA="re"
+WEB_BO_USERNAME="web-bo"
+WEB_BO_PASSWORD="web-bo"
+WEB_BO_SCHEMA="web-bo"
 LQB_CONTEXTS="dev"
 ' > dev.env
 
 cat dev.env
 
 echo ">>>>>>>>>>>>>>>>>>>>>>>>>>> STEP#1 (re)creating nodo db ( CREATE SCHEMAs ... ) "
-docker compose -f docker-compose-pg.yml down -v --remove-orphans
-docker compose -f docker-compose-pg.yml up -d
-sleep 5
+docker compose -f postgresql.yml down -v --remove-orphans
+docker compose -f postgresql.yml up -d
+sleep 2
 echo "<<<<<<<<<<<<<<<<<<<<<<<<<<< done!"
 
 
 
-echo ">>>>>>>>>>>>>>>>>>>>>>>>>>> STEP#2 Executing docker compose ( liquibase Migration to version $NODO_VERSION) "
+echo ">>>>>>>>>>>>>>>>>>>>>>>>>>> STEP#2 Executing docker compose ( liquibase Migration to nodo version $NODO_VERSION) "
 export NODO_VERSION=$NODO_VERSION
-docker compose -f docker-compose-liquibase.yml up
+docker compose -f ./liquibase-nodo.yml up
 echo "<<<<<<<<<<<<<<<<<<<<<<<<<<< Migration done!"
+
+echo ">>>>>>>>>>>>>>>>>>>>>>>>>>> STEP#2 Executing docker compose ( liquibase Migration to web-bo version $WEB_BO_VERSION) "
+export WEB_BO_VERSION=$WEB_BO_VERSION
+docker compose -f ./liquibase-web-bo.yml up
+echo "<<<<<<<<<<<<<<<<<<<<<<<<<<< Migration done!"
+
