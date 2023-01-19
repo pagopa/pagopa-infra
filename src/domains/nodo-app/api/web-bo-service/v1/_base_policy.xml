@@ -34,7 +34,7 @@
     
     <set-variable name="external-scheme" value="https" />
     <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.<ENV>.platform.pagopa.it -->
-    <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /web-bo-ndp/service/v1 -->
+    <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /web-bo-ndp -->
 
     <choose>
       <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\${apim_base_path}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
@@ -59,7 +59,6 @@
   </backend>
   <outbound>
     <base />
-    <!--
     <find-and-replace from="src=&quot;/" to="@{
             string str = "src=\"";
             str += (string)context.Variables["external-context-path"];
@@ -78,7 +77,6 @@
             str += "/";
             return str;
         }" />
-    -->
     <find-and-replace from="onclick=&quot;javascript:window.location.href = '/bo-nodo/" to="@{
             string str = "onclick=\"javascript:window.location.href = '";
             str += (string)context.Variables["external-context-path"];

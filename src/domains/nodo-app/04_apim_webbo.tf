@@ -27,21 +27,21 @@ locals {
   apim_web_bo_service_api = {
     display_name          = "Web BO (BackOffice) for NDP"
     description           = "API Web BO (BackOffice) for NDP"
-    path                  = "web-bo-ndp/service"
+    path                  = "web-bo-ndp"
     subscription_required = false
     service_url           = null
   }
 }
 
+/*
 resource "azurerm_api_management_api_version_set" "api_web_bo_api" {
-
   name                = format("%s-web-bo-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_web_bo_service_api.display_name
   versioning_scheme   = "Segment"
 }
-
+*/
 
 module "apim_api_web_bo_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
@@ -51,8 +51,8 @@ module "apim_api_web_bo_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_web_bo_product.product_id]
   subscription_required = local.apim_web_bo_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_web_bo_api.id
-  api_version           = "v1"
+  #version_set_id        = azurerm_api_management_api_version_set.api_web_bo_api.id
+  #api_version           = "v1"
 
   description  = local.apim_web_bo_service_api.description
   display_name = local.apim_web_bo_service_api.display_name
@@ -68,7 +68,7 @@ module "apim_api_web_bo_api_v1" {
   xml_content = templatefile("./api/web-bo-service/v1/_base_policy.xml", {
     hostname = local.nodo_hostname
     dns_pagopa_platform = format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain)
-    apim_base_path      = "/web-bo-ndp/service/v1"
+    apim_base_path      = "/web-bo-ndp"
   })
   
 }
