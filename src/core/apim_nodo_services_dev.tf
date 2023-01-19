@@ -17,7 +17,10 @@ module "apim_nodo_dei_pagamenti_product_dev" {
   subscription_required = var.nodo_pagamenti_subkey_required
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 locals {
@@ -201,7 +204,9 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_dev" {
 #   resource_group_name = azurerm_resource_group.rg_api.name
 #   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
 
-#   xml_content = file("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml")
+#   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
+#     base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+#   })
 # }
 
 ######################################

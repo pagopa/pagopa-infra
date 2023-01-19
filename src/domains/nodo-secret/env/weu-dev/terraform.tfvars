@@ -25,14 +25,9 @@ input_file = "./secret/weu-dev/configs.json"
 
 enable_iac_pipeline = true
 
-### SP for use keyvault with access read only
-az_nodo_app_kv_ro_policy_name = "app-kv-ro-nodo-dev"
-
-az_nodo_sa_share_name = "certificates"
-upload_certificates = {
-  "cacerts-dev" = "./env/dev/resources/dev/cacerts"
-  "casogei-dev" = "./env/dev/resources/dev/CASogeiTest.pem"
-  "cacerts-sit" = "./env/dev/resources/sit/cacerts"
-  "casogei-sit" = "./env/dev/resources/sit/CASogeiTest.pem"
+az_nodo_sa_share_name_firmatore = "firmatore"
+upload_firmatore = {
+  "firmatore.zip" = "./env/weu-dev/resources/firmatore.zip"
 }
 
+cacerts_path = "./env/weu-dev/resources/cacerts"

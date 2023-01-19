@@ -108,6 +108,24 @@ locals {
     }
   }
 
+  listeners_wfespgovit = {
+    wfespgovit = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_wfesp, "pagopa.gov.it")
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+      certificate = {
+        name = var.app_gateway_wfespgovit_certificate_name
+        id = var.app_gateway_wfespgovit_certificate_name == "" ? null : replace(
+          data.azurerm_key_vault_certificate.wfespgovit[0].secret_id,
+          "/${data.azurerm_key_vault_certificate.wfespgovit[0].version}",
+          ""
+        )
+      }
+    }
+  }
+
   # routes
 
   routes = {
@@ -147,6 +165,14 @@ locals {
   routes_wisp2govit = {
     wisp2govit = {
       listener              = "wisp2govit"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+  }
+
+  routes_wfespgovit = {
+    wfespgovit = {
+      listener              = "wfespgovit"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
@@ -257,6 +283,7 @@ module "app_gw" {
     local.listeners,
     var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
     var.app_gateway_wisp2govit_certificate_name != "" ? local.listeners_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.listeners_wfespgovit : {},
   )
 
   # maps listener to backend
@@ -264,6 +291,7 @@ module "app_gw" {
     local.routes,
     var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
     var.app_gateway_wisp2govit_certificate_name != "" ? local.routes_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.routes_wfespgovit : {},
   )
 
   rewrite_rule_sets = [

@@ -1,8 +1,8 @@
 <policies>
     <inbound>
         <base />
-        <!-- https://weudev.nodo.internal.dev.platform.pagopa.it/nodo-dev(/|$)(.*) -->
-        <set-backend-service base-url="https://${hostname}/nodo-dev" />
+        <!-- https://weudev.nodo.internal.dev.platform.pagopa.it/nodo(/|$)(.*) -->
+        <set-backend-service base-url="https://${hostname}/nodo" />
     </inbound>
     <outbound>
         <base />

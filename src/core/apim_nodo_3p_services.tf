@@ -18,7 +18,10 @@ module "apim_nodo_ppt_lmi_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_api" {
@@ -82,7 +85,10 @@ module "apim_nodo_sync_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_sync_api" {
@@ -146,7 +152,10 @@ module "apim_nodo_wfesp_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
@@ -159,6 +168,10 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
   versioning_scheme   = "Segment"
 }
 
+
+# UAT   https://wfesp.test.pagopa.gov.it/redirect/wpl02
+# PROD  https://wfesp.pagopa.gov.it/redirect/wpl05
+
 module "apim_nodo_wfesp_api" {
   count  = var.env_short == "p" ? 0 : 1
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
@@ -170,11 +183,11 @@ module "apim_nodo_wfesp_api" {
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.nodo_wfesp_api[0].id
-  api_version    = "v1"
+  # api_version    = "v1"
 
   description  = "NodeDeiPagamenti (wfesp)"
   display_name = "NodeDeiPagamenti (wfesp)"
-  path         = "wfesp/api"
+  path         = "redirect/wpl02"
   protocols    = ["https"]
 
   service_url = null
@@ -186,7 +199,7 @@ module "apim_nodo_wfesp_api" {
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path      = "/wfesp/api/v1"
+    apim_base_path      = "/redirect/wpl02"
   })
 
 }
@@ -210,7 +223,10 @@ module "apim_nodo_fatturazione_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_fatturazione_api" {
@@ -273,7 +289,10 @@ module "apim_nodo_web_bo_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = "0.0.0.0"
+    address-range-to   = "0.0.0.0"
+  })
 }
 
 # resource "azurerm_api_management_api_version_set" "nodo_web_bo_api" {
@@ -287,7 +306,7 @@ module "apim_nodo_web_bo_product" {
 # }
 
 module "apim_nodo_web_bo_api" {
-  count = var.env_short == "p" ? 0 : 1
+  count = var.env_short != "p" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
@@ -302,7 +321,7 @@ module "apim_nodo_web_bo_api" {
 
   description  = "Nodo OnCloud WEB-BO" # "NodeDeiPagamenti (web-bo)"
   display_name = "Nodo OnCloud WEB-BO" # "NodeDeiPagamenti (web-bo)"
-  path         = "web-bo"
+  path         = "bo-nodo"
   protocols    = ["https"]
 
   service_url = null
@@ -313,8 +332,9 @@ module "apim_nodo_web_bo_api" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_base_policy.xml", {
-    dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path      = "/web-bo"
+    # dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
+    dns_pagopa_platform = var.env_short != "u" ? "uat.wisp2.pagopa.gov.it" : format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
+    apim_base_path      = "/bo-nodo"
     allowed_ip_1        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0] # PagoPA on prem VPN
     allowed_ip_2        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1] # PagoPA on prem VPN DR
     allowed_ip_3        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[3] # Softlab L1 Pagamenti VPN
@@ -326,6 +346,8 @@ module "apim_nodo_web_bo_api" {
   })
 
 }
+
+
 module "apim_nodo_web_bo_api_onprem" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -387,7 +409,10 @@ module "apim_nodo_web_bo_product_history" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 # resource "azurerm_api_management_api_version_set" "nodo_web_bo_api" {

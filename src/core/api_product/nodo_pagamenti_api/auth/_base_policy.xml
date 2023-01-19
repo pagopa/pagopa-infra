@@ -43,6 +43,9 @@
           return doc.ToString();
         }
       </set-body>
+      <set-header name="X-Forwarded-For" exists-action="override">
+        <value>{{xForwardedFor}}</value>
+      </set-header>
     </inbound>
     <backend>
         <base />

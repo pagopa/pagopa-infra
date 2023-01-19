@@ -42,12 +42,8 @@ nodo_user_node_pool = {
   node_count_min  = "1" #TODO change to 2 or 3 in prod
   node_count_max  = "2"
   node_labels = {
-    node_name : "nodo-dev",
-    node_type : "nodo-cron-dev",
-    "nodo-dev"        = "true",
-    "nodo-cron-dev"   = "true",
-    "nodo-dev-canary" = "true",
-  "nodo-cron-dev-canary" = "true", },
+    "nodo" = "true",
+  },
   node_taints        = [],
   node_tags          = { node_tag_1 : "1" },
   nodo_pool_max_pods = "250",
