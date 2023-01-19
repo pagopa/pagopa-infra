@@ -99,44 +99,46 @@ resource "helm_release" "kube_prometheus_stack" {
   namespace  = kubernetes_namespace.monitoring.metadata[0].name
 
   values = [
-    "${file(var.kube_prometheus_stack_helm.values_file)}"
+    "${file("${var.kube_prometheus_stack_helm.values_file}")}"
   ]
+  /*
   set {
     name = "grafana.dashboards.ds_nodo.akka-actors.json"
-    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_actors)}"
+    value = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_actors}")}"
   }
   set {
     name = "grafana.dashboards.ds_nodo.akka-cluster.json"
-    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_cluster)}"
+    value = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_cluster}")}"
   }
   set {
     name = "grafana.dashboards.ds_nodo.akka-dispatchers.json"
-    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_dispatchers)}"
+    value = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_dispatchers}")}"
   }
   set {
     name = "grafana.dashboards.ds_nodo.akka-http-and-play-endpoints.json"
-    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_http_and_play_endpoints)}"
+    value = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_http_and_play_endpoints}")}"
   }
   set {
     name = "grafana.dashboards.ds_nodo.akka-http-and-play-servers.json"
-    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_http_and_play_servers)}"
+    value = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_http_and_play_servers}")}"
   }
   set {
     name = "grafana.dashboards.ds_nodo.akka-routers.json"
-    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_routers)}"
+    value = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_routers}")}"
   }
   set {
     name = "grafana.dashboards.ds_nodo.jvm-metrics.json"
-    value = "${file(var.kube_prometheus_stack_helm.dashboard_jvm_metrics)}"
+    value = "${file("${var.kube_prometheus_stack_helm.dashboard_jvm_metrics}")}"
   }
   set {
     name = "grafana.dashboards.ds_nodo.jvm-micrometer.json"
-    value = "${file(var.kube_prometheus_stack_helm.dashboard_jvm_micrometer)}"
+    value = "${file("${var.kube_prometheus_stack_helm.dashboard_jvm_micrometer}")}"
   }
   set {
     name = "grafana.dashboards.ds_nodo.namespace-nodo.json"
-    value = "${file(var.kube_prometheus_stack_helm.dashboard_namespace_nodo)}"
+    value = "${file("${var.kube_prometheus_stack_helm.dashboard_namespace_nodo}")}"
   }
+  */
 
 }
 
