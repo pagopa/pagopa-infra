@@ -211,7 +211,7 @@ variable "reloader_helm" {
   })
   description = "reloader helm chart configuration"
 }
-
+/*
 variable "prometheus_helm" {
   type = object({
     chart_version = string,
@@ -245,6 +245,50 @@ variable "prometheus_helm" {
     }),
   })
   description = "prometheus helm chart configuration"
+}
+*/
+
+variable "kube_prometheus_stack_helm" {
+  type = object({
+    chart_version = string,
+    alertmanager = object({
+      image_registry = string,
+      image_repository = string,
+      image_tag  = string,
+      image_sha  = string,
+    }),
+    kube_webhook_certgen = object({
+      image_registry = string,
+      image_repository = string,
+      image_tag  = string,
+      image_sha  = string,
+    }),
+    prometheus_operator = object({
+      image_registry = string,
+      image_repository = string,
+      image_tag  = string,
+      image_sha  = string,
+    }),
+    prometheus_config_reloader = object({
+      image_registry = string,
+      image_repository = string,
+      image_tag  = string,
+      image_sha  = string,
+    }),
+    thanos = object({
+      image_registry = string,
+      image_repository = string,
+      image_tag  = string,
+      image_sha  = string,
+    }),
+    prometheus = object({
+      image_registry = string,
+      image_repository = string,
+      image_tag  = string,
+      image_sha  = string,
+    }),
+  })
+  description = "kube-prometheus-stack helm chart configuration"
 }
 
 variable "tls_cert_check_helm" {
