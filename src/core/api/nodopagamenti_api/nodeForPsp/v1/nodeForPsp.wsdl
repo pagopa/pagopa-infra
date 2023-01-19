@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="nodeForPsp"
-                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-                  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
-                  xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd"
-                  xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl">
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+  xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd"
+  xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl">
 
   <wsdl:types>
     <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+      xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 
 
       <!--Simple type-->
@@ -30,13 +30,13 @@
       <xsd:simpleType name="stIdPSP">
         <xsd:annotation>
           <xsd:documentation>
-            PSP Identifier, it has been assigned from pagoPA.
+    PSP Identifier, it has been assigned from pagoPA.
 
-            Code used in the primitive web service and in its objects exchanged with the NodoSPC.
+    Code used in the primitive web service and in its objects exchanged with the NodoSPC.
 
-            The code is generally represented by the **BIC** code (_Bank Identifier Code_) of the PSP.
+    The code is generally represented by the **BIC** code (_Bank Identifier Code_) of the PSP.
 
-            In the absence of the BIC code, or to handle particular situations, another code can be used, as long as it uniquely identifies the PSP.
+    In the absence of the BIC code, or to handle particular situations, another code can be used, as long as it uniquely identifies the PSP.
           </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -48,11 +48,11 @@
       <xsd:simpleType name="stIdBroker">
         <xsd:annotation>
           <xsd:documentation>
-            Broker Identifier, it has been assigned from pagoPA.
+    Broker Identifier, it has been assigned from pagoPA.
 
-            Identification of the intermediary/broker of the PSP that provides the specific access (channel) to the PSP for the service delivery.
+    Identification of the intermediary/broker of the PSP that provides the specific access (channel) to the PSP for the service delivery.
 
-            _Note_: The intermediary/broker can coincide with the PSP itself
+    _Note_: The intermediary/broker can coincide with the PSP itself
 
           </xsd:documentation>
         </xsd:annotation>
@@ -65,9 +65,9 @@
       <xsd:simpleType name="stIdChannel">
         <xsd:annotation>
           <xsd:documentation>
-            Channel Identifier, it identifies a payment service category and through which the transaction is carried out.
+    Channel Identifier, it identifies a payment service category and through which the transaction is carried out.
 
-            A Channel identifier belongs to only one PSP intermediary/broker and consequently must be unique with respect to the PSP.
+    A Channel identifier belongs to only one PSP intermediary/broker and consequently must be unique with respect to the PSP.
           </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -118,14 +118,14 @@
       <xsd:simpleType name="stIdempotencyKey">
         <xsd:annotation>
           <xsd:documentation>
-            `idempotencyKey`, it has been genearated from PSP.
+    `idempotencyKey`, it has been genearated from PSP.
 
-            The `activationPaymentNotice` request expects this input parameter,  whose content is a discretion of caller, which makes the call idempotent with respect to the
-            same value of `idempotencyKey`, i.e. with the same key the platform will respond with the same response.
+    The `activationPaymentNotice` request expects this input parameter,  whose content is a discretion of caller, which makes the call idempotent with respect to the
+    same value of `idempotencyKey`, i.e. with the same key the platform will respond with the same response.
 
-            It's obtained as concatenation of the PSP' fiscal code followed by a `_` and a unique random string within PSP, that generated it
+    It's obtained as concatenation of the PSP' fiscal code followed by a `_` and a unique random string within PSP, that generated it
 
-            The system won't check the value of the PSP tax number on the DB, but the above criteria are useful for creating and guaranteeing a unique `idempotencyKey`.
+    The system won't check the value of the PSP tax number on the DB, but the above criteria are useful for creating and guaranteeing a unique `idempotencyKey`.
 
           </xsd:documentation>
         </xsd:annotation>
@@ -137,10 +137,10 @@
       <xsd:simpleType name="stPaymentToken">
         <xsd:annotation>
           <xsd:documentation>
-            It is generated by the system during the payment activation phase, it is the correlation identifier to match activation and payment outcome.
+    It is generated by the system during the payment activation phase, it is the correlation identifier to match activation and payment outcome.
 
-            - **PA OLD**: the PA receives it into `CCP` (_CodiceContestoPagamento_) which uniquely identifies a single payment activity started from PSP.
-            - **PA NEW**: the PA does not know it, it will receive it as a unique identifier of the receipt.
+    - **PA OLD**: the PA receives it into `CCP` (_CodiceContestoPagamento_) which uniquely identifies a single payment activity started from PSP.
+    - **PA NEW**: the PA does not know it, it will receive it as a unique identifier of the receipt.
 
           </xsd:documentation>
         </xsd:annotation>
@@ -159,7 +159,7 @@
       <xsd:simpleType name="stPassword">
         <xsd:annotation>
           <xsd:documentation>
-            channel password, it has been assigned from pagoPA
+                    channel password, it has been assigned from pagoPA
           </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -178,13 +178,13 @@
       <xsd:simpleType name="stExpirationTime">
         <xsd:annotation>
           <xsd:documentation>
-            Token expiration time ( ms ), max 30 minute.
+    Token expiration time ( ms ), max 30 minute.
 
-            The duration of the payment token can be set in 2 ways :
+    The duration of the payment token can be set in 2 ways :
 
-            - _Implicitly_ from the **pagoPA** platform, if it isn't set in the request of `activatePaymentNotice` (default value duration = `30` minutes)
+    - _Implicitly_ from the **pagoPA** platform, if it isn't set in the request of `activatePaymentNotice` (default value duration = `30` minutes)
 
-            - _Explicitly_ from the **PSP**, if it's set in request to the `activatePaymentNotice`
+    - _Explicitly_ from the **PSP**, if it's set in request to the `activatePaymentNotice`
 
           </xsd:documentation>
         </xsd:annotation>
@@ -203,7 +203,7 @@
       <xsd:simpleType name="stAmount">
         <xsd:annotation>
           <xsd:documentation>
-            Amount of payment in euro
+    Amount of payment in euro
           </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:decimal">
@@ -221,9 +221,9 @@
       <xsd:simpleType name="stNoticeNumber">
         <xsd:annotation>
           <xsd:documentation>
-            `noticeNumber` is composed by :
+    `noticeNumber` is composed by :
 
-            `[auxDigit][segregationCode][IUVBase][IUVCheckDigit]`
+    `[auxDigit][segregationCode][IUVBase][IUVCheckDigit]`
           </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -247,7 +247,7 @@
       <xsd:simpleType name="stFiscalCodePA">
         <xsd:annotation>
           <xsd:documentation>
-            Tax code of the public administration to which the payment notification is made out
+    Tax code of the public administration to which the payment notification is made out
           </xsd:documentation>
         </xsd:annotation>
 
@@ -260,7 +260,7 @@
       <xsd:simpleType name="stPaymentMethod">
         <xsd:annotation>
           <xsd:documentation>
-            Method of the payment , i.e. `cash`, `creditCard`, `bancomat` or `other`
+    Method of the payment , i.e. `cash`, `creditCard`, `bancomat` or `other`
           </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -274,7 +274,7 @@
       <xsd:simpleType name="stPaymentChannel">
         <xsd:annotation>
           <xsd:documentation>
-            Channel of the payment , i.e. `frontOffice`, `atm`, `onLine`, `app` or `other`
+    Channel of the payment , i.e. `frontOffice`, `atm`, `onLine`, `app` or `other`
           </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -289,10 +289,10 @@
       <xsd:simpleType name="stOutcome">
         <xsd:annotation>
           <xsd:documentation>
-            The outcome of the operation may contain the following result string code:
+    The outcome of the operation may contain the following result string code:
 
-            - **OK** : operation performed successfully
-            - **KO** : operation terminated with error
+    - **OK** : operation performed successfully
+    - **KO** : operation terminated with error
           </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -310,9 +310,9 @@
       <xsd:simpleType name="stEntityUniqueIdentifierValue">
         <xsd:annotation>
           <xsd:documentation>
-            Alphanumeric field that can contain the tax code or, alternatively, the VAT number of the payer.
+    Alphanumeric field that can contain the tax code or, alternatively, the VAT number of the payer.
 
-            In applicable cases, when it is not possible to identify for tax purposes the subject, the `ANONIMO` value can be used
+    In applicable cases, when it is not possible to identify for tax purposes the subject, the `ANONIMO` value can be used
           </xsd:documentation>
         </xsd:annotation>
 
@@ -325,10 +325,10 @@
       <xsd:simpleType name="stEntityUniqueIdentifierType">
         <xsd:annotation>
           <xsd:documentation>
-            Alphanumeric field indicating the nature of the subject; it can assume the following values:
+    Alphanumeric field indicating the nature of the subject; it can assume the following values:
 
-            - **F** : Natural person
-            - **G** : Legal Person
+    - **F** : Natural person
+    - **G** : Legal Person
           </xsd:documentation>
         </xsd:annotation>
 
@@ -348,14 +348,14 @@
       <xsd:simpleType name="stAmountOptionPSP">
         <xsd:annotation>
           <xsd:documentation>
-            Indicates the payment criteria accepted by public administration respect to the amount, i.e. if it accepts an `amount` for this payment option
+    Indicates the payment criteria accepted by public administration respect to the amount, i.e. if it accepts an `amount` for this payment option
 
-            - equals `EQ`
-            - less `LT`
-            - greater `GT`
-            - any `ANY`
+    - equals `EQ`
+    - less `LT`
+    - greater `GT`
+    - any `ANY`
 
-            than indicated.
+    than indicated.
           </xsd:documentation>
         </xsd:annotation>
 
@@ -441,17 +441,17 @@
       <xsd:complexType name="ctSubject">
         <xsd:annotation>
           <xsd:documentation>
-            Contains all data for the subject of payment :
+    Contains all data for the subject of payment :
 
-            - `uniqueIdentifier` : (_see below to details_)
-            - `fullName` : name of the subject
-            - `streetName` : street name
-            - `civicNumber` : building number
-            - `postalCode` : postal code
-            - `city` : town name
-            - `stateProvinceRegion` : country subdivision
-            - `country` : country name
-            - `e-mail` : remittance location electronic address
+    - `uniqueIdentifier` : (_see below to details_)
+    - `fullName` : name of the subject
+    - `streetName` : street name
+    - `civicNumber` : building number
+    - `postalCode` : postal code
+    - `city` : town name
+    - `stateProvinceRegion` : country subdivision
+    - `country` : country name
+    - `e-mail` : remittance location electronic address
 
           </xsd:documentation>
         </xsd:annotation>
@@ -489,26 +489,26 @@
       <xsd:complexType name="ctFaultBean">
         <xsd:annotation>
           <xsd:documentation>
-            - `id` : Subject issuing the error.
-            Allowed values ​​are :
-            - `NodoDeiPagamentiSPC` : constant which identifies the NodoSPC
-            - `[domain identifier]` : domain id of the creditor entity issuing the fault
-            - `[PSP identifier]` : PSP identifier issuing the fault
+    - `id` : Subject issuing the error.
+    Allowed values ​​are :
+      - `NodoDeiPagamentiSPC` : constant which identifies the NodoSPC
+      - `[domain identifier]` : domain id of the creditor entity issuing the fault
+      - `[PSP identifier]` : PSP identifier issuing the fault
 
-            - `faultCode` : error code (see `stFaultCode` to details)
+    - `faultCode` : error code (see `stFaultCode` to details)
 
-            - `faultString` : Specification of the error code, specific to the subject issuing it. Contains a more talking description relating to the `faultCode`.
+    - `faultString` : Specification of the error code, specific to the subject issuing it. Contains a more talking description relating to the `faultCode`.
 
-            - `description` : Additional description of the error set by the NodoSPC, by the creditor or PSP.
+    - `description` : Additional description of the error set by the NodoSPC, by the creditor or PSP.
 
-            - `serial` : Position of the element in the referenced list. Useful when providing a parameter in the form of a vector (for example, in the primitive `SendCarrelloRPT` node).
-            If the error is generated by the EC or by the PSP, the data reported is the value of the `faultBean.serial` data set by the EC or by the PSP.
+    - `serial` : Position of the element in the referenced list. Useful when providing a parameter in the form of a vector (for example, in the primitive `SendCarrelloRPT` node).
+    If the error is generated by the EC or by the PSP, the data reported is the value of the `faultBean.serial` data set by the EC or by the PSP.
 
-            - `originalFaultCode` : Error code generated by the counterpart. (_Set only it isn't generated by NodoSPC._)
+    - `originalFaultCode` : Error code generated by the counterpart. (_Set only it isn't generated by NodoSPC._)
 
-            - `originalFaultString` : Specification of the error code generated by the counterpart. (_Set only it isn't generated by NodoSPC._)
+    - `originalFaultString` : Specification of the error code generated by the counterpart. (_Set only it isn't generated by NodoSPC._)
 
-            - `originalDescription` : Additional description of the error generated by the counterparty. (_Set only it isn't generated by NodoSPC._)
+    - `originalDescription` : Additional description of the error generated by the counterparty. (_Set only it isn't generated by NodoSPC._)
           </xsd:documentation>
         </xsd:annotation>
 
@@ -527,25 +527,25 @@
       <xsd:complexType name="ctQrCode">
         <xsd:annotation>
           <xsd:documentation>
-            Payment Notice **QR-CODE** data.
-            QR-CODE is ISO/IEC 18004:2015 compliant generated with:
+    Payment Notice **QR-CODE** data.
+    QR-CODE is ISO/IEC 18004:2015 compliant generated with:
 
-            Parameters for generating the QR-CODE
+    Parameters for generating the QR-CODE
 
-            - Symbol Version : 4
-            - Modules : 33x33
-            - Modules width : 3 pixels
-            - ECC Level: M ( max correction error 15%)
-            - Character set : UTF-8
+    - Symbol Version : 4
+    - Modules : 33x33
+    - Modules width : 3 pixels
+    - ECC Level: M ( max correction error 15%)
+    - Character set : UTF-8
 
-            QR-CODE contains a string formatted as :
-            `PAGOPA|002|noticeNumber|fiscalCode|amount`
+    QR-CODE contains a string formatted as :
+    `PAGOPA|002|noticeNumber|fiscalCode|amount`
 
-            Where `noticeNumber` is composed by :
+    Where `noticeNumber` is composed by :
 
-            `[auxDigit][segregationCode][IUVBase][IUVCheckDigit]`
+    `[auxDigit][segregationCode][IUVBase][IUVCheckDigit]`
 
-            While `fiscalCode` is the creditor tax code.
+    While `fiscalCode` is the creditor tax code.
           </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
@@ -579,16 +579,16 @@
       <xsd:complexType name="ctPaymentOptionsDescriptionList">
         <xsd:annotation>
           <xsd:documentation>
-            Structure containing the details of possible payments relating to the debt position to be paid.
+    Structure containing the details of possible payments relating to the debt position to be paid.
 
-            Currently set at 5 eligible payments per single position.
+    Currently set at 5 eligible payments per single position.
 
-            Where each `paymentOptionDescription` items contains :
+    Where each `paymentOptionDescription` items contains :
 
-            - `amount` : payment amount
-            - `options` : indicates the payment criteria accepted by the institution with respect to the amount, or if it accepts for this payment option other than `amount`.
-            - `dueDate` : indicates the expiration payment date according to the ISO 8601 format `[YYYY]-[MM]-[DD]`.
-            - `paymentNote` : Free text available to describe the payment reasons
+    - `amount` : payment amount
+    - `options` : indicates the payment criteria accepted by the institution with respect to the amount, or if it accepts for this payment option other than `amount`.
+    - `dueDate` : indicates the expiration payment date according to the ISO 8601 format `[YYYY]-[MM]-[DD]`.
+    - `paymentNote` : Free text available to describe the payment reasons
 
           </xsd:documentation>
         </xsd:annotation>
@@ -619,17 +619,17 @@
       <xsd:complexType name="ctTransferListPSP">
         <xsd:annotation>
           <xsd:documentation>
-            Structure containing the details of possible tranfer payments.
+    Structure containing the details of possible tranfer payments.
 
-            Currently set at 5 eligible payments per single position.
+    Currently set at 5 eligible payments per single position.
 
-            Where each `transfer` items contains :
+    Where each `transfer` items contains :
 
-            - `idTransfer` : index of the list
-            - `transferAmount` : amount
-            - `fiscalCodePA` : Tax code of the public administration
-            - `IBAN` : contains the IBAN of the account to be credited
-            - `remittanceInformation` : reason for payment (_alias_ `causaleVersamento`)
+    - `idTransfer` : index of the list
+    - `transferAmount` : amount
+    - `fiscalCodePA` : Tax code of the public administration
+    - `IBAN` : contains the IBAN of the account to be credited
+    - `remittanceInformation` : reason for payment (_alias_ `causaleVersamento`)
           </xsd:documentation>
         </xsd:annotation>
 
@@ -723,21 +723,21 @@
               <xsd:element name="paymentDescription" type="tns:stText210" minOccurs="0">
                 <xsd:annotation>
                   <xsd:documentation>
-                    full text description
+                                    full text description
                   </xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
               <xsd:element name="fiscalCodePA" type="tns:stFiscalCodePA" minOccurs="0">
                 <xsd:annotation>
                   <xsd:documentation>
-                    tax code of the public administration to which the payment notification is made out
+    tax code of the public administration to which the payment notification is made out
                   </xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
               <xsd:element name="noticeNumber" type="tns:stNoticeNumber" minOccurs="0">
                 <xsd:annotation>
                   <xsd:documentation>
-                    notice number requested
+    notice number requested
                   </xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
@@ -745,14 +745,14 @@
               <xsd:element name="companyName" type="tns:stText140" minOccurs="0">
                 <xsd:annotation>
                   <xsd:documentation>
-                    Public Administration full name
+    Public Administration full name
                   </xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
               <xsd:element name="officeName" type="tns:stText140" minOccurs="0">
                 <xsd:annotation>
                   <xsd:documentation>
-                    Public Admninistration Department Name
+    Public Admninistration Department Name
                   </xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
@@ -765,9 +765,9 @@
       <xsd:complexType name="verifyPaymentNoticeReq">
         <xsd:annotation>
           <xsd:documentation>
-            Its a request to verify payment starting from a payment notice.
+    Its a request to verify payment starting from a payment notice.
 
-            The PSP shall call it to verify the payment notice and obtains all payment options available for this debt position.
+    The PSP shall call it to verify the payment notice and obtains all payment options available for this debt position.
           </xsd:documentation>
         </xsd:annotation>
 
@@ -783,21 +783,21 @@
       <xsd:complexType name="verifyPaymentNoticeRes">
         <xsd:annotation>
           <xsd:documentation>
-            Its a response to `verifyPaymentNoticeReq` and contains :
+    Its a response to `verifyPaymentNoticeReq` and contains :
 
-            - `outcome` and _optional_ `fault` (_see below to details_)
-            - `paymentList` : the list of all available payment options (_see below to details_)
-            - `paymentDescription` :
+    - `outcome` and _optional_ `fault` (_see below to details_)
+    - `paymentList` : the list of all available payment options (_see below to details_)
+    - `paymentDescription` :
 
-            If the Public Administration is configured as _OLD_ (i.e. still uses the old primitives) this field must be set with the data `nodoTipoDatiPagamentoPA` of the `nodoVerificaRPTRisposta` specifically with:
-            - `causaleVersamento`: represents the extended description of the reason for the payment
-            or
-            - `spezzoniCausaleVersamento`: structure available to Public Administration to specify the payment reasons.
+    If the Public Administration is configured as _OLD_ (i.e. still uses the old primitives) this field must be set with the data `nodoTipoDatiPagamentoPA` of the `nodoVerificaRPTRisposta` specifically with:
+    - `causaleVersamento`: represents the extended description of the reason for the payment
+    or
+    - `spezzoniCausaleVersamento`: structure available to Public Administration to specify the payment reasons.
 
-            The size of the current field is such as to allow the concatenation of the old information previously described.
+    The size of the current field is such as to allow the concatenation of the old information previously described.
 
-            - `companyName` : Public Administration full name
-            - `officeName` : Public Administration Department Name
+    - `companyName` : Public Administration full name
+    - `officeName` : Public Administration Department Name
           </xsd:documentation>
         </xsd:annotation>
         <xsd:complexContent>
@@ -818,12 +818,12 @@
       <xsd:complexType name="activatePaymentNoticeReq">
         <xsd:annotation>
           <xsd:documentation>
-            This request permits a PSP starting a payment process.
+    This request permits a PSP starting a payment process.
 
-            The `amount` should not match with `amount` received into `verifyPaymentNotice` response.
+    The `amount` should not match with `amount` received into `verifyPaymentNotice` response.
 
-            If the PA is configured as _OLD_ , if there is no `amount` in input, the system shall return an error to the PSP.
-            **NOTE** : _the `amount` is required for `paaAttivaRPT`_
+    If the PA is configured as _OLD_ , if there is no `amount` in input, the system shall return an error to the PSP.
+    **NOTE** : _the `amount` is required for `paaAttivaRPT`_
           </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
@@ -852,24 +852,24 @@
       <xsd:complexType name="activatePaymentNoticeRes">
         <xsd:annotation>
           <xsd:documentation>
-            Its a response to `activatePaymentNoticeReq` and contains :
+    Its a response to `activatePaymentNoticeReq` and contains :
 
-            - `outcome` and _optional_ `fault` (_see below to details_)
-            - `totalAmount` (_see below to details_)
-            - `paymentDescription` :
+    - `outcome` and _optional_ `fault` (_see below to details_)
+    - `totalAmount` (_see below to details_)
+    - `paymentDescription` :
 
-            If the Public Admninistration is configured as _OLD_ (i.e. still uses the old primitives) this field must be set with the data `nodeTipoDatiPagamentoPA` of the` nodeVerificaRPTRanspond` specifically:
-            - `causaleVersamento`: represents the extended description of the reason for the payment, or
-            - `spezzoniCausaleVersamento`: structure available to Public Administration to specify the payment reasons.
+    If the Public Admninistration is configured as _OLD_ (i.e. still uses the old primitives) this field must be set with the data `nodeTipoDatiPagamentoPA` of the` nodeVerificaRPTRanspond` specifically:
+    - `causaleVersamento`: represents the extended description of the reason for the payment, or
+    - `spezzoniCausaleVersamento`: structure available to Public Administration to specify the payment reasons.
 
-            The size of the current field is such as to allow the concatenation of the old information previously described.
+    The size of the current field is such as to allow the concatenation of the old information previously described.
 
-            - `companyName` : Public Administration full name
-            - `officeName` : Public Admninistration Department Name
-            - `paymentToken` (_see below to details_)
-            - `transferList` : : the list of all available transfer (_see below to details_)
-            - `creditorReferenceId` : it contains a **IUV**. The **IUV** code is assigned by PA through the generation rules provided by _SANP_.
-            The **IUV** code constitutes the element through which the PA receives all the information that characterizes the payment.
+    - `companyName` : Public Administration full name
+    - `officeName` : Public Admninistration Department Name
+    - `paymentToken` (_see below to details_)
+    - `transferList` : : the list of all available transfer (_see below to details_)
+    - `creditorReferenceId` : it contains a **IUV**. The **IUV** code is assigned by PA through the generation rules provided by _SANP_.
+    The **IUV** code constitutes the element through which the PA receives all the information that characterizes the payment.
           </xsd:documentation>
         </xsd:annotation>
         <xsd:complexContent>
@@ -894,9 +894,9 @@
       <xsd:complexType name="ctOutcomeDetails">
         <xsd:annotation>
           <xsd:documentation>
-            The outcome details contains a payment method and channel , a PSP's fee, the `payer` subject and two date :
-            - `applicationDate` : when payment is made
-            - `transferDate` : transfer order date, the date of effective transfer amount
+    The outcome details contains a payment method and channel , a PSP's fee, the `payer` subject and two date :
+    - `applicationDate` : when payment is made
+    - `transferDate` : transfer order date, the date of effective transfer amount
 
           </xsd:documentation>
         </xsd:annotation>
@@ -934,9 +934,9 @@
       <xsd:complexType name="sendPaymentOutcomeReq">
         <xsd:annotation>
           <xsd:documentation>
-            This request permits a PSP to send a receipt.
+    This request permits a PSP to send a receipt.
 
-            The `details` field contains the details of the payment made by the user.
+    The `details` field contains the details of the payment made by the user.
 
           </xsd:documentation>
         </xsd:annotation>
@@ -1165,13 +1165,13 @@
     <wsdl:operation name="verificaBollettino">
       <wsdl:documentation>
 
-        **NOTE** : valid only for [Poste Italiane](https://www.poste.it/)
+**NOTE** : valid only for [Poste Italiane](https://www.poste.it/)
 
-        Interrogazione del bollettino postale PA contenuto all'interno dell'avviso di pagamento.
+Interrogazione del bollettino postale PA contenuto all'interno dell'avviso di pagamento.
 
-        Ogni bollettino postale PA e' identificato per mezzo delle informazioni contenute all'interno del [data-matrix](https://docs.italia.it/italia/pagopa/pagopa-specifichepagamenti-docs/it/stabile/_docs/SANP_2.2_Sez3_Cap10_PagamentoPressoPSP.html), ovvero conto corrente postale e numero avviso.
+Ogni bollettino postale PA e' identificato per mezzo delle informazioni contenute all'interno del [data-matrix](https://docs.italia.it/italia/pagopa/pagopa-specifichepagamenti-docs/it/stabile/_docs/SANP_2.2_Sez3_Cap10_PagamentoPressoPSP.html), ovvero conto corrente postale e numero avviso.
 
-        L'operazione ritorna tutti le possibili opzioni di pagamento disponibili per l'avviso di pagamnto.
+L'operazione ritorna tutti le possibili opzioni di pagamento disponibili per l'avviso di pagamnto.
       </wsdl:documentation>
       <wsdl:input message="tns:verificaBollettinoReq" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/verificaBollettinoReq" />
       <wsdl:output message="tns:verificaBollettinoRes" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/verificaBollettinoRes" />
@@ -1180,9 +1180,9 @@
 
     <wsdl:operation name="verifyPaymentNotice">
       <wsdl:documentation>
-        Gets Payment Notice Data. A Payment Notice is identified by its QR-CODE data.
+Gets Payment Notice Data. A Payment Notice is identified by its QR-CODE data.
 
-        The operation returns available payment options to the user. Each payment options describes the acceptance `amount` values to be used requesting a payment activation ( see _activatePaymentNotice_ ).
+The operation returns available payment options to the user. Each payment options describes the acceptance `amount` values to be used requesting a payment activation ( see _activatePaymentNotice_ ).
 
       </wsdl:documentation>
       <wsdl:input message="tns:verifyPaymentNoticeReq" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/verifyPaymentNoticeReq" />
@@ -1191,21 +1191,21 @@
     </wsdl:operation>
     <wsdl:operation name="activatePaymentNotice">
       <wsdl:documentation>
-        Request a payment activation, it returns a `paymentToken`.
+Request a payment activation, it returns a `paymentToken`.
 
-        Payment amount shall be equal to a payment option returned by `verifyPaymentNotice` ; if omitted,  it will setted by the public administration.
-        The operation supports client idempotency for safely retrying requests without accidentally performing the same operation twice ( or to retrieve missed responses).
-        The idempontency key works by saving the resulting status code and body of the first request made for any given idempotency key if its status is **OK**.
-        Subsequent request with the same key return the same result, except for error codes.
+Payment amount shall be equal to a payment option returned by `verifyPaymentNotice` ; if omitted,  it will setted by the public administration.
+The operation supports client idempotency for safely retrying requests without accidentally performing the same operation twice ( or to retrieve missed responses).
+The idempontency key works by saving the resulting status code and body of the first request made for any given idempotency key if its status is **OK**.
+Subsequent request with the same key return the same result, except for error codes.
 
-        An idempotency key is a unique value generated by the client which the server uses to recognize subsequent retries of the same request.
-        How you create unique keys is up to you, but we suggest using a random string with enough entropy to avoid collisions. _(see `stIdempotencyKey` definition for details)_
-        Keys are eligible to be removed from the system automatically after they are at least 24 hours old, and a new request is generated if a key is reused after the original has been pruned.
-        The idempotency layer compares incoming parameters to those of the original request and errors unless they're the same to prevent accidental misuse.
+An idempotency key is a unique value generated by the client which the server uses to recognize subsequent retries of the same request.
+How you create unique keys is up to you, but we suggest using a random string with enough entropy to avoid collisions. _(see `stIdempotencyKey` definition for details)_
+Keys are eligible to be removed from the system automatically after they are at least 24 hours old, and a new request is generated if a key is reused after the original has been pruned.
+The idempotency layer compares incoming parameters to those of the original request and errors unless they're the same to prevent accidental misuse.
 
-        The `paymentToken` is a unique key with no expiration date _( as default, see `expirationTime` definition for details)_ , and allow a PSP to start an user payment session _(see `stPaymentToken` definition for details)_, until the receipt of a `sendPaymentOutcome`.
+The `paymentToken` is a unique key with no expiration date _( as default, see `expirationTime` definition for details)_ , and allow a PSP to start an user payment session _(see `stPaymentToken` definition for details)_, until the receipt of a `sendPaymentOutcome`.
 
-        Any subsequent request for the same payment notice will be denied.
+Any subsequent request for the same payment notice will be denied.
       </wsdl:documentation>
       <wsdl:input message="tns:activatePaymentNoticeReq" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/activatePaymentNoticeReq" />
       <wsdl:output message="tns:activatePaymentNoticeRes" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/activatePaymentNoticeRes" />
@@ -1213,13 +1213,13 @@
     </wsdl:operation>
     <wsdl:operation name="sendPaymentOutcome">
       <wsdl:documentation>
-        Close payment session associated with the paymentToken.
-        The outcome can be positive or negative.
+Close payment session associated with the paymentToken.
+The outcome can be positive or negative.
 
-        if **positive**, the psp SHALL fill the _details_
+if **positive**, the psp SHALL fill the _details_
 
-        The operation use the paymentToken as idempotency key for safely retrying requests without accidentally performing the same operation twice ( or to retrieve missed responses).
-        The idempotency layer compares incoming parameters to those of the original request and errors unless they're the same to prevent accidental misuse.
+The operation use the paymentToken as idempotency key for safely retrying requests without accidentally performing the same operation twice ( or to retrieve missed responses).
+The idempotency layer compares incoming parameters to those of the original request and errors unless they're the same to prevent accidental misuse.
 
       </wsdl:documentation>
       <wsdl:input message="tns:sendPaymentOutcomeReq" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/sendPaymentOutcomeReq" />
