@@ -7,7 +7,7 @@ locals {
     display_name = "GPD Payments pagoPA - SOAP - aks"
     description  = "SOAP API del servizio Payments per Gestione Posizione Debitorie"
     # temporary path for migration purpose - the official one will be gpd-payments/api
-    path                  = "gps/gpd-payments/api"
+    path                  = "gpd-payments/api"
     published             = true
     subscription_required = false
     approval_required     = false
@@ -18,7 +18,7 @@ locals {
     display_name = "GPD Payments pagoPA - REST - aks"
     description  = "REST API del servizio Payments per Gestione Posizione Debitorie"
     # temporary path for migration purpose - the official one will be gpd-payments/api
-    path                  = "gps/gpd-payment-receipts/api"
+    path                  = "payment-receipts/api"
     published             = true
     subscription_required = false
     approval_required     = false
