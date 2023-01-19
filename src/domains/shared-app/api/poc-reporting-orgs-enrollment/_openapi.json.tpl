@@ -16,6 +16,9 @@
                 "tags": [
                     "Home Controller"
                 ],
+                "summary": "Health check",
+                "description": "Return OK if application is started",
+                "operationId": "healthCheck",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -41,6 +44,9 @@
                 "tags": [
                     "Enrollments Controller"
                 ],
+                "summary": "Return the list of organizations",
+                "description": "Return the list of organizations",
+                "operationId": "getOrganizations",
                 "responses": {
                     "200": {
                         "description": "Obtained all enrollments.",
@@ -91,6 +97,9 @@
                         }
                     }
                 ],
+                "summary": "Return the specified organization",
+                "description": "Return the specified organization",
+                "operationId": "getOrganization",
                 "responses": {
                     "200": {
                         "description": "Obtained single enrollment.",
@@ -146,6 +155,9 @@
                         }
                     }
                 ],
+                "summary": "Create an organization",
+                "description": "Create an organization",
+                "operationId": "createOrganization",
                 "responses": {
                     "201": {
                         "description": "Created",
@@ -199,6 +211,9 @@
                         }
                     }
                 ],
+                "summary": "Delete the specified organization",
+                "description": "Delete the specified organization",
+                "operationId": "removeOrganization",
                 "responses": {
                     "200": {
                         "description": "Request deleted.",
