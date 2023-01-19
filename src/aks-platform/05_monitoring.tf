@@ -218,6 +218,23 @@ resource "helm_release" "kube_prometheus_stack" {
     value = var.kube_prometheus_stack_helm.thanos.image_sha
   }
 
+  set {
+    name = "prometheus.prometheusSpec.ingress.enabled"
+    value = var.kube_prometheus_stack_helm.prometheus_ingress.enabled
+  }
+  set {
+    name = "prometheus.prometheusSpec.ingress.hosts[0]"
+    value = var.kube_prometheus_stack_helm.prometheus_ingress.host
+  }
+  set {
+    name = "prometheus.prometheusSpec.ingress.tls[0].secretName"
+    value = var.kube_prometheus_stack_helm.prometheus_ingress.tls_secret_name
+  }
+  set {
+    name = "prometheus.prometheusSpec.ingress.tls[0].hosts[0]"
+    value = var.kube_prometheus_stack_helm.prometheus_ingress.tls_secret_host
+  }
+
 }
 
 resource "helm_release" "monitoring_reloader" {

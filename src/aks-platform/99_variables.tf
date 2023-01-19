@@ -287,6 +287,13 @@ variable "kube_prometheus_stack_helm" {
       image_tag  = string,
       image_sha  = string,
     }),
+    prometheus_ingress = object({
+      enabled = bool,
+      host = string,
+      tls_secret_name = string,
+      tls_secret_host = string,
+    })
+
   })
   description = "kube-prometheus-stack helm chart configuration"
 }

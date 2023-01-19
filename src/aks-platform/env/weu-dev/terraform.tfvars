@@ -181,6 +181,13 @@ kube_prometheus_stack_helm = {
     image_sha        = ""
   }
 
+  prometheus_ingress = {
+    enabled = true
+    host = "weudev.kibana.internal.dev.platform.pagopa.it"
+    tls_secret_name = "weudev-kibana-internal-dev-platform-pagopa-it"
+    tls_secret_host = "weudev.kibana.internal.dev.platform.pagopa.it"
+  }
+
 }
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
