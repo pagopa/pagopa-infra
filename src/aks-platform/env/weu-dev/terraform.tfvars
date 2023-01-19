@@ -140,45 +140,45 @@ kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
 
   alertmanager = {
-    image_registry = "quay.io"
+    image_registry   = "quay.io"
     image_repository = "prometheus/alertmanager"
-    image_tag  = "v0.25.0"
-    image_sha  = ""
+    image_tag        = "v0.25.0"
+    image_sha        = ""
   }
 
   kube_webhook_certgen = {
-    image_registry = "registry.k8s.io"
+    image_registry   = "registry.k8s.io"
     image_repository = "ingress-nginx/kube-webhook-certgen"
-    image_tag  = "v1.3.0"
-    image_sha  = ""
+    image_tag        = "v1.3.0"
+    image_sha        = ""
   }
 
   prometheus_operator = {
-    image_registry = "quay.io"
-    image_name = "prometheus-operator/prometheus-operator"
-    image_tag  = ""
-    image_sha  = ""
+    image_registry   = "quay.io"
+    image_repository = "prometheus-operator/prometheus-operator"
+    image_tag        = ""
+    image_sha        = ""
   }
 
   prometheus_config_reloader = {
-    image_registry = "quay.io"
-    image_name = "prometheus-operator/prometheus-config-reloader"
-    image_tag  = ""
-    image_sha  = ""
+    image_registry   = "quay.io"
+    image_repository = "prometheus-operator/prometheus-config-reloader"
+    image_tag        = ""
+    image_sha        = ""
   }
 
   thanos = {
-    image_registry = "quay.io"
-    image_name = "thanos/thanos"
-    image_tag  = "v0.30.1"
-    image_sha  = ""
+    image_registry   = "quay.io"
+    image_repository = "thanos/thanos"
+    image_tag        = "v0.30.1"
+    image_sha        = ""
   }
 
   prometheus = {
-    image_registry = "quay.io"
-    image_name = "prometheus/prometheus"
-    image_tag  = "v2.41.0"
-    image_sha  = ""
+    image_registry   = "quay.io"
+    image_repository = "prometheus/prometheus"
+    image_tag        = "v2.41.0"
+    image_sha        = ""
   }
 
 }
