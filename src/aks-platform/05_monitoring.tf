@@ -91,6 +91,20 @@ resource "kubernetes_namespace" "monitoring" {
 #   }
 # }
 
+resource "kubernetes_config_map" "akka_actors" {
+  metadata {
+    name      = "grafana-dashboard-akka-actors"
+    namespace = "nodo"
+    labels = {
+       grafana_dashboard = 1
+    }
+  }
+
+  data = {
+    "akka-actors.json" = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_actors}")}"
+  }
+}
+
 resource "helm_release" "kube_prometheus_stack" {
   name       = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
@@ -104,8 +118,9 @@ resource "helm_release" "kube_prometheus_stack" {
   /*
   set {
     name = "grafana.dashboards.ds_nodo.akka-actors.json"
-    value = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_actors}")}"
+    value = "${jsonencode(jsondecode(local.ab))}"
   }
+  
   set {
     name = "grafana.dashboards.ds_nodo.akka-cluster.json"
     value = "${file("${var.kube_prometheus_stack_helm.dashboard_akka_cluster}")}"
