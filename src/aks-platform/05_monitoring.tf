@@ -98,141 +98,44 @@ resource "helm_release" "kube_prometheus_stack" {
   version    = var.kube_prometheus_stack_helm.chart_version
   namespace  = kubernetes_namespace.monitoring.metadata[0].name
 
+  values = [
+    "${file(var.kube_prometheus_stack_helm.values_file)}"
+  ]
   set {
-    name = "alertmanagerSpec.image.registry"
-    value = var.kube_prometheus_stack_helm.alertmanager.image_registry
+    name = "grafana.dashboards.ds_nodo.akka-actors.json"
+    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_actors)}"
   }
   set {
-    name = "alertmanagerSpec.image.repository"
-    value = var.kube_prometheus_stack_helm.alertmanager.image_repository
+    name = "grafana.dashboards.ds_nodo.akka-cluster.json"
+    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_cluster)}"
   }
   set {
-    name = "alertmanagerSpec.image.tag"
-    value = var.kube_prometheus_stack_helm.alertmanager.image_tag
+    name = "grafana.dashboards.ds_nodo.akka-dispatchers.json"
+    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_dispatchers)}"
   }
   set {
-    name = "alertmanagerSpec.image.sha"
-    value = var.kube_prometheus_stack_helm.alertmanager.image_sha
-  }
-
-
-  set {
-    name = "prometheusOperator.admissionWebhooks.patch.image.registry"
-    value = var.kube_prometheus_stack_helm.kube_webhook_certgen.image_registry
+    name = "grafana.dashboards.ds_nodo.akka-http-and-play-endpoints.json"
+    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_http_and_play_endpoints)}"
   }
   set {
-    name = "prometheusOperator.admissionWebhooks.patch.image.repository"
-    value = var.kube_prometheus_stack_helm.kube_webhook_certgen.image_repository
+    name = "grafana.dashboards.ds_nodo.akka-http-and-play-servers.json"
+    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_http_and_play_servers)}"
   }
   set {
-    name = "prometheusOperator.admissionWebhooks.patch.image.tag"
-    value = var.kube_prometheus_stack_helm.kube_webhook_certgen.image_tag
+    name = "grafana.dashboards.ds_nodo.akka-routers.json"
+    value = "${file(var.kube_prometheus_stack_helm.dashboard_akka_routers)}"
   }
   set {
-    name = "prometheusOperator.admissionWebhooks.patch.image.sha"
-    value = var.kube_prometheus_stack_helm.kube_webhook_certgen.image_sha
-  }
-
-  set {
-    name = "prometheusOperator.image.registry"
-    value = var.kube_prometheus_stack_helm.prometheus_operator.image_registry
+    name = "grafana.dashboards.ds_nodo.jvm-metrics.json"
+    value = "${file(var.kube_prometheus_stack_helm.dashboard_jvm_metrics)}"
   }
   set {
-    name = "prometheusOperator.image.repository"
-    value = var.kube_prometheus_stack_helm.prometheus_operator.image_repository
+    name = "grafana.dashboards.ds_nodo.jvm-micrometer.json"
+    value = "${file(var.kube_prometheus_stack_helm.dashboard_jvm_micrometer)}"
   }
   set {
-    name = "prometheusOperator.image.tag"
-    value = var.kube_prometheus_stack_helm.prometheus_operator.image_tag
-  }
-  set {
-    name = "prometheusOperator.image.sha"
-    value = var.kube_prometheus_stack_helm.prometheus_operator.image_sha
-  }
-
-  set {
-    name = "prometheusOperator.prometheusConfigReloader.image.registry"
-    value = var.kube_prometheus_stack_helm.prometheus_config_reloader.image_registry
-  }
-  set {
-    name = "prometheusOperator.prometheusConfigReloader.image.repository"
-    value = var.kube_prometheus_stack_helm.prometheus_config_reloader.image_repository
-  }
-  set {
-    name = "prometheusOperator.prometheusConfigReloader.image.tag"
-    value = var.kube_prometheus_stack_helm.prometheus_config_reloader.image_tag
-  }
-  set {
-    name = "prometheusOperator.prometheusConfigReloader.image.sha"
-    value = var.kube_prometheus_stack_helm.prometheus_config_reloader.image_sha
-  }
-
-  set {
-    name = "prometheusOperator.thanosImage.image.registry"
-    value = var.kube_prometheus_stack_helm.thanos.image_registry
-  }
-  set {
-    name = "prometheusOperator.thanosImage.image.repository"
-    value = var.kube_prometheus_stack_helm.thanos.image_repository
-  }
-  set {
-    name = "prometheusOperator.thanosImage.image.tag"
-    value = var.kube_prometheus_stack_helm.thanos.image_tag
-  }
-  set {
-    name = "prometheusOperator.thanosImage.image.sha"
-    value = var.kube_prometheus_stack_helm.thanos.image_sha
-  }
-
-  set {
-    name = "prometheus.prometheusSpec.image.registry"
-    value = var.kube_prometheus_stack_helm.prometheus.image_registry
-  }
-  set {
-    name = "prometheus.prometheusSpec.image.repository"
-    value = var.kube_prometheus_stack_helm.prometheus.image_repository
-  }
-  set {
-    name = "prometheus.prometheusSpec.image.tag"
-    value = var.kube_prometheus_stack_helm.prometheus.image_tag
-  }
-  set {
-    name = "prometheus.prometheusSpec.image.sha"
-    value = var.kube_prometheus_stack_helm.thanos.image_sha
-  }
-
-  set {
-    name = "thanosRuler.thanosRulerSpec.image.registry"
-    value = var.kube_prometheus_stack_helm.thanos.image_registry
-  }
-  set {
-    name = "thanosRuler.thanosRulerSpec.image.repository"
-    value = var.kube_prometheus_stack_helm.thanos.image_repository
-  }
-  set {
-    name = "thanosRuler.thanosRulerSpec.image.tag"
-    value = var.kube_prometheus_stack_helm.thanos.image_tag
-  }
-  set {
-    name = "thanosRuler.thanosRulerSpec.image.sha"
-    value = var.kube_prometheus_stack_helm.thanos.image_sha
-  }
-
-  set {
-    name = "prometheus.prometheusSpec.ingress.enabled"
-    value = var.kube_prometheus_stack_helm.prometheus_ingress.enabled
-  }
-  set {
-    name = "prometheus.prometheusSpec.ingress.hosts[0]"
-    value = var.kube_prometheus_stack_helm.prometheus_ingress.host
-  }
-  set {
-    name = "prometheus.prometheusSpec.ingress.tls[0].secretName"
-    value = var.kube_prometheus_stack_helm.prometheus_ingress.tls_secret_name
-  }
-  set {
-    name = "prometheus.prometheusSpec.ingress.tls[0].hosts[0]"
-    value = var.kube_prometheus_stack_helm.prometheus_ingress.tls_secret_host
+    name = "grafana.dashboards.ds_nodo.namespace-nodo.json"
+    value = "${file(var.kube_prometheus_stack_helm.dashboard_namespace_nodo)}"
   }
 
 }

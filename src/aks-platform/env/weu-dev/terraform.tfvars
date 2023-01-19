@@ -139,55 +139,17 @@ reloader_helm = {
 kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
 
-  alertmanager = {
-    image_registry   = "quay.io"
-    image_repository = "prometheus/alertmanager"
-    image_tag        = "v0.25.0"
-    image_sha        = ""
-  }
+  values_file = "./env/weu-dev/kube-prometheus-stack-helm/values.yaml"
 
-  kube_webhook_certgen = {
-    image_registry   = "registry.k8s.io"
-    image_repository = "ingress-nginx/kube-webhook-certgen"
-    image_tag        = "v1.3.0"
-    image_sha        = ""
-  }
-
-  prometheus_operator = {
-    image_registry   = "quay.io"
-    image_repository = "prometheus-operator/prometheus-operator"
-    image_tag        = ""
-    image_sha        = ""
-  }
-
-  prometheus_config_reloader = {
-    image_registry   = "quay.io"
-    image_repository = "prometheus-operator/prometheus-config-reloader"
-    image_tag        = ""
-    image_sha        = ""
-  }
-
-  thanos = {
-    image_registry   = "quay.io"
-    image_repository = "thanos/thanos"
-    image_tag        = "v0.30.1"
-    image_sha        = ""
-  }
-
-  prometheus = {
-    image_registry   = "quay.io"
-    image_repository = "prometheus/prometheus"
-    image_tag        = "v2.41.0"
-    image_sha        = ""
-  }
-
-  prometheus_ingress = {
-    enabled = true
-    host = "weudev.kibana.internal.dev.platform.pagopa.it"
-    tls_secret_name = "weudev-kibana-internal-dev-platform-pagopa-it"
-    tls_secret_host = "weudev.kibana.internal.dev.platform.pagopa.it"
-  }
-
+  dashboard_akka_actors = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-actors.json"
+  dashboard_akka_cluster = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-cluster.json"
+  dashboard_akka_dispatchers = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-dispatchers.json"
+  dashboard_akka_http_and_play_endpoints = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-http-and-play-endpoints.json"
+  dashboard_akka_http_and_play_servers = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-http-and-play-servers.json"
+  dashboard_akka_routers = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-routers.json"
+  dashboard_jvm_metrics = "./env/weu-dev/kube-prometheus-stack-helm/nodo/jvm-metrics.json"
+  dashboard_jvm_micrometer = "./env/weu-dev/kube-prometheus-stack-helm/nodo/jvm-micrometer.json"
+  dashboard_namespace_nodo = "./env/weu-dev/kube-prometheus-stack-helm/nodo/namespace-nodo.json"
 }
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases

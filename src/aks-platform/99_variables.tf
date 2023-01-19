@@ -251,49 +251,16 @@ variable "prometheus_helm" {
 variable "kube_prometheus_stack_helm" {
   type = object({
     chart_version = string,
-    alertmanager = object({
-      image_registry = string,
-      image_repository = string,
-      image_tag  = string,
-      image_sha  = string,
-    }),
-    kube_webhook_certgen = object({
-      image_registry = string,
-      image_repository = string,
-      image_tag  = string,
-      image_sha  = string,
-    }),
-    prometheus_operator = object({
-      image_registry = string,
-      image_repository = string,
-      image_tag  = string,
-      image_sha  = string,
-    }),
-    prometheus_config_reloader = object({
-      image_registry = string,
-      image_repository = string,
-      image_tag  = string,
-      image_sha  = string,
-    }),
-    thanos = object({
-      image_registry = string,
-      image_repository = string,
-      image_tag  = string,
-      image_sha  = string,
-    }),
-    prometheus = object({
-      image_registry = string,
-      image_repository = string,
-      image_tag  = string,
-      image_sha  = string,
-    }),
-    prometheus_ingress = object({
-      enabled = bool,
-      host = string,
-      tls_secret_name = string,
-      tls_secret_host = string,
-    })
-
+    values_file = string
+    dashboard_akka_actors = string
+    dashboard_akka_cluster = string
+    dashboard_akka_dispatchers = string
+    dashboard_akka_http_and_play_endpoints = string
+    dashboard_akka_http_and_play_servers = string
+    dashboard_akka_routers = string
+    dashboard_jvm_metrics = string
+    dashboard_jvm_micrometer = string
+    dashboard_namespace_nodo = string
   })
   description = "kube-prometheus-stack helm chart configuration"
 }
