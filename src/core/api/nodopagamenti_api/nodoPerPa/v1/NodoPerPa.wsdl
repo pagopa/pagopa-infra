@@ -6,13 +6,13 @@
   Renaming delle primitive.
 -->
 <wsdl:definitions xmlns:ppt="http://ws.pagamenti.telematici.gov/"
-                  xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead"
-                  xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT"
-                  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
-                  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
-                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="PagamentiTelematiciRPTservice" targetNamespace="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT">
+  xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead"
+  xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT"
+  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="PagamentiTelematiciRPTservice" targetNamespace="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT">
   <wsdl:types>
     <xsd:schema version="2.1.2" targetNamespace="http://ws.pagamenti.telematici.gov/ppthead">
       <!-- START <xsd:import schemaLocation="envelope.xsd" namespace="http://schemas.xmlsoap.org/soap/envelope/" /> -->
@@ -26,13 +26,13 @@
       <xsd:simpleType name="stIdentificativoCarrello">
         <xsd:annotation>
           <xsd:documentation>
-            Identificativo univoco della chiamata.
-            Nel caso di pagamento multi beneficiario (parametro multiBeneficario=true) deve essere necessariamente essere composto
-            'idDominio(11)numeroAvviso(18)-(1)-Progressivo(5)'
+						Identificativo univoco della chiamata.
+						Nel caso di pagamento multi beneficiario (parametro multiBeneficario=true) deve essere necessariamente essere composto
+						'idDominio(11)numeroAvviso(18)-(1)-Progressivo(5)'
 
 
-            Nei casi dove il carrello contiene il pagamento di più posizioni debitorie ( non multi beneficiarie ) è possibile utilizzare la seguente sintassi
-            'Anno(4)idDominio(11)codiceSorgente(2)Progressivo(18)'
+						Nei casi dove il carrello contiene il pagamento di più posizioni debitorie ( non multi beneficiarie ) è possibile utilizzare la seguente sintassi
+						'Anno(4)idDominio(11)codiceSorgente(2)Progressivo(18)'
 
           </xsd:documentation>
         </xsd:annotation>
@@ -42,7 +42,7 @@
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:element name="intestazionePPT"
-                   xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="identificativoIntermediarioPA" type="ppthead:stText35" />
@@ -56,7 +56,7 @@
         </xsd:complexType>
       </xsd:element>
       <xsd:element name="intestazioneCarrelloPPT"
-                   xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="identificativoIntermediarioPA" type="ppthead:stText35" />
@@ -217,7 +217,7 @@
             <xsd:sequence>
               <xsd:element name="tipoFirma" type="xsd:string" minOccurs="0" />
               <xsd:element name="rt" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream"
-                           xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
+                xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -390,7 +390,7 @@
           <xsd:extension base="ppt:risposta">
             <xsd:sequence>
               <xsd:element name="xmlInformativa" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream"
-                           xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
+                xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -410,7 +410,7 @@
           <xsd:extension base="ppt:risposta">
             <xsd:sequence>
               <xsd:element name="xmlInformativa" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream"
-                           xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
+                xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -464,7 +464,7 @@
           <xsd:extension base="ppt:risposta">
             <xsd:sequence>
               <xsd:element name="xmlQuadratura" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream"
-                           xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
+                xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -520,7 +520,7 @@
           <xsd:extension base="ppt:risposta">
             <xsd:sequence>
               <xsd:element name="xmlRendicontazione" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream"
-                           xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
+                xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
