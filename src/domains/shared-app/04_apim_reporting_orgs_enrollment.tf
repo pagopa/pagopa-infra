@@ -69,11 +69,11 @@ module "apim_api_poc_api_v1" {
   service_url  = local.apim_poc_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/iuv-generator-service/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/poc-reporting-orgs-enrollment/v1/_openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/iuv-generator-service/v1/_base_policy.xml", {
+  xml_content = templatefile("./api/poc-reporting-orgs-enrollment/v1/_base_policy.xml", {
     hostname = local.shared_hostname
   })
 }
