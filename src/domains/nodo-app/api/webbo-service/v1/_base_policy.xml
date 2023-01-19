@@ -12,6 +12,7 @@
 -->
 <policies>
   <inbound>
+    <!--
     <cors>
       <allowed-origins>
         <origin>*</origin>
@@ -26,14 +27,15 @@
         <header>*</header>
       </expose-headers>
     </cors>
+    -->
 
     <!-- https://weudev.nodo.internal.dev.platform.pagopa.it/web-bo(/|$)(.*) -->
-    <set-backend-service base-url="https://${hostname}/web-bo" />
+    <set-backend-service base-url="https://${hostname}/bo-nodo" />
     
     <set-variable name="external-scheme" value="https" />
-
     <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.<ENV>.platform.pagopa.it -->
-    <set-variable name="external-context-path" value="${apim_base_path}" />
+    <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /bo-nodo -->
+
     <!-- /web-bo/api/v1 -->
     <choose>
       <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\${apim_base_path}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
@@ -41,13 +43,13 @@
           <set-status code="301" reason="See Other" />
           <set-header name="Location" exists-action="override">
             <value>@{
-                            string str = (string)context.Variables["external-scheme"];
-                            str += "://";
-                            str += (string)context.Variables["external-host"];
-                            str += (string)context.Variables["external-context-path"];
-                            str += "/";
-                            return str;
-                        }</value>
+                        string str = (string)context.Variables["external-scheme"];
+                        str += "://";
+                        str += (string)context.Variables["external-host"];
+                        str += (string)context.Variables["external-context-path"];
+                        str += "/";
+                        return str;
+                    }</value>
           </set-header>
         </return-response>
       </when>

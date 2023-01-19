@@ -25,22 +25,21 @@ module "apim_webbo_product" {
 ########################
 locals {
   apim_webbo_service_api = {
-    display_name          = "webbo for NDP"
+    display_name          = "WebBO for NDP"
     description           = "API webbo for NDP"
-    path                  = "webbo-ndp/service"
+    path                  = "bo-nodo"
     subscription_required = false
     service_url           = null
   }
 }
 
-resource "azurerm_api_management_api_version_set" "api_webbo_api" {
-
-  name                = format("%s-webbo-service-api", var.env_short)
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_webbo_service_api.display_name
-  versioning_scheme   = "Segment"
-}
+# resource "azurerm_api_management_api_version_set" "api_webbo_api" {
+#   name                = format("%s-webbo-service-api", var.env_short)
+#   resource_group_name = local.pagopa_apim_rg
+#   api_management_name = local.pagopa_apim_name
+#   display_name        = local.apim_webbo_service_api.display_name
+#   versioning_scheme   = "Segment"
+# }
 
 
 module "apim_api_webbo_api_v1" {
@@ -51,8 +50,8 @@ module "apim_api_webbo_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_webbo_product.product_id]
   subscription_required = local.apim_webbo_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_webbo_api.id
-  api_version           = "v1"
+  #version_set_id        = azurerm_api_management_api_version_set.api_webbo_api.id
+  #api_version           = "v1"
 
   description  = local.apim_webbo_service_api.description
   display_name = local.apim_webbo_service_api.display_name
@@ -68,7 +67,7 @@ module "apim_api_webbo_api_v1" {
   xml_content = templatefile("./api/webbo-service/v1/_base_policy.xml", {
     hostname = local.nodo_hostname
     dns_pagopa_platform = format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain)
-    apim_base_path      = "/web-bo"
+    apim_base_path      = "/bo-nodo"
   })
   
 }
