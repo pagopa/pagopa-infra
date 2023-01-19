@@ -1,16 +1,16 @@
 <policies>
-    <inbound>
-      <base />
-      <set-variable name="betocall" value="@(context.Request.Url.Query.GetValueOrDefault("frameworkType")" />
-      <set-backend-service base-url="@(https://${hostname}/pagopa-poc-"+(string) context.Variables["betocall"]+"-service")/> <!-- micronaut OR quarkus -->
-    </inbound>
-    <outbound>
-      <base />
-    </outbound>
-    <backend>
-      <base />
-    </backend>
-    <on-error>
-      <base />
-    </on-error>
+  <inbound>
+    <base />
+    <set-variable name="betocall" value="@(context.Request.Url.Query.GetValueOrDefault("frameworkType"))" /> <!-- micronaut OR quarkus -->
+    <set-backend-service base-url="@(String.Format("https://${hostname}/pagopa-poc-{0}-service", (string) context.Variables["betocall"]))" />
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
 </policies>
