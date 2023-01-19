@@ -35,9 +35,9 @@ module "apim_poc_product" {
   policy_xml = file("./api_product/_base_policy_poc.xml")
 }
 
-##########
-##  API ##
-##########
+#########
+## API ##
+#########
 
 resource "azurerm_api_management_api_version_set" "api_poc_api" {
 
@@ -69,11 +69,11 @@ module "apim_api_poc_api_v1" {
   service_url  = local.apim_poc_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/poc-reporting-orgs-enrollment/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/poc-reporting-orgs-enrollment/_openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/poc-reporting-orgs-enrollment/v1/_base_policy.xml", {
+  xml_content = templatefile("./api/poc-reporting-orgs-enrollment/_base_policy.xml", {
     hostname = local.shared_hostname
   })
 }
