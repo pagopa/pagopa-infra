@@ -136,20 +136,12 @@ reloader_helm = {
 #   }
 # }
 
+# https://github.com/prometheus-community/helm-charts/issues/1754#issuecomment-1199125703
+prometheus_basic_auth_file = "./env/weu-dev/kube-prometheus-stack-helm/prometheus-basic-auth"
+
 kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
-
   values_file = "./env/weu-dev/kube-prometheus-stack-helm/values.yaml"
-
-  dashboard_akka_actors = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-actors.json"
-  dashboard_akka_cluster = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-cluster.json"
-  dashboard_akka_dispatchers = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-dispatchers.json"
-  dashboard_akka_http_and_play_endpoints = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-http-and-play-endpoints.json"
-  dashboard_akka_http_and_play_servers = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-http-and-play-servers.json"
-  dashboard_akka_routers = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-routers.json"
-  dashboard_jvm_metrics = "./env/weu-dev/kube-prometheus-stack-helm/nodo/jvm-metrics.json"
-  dashboard_jvm_micrometer = "./env/weu-dev/kube-prometheus-stack-helm/nodo/jvm-micrometer.json"
-  dashboard_namespace_nodo = "./env/weu-dev/kube-prometheus-stack-helm/nodo/namespace-nodo.json"
 }
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
