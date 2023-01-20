@@ -44,45 +44,9 @@ thanosRuler:
       tag: v0.30.1
       sha: ""
 grafana:
-  enabled: true
-  ingress:
-    enabled: true
-    ingressClassName: nginx
-    annotations: 
-      kubernetes.io/ingress.class: nginx
-      kubernetes.io/tls-acme: "true"
-    #  nginx.ingress.kubernetes.io/service-upstream: "true"
-    #  nginx.ingress.kubernetes.io/rewrite-target: /$2
-    #  nginx.ingress.kubernetes.io/ssl-redirect: 'false'
-    #  nginx.ingress.kubernetes.io/use-regex: 'true'
-    #pathType: Prefix
-    path: "/grafana" #"/grafana(/|$)(.*)"
-    hosts: 
-      - weudev.kibana.internal.dev.platform.pagopa.it
-    tls:
-      - secretName: weudev-kibana-internal-dev-platform-pagopa-it
-        hosts:
-          - weudev.kibana.internal.dev.platform.pagopa.it
-  grafana.ini:
-    server:
-      domain: api.dev.platform.pagopa.it
-      root_url: https://api.dev.platform.pagopa.it/grafana/
-      serve_from_sub_path: true
-  dashboardProviders:
-    dashboardproviders.yaml:
-      apiVersion: 1
-      providers:
-        - name: 'ds_nodo'
-          orgId: 1
-          folder: 'nodo'
-          type: file
-          disableDeletion: false
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/ds_nodo
+  enabled: false
 prometheus:
   prometheusSpec:
-  #  routePrefix: /prometheus
     externalUrl: https://api.dev.platform.pagopa.it/prometheus
   ingress:
     enabled: true
