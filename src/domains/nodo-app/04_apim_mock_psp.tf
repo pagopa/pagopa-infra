@@ -35,7 +35,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "api_mock_psp_api" {
 
-  name                = format("%s-mock-psp-service-api", var.env_short)
+  name                = format("%s-mock-psp-service-ndp-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_mock_psp_service_api.display_name
