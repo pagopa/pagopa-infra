@@ -66,9 +66,9 @@ module "apim_api_web_bo_api_v1" {
   })
 
   xml_content = templatefile("./api/web-bo-service/v1/_base_policy.xml", {
-    hostname = local.nodo_hostname
+    hostname            = local.nodo_hostname
     dns_pagopa_platform = format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain)
     apim_base_path      = "/web-bo-ndp"
   })
-  
+
 }
