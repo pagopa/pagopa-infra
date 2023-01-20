@@ -1,4 +1,3 @@
-<!-- https://github.com/pagopa/pagopa-api/tree/SANP3.3.0 -->
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Questo WSDL rappresenta l'interfaccia esposta dal Nodo dei Pagamenti Telematici
@@ -1098,3 +1097,4 @@
 	</wsdl:service>
 
 </wsdl:definitions>
+<!-- https://github.com/pagopa/pagopa-api/tree/SANP3.3.0 -->

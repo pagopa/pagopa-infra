@@ -1,4 +1,3 @@
-<!-- https://github.com/pagopa/pagopa-api/tree/SANP3.3.0 -->
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="nodeForIO" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForIO.xsd" xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForIO.wsdl" targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForIO.wsdl">
 
@@ -544,3 +543,4 @@ Where each `transfer` items contains :
     </wsdl:service>
 
 </wsdl:definitions>
+<!-- https://github.com/pagopa/pagopa-api/tree/SANP3.3.0 -->
