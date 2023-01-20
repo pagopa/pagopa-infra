@@ -48,16 +48,17 @@ grafana:
   ingress:
     enabled: true
     ingressClassName: nginx
-    #annotations: 
-    #  kubernetes.io/ingress.class: nginx
+    annotations: 
+      kubernetes.io/ingress.class: nginx
+      kubernetes.io/tls-acme: "true"
     #  nginx.ingress.kubernetes.io/service-upstream: "true"
     #  nginx.ingress.kubernetes.io/rewrite-target: /$2
     #  nginx.ingress.kubernetes.io/ssl-redirect: 'false'
     #  nginx.ingress.kubernetes.io/use-regex: 'true'
+    #pathType: Prefix
+    path: "/grafana" #"/grafana(/|$)(.*)"
     hosts: 
       - weudev.kibana.internal.dev.platform.pagopa.it
-    #pathType: Prefix
-    path: "/grafana(/|$)(.*)"
     tls:
       - secretName: weudev-kibana-internal-dev-platform-pagopa-it
         hosts:
