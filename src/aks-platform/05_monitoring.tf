@@ -94,7 +94,7 @@ resource "kubernetes_namespace" "monitoring" {
 resource "kubernetes_config_map" "akka_actors" {
   metadata {
     name      = "grafana-dashboard-akka-actors"
-    namespace = "nodo"
+    namespace = "monitoring"
     labels = {
        grafana_dashboard = 1
     }
