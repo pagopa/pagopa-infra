@@ -107,32 +107,49 @@ reloader_helm = {
 # quay.io/prometheus/node-exporter image tags: https://quay.io/repository/prometheus/node-exporter?tab=tags
 # quay.io/prometheus/prometheus image tags: https://quay.io/repository/prometheus/prometheus?tab=tags
 # prom/pushgateway image tags:https://hub.docker.com/r/prom/pushgateway/tags
-prometheus_helm = {
-  chart_version = "15.12.0"
-  alertmanager = {
-    image_name = "quay.io/prometheus/alertmanager"
-    image_tag  = "v0.24.0@sha256:088464f949de8065b9da7dfce7302a633d700e9d598e2bebc03310712f083b31"
-  }
-  configmap_reload_prometheus = {
-    image_name = "jimmidyson/configmap-reload"
-    image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
-  }
-  configmap_reload_alertmanager = {
-    image_name = "jimmidyson/configmap-reload"
-    image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
-  }
-  node_exporter = {
-    image_name = "quay.io/prometheus/node-exporter"
-    image_tag  = "v1.3.1@sha256:f2269e73124dd0f60a7d19a2ce1264d33d08a985aed0ee6b0b89d0be470592cd"
-  }
-  server = {
-    image_name = "quay.io/prometheus/prometheus"
-    image_tag  = "v2.36.2@sha256:df0cd5887887ec393c1934c36c1977b69ef3693611932c3ddeae8b7a412059b9"
-  }
-  pushgateway = {
-    image_name = "prom/pushgateway"
-    image_tag  = "v1.4.3@sha256:9e4e2396009751f1dc66ebb2b59e07d5abb009eb26d637eb0cf89b9a3738f146"
-  }
+
+# prometheus_helm = {
+#   chart_version = "15.12.0"
+#   alertmanager = {
+#     image_name = "quay.io/prometheus/alertmanager"
+#     image_tag  = "v0.24.0@sha256:088464f949de8065b9da7dfce7302a633d700e9d598e2bebc03310712f083b31"
+#   }
+#   configmap_reload_prometheus = {
+#     image_name = "jimmidyson/configmap-reload"
+#     image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
+#   }
+#   configmap_reload_alertmanager = {
+#     image_name = "jimmidyson/configmap-reload"
+#     image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
+#   }
+#   node_exporter = {
+#     image_name = "quay.io/prometheus/node-exporter"
+#     image_tag  = "v1.3.1@sha256:f2269e73124dd0f60a7d19a2ce1264d33d08a985aed0ee6b0b89d0be470592cd"
+#   }
+#   server = {
+#     image_name = "quay.io/prometheus/prometheus"
+#     image_tag  = "v2.36.2@sha256:df0cd5887887ec393c1934c36c1977b69ef3693611932c3ddeae8b7a412059b9"
+#   }
+#   pushgateway = {
+#     image_name = "prom/pushgateway"
+#     image_tag  = "v1.4.3@sha256:9e4e2396009751f1dc66ebb2b59e07d5abb009eb26d637eb0cf89b9a3738f146"
+#   }
+# }
+
+kube_prometheus_stack_helm = {
+  chart_version = "44.2.1"
+
+  values_file = "./env/weu-dev/kube-prometheus-stack-helm/values.yaml"
+
+  dashboard_akka_actors = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-actors.json"
+  dashboard_akka_cluster = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-cluster.json"
+  dashboard_akka_dispatchers = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-dispatchers.json"
+  dashboard_akka_http_and_play_endpoints = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-http-and-play-endpoints.json"
+  dashboard_akka_http_and_play_servers = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-http-and-play-servers.json"
+  dashboard_akka_routers = "./env/weu-dev/kube-prometheus-stack-helm/nodo/akka-routers.json"
+  dashboard_jvm_metrics = "./env/weu-dev/kube-prometheus-stack-helm/nodo/jvm-metrics.json"
+  dashboard_jvm_micrometer = "./env/weu-dev/kube-prometheus-stack-helm/nodo/jvm-micrometer.json"
+  dashboard_namespace_nodo = "./env/weu-dev/kube-prometheus-stack-helm/nodo/namespace-nodo.json"
 }
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases

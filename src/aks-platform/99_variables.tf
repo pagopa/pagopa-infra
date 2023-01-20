@@ -211,7 +211,7 @@ variable "reloader_helm" {
   })
   description = "reloader helm chart configuration"
 }
-
+/*
 variable "prometheus_helm" {
   type = object({
     chart_version = string,
@@ -245,6 +245,24 @@ variable "prometheus_helm" {
     }),
   })
   description = "prometheus helm chart configuration"
+}
+*/
+
+variable "kube_prometheus_stack_helm" {
+  type = object({
+    chart_version = string,
+    values_file = string
+    dashboard_akka_actors = string
+    dashboard_akka_cluster = string
+    dashboard_akka_dispatchers = string
+    dashboard_akka_http_and_play_endpoints = string
+    dashboard_akka_http_and_play_servers = string
+    dashboard_akka_routers = string
+    dashboard_jvm_metrics = string
+    dashboard_jvm_micrometer = string
+    dashboard_namespace_nodo = string
+  })
+  description = "kube-prometheus-stack helm chart configuration"
 }
 
 variable "tls_cert_check_helm" {
