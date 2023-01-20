@@ -387,7 +387,7 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-biz-evt-enrich"
-    partitions        = 30
+    partitions        = 32
     message_retention = 7
     consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
@@ -589,7 +589,7 @@ dexp_params = {
 dexp_db = {
   enable             = true
   hot_cache_period   = "P5D"
-  soft_delete_period = "P3M"
+  soft_delete_period = "P90D"
 }
 
 dexp_re_db_linkes_service = {

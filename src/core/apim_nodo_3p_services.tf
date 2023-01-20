@@ -169,8 +169,8 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
 }
 
 
-# UAT   https://wfesp.test.pagopa.gov.it/redirect/wpl02
-# PROD  https://wfesp.pagopa.gov.it/redirect/wpl05
+# UAT   https://wfesp.test.pagopa.gov.it/redirect  (ex followed by /wpl02 )
+# PROD  https://wfesp.pagopa.gov.it/redirect (ex followed by /wpl05 )
 
 module "apim_nodo_wfesp_api" {
   count  = var.env_short == "p" ? 0 : 1
@@ -187,7 +187,7 @@ module "apim_nodo_wfesp_api" {
 
   description  = "NodeDeiPagamenti (wfesp)"
   display_name = "NodeDeiPagamenti (wfesp)"
-  path         = "redirect/wpl02"
+  path         = "redirect"
   protocols    = ["https"]
 
   service_url = null
@@ -199,7 +199,7 @@ module "apim_nodo_wfesp_api" {
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path      = "/redirect/wpl02"
+    apim_base_path      = "/redirect"
   })
 
 }
