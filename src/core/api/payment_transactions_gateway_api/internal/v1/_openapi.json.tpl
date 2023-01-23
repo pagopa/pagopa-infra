@@ -723,13 +723,13 @@
         }
       }
     },
-    "/request-payments/creditCard": {
+    "/request-payments/vpos": {
       "post": {
         "summary": "payment authorization request to Vpos",
         "tags": [
-          "CreditCard-internal"
+          "Vpos-internal"
         ],
-        "operationId": "step0-creditCard",
+        "operationId": "step0-vpos",
         "parameters": [
           {
             "in": "header",
@@ -756,7 +756,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreditCardAuthRequest"
+                "$ref": "#/components/schemas/VposAuthRequest"
               }
             }
           },
@@ -768,7 +768,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditCardAuthResponse"
+                  "$ref": "#/components/schemas/VposAuthResponse"
                 }
               }
             }
@@ -778,7 +778,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditCardAuthResponseBadRequest"
+                  "$ref": "#/components/schemas/VposAuthResponseBadRequest"
                 }
               }
             }
@@ -788,7 +788,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditCardAuthResponseUnauthorized"
+                  "$ref": "#/components/schemas/VposAuthResponseUnauthorized"
                 }
               }
             }
@@ -798,7 +798,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditCardAuthResponseGenericError"
+                  "$ref": "#/components/schemas/VposAuthResponseGenericError"
                 }
               }
             }
@@ -1287,7 +1287,7 @@
           "correlationId"
         ]
       },
-      "CreditCardAuthRequest": {
+      "VposAuthRequest": {
         "required": [
           "idTransaction",
           "reqRefNumber",
@@ -1358,7 +1358,7 @@
           }
         }
       },
-      "CreditCardAuthResponse": {
+      "VposAuthResponse": {
         "type": "object",
         "required": [
           "requestId",
@@ -1388,7 +1388,7 @@
           }
         }
       },
-      "CreditCardAuthResponseBadRequest": {
+      "VposAuthResponseBadRequest": {
         "type": "object",
         "required": [
           "error"
@@ -1401,7 +1401,7 @@
           }
         }
       },
-      "CreditCardAuthResponseUnauthorized": {
+      "VposAuthResponseUnauthorized": {
         "type": "object",
         "required": [
           "error"
@@ -1414,7 +1414,7 @@
           }
         }
       },
-      "CreditCardAuthResponseGenericError": {
+      "VposAuthResponseGenericError": {
         "type": "object",
         "required": [
           "error"

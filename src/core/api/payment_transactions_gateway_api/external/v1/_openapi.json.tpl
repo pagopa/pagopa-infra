@@ -242,9 +242,9 @@
         }
       }
     },
-    "/request-payments/creditCard/{requestId}": {
+    "/request-payments/vpos/{requestId}": {
       "get": {
-        "summary": "retrieve CreditCard payment request",
+        "summary": "retrieve vpos payment request",
         "tags": [
           "Vpos-external"
         ],
@@ -304,9 +304,9 @@
         }
       }
     },
-    "/request-payments/creditCard/{requestId}/resume/method": {
+    "/request-payments/vpos/{requestId}/resume/method": {
       "post": {
-        "summary": "resume CreditCard payment request",
+        "summary": "resume vpos payment request",
         "tags": [
           "Vpos-external"
         ],
@@ -336,7 +336,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreditCardResumeRequest"
+                "$ref": "#/components/schemas/VposResumeRequest"
               }
             }
           },
@@ -349,9 +349,9 @@
         }
       }
     },
-    "/request-payments/creditCard/{requestId}/resume/challenge": {
+    "/request-payments/vpos/{requestId}/resume/challenge": {
       "post": {
-        "summary": "resume CreditCard payment request",
+        "summary": "resume Vpos payment request",
         "tags": [
           "Vpos-external"
         ],
@@ -526,7 +526,7 @@
           }
         }
       },
-      "CreditCardResumeRequest": {
+      "VposResumeRequest": {
         "type": "object",
         "required": [
           "methodCompleted"
