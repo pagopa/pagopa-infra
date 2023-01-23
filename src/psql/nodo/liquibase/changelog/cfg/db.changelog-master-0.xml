@@ -6,5 +6,6 @@
   <include file="./0/db.changelog-0.xml" labels="init"/>
   <include file="./0/db.changelog-dev-data.xml" context="dev" labels="init"/>
   <include file="./0/db.changelog-dev-data-psp-pa.xml" context="dev" labels="init"/>
+  <include file="./0/db.changelog-dev-data-update.xml" context="dev" labels="init"/>
 
 </databaseChangeLog>
