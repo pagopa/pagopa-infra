@@ -76,15 +76,15 @@ data "azurerm_key_vault_secret" "sessions-jwt-secret" {
 
 resource "azurerm_api_management_named_value" "transaction_jwt_signing_key" {
   name                = "transaction-jwt-signing-key"
-  resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "transaction-jwt-signing-key"
   value               = data.azurerm_key_vault_secret.sessions-jwt-secret.value
   secret              = true
 }
 
 resource "azurerm_api_management_api_operation_policy" "transaction_validate_jwt_get_transaction_info" {
-  api_name            = "${local.project}-checkout-ecommerce-api-v1"
+  api_name            = format("%s-transactions-service-api-v1", local.project)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "getTransactionInfo"
