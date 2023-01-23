@@ -9,5 +9,6 @@
 
   <!-- 3.10.0 -->
   <include file="./${version}/db.changelog-202212120933_drop_view_storni_revoche.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-202301160000_web-bo-views.xml" labels="${version}"/>
 
-</databaseChangeLog> 
+</databaseChangeLog>
