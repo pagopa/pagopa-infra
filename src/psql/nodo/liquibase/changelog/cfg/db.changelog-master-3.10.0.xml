@@ -13,5 +13,6 @@
   <include file="./${version}/db.changelog-20221205161400_delete_key_chiediElencoFlussiRendicontazioneDayLimit.xml" labels="${version}"/>
   <include file="./${version}/db.changelog-20221212091400_delete_unused_keys_column-2.xml" labels="${version}"/>
   <include file="./${version}/db.changelog-20221220095600_lispay.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20230120114500_restore_dropped_column.xml" labels="${version}"/>
 
 </databaseChangeLog>

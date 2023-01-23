@@ -1,0 +1,54 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="liquibase" id="20230120114700">
+        <addColumn tableName="CANALI">
+            <column name="CANALE_AVV" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="CANALI">
+            <column name="CANALE_NODO" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="INTERMEDIARI_PSP">
+            <column name="INTERMEDIARIO_AVV" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="INTERMEDIARI_PSP">
+            <column name="INTERMEDIARIO_AVV" type="CHAR(1)"/>
+        </addColumn>
+        <addColumn tableName="INTERMEDIARI_PSP">
+            <column name="INTERMEDIARIO_NODO" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="PA_STAZIONE_PA">
+            <column name="STAZIONE_AVV" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="PA_STAZIONE_PA">
+            <column name="STAZIONE_NODO" type="CHAR(1)" defaultValue="Y"/>
+        </addColumn>
+        <addColumn tableName="PSP">
+            <column name="PSP_NODO" type="CHAR(1)" defaultValue="Y"/>
+        </addColumn>
+        <addColumn tableName="PSP">
+            <column name="PSP_AVV" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="PSP">
+            <column name="FLAG_REPO_COMMISSIONE_CARICO_PA" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="PSP">
+            <column name="EMAIL_REPO_COMMISSIONE_CARICO_PA" type="VARCHAR(255)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="PSP">
+            <column name="STORNO_PAGAMENTO" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="PA">
+            <column name="REVOCA_PAGAMENTO" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="PA">
+            <column name="FLAG_REPO_COMMISSIONE_CARICO_PA" type="CHAR(1)" defaultValue="N"/>
+        </addColumn>
+        <addColumn tableName="PA">
+            <column name="EMAIL_REPO_COMMISSIONE_CARICO_PA" type="VARCHAR(255)" defaultValue="N"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
