@@ -72,61 +72,60 @@ locals {
 #   }
 # }
 
-module "payments_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
+#module "payments_app_service" {
+#  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
+#
+#  vnet_integration    = true
+#  resource_group_name = azurerm_resource_group.gpd_rg.name
+#  plan_type           = "external"
+#  # plan condiviso con GPD
+#  plan_id = azurerm_app_service_plan.gpd_service_plan.id
+#
+#  # App service
+#  name                = format("%s-app-payments", local.project)
+#  client_cert_enabled = false
+#  always_on           = var.payments_always_on
+#  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.container_registry.login_server, "latest")
+#  health_check_path   = "/info"
+#
+#  app_settings = local.gpd_payments_app_settings
+#
+#  allowed_subnets = local.gpd_payments_allowed_subnets
+#  allowed_ips     = []
+#
+#  subnet_id = module.gpd_snet[0].id # shared plan
+#
+#  tags = var.tags
+#}
 
-  vnet_integration    = true
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  plan_type           = "external"
-  # plan condiviso con GPD
-  plan_id = azurerm_app_service_plan.gpd_service_plan.id
-
-  # App service
-  name                = format("%s-app-payments", local.project)
-  client_cert_enabled = false
-  always_on           = var.payments_always_on
-  linux_fx_version    = format("DOCKER|%s/api-payments-backend:%s", module.container_registry.login_server, "latest")
-  health_check_path   = "/info"
-
-  app_settings = local.gpd_payments_app_settings
-
-  allowed_subnets = local.gpd_payments_allowed_subnets
-  allowed_ips     = []
-
-  subnet_id = module.gpd_snet[0].id # shared plan
-
-  tags = var.tags
-
-}
-
-module "payments_app_service_slot_staging" {
-  count = var.env_short == "p" ? 1 : 0
-
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.2.0"
-
-  # App service plan
-  app_service_plan_id = module.payments_app_service.plan_id
-  app_service_id      = module.payments_app_service.id
-  app_service_name    = module.payments_app_service.name
-
-  # App service
-  name                = "staging"
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  location            = azurerm_resource_group.gpd_rg.location
-
-  always_on         = true
-  linux_fx_version  = format("DOCKER|%s/api-payments-backend:%s", module.container_registry.login_server, "latest")
-  health_check_path = "/info"
-
-  # App settings
-  app_settings = local.gpd_payments_app_settings
-
-  allowed_subnets = local.gpd_payments_allowed_subnets
-  allowed_ips     = []
-  subnet_id       = module.gpd_snet[0].id
-
-  tags = var.tags
-}
+#module "payments_app_service_slot_staging" {
+#  count = var.env_short == "p" ? 1 : 0
+#
+#  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.2.0"
+#
+#  # App service plan
+#  app_service_plan_id = module.payments_app_service.plan_id
+#  app_service_id      = module.payments_app_service.id
+#  app_service_name    = module.payments_app_service.name
+#
+#  # App service
+#  name                = "staging"
+#  resource_group_name = azurerm_resource_group.gpd_rg.name
+#  location            = azurerm_resource_group.gpd_rg.location
+#
+#  always_on         = true
+#  linux_fx_version  = format("DOCKER|%s/api-payments-backend:%s", module.container_registry.login_server, "latest")
+#  health_check_path = "/info"
+#
+#  # App settings
+#  app_settings = local.gpd_payments_app_settings
+#
+#  allowed_subnets = local.gpd_payments_allowed_subnets
+#  allowed_ips     = []
+#  subnet_id       = module.gpd_snet[0].id
+#
+#  tags = var.tags
+#}
 
 # resource "azurerm_monitor_autoscale_setting" "payments_app_service_autoscale" {
 #   name                = format("%s-autoscale-payments", local.project)
@@ -218,34 +217,34 @@ resource "azurerm_storage_table" "payments_receipts_table" {
 }
 
 ##Alert
-resource "azurerm_monitor_scheduled_query_rules_alert" "payments_gpd_inconsistency_error" {
-  count = var.env_short == "p" ? 1 : 0
-
-  name                = format("%s-payments-api-alert", module.payments_app_service.name)
-  resource_group_name = azurerm_resource_group.gpd_rg.name
-  location            = var.location
-
-  action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
-    email_subject          = "[Payments] call GPD payment position error"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = azurerm_application_insights.application_insights.id
-  description    = "Payments API Call Warning"
-  enabled        = true
-  query = format(<<-QUERY
-  traces
-    | where cloud_RoleName == "%s"
-    | order by timestamp desc
-    | where message contains "[getGPDCheckedReceiptsList] Non-blocking error"
-  QUERY
-    , module.payments_app_service.name
-  )
-  severity    = 1
-  frequency   = 15
-  time_window = 15
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
-  }
-}
+#resource "azurerm_monitor_scheduled_query_rules_alert" "payments_gpd_inconsistency_error" {
+#  count = var.env_short == "p" ? 1 : 0
+#
+#  name                = format("%s-payments-api-alert", module.payments_app_service.name)
+#  resource_group_name = azurerm_resource_group.gpd_rg.name
+#  location            = var.location
+#
+#  action {
+#    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+#    email_subject          = "[Payments] call GPD payment position error"
+#    custom_webhook_payload = "{}"
+#  }
+#  data_source_id = azurerm_application_insights.application_insights.id
+#  description    = "Payments API Call Warning"
+#  enabled        = true
+#  query = format(<<-QUERY
+#  traces
+#    | where cloud_RoleName == "%s"
+#    | order by timestamp desc
+#    | where message contains "[getGPDCheckedReceiptsList] Non-blocking error"
+#  QUERY
+#    , module.payments_app_service.name
+#  )
+#  severity    = 1
+#  frequency   = 15
+#  time_window = 15
+#  trigger {
+#    operator  = "GreaterThanOrEqual"
+#    threshold = 1
+#  }
+#}
