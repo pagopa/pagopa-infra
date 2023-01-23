@@ -105,6 +105,18 @@ resource "kubernetes_namespace" "monitoring" {
 #   }
 # }
 
+resource "kubernetes_secret_v1" "prometheus_basic_auth" {
+  metadata {
+    name = "prometheus-basic-auth"
+    namespace = "monitoring"
+  }
+
+  data = {
+    "auth" = "${file("${var.prometheus_basic_auth_file}")}"
+  }
+
+}
+
 resource "helm_release" "kube_prometheus_stack" {
   name       = "prometheus"
   repository = "https://prometheus-community.github.io/helm-charts"
