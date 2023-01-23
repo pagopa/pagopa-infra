@@ -27,7 +27,7 @@ locals {
   apim_mock_psp_service_api = {
     display_name          = "Mock PSP for NDP"
     description           = "API Mock PSP for NDP"
-    path                  = "mock_psp-ndp/service"
+    path                  = "mock-psp-ndp/service"
     subscription_required = false
     service_url           = null
   }
