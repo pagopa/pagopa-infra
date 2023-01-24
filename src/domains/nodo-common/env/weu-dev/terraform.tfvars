@@ -49,3 +49,8 @@ pgres_flex_private_endpoint_enabled    = false
 pgres_flex_ha_enabled                  = false
 pgres_flex_pgbouncher_enabled          = false
 pgres_flex_diagnostic_settings_enabled = false
+
+
+sftp_account_replication_type = "LRS"
+sftp_enable_private_endpoint  = true
+sftp_disable_network_rules    = true
