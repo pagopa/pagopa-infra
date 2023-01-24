@@ -6,16 +6,15 @@
                 <key>{{transaction-jwt-signing-key}}</key>
             </issuer-signing-keys>
         </validate-jwt>
-        <set-variable name="isValidToken" value="@{
+        <set-variable name="tokenTransactionId" value="@{
         var jwt = (Jwt)context.Variables["jwtToken"];
         if(jwt.Claims.ContainsKey("transactionId")){
-        var transactionId = jwt.Claims["transactionId"];
-        return context.Request.MatchedParameters["transactionId"].Equals(transactionId);
+        return jwt.Claims["transactionId"][0];
         }
-        return false;
+        return "";
         }" />
         <choose>
-            <when condition="@((bool)context.Variables["isValidToken"] == false)">
+            <when condition="@((string)context.Variables.GetValueOrDefault("tokenTransactionId","") != context.Request.MatchedParameters["transactionId"])">
                 <return-response>
                     <set-status code="401" reason="Invalid token transaction id" />
                 </return-response>
