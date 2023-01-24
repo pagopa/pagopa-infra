@@ -30,6 +30,10 @@ dns_zone_internal_prefix = "internal.uat.platform"
 ## CIDR nodo per database pgsql
 cidr_subnet_flex_dbms = ["10.1.160.0/24"]
 
+## CIDR storage subnet
+cidr_subnet_storage_account = ["10.1.137.16/29"]
+
+
 pgres_flex_params = {
 
   enabled    = true

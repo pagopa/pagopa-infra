@@ -166,3 +166,7 @@ variable "sftp_enable_private_endpoint" {
   type        = bool
   description = "If true, create a private endpoint for the SFTP storage account"
 }
+variable "cidr_subnet_storage_account" {
+  type        = list(string)
+  description = "Storage account network address space."
+}

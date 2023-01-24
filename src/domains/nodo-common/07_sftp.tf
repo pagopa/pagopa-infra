@@ -36,20 +36,11 @@ module "storage_account_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.3.0"
   name                                           = format("%s-storage-account-snet", local.project)
   address_prefixes                               = var.cidr_subnet_storage_account
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
+  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
   service_endpoints                              = ["Microsoft.Storage"]
   enforce_private_link_endpoint_network_policies = true
 }
-
-#
-# Private DNS Zone for Storage Accounts
-#
-resource "azurerm_private_dns_zone" "storage_account" {
-  name                = "privatelink.blob.core.windows.net"
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-}
-
 
 resource "azurerm_private_endpoint" "sftp_blob" {
   count = var.sftp_enable_private_endpoint ? 1 : 0
@@ -68,7 +59,7 @@ resource "azurerm_private_endpoint" "sftp_blob" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [azurerm_private_dns_zone.storage_account.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage[0].id]
   }
 
   tags = var.tags
@@ -81,7 +72,7 @@ resource "azurerm_storage_container" "sogei" {
 }
 
 resource "azurerm_storage_blob" "sogei_dirs" {
-  for_each               = toset(["in", "out", "error", "ack"])
+  for_each               = toset(["Inbox", "output"])
   name                   = format("%s/.test", each.key)
   storage_account_name   = module.sftp.name
   storage_container_name = azurerm_storage_container.sogei.name
