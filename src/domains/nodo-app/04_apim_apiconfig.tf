@@ -10,6 +10,40 @@ data "azuread_application" "apiconfig-be-aks" {
   display_name = format("pagopa-%s-apiconfig-be", var.env_short)
 }
 
+data "azurerm_key_vault" "nodo-kv" {
+  name                = format("pagopa-%s-nodo-kv", var.env_short)
+  resource_group_name = "${local.product}-${var.domain}-sec-rg"
+}
+
+data "azurerm_key_vault_secret" "apiconfig-client-secret" {
+  name         = "apiconfig-client-secret"
+  key_vault_id = data.azurerm_key_vault.nodo-kv.id
+}
+
+resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
+  name                         = "apiconfig-oauth2"
+  api_management_name          = local.pagopa_apim_name
+  resource_group_name          = local.pagopa_apim_rg
+  display_name                 = "apiconfig-oauth2"
+  authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
+  client_id                    = data.azuread_application.apiconfig-fe-aks.application_id
+  client_registration_endpoint = "http://localhost"
+
+  grant_types           = ["authorizationCode"]
+  authorization_methods = ["GET", "POST"]
+
+  #tfsec:ignore:GEN003
+  token_endpoint = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
+  default_scope = format("%s/%s",
+    data.azuread_application.apiconfig-be-aks.identifier_uris[0],
+    "access-apiconfig-be")
+  client_secret = data.azurerm_key_vault_secret.apiconfig-client-secret.value
+
+  bearer_token_sending_methods = ["authorizationHeader"]
+  client_authentication_method = ["Body"]
+
+}
+
 locals {
   apim_api_config_service_api = {
     name                   = "apiconfig-service-%s-api"
