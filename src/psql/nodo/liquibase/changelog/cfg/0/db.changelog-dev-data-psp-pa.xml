@@ -1,61 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
-    <changeSet author="liquibase" id="dev-data-tipiversamento">
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="PayPal"/>
-            <column name="TIPO_VERSAMENTO" value="PPAL"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Satispay PROVA"/>
-            <column name="TIPO_VERSAMENTO" value="STP"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Addebito diretto"/>
-            <column name="TIPO_VERSAMENTO" value="AD"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Bonifico bancario telematico"/>
-            <column name="TIPO_VERSAMENTO" value="BBT"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Bollettino postale"/>
-            <column name="TIPO_VERSAMENTO" value="BP"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Carta di pagamento"/>
-            <column name="TIPO_VERSAMENTO" value="CP"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Online Banking Electronic Payment"/>
-            <column name="TIPO_VERSAMENTO" value="OBEP"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Pagamento attivato presso PSP"/>
-            <column name="TIPO_VERSAMENTO" value="PO"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Jiffy"/>
-            <column name="TIPO_VERSAMENTO" value="JIF"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="MyBank"/>
-            <column name="TIPO_VERSAMENTO" value="MYBK"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Pagamento appIO di test aggiuntivo"/>
-            <column name="TIPO_VERSAMENTO" value="TPAY"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="Bancomat Pay"/>
-            <column name="TIPO_VERSAMENTO" value="BPAY"/>
-        </insert>
-        <insert tableName="TIPI_VERSAMENTO">
-            <column name="DESCRIZIONE" value="PostePay"/>
-            <column name="TIPO_VERSAMENTO" value="PPAY"/>
-        </insert>
-    </changeSet>
-
     <changeSet author="liquibase" id="dev-data-psp">
         <insert tableName="PSP">
             <column  name="ID_PSP" value="nodo-doc-dev"/>
@@ -538,24 +483,15 @@
 
 
     <changeSet author="liquibase" id="dev-data-cds_servizi">
-        <insert tableName="CDS_CATEGORIE">
-            <column  name="descrizione"  value="ALTRO"/>
-        </insert>
-        <insert tableName="CDS_CATEGORIE">
-            <column  name="descrizione"  value="Tassa automobilistica"/>
-        </insert>
-        <insert tableName="CDS_CATEGORIE">
-            <column  name="descrizione"  value="Donazioni"/>
-        </insert>
         <insert tableName="CDS_SERVIZIO">
-            <column  name="id_servizio"  value="00001"/>
+            <column  name="id_servizio"  value="90001"/>
             <column  name="descrizione_servizio"  value="Tassa automobilistica"/>
             <column  name="xsd_riferimento"  value="TassaAutomobilistica_1_1_0.xsd"/>
             <column  name="versione"  value="1"/>
             <column  name="categoria_id"  valueComputed="(select OBJ_ID from CDS_CATEGORIE where descrizione = 'Tassa automobilistica')"/>
         </insert>
         <insert tableName="CDS_SERVIZIO">
-            <column  name="id_servizio"  value="00002"/>
+            <column  name="id_servizio"  value="90002"/>
             <column  name="descrizione_servizio"  value="Tassa automobilistica"/>
             <column  name="xsd_riferimento"  value="TassaAutomobilistica_1_1_0.xsd"/>
             <column  name="versione"  value="2"/>
@@ -567,36 +503,42 @@
         </insert>
         <insert tableName="CDS_SOGGETTO_SERVIZIO">
             <column  name="fk_cds_soggetto"  valueComputed="(select OBJ_ID from CDS_SOGGETTO where id_dominio = '00000000099')"/>
-            <column  name="fk_cds_servizio"  valueComputed="(select OBJ_ID from CDS_SERVIZIO where id_servizio = '00001')"/>
+            <column  name="fk_cds_servizio"  valueComputed="(select OBJ_ID from CDS_SERVIZIO where id_servizio = '90001')"/>
             <column  name="data_inizio_validita"  valueComputed="current_timestamp"/>
             <column  name="commissione"  value="Y"/>
-            <column  name="id_soggetto_servizio"  value="00001"/>
+            <column  name="id_soggetto_servizio"  value="90001"/>
         </insert>
         <insert tableName="CDS_SOGGETTO_SERVIZIO">
             <column  name="fk_cds_soggetto"  valueComputed="(select OBJ_ID from CDS_SOGGETTO where id_dominio = '00000000099')"/>
-            <column  name="fk_cds_servizio"  valueComputed="(select OBJ_ID from CDS_SERVIZIO where id_servizio = '00002')"/>
+            <column  name="fk_cds_servizio"  valueComputed="(select OBJ_ID from CDS_SERVIZIO where id_servizio = '90002')"/>
             <column  name="data_inizio_validita"  valueComputed="current_timestamp"/>
             <column  name="commissione"  value="Y"/>
-            <column  name="id_soggetto_servizio"  value="00002"/>
+            <column  name="id_soggetto_servizio"  value="90002"/>
         </insert>
     </changeSet>
 
+    <changeSet author="liquibase" id="dev-data-agid-conf-if-not-exists">
+      <preConditions onFail="MARK_RAN">
+          <sqlCheck expectedResult="0">SELECT COUNT(*) FROM PSP WHERE ID_PSP = 'AGID_01'</sqlCheck>
+      </preConditions>
+      <insert tableName="PSP">
+        <column  name="ID_PSP" value="AGID_01"/>
+        <column  name="ENABLED" value="Y"/>
+        <column  name="DESCRIZIONE" value="nodo-doc-dev-agid"/>
+        <column  name="RAGIONE_SOCIALE" value="nodo-doc-dev-agid"/>
+        <column  name="MARCA_BOLLO_DIGITALE"  value="0"/>
+        <column  name="AGID_PSP"  value="N"/>
+        <column  name="CODICE_FISCALE"  value="AGID_01"/>
+        <column  name="VAT_NUMBER"  value="NODODOCAGID"/>
+      </insert>
+    </changeSet>
     <changeSet author="liquibase" id="dev-data-agid-conf">
-        <insert tableName="PSP">
-            <column  name="ID_PSP" value="AGID_01"/>
-            <column  name="ENABLED" value="Y"/>
-            <column  name="DESCRIZIONE" value="nodo-doc-dev-agid"/>
-            <column  name="RAGIONE_SOCIALE" value="nodo-doc-dev-agid"/>
-            <column  name="MARCA_BOLLO_DIGITALE"  value="0"/>
-            <column  name="AGID_PSP"  value="N"/>
-            <column  name="CODICE_FISCALE"  value="AGID_01"/>
-            <column  name="VAT_NUMBER"  value="NODODOCAGID"/>
-        </insert>
+
 
         <insert tableName="INTERMEDIARI_PSP">
-            <column  name="ID_INTERMEDIARIO_PSP" value="97735020584"/>
+            <column  name="ID_INTERMEDIARIO_PSP" value="00000000000"/>
             <column  name="ENABLED" value="Y"/>
-            <column  name="CODICE_INTERMEDIARIO" value="97735020584"/>
+            <column  name="CODICE_INTERMEDIARIO" value="00000000000"/>
             <column  name="FAULT_BEAN_ESTESO"  value="Y"/>
         </insert>
 
@@ -622,7 +564,7 @@
         </insert>
 
         <insert tableName="CANALI">
-            <column  name="ID_CANALE" value="97735020584_02"/>
+            <column  name="ID_CANALE" value="00000000000_02"/>
             <column  name="ENABLED" value="Y"/>
             <column  name="IP" value="localhost"/>
             <column  name="PASSWORD"  value="pwdpwdpwd"/>
@@ -630,7 +572,7 @@
             <column  name="PROTOCOLLO"  value="HTTP"/>
             <column  name="SERVIZIO"  value="FespPsp"/>
             <column  name="DESCRIZIONE"  value="nodo-doc-dev-agid"/>
-            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = '97735020584')"/>
+            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = '00000000000')"/>
             <column  name="PROXY_ENABLED"  value="N"/>
             <column  name="PROXY_HOST"  value="10.97.20.33"/>
             <column  name="PROXY_PORT"  value="80"/>
@@ -644,12 +586,12 @@
         </insert>
 
         <insert tableName="CANALE_TIPO_VERSAMENTO">
-            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = '97735020584_02')"/>
+            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = '00000000000_02')"/>
             <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO')"/>
         </insert>
 
         <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
-            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = '97735020584_02') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO'))"/>
+            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = '00000000000_02') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO'))"/>
             <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'AGID_01')"/>
         </insert>
     </changeSet>

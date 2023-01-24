@@ -1,0 +1,47 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="liquibase" id="update-seqs">
+        <sql>
+          SELECT setval('auth_permissions_seq', 5000000, FALSE);
+          SELECT setval('auth_roles_seq', 5000000, FALSE);
+          SELECT setval('auth_users_seq', 5000000, FALSE);
+          SELECT setval('binary_file_seq', 5000000, FALSE);
+          SELECT setval('canale_tipo_versamento_seq', 5000000, FALSE);
+          SELECT setval('canali_nodo_seq', 5000000, FALSE);
+          SELECT setval('canali_seq', 5000000, FALSE);
+          SELECT setval('cdi_detail_seq', 5000000, FALSE);
+          SELECT setval('cdi_fascia_costo_servizio_seq', 5000000, FALSE);
+          SELECT setval('cdi_informazioni_servizio_seq', 5000000, FALSE);
+          SELECT setval('cdi_master_seq', 5000000, FALSE);
+          SELECT setval('cdi_preferences_seq', 5000000, FALSE);
+          SELECT setval('cds_categorie_seq', 5000000, FALSE);
+          SELECT setval('cds_servizio_seq', 5000000, FALSE);
+          SELECT setval('cds_soggetto_seq', 5000000, FALSE);
+          SELECT setval('cds_soggetto_servizio_seq', 5000000, FALSE);
+          SELECT setval('codifiche_pa_seq', 5000000, FALSE);
+          SELECT setval('codifiche_seq', 5000000, FALSE);
+          SELECT setval('elenco_servizi_seq', 5000000, FALSE);
+          SELECT setval('ftp_servers_seq', 5000000, FALSE);
+          SELECT setval('hibernate_sequence', 5000000, FALSE);
+          SELECT setval('informative_conto_accredito_detail_seq', 5000000, FALSE);
+          SELECT setval('informative_conto_accredito_master_seq', 5000000, FALSE);
+          SELECT setval('informative_pa_detail_seq', 5000000, FALSE);
+          SELECT setval('informative_pa_fasce_seq', 5000000, FALSE);
+          SELECT setval('informative_pa_master_seq', 5000000, FALSE);
+          SELECT setval('intermediari_pa_seq', 5000000, FALSE);
+          SELECT setval('intermediari_psp_seq', 5000000, FALSE);
+          SELECT setval('pa_seq', 5000000, FALSE);
+          SELECT setval('pa_stazione_pa_seq', 5000000, FALSE);
+          SELECT setval('pdd_seq', 5000000, FALSE);
+          SELECT setval('psp_canale_tipo_versamento_seq', 5000000, FALSE);
+          SELECT setval('psp_seq', 5000000, FALSE);
+          SELECT setval('quadrature_sched_seq', 5000000, FALSE);
+          SELECT setval('stazioni_seq', 5000000, FALSE);
+          SELECT setval('sync_status_seq', 5000000, FALSE);
+          SELECT setval('tipi_versamento_seq', 5000000, FALSE);
+          SELECT setval('wfesp_plugin_conf_seq', 5000000, FALSE);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
