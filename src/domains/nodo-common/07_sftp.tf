@@ -29,28 +29,50 @@ module "sftp" {
   tags = var.tags
 }
 
-# resource "azurerm_private_endpoint" "sftp_blob" {
-#   count = var.sftp_enable_private_endpoint ? 1 : 0
+# Azure Blob Storage subnet
+module "storage_account_snet" {
+  count = var.sftp_enable_private_endpoint ? 1 : 0
 
-#   name                = "${module.sftp.name}-blob-endpoint"
-#   resource_group_name = azurerm_resource_group.sftp.name
-#   location            = azurerm_resource_group.sftp.location
-#   subnet_id           = module.storage_account_snet.id
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.3.0"
+  name                                           = format("%s-storage-account-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_storage_account
+  resource_group_name                            = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = module.vnet.name
+  service_endpoints                              = ["Microsoft.Storage"]
+  enforce_private_link_endpoint_network_policies = true
+}
 
-#   private_service_connection {
-#     name                           = "${module.sftp.name}-blob-endpoint"
-#     private_connection_resource_id = module.sftp.id
-#     is_manual_connection           = false
-#     subresource_names              = ["blob"]
-#   }
+#
+# Private DNS Zone for Storage Accounts
+#
+resource "azurerm_private_dns_zone" "storage_account" {
+  name                = "privatelink.blob.core.windows.net"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+}
 
-#   private_dns_zone_group {
-#     name                 = "private-dns-zone-group"
-#     private_dns_zone_ids = [azurerm_private_dns_zone.storage_account.id]
-#   }
 
-#   tags = var.tags
-# }
+resource "azurerm_private_endpoint" "sftp_blob" {
+  count = var.sftp_enable_private_endpoint ? 1 : 0
+
+  name                = "${module.sftp.name}-blob-endpoint"
+  resource_group_name = azurerm_resource_group.sftp.name
+  location            = azurerm_resource_group.sftp.location
+  subnet_id           = module.storage_account_snet[0].id
+
+  private_service_connection {
+    name                           = "${module.sftp.name}-blob-endpoint"
+    private_connection_resource_id = module.sftp.id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [azurerm_private_dns_zone.storage_account.id]
+  }
+
+  tags = var.tags
+}
 
 resource "azurerm_storage_container" "sogei" {
   name                  = "sogei"
