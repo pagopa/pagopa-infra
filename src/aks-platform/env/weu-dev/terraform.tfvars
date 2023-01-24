@@ -141,7 +141,7 @@ prometheus_basic_auth_file = "./env/weu-dev/kube-prometheus-stack-helm/prometheu
 
 kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
-  values_file = "./env/weu-dev/kube-prometheus-stack-helm/values.yaml"
+  values_file   = "./env/weu-dev/kube-prometheus-stack-helm/values.yaml"
 }
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
