@@ -4,7 +4,7 @@
         <set-variable name="envshort" value="${env_short}" />
         <set-variable name="fiscalCodeParam" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
         <set-variable name="organizationFiscalCode" value="@{
-            return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;
+            return context.User.Id ;
         }" />
         <choose>
             <when condition="@(!context.Variables.GetValueOrDefault<string>("fiscalCodeParam").Equals(context.Variables.GetValueOrDefault<string>("organizationFiscalCode")))">
