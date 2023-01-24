@@ -211,7 +211,7 @@ variable "reloader_helm" {
   })
   description = "reloader helm chart configuration"
 }
-
+/*
 variable "prometheus_helm" {
   type = object({
     chart_version = string,
@@ -245,6 +245,18 @@ variable "prometheus_helm" {
     }),
   })
   description = "prometheus helm chart configuration"
+}
+*/
+
+variable "prometheus_basic_auth_file" {
+  type = string
+}
+variable "kube_prometheus_stack_helm" {
+  type = object({
+    chart_version = string,
+    values_file   = string
+  })
+  description = "kube-prometheus-stack helm chart configuration"
 }
 
 variable "tls_cert_check_helm" {

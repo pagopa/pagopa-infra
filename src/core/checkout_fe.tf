@@ -98,6 +98,24 @@ module "checkout_cdn" {
       destination             = "/dona.html"
       preserve_unmatched_path = false
     }
+    },
+    {
+      name  = "RewriteRulesPaymentTransactionsGateway"
+      order = 3
+
+      conditions = [{
+        condition_type   = "url_path_condition"
+        operator         = "BeginsWith"
+        match_values     = ["/payment-transactions-gateway/vpos", "/payment-transactions-gateway/postepay", "/payment-transactions-gateway/xpay"]
+        transforms       = []
+        negate_condition = false
+      }]
+
+      url_rewrite_action = {
+        source_pattern          = "/"
+        destination             = "/payment-transactions-gateway/index.html"
+        preserve_unmatched_path = false
+      }
   }]
 
   tags = var.tags

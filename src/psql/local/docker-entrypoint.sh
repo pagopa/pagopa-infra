@@ -8,7 +8,7 @@ if [[ "$cmd" == *--defaultsFile* ]] || [[ "$cmd" == *--defaults-file* ]]; then
     for prop in $props
     do
         if [[ "$prop" == *--defaultsFile* ]]; then
-            
+
             file=$(echo $prop | sed 's/--defaultsFile=\(.*\).*/\1/g')
             fileEvaluated=/liquibase/$(basename $file).eval
             (eval "echo \"$(cat $file)\"") > $fileEvaluated
@@ -19,7 +19,7 @@ if [[ "$cmd" == *--defaultsFile* ]] || [[ "$cmd" == *--defaults-file* ]]; then
             #cat ${fileEvaluated}
         fi
         if [[ "$prop" == *--defaults-file* ]]; then
-            
+
             file=$(echo $prop | sed 's/--defaults-file=\(.*\).*/\1/g')
             fileEvaluated=/liquibase/$(basename $file).eval
             (eval "echo \"$(cat $file)\"") > $fileEvaluated
