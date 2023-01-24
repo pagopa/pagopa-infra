@@ -27,7 +27,7 @@ locals {
   apim_mock_ec_service_api = {
     display_name          = "Mock EC for NDP"
     description           = "API Mock EC for NDP"
-    path                  = "mock_ec-ndp/service"
+    path                  = "mock-ec-ndp/service"
     subscription_required = false
     service_url           = null
   }

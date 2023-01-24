@@ -50,7 +50,7 @@ prometheus:
     externalUrl: https://api.dev.platform.pagopa.it/prometheus
   ingress:
     enabled: true
-    ingressClassName: nginx
+    ingressClassName: nginxelk
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: /$2
       nginx.ingress.kubernetes.io/ssl-redirect: 'false'
