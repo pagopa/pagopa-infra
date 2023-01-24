@@ -107,7 +107,7 @@ resource "kubernetes_namespace" "monitoring" {
 
 resource "kubernetes_secret_v1" "prometheus_basic_auth" {
   metadata {
-    name = "prometheus-basic-auth"
+    name      = "prometheus-basic-auth"
     namespace = "monitoring"
   }
 
