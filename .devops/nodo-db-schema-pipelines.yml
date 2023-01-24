@@ -101,7 +101,7 @@ stages:
                     CREATE SCHEMA IF NOT EXISTS $ONLINE_SCHEMA AUTHORIZATION $ONLINE_USERNAME;
                   END IF;
 
-                  CREATE or REPLACE FUNCTION trunc(timestamp without time zone) RETURNS date
+                  CREATE or REPLACE FUNCTION "$DATABASE_NAME".trunc(timestamp without time zone) RETURNS date
                     AS 'select DATE_TRUNC(''day'',\$1);'
                     LANGUAGE SQL
                     IMMUTABLE
