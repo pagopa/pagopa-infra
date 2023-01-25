@@ -151,7 +151,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "77.43.17.42",    # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
-    "???.???.???.???" # IP NOBO VIA INTERNET
+    "193.203.230.20"  # IP NODO VIA INTERNET
   ]
 }
 

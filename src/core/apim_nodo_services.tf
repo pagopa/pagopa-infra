@@ -17,8 +17,10 @@ module "apim_nodo_dei_pagamenti_product" {
   approval_required     = false
 
   policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
-    address-range-from = var.env_short == "p" ? "???.???.???.???" : "0.0.0.0" # remote appgw ip for NODO IP internet
-    address-range-to   = var.env_short == "p" ? "???.???.???.???" : "0.0.0.0" #  remote appgw ip for ith NODO IP internet
+    # address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    # address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+    address-range-from = "0.0.0.0"
+    address-range-to   = "0.0.0.0"
   })
 
 }
