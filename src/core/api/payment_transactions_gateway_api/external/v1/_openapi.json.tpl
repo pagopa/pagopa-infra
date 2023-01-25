@@ -343,8 +343,15 @@
           "required": true
         },
         "responses": {
-          "302": {
-            "description": "FOUND, Redirect to url"
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposResumeResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -380,6 +387,35 @@
         "responses": {
           "302": {
             "description": "FOUND, Redirect to url"
+          }
+        }
+      }
+    },
+    "/request-payments/vpos/{requestId}/method/notifications": {
+      "post": {
+        "summary": "API used to notify the end of the method step (invoked inside the iframe)",
+        "tags": [
+          "Vpos-external"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK, returns html",
+            "content": {
+              "text/html": {}
+            }
           }
         }
       }
@@ -535,6 +571,19 @@
           "methodCompleted": {
             "type": "string",
             "example": "Y"
+          }
+        }
+      },
+      "VposResumeResponse": {
+        "type": "object",
+        "required": [
+          "requestId"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "1f3af548-f9d3-423f-b7b0-4e68948d41d2"
           }
         }
       }
