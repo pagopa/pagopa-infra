@@ -14,10 +14,10 @@
   <include file="./${version}/db.changelog-20221212091400_delete_unused_keys_column-2.xml" labels="${version}"/>
   <include file="./${version}/db.changelog-20221220095600_lispay.xml" labels="${version}"/>
 
-  <include file="./0/data/db.changelog-configs.xml"           labels="init"/>
+  <include file="./0/data/db.changelog-configs.xml"           context="base" labels="init"/>
 
-  <include file="./0/data/db.changelog-plugins.xml"           labels="init"/>
-  <include file="./0/data/db.changelog-tv.xml"                labels="init"/>
+  <include file="./0/data/db.changelog-plugins.xml"           context="base" labels="init"/>
+  <include file="./0/data/db.changelog-tv.xml"                context="base" labels="init"/>
   <include file="./0/data/db.changelog-intermediari_psp.xml"  context="integ" labels="init"/>
   <include file="./0/data/db.changelog-psp.xml"               context="integ" labels="init"/>
   <include file="./0/data/db.changelog-canali.xml"            context="integ" labels="init"/>
