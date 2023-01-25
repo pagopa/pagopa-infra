@@ -833,4 +833,76 @@
         </insert>
     </changeSet>
 
+    <changeSet author="liquibase" id="dev-data-psp-bollo">
+      <insert tableName="PSP">
+        <column  name="ID_PSP" value="nodo-doc-bollo-dev"/>
+        <column  name="ENABLED" value="Y"/>
+        <column  name="DESCRIZIONE" value="nodo-doc-bollo-dev"/>
+        <column  name="RAGIONE_SOCIALE" value="nodo-doc-bollo-dev"/>
+        <column  name="MARCA_BOLLO_DIGITALE"  value="1"/>
+        <column  name="AGID_PSP"  value="N"/>
+        <column  name="CODICE_FISCALE"  value="NODODOCDEV123457"/>
+        <column  name="VAT_NUMBER"  value="NODODOCDEV2"/>
+      </insert>
+
+      <insert tableName="INTERMEDIARI_PSP">
+        <column  name="ID_INTERMEDIARIO_PSP" value="nodo-doc-bollo-dev"/>
+        <column  name="ENABLED" value="Y"/>
+        <column  name="CODICE_INTERMEDIARIO" value="int nodo-doc-bollo-dev"/>
+        <column  name="FAULT_BEAN_ESTESO"  value="Y"/>
+      </insert>
+
+      <insert tableName="CANALI_NODO">
+        <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+        <column  name="REDIRECT_PATH" value="psp"/>
+        <column  name="REDIRECT_PORTA" value="80"/>
+        <column  name="MODELLO_PAGAMENTO"  value="ATTIVATO_PRESSO_PSP"/>
+        <column  name="MULTI_PAYMENT"  value="N"/>
+        <column  name="RAGIONE_SOCIALE"  value="nodo-doc-bollo-dev"/>
+        <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+        <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+        <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+        <column  name="LENTO"  value="N"/>
+        <column  name="RT_PUSH"  value="Y"/>
+        <column  name="AGID_CHANNEL"  value="N"/>
+        <column  name="ON_US"  value="N"/>
+        <column  name="CARRELLO_CARTE"  value="N"/>
+        <column  name="RECOVERY"  value="N"/>
+        <column  name="MARCA_BOLLO_DIGITALE"  value="Y"/>
+        <column  name="FLAG_IO"  value="N"/>
+        <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+      </insert>
+
+      <insert tableName="CANALI">
+        <column  name="ID_CANALE" value="nodo-doc-bollo-dev"/>
+        <column  name="ENABLED" value="Y"/>
+        <column  name="IP" value="api.dev.platform.pagopa.it" />
+        <column  name="PASSWORD"  value="pwdpwdpwd"/>
+        <column  name="PORTA" value="443" />
+        <column  name="PROTOCOLLO" value="HTTPS" />
+        <column  name="SERVIZIO" value="mock-psp-ndp/service/v1/mock" />
+        <column  name="DESCRIZIONE"  value="nodo-doc-bollo-dev"/>
+        <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = 'nodo-doc-bollo-dev')"/>
+        <column  name="PROXY_ENABLED"  value="N"/>
+        <column  name="PROXY_HOST"  value="10.97.20.33"/>
+        <column  name="PROXY_PORT"  value="80"/>
+        <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-bollo-dev')"/>
+        <column  name="TIMEOUT"  value="10"/>
+        <column  name="NUM_THREAD"  value="2"/>
+        <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+        <column  name="TIMEOUT_A"  value="20"/>
+        <column  name="TIMEOUT_B"  value="20"/>
+        <column  name="TIMEOUT_C"  value="20"/>
+      </insert>
+
+      <insert tableName="CANALE_TIPO_VERSAMENTO">
+        <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-bollo-dev')"/>
+        <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO')"/>
+      </insert>
+
+      <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+        <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-bollo-dev') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO'))"/>
+        <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'nodo-doc-bollo-dev')"/>
+      </insert>
+    </changeSet>
 </databaseChangeLog>
