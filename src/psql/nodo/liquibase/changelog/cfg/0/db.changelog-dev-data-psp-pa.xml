@@ -897,7 +897,7 @@
 
       <insert tableName="CANALE_TIPO_VERSAMENTO">
         <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-bollo-dev')"/>
-        <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO')"/>
+        <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'CP')"/>
       </insert>
 
       <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
