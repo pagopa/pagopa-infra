@@ -103,7 +103,7 @@ app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true
 app_gateway_alerts_enabled              = true
 app_gateway_deny_paths = [
-  "/nodo/.*",
+  # "/nodo/.*",
   "/nodo-auth/.*", # non serve in quanto queste API sono con subkey required 🔐
   "/payment-manager/clients/.*",
   "/payment-manager/pp-restapi-rtd/.*",
@@ -139,6 +139,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "/web-bo/.*",
     "/bo-nodo/.*",
     "/pp-admin-panel/.*",
+    "/nodo/.*",
   ]
   ips = [
     "93.63.219.230",  # PagoPA on prem VPN
@@ -150,6 +151,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "77.43.17.42",    # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
+    "???.???.???.???" # IP NOBO VIA INTERNET
   ]
 }
 
