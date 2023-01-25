@@ -213,6 +213,19 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_
   tags = var.tags
 }
 
+#
+# Private DNS Zone for Storage Accounts
+#
+# resource "azurerm_private_dns_zone" "storage_account" {
+#   name                = "privatelink.blob.core.windows.net"
+#   resource_group_name = azurerm_resource_group.rg_vnet.name
+
+#   tags = var.tags
+# }
+
+## TODO add net link
+
+
 # DNS private: internal.dev.platform.pagopa.it
 
 resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {

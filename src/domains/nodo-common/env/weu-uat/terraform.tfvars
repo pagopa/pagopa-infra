@@ -30,6 +30,10 @@ dns_zone_internal_prefix = "internal.uat.platform"
 ## CIDR nodo per database pgsql
 cidr_subnet_flex_dbms = ["10.1.160.0/24"]
 
+## CIDR storage subnet
+cidr_subnet_storage_account = ["10.1.137.16/29"]
+
+
 pgres_flex_params = {
 
   enabled    = true
@@ -49,3 +53,8 @@ pgres_flex_private_endpoint_enabled    = false
 pgres_flex_ha_enabled                  = false
 pgres_flex_pgbouncher_enabled          = false
 pgres_flex_diagnostic_settings_enabled = false
+
+sftp_account_replication_type = "LRS"
+sftp_enable_private_endpoint  = true
+sftp_ip_rules                 = ["217.175.54.31", "217.175.48.25"]
+
