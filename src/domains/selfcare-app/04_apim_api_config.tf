@@ -38,7 +38,7 @@ module "apim_api_backoffice_apiConfig_api_v1" {
   service_url  = local.apim_backoffice_apiConfig_api.service_url
 
   content_format = "openapi"
-  content_value  = templatefile("./api/pagopa-api-config/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/pagopa-api-config/v1/_openapi.json.tpl", {
     host     = local.selfcare_hostname
     basePath = "selfcare"
   })
