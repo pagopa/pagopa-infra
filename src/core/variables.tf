@@ -1752,6 +1752,11 @@ variable "ingress_load_balancer_ip" {
   default = ""
 }
 
+variable "ingress_elk_load_balancer_ip" {
+  type    = string
+  default = ""
+}
+
 variable "env" {
   type    = string
   default = ""

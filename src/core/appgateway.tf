@@ -285,7 +285,7 @@ module "app_gw" {
       protocol                    = "Https"
       host                        = "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
       port                        = 443
-      ip_addresses                = [var.ingress_load_balancer_ip]
+      ip_addresses                = [var.ingress_elk_load_balancer_ip]
       fqdns                       = ["weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
       probe                       = "/kibana"
       probe_name                  = "probe-kibana"
