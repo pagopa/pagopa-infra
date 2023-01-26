@@ -43,8 +43,8 @@ module "apim_ecommerce_checkout_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = "${local.project}-ecommerce-checkout-api"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  api_management_name   = local.pagopa_apim_name
   product_ids           = [module.apim_ecommerce_checkout_product.product_id]
   subscription_required = local.apim_ecommerce_checkout_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.ecommerce_checkout_api_v1.id
