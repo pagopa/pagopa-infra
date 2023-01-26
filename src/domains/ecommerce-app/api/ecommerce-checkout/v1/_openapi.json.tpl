@@ -143,6 +143,11 @@
             "description": "Transaction ID"
           }
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "summary": "Get information about a specific transaction",
         "responses": {
           "200": {
@@ -191,6 +196,11 @@
             },
             "required": true,
             "description": "Transaction ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "requestBody": {
@@ -1446,6 +1456,13 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
