@@ -34,7 +34,7 @@ liquibase.hub.mode: OFF
 log-level: INFO
 " > cfg.properties
 
-liquibase --defaultsFile=cfg.properties drop-all
+#liquibase --defaultsFile=cfg.properties drop-all
 
 liquibase --defaultsFile=cfg.properties update --changelogFile="db.changelog-master-3.10.0.xml"
 

@@ -1,0 +1,1099 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+  <changeSet author="liquibase" id="1674553032784-44">
+    <insert tableName="WFESP_PLUGIN_CONF">
+      <column name="OBJ_ID" valueNumeric="1"/>
+      <column name="ID_SERV_PLUGIN" value="test2"/>
+      <column name="PROFILO_PAG_CONST_STRING"/>
+      <column name="PROFILO_PAG_SOAP_RULE"/>
+      <column name="PROFILO_PAG_RPT_XPATH"/>
+      <column name="ID_BEAN" value="defaultForwardProcessor"/>
+    </insert>
+    <insert tableName="WFESP_PLUGIN_CONF">
+      <column name="OBJ_ID" valueNumeric="2"/>
+      <column name="ID_SERV_PLUGIN" value="wpl02"/>
+      <column name="PROFILO_PAG_CONST_STRING"/>
+      <column name="PROFILO_PAG_SOAP_RULE"/>
+      <column name="PROFILO_PAG_RPT_XPATH"/>
+      <column name="ID_BEAN" value="defaultForwardProcessor"/>
+    </insert>
+    <insert tableName="WFESP_PLUGIN_CONF">
+      <column name="OBJ_ID" valueNumeric="3"/>
+      <column name="ID_SERV_PLUGIN" value="idPsp1"/>
+      <column name="PROFILO_PAG_CONST_STRING"/>
+      <column name="PROFILO_PAG_SOAP_RULE" value="profilo=$identificativoIntermediarioPA$~$identificativoStazioneIntermediarioPA$"/>
+      <column name="PROFILO_PAG_RPT_XPATH"/>
+      <column name="ID_BEAN" value="defaultForwardProcessor"/>
+    </insert>
+    <insert tableName="WFESP_PLUGIN_CONF">
+      <column name="OBJ_ID" valueNumeric="4"/>
+      <column name="ID_SERV_PLUGIN" value="wpl04"/>
+      <column name="PROFILO_PAG_CONST_STRING"/>
+      <column name="PROFILO_PAG_SOAP_RULE"/>
+      <column name="PROFILO_PAG_RPT_XPATH"/>
+      <column name="ID_BEAN" value="myBankForwardProcessor"/>
+    </insert>
+    <insert tableName="WFESP_PLUGIN_CONF">
+      <column name="OBJ_ID" valueNumeric="5"/>
+      <column name="ID_SERV_PLUGIN" value="wpl06"/>
+      <column name="PROFILO_PAG_CONST_STRING"/>
+      <column name="PROFILO_PAG_SOAP_RULE"/>
+      <column name="PROFILO_PAG_RPT_XPATH"/>
+      <column name="ID_BEAN" value="defaultForwardProcessor"/>
+    </insert>
+    <insert tableName="WFESP_PLUGIN_CONF">
+      <column name="OBJ_ID" valueNumeric="6"/>
+      <column name="ID_SERV_PLUGIN" value="wpl05"/>
+      <column name="PROFILO_PAG_CONST_STRING"/>
+      <column name="PROFILO_PAG_SOAP_RULE"/>
+      <column name="PROFILO_PAG_RPT_XPATH"/>
+      <column name="ID_BEAN" value="defaultForwardProcessor"/>
+    </insert>
+    <insert tableName="WFESP_PLUGIN_CONF">
+      <column name="OBJ_ID" valueNumeric="8"/>
+      <column name="ID_SERV_PLUGIN" value="wpl03"/>
+      <column name="PROFILO_PAG_CONST_STRING"/>
+      <column name="PROFILO_PAG_SOAP_RULE"/>
+      <column name="PROFILO_PAG_RPT_XPATH"/>
+      <column name="ID_BEAN" value="defaultForwardProcessor"/>
+    </insert>
+    <insert tableName="WFESP_PLUGIN_CONF">
+      <column name="OBJ_ID" valueNumeric="9"/>
+      <column name="ID_SERV_PLUGIN" value="wpl07"/>
+      <column name="PROFILO_PAG_CONST_STRING"/>
+      <column name="PROFILO_PAG_SOAP_RULE" value="IDVS=$buyerBank$"/>
+      <column name="PROFILO_PAG_RPT_XPATH"/>
+      <column name="ID_BEAN" value="defaultForwardProcessor"/>
+    </insert>
+  </changeSet>
+  <changeSet author="liquibase" id="1674553032784-16">
+    <insert tableName="CDS_CATEGORIE">
+      <column name="OBJ_ID" valueNumeric="1"/>
+      <column name="DESCRIZIONE" value="Altro"/>
+    </insert>
+    <insert tableName="CDS_CATEGORIE">
+      <column name="OBJ_ID" valueNumeric="2"/>
+      <column name="DESCRIZIONE" value="Tassa automobilistica"/>
+    </insert>
+    <insert tableName="CDS_CATEGORIE">
+      <column name="OBJ_ID" valueNumeric="3"/>
+      <column name="DESCRIZIONE" value="Donazioni"/>
+    </insert>
+  </changeSet>
+  <changeSet author="liquibase" id="1674553032784-26">
+    <insert tableName="FTP_SERVERS">
+      <column name="OBJ_ID" valueNumeric="1"/>
+      <column name="HOST" value="10.6.97.46"/>
+      <column name="PORT" valueNumeric="22"/>
+      <column name="USERNAME" value="avvisti"/>
+      <column name="PASSWORD" value="avvisti01"/>
+      <column name="ROOT_PATH" value="/"/>
+      <column name="SERVICE" value="avvisatura"/>
+      <column name="TYPE" value="out"/>
+      <column name="IN_PATH" value="/in/avvisatura"/>
+      <column name="OUT_PATH" value="/out/avvisatura"/>
+      <column name="HISTORY_PATH" value="/out/history/avvisatura"/>
+      <column name="ENABLED" value="Y"/>
+    </insert>
+    <insert tableName="FTP_SERVERS">
+      <column name="OBJ_ID" valueNumeric="2"/>
+      <column name="HOST" value="10.6.97.46"/>
+      <column name="PORT" valueNumeric="22"/>
+      <column name="USERNAME" value="avvisti"/>
+      <column name="PASSWORD" value="avvisti01"/>
+      <column name="ROOT_PATH" value="/"/>
+      <column name="SERVICE" value="rendicontazioni"/>
+      <column name="TYPE" value="out"/>
+      <column name="IN_PATH" value="/in/rendicontazioni"/>
+      <column name="OUT_PATH" value="/out/rendicontazioni"/>
+      <column name="HISTORY_PATH" value="/out/history/rendicontazioni"/>
+      <column name="ENABLED" value="Y"/>
+    </insert>
+    <insert tableName="FTP_SERVERS">
+      <column name="OBJ_ID" valueNumeric="3"/>
+      <column name="HOST" value="10.6.97.46"/>
+      <column name="PORT" valueNumeric="22"/>
+      <column name="USERNAME" value="avvisti"/>
+      <column name="PASSWORD" value="avvisti01"/>
+      <column name="ROOT_PATH" value="/"/>
+      <column name="SERVICE" value="rendicontazioni_bollo"/>
+      <column name="TYPE" value="out"/>
+      <column name="IN_PATH" value="/in/rendicontazioni_bollo"/>
+      <column name="OUT_PATH" value="/out/rendicontazioni_bollo"/>
+      <column name="HISTORY_PATH" value="/out/history/rendicontazioni_bollo"/>
+      <column name="ENABLED" value="Y"/>
+    </insert>
+  </changeSet>
+  <changeSet author="liquibase" id="1674553032784-43">
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="20148"/>
+      <column name="DESCRIZIONE" value="PayPal"/>
+      <column name="TIPO_VERSAMENTO" value="PPAL"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="61"/>
+      <column name="DESCRIZIONE" value="Satispay PROVA"/>
+      <column name="TIPO_VERSAMENTO" value="STP"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="1"/>
+      <column name="DESCRIZIONE" value="Addebito diretto"/>
+      <column name="TIPO_VERSAMENTO" value="AD"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="2"/>
+      <column name="DESCRIZIONE" value="Bonifico bancario telematico"/>
+      <column name="TIPO_VERSAMENTO" value="BBT"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="3"/>
+      <column name="DESCRIZIONE" value="Bollettino postale "/>
+      <column name="TIPO_VERSAMENTO" value="BP"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="4"/>
+      <column name="DESCRIZIONE" value="Carta di pagamento "/>
+      <column name="TIPO_VERSAMENTO" value="CP"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="5"/>
+      <column name="DESCRIZIONE" value="Online Banking Electronic Payment "/>
+      <column name="TIPO_VERSAMENTO" value="OBEP"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="6"/>
+      <column name="DESCRIZIONE" value="Pagamento attivato presso PSP "/>
+      <column name="TIPO_VERSAMENTO" value="PO"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="7"/>
+      <column name="DESCRIZIONE" value="Jiffy"/>
+      <column name="TIPO_VERSAMENTO" value="JIF"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="8"/>
+      <column name="DESCRIZIONE" value="MyBank"/>
+      <column name="TIPO_VERSAMENTO" value="MYBK"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="28510"/>
+      <column name="DESCRIZIONE" value="Pagamento appIO di test aggiuntivo"/>
+      <column name="TIPO_VERSAMENTO" value="TPAY"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="81"/>
+      <column name="DESCRIZIONE" value="Bancomat Pay"/>
+      <column name="TIPO_VERSAMENTO" value="BPAY"/>
+    </insert>
+    <insert tableName="TIPI_VERSAMENTO">
+      <column name="OBJ_ID" valueNumeric="1000003"/>
+      <column name="DESCRIZIONE" value="PostePay"/>
+      <column name="TIPO_VERSAMENTO" value="PPAY"/>
+    </insert>
+  </changeSet>
+  <changeSet author="liquibase" id="dev-data-psp">
+        <insert tableName="PSP">
+            <column  name="ID_PSP" value="nodo-doc-dev"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="DESCRIZIONE" value="nodo-doc-dev"/>
+            <column  name="RAGIONE_SOCIALE" value="nodo-doc-dev"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="0"/>
+            <column  name="AGID_PSP"  value="N"/>
+            <column  name="CODICE_FISCALE"  value="NODODOCDEV123456"/>
+            <column  name="VAT_NUMBER"  value="NODODOCDEV1"/>
+        </insert>
+
+        <insert tableName="INTERMEDIARI_PSP">
+            <column  name="ID_INTERMEDIARIO_PSP" value="nodo-doc-dev"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="CODICE_INTERMEDIARIO" value="int nodo-doc-dev"/>
+            <column  name="FAULT_BEAN_ESTESO"  value="Y"/>
+        </insert>
+
+        <insert tableName="CANALI_NODO">
+            <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH" value="psp"/>
+            <column  name="REDIRECT_PORTA" value="80"/>
+            <column  name="MODELLO_PAGAMENTO"  value="ATTIVATO_PRESSO_PSP"/>
+            <column  name="MULTI_PAYMENT"  value="N"/>
+            <column  name="RAGIONE_SOCIALE"  value="nodo-doc-dev"/>
+            <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+            <column  name="LENTO"  value="N"/>
+            <column  name="RT_PUSH"  value="Y"/>
+            <column  name="AGID_CHANNEL"  value="N"/>
+            <column  name="ON_US"  value="N"/>
+            <column  name="CARRELLO_CARTE"  value="N"/>
+            <column  name="RECOVERY"  value="N"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="N"/>
+            <column  name="FLAG_IO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+        </insert>
+
+        <insert tableName="CANALI">
+            <column  name="ID_CANALE" value="nodo-doc-dev"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="SERVIZIO"  value="FespPsp"/>
+            <column  name="DESCRIZIONE"  value="nodo-doc-dev"/>
+            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = 'nodo-doc-dev')"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-dev')"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="2"/>
+            <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+            <column  name="TIMEOUT_A"  value="20"/>
+            <column  name="TIMEOUT_B"  value="20"/>
+            <column  name="TIMEOUT_C"  value="20"/>
+        </insert>
+
+        <insert tableName="CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev')"/>
+            <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO')"/>
+        </insert>
+
+        <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO'))"/>
+            <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'nodo-doc-dev')"/>
+        </insert>
+    </changeSet>
+
+  <changeSet author="liquibase" id="dev-data-pa-01">
+    <preConditions onFail="MARK_RAN"><columnExists tableName="PA" columnName="FLAG_REPO_COMMISSIONE_CARICO_PA"/></preConditions>
+    <insert tableName="PA">
+      <column  name="ID_DOMINIO" value="00000000099"/>
+      <column  name="ENABLED" value="Y"/>
+      <column  name="DESCRIZIONE" value="nodo-doc-dev"/>
+      <column  name="RAGIONE_SOCIALE" value="nodo-doc-dev"/>
+      <column  name="INDIRIZZO_DOMICILIO_FISCALE"  value="Via Pisani 1"/>
+      <column  name="SIGLA_PROVINCIA_DOMICILIO_FISCALE"  value="MI"/>
+      <column  name="COMUNE_DOMICILIO_FISCALE"  value="Milano"/>
+      <column  name="DENOMINAZIONE_DOMICILIO_FISCALE"  value="Denominazione nodo-doc-dev"/>
+      <column  name="PAGAMENTO_PRESSO_PSP"  value="Y"/>
+      <column  name="RENDICONTAZIONE_FTP"  value="Y"/>
+      <column  name="RENDICONTAZIONE_ZIP"  value="Y"/>
+      <column  name="CAP_DOMICILIO_FISCALE"  value="20090"/>
+      <column  name="FLAG_REPO_COMMISSIONE_CARICO_PA" value="Y"/>
+    </insert>
+  </changeSet>
+
+  <changeSet author="liquibase" id="dev-data-pa-02">
+    <preConditions onFail="MARK_RAN"><not><columnExists tableName="PA" columnName="FLAG_REPO_COMMISSIONE_CARICO_PA"/></not></preConditions>
+    <insert tableName="PA">
+      <column  name="ID_DOMINIO" value="00000000099"/>
+      <column  name="ENABLED" value="Y"/>
+      <column  name="DESCRIZIONE" value="nodo-doc-dev"/>
+      <column  name="RAGIONE_SOCIALE" value="nodo-doc-dev"/>
+      <column  name="INDIRIZZO_DOMICILIO_FISCALE"  value="Via Pisani 1"/>
+      <column  name="SIGLA_PROVINCIA_DOMICILIO_FISCALE"  value="MI"/>
+      <column  name="COMUNE_DOMICILIO_FISCALE"  value="Milano"/>
+      <column  name="DENOMINAZIONE_DOMICILIO_FISCALE"  value="Denominazione nodo-doc-dev"/>
+      <column  name="PAGAMENTO_PRESSO_PSP"  value="Y"/>
+      <column  name="RENDICONTAZIONE_FTP"  value="Y"/>
+      <column  name="RENDICONTAZIONE_ZIP"  value="Y"/>
+      <column  name="CAP_DOMICILIO_FISCALE"  value="20090"/>
+    </insert>
+  </changeSet>
+
+  <changeSet author="liquibase" id="dev-data-pa">
+
+        <insert tableName="INTERMEDIARI_PA">
+            <column  name="ID_INTERMEDIARIO_PA" value="nodo-doc-dev"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="CODICE_INTERMEDIARIO" value="Intermediario PA dev"/>
+            <column  name="FAULT_BEAN_ESTESO" value="N"/>
+        </insert>
+
+        <insert tableName="STAZIONI">
+            <column  name="ID_STAZIONE" value="nodo-doc-dev_v1_1"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="REDIRECT_IP"  value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH"  value="ec"/>
+            <column  name="REDIRECT_PORTA"  value="80"/>
+            <column  name="REDIRECT_QUERY_STRING"  value="qrstr=prova"/>
+            <column  name="SERVIZIO"  value="PortaleRTServer"/>
+            <column  name="RT_ENABLED"  value="Y"/>
+            <column  name="SERVIZIO_POF"  value="Pof"/>
+            <column  name="FK_INTERMEDIARIO_PA"  valueComputed="(select OBJ_ID from INTERMEDIARI_PA where ID_INTERMEDIARIO_PA = 'nodo-doc-dev')"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="PROTOCOLLO_4MOD"  value="HTTP"/>
+            <column  name="IP_4MOD"  value="localhost"/>
+            <column  name="PORTA_4MOD"  value="8087"/>
+            <column  name="SERVIZIO_4MOD"  value="4mod"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="PROTOCOLLO_AVV"  value="HTTP"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="4"/>
+            <column  name="TIMEOUT_A"  value="2"/>
+            <column  name="TIMEOUT_B"  value="3"/>
+            <column  name="TIMEOUT_C"  value="4"/>
+            <column  name="FLAG_ONLINE"  value="Y"/>
+            <column  name="VERSIONE"  value="1"/>
+            <column  name="INVIO_RT_ISTANTANEO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+        </insert>
+        <insert tableName="STAZIONI">
+            <column  name="ID_STAZIONE" value="nodo-doc-dev_v1_2"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="REDIRECT_IP"  value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH"  value="ec"/>
+            <column  name="REDIRECT_PORTA"  value="80"/>
+            <column  name="REDIRECT_QUERY_STRING"  value="qrstr=prova"/>
+            <column  name="SERVIZIO"  value="PortaleRTServer"/>
+            <column  name="RT_ENABLED"  value="Y"/>
+            <column  name="SERVIZIO_POF"  value="Pof"/>
+            <column  name="FK_INTERMEDIARIO_PA"  valueComputed="(select OBJ_ID from INTERMEDIARI_PA where ID_INTERMEDIARIO_PA = 'nodo-doc-dev')"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="PROTOCOLLO_4MOD"  value="HTTP"/>
+            <column  name="IP_4MOD"  value="localhost"/>
+            <column  name="PORTA_4MOD"  value="8087"/>
+            <column  name="SERVIZIO_4MOD"  value="4mod"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="PROTOCOLLO_AVV"  value="HTTP"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="4"/>
+            <column  name="TIMEOUT_A"  value="2"/>
+            <column  name="TIMEOUT_B"  value="3"/>
+            <column  name="TIMEOUT_C"  value="4"/>
+            <column  name="FLAG_ONLINE"  value="Y"/>
+            <column  name="VERSIONE"  value="1"/>
+            <column  name="INVIO_RT_ISTANTANEO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="2"/>
+        </insert>
+        <insert tableName="STAZIONI">
+            <column  name="ID_STAZIONE" value="nodo-doc-dev_v2_1"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="REDIRECT_IP"  value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH"  value="ec"/>
+            <column  name="REDIRECT_PORTA"  value="80"/>
+            <column  name="REDIRECT_QUERY_STRING"  value="qrstr=prova"/>
+            <column  name="SERVIZIO"  value="PortaleRTServer"/>
+            <column  name="RT_ENABLED"  value="Y"/>
+            <column  name="SERVIZIO_POF"  value="Pof"/>
+            <column  name="FK_INTERMEDIARIO_PA"  valueComputed="(select OBJ_ID from INTERMEDIARI_PA where ID_INTERMEDIARIO_PA = 'nodo-doc-dev')"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="PROTOCOLLO_4MOD"  value="HTTP"/>
+            <column  name="IP_4MOD"  value="localhost"/>
+            <column  name="PORTA_4MOD"  value="8087"/>
+            <column  name="SERVIZIO_4MOD"  value="4mod"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="PROTOCOLLO_AVV"  value="HTTP"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="4"/>
+            <column  name="TIMEOUT_A"  value="2"/>
+            <column  name="TIMEOUT_B"  value="3"/>
+            <column  name="TIMEOUT_C"  value="4"/>
+            <column  name="FLAG_ONLINE"  value="Y"/>
+            <column  name="VERSIONE"  value="2"/>
+            <column  name="INVIO_RT_ISTANTANEO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+        </insert>
+        <insert tableName="STAZIONI">
+            <column  name="ID_STAZIONE" value="nodo-doc-dev_v2_2"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="REDIRECT_IP"  value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH"  value="ec"/>
+            <column  name="REDIRECT_PORTA"  value="80"/>
+            <column  name="REDIRECT_QUERY_STRING"  value="qrstr=prova"/>
+            <column  name="SERVIZIO"  value="PortaleRTServer"/>
+            <column  name="RT_ENABLED"  value="Y"/>
+            <column  name="SERVIZIO_POF"  value="Pof"/>
+            <column  name="FK_INTERMEDIARIO_PA"  valueComputed="(select OBJ_ID from INTERMEDIARI_PA where ID_INTERMEDIARIO_PA = 'nodo-doc-dev')"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="PROTOCOLLO_4MOD"  value="HTTP"/>
+            <column  name="IP_4MOD"  value="localhost"/>
+            <column  name="PORTA_4MOD"  value="8087"/>
+            <column  name="SERVIZIO_4MOD"  value="4mod"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="PROTOCOLLO_AVV"  value="HTTP"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="4"/>
+            <column  name="TIMEOUT_A"  value="2"/>
+            <column  name="TIMEOUT_B"  value="3"/>
+            <column  name="TIMEOUT_C"  value="4"/>
+            <column  name="FLAG_ONLINE"  value="Y"/>
+            <column  name="VERSIONE"  value="2"/>
+            <column  name="INVIO_RT_ISTANTANEO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="2"/>
+        </insert>
+
+        <insert tableName="PA_STAZIONE_PA">
+            <column  name="FK_PA"  valueComputed="(select OBJ_ID from PA where ID_DOMINIO = '00000000099')"/>
+            <column  name="FK_STAZIONE"  valueComputed="(select OBJ_ID from STAZIONI where ID_STAZIONE = 'nodo-doc-dev_v1_1')"/>
+            <column  name="PROGRESSIVO"  value="11"/>
+            <column  name="QUARTO_MODELLO"  value="Y"/>
+            <column  name="BROADCAST"  value="N"/>
+            <column  name="PAGAMENTO_SPONTANEO"  value="Y"/>
+        </insert>
+
+        <insert tableName="PA_STAZIONE_PA">
+            <column  name="FK_PA"  valueComputed="(select OBJ_ID from PA where ID_DOMINIO = '00000000099')"/>
+            <column  name="FK_STAZIONE"  valueComputed="(select OBJ_ID from STAZIONI where ID_STAZIONE = 'nodo-doc-dev_v1_2')"/>
+            <column  name="PROGRESSIVO"  value="12"/>
+            <column  name="QUARTO_MODELLO"  value="N"/>
+            <column  name="BROADCAST"  value="N"/>
+            <column  name="PAGAMENTO_SPONTANEO"  value="Y"/>
+        </insert>
+
+        <insert tableName="PA_STAZIONE_PA">
+            <column  name="FK_PA"  valueComputed="(select OBJ_ID from PA where ID_DOMINIO = '00000000099')"/>
+            <column  name="FK_STAZIONE"  valueComputed="(select OBJ_ID from STAZIONI where ID_STAZIONE = 'nodo-doc-dev_v2_1')"/>
+            <column  name="PROGRESSIVO"  value="21"/>
+            <column  name="QUARTO_MODELLO"  value="N"/>
+            <column  name="BROADCAST"  value="N"/>
+            <column  name="PAGAMENTO_SPONTANEO"  value="Y"/>
+        </insert>
+
+        <insert tableName="PA_STAZIONE_PA">
+            <column  name="FK_PA"  valueComputed="(select OBJ_ID from PA where ID_DOMINIO = '00000000099')"/>
+            <column  name="FK_STAZIONE"  valueComputed="(select OBJ_ID from STAZIONI where ID_STAZIONE = 'nodo-doc-dev_v2_2')"/>
+            <column  name="PROGRESSIVO"  value="22"/>
+            <column  name="QUARTO_MODELLO"  value="N"/>
+            <column  name="BROADCAST"  value="N"/>
+            <column  name="PAGAMENTO_SPONTANEO"  value="Y"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-codifica">
+        <insert tableName="CODIFICHE">
+            <column  name="ID_CODIFICA"  value="BARCODE-128-AIM"/>
+            <column  name="DESCRIZIONE"  value="Codifica 128 AIM"/>
+        </insert>
+        <insert tableName="CODIFICHE">
+            <column  name="ID_CODIFICA"  value="BARCODE-GS1-128"/>
+            <column  name="DESCRIZIONE"  value="Codifica barcode GS1-128"/>
+        </insert>
+        <insert tableName="CODIFICHE">
+            <column  name="ID_CODIFICA"  value="QR-CODE"/>
+            <column  name="DESCRIZIONE"  value="Codifica QR Code"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-codifica_pa">
+        <insert tableName="CODIFICHE_PA">
+            <column  name="CODICE_PA"  value="00000000099"/>
+            <column  name="FK_CODIFICA"  valueComputed="(select OBJ_ID from CODIFICHE where ID_CODIFICA = 'QR-CODE')"/>
+            <column  name="FK_PA"  valueComputed="(select OBJ_ID from PA where ID_DOMINIO = '00000000099')"/>
+        </insert>
+    </changeSet>
+    <changeSet author="liquibase" id="dev-data-codifica_pa_barcode">
+        <insert tableName="CODIFICHE_PA">
+            <column  name="CODICE_PA"  value="200000000099"/>
+            <column  name="FK_CODIFICA"  valueComputed="(select OBJ_ID from CODIFICHE where ID_CODIFICA = 'BARCODE-128-AIM')"/>
+            <column  name="FK_PA"  valueComputed="(select OBJ_ID from PA where ID_DOMINIO = '00000000099')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-info_pa_master">
+        <insert tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER">
+            <column  name="data_inizio_validita"  valueComputed="current_timestamp"/>
+            <column  name="data_pubblicazione"  valueComputed="current_timestamp"/>
+            <column  name="id_informativa_conto_accredito_pa"  value="00000000099"/>
+            <column  name="ragione_sociale"  value="00000000099"/>
+            <column  name="FK_PA"  valueComputed="(select OBJ_ID from PA where ID_DOMINIO = '00000000099')"/>
+            <column  name="versione"  value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-info_pa_det">
+        <insert tableName="INFORMATIVE_CONTO_ACCREDITO_DETAIL">
+            <column  name="iban_accredito"  value="IT96R0123454321000000012345"/>
+            <column  name="fk_informativa_conto_accredito_master"  valueComputed="(select OBJ_ID from INFORMATIVE_CONTO_ACCREDITO_MASTER where id_informativa_conto_accredito_pa = '00000000099')"/>
+            <column  name="id_merchant"  value="00000000099"/>
+            <column  name="chiave_avvio"  value="00000000099"/>
+            <column  name="chiave_esito"  value="00000000099"/>
+            <column  name="id_banca_seller"  value="1"/>
+        </insert>
+        <insert tableName="INFORMATIVE_CONTO_ACCREDITO_DETAIL">
+            <column  name="iban_accredito"  value="IT96R0760154321200000000099"/>
+            <column  name="fk_informativa_conto_accredito_master"  valueComputed="(select OBJ_ID from INFORMATIVE_CONTO_ACCREDITO_MASTER where id_informativa_conto_accredito_pa = '00000000099')"/>
+            <column  name="id_merchant"  value="00000000099"/>
+            <column  name="chiave_avvio"  value="00000000099"/>
+            <column  name="chiave_esito"  value="00000000099"/>
+            <column  name="id_banca_seller"  value="1"/>
+        </insert>
+    </changeSet>
+
+
+    <changeSet author="liquibase" id="dev-data-psp-mod3">
+        <insert tableName="PSP">
+            <column  name="ID_PSP" value="nodo-doc-dev-mod3"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="DESCRIZIONE" value="nodo-doc-dev-mod3"/>
+            <column  name="RAGIONE_SOCIALE" value="nodo-doc-dev-mod3"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="0"/>
+            <column  name="AGID_PSP"  value="N"/>
+            <column  name="CODICE_FISCALE"  value="NODODOCDEV223456"/>
+            <column  name="VAT_NUMBER"  value="NODODOCDEV2"/>
+        </insert>
+
+        <insert tableName="INTERMEDIARI_PSP">
+            <column  name="ID_INTERMEDIARIO_PSP" value="nodo-doc-dev-mod3"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="CODICE_INTERMEDIARIO" value="int nodo-doc-dev-mod3"/>
+            <column  name="FAULT_BEAN_ESTESO"  value="Y"/>
+        </insert>
+
+        <insert tableName="CANALI_NODO">
+            <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH" value="psp"/>
+            <column  name="REDIRECT_PORTA" value="80"/>
+            <column  name="MODELLO_PAGAMENTO"  value="ATTIVATO_PRESSO_PSP"/>
+            <column  name="MULTI_PAYMENT"  value="N"/>
+            <column  name="RAGIONE_SOCIALE"  value="nodo-doc-dev-mod3"/>
+            <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+            <column  name="LENTO"  value="N"/>
+            <column  name="RT_PUSH"  value="Y"/>
+            <column  name="AGID_CHANNEL"  value="N"/>
+            <column  name="ON_US"  value="N"/>
+            <column  name="CARRELLO_CARTE"  value="N"/>
+            <column  name="RECOVERY"  value="N"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="N"/>
+            <column  name="FLAG_IO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+        </insert>
+
+        <insert tableName="CANALI">
+            <column  name="ID_CANALE" value="nodo-doc-dev-mod3"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="SERVIZIO"  value="FespPsp"/>
+            <column  name="DESCRIZIONE"  value="nodo-doc-dev-mod3"/>
+            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = 'nodo-doc-dev-mod3')"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-dev-mod3')"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="2"/>
+            <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+            <column  name="TIMEOUT_A"  value="20"/>
+            <column  name="TIMEOUT_B"  value="20"/>
+            <column  name="TIMEOUT_C"  value="20"/>
+        </insert>
+
+        <insert tableName="CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-mod3')"/>
+            <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO')"/>
+        </insert>
+
+        <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-mod3') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO'))"/>
+            <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'nodo-doc-dev-mod3')"/>
+        </insert>
+
+        <insert tableName="CANALI_NODO">
+            <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH" value="psp"/>
+            <column  name="REDIRECT_PORTA" value="80"/>
+            <column  name="MODELLO_PAGAMENTO"  value="IMMEDIATO"/>
+            <column  name="MULTI_PAYMENT"  value="N"/>
+            <column  name="RAGIONE_SOCIALE"  value="nodo-doc-dev-immediato"/>
+            <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+            <column  name="LENTO"  value="N"/>
+            <column  name="RT_PUSH"  value="Y"/>
+            <column  name="AGID_CHANNEL"  value="N"/>
+            <column  name="ON_US"  value="N"/>
+            <column  name="CARRELLO_CARTE"  value="N"/>
+            <column  name="RECOVERY"  value="N"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="N"/>
+            <column  name="FLAG_IO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+        </insert>
+
+        <insert tableName="CANALI">
+            <column  name="ID_CANALE" value="nodo-doc-dev-immediato"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="SERVIZIO"  value="FespPsp"/>
+            <column  name="DESCRIZIONE"  value="nodo-doc-dev-immediato"/>
+            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = 'nodo-doc-dev')"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-dev-immediato')"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="2"/>
+            <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+            <column  name="TIMEOUT_A"  value="20"/>
+            <column  name="TIMEOUT_B"  value="20"/>
+            <column  name="TIMEOUT_C"  value="20"/>
+        </insert>
+
+        <insert tableName="CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-immediato')"/>
+            <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'CP')"/>
+        </insert>
+
+        <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-immediato') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'CP'))"/>
+            <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'nodo-doc-dev')"/>
+        </insert>
+    </changeSet>
+
+
+    <changeSet author="liquibase" id="dev-data-cds_servizi">
+        <insert tableName="CDS_SERVIZIO">
+            <column  name="id_servizio"  value="90001"/>
+            <column  name="descrizione_servizio"  value="Tassa automobilistica"/>
+            <column  name="xsd_riferimento"  value="TassaAutomobilistica_1_1_0.xsd"/>
+            <column  name="versione"  value="1"/>
+            <column  name="categoria_id"  valueComputed="(select OBJ_ID from CDS_CATEGORIE where descrizione = 'Tassa automobilistica')"/>
+        </insert>
+        <insert tableName="CDS_SERVIZIO">
+            <column  name="id_servizio"  value="90002"/>
+            <column  name="descrizione_servizio"  value="Tassa automobilistica"/>
+            <column  name="xsd_riferimento"  value="TassaAutomobilistica_1_1_0.xsd"/>
+            <column  name="versione"  value="2"/>
+            <column  name="categoria_id"  valueComputed="(select OBJ_ID from CDS_CATEGORIE where descrizione = 'Tassa automobilistica')"/>
+        </insert>
+        <insert tableName="CDS_SOGGETTO">
+            <column  name="id_dominio"  value="00000000099"/>
+            <column  name="descrizione_ente"  value="PA dev"/>
+        </insert>
+        <insert tableName="CDS_SOGGETTO_SERVIZIO">
+            <column  name="fk_cds_soggetto"  valueComputed="(select OBJ_ID from CDS_SOGGETTO where id_dominio = '00000000099')"/>
+            <column  name="fk_cds_servizio"  valueComputed="(select OBJ_ID from CDS_SERVIZIO where id_servizio = '90001')"/>
+            <column  name="data_inizio_validita"  valueComputed="current_timestamp"/>
+            <column  name="commissione"  value="Y"/>
+            <column  name="id_soggetto_servizio"  value="90001"/>
+        </insert>
+        <insert tableName="CDS_SOGGETTO_SERVIZIO">
+            <column  name="fk_cds_soggetto"  valueComputed="(select OBJ_ID from CDS_SOGGETTO where id_dominio = '00000000099')"/>
+            <column  name="fk_cds_servizio"  valueComputed="(select OBJ_ID from CDS_SERVIZIO where id_servizio = '90002')"/>
+            <column  name="data_inizio_validita"  valueComputed="current_timestamp"/>
+            <column  name="commissione"  value="Y"/>
+            <column  name="id_soggetto_servizio"  value="90002"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-agid-conf-if-not-exists">
+      <preConditions onFail="MARK_RAN">
+          <sqlCheck expectedResult="0">SELECT COUNT(*) FROM PSP WHERE ID_PSP = 'AGID_01'</sqlCheck>
+      </preConditions>
+      <insert tableName="PSP">
+        <column  name="ID_PSP" value="AGID_01"/>
+        <column  name="ENABLED" value="Y"/>
+        <column  name="DESCRIZIONE" value="nodo-doc-dev-agid"/>
+        <column  name="RAGIONE_SOCIALE" value="nodo-doc-dev-agid"/>
+        <column  name="MARCA_BOLLO_DIGITALE"  value="0"/>
+        <column  name="AGID_PSP"  value="N"/>
+        <column  name="CODICE_FISCALE"  value="AGID_01"/>
+        <column  name="VAT_NUMBER"  value="NODODOCAGID"/>
+      </insert>
+    </changeSet>
+    <changeSet author="liquibase" id="dev-data-agid-conf">
+
+
+        <insert tableName="INTERMEDIARI_PSP">
+            <column  name="ID_INTERMEDIARIO_PSP" value="00000000000"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="CODICE_INTERMEDIARIO" value="00000000000"/>
+            <column  name="FAULT_BEAN_ESTESO"  value="Y"/>
+        </insert>
+
+        <insert tableName="CANALI_NODO">
+            <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH" value="psp"/>
+            <column  name="REDIRECT_PORTA" value="80"/>
+            <column  name="MODELLO_PAGAMENTO"  value="IMMEDIATO_MULTIBENEFICIARIO"/>
+            <column  name="MULTI_PAYMENT"  value="N"/>
+            <column  name="RAGIONE_SOCIALE"  value="nodo-doc-dev-agid"/>
+            <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+            <column  name="LENTO"  value="N"/>
+            <column  name="RT_PUSH"  value="Y"/>
+            <column  name="AGID_CHANNEL"  value="N"/>
+            <column  name="ON_US"  value="N"/>
+            <column  name="CARRELLO_CARTE"  value="N"/>
+            <column  name="RECOVERY"  value="N"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="N"/>
+            <column  name="FLAG_IO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+        </insert>
+
+        <insert tableName="CANALI">
+            <column  name="ID_CANALE" value="00000000000_02"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="SERVIZIO"  value="FespPsp"/>
+            <column  name="DESCRIZIONE"  value="nodo-doc-dev-agid"/>
+            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = '00000000000')"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-dev-agid')"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="2"/>
+            <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+            <column  name="TIMEOUT_A"  value="20"/>
+            <column  name="TIMEOUT_B"  value="20"/>
+            <column  name="TIMEOUT_C"  value="20"/>
+        </insert>
+
+        <insert tableName="CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = '00000000000_02')"/>
+            <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO')"/>
+        </insert>
+
+        <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = '00000000000_02') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PO'))"/>
+            <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'AGID_01')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-canale-differito">
+        <insert tableName="CANALI_NODO">
+            <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH" value="psp"/>
+            <column  name="REDIRECT_PORTA" value="80"/>
+            <column  name="MODELLO_PAGAMENTO"  value="DIFFERITO"/>
+            <column  name="MULTI_PAYMENT"  value="N"/>
+            <column  name="RAGIONE_SOCIALE"  value="nodo-doc-dev-differito"/>
+            <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+            <column  name="LENTO"  value="N"/>
+            <column  name="RT_PUSH"  value="Y"/>
+            <column  name="AGID_CHANNEL"  value="N"/>
+            <column  name="ON_US"  value="N"/>
+            <column  name="CARRELLO_CARTE"  value="N"/>
+            <column  name="RECOVERY"  value="N"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="N"/>
+            <column  name="FLAG_IO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+        </insert>
+
+        <insert tableName="CANALI">
+            <column  name="ID_CANALE" value="nodo-doc-dev-differito"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="SERVIZIO"  value="FespPsp"/>
+            <column  name="DESCRIZIONE"  value="nodo-doc-dev-differito"/>
+            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = 'nodo-doc-dev')"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-dev-differito')"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="2"/>
+            <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+            <column  name="TIMEOUT_A"  value="20"/>
+            <column  name="TIMEOUT_B"  value="20"/>
+            <column  name="TIMEOUT_C"  value="20"/>
+        </insert>
+
+        <insert tableName="CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-differito')"/>
+            <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'MYBK')"/>
+        </insert>
+
+        <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-differito') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'MYBK'))"/>
+            <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'nodo-doc-dev')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-set-stazione-rtIstantanea">
+        <update tableName="STAZIONI">
+            <column name="INVIO_RT_ISTANTANEO" value="Y" />
+            <where>ID_STAZIONE = 'nodo-doc-dev_v1_1'</where>
+        </update>
+        <update tableName="STAZIONI">
+            <column name="INVIO_RT_ISTANTANEO" value="Y" />
+            <where>ID_STAZIONE = 'nodo-doc-dev_v2_2'</where>
+        </update>
+    </changeSet>
+
+
+    <changeSet author="liquibase" id="dev-data-canale-paypal">
+        <insert tableName="CANALI_NODO">
+            <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH" value="psp"/>
+            <column  name="REDIRECT_PORTA" value="80"/>
+            <column  name="MODELLO_PAGAMENTO"  value="IMMEDIATO"/>
+            <column  name="MULTI_PAYMENT"  value="N"/>
+            <column  name="RAGIONE_SOCIALE"  value="nodo-doc-dev-paypal"/>
+            <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+            <column  name="LENTO"  value="N"/>
+            <column  name="RT_PUSH"  value="Y"/>
+            <column  name="AGID_CHANNEL"  value="N"/>
+            <column  name="ON_US"  value="N"/>
+            <column  name="CARRELLO_CARTE"  value="N"/>
+            <column  name="RECOVERY"  value="N"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="N"/>
+            <column  name="FLAG_IO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+        </insert>
+
+        <insert tableName="CANALI">
+            <column  name="ID_CANALE" value="nodo-doc-dev-paypal"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="SERVIZIO"  value="FespPsp"/>
+            <column  name="DESCRIZIONE"  value="nodo-doc-dev-paypal"/>
+            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = 'nodo-doc-dev')"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-dev-paypal')"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="2"/>
+            <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+            <column  name="TIMEOUT_A"  value="20"/>
+            <column  name="TIMEOUT_B"  value="20"/>
+            <column  name="TIMEOUT_C"  value="20"/>
+        </insert>
+
+        <insert tableName="CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-paypal')"/>
+            <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PPAL')"/>
+        </insert>
+
+        <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-paypal') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'PPAL'))"/>
+            <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'nodo-doc-dev')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-canale-bpay">
+        <insert tableName="CANALI_NODO">
+            <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH" value="psp"/>
+            <column  name="REDIRECT_PORTA" value="80"/>
+            <column  name="MODELLO_PAGAMENTO"  value="IMMEDIATO"/>
+            <column  name="MULTI_PAYMENT"  value="N"/>
+            <column  name="RAGIONE_SOCIALE"  value="nodo-doc-dev-bpay"/>
+            <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+            <column  name="LENTO"  value="N"/>
+            <column  name="RT_PUSH"  value="Y"/>
+            <column  name="AGID_CHANNEL"  value="N"/>
+            <column  name="ON_US"  value="N"/>
+            <column  name="CARRELLO_CARTE"  value="N"/>
+            <column  name="RECOVERY"  value="N"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="N"/>
+            <column  name="FLAG_IO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+        </insert>
+
+        <insert tableName="CANALI">
+            <column  name="ID_CANALE" value="nodo-doc-dev-bpay"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="SERVIZIO"  value="FespPsp"/>
+            <column  name="DESCRIZIONE"  value="nodo-doc-dev-bpay"/>
+            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = 'nodo-doc-dev')"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-dev-bpay')"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="2"/>
+            <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+            <column  name="TIMEOUT_A"  value="20"/>
+            <column  name="TIMEOUT_B"  value="20"/>
+            <column  name="TIMEOUT_C"  value="20"/>
+        </insert>
+
+        <insert tableName="CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-bpay')"/>
+            <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'BPAY')"/>
+        </insert>
+
+        <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-bpay') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'BPAY'))"/>
+            <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'nodo-doc-dev')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-canale-devpay">
+        <insert tableName="TIPI_VERSAMENTO">
+            <column name="DESCRIZIONE" value="Develop PAY"/>
+            <column name="TIPO_VERSAMENTO" value="DEVPAY"/>
+        </insert>
+
+        <insert tableName="CANALI_NODO">
+            <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+            <column  name="REDIRECT_PATH" value="psp"/>
+            <column  name="REDIRECT_PORTA" value="80"/>
+            <column  name="MODELLO_PAGAMENTO"  value="IMMEDIATO"/>
+            <column  name="MULTI_PAYMENT"  value="N"/>
+            <column  name="RAGIONE_SOCIALE"  value="nodo-doc-dev-devpay"/>
+            <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+            <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+            <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+            <column  name="LENTO"  value="N"/>
+            <column  name="RT_PUSH"  value="Y"/>
+            <column  name="AGID_CHANNEL"  value="N"/>
+            <column  name="ON_US"  value="N"/>
+            <column  name="CARRELLO_CARTE"  value="N"/>
+            <column  name="RECOVERY"  value="N"/>
+            <column  name="MARCA_BOLLO_DIGITALE"  value="N"/>
+            <column  name="FLAG_IO"  value="N"/>
+            <column  name="VERSIONE_PRIMITIVE"  value="2"/>
+        </insert>
+
+        <insert tableName="CANALI">
+            <column  name="ID_CANALE" value="nodo-doc-dev-devpay"/>
+            <column  name="ENABLED" value="Y"/>
+            <column  name="IP" value="localhost"/>
+            <column  name="PASSWORD"  value="pwdpwdpwd"/>
+            <column  name="PORTA"  value="8087"/>
+            <column  name="PROTOCOLLO"  value="HTTP"/>
+            <column  name="SERVIZIO"  value="FespPsp"/>
+            <column  name="DESCRIZIONE"  value="nodo-doc-dev-devpay"/>
+            <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = 'nodo-doc-dev')"/>
+            <column  name="PROXY_ENABLED"  value="N"/>
+            <column  name="PROXY_HOST"  value="10.97.20.33"/>
+            <column  name="PROXY_PORT"  value="80"/>
+            <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-dev-devpay')"/>
+            <column  name="TIMEOUT"  value="10"/>
+            <column  name="NUM_THREAD"  value="2"/>
+            <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+            <column  name="TIMEOUT_A"  value="20"/>
+            <column  name="TIMEOUT_B"  value="20"/>
+            <column  name="TIMEOUT_C"  value="20"/>
+        </insert>
+
+        <insert tableName="CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-devpay')"/>
+            <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'DEVPAY')"/>
+        </insert>
+
+        <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+            <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-dev-devpay') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'DEVPAY'))"/>
+            <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'nodo-doc-dev')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="liquibase" id="dev-data-psp-bollo">
+      <insert tableName="PSP">
+        <column  name="ID_PSP" value="nodo-doc-bollo-dev"/>
+        <column  name="ENABLED" value="Y"/>
+        <column  name="DESCRIZIONE" value="nodo-doc-bollo-dev"/>
+        <column  name="RAGIONE_SOCIALE" value="nodo-doc-bollo-dev"/>
+        <column  name="MARCA_BOLLO_DIGITALE"  value="1"/>
+        <column  name="AGID_PSP"  value="N"/>
+        <column  name="CODICE_FISCALE"  value="NODODOCDEV123457"/>
+        <column  name="VAT_NUMBER"  value="NODODOCDEV2"/>
+      </insert>
+
+      <insert tableName="INTERMEDIARI_PSP">
+        <column  name="ID_INTERMEDIARIO_PSP" value="nodo-doc-bollo-dev"/>
+        <column  name="ENABLED" value="Y"/>
+        <column  name="CODICE_INTERMEDIARIO" value="int nodo-doc-bollo-dev"/>
+        <column  name="FAULT_BEAN_ESTESO"  value="Y"/>
+      </insert>
+
+      <insert tableName="CANALI_NODO">
+        <column  name="REDIRECT_IP" value="siapagopa.rf.gd"/>
+        <column  name="REDIRECT_PATH" value="psp"/>
+        <column  name="REDIRECT_PORTA" value="80"/>
+        <column  name="MODELLO_PAGAMENTO"  value="ATTIVATO_PRESSO_PSP"/>
+        <column  name="MULTI_PAYMENT"  value="N"/>
+        <column  name="RAGIONE_SOCIALE"  value="nodo-doc-bollo-dev"/>
+        <column  name="RPT_RT_COMPLIANT"  value="Y"/>
+        <column  name="REDIRECT_PROTOCOLLO"  value="HTTP"/>
+        <column  name="ID_SERV_PLUGIN"  value="wpl02"/>
+        <column  name="LENTO"  value="N"/>
+        <column  name="RT_PUSH"  value="Y"/>
+        <column  name="AGID_CHANNEL"  value="N"/>
+        <column  name="ON_US"  value="N"/>
+        <column  name="CARRELLO_CARTE"  value="N"/>
+        <column  name="RECOVERY"  value="N"/>
+        <column  name="MARCA_BOLLO_DIGITALE"  value="Y"/>
+        <column  name="FLAG_IO"  value="N"/>
+        <column  name="VERSIONE_PRIMITIVE"  value="1"/>
+      </insert>
+
+      <insert tableName="CANALI">
+        <column  name="ID_CANALE" value="nodo-doc-bollo-dev"/>
+        <column  name="ENABLED" value="Y"/>
+        <column  name="IP" value="api.dev.platform.pagopa.it" />
+        <column  name="PASSWORD"  value="pwdpwdpwd"/>
+        <column  name="PORTA" value="443" />
+        <column  name="PROTOCOLLO" value="HTTPS" />
+        <column  name="SERVIZIO" value="mock-psp-ndp/service/v1/mock" />
+        <column  name="DESCRIZIONE"  value="nodo-doc-bollo-dev"/>
+        <column  name="FK_INTERMEDIARIO_PSP"  valueComputed="(select OBJ_ID from INTERMEDIARI_PSP where ID_INTERMEDIARIO_PSP = 'nodo-doc-bollo-dev')"/>
+        <column  name="PROXY_ENABLED"  value="N"/>
+        <column  name="PROXY_HOST"  value="10.97.20.33"/>
+        <column  name="PROXY_PORT"  value="80"/>
+        <column  name="FK_CANALI_NODO"  valueComputed="(select OBJ_ID from CANALI_NODO where RAGIONE_SOCIALE = 'nodo-doc-bollo-dev')"/>
+        <column  name="TIMEOUT"  value="10"/>
+        <column  name="NUM_THREAD"  value="2"/>
+        <column  name="USE_NEW_FAULT_CODE"  value="Y"/>
+        <column  name="TIMEOUT_A"  value="20"/>
+        <column  name="TIMEOUT_B"  value="20"/>
+        <column  name="TIMEOUT_C"  value="20"/>
+      </insert>
+
+      <insert tableName="CANALE_TIPO_VERSAMENTO">
+        <column  name="FK_CANALE"  valueComputed="(select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-bollo-dev')"/>
+        <column  name="FK_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'CP')"/>
+      </insert>
+
+      <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
+        <column  name="FK_CANALE_TIPO_VERSAMENTO"  valueComputed="(select OBJ_ID from CANALE_TIPO_VERSAMENTO where FK_CANALE = (select OBJ_ID from CANALI where ID_CANALE = 'nodo-doc-bollo-dev') and FK_TIPO_VERSAMENTO = (select OBJ_ID from TIPI_VERSAMENTO where TIPO_VERSAMENTO = 'CP'))"/>
+        <column  name="FK_PSP"  valueComputed="(select OBJ_ID from PSP where ID_PSP = 'nodo-doc-bollo-dev')"/>
+      </insert>
+    </changeSet>
+</databaseChangeLog>
