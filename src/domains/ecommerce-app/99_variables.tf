@@ -129,3 +129,9 @@ variable "ecommerce_vpos_psps_list" {
   description = "psps list using vpos as comma separated value"
   default     = ""
 }
+
+variable "dns_zone_checkout" {
+  type        = string
+  default     = null
+  description = "The checkout dns subdomain."
+}

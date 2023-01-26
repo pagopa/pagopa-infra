@@ -35,3 +35,5 @@ tls_cert_check_helm = {
 
 ecommerce_xpay_psps_list = "testPSP1,testPSP2"
 ecommerce_vpos_psps_list = "testPSP3,testPSP4"
+
+dns_zone_checkout = "dev.checkout"
