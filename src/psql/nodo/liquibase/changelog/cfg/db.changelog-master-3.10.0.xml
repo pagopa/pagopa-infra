@@ -8,34 +8,37 @@
   <include file="./db.changelog-master-3.9.0.xml"/>
 
   <!-- 3.10.0 -->
-  <include file="./${version}/db.changelog-20221205102000_replace_elenco_servizi_view_canali_nodo.xml" labels="${version}"/>
-  <include file="./${version}/db.changelog-20221205102100_delete_unused_keys_column.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20221205102000_replace_elenco_servizi_view_canali_nodo.xml"              labels="${version}"/>
+  <include file="./${version}/db.changelog-20221205102100_delete_unused_keys_column.xml"                            labels="${version}"/>
   <include file="./${version}/db.changelog-20221205161400_delete_key_chiediElencoFlussiRendicontazioneDayLimit.xml" labels="${version}"/>
-  <include file="./${version}/db.changelog-20221212091400_delete_unused_keys_column-2.xml" labels="${version}"/>
-  <include file="./${version}/db.changelog-20221220095600_lispay.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20221212091400_delete_unused_keys_column-2.xml"                          labels="${version}"/>
+  <include file="./${version}/db.changelog-20221220095600_lispay.xml"                                               labels="${version}"/>
 
-  <include file="./0/data/db.changelog-configs.xml"           labels="init"/>
+  <include file="./0/data/common/db.changelog-configs.xml"                                                          labels="init"/>
+  <include file="./0/data/common/db.changelog-plugins.xml"                                                          labels="init"/>
 
-  <include file="./0/data/db.changelog-plugins.xml"           labels="init"/>
-  <include file="./0/data/db.changelog-tv.xml"                labels="init"/>
-  <include file="./0/data/db.changelog-intermediari_psp.xml"  context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-psp.xml"               context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-canali.xml"            context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-canali-tv.xml"         context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-psp-ctv.xml"           context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-int_pa.xml"            context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-pa.xml"                context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-stazioni.xml"          context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-pa-stazioni.xml"       context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-categorie.xml"         context="dev,integ" labels="init"/>
+  <include file="./0/data/integ/db.changelog-categorie.xml"         context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-tv.xml"                context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-intermediari_psp.xml"  context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-psp.xml"               context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-canali.xml"            context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-canali-tv.xml"         context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-psp-ctv.xml"           context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-int_pa.xml"            context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-pa.xml"                context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-stazioni.xml"          context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-pa-stazioni.xml"       context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-binary-files.xml"      context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-cdi_master.xml"        context="integ"                                 labels="init"/>
+  <include file="./0/data/integ/db.changelog-other-data.xml"        context="integ"                                 labels="init"/>
 
-  <include file="./0/data/db.changelog-binary-files.xml" context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-cdi_master.xml" context="integ" labels="init"/>
-  <include file="./0/data/db.changelog-other-data.xml" context="integ" labels="init"/>
+  <include file="./0/data/dev/db.changelog-categorie.xml"           context="dev"                                   labels="init"/>
+  <include file="./0/data/dev/db.changelog-tv.xml"                  context="dev"                                   labels="init"/>
+  <include file="./0/data/dev/db.changelog-dev-data-psp-pa.xml"     context="dev"                                   labels="init"/>
 
+  <include file="./0/data/prf/db.changelog-all-data.xml"            context="prf"                                   labels="init"/>
 
-  <include file="./0/db.changelog-update-sequences.xml"       context="dev,integ" labels="init"/>
-  <include file="./0/db.changelog-dev-data-psp-pa.xml"        context="dev" labels="init"/>
-  <include file="./0/db.changelog-update-stazioni-canali.xml" context="dev,integ" labels="init"/>
+  <include file="./0/data/common/db.changelog-update-sequences.xml"       context="dev,integ,prf"                   labels="init"/>
+  <include file="./0/data/common/db.changelog-update-stazioni-canali.xml" context="dev,integ,prf"                   labels="init"/>
 
 </databaseChangeLog>
