@@ -58,7 +58,7 @@ module "apim_ecommerce_checkout_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/ecommerce-checkout/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_base_policy.xml.tpl", {
