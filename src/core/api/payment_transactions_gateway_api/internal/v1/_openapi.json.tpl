@@ -805,6 +805,58 @@
           }
         }
       }
+    },
+    "/request-payments/vpos/{requestId}": {
+      "delete": {
+        "summary": "delete vpos payment request",
+        "tags": [
+          "Vpos-internal"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse500"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1424,6 +1476,86 @@
             "type": "string",
             "description": "error description",
             "example": "Generic error"
+          }
+        }
+      },
+      "VposDeleteResponse": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "refundOutcome",
+          "status"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string",
+            "description": "null if no error occurred"
+          }
+        }
+      },
+      "VposDeleteResponse404": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "refundOutcome",
+          "error"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "VposDeleteResponse500": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "refundOutcome",
+          "status",
+          "error"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
           }
         }
       }
