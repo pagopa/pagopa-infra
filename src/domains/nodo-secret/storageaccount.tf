@@ -30,5 +30,3 @@ resource "azurerm_storage_share_file" "upload_firmatore" {
 }
 
 
-
-
