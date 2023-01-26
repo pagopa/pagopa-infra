@@ -55,9 +55,6 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized, access token missing or invalid"
-          },
           "404": {
             "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
             "content": {
@@ -172,6 +169,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Transaction not found",
