@@ -254,7 +254,7 @@ variable "prometheus_basic_auth_file" {
 variable "kube_prometheus_stack_helm" {
   type = object({
     chart_version = string,
-    values_file = string
+    values_file   = string
   })
   description = "kube-prometheus-stack helm chart configuration"
 }
