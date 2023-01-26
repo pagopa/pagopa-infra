@@ -117,3 +117,15 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
+
+variable "ecommerce_xpay_psps_list" {
+  type        = string
+  description = "psps list using xpay as comma separated value"
+  default     = ""
+}
+
+variable "ecommerce_vpos_psps_list" {
+  type        = string
+  description = "psps list using vpos as comma separated value"
+  default     = ""
+}
