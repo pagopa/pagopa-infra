@@ -47,7 +47,7 @@ pgres_flex_params = {
   create_mode                            = "Default"
   pgres_flex_private_endpoint_enabled    = false
   pgres_flex_ha_enabled                  = false
-  pgres_flex_pgbouncer_enabled           = false
+  pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 1700
 }
