@@ -86,130 +86,130 @@ stages:
               secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(CFG_USERNAME) \
-              --password=$(db-cfg-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(CFG_USERNAME)" \
+              --password="$(db-cfg-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/cfg \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(CFG_SCHEMA) \
-              --defaultSchemaName=$(CFG_SCHEMA) \
+              --liquibaseSchemaName="$(CFG_SCHEMA)" \
+              --defaultSchemaName="$(CFG_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               status -Dschema=$(CFG_SCHEMA)
             displayName: "cfg db status"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(ONLINE_USERNAME) \
-              --password=$(db-online-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(ONLINE_USERNAME)" \
+              --password="$(db-online-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/online \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(ONLINE_SCHEMA) \
-              --defaultSchemaName=$(ONLINE_SCHEMA) \
+              --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+              --defaultSchemaName="$(ONLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               status -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
             displayName: "online db status"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(OFFLINE_USERNAME) \
-              --password=$(db-offline-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(OFFLINE_USERNAME)" \
+              --password="$(db-offline-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/offline \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(OFFLINE_SCHEMA) \
-              --defaultSchemaName=$(OFFLINE_SCHEMA) \
+              --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
+              --defaultSchemaName="$(OFFLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               status -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
             displayName: "offline db status"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(RE_USERNAME) \
-              --password=$(db-re-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(RE_USERNAME)" \
+              --password="$(db-re-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/re \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(RE_SCHEMA) \
-              --defaultSchemaName=$(RE_SCHEMA) \
+              --liquibaseSchemaName="$(RE_SCHEMA)" \
+              --defaultSchemaName="$(RE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               status -Dschema=$(RE_SCHEMA)
             displayName: "re db status"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WFESP_USERNAME) \
-              --password=$(db-wfesp-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WFESP_USERNAME)" \
+              --password="$(db-wfesp-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/wfesp \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WFESP_SCHEMA) \
-              --defaultSchemaName=$(WFESP_SCHEMA) \
+              --liquibaseSchemaName="$(WFESP_SCHEMA)" \
+              --defaultSchemaName="$(WFESP_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               status -Dschema=$(WFESP_SCHEMA)
             displayName: "wfeps db status"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(CFG_USERNAME) \
-              --password=$(db-cfg-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(CFG_USERNAME)" \
+              --password="$(db-cfg-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/cfg \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(CFG_SCHEMA) \
-              --defaultSchemaName=$(CFG_SCHEMA) \
+              --liquibaseSchemaName="$(CFG_SCHEMA)" \
+              --defaultSchemaName="$(CFG_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               validate -Dschema=$(CFG_SCHEMA)
             displayName: "cfg db validate"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(ONLINE_USERNAME) \
-              --password=$(db-online-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(ONLINE_USERNAME)" \
+              --password="$(db-online-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/online \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(ONLINE_SCHEMA) \
-              --defaultSchemaName=$(ONLINE_SCHEMA) \
+              --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+              --defaultSchemaName="$(ONLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               validate -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
             displayName: "online db validate"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(OFFLINE_USERNAME) \
-              --password=$(db-offline-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(OFFLINE_USERNAME)" \
+              --password="$(db-offline-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/offline \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(OFFLINE_SCHEMA) \
-              --defaultSchemaName=$(OFFLINE_SCHEMA) \
+              --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
+              --defaultSchemaName="$(OFFLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               validate -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
             displayName: "offline db validate"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(RE_USERNAME) \
-              --password=$(db-re-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(RE_USERNAME)" \
+              --password="$(db-re-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/re \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(RE_SCHEMA) \
-              --defaultSchemaName=$(RE_SCHEMA) \
+              --liquibaseSchemaName="$(RE_SCHEMA)" \
+              --defaultSchemaName="$(RE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               validate -Dschema=$(RE_SCHEMA)
             displayName: "re db validate"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WFESP_USERNAME) \
-              --password=$(db-wfesp-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WFESP_USERNAME)" \
+              --password="$(db-wfesp-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/wfesp \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WFESP_SCHEMA) \
-              --defaultSchemaName=$(WFESP_SCHEMA) \
+              --liquibaseSchemaName="$(WFESP_SCHEMA)" \
+              --defaultSchemaName="$(WFESP_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               validate -Dschema=$(WFESP_SCHEMA)
@@ -254,130 +254,130 @@ stages:
               secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(CFG_USERNAME) \
-              --password=$(db-cfg-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(CFG_USERNAME)" \
+              --password="$(db-cfg-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/cfg \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(CFG_SCHEMA) \
-              --defaultSchemaName=$(CFG_SCHEMA) \
+              --liquibaseSchemaName="$(CFG_SCHEMA)" \
+              --defaultSchemaName="$(CFG_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(CFG_SCHEMA)
             displayName: "Run Liquibase cfg"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(CFG_USERNAME) \
-              --password=$(db-cfg-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(CFG_USERNAME)" \
+              --password="$(db-cfg-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/cfg \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(CFG_SCHEMA) \
-              --defaultSchemaName=$(CFG_SCHEMA) \
+              --liquibaseSchemaName="$(CFG_SCHEMA)" \
+              --defaultSchemaName="$(CFG_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag cfg"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(ONLINE_USERNAME) \
-              --password=$(db-online-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(ONLINE_USERNAME)" \
+              --password="$(db-online-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/online \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(ONLINE_SCHEMA) \
-              --defaultSchemaName=$(ONLINE_SCHEMA) \
+              --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+              --defaultSchemaName="$(ONLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
             displayName: "Run Liquibase online"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(ONLINE_USERNAME) \
-              --password=$(db-online-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(ONLINE_USERNAME)" \
+              --password="$(db-online-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/online \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(ONLINE_SCHEMA) \
-              --defaultSchemaName=$(ONLINE_SCHEMA) \
+              --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+              --defaultSchemaName="$(ONLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag online"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(OFFLINE_USERNAME) \
-              --password=$(db-offline-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(OFFLINE_USERNAME)" \
+              --password="$(db-offline-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/offline \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(OFFLINE_SCHEMA) \
-              --defaultSchemaName=$(OFFLINE_SCHEMA) \
+              --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
+              --defaultSchemaName="$(OFFLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
             displayName: "Run Liquibase offline"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(OFFLINE_USERNAME) \
-              --password=$(db-offline-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(OFFLINE_USERNAME)" \
+              --password="$(db-offline-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/offline \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(OFFLINE_SCHEMA) \
-              --defaultSchemaName=$(OFFLINE_SCHEMA) \
+              --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
+              --defaultSchemaName="$(OFFLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag offline"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(RE_USERNAME) \
-              --password=$(db-re-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(RE_USERNAME)" \
+              --password="$(db-re-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/re \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(RE_SCHEMA) \
-              --defaultSchemaName=$(RE_SCHEMA) \
+              --liquibaseSchemaName="$(RE_SCHEMA)" \
+              --defaultSchemaName="$(RE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(RE_SCHEMA)
             displayName: "Run Liquibase re"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(RE_USERNAME) \
-              --password=$(db-re-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(RE_USERNAME)" \
+              --password="$(db-re-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/re \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(RE_SCHEMA) \
-              --defaultSchemaName=$(RE_SCHEMA) \
+              --liquibaseSchemaName="$(RE_SCHEMA)" \
+              --defaultSchemaName="$(RE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag re"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WFESP_USERNAME) \
-              --password=$(db-wfesp-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WFESP_USERNAME)" \
+              --password="$(db-wfesp-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/wfesp \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WFESP_SCHEMA) \
-              --defaultSchemaName=$(WFESP_SCHEMA) \
+              --liquibaseSchemaName="$(WFESP_SCHEMA)" \
+              --defaultSchemaName="$(WFESP_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               update -Dschema=$(WFESP_SCHEMA)
             displayName: "Run Liquibase wfesp"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WFESP_USERNAME) \
-              --password=$(db-wfesp-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WFESP_USERNAME)" \
+              --password="$(db-wfesp-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/wfesp \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WFESP_SCHEMA) \
-              --defaultSchemaName=$(WFESP_SCHEMA) \
+              --liquibaseSchemaName="$(WFESP_SCHEMA)" \
+              --defaultSchemaName="$(WFESP_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
