@@ -95,7 +95,7 @@ stages:
               --defaultSchemaName="$(CFG_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              status -Dschema=$(CFG_SCHEMA)
+              status -Dschema=$(CFG_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "cfg db status"
           - script: |
               liquibase \
@@ -108,7 +108,7 @@ stages:
               --defaultSchemaName="$(ONLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              status -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
+              status -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "online db status"
           - script: |
               liquibase \
@@ -121,7 +121,7 @@ stages:
               --defaultSchemaName="$(OFFLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              status -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
+              status -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "offline db status"
           - script: |
               liquibase \
@@ -134,7 +134,7 @@ stages:
               --defaultSchemaName="$(RE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              status -Dschema=$(RE_SCHEMA)
+              status -Dschema=$(RE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "re db status"
           - script: |
               liquibase \
@@ -147,7 +147,7 @@ stages:
               --defaultSchemaName="$(WFESP_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              status -Dschema=$(WFESP_SCHEMA)
+              status -Dschema=$(WFESP_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "wfeps db status"
           - script: |
               liquibase \
@@ -160,7 +160,7 @@ stages:
               --defaultSchemaName="$(CFG_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate -Dschema=$(CFG_SCHEMA)
+              validate -Dschema=$(CFG_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "cfg db validate"
           - script: |
               liquibase \
@@ -173,7 +173,7 @@ stages:
               --defaultSchemaName="$(ONLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
+              validate -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "online db validate"
           - script: |
               liquibase \
@@ -186,7 +186,7 @@ stages:
               --defaultSchemaName="$(OFFLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
+              validate -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "offline db validate"
           - script: |
               liquibase \
@@ -199,7 +199,7 @@ stages:
               --defaultSchemaName="$(RE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate -Dschema=$(RE_SCHEMA)
+              validate -Dschema=$(RE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "re db validate"
           - script: |
               liquibase \
@@ -212,7 +212,7 @@ stages:
               --defaultSchemaName="$(WFESP_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              validate -Dschema=$(WFESP_SCHEMA)
+              validate -Dschema=$(WFESP_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "wfeps db validate"
       - job: prd_approval
         dependsOn: liquibase_status_job
@@ -263,7 +263,7 @@ stages:
               --defaultSchemaName="$(CFG_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              update -Dschema=$(CFG_SCHEMA)
+              update -Dschema=$(CFG_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "Run Liquibase cfg"
           - script: |
               liquibase \
@@ -289,7 +289,7 @@ stages:
               --defaultSchemaName="$(ONLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
+              update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "Run Liquibase online"
           - script: |
               liquibase \
@@ -315,7 +315,7 @@ stages:
               --defaultSchemaName="$(OFFLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              update -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA)
+              update -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "Run Liquibase offline"
           - script: |
               liquibase \
@@ -341,7 +341,7 @@ stages:
               --defaultSchemaName="$(RE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              update -Dschema=$(RE_SCHEMA)
+              update -Dschema=$(RE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "Run Liquibase re"
           - script: |
               liquibase \
@@ -367,7 +367,7 @@ stages:
               --defaultSchemaName="$(WFESP_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              update -Dschema=$(WFESP_SCHEMA)
+              update -Dschema=$(WFESP_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
             displayName: "Run Liquibase wfesp"
           - script: |
               liquibase \
