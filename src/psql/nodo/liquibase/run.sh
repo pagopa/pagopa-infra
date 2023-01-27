@@ -34,9 +34,7 @@ liquibase.hub.mode: OFF
 log-level: INFO
 " > cfg.properties
 
-if [[ "$CONTEXTS" -eq "integ" ]]; then
 liquibase --defaultsFile=cfg.properties drop-all
-fi
 
 liquibase --defaultsFile=cfg.properties update --changelogFile="db.changelog-master-3.10.0.xml"
 

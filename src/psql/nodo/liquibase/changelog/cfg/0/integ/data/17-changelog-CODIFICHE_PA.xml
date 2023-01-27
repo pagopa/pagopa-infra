@@ -73,19 +73,19 @@
       <column name="FK_PA" valueNumeric="28435"/>
     </insert>
     <insert tableName="CODIFICHE_PA">
-      <column name="OBJ_ID" valueComputed="(SELECT OBJ_ID FROM CODIFICHE WHERE ID_CODIFICA = 'BARCODE-128-AIM')"/>
+      <column name="OBJ_ID" valueNumeric="1"/>
       <column name="CODICE_PA" value="PaS"/>
       <column name="FK_CODIFICA" valueComputed="(SELECT OBJ_ID FROM CODIFICHE WHERE ID_CODIFICA = 'QR-CODE')"/>
       <column name="FK_PA" valueNumeric="5"/>
     </insert>
     <insert tableName="CODIFICHE_PA">
-      <column name="OBJ_ID" valueComputed="(SELECT OBJ_ID FROM CODIFICHE WHERE ID_CODIFICA = 'BARCODE-GS1-128')"/>
+      <column name="OBJ_ID" valueNumeric="2"/>
       <column name="CODICE_PA" value="0000000000000"/>
       <column name="FK_CODIFICA" valueComputed="(SELECT OBJ_ID FROM CODIFICHE WHERE ID_CODIFICA = 'BARCODE-GS1-128')"/>
       <column name="FK_PA" valueNumeric="5"/>
     </insert>
     <insert tableName="CODIFICHE_PA">
-      <column name="OBJ_ID" valueComputed="(SELECT OBJ_ID FROM CODIFICHE WHERE ID_CODIFICA = 'QR-CODE')"/>
+      <column name="OBJ_ID" valueNumeric="3"/>
       <column name="CODICE_PA" value="9000000000001"/>
       <column name="FK_CODIFICA" valueComputed="(SELECT OBJ_ID FROM CODIFICHE WHERE ID_CODIFICA = 'BARCODE-GS1-128')"/>
       <column name="FK_PA" valueNumeric="6"/>

@@ -1,7 +1,7 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
-    <changeSet author="liquibase" id="data-update-canali" >
+    <changeSet author="liquibase" id="data-update-canali" runAlways="true">
       <update tableName="CANALI">
         <column name="IP" value="api.${domain}.platform.pagopa.it" />
         <column name="PORTA" value="443" />
@@ -10,7 +10,7 @@
       </update>
     </changeSet>
 
-  <changeSet author="liquibase" id="data-update-stazioni" >
+  <changeSet author="liquibase" id="data-update-stazioni" runAlways="true">
     <update tableName="STAZIONI">
       <column name="IP" value="api.${domain}.platform.pagopa.it" />
       <column name="PORTA" value="443" />
@@ -22,20 +22,20 @@
     </update>
   </changeSet>
 
-  <changeSet author="liquibase" id="data-update-canali-1" >
+  <changeSet author="liquibase" id="data-update-canali-1" runAlways="true">
     <update tableName="CANALI">
       <column name="SERVIZIO" value="mock-psp-ndp/service/v1/mock" />
       <where>SERVIZIO not like '%secondary%'</where>
     </update>
   </changeSet>
-  <changeSet author="liquibase" id="data-update-canali-2" >
+  <changeSet author="liquibase" id="data-update-canali-2" runAlways="true">
     <update tableName="CANALI">
       <column name="SERVIZIO" value="mock-psp-secondary-ndp/service/v1/mock" />
       <where>SERVIZIO like '%secondary%'</where>
     </update>
   </changeSet>
 
-  <changeSet author="liquibase" id="data-update-stazioni-1" >
+  <changeSet author="liquibase" id="data-update-stazioni-1" runAlways="true">
     <update tableName="STAZIONI">
       <column name="SERVIZIO" value="mock-ec-ndp/service/v1/mock" />
       <column name="SERVIZIO_4MOD" value="mock-ec-ndp/service/v1/mock" />
@@ -43,7 +43,7 @@
       <where>SERVIZIO not like '%secondary%'</where>
     </update>
   </changeSet>
-  <changeSet author="liquibase" id="data-update-stazioni-2" >
+  <changeSet author="liquibase" id="data-update-stazioni-2" runAlways="true">
     <update tableName="STAZIONI">
       <column name="SERVIZIO" value="mock-ec-secondary-ndp/service/v1/mock" />
       <column name="SERVIZIO_4MOD" value="mock-ec-secondary-ndp/service/v1/mock" />

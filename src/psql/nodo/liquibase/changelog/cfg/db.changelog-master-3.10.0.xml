@@ -15,6 +15,6 @@
   <include file="./0/uat/db.changelog-all-data.xml"                  context="uat"               labels="init,${version}"/>
 
   <include file="./0/common/db.changelog-update-sequences.xml"       context="dev,integ,prf,uat" labels="init,${version}"/>
-  <include file="./0/common/db.changelog-update-stazioni-canali.xml" context="dev,integ,prf,uat" labels="init,${version}"/>
+  <include file="./0/common/db.changelog-update-stazioni-canali.xml" context="dev,integ"         labels="init,${version}"/>
 
 </databaseChangeLog>
