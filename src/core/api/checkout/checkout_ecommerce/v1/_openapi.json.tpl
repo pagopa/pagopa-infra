@@ -1011,9 +1011,6 @@
           "status": {
             "$ref": "#/components/schemas/TransactionStatus"
           },
-          "amountTotal": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
           "feeTotal": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
@@ -1033,7 +1030,6 @@
         },
         "required": [
           "transactionId",
-          "amountTotal",
           "status",
           "payments"
         ]
