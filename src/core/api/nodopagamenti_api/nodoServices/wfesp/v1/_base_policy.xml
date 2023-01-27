@@ -27,10 +27,10 @@
             </expose-headers>
         </cors>
         <base />
-        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-wfesp}}" />
+        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-wfesp}}/redirect" />
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/wfesp-prf" />
+                <set-backend-service base-url="http://{{aks-lb-nexi}}/wfesp-prf/redirect" />
             </when>
         </choose>   
         
