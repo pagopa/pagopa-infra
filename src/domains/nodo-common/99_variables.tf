@@ -103,41 +103,45 @@ variable "cidr_subnet_flex_dbms" {
 # Postgres Flexible
 variable "pgres_flex_params" {
   type = object({
-    enabled                      = bool
-    sku_name                     = string
-    db_version                   = string
-    storage_mb                   = string
-    zone                         = number
-    backup_retention_days        = number
-    geo_redundant_backup_enabled = bool
-    create_mode                  = string
+    enabled                                = bool
+    sku_name                               = string
+    db_version                             = string
+    storage_mb                             = string
+    zone                                   = number
+    backup_retention_days                  = number
+    geo_redundant_backup_enabled           = bool
+    create_mode                            = string
+    pgres_flex_private_endpoint_enabled    = bool
+    pgres_flex_ha_enabled                  = bool
+    pgres_flex_pgbouncer_enabled           = bool
+    pgres_flex_diagnostic_settings_enabled = bool
   })
 
 }
 
-variable "pgres_flex_private_endpoint_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable or Disable private endpoint for postgresql flex."
-}
+# variable "pgres_flex_private_endpoint_enabled" {
+#   type        = bool
+#   default     = false
+#   description = "Enable or Disable private endpoint for postgresql flex."
+# }
 
-variable "pgres_flex_ha_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable or Disable hight availability postgresql flex."
-}
+# variable "pgres_flex_ha_enabled" {
+#   type        = bool
+#   default     = false
+#   description = "Enable or Disable hight availability postgresql flex."
+# }
 
-variable "pgres_flex_pgbouncer_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable or Disable high availability postgresql flex."
-}
+# variable "pgres_flex_pgbouncer_enabled" {
+#   type        = bool
+#   default     = false
+#   description = "Enable or Disable high availability postgresql flex."
+# }
 
-variable "pgres_flex_diagnostic_settings_enabled" {
-  type        = bool
-  default     = false
-  description = "Enable or Disable diagnostic postgresql flex."
-}
+# variable "pgres_flex_diagnostic_settings_enabled" {
+#   type        = bool
+#   default     = false
+#   description = "Enable or Disable diagnostic postgresql flex."
+# }
 
 variable "pgres_flex_nodo_db_name" {
   type        = string
