@@ -7,14 +7,14 @@
 
   <include file="./${version}/db.changelog-0.xml"                                                     labels="${version}"/>
 
-  <include file="./0.data/common/db.changelog-configs.xml"                                            labels="init,${version}"/>
+  <include file="./0/common/db.changelog-configs.xml"                                            labels="init,${version}"/>
 
-  <include file="./0.data/dev/db.changelog-all-data.xml"                  context="dev"               labels="init,${version}"/>
-  <include file="./0.data/dev/db.changelog-all-data.xml"                  context="integ"             labels="init,${version}"/>
-  <include file="./0.data/prf/db.changelog-all-data.xml"                  context="prf"               labels="init,${version}"/>
-  <include file="./0.data/uat/db.changelog-all-data.xml"                  context="uat"               labels="init,${version}"/>
+  <include file="./0/dev/db.changelog-all-data.xml"                  context="dev"               labels="init,${version}"/>
+  <include file="./0/dev/db.changelog-all-data.xml"                  context="integ"             labels="init,${version}"/>
+  <include file="./0/prf/db.changelog-all-data.xml"                  context="prf"               labels="init,${version}"/>
+  <include file="./0/uat/db.changelog-all-data.xml"                  context="uat"               labels="init,${version}"/>
 
-  <include file="./0.data/common/db.changelog-update-sequences.xml"       context="dev,integ,prf,uat" labels="init,${version}"/>
-  <include file="./0.data/common/db.changelog-update-stazioni-canali.xml" context="dev,integ,prf,uat" labels="init,${version}"/>
+  <include file="./0/common/db.changelog-update-sequences.xml"       context="dev,integ,prf,uat" labels="init,${version}"/>
+  <include file="./0/common/db.changelog-update-stazioni-canali.xml" context="dev,integ,prf,uat" labels="init,${version}"/>
 
 </databaseChangeLog>
