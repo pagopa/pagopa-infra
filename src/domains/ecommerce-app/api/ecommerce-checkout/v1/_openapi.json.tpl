@@ -143,6 +143,11 @@
             "description": "Transaction ID"
           }
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "summary": "Get information about a specific transaction",
         "responses": {
           "200": {
@@ -164,6 +169,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Transaction not found",
@@ -193,6 +201,11 @@
             "description": "Transaction ID"
           }
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "$ref": "#/components/requestBodies/RequestAuthorizationRequest"
         },
@@ -216,6 +229,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Transaction not found",
@@ -1446,6 +1462,13 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
