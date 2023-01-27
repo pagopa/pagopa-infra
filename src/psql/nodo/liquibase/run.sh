@@ -8,21 +8,31 @@
 #export NODO_CFG_USERNAME="cfg"
 #export NODO_CFG_PASSWORD="password"
 
+#export POSTGRES_DB_HOST="pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com"
+#export POSTGRES_DB_PORT="5432"
+#export POSTGRES_DB="nodo"
+#export NODO_CFG_SCHEMA="cfg"
+#export LQB_CONTEXTS="dev,integ"
+#export NODO_CFG_USERNAME="cfg"
+#export NODO_CFG_PASSWORD="password"
+
+#export POSTGRES_DB_HOST="localhost"
+#export POSTGRES_DB_PORT="5432"
+#export POSTGRES_DB="nodo"
+#export NODO_CFG_SCHEMA="cfg"
+#export LQB_CONTEXTS=$CONTEXTS
+#export NODO_CFG_USERNAME="cfg"
+#export NODO_CFG_PASSWORD="cfg"
+
 CONTEXTS=$1
 DOMAIN=$2
 
-export POSTGRES_DB_HOST="localhost"
-export POSTGRES_DB_PORT="5432"
-export POSTGRES_DB="nodo"
-export NODO_CFG_SCHEMA="cfg"
-export LQB_CONTEXTS=$CONTEXTS
-export NODO_CFG_USERNAME="cfg"
-export NODO_CFG_PASSWORD="cfg"
+
 
 echo "
 classpath: ./changelog/cfg/
 liquibase.headless: true
-url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?currentSchema=${NODO_CFG_SCHEMA}
+url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?sslmode=require&prepareThreshold=0&currentSchema=${NODO_CFG_SCHEMA}
 contexts: ${LQB_CONTEXTS}
 username: ${NODO_CFG_USERNAME}
 password: ${NODO_CFG_PASSWORD}
