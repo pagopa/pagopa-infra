@@ -414,29 +414,7 @@
       <column name="STORNO_PAGAMENTO" value="N"/>
 -->
     </insert>
-    <insert tableName="PSP">
-      <column name="OBJ_ID" valueNumeric="6"/>
-      <column name="ID_PSP" value="AGID_01"/>
-      <column name="ENABLED" value="Y"/>
-      <column name="ABI" value="TBD"/>
-      <column name="BIC" value="TBD"/>
-      <column name="DESCRIZIONE" value="Psp AgID"/>
-      <column name="RAGIONE_SOCIALE" value="AgID"/>
-      <column name="FK_INT_QUADRATURE"/>
-      <column name="CODICE_MYBANK"/>
-      <column name="MARCA_BOLLO_DIGITALE" valueNumeric="1"/>
-      <column name="AGID_PSP" value="Y"/>
-      <column name="CODICE_FISCALE" value="CFAGID_01"/>
-      <column name="VAT_NUMBER"/>
-      <!--
-<column name="PSP_NODO" value="Y"/>
-      <column name="PSP_AVV" value="N"/>
 
-      <column name="FLAG_REPO_COMMISSIONE_CARICO_PA" value="N"/>
-      <column name="EMAIL_REPO_COMMISSIONE_CARICO_PA" value="N"/>
-      <column name="STORNO_PAGAMENTO" value="N"/>
--->
-    </insert>
     <insert tableName="PSP">
       <column name="OBJ_ID" valueNumeric="7"/>
       <column name="ID_PSP" value="idPsp1"/>
@@ -3495,6 +3473,26 @@
       <column name="EMAIL_REPO_COMMISSIONE_CARICO_PA" value="N"/>
       <column name="STORNO_PAGAMENTO" value="N"/>
 -->
+    </insert>
+  </changeSet>
+
+  <changeSet author="liquibase" id="dev-data-agid-conf-if-not-exists">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">SELECT COUNT(*) FROM PSP WHERE ID_PSP = 'AGID_01'</sqlCheck>
+    </preConditions>
+    <insert tableName="PSP">
+      <column name="ID_PSP" value="AGID_01"/>
+      <column name="ENABLED" value="Y"/>
+      <column name="ABI" value="TBD"/>
+      <column name="BIC" value="TBD"/>
+      <column name="DESCRIZIONE" value="Psp AgID"/>
+      <column name="RAGIONE_SOCIALE" value="AgID"/>
+      <column name="FK_INT_QUADRATURE"/>
+      <column name="CODICE_MYBANK"/>
+      <column name="MARCA_BOLLO_DIGITALE" valueNumeric="1"/>
+      <column name="AGID_PSP" value="Y"/>
+      <column name="CODICE_FISCALE" value="CFAGID_01"/>
+      <column name="VAT_NUMBER"/>
     </insert>
   </changeSet>
   </databaseChangeLog>

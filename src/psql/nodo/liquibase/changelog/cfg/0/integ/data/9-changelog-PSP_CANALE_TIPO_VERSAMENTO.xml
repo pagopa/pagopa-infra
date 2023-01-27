@@ -698,17 +698,17 @@
     <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
       <column name="OBJ_ID" valueNumeric="20"/>
       <column name="FK_CANALE_TIPO_VERSAMENTO" valueNumeric="21"/>
-      <column name="FK_PSP" valueNumeric="6"/>
+      <column name="FK_PSP" valueComputed="(select OBJ_ID from PSP where ID_PSP='AGID_01')"/>
     </insert>
     <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
       <column name="OBJ_ID" valueNumeric="21"/>
       <column name="FK_CANALE_TIPO_VERSAMENTO" valueNumeric="20"/>
-      <column name="FK_PSP" valueNumeric="6"/>
+      <column name="FK_PSP" valueComputed="(select OBJ_ID from PSP where ID_PSP='AGID_01')"/>
     </insert>
     <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
       <column name="OBJ_ID" valueNumeric="22"/>
       <column name="FK_CANALE_TIPO_VERSAMENTO" valueNumeric="22"/>
-      <column name="FK_PSP" valueNumeric="6"/>
+      <column name="FK_PSP" valueComputed="(select OBJ_ID from PSP where ID_PSP='AGID_01')"/>
     </insert>
     <insert tableName="PSP_CANALE_TIPO_VERSAMENTO">
       <column name="OBJ_ID" valueNumeric="23"/>

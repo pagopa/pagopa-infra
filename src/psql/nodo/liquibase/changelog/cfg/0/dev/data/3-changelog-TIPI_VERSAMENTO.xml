@@ -1,14 +1,14 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-<changeSet author="liquibase" id="1674553032784-PPAL">
-  <preConditions onFail="MARK_RAN">
-    <sqlCheck expectedResult="0">SELECT COUNT(*) FROM TIPI_VERSAMENTO WHERE TIPO_VERSAMENTO = 'PPAL'</sqlCheck>
-  </preConditions>
+  <changeSet author="liquibase" id="1674553032784-PPAL">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">SELECT COUNT(*) FROM TIPI_VERSAMENTO WHERE TIPO_VERSAMENTO = 'PPAL'</sqlCheck>
+    </preConditions>
     <insert tableName="TIPI_VERSAMENTO">
       <column name="OBJ_ID" valueNumeric="20148"/>
       <column name="DESCRIZIONE" value="PayPal"/>
       <column name="TIPO_VERSAMENTO" value="PPAL"/>
     </insert>
-</changeSet>
+  </changeSet>
   <changeSet author="liquibase" id="1674553032784-STP">
     <preConditions onFail="MARK_RAN">
       <sqlCheck expectedResult="0">SELECT COUNT(*) FROM TIPI_VERSAMENTO WHERE TIPO_VERSAMENTO = 'STP'</sqlCheck>
@@ -138,4 +138,4 @@
       <column name="TIPO_VERSAMENTO" value="DEVPAY"/>
     </insert>
   </changeSet>
-  </databaseChangeLog>
+</databaseChangeLog>

@@ -103,4 +103,4 @@
       <column name="ID_BEAN" value="defaultForwardProcessor"/>
     </insert>
   </changeSet>
-</databaseChangeLog>
+  </databaseChangeLog>

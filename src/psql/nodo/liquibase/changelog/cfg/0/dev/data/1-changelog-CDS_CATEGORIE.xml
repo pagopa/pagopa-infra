@@ -26,4 +26,4 @@
       <column name="DESCRIZIONE" value="Donazioni"/>
     </insert>
   </changeSet>
-</databaseChangeLog>
+  </databaseChangeLog>
