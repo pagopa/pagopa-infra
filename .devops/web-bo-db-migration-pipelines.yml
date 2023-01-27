@@ -78,29 +78,29 @@ stages:
               secretsFilter: 'db-web-bo-password'
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WEB_BO_USERNAME) \
-              --password=$(db-web-bo-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WEB_BO_USERNAME)" \
+              --password="$(db-web-bo-password)" \
               --classpath=src/psql/web-bo/liquibase/changelog/web-bo \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WEB_BO_SCHEMA) \
-              --defaultSchemaName=$(WEB_BO_SCHEMA) \
-              --contexts=${{ parameters.lbContexts }} \
-              --log-level=${{ parameters.lbLogLevel }} \
+              --liquibaseSchemaName="$(WEB_BO_SCHEMA)" \
+              --defaultSchemaName="$(WEB_BO_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level="${{ parameters.lbLogLevel }}" \
               --preserve-schema-case=true \
               status -Dschema=$(WEB_BO_SCHEMA)
             displayName: "web-bo db status"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WEB_BO_USERNAME) \
-              --password=$(db-web-bo-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WEB_BO_USERNAME)" \
+              --password="$(db-web-bo-password)" \
               --classpath=src/psql/web-bo/liquibase/changelog/web-bo \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WEB_BO_SCHEMA) \
-              --defaultSchemaName=$(WEB_BO_SCHEMA) \
-              --contexts=${{ parameters.lbContexts }} \
-              --log-level=${{ parameters.lbLogLevel }} \
+              --liquibaseSchemaName="$(WEB_BO_SCHEMA)" \
+              --defaultSchemaName="$(WEB_BO_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level="${{ parameters.lbLogLevel }}" \
               --preserve-schema-case=true \
               validate -Dschema=$(WEB_BO_SCHEMA)
             displayName: "web-bo db validate"
@@ -144,29 +144,29 @@ stages:
               secretsFilter: 'db-web-bo-password'
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WEB_BO_USERNAME) \
-              --password=$(db-web-bo-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WEB_BO_USERNAME)" \
+              --password="$(db-web-bo-password)" \
               --classpath=src/psql/web-bo/liquibase/changelog/web-bo \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WEB_BO_SCHEMA) \
-              --defaultSchemaName=$(WEB_BO_SCHEMA) \
-              --contexts=${{ parameters.lbContexts }} \
-              --log-level=${{ parameters.lbLogLevel }} \
+              --liquibaseSchemaName="$(WEB_BO_SCHEMA)" \
+              --defaultSchemaName="$(WEB_BO_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level="${{ parameters.lbLogLevel }}" \
               --preserve-schema-case=true \
               update -Dschema=$(WEB_BO_SCHEMA)
             displayName: "Run Liquibase web-bo"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WEB_BO_USERNAME) \
-              --password=$(db-web-bo-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WEB_BO_USERNAME)" \
+              --password="$(db-web-bo-password)" \
               --classpath=src/psql/web-bo/liquibase/changelog/web-bo \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WEB_BO_SCHEMA) \
-              --defaultSchemaName=$(WEB_BO_SCHEMA) \
-              --contexts=${{ parameters.lbContexts }} \
-              --log-level=${{ parameters.lbLogLevel }} \
+              --liquibaseSchemaName="$(WEB_BO_SCHEMA)" \
+              --defaultSchemaName="$(WEB_BO_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level="${{ parameters.lbLogLevel }}" \
               --preserve-schema-case=true \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag web-bo"
