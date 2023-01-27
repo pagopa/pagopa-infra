@@ -962,7 +962,8 @@
           "transactionId",
           "amountTotal",
           "status",
-          "payments"
+          "payments",
+          "clientId"
         ]
       },
       "RequestAuthorizationRequest": {
