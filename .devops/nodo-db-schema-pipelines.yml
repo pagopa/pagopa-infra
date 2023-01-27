@@ -100,10 +100,11 @@ stages:
                     GRANT $ONLINE_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $ONLINE_SCHEMA AUTHORIZATION $ONLINE_USERNAME;
                   END IF;
+                END
                 \$\$;
                 "
           - task: AzureCLI@2
-            displayName: "online schema"
+            displayName: "online trunc function"
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
@@ -120,7 +121,7 @@ stages:
                     LANGUAGE SQL
                     IMMUTABLE
                     RETURNS NULL ON NULL INPUT;
-                  END
+                END
                 \$\$;
                 "
           - task: AzureCLI@2
