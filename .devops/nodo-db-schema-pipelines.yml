@@ -100,13 +100,27 @@ stages:
                     GRANT $ONLINE_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $ONLINE_SCHEMA AUTHORIZATION $ONLINE_USERNAME;
                   END IF;
-
+                \$\$;
+                "
+          - task: AzureCLI@2
+            displayName: "online schema"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |
+                az config set extension.use_dynamic_install=yes_without_prompt
+                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
+                --querytext "
+                do \$\$
+                BEGIN
                   CREATE or REPLACE FUNCTION "$ONLINE_USERNAME".trunc(timestamp without time zone) RETURNS date
                     AS 'select DATE_TRUNC(''day'',\$1);'
                     LANGUAGE SQL
                     IMMUTABLE
                     RETURNS NULL ON NULL INPUT;
-                END
+                  END
                 \$\$;
                 "
           - task: AzureCLI@2
