@@ -36,7 +36,7 @@ cidr_subnet_storage_account = ["10.1.137.16/29"]
 pgres_flex_params = {
 
   enabled    = true
-  sku_name   = "B_Standard_B1ms"
+  sku_name   = "GP_Standard_D4s_v3"
   db_version = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
@@ -49,6 +49,7 @@ pgres_flex_params = {
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = false
   pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 1700
 }
 
 

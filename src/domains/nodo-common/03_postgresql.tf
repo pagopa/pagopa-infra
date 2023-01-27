@@ -77,7 +77,7 @@ resource "azurerm_postgresql_flexible_server_database" "nodo_db" {
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_db_flex_max_connection" {
   name      = "max_connections"
   server_id = module.postgres_flexible_server.id
-  value     = var.env_short == "d" ? 1700 : var.env_short == "u" ? 3400 : 5000 # 5000 max in PROD
+  value     = var.pgres_flex_params.max_connections
 }
 
 # PG bouncer config
