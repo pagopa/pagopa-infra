@@ -10,7 +10,7 @@ instance        = "dev"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
-  Owner       = "IO"
+  Owner       = "PagoPa"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/grafana-monitoring"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
