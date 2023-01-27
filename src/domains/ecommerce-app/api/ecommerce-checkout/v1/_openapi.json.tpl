@@ -951,8 +951,7 @@
             "enum": [
               "IO",
               "CHECKOUT",
-              "CHECKOUT_CART",
-              "UNKNOWN"
+              "CHECKOUT_CART"
             ]
           },
           "authToken": {
