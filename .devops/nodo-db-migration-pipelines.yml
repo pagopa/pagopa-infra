@@ -107,12 +107,12 @@ stages:
 
                 liquibase \
                 --url="$(JDBC_URL)" \
-                --username="$(USER)" \
-                --password="$(PASS)" \
+                --username="$USER" \
+                --password="$PASS" \
                 --classpath=src/psql/nodo/liquibase/changelog/$PATH \
                 --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(SCHEMA)" \
-                --defaultSchemaName="$(SCHEMA)" \
+                --liquibaseSchemaName="$SCHEMA" \
+                --defaultSchemaName="$SCHEMA" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
                 status $@
