@@ -104,6 +104,16 @@ stages:
               ls -la liquibase-app
               echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
             displayName: "Install Liquibase"
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir java
+              wget -c https://objects.githubusercontent.com/github-production-release-asset-2e65be/372924883/d6f681ad-b249-4278-9d57-4a0f1f7dd372?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230130%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230130T163358Z&X-Amz-Expires=300&X-Amz-Signature=778b65e8734a8eb81d86a22803fdad73bb957661bfcbc0465502e13794dc6699&X-Amz-SignedHeaders=host&actor_id=121177377&key_id=0&repo_id=372924883&response-content-disposition=attachment%3B%20filename%3DOpenJDK11U-jre_x64_linux_hotspot_11.0.18_10.tar.gz&response-content-type=application%2Foctet-stream
+              tar -xzf OpenJDK11U-jre_x64_linux_hotspot_11.0.18_10.tar.gz -C java
+              rm -rf OpenJDK11U-jre_x64_linux_hotspot_11.0.18_10.tar.gz
+              ls -la java
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-11.0.18+10-jre/bin"
+              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.18+10-jre"
+            displayName: "Install Java"
           - task: AzureKeyVault@2
             displayName: "Get $(KEY_VAULT_NAME) secrets"
             inputs:
