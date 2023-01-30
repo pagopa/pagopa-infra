@@ -118,7 +118,7 @@ stages:
                 status $@
               }
 
-              liquibase --version
+              export -f liquibase
 
               run_liquibase status   "$(CFG_USERNAME)"     "$(db-cfg-password)"     cfg     "$(CFG_SCHEMA)"     -Dschema="$(CFG_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
               run_liquibase status   "$(ONLINE_USERNAME)"  "$(db-online-password)"  online  "$(ONLINE_SCHEMA)"  -DschemaOffline="$(OFFLINE_SCHEMA)" -DusernameOffline="$(OFFLINE_USERNAME)" -Ddomain="${{ parameters.k8sEnv }}"
