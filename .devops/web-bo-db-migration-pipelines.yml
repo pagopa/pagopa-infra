@@ -38,15 +38,15 @@ parameters:
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
-    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
+    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-d-nodo-kv
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
+    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-u-nodo-kv
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
-    JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require
+    JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-p-nodo-kv
   APPROVE_NOTIFY_GROUP: '[pagoPA-iac]\pagopa-iac-externals-team'
   APPROVE_NOTIFY_ADMIN: '[pagoPA-iac]\Project Administrators'
@@ -78,29 +78,29 @@ stages:
               secretsFilter: 'db-web-bo-password'
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WEB_BO_USERNAME) \
-              --password=$(db-web-bo-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WEB_BO_USERNAME)" \
+              --password="$(db-web-bo-password)" \
               --classpath=src/psql/web-bo/liquibase/changelog/web-bo \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WEB_BO_SCHEMA) \
-              --defaultSchemaName=$(WEB_BO_SCHEMA) \
-              --contexts=${{ parameters.lbContexts }} \
-              --log-level=${{ parameters.lbLogLevel }} \
+              --liquibaseSchemaName="$(WEB_BO_SCHEMA)" \
+              --defaultSchemaName="$(WEB_BO_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level="${{ parameters.lbLogLevel }}" \
               --preserve-schema-case=true \
               status -Dschema=$(WEB_BO_SCHEMA)
             displayName: "web-bo db status"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WEB_BO_USERNAME) \
-              --password=$(db-web-bo-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WEB_BO_USERNAME)" \
+              --password="$(db-web-bo-password)" \
               --classpath=src/psql/web-bo/liquibase/changelog/web-bo \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WEB_BO_SCHEMA) \
-              --defaultSchemaName=$(WEB_BO_SCHEMA) \
-              --contexts=${{ parameters.lbContexts }} \
-              --log-level=${{ parameters.lbLogLevel }} \
+              --liquibaseSchemaName="$(WEB_BO_SCHEMA)" \
+              --defaultSchemaName="$(WEB_BO_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level="${{ parameters.lbLogLevel }}" \
               --preserve-schema-case=true \
               validate -Dschema=$(WEB_BO_SCHEMA)
             displayName: "web-bo db validate"
@@ -120,7 +120,7 @@ stages:
               instructions: "Please check liquibase status and validation for each database and resume if correct"
               onTimeout: 'reject'
       - job: initialization
-        dependsOn: prd_approval
+        dependsOn: [liquibase_status_job,prd_approval]
         condition: or(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'uat'),and(eq('${{ parameters.k8sEnv }}', 'prd'),not(failed('prd_approval'))))
         displayName: "Update web-bo DB ${{ parameters.k8sEnv }}"
         steps:
@@ -144,29 +144,29 @@ stages:
               secretsFilter: 'db-web-bo-password'
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WEB_BO_USERNAME) \
-              --password=$(db-web-bo-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WEB_BO_USERNAME)" \
+              --password="$(db-web-bo-password)" \
               --classpath=src/psql/web-bo/liquibase/changelog/web-bo \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WEB_BO_SCHEMA) \
-              --defaultSchemaName=$(WEB_BO_SCHEMA) \
-              --contexts=${{ parameters.lbContexts }} \
-              --log-level=${{ parameters.lbLogLevel }} \
+              --liquibaseSchemaName="$(WEB_BO_SCHEMA)" \
+              --defaultSchemaName="$(WEB_BO_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level="${{ parameters.lbLogLevel }}" \
               --preserve-schema-case=true \
               update -Dschema=$(WEB_BO_SCHEMA)
             displayName: "Run Liquibase web-bo"
           - script: |
               liquibase \
-              --url=$(JDBC_URL) \
-              --username=$(WEB_BO_USERNAME) \
-              --password=$(db-web-bo-password) \
+              --url="$(JDBC_URL)" \
+              --username="$(WEB_BO_USERNAME)" \
+              --password="$(db-web-bo-password)" \
               --classpath=src/psql/web-bo/liquibase/changelog/web-bo \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-              --liquibaseSchemaName=$(WEB_BO_SCHEMA) \
-              --defaultSchemaName=$(WEB_BO_SCHEMA) \
-              --contexts=${{ parameters.lbContexts }} \
-              --log-level=${{ parameters.lbLogLevel }} \
+              --liquibaseSchemaName="$(WEB_BO_SCHEMA)" \
+              --defaultSchemaName="$(WEB_BO_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level="${{ parameters.lbLogLevel }}" \
               --preserve-schema-case=true \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag web-bo"

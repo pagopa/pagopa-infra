@@ -5,13 +5,16 @@
 
   <property name="version" value="3.10.0" global="false"/>
 
-  <include file="./db.changelog-master-3.9.0.xml"/>
+  <include file="./${version}/db.changelog-0.xml"                                                     labels="${version}"/>
 
-  <!-- 3.10.0 -->
-  <include file="./${version}/db.changelog-20221205102000_replace_elenco_servizi_view_canali_nodo.xml" labels="${version}"/>
-  <include file="./${version}/db.changelog-20221205102100_delete_unused_keys_column.xml" labels="${version}"/>
-  <include file="./${version}/db.changelog-20221205161400_delete_key_chiediElencoFlussiRendicontazioneDayLimit.xml" labels="${version}"/>
-  <include file="./${version}/db.changelog-20221212091400_delete_unused_keys_column-2.xml" labels="${version}"/>
-  <include file="./${version}/db.changelog-20221220095600_lispay.xml" labels="${version}"/>
+  <include file="./0/common/db.changelog-configs.xml"                                            labels="init,${version}"/>
+
+  <include file="./0/dev/db.changelog-all-data.xml"                  context="dev"               labels="init,${version}"/>
+  <include file="./0/integ/db.changelog-all-data.xml"                context="integ"             labels="init,${version}"/>
+  <include file="./0/prf/db.changelog-all-data.xml"                  context="prf"               labels="init,${version}"/>
+  <include file="./0/uat/db.changelog-all-data.xml"                  context="uat"               labels="init,${version}"/>
+
+  <include file="./0/common/db.changelog-update-sequences.xml"       context="dev,integ,prf,uat" labels="init,${version}"/>
+  <include file="./0/common/db.changelog-update-stazioni-canali.xml" context="dev,integ"         labels="init,${version}"/>
 
 </databaseChangeLog>
