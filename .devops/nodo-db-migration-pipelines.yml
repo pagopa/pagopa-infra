@@ -17,11 +17,11 @@ parameters:
       - prf
       - uat
       - prd
-# version of liquibase db.changelog-master-*.xml to run
+  # version of liquibase db.changelog-master-*.xml to run
   - name: dbVersion
     displayName: Database Version
     type: string
-# liquibase context to run specific changelogs,default to '_' to run only uncontexted changelogs
+  # liquibase context to run specific changelogs,default to '_' to run only uncontexted changelogs
   - name: lbContexts
     displayName: Liquibase Contexts
     type: string
@@ -44,15 +44,15 @@ variables:
     KEY_VAULT_NAME: pagopa-d-nodo-kv
   ${{ if eq(parameters.k8sEnv, 'it') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
-    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo-int?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo-replica?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-d-nodo-kv
   ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo-prf?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-u-nodo-kv
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo-replica?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-u-nodo-kv
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
@@ -95,36 +95,135 @@ stages:
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
           - script: |
-
-              run_liquibase () {
-
-
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$USER" \
-                --password="$PASS" \
-                --classpath=src/psql/nodo/liquibase/changelog/$PATH \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$SCHEMA" \
-                --defaultSchemaName="$SCHEMA" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status "$@"
-              }
-
-              run_liquibase status   "$(CFG_USERNAME)"     "$(db-cfg-password)"     cfg     "$(CFG_SCHEMA)"     -Dschema="$(CFG_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase status   "$(ONLINE_USERNAME)"  "$(db-online-password)"  online  "$(ONLINE_SCHEMA)"  -DschemaOffline="$(OFFLINE_SCHEMA)" -DusernameOffline="$(OFFLINE_USERNAME)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase status   "$(OFFLINE_USERNAME)" "$(db-offline-password)" cfg     "$(OFFLINE_SCHEMA)" -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline="$(ONLINE_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase status   "$(RE_USERNAME)"      "$(db-re-password)"      re      "$(RE_SCHEMA)"      -Dschema="$(RE_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase status   "$(WFESP_USERNAME)"   "$(db-wfesp-password)"   wfesp   "$(WFESP_SCHEMA)"   -Dschema=$(WFESP_SCHEMA) -Ddomain="${{ parameters.k8sEnv }}"
-
-              run_liquibase validate "$(CFG_USERNAME)"     "$(db-cfg-password)"     cfg     "$(CFG_SCHEMA)"     -Dschema="$(CFG_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase validate "$(ONLINE_USERNAME)"  "$(db-online-password)"  online  "$(ONLINE_SCHEMA)"  -DschemaOffline="$(OFFLINE_SCHEMA)" -DusernameOffline="$(OFFLINE_USERNAME)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase validate "$(OFFLINE_USERNAME)" "$(db-offline-password)" cfg     "$(OFFLINE_SCHEMA)" -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline="$(ONLINE_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase validate "$(RE_USERNAME)"      "$(db-re-password)"      re      "$(RE_SCHEMA)"      -Dschema="$(RE_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase validate "$(WFESP_USERNAME)"   "$(db-wfesp-password)"   wfesp   "$(WFESP_SCHEMA)"   -Dschema=$(WFESP_SCHEMA) -Ddomain="${{ parameters.k8sEnv }}"
-
-
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(CFG_USERNAME)" \
+              --password="$(db-cfg-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/cfg \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(CFG_SCHEMA)" \
+              --defaultSchemaName="$(CFG_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              status -Dschema=$(CFG_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "cfg db status"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(ONLINE_USERNAME)" \
+              --password="$(db-online-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/online \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+              --defaultSchemaName="$(ONLINE_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              status -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "online db status"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(OFFLINE_USERNAME)" \
+              --password="$(db-offline-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/offline \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
+              --defaultSchemaName="$(OFFLINE_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              status -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "offline db status"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(RE_USERNAME)" \
+              --password="$(db-re-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/re \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(RE_SCHEMA)" \
+              --defaultSchemaName="$(RE_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              status -Dschema=$(RE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "re db status"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(WFESP_USERNAME)" \
+              --password="$(db-wfesp-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/wfesp \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(WFESP_SCHEMA)" \
+              --defaultSchemaName="$(WFESP_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              status -Dschema=$(WFESP_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "wfeps db status"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(CFG_USERNAME)" \
+              --password="$(db-cfg-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/cfg \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(CFG_SCHEMA)" \
+              --defaultSchemaName="$(CFG_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              validate -Dschema=$(CFG_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "cfg db validate"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(ONLINE_USERNAME)" \
+              --password="$(db-online-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/online \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+              --defaultSchemaName="$(ONLINE_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              validate -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "online db validate"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(OFFLINE_USERNAME)" \
+              --password="$(db-offline-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/offline \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(OFFLINE_SCHEMA)" \
+              --defaultSchemaName="$(OFFLINE_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              validate -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline=$(ONLINE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "offline db validate"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(RE_USERNAME)" \
+              --password="$(db-re-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/re \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(RE_SCHEMA)" \
+              --defaultSchemaName="$(RE_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              validate -Dschema=$(RE_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "re db validate"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(WFESP_USERNAME)" \
+              --password="$(db-wfesp-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/wfesp \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(WFESP_SCHEMA)" \
+              --defaultSchemaName="$(WFESP_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              validate -Dschema=$(WFESP_SCHEMA) -Ddomain=${{ parameters.k8sEnv }}
+            displayName: "wfeps db validate"
       - job: prd_approval
         dependsOn: liquibase_status_job
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
