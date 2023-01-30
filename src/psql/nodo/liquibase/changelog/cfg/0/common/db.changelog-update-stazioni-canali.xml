@@ -58,4 +58,13 @@
     </update>
   </changeSet>
 
+  <changeSet author="liquibase" id="data-update-config-uri-wfesp" runAlways="true">
+    <validCheckSum>ANY</validCheckSum>
+    <update tableName="CONFIGURATION_KEYS">
+      <column name="CONFIG_VALUE" value="https://api.${domain}.platform.pagopa.it/wfesp${replica}-ndp/service/v1/redirect" />
+      <where>CONFIG_KEY = 'uri.wfesp'</where>
+    </update>
+  </changeSet>
+
+
 </databaseChangeLog>
