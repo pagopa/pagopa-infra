@@ -97,6 +97,8 @@ stages:
           - script: |
 
               run_liquibase () {
+
+                liquibase -v
                 COMMAND=$1
                 USER=$2
                 PASS=$3
