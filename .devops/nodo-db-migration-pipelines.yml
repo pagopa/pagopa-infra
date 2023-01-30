@@ -105,17 +105,7 @@ stages:
                 PATH=$4
                 SCHEMA=$5
 
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$USER" \
-                --password="$PASS" \
-                --classpath=src/psql/nodo/liquibase/changelog/$PATH \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$SCHEMA" \
-                --defaultSchemaName="$SCHEMA" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status "$@"
+                liquibase -v
               }
 
               run_liquibase status   "$(CFG_USERNAME)"     "$(db-cfg-password)"     cfg     "$(CFG_SCHEMA)"     -Dschema="$(CFG_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
