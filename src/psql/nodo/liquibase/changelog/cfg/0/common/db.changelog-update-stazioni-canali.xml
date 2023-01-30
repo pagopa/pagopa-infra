@@ -32,6 +32,7 @@
     </update>
   </changeSet>
   <changeSet author="liquibase" id="data-update-canali-2" runAlways="true">
+    <validCheckSum>ANY</validCheckSum>
     <update tableName="CANALI">
       <column name="SERVIZIO" value="mock-psp-secondary${replica}-ndp/service/v1/mock" />
       <where>SERVIZIO like '%secondary%'</where>
