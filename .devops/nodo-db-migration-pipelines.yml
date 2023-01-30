@@ -105,7 +105,7 @@ stages:
 
                 shift 5
 
-                sh $(Pipeline.Workspace)/liquibase-app/liquibase \
+                $(Pipeline.Workspace)/liquibase-app/liquibase \
                 --url="$(JDBC_URL)" \
                 --username="$USER" \
                 --password="$PASS" \
