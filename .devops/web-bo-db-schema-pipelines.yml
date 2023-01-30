@@ -13,7 +13,7 @@ parameters:
     default: dev
     values:
       - dev
-      - int
+      - it
       - prf
       - uat
       - prd
