@@ -24,26 +24,31 @@ variables:
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
     DATABASE_NAME: nodo
+    poolImage: 'pagopa-dev-linux'
   ${{ if eq(parameters.k8sEnv, 'it') }}:
     DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
     DATABASE_NAME: 'nodo-replica'
+    poolImage: 'pagopa-dev-linux'
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
     DATABASE_NAME: nodo
+    poolImage: 'pagopa-uat-linux'
   ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
     DATABASE_NAME: 'nodo-replica'
+    poolImage: 'pagopa-uat-linux'
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
     DATABASE_NAME: nodo
+    poolImage: 'pagopa-prod-linux'
   ADMIN_USERNAME: azureuser
   CFG_USERNAME: cfg
   CFG_SCHEMA: cfg
@@ -61,6 +66,7 @@ stages:
     displayName: "Init ${{ parameters.k8sEnv }}"
     jobs:
       - job: initialization
+        pool: $(poolImage)
         displayName: "Schemas creation job"
         steps:
           - task: AzureKeyVault@2
