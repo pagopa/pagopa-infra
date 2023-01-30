@@ -93,7 +93,7 @@ stages:
 
                   GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO \"$USER\";
                   GRANT \"$USER\" to $ADMIN_USERNAME;
-                  CREATE SCHEMA IF NOT EXISTS \"$SCHEMA\" AUTHORIZATION $USER;
+                  CREATE SCHEMA IF NOT EXISTS \"$SCHEMA\" AUTHORIZATION \"$USER\";
                   END
                   \$\$;
                   "
