@@ -86,7 +86,7 @@ stages:
                     RAISE NOTICE 'Role "$CFG_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $CFG_USERNAME LOGIN PASSWORD '$(db-cfg-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $CFG_USERNAME;
+                    GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO $CFG_USERNAME;
                     GRANT $CFG_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $CFG_SCHEMA AUTHORIZATION $CFG_USERNAME;
                   END IF;
@@ -110,7 +110,7 @@ stages:
                     RAISE NOTICE 'Role "$ONLINE_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $ONLINE_USERNAME LOGIN PASSWORD '$(db-online-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $ONLINE_USERNAME;
+                    GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO $ONLINE_USERNAME;
                     GRANT $ONLINE_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $ONLINE_SCHEMA AUTHORIZATION $ONLINE_USERNAME;
                   END IF;
@@ -155,7 +155,7 @@ stages:
                     RAISE NOTICE 'Role "$OFFLINE_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $OFFLINE_USERNAME LOGIN PASSWORD '$(db-offline-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $OFFLINE_USERNAME;
+                    GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO $OFFLINE_USERNAME;
                     GRANT $OFFLINE_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $OFFLINE_SCHEMA AUTHORIZATION $OFFLINE_USERNAME;
                   END IF;
@@ -179,7 +179,7 @@ stages:
                     RAISE NOTICE 'Role "$RE_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $RE_USERNAME LOGIN PASSWORD '$(db-re-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $RE_USERNAME;
+                    GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO $RE_USERNAME;
                     GRANT $RE_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $RE_SCHEMA AUTHORIZATION $RE_USERNAME;
                   END IF;
@@ -203,7 +203,7 @@ stages:
                     RAISE NOTICE 'Role "$WFESP_USERNAME" already exists. Skipping.';
                   ELSE
                     CREATE ROLE $WFESP_USERNAME LOGIN PASSWORD '$(db-wfesp-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $WFESP_USERNAME;
+                    GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO $WFESP_USERNAME;
                     GRANT $WFESP_USERNAME to $ADMIN_USERNAME;
                     CREATE SCHEMA IF NOT EXISTS $WFESP_SCHEMA AUTHORIZATION $WFESP_USERNAME;
                   END IF;
