@@ -1,6 +1,6 @@
-#####################
+######################
 ## Products REPLICA ##
-#####################
+######################
 
 module "apim_nodo_dei_pagamenti_product_replica_ndp" {
   source       = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
