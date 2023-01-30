@@ -105,8 +105,6 @@ stages:
                 PATH=$4
                 SCHEMA=$5
 
-                shift 5
-
                 liquibase \
                 --url="$(JDBC_URL)" \
                 --username="$USER" \
