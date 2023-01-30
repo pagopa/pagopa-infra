@@ -68,20 +68,27 @@ stages:
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
+
+                create_schema () {
+                SCHEMA=$1
+                USER=$2
+                PASS=$3
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
                 --querytext "
                 do \$\$
                 BEGIN
-                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE  rolname = '$WEB_BO_USERNAME') THEN
-                  RAISE NOTICE 'Role \"$WEB_BO_USERNAME\" already exists. Skipping.';
-                  ELSE
-                  CREATE ROLE \"$WEB_BO_USERNAME\" LOGIN PASSWORD '$(db-web-bo-password)';
-                  GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO \"$WEB_BO_USERNAME\";
-                  GRANT \"$WEB_BO_USERNAME\" to $ADMIN_USERNAME;
-                  CREATE SCHEMA IF NOT EXISTS \"$WEB_BO_SCHEMA\" AUTHORIZATION \"$WEB_BO_USERNAME\";
-                  END IF;
+                IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$USER') THEN
+                CREATE ROLE $USER LOGIN PASSWORD '$PASS';
+                END IF;
+
+                GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO \"$USER\";
+                GRANT \"$USER\" to $ADMIN_USERNAME;
+                CREATE SCHEMA IF NOT EXISTS \"$SCHEMA\" AUTHORIZATION $USER;
                 END
                 \$\$;
                 "
+                }
+
+                create_schema "$WEB_BO_SCHEMA"     "$WEB_BO_USERNAME"     "$(db-web-bo-password)"
