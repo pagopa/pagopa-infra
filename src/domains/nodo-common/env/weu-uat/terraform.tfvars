@@ -53,7 +53,10 @@ pgres_flex_params = {
   max_connections                        = 3400
 }
 
-
+pgres_flex_nodo_secondary = {
+  enabled = true
+  db_name = "nodo-prf"
+}
 
 sftp_account_replication_type = "LRS"
 sftp_enable_private_endpoint  = true

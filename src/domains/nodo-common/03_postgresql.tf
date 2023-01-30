@@ -110,3 +110,12 @@ resource "azurerm_postgresql_flexible_server_configuration" "nodo_db_flex_defaul
   server_id = module.postgres_flexible_server.id
   value     = 1000
 }
+
+
+resource "azurerm_postgresql_flexible_server_database" "nodo_secondary_db" {
+  count     = var.pgres_flex_nodo_secondary.enabled ? 1 : 0
+  name      = var.pgres_flex_nodo_secondary.db_name
+  server_id = module.postgres_flexible_server.id
+  collation = "en_US.utf8"
+  charset   = "utf8"
+}
