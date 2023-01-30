@@ -150,14 +150,6 @@ variable "pgres_flex_nodo_db_name" {
   default     = "nodo"
 }
 
-variable "pgres_flex_nodo_secondary" {
-  type = object({
-    enabled                                = bool
-    db_name                               = string
-  })
-  description = "Nodo secondary DB name"
-}
-
 variable "sftp_account_replication_type" {
   type        = string
   description = "Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. Changing this forces a new resource to be created when types LRS, GRS and RAGRS are changed to ZRS, GZRS or RAGZRS and vice versa"

@@ -53,11 +53,6 @@ pgres_flex_params = {
   max_connections                        = 3400
 }
 
-pgres_flex_nodo_secondary = {
-  enabled = true
-  db_name = "nodo-prf"
-}
-
 sftp_account_replication_type = "LRS"
 sftp_enable_private_endpoint  = true
 sftp_ip_rules                 = [] # List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed
