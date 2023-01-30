@@ -107,22 +107,22 @@ stages:
 
                 liquibase \
                 --url="$(JDBC_URL)" \
-                --username="$(CFG_USERNAME)" \
-                --password="$(db-cfg-password)" \
-                --classpath=src/psql/nodo/liquibase/changelog/"$PATH" \
+                --username="$(USER)" \
+                --password="$(PASS)" \
+                --classpath=src/psql/nodo/liquibase/changelog/$PATH \
                 --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(CFG_SCHEMA)" \
-                --defaultSchemaName="$(CFG_SCHEMA)" \
+                --liquibaseSchemaName="$(SCHEMA)" \
+                --defaultSchemaName="$(SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
                 status $@
               }
 
-              run_liquibase status "$(CFG_USERNAME)"     "$(db-cfg-password)"     cfg     "$(CFG_SCHEMA)"     -Dschema="$(CFG_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase status "$(ONLINE_USERNAME)"  "$(db-online-password)"  online  "$(ONLINE_SCHEMA)"  -DschemaOffline="$(OFFLINE_SCHEMA)" -DusernameOffline="$(OFFLINE_USERNAME)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase status "$(OFFLINE_USERNAME)" "$(db-offline-password)" cfg     "$(OFFLINE_SCHEMA)" -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline="$(ONLINE_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase status "$(RE_USERNAME)"      "$(db-re-password)"      re      "$(RE_SCHEMA)"      -Dschema="$(RE_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
-              run_liquibase status "$(WFESP_USERNAME)"   "$(db-wfesp-password)"   wfesp   "$(WFESP_SCHEMA)"   -Dschema=$(WFESP_SCHEMA) -Ddomain="${{ parameters.k8sEnv }}"
+              run_liquibase status   "$(CFG_USERNAME)"     "$(db-cfg-password)"     cfg     "$(CFG_SCHEMA)"     -Dschema="$(CFG_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
+              run_liquibase status   "$(ONLINE_USERNAME)"  "$(db-online-password)"  online  "$(ONLINE_SCHEMA)"  -DschemaOffline="$(OFFLINE_SCHEMA)" -DusernameOffline="$(OFFLINE_USERNAME)" -Ddomain="${{ parameters.k8sEnv }}"
+              run_liquibase status   "$(OFFLINE_USERNAME)" "$(db-offline-password)" cfg     "$(OFFLINE_SCHEMA)" -Dschema=$(OFFLINE_SCHEMA) -DschemaOnline="$(ONLINE_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
+              run_liquibase status   "$(RE_USERNAME)"      "$(db-re-password)"      re      "$(RE_SCHEMA)"      -Dschema="$(RE_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
+              run_liquibase status   "$(WFESP_USERNAME)"   "$(db-wfesp-password)"   wfesp   "$(WFESP_SCHEMA)"   -Dschema=$(WFESP_SCHEMA) -Ddomain="${{ parameters.k8sEnv }}"
 
               run_liquibase validate "$(CFG_USERNAME)"     "$(db-cfg-password)"     cfg     "$(CFG_SCHEMA)"     -Dschema="$(CFG_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
               run_liquibase validate "$(ONLINE_USERNAME)"  "$(db-online-password)"  online  "$(ONLINE_SCHEMA)"  -DschemaOffline="$(OFFLINE_SCHEMA)" -DusernameOffline="$(OFFLINE_USERNAME)" -Ddomain="${{ parameters.k8sEnv }}"
