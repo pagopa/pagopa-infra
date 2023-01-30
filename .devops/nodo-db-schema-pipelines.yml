@@ -28,7 +28,7 @@ variables:
     DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
-    DATABASE_NAME: nodo-it
+    DATABASE_NAME: 'nodo-it'
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
@@ -38,7 +38,7 @@ variables:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
-    DATABASE_NAME: nodo-prf
+    DATABASE_NAME: 'nodo-prf'
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
@@ -78,7 +78,7 @@ stages:
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -102,7 +102,7 @@ stages:
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -126,7 +126,7 @@ stages:
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -147,7 +147,7 @@ stages:
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -171,7 +171,7 @@ stages:
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -195,7 +195,7 @@ stages:
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
                 --querytext "
                 do \$\$
                 BEGIN
