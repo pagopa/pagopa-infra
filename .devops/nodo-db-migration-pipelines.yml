@@ -98,11 +98,6 @@ stages:
 
               run_liquibase () {
 
-                COMMAND="$1"
-                USER="$2"
-                PASS="$3"
-                PATH="$4"
-                SCHEMA="$5"
 
                 liquibase \
                 --url="$(JDBC_URL)" \
