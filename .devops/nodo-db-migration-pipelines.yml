@@ -115,7 +115,7 @@ stages:
                 --defaultSchemaName="$SCHEMA" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
-                status $@
+                status "$@"
               }
 
               run_liquibase status   "$(CFG_USERNAME)"     "$(db-cfg-password)"     cfg     "$(CFG_SCHEMA)"     -Dschema="$(CFG_SCHEMA)" -Ddomain="${{ parameters.k8sEnv }}"
