@@ -86,6 +86,16 @@ stages:
               ls -la liquibase-app
               echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
             displayName: "Install Liquibase"
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir java
+              wget -c https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
+              tar -xzf openjdk-11.0.2_linux-x64_bin.tar.gz -C java
+              rm -rf openjdk-11.0.2_linux-x64_bin.tar.gz
+              ls -la java
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-11.0.2/bin"
+              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
+            displayName: "Install Java"
           - task: AzureKeyVault@2
             displayName: "Get $(KEY_VAULT_NAME) secrets"
             inputs:
@@ -153,6 +163,16 @@ stages:
               ls -la liquibase-app
               echo "##vso[task.prependpath]$(Pipeline.Workspace)/liquibase-app"
             displayName: "Install Liquibase"
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir java
+              wget -c https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
+              tar -xzf openjdk-11.0.2_linux-x64_bin.tar.gz -C java
+              rm -rf openjdk-11.0.2_linux-x64_bin.tar.gz
+              ls -la java
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-11.0.2/bin"
+              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
+            displayName: "Install Java"
           - task: AzureKeyVault@2
             displayName: "Get $(KEY_VAULT_NAME) secrets"
             inputs:
