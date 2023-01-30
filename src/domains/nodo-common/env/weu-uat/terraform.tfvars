@@ -56,5 +56,5 @@ pgres_flex_diagnostic_settings_enabled = false
 
 sftp_account_replication_type = "LRS"
 sftp_enable_private_endpoint  = true
-sftp_ip_rules                 = ["217.175.54.31", "217.175.48.25"]
+sftp_ip_rules                 = [] # List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed
 

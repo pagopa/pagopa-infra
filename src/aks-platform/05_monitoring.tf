@@ -108,7 +108,7 @@ resource "kubernetes_namespace" "monitoring" {
 resource "kubernetes_secret_v1" "prometheus_basic_auth" {
   metadata {
     name      = "prometheus-basic-auth"
-    namespace = "monitoring"
+    namespace = "elastic-system"
   }
 
   data = {
@@ -122,7 +122,7 @@ resource "helm_release" "kube_prometheus_stack" {
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
   version    = var.kube_prometheus_stack_helm.chart_version
-  namespace  = kubernetes_namespace.monitoring.metadata[0].name
+  namespace  = "elastic-system" #kubernetes_namespace.monitoring.metadata[0].name
 
   values = [
     "${file("${var.kube_prometheus_stack_helm.values_file}")}"

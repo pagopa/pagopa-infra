@@ -3,6 +3,7 @@
 ##############
 
 module "apim_nodopg_product" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
   product_id   = "nodopg"
@@ -34,6 +35,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "api_nodopg_api" {
+  count = var.env_short == "d" ? 1 : 0
 
   name                = format("%s-nodopg-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -44,14 +46,15 @@ resource "azurerm_api_management_api_version_set" "api_nodopg_api" {
 
 
 module "apim_api_nodopg_api_v1" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
   name                  = format("%s-nodopg-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_nodopg_product.product_id]
+  product_ids           = [module.apim_nodopg_product[0].product_id]
   subscription_required = local.apim_nodopg_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_nodopg_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_nodopg_api[0].id
   api_version           = "v1"
 
   description  = local.apim_nodopg_service_api.description
