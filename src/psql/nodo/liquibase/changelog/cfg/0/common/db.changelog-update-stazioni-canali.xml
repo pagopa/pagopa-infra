@@ -27,13 +27,13 @@
   <changeSet author="liquibase" id="data-update-canali-1" runAlways="true">
     <validCheckSum>ANY</validCheckSum>
     <update tableName="CANALI">
-      <column name="SERVIZIO" value="mock-psp-ndp/service/v1/mock" />
+      <column name="SERVIZIO" value="mock-psp${replica}-ndp/service/v1/mock" />
       <where>SERVIZIO not like '%secondary%'</where>
     </update>
   </changeSet>
   <changeSet author="liquibase" id="data-update-canali-2" runAlways="true">
     <update tableName="CANALI">
-      <column name="SERVIZIO" value="mock-psp-secondary-ndp/service/v1/mock" />
+      <column name="SERVIZIO" value="mock-psp-secondary${replica}-ndp/service/v1/mock" />
       <where>SERVIZIO like '%secondary%'</where>
     </update>
   </changeSet>
@@ -42,17 +42,17 @@
     <validCheckSum>ANY</validCheckSum>
     <update tableName="STAZIONI">
       <column name="SERVIZIO" value="mock-ec-ndp/service/v1/mock" />
-      <column name="SERVIZIO_4MOD" value="mock-ec-ndp/service/v1/mock" />
-      <column name="SERVIZIO_POF" value="mock-ec-ndp/service/v1/mock" />
+      <column name="SERVIZIO_4MOD" value="mock-ec${replica}-ndp/service/v1/mock" />
+      <column name="SERVIZIO_POF" value="mock-ec${replica}-ndp/service/v1/mock" />
       <where>SERVIZIO not like '%secondary%'</where>
     </update>
   </changeSet>
   <changeSet author="liquibase" id="data-update-stazioni-2" runAlways="true">
     <validCheckSum>ANY</validCheckSum>
     <update tableName="STAZIONI">
-      <column name="SERVIZIO" value="mock-ec-secondary-ndp/service/v1/mock" />
-      <column name="SERVIZIO_4MOD" value="mock-ec-secondary-ndp/service/v1/mock" />
-      <column name="SERVIZIO_POF" value="mock-ec-secondary-ndp/service/v1/mock" />
+      <column name="SERVIZIO" value="mock-ec-secondary${replica}-ndp/service/v1/mock" />
+      <column name="SERVIZIO_4MOD" value="mock-ec-secondary${replica}-ndp/service/v1/mock" />
+      <column name="SERVIZIO_POF" value="mock-ec-secondary${replica}-ndp/service/v1/mock" />
       <where>SERVIZIO like '%secondary%'</where>
     </update>
   </changeSet>
