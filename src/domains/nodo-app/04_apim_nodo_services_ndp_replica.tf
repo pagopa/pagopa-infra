@@ -3,8 +3,8 @@
 #####################
 
 module "apim_nodo_dei_pagamenti_product_replica_ndp" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
-  count     = var.env_short == "p" ?  0 : 1
+  source       = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  count        = var.env_short == "p" ? 0 : 1
   product_id   = "nodo-replica-ndp"
   display_name = "Nodo dei Pagamenti REPLICA NDP"
   description  = "Product for Nodo dei Pagamenti REPLICA NDP"
@@ -25,7 +25,7 @@ module "apim_nodo_dei_pagamenti_product_replica_ndp" {
 
 locals {
 
-  api_nodo_product_replica_ndp =  var.env_short == "p" ? [] : [
+  api_nodo_product_replica_ndp = var.env_short == "p" ? [] : [
     azurerm_api_management_api.apim_node_for_psp_api_v1_replica_ndp[0].name,
     azurerm_api_management_api.apim_nodo_per_psp_api_v1_replica_ndp[0].name,
     azurerm_api_management_api.apim_node_for_io_api_v1_replica_ndp[0].name,
@@ -61,7 +61,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   name                = format("%s-node-for-psp-api-replica-ndp", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -70,7 +70,7 @@ resource "azurerm_api_management_api_version_set" "node_for_psp_api_replica_ndp"
 }
 
 resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-node-for-psp-api-replica-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
@@ -99,7 +99,7 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_replica_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_replica_ndp[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -124,7 +124,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_psp_api_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   name                = format("%s-nodo-per-psp-api-replica-ndp", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -133,7 +133,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_psp_api_replica_ndp"
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-nodo-per-psp-api-replica-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
@@ -162,7 +162,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_replica_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_replica_ndp[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -187,7 +187,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_psp_richiesta_avvisi_api_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   name                = format("%s-nodo-per-psp-richiesta-avvisi-api-replica-ndp", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -196,7 +196,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_psp_richiesta_avvisi
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-nodo-per-psp-richiesta-avvisi-api-replica-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
@@ -225,7 +225,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi_policy_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_replica_ndp[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -251,7 +251,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_io_api_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   name                = format("%s-nodo-for-io-api-replica-ndp", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -260,7 +260,7 @@ resource "azurerm_api_management_api_version_set" "node_for_io_api_replica_ndp" 
 }
 
 resource "azurerm_api_management_api" "apim_node_for_io_api_v1_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-node-for-io-api-replica-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
@@ -289,7 +289,7 @@ resource "azurerm_api_management_api" "apim_node_for_io_api_v1_replica_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   api_name            = resource.azurerm_api_management_api.apim_node_for_io_api_v1_replica_ndp[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -315,7 +315,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "psp_for_node_api_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   name                = format("%s-psp-for-node-api-replica-ndp", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -324,7 +324,7 @@ resource "azurerm_api_management_api_version_set" "psp_for_node_api_replica_ndp"
 }
 
 resource "azurerm_api_management_api" "apim_psp_for_node_api_v1_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-psp-for-node-api-replica-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
@@ -353,7 +353,7 @@ resource "azurerm_api_management_api" "apim_psp_for_node_api_v1_replica_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_psp_for_node_policy_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   api_name            = resource.azurerm_api_management_api.apim_psp_for_node_api_v1_replica_ndp[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -376,7 +376,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   name                = format("%s-nodo-per-pa-api-replica-ndp", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -385,7 +385,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_replica_ndp" 
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-nodo-per-pa-api-replica-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
@@ -414,7 +414,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_replica_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1_replica_ndp[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -438,7 +438,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   name                = format("%s-nodo-per-pm-api-replica-ndp", local.project)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -448,7 +448,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_replica_ndp" 
 
 module "apim_nodo_per_pm_api_v1_replica_ndp" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
-  count     = var.env_short == "p" ?  0 : 1
+  count  = var.env_short == "p" ? 0 : 1
 
   name                  = format("%s-nodo-per-pm-api-replica-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
@@ -474,7 +474,7 @@ module "apim_nodo_per_pm_api_v1_replica_ndp" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   api_name            = format("%s-nodo-per-pm-api-replica-ndp-v1", local.project)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -485,8 +485,8 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_rep
 }
 
 module "apim_nodo_per_pm_api_v2_replica_ndp" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
-  count     = var.env_short == "p" ?  0 : 1
+  source                = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-nodo-per-pm-api-replica-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
@@ -528,7 +528,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_replica_ndp" {
-  count     = var.env_short == "p" ?  0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   name                = format("%s-nodo-monitoring-api-replica-ndp", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -537,12 +537,12 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_replica_n
 }
 
 module "apim_nodo_monitoring_api_replica_ndp" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-  count     = var.env_short == "p" ?  0 : 1
+  source                = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-nodo-monitoring-api-replica-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
-  product_ids           = [module.apim_nodo_dei_pagamenti_product_ndp.product_id]
+  product_ids           = [module.apim_nodo_dei_pagamenti_product_replica_ndp[0].product_id]
   subscription_required = local.apim_nodo_monitoring_api_replica_ndp.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api_replica_ndp[0].id
