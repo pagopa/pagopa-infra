@@ -13,6 +13,8 @@ parameters:
     default: dev
     values:
       - dev
+      - int
+      - prf
       - uat
       - prd
 
@@ -21,16 +23,28 @@ variables:
     DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+    DATABASE_NAME: nodo
+  ${{ if eq(parameters.k8sEnv, 'int') }}:
+    DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
+    KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+    DATABASE_NAME: nodo-it
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+    DATABASE_NAME: nodo
+  ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
+    DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
+    KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+    DATABASE_NAME: nodo-prf
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
+    DATABASE_NAME: nodo
   ADMIN_USERNAME: azureuser
-  DATABASE_NAME: nodo
   CFG_USERNAME: cfg
   CFG_SCHEMA: cfg
   OFFLINE_USERNAME: offline
