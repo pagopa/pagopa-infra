@@ -17,6 +17,14 @@ parameters:
       - prf
       - uat
       - prd
+  - name: domain
+    displayName: Dominio apim
+    type: string
+    default: dev
+    values:
+      - dev
+      - prf
+      - prd
   # version of liquibase db.changelog-master-*.xml to run
   - name: dbVersion
     displayName: Database Version

@@ -80,7 +80,7 @@ stages:
                 do \$\$
                 BEGIN
                 IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$USER') THEN
-                CREATE ROLE $USER LOGIN PASSWORD '$PASS';
+                CREATE ROLE \"$USER\" LOGIN PASSWORD '$PASS';
                 END IF;
 
                 GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO \"$USER\";
