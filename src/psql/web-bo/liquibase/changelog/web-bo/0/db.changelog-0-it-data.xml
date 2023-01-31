@@ -1,0 +1,106 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd"
+                   >
+
+  <changeSet author="liquibase" id="1673858027089-4">
+    <insert tableName="BO_ROLE">
+      <column name="ID" valueNumeric="1"/>
+      <column name="NAME" value="RL_WBO-INQUIRY"/>
+      <column name="DESCRIPTION" value="WBO - Role Inquiry"/>
+    </insert>
+    <insert tableName="BO_ROLE">
+      <column name="ID" valueNumeric="2"/>
+      <column name="NAME" value="RL_WBO-OPERATION"/>
+      <column name="DESCRIPTION" value="WBO - Role Operation"/>
+    </insert>
+    <insert tableName="BO_ROLE">
+      <column name="ID" valueNumeric="3"/>
+      <column name="NAME" value="ADMIN"/>
+      <column name="DESCRIPTION" value="WBO - Admin"/>
+    </insert>
+  </changeSet>
+
+  <changeSet author="liquibase" id="1673858027089-1">
+    <insert tableName="BO_GROUP">
+      <column name="ID" valueNumeric="1"/>
+      <column name="NAME" value="GRP_SIA-ADMIN"/>
+      <column name="DESCRIPTION" value="Gruppo utenti SIA - Admin"/>
+    </insert>
+    <insert tableName="BO_GROUP">
+      <column name="ID" valueNumeric="2"/>
+      <column name="NAME" value="GRP_SIA-OPERATION"/>
+      <column name="DESCRIPTION" value="Gruppo utenti SIA - Operation"/>
+    </insert>
+    <insert tableName="BO_GROUP">
+      <column name="ID" valueNumeric="3"/>
+      <column name="NAME" value="GRP_SIA-BACKOFFICE"/>
+      <column name="DESCRIPTION" value="Gruppo utenti SIA - Backoffice"/>
+    </insert>
+    <insert tableName="BO_GROUP">
+      <column name="ID" valueNumeric="4"/>
+      <column name="NAME" value="GRP_PAGOPA-BACKOFFICE"/>
+      <column name="DESCRIPTION" value="Gruppo utenti PagoPA - Backoffice"/>
+    </insert>
+  </changeSet>
+  <changeSet author="liquibase" id="1673858027089-2">
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="1"/>
+      <column name="ROLE_FK" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="1"/>
+      <column name="ROLE_FK" valueNumeric="2"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="1"/>
+      <column name="ROLE_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="2"/>
+      <column name="ROLE_FK" valueNumeric="2"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="3"/>
+      <column name="ROLE_FK" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="4"/>
+      <column name="ROLE_FK" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+  <changeSet author="liquibase" id="1673858027089-3">
+    <insert tableName="BO_OAUTH_CLIENT_DETAILS">
+      <column name="CLIENT_ID" value="oauth2_client"/>
+      <column name="RESOURCE_IDS"/>
+      <column name="CLIENT_SECRET" value="$2a$10$AnduFWVRP3/z2NfZx972R.d7HkA7uhdfJzWdNXEmjpCCCathqx1gK"/>
+      <column name="SCOPE" value="foo,read,write"/>
+      <column name="AUTHORIZED_GRANT_TYPES" value="password,authorization_code,refresh_token"/>
+      <column name="WEB_SERVER_REDIRECT_URI"/>
+      <column name="AUTHORITIES"/>
+      <column name="ACCESS_TOKEN_VALIDITY" valueNumeric="30"/>
+      <column name="REFRESH_TOKEN_VALIDITY" valueNumeric="120"/>
+      <column name="ADDITIONAL_INFORMATION"/>
+      <column name="AUTOAPPROVE" value="true"/>
+    </insert>
+  </changeSet>
+  <changeSet author="liquibase" id="1673858027089-5">
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="21"/>
+      <column name="USERNAME" value="ADMIN"/>
+      <column name="PASSWORD" value="$2a$10$HaSVrShMXmyGDrcjpASopu0.pZSvF0eE0QfYfFliLXirwkJwyMsdu"/>
+      <column name="FIRST_NAME" value="Admin"/>
+      <column name="LAST_NAME" value="Admin"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-14T11:34:50"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+  <changeSet author="liquibase" id="1673858027089-6">
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="21"/>
+      <column name="GROUP_FK" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+
+</databaseChangeLog>

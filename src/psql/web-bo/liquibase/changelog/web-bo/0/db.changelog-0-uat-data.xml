@@ -1,0 +1,1722 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <changeSet author="massimoscattarella (generated)" id="1675157661557-1">
+    <insert tableName="BO_GROUP">
+      <column name="ID" valueNumeric="1"/>
+      <column name="NAME" value="GRP_SIA-ADMIN"/>
+      <column name="DESCRIPTION" value="Gruppo utenti SIA - Admin"/>
+    </insert>
+    <insert tableName="BO_GROUP">
+      <column name="ID" valueNumeric="2"/>
+      <column name="NAME" value="GRP_SIA-OPERATION"/>
+      <column name="DESCRIPTION" value="Gruppo utenti SIA - Operation"/>
+    </insert>
+    <insert tableName="BO_GROUP">
+      <column name="ID" valueNumeric="3"/>
+      <column name="NAME" value="GRP_SIA-BACKOFFICE"/>
+      <column name="DESCRIPTION" value="Gruppo utenti SIA - Backoffice"/>
+    </insert>
+    <insert tableName="BO_GROUP">
+      <column name="ID" valueNumeric="4"/>
+      <column name="NAME" value="GRP_PAGOPA-BACKOFFICE"/>
+      <column name="DESCRIPTION" value="Gruppo utenti PagoPA - Backoffice"/>
+    </insert>
+  </changeSet>
+  <changeSet author="massimoscattarella (generated)" id="1675157661557-3">
+    <insert tableName="BO_ROLE">
+      <column name="ID" valueNumeric="3"/>
+      <column name="NAME" value="ADMIN"/>
+      <column name="DESCRIPTION" value="WBO - Role Admin"/>
+    </insert>
+    <insert tableName="BO_ROLE">
+      <column name="ID" valueNumeric="1"/>
+      <column name="NAME" value="RL_WBO-INQUIRY"/>
+      <column name="DESCRIPTION" value="WBO - Role Inquiry"/>
+    </insert>
+    <insert tableName="BO_ROLE">
+      <column name="ID" valueNumeric="2"/>
+      <column name="NAME" value="RL_WBO-OPERATION"/>
+      <column name="DESCRIPTION" value="WBO - Role Operation"/>
+    </insert>
+  </changeSet>
+  <changeSet author="massimoscattarella (generated)" id="1675157661557-2">
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="1"/>
+      <column name="ROLE_FK" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="1"/>
+      <column name="ROLE_FK" valueNumeric="2"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="1"/>
+      <column name="ROLE_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="2"/>
+      <column name="ROLE_FK" valueNumeric="2"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="3"/>
+      <column name="ROLE_FK" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" valueNumeric="4"/>
+      <column name="ROLE_FK" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+  <changeSet author="massimoscattarella (generated)" id="1675157661557-4">
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="181"/>
+      <column name="USERNAME" value="consScettriPiergiorgio"/>
+      <column name="PASSWORD" value="$2a$10$TrWe.qOSw/QKoJRPMGqzeeHEvPSh6mUFvMJtXPsorIqKa7Jboc2i."/>
+      <column name="FIRST_NAME" value="Piergiorgio"/>
+      <column name="LAST_NAME" value="Scettri"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-02-25T16:13:24"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="182"/>
+      <column name="USERNAME" value="consLoorzamoraSandynathaly"/>
+      <column name="PASSWORD" value="$2a$10$Wh8.gEQVqT93iBTGW5AhWOiQvGOCESyn/gxJC1DYLxdcLqxsiTn7q"/>
+      <column name="FIRST_NAME" value="Sandy Nathaly"/>
+      <column name="LAST_NAME" value="Loor Zamora"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-02-25T16:13:24"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="221"/>
+      <column name="USERNAME" value="cons.PezzanoAndrea@sia.eu"/>
+      <column name="PASSWORD" value="$2a$10$yltJaiXpV2w5sgko8fSJxecrIewpjiV/NbCjLXg0M6ZSnlN2.8F5O"/>
+      <column name="FIRST_NAME" value="Andrea"/>
+      <column name="LAST_NAME" value="Pezzano"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-03-18T14:21:07"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="261"/>
+      <column name="USERNAME" value="Assistenza13"/>
+      <column name="PASSWORD" value="$2a$10$lUGtwyIMQmyTbBXLza69BucI.rlu1ESqQrFjZBzzI6zZByl861eC."/>
+      <column name="FIRST_NAME" value="Alessandro"/>
+      <column name="LAST_NAME" value="Lopez"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-05-19T09:06:55"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="281"/>
+      <column name="USERNAME" value="Assistenza14"/>
+      <column name="PASSWORD" value="$2a$10$86GGcJutdKY7V6cQq8cwgedPwLU2ksmb5mQYXnEXULo6vyInAu8Im"/>
+      <column name="FIRST_NAME" value="Emilio"/>
+      <column name="LAST_NAME" value="Lo Monaco"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-06-25T10:09:49"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="341"/>
+      <column name="USERNAME" value="DiCiommoViviana"/>
+      <column name="PASSWORD" value="$2a$10$D8zG1H5crA50e79rDtXwAOIdyvTq3KuZ4C3j0ZTb2dBeIqQPJ4T.e"/>
+      <column name="FIRST_NAME" value="Viviana"/>
+      <column name="LAST_NAME" value="Di Ciommo"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-09-16T10:42:41"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="342"/>
+      <column name="USERNAME" value="cons.PanzaErika"/>
+      <column name="PASSWORD" value="$2a$10$zyRwSYoQZMfaTG7TqZu8aeqKGrKuC3X0Ho.QbnrqjT9wgtTolSiVq"/>
+      <column name="FIRST_NAME" value="Erika"/>
+      <column name="LAST_NAME" value="Panza"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-09-16T10:42:41"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="125"/>
+      <column name="USERNAME" value="Assistenza09"/>
+      <column name="PASSWORD" value="$2a$10$Er.aE7JguPXs8puE0yhqT.TBYep8V0asKJB2tEPudylB5QmA0OLnq"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="09"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-10-09T15:57:19"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="2"/>
+      <column name="USERNAME" value="ConsCasarottoE"/>
+      <column name="PASSWORD" value="$2a$10$NCW9RmS6NZQ9GgK32/XYBeWGzOJ3SBfKww75Ovn/UZPcWJZoQQH8e"/>
+      <column name="FIRST_NAME" value="Emanuela"/>
+      <column name="LAST_NAME" value="Casarotto"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="3"/>
+      <column name="USERNAME" value="ConsMalteseMatteo"/>
+      <column name="PASSWORD" value="$2a$10$xHJR1QNI7R2uPhPOiubCKu96mY4W2Iby33.oSrO7O02St/IcSVRcS"/>
+      <column name="FIRST_NAME" value="Matteo"/>
+      <column name="LAST_NAME" value="Maltese"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="4"/>
+      <column name="USERNAME" value="ConsNobileValentino"/>
+      <column name="PASSWORD" value="$2a$10$u9gDAjgnBqLHlG8hp2aSOuP1QR/cup2yDPIknG0gLkFQ.B6EFslE6"/>
+      <column name="FIRST_NAME" value="Valentino"/>
+      <column name="LAST_NAME" value="Nobile"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="161"/>
+      <column name="USERNAME" value="ddicroce"/>
+      <column name="PASSWORD" value="$2a$10$2SazP9Ew4lXAAr0dp4qA2On/iMcCsfROo5T.NB1OAnZbXCmQ7n/wu"/>
+      <column name="FIRST_NAME" value="Donato"/>
+      <column name="LAST_NAME" value="Di Croce"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-02-01T12:18:54"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="6"/>
+      <column name="USERNAME" value="FunaroFrancesco"/>
+      <column name="PASSWORD" value="$2a$10$c1Axe.k8Fgxo1UVmN8EMKuosz44wha28g9ZQE/BBrSQBHvLFlhKta"/>
+      <column name="FIRST_NAME" value="Francesco"/>
+      <column name="LAST_NAME" value="Funaro"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="7"/>
+      <column name="USERNAME" value="ConsMarianoMarcello"/>
+      <column name="PASSWORD" value="$2a$10$NM1YgJBGWRfuja/moANDx.387BP5kbl5gfCC7xpG2AvKAY/4/4/8a"/>
+      <column name="FIRST_NAME" value="Marcello"/>
+      <column name="LAST_NAME" value="Mariano"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="8"/>
+      <column name="USERNAME" value="GuagliumiMirella"/>
+      <column name="PASSWORD" value="$2a$10$KYzAme6TtoXNTLVEMZ5i1eTCfi4ILH9bJVZTSmmE9yExBgEPQFs9W"/>
+      <column name="FIRST_NAME" value="Mirella"/>
+      <column name="LAST_NAME" value="Guagliumi"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="361"/>
+      <column name="USERNAME" value="ConsSampinoRoberta"/>
+      <column name="PASSWORD" value="$2a$10$B7L7HneYSOe0mKQlACDluepuiCsc.62CZFd87p99jo54Qef0lKfF6"/>
+      <column name="FIRST_NAME" value="Roberta"/>
+      <column name="LAST_NAME" value="Sampino"/>
+      <column name="EMAIL" value="cons.SampinoRoberta@sia.eu"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-09-24T14:16:14"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="10"/>
+      <column name="USERNAME" value="ConsGuerrieroA"/>
+      <column name="PASSWORD" value="$2a$10$ITiSRau2tnkXdMdeaPogzOrD/u3jk.2V8Q46sRup54IyhduL1Y8OO"/>
+      <column name="FIRST_NAME" value="Alessandra"/>
+      <column name="LAST_NAME" value="Guerriero"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="521"/>
+      <column name="USERNAME" value="Assistenza67"/>
+      <column name="PASSWORD" value="$2a$10$dRABtp5WcZZh1M7AhpGBIeZmjFnvU66bAD6Nzkdisk44xn9XiXZGa"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="67"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="522"/>
+      <column name="USERNAME" value="Assistenza68"/>
+      <column name="PASSWORD" value="$2a$10$mLBFwy0/W/mi9C38zBfOPOmmDZx59rjIvIoXi9R87N6Me/HhQCPn6"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="68"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="523"/>
+      <column name="USERNAME" value="Assistenza69"/>
+      <column name="PASSWORD" value="$2a$10$EAZYE/1Y6YnL1ARfbpoh/O9QdflsLWeL1NeH0abNDpKQ7lPp1np56"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="69"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="14"/>
+      <column name="USERNAME" value="ConsMontenegroMara"/>
+      <column name="PASSWORD" value="$2a$10$tm.pnOcTyFbJzlqMZuY/v.LO5u9qWdRHVGav6ii8.SizYUjBabXEW"/>
+      <column name="FIRST_NAME" value="Montenegro "/>
+      <column name="LAST_NAME" value="Mara"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="15"/>
+      <column name="USERNAME" value="Assistenza01"/>
+      <column name="PASSWORD" value="$2a$10$giGe4UMY4BS9RwkZYy8RU.XzNCVFtVc3NCQtNE1QyIRHt3AOmSBli"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="01"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="16"/>
+      <column name="USERNAME" value="Assistenza02"/>
+      <column name="PASSWORD" value="$2a$10$BQCTFXEYW0b1Ocxo5dJ0eOq1dXW3h9Yi5QLudOUDmnuw0Q6tOvFwi"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="02"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="17"/>
+      <column name="USERNAME" value="Assistenza03"/>
+      <column name="PASSWORD" value="$2a$10$X9wafs4nTyLzuqMlNQVD5ek43MjDUQGLUVcYduX1m/N.kC/LquH0y"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="03"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="0"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="18"/>
+      <column name="USERNAME" value="Assistenza04"/>
+      <column name="PASSWORD" value="$2a$10$N9hRe1314GHh0IVF87DF6uAGDSR39ybj5u6DFjRy6q.8z2CEirte2"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="04"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="19"/>
+      <column name="USERNAME" value="Assistenza05"/>
+      <column name="PASSWORD" value="$2a$10$70KXuiX7MyU6aeiaS1/Jc.weO2IyK.Gxop4Q21DR/4VI8fkNOQlWO"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="05"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="20"/>
+      <column name="USERNAME" value="ADMIN"/>
+      <column name="PASSWORD" value="$2a$10$2ReVXR2Mn5HzVX4pA2eo7OXNHCA7HaN/U5JYTyPmN8DDxTT3IgSJ2"/>
+      <column name="FIRST_NAME" value="Admin"/>
+      <column name="LAST_NAME" value="Admin"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="21"/>
+      <column name="USERNAME" value="AGID_USER"/>
+      <column name="PASSWORD" value="$2a$10$ArWB1edGeVMEDdRzSMUQy./Nvpp0VZ1QKlqSyGYQ8SzFzRHo/qqxW"/>
+      <column name="FIRST_NAME" value="Agid"/>
+      <column name="LAST_NAME" value="User"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-01-13T14:58:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="524"/>
+      <column name="USERNAME" value="Assistenza70"/>
+      <column name="PASSWORD" value="$2a$10$mnjmjeCb.Pzmq.5iY.yxSeyrQpxv/ov.fC6mqUX/q4lQxQtGltCYG"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="71"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="525"/>
+      <column name="USERNAME" value="Assistenza71"/>
+      <column name="PASSWORD" value="$2a$10$7x7bv6jkB0Gs.C4ivBJUCew8JQd.g6STuv47w7N1ViJYLN98fhLlK"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="72"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="526"/>
+      <column name="USERNAME" value="Assistenza72"/>
+      <column name="PASSWORD" value="$2a$10$SCBU9OEyOjjbP5a3V0tYGumbWufFvbEXDoOoNBIAgSVGr7aDyr9yS"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="73"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="527"/>
+      <column name="USERNAME" value="Assistenza73"/>
+      <column name="PASSWORD" value="$2a$10$Z9rikM7I.tzhKR.xsyndn.nXU87koiAwt1ZXiV6oK6TW/xHzXqWlW"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="74"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="528"/>
+      <column name="USERNAME" value="Assistenza74"/>
+      <column name="PASSWORD" value="$2a$10$TJD.con9zUGEHZ3jRnqbt.g6xk.wz3oLHYiSlWQXDBUfCIANDHs3e"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="75"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="529"/>
+      <column name="USERNAME" value="Assistenza75"/>
+      <column name="PASSWORD" value="$2a$10$B/AuZWHtm8SIK8TrdJMacu2N3VJHDbxVe/zAV3AaR9meSV/xK4Tuu"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="76"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="530"/>
+      <column name="USERNAME" value="Assistenza76"/>
+      <column name="PASSWORD" value="$2a$10$k0QwE6Y2UwFPGfzWOCdrmeg/Dclw8l70VSKuHniMfngYwyDY8JIia"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="77"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="531"/>
+      <column name="USERNAME" value="Assistenza77"/>
+      <column name="PASSWORD" value="$2a$10$GJt3XwQ1Qy1oOWj1b7JDDegqKyeIiPeejqYLE6bwJ1orvcGPAbXRm"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="78"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="532"/>
+      <column name="USERNAME" value="Assistenza78"/>
+      <column name="PASSWORD" value="$2a$10$ZYyYUL7TKeDoEXYQXzIvzuDudSKzDoDbflnEONo7w16HpITzLxtnW"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="79"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="533"/>
+      <column name="USERNAME" value="Assistenza79"/>
+      <column name="PASSWORD" value="$2a$10$XrI5ucg7JCWFipO6lDclMOODS.QuBhl/sG0idYN5UlspyZk86J/jm"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="80"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="534"/>
+      <column name="USERNAME" value="Assistenza80"/>
+      <column name="PASSWORD" value="$2a$10$GX59Etlz3azp5N7KqKqGjOCG4ri5wRpF479eJKKbX1JtjSDYX.Zva"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="81"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="535"/>
+      <column name="USERNAME" value="Assistenza81"/>
+      <column name="PASSWORD" value="$2a$10$EtMNVJA1fhyCeSvgRZDku.fc5AGtr2WmxCbKieUDJwaK0K4QRwq7m"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="82"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="536"/>
+      <column name="USERNAME" value="Assistenza82"/>
+      <column name="PASSWORD" value="$2a$10$j7QtksFVSrgTuIZhi.CPyudGz8kA/Mjk0L3Y99J6AhsFF/crFQz3e"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="83"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="537"/>
+      <column name="USERNAME" value="Assistenza83"/>
+      <column name="PASSWORD" value="$2a$10$8H/PA25.CouOZ3vuZ6/UtOryUxdAeTUynGsYMkMG.EPCtyMlFsk8e"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="84"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="538"/>
+      <column name="USERNAME" value="Assistenza84"/>
+      <column name="PASSWORD" value="$2a$10$MN.5TxhB6.J6N.ffmItwqO6wWX9INMItratEyblTdCw6Ch72gsCUK"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="85"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="539"/>
+      <column name="USERNAME" value="Assistenza85"/>
+      <column name="PASSWORD" value="$2a$10$wc.l.4ZpEdAyg72P79am2OBQElyJYwTO9AN4Tj8.hlLS1DhzSOEbS"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="86"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="540"/>
+      <column name="USERNAME" value="Assistenza86"/>
+      <column name="PASSWORD" value="$2a$10$Xg2ixO9IUGKpp8V087hfZudbyGLPhkQ2fDXmeZA0gnkavHH82cZYS"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="87"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="541"/>
+      <column name="USERNAME" value="Assistenza87"/>
+      <column name="PASSWORD" value="$2a$10$YRZyiByUsYvhnm5ZtAHJJeY0F1q4e7T/Q8yGno5UB/FobVbBse0Yi"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="88"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="542"/>
+      <column name="USERNAME" value="Assistenza88"/>
+      <column name="PASSWORD" value="$2a$10$J6WVZ3tlh72eqE608GkjnuH5UuYlm9XUZdWRZdBNukKpFw6Lb2IoS"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="89"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="543"/>
+      <column name="USERNAME" value="Assistenza89"/>
+      <column name="PASSWORD" value="$2a$10$fPoj0vwkvV77fUl/CyZDX.nq/32Re5xl7I1043.w1/JVknNzgSxKG"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="90"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="544"/>
+      <column name="USERNAME" value="Assistenza90"/>
+      <column name="PASSWORD" value="$2a$10$XB.lZqc15lJyB1SVyRTDR.zmWBaQqkU9dtU8XcKscb09B.ZooDzqm"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="91"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="545"/>
+      <column name="USERNAME" value="Assistenza91"/>
+      <column name="PASSWORD" value="$2a$10$JU2pvHcCpGBlF0sM3SLHWueKK5m/yE1jb5Y2b5L0IO4BXPWnIci9W"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="92"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="546"/>
+      <column name="USERNAME" value="Assistenza92"/>
+      <column name="PASSWORD" value="$2a$10$fa.HSvOnAWmRoz9rXcGwoObZxGsHZFQSKKyLW6ybYGky14dpMAw.a"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="93"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="547"/>
+      <column name="USERNAME" value="Assistenza93"/>
+      <column name="PASSWORD" value="$2a$10$B1QGdcWmZ/UtC2OfWS2xw.5b6Rl.SJ4VlB8k9wcUVZISfXckGERjm"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="94"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="548"/>
+      <column name="USERNAME" value="Assistenza94"/>
+      <column name="PASSWORD" value="$2a$10$159mImppqkwF004Bm/YQ..zohOpl5JD4r9bNJPst454sdlp/MRxCW"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="95"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="549"/>
+      <column name="USERNAME" value="Assistenza95"/>
+      <column name="PASSWORD" value="$2a$10$pFJStD41C1wwbn0LYnjPXueVyoNuzVheSLsFU9ruC0CUD7mUQQfyi"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="96"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="550"/>
+      <column name="USERNAME" value="Assistenza96"/>
+      <column name="PASSWORD" value="$2a$10$ebdUM1k4faivwfwDsgxNUuG8us51DCFmseqEDuxQkzisp1lLLDh9q"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="97"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="551"/>
+      <column name="USERNAME" value="Sambranofabian"/>
+      <column name="PASSWORD" value="$2a$10$8LJqz5KxXhdfU2peI1vDrOV63/7Y07Gi84adm4oxq5Wwv2i7bPC4m"/>
+      <column name="FIRST_NAME" value="Fabian"/>
+      <column name="LAST_NAME" value="Sambrano"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-24T11:00:40"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="141"/>
+      <column name="USERNAME" value="Assistenza10"/>
+      <column name="PASSWORD" value="$2a$10$z7Y07XjyQhHjYE/P75H/5uMolkU0EAa3pm1dub6mxN5jNYnxgs5zO"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="10"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-10-14T15:03:29"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="142"/>
+      <column name="USERNAME" value="Assistenza11"/>
+      <column name="PASSWORD" value="$2a$10$/dAllF2PIMRC7sRzeDNZg.NGTwXBxwrrUtuBF7aFPpDKVqja922wK"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="11"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-10-14T15:03:29"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="201"/>
+      <column name="USERNAME" value="cons.CiannameaClaudia2"/>
+      <column name="PASSWORD" value="$2a$10$J0vBdcj/Ohc.09vJNd2.BOvZ1vzSGqsgt0xKAV8FKU2O4N.74kHRe"/>
+      <column name="FIRST_NAME" value="Claudia"/>
+      <column name="LAST_NAME" value="Ciannamea"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-03-11T15:30:51"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="241"/>
+      <column name="USERNAME" value="Assistenza12"/>
+      <column name="PASSWORD" value="$2a$10$GxFkKAoDpQ/kgxLHW1KeV.eF3c3TP37mvAvNB6bLrOd01d82FjlRu"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="12"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-04-30T10:33:42"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="461"/>
+      <column name="USERNAME" value="Assistenza24"/>
+      <column name="PASSWORD" value="$2a$10$kvuAAKqr8dnARYL5B8MSSeMs3Th/QxW4uOqe1b0RjHalwYfwj2jfq"/>
+      <column name="FIRST_NAME" value="Matteo"/>
+      <column name="LAST_NAME" value="Brachi"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="302"/>
+      <column name="USERNAME" value="Assistenza16"/>
+      <column name="PASSWORD" value="$2a$10$w6n.bkloLGyJo8XY5YPJgulp8Um5TSs7SpS5aZYnRachNw4UIJenW"/>
+      <column name="FIRST_NAME" value="Simone"/>
+      <column name="LAST_NAME" value="Esposito"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-07-15T15:55:39"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="303"/>
+      <column name="USERNAME" value="Assistenza17"/>
+      <column name="PASSWORD" value="$2a$10$NQjMS4nUUvfY2VYzwm2RPO7RTPg.Ptv3NRXdj2BK44fZe9tuQow9q"/>
+      <column name="FIRST_NAME" value="Stefano"/>
+      <column name="LAST_NAME" value="Bafaro"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-07-15T15:55:39"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="464"/>
+      <column name="USERNAME" value="Assistenza27"/>
+      <column name="PASSWORD" value="$2a$10$D1QYydnPERnjj4Blm4JUlO59igPN5Vr0OaCTElJHa37rosWTbdcPe"/>
+      <column name="FIRST_NAME" value="Antonio"/>
+      <column name="LAST_NAME" value="Moretta"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="465"/>
+      <column name="USERNAME" value="Assistenza28"/>
+      <column name="PASSWORD" value="$2a$10$TFmIH1Rg2LRaLvZrxwP6uehwNuElxvHCZffpeERuVxKmsQRhH7HqO"/>
+      <column name="FIRST_NAME" value="Mario"/>
+      <column name="LAST_NAME" value="Capriglione"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="466"/>
+      <column name="USERNAME" value="Assistenza29"/>
+      <column name="PASSWORD" value="$2a$10$gAYtcY4r2.9Syq0smUzRsu1RSk8LcZOEs5P3tq2TEJCAKHBMUMCBe"/>
+      <column name="FIRST_NAME" value="Giovanni"/>
+      <column name="LAST_NAME" value="Sannini"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="469"/>
+      <column name="USERNAME" value="Assistenza32"/>
+      <column name="PASSWORD" value="$2a$10$UZZJK5BuUsrObawUXeTAd.FLUt1JFxtLmaMh1IHjMF34csqrH.xaK"/>
+      <column name="FIRST_NAME" value="Dario"/>
+      <column name="LAST_NAME" value="Bartolo"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="470"/>
+      <column name="USERNAME" value="Assistenza33"/>
+      <column name="PASSWORD" value="$2a$10$Snk2YjZGlayCYojmfCuMSeWz48NtuNdeuEO6T2aPE5rmjYW8R8GNy"/>
+      <column name="FIRST_NAME" value="Davide"/>
+      <column name="LAST_NAME" value="Pignalosa"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="471"/>
+      <column name="USERNAME" value="Assistenza34"/>
+      <column name="PASSWORD" value="$2a$10$M3fmPtupR7K5UcVDFB3ivOv0k5I9FE4Kb2r0/4CEF5y2a1kDficsW"/>
+      <column name="FIRST_NAME" value="Elena"/>
+      <column name="LAST_NAME" value="Giuli"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="472"/>
+      <column name="USERNAME" value="Assistenza35"/>
+      <column name="PASSWORD" value="$2a$10$yiqkz7aZddHd.IX1dkr8ROsGOC3vYITaIf0SEfkAGze121iwdtJQC"/>
+      <column name="FIRST_NAME" value="Gloria"/>
+      <column name="LAST_NAME" value="Gonino"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="474"/>
+      <column name="USERNAME" value="Assistenza37"/>
+      <column name="PASSWORD" value="$2a$10$YqoEeT9taeV9kYSaShHkrehJYoq/sG4cCRHh8QEbhRvxBvpDVF5Eu"/>
+      <column name="FIRST_NAME" value="Ciro"/>
+      <column name="LAST_NAME" value="Di Nisio"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="475"/>
+      <column name="USERNAME" value="Assistenza38"/>
+      <column name="PASSWORD" value="$2a$10$JqysSRUQZ9AW2hM1UvEHQ.9B/hsqdYgpG1ou5nJDfuP0OAvQf9JTO"/>
+      <column name="FIRST_NAME" value="Francesco"/>
+      <column name="LAST_NAME" value="Mattiello"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="476"/>
+      <column name="USERNAME" value="Assistenza39"/>
+      <column name="PASSWORD" value="$2a$10$C/RtJUB/hXPmCxTIqMj61u.Ab9g26qvZQrHwGp4C84QPAOQsEKYy6"/>
+      <column name="FIRST_NAME" value="Domenico"/>
+      <column name="LAST_NAME" value="Meloro"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="477"/>
+      <column name="USERNAME" value="Assistenza40"/>
+      <column name="PASSWORD" value="$2a$10$.Kq/y7Bx2GtdCyn/jO/Ai.4oC/67v3fYfhBsGjrBdFCCjX5p4WTfO"/>
+      <column name="FIRST_NAME" value="Paolo"/>
+      <column name="LAST_NAME" value="Chianese"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="478"/>
+      <column name="USERNAME" value="Assistenza41"/>
+      <column name="PASSWORD" value="$2a$10$yHLml5JzVT9cTwL/omQbcu8aigze00Ng7PPhsbNHFZQC8ksxgBpLS"/>
+      <column name="FIRST_NAME" value="Maria"/>
+      <column name="LAST_NAME" value="Barbato"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="479"/>
+      <column name="USERNAME" value="Assistenza42"/>
+      <column name="PASSWORD" value="$2a$10$6UVnqaVFJHIxuPVou/BhOOD7vj0rA4RV6ewcIqwBi2E1uCUKywRaC"/>
+      <column name="FIRST_NAME" value="Fulvio"/>
+      <column name="LAST_NAME" value="Cannillo"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="480"/>
+      <column name="USERNAME" value="Assistenza43"/>
+      <column name="PASSWORD" value="$2a$10$L6cnUUbSMIvSgn6ycd1QLehMdz7HAOcMtvltCyyoFIyvRFDyIqHla"/>
+      <column name="FIRST_NAME" value="Lucia"/>
+      <column name="LAST_NAME" value="Dello Iacovo"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="481"/>
+      <column name="USERNAME" value="Assistenza44"/>
+      <column name="PASSWORD" value="$2a$10$rL9fJPIa4NvHkKT4k5TAcOjeEnKy5zSuTGKm36GKg00XAGsifY7DO"/>
+      <column name="FIRST_NAME" value="Guglielmo"/>
+      <column name="LAST_NAME" value="Di Sarno"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="482"/>
+      <column name="USERNAME" value="Assistenza45"/>
+      <column name="PASSWORD" value="$2a$10$zQTgN/E5BIvwPZnglSAqz.dmo.Rp9gmSyqYPYHGx9boaF0PgCbTZa"/>
+      <column name="FIRST_NAME" value="Raimondo"/>
+      <column name="LAST_NAME" value="Sorice"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="483"/>
+      <column name="USERNAME" value="Assistenza46"/>
+      <column name="PASSWORD" value="$2a$10$PsKXEWoUcGc8gvnqAZQ3WO1hFuT4PDiRnNfgroLnars.faPP.j3qW"/>
+      <column name="FIRST_NAME" value="Vito"/>
+      <column name="LAST_NAME" value="Iavarone"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="484"/>
+      <column name="USERNAME" value="Assistenza47"/>
+      <column name="PASSWORD" value="$2a$10$PxpSj53QEJwFK6KEuEk24.hvbvWXONhF44JSKs5kUKtWRVuNzm2yu"/>
+      <column name="FIRST_NAME" value="Gianluca"/>
+      <column name="LAST_NAME" value="Licciardi"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="485"/>
+      <column name="USERNAME" value="Assistenza48"/>
+      <column name="PASSWORD" value="$2a$10$Rzk4ku8mZpx4IBaPerpTMe57w5gYVeNF961VlQ0A2wPvIU4OywCYO"/>
+      <column name="FIRST_NAME" value="Fabio"/>
+      <column name="LAST_NAME" value="Sferlazza"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="486"/>
+      <column name="USERNAME" value="Assistenza49"/>
+      <column name="PASSWORD" value="$2a$10$5dEOk9y6dQtzWENhG620U.YWml/KSCwtqDJ5eps5180OEvxxknm3K"/>
+      <column name="FIRST_NAME" value="Isabella"/>
+      <column name="LAST_NAME" value="Miani"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="488"/>
+      <column name="USERNAME" value="Assistenza51"/>
+      <column name="PASSWORD" value="$2a$10$CqLjGeo5OEQE.L2pEP/yVOuxGs33XXG6YzFlSCdam/fe2AmOJ439K"/>
+      <column name="FIRST_NAME" value="Massimiliano"/>
+      <column name="LAST_NAME" value="Gitto"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="489"/>
+      <column name="USERNAME" value="Assistenza52"/>
+      <column name="PASSWORD" value="$2a$10$3.g6AQ6bb1yzwZuk4SkvM.EWQCgUJnqFKYK1uSLlM.494gFBoiOWe"/>
+      <column name="FIRST_NAME" value="Sara Luigina Giovanna"/>
+      <column name="LAST_NAME" value="Maestri"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="491"/>
+      <column name="USERNAME" value="Assistenza54"/>
+      <column name="PASSWORD" value="$2a$10$tQNwdlJxkAYgREniglWKJubIjhq1HwYNelwPHMV24SQkrHGsjReg6"/>
+      <column name="FIRST_NAME" value="Adriana"/>
+      <column name="LAST_NAME" value="Risso"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="492"/>
+      <column name="USERNAME" value="Assistenza55"/>
+      <column name="PASSWORD" value="$2a$10$qmWdMO9jEMCs6gajr5MwO.RIRKBtbT6afUKerM611I.OttkRbNBea"/>
+      <column name="FIRST_NAME" value="Marta"/>
+      <column name="LAST_NAME" value="Romito"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-12-21T14:36:11"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="61"/>
+      <column name="USERNAME" value="Assistenza06"/>
+      <column name="PASSWORD" value="$2a$10$JxLAEC30zWGGTPK5IWS6CeW/2L7Zw3Vn6e1LjNDzxSt62mzTVzYqq"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="06"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-08-10T11:38:25"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="62"/>
+      <column name="USERNAME" value="Assistenza07"/>
+      <column name="PASSWORD" value="$2a$10$BJKTKkrPDM0HcTCd911.LuWx50aTR5.4rAxwENZPjuuawQ2ZNHfWO"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="07"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-08-10T11:38:25"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="81"/>
+      <column name="USERNAME" value="Assistenza08"/>
+      <column name="PASSWORD" value="$2a$10$kduHJ.VjFBS5ROdPAT5K.u2cO0HOWw8wqlZVTQqojjQCuZFfeTUdK"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="08"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-08-26T16:52:53"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="321"/>
+      <column name="USERNAME" value="Assistenza18"/>
+      <column name="PASSWORD" value="$2a$10$IyqXFaJ50JrIyoGuAijEC.k56SzYRql.gxY/s9ct6QgGsDTKGo/D6"/>
+      <column name="FIRST_NAME" value="Luisella"/>
+      <column name="LAST_NAME" value="De Amicis"/>
+      <column name="EMAIL" value="luisella.deamicis@pagopa.it"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-09-09T10:09:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="322"/>
+      <column name="USERNAME" value="Assistenza19"/>
+      <column name="PASSWORD" value="$2a$10$NvvG92NvBLrLtOivHzih/etGdMQCAIloe4djbPEWWeD67ZMXtMBE2"/>
+      <column name="FIRST_NAME" value="Federico"/>
+      <column name="LAST_NAME" value="Fontana"/>
+      <column name="EMAIL" value="federico.fontana@pagopa.it"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-09-09T10:09:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="323"/>
+      <column name="USERNAME" value="Assistenza20"/>
+      <column name="PASSWORD" value="$2a$10$BAJoUNN.jld7dPXHDAoFM.qLY.oUr27am2aUsjX6wyWgsHfGajwo."/>
+      <column name="FIRST_NAME" value="Marco"/>
+      <column name="LAST_NAME" value="De Gregorio"/>
+      <column name="EMAIL" value="marco.degregorio@pagopa.it"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-09-09T10:09:46"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="401"/>
+      <column name="USERNAME" value="ConsViganoMatteo"/>
+      <column name="PASSWORD" value="$2a$10$ZuIJpUi3vHTtJHlApjoit.8e/8Dknevd6slyEqti5L97hBlwraApm"/>
+      <column name="FIRST_NAME" value="Matteo"/>
+      <column name="LAST_NAME" value="Vigano"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-11-04T14:25:29"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="101"/>
+      <column name="USERNAME" value="dauriaraffaele"/>
+      <column name="PASSWORD" value="$2a$10$oZDhR0rMpvmok9ZVuFCZpuz1PCXesQufhP57MBst/5AUxiiEFT2Ji"/>
+      <column name="FIRST_NAME" value="Raffaele"/>
+      <column name="LAST_NAME" value="D���Auria"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-09-11T14:03:04"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="102"/>
+      <column name="USERNAME" value="consbastianininicolo"/>
+      <column name="PASSWORD" value="$2a$10$LQLLp/SVf2uqRJvDmhVMGeQMDBrl/KZrZtQvubspJCrYEXC62O85S"/>
+      <column name="FIRST_NAME" value="Nicol��"/>
+      <column name="LAST_NAME" value="Bastianini"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-09-11T14:03:04"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="103"/>
+      <column name="USERNAME" value="conspalermofranco1"/>
+      <column name="PASSWORD" value="$2a$10$dBmD.bWy5erJffptl1.JWuvOe3S6z9X8DhaqWmte5mBga7qio8T/2"/>
+      <column name="FIRST_NAME" value="Franco"/>
+      <column name="LAST_NAME" value="Palermo"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2020-09-11T14:03:04"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="381"/>
+      <column name="USERNAME" value="Assistenza21"/>
+      <column name="PASSWORD" value="$2a$10$SFoZxK5O8YxSTl8zm.HFpeJ25tJD8hIbZwT9dpqUU47/nr3.9GpHq"/>
+      <column name="FIRST_NAME" value="Carlotta"/>
+      <column name="LAST_NAME" value="Bartoloni"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-10-01T13:22:32"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="382"/>
+      <column name="USERNAME" value="cons.coscioneandrea"/>
+      <column name="PASSWORD" value="$2a$10$ktGQbdkRUk6HTSD6z8TOseSQSrvJ6ZDpRIOnfEJOtWiO4WMHg9Fza"/>
+      <column name="FIRST_NAME" value="Andrea"/>
+      <column name="LAST_NAME" value="Coscione"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-10-01T13:22:32"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="441"/>
+      <column name="USERNAME" value="Assistenza23"/>
+      <column name="PASSWORD" value="$2a$10$.FJ9E1XA.DuV.gMyAwZaA.0FwYG/zzNYI4.LNn2LH/aQswIHTxx9W"/>
+      <column name="FIRST_NAME" value="Alessio"/>
+      <column name="LAST_NAME" value="Brunelli"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2021-11-17T15:28:27"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="501"/>
+      <column name="USERNAME" value="Assistenza57"/>
+      <column name="PASSWORD" value="$2a$10$.bVCPf2QuI/uXVVrphDFAunOa.94BA4QohZMguvAx83YpMH/Nzi32"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="57"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="502"/>
+      <column name="USERNAME" value="Assistenza58"/>
+      <column name="PASSWORD" value="$2a$10$5wuY/Gm8HNGa/3psC1dD5uyCeq9Rtlnl1luyLoPCeCMrMxcA4cJIG"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="58"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="503"/>
+      <column name="USERNAME" value="Assistenza59"/>
+      <column name="PASSWORD" value="$2a$10$U6w6lmnXKbz6FAHXgY0Ytundk7DmkWthnKK9a4LXOoRFeFvXF/uya"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="59"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="504"/>
+      <column name="USERNAME" value="Assistenza60"/>
+      <column name="PASSWORD" value="$2a$10$hU9y3ipusgBj7IsucOhRHOjpdh5kAYEourPXnc0.nxZQ8mbWdKtp2"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="60"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="505"/>
+      <column name="USERNAME" value="Assistenza61"/>
+      <column name="PASSWORD" value="$2a$10$kU/31AsJM4Mh3ThEa/sgk.ypQoL/.KPMNLyBUtJWTtu9aAsBYSbW6"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="61"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="506"/>
+      <column name="USERNAME" value="Assistenza62"/>
+      <column name="PASSWORD" value="$2a$10$CnSJz3CgN1CMLasoMBjxkeRk.3nom0fbFRv/7JEUhBUW.sfgZDDbG"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="62"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="507"/>
+      <column name="USERNAME" value="Assistenza63"/>
+      <column name="PASSWORD" value="$2a$10$tax5OQorhzW04Gu6alSAje6o1qNirk7fojrkvvon4JhmKwG6AxMCq"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="63"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="508"/>
+      <column name="USERNAME" value="Assistenza64"/>
+      <column name="PASSWORD" value="$2a$10$kGptWyFp7ODYOLMqXu9GCepYGHkEOoFctLwPzy4lo27BqmyTCbj.C"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="64"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="509"/>
+      <column name="USERNAME" value="Assistenza65"/>
+      <column name="PASSWORD" value="$2a$10$/KjbV.7YAxEljELPyemdT.EIFbdzk7iAIogeaZnoHJGibnEj.Cj.2"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="65"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER">
+      <column name="ID" valueNumeric="510"/>
+      <column name="USERNAME" value="Assistenza66"/>
+      <column name="PASSWORD" value="$2a$10$FNy3/huxQRMTtW9OUU8Gi.Gfw3irAk/BZvZsjvKVmLvXZ/PVRn8x2"/>
+      <column name="FIRST_NAME" value="Assistenza"/>
+      <column name="LAST_NAME" value="66"/>
+      <column name="EMAIL"/>
+      <column name="INSERTED_TIMESTAMP" valueDate="2022-02-04T15:02:20"/>
+      <column name="UPDATED_TIMESTAMP"/>
+      <column name="STATUS" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+  <changeSet author="massimoscattarella (generated)" id="1675157661557-5">
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="2"/>
+      <column name="GROUP_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="3"/>
+      <column name="GROUP_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="4"/>
+      <column name="GROUP_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="6"/>
+      <column name="GROUP_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="7"/>
+      <column name="GROUP_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="8"/>
+      <column name="GROUP_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="10"/>
+      <column name="GROUP_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="14"/>
+      <column name="GROUP_FK" valueNumeric="3"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="15"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="16"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="17"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="18"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="19"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="20"/>
+      <column name="GROUP_FK" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="21"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="61"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="62"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="81"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="101"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="102"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="103"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="125"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="141"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="142"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="161"/>
+      <column name="GROUP_FK" valueNumeric="1"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="181"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="182"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="201"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="221"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="241"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="261"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="281"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="302"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="303"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="321"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="322"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="323"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="341"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="342"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="361"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="381"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="382"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="401"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="441"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="461"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="464"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="465"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="466"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="469"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="470"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="471"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="472"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="474"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="475"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="476"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="477"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="478"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="479"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="480"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="481"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="482"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="483"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="484"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="485"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="486"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="488"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="489"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="491"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="492"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="501"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="502"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="503"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="504"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="505"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="506"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="507"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="508"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="509"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="510"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="521"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="522"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="523"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="524"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="525"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="526"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="527"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="528"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="529"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="530"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="531"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="532"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="533"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="534"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="535"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="536"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="537"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="538"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="539"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="540"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="541"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="542"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="543"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="544"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="545"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="546"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="547"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="548"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="549"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="550"/>
+      <column name="GROUP_FK" valueNumeric="4"/>
+    </insert>
+    <insert tableName="BO_USER_GROUP">
+      <column name="USER_FK" valueNumeric="551"/>
+      <column name="GROUP_FK" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+</databaseChangeLog>
