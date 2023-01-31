@@ -43,7 +43,7 @@ nodo_user_node_pool = {
   node_count_max  = "2"
   node_labels = {
   "nodo-cron" = "true", },
-  node_taints        = [],
+  node_taints        = ["dedicated=nodo-cron:NoSchedule"],
   node_tags          = { node_tag_1 : "1" },
   nodo_pool_max_pods = "250",
 }

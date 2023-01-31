@@ -1,15 +1,15 @@
 prefix          = "pagopa"
-env_short       = "u"
-env             = "uat"
+env_short       = "p"
+env             = "prod"
 domain          = "nodo"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
-instance        = "uat"
+instance        = "prod"
 
 tags = {
   CreatedBy   = "Terraform"
-  Environment = "Uat"
+  Environment = "Prod"
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
@@ -17,13 +17,13 @@ tags = {
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-u-monitor-rg"
-log_analytics_workspace_name                = "pagopa-u-law"
-log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
+monitor_resource_group_name                 = "pagopa-p-monitor-rg"
+log_analytics_workspace_name                = "pagopa-p-law"
+log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.uat.platform"
-apim_dns_zone_prefix     = "uat.platform"
+dns_zone_internal_prefix = "internal.platform"
+apim_dns_zone_prefix     = "platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -35,15 +35,15 @@ tls_cert_check_helm = {
 
 nodo_user_node_pool = {
   enabled         = true
-  name            = "nodo01"
+  name            = "nodocron01"
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
   node_count_min  = "1" #TODO change to 2 or 3 in prod
   node_count_max  = "2"
   node_labels = {
-  "nodo" = "true", },
-  node_taints        = ["dedicated=nodo:NoSchedule"],
+  "nodo-cron" = "true", },
+  node_taints        = ["dedicated=nodo-cron:NoSchedule"],
   node_tags          = { node_tag_1 : "1" },
   nodo_pool_max_pods = "250",
 }
