@@ -10,11 +10,11 @@
   <include file="./0/common/db.changelog-configs.xml"                                            labels="init,${version}"/>
 
   <include file="./0/dev/db.changelog-all-data.xml"                  context="dev"               labels="init,${version}"/>
-  <include file="./0/integ/db.changelog-all-data.xml"                context="integ"             labels="init,${version}"/>
+  <include file="./0/it/db.changelog-all-data.xml"                   context="it"                labels="init,${version}"/>
   <include file="./0/prf/db.changelog-all-data.xml"                  context="prf"               labels="init,${version}"/>
   <include file="./0/uat/db.changelog-all-data.xml"                  context="uat"               labels="init,${version}"/>
 
-  <include file="./0/common/db.changelog-update-sequences.xml"       context="dev,integ,prf,uat" labels="init,${version}"/>
-  <include file="./0/common/db.changelog-update-stazioni-canali.xml" context="dev,integ"         labels="init,${version}"/>
+  <include file="./0/common/db.changelog-update-sequences.xml"       context="dev,it,prf,uat" labels="init,${version}"/>
+  <include file="./0/common/db.changelog-update-stazioni-canali.xml" context="dev,it,prf"     labels="init,${version}"/>
 
 </databaseChangeLog>
