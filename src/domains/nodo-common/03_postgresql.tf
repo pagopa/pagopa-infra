@@ -113,7 +113,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "nodo_db_flex_defaul
 
 
 resource "azurerm_postgresql_flexible_server_database" "nodo_replica_db" {
-  count     = var.env_short == "p" ?  0 : 1
+  count     = var.env_short == "p" ? 0 : 1
   name      = "${var.pgres_flex_nodo_db_name}-replica"
   server_id = module.postgres_flexible_server.id
   collation = "en_US.utf8"
