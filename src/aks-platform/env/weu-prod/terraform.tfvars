@@ -138,11 +138,11 @@ reloader_helm = {
 # }
 
 # https://github.com/prometheus-community/helm-charts/issues/1754#issuecomment-1199125703
-prometheus_basic_auth_file = "./env/weu-uat/kube-prometheus-stack-helm/prometheus-basic-auth"
+prometheus_basic_auth_file = "./env/weu-prod/kube-prometheus-stack-helm/prometheus-basic-auth"
 
 kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
-  values_file   = "./env/weu-uat/kube-prometheus-stack-helm/values.yaml"
+  values_file   = "./env/weu-prod/kube-prometheus-stack-helm/values.yaml"
 }
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
