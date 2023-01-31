@@ -135,3 +135,31 @@ variable "dns_zone_checkout" {
   default     = null
   description = "The checkout dns subdomain."
 }
+
+variable "cidr_subnet_ecommerce_functions" {
+  type        = string
+  description = "CIDR subnet for ecommerce functions"
+}
+
+variable "ecommerce_function_always_on" {
+  type        = bool
+  description = "Should ecommerce-functions app be always on?"
+}
+
+variable "ecommerce_functions_app_sku" {
+  type = object({
+    kind     = string
+    sku_tier = string
+    sku_size = string
+  })
+  description = "eCommerce functions app plan SKU"
+}
+
+variable "ecommerce_functions_autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+  description = "eCommerce functions autoscaling parameters"
+}
