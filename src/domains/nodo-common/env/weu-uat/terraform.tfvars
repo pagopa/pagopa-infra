@@ -46,14 +46,12 @@ pgres_flex_params = {
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
-  pgres_flex_private_endpoint_enabled    = false
+  pgres_flex_private_endpoint_enabled    = true
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 3400
 }
-
-
 
 sftp_account_replication_type = "LRS"
 sftp_enable_private_endpoint  = true

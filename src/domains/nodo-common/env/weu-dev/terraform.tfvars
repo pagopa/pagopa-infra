@@ -52,8 +52,6 @@ pgres_flex_params = {
   max_connections                        = 1700
 }
 
-
-
 sftp_account_replication_type = "LRS"
 sftp_enable_private_endpoint  = false
 sftp_disable_network_rules    = true
