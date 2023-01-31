@@ -22,6 +22,23 @@
       <column name="DESCRIPTION" value="Gruppo utenti PagoPA - Backoffice"/>
     </insert>
   </changeSet>
+  <changeSet author="massimoscattarella (generated)" id="1675157661557-3">
+    <insert tableName="BO_ROLE">
+      <column name="ID" valueNumeric="3"/>
+      <column name="NAME" value="ADMIN"/>
+      <column name="DESCRIPTION" value="WBO - Role Admin"/>
+    </insert>
+    <insert tableName="BO_ROLE">
+      <column name="ID" valueNumeric="1"/>
+      <column name="NAME" value="RL_WBO-INQUIRY"/>
+      <column name="DESCRIPTION" value="WBO - Role Inquiry"/>
+    </insert>
+    <insert tableName="BO_ROLE">
+      <column name="ID" valueNumeric="2"/>
+      <column name="NAME" value="RL_WBO-OPERATION"/>
+      <column name="DESCRIPTION" value="WBO - Role Operation"/>
+    </insert>
+  </changeSet>
   <changeSet author="massimoscattarella (generated)" id="1675157661557-2">
     <insert tableName="BO_GROUP_ROLE">
       <column name="GROUP_FK" valueNumeric="1"/>
@@ -46,23 +63,6 @@
     <insert tableName="BO_GROUP_ROLE">
       <column name="GROUP_FK" valueNumeric="4"/>
       <column name="ROLE_FK" valueNumeric="1"/>
-    </insert>
-  </changeSet>
-  <changeSet author="massimoscattarella (generated)" id="1675157661557-3">
-    <insert tableName="BO_ROLE">
-      <column name="ID" valueNumeric="3"/>
-      <column name="NAME" value="ADMIN"/>
-      <column name="DESCRIPTION" value="WBO - Role Admin"/>
-    </insert>
-    <insert tableName="BO_ROLE">
-      <column name="ID" valueNumeric="1"/>
-      <column name="NAME" value="RL_WBO-INQUIRY"/>
-      <column name="DESCRIPTION" value="WBO - Role Inquiry"/>
-    </insert>
-    <insert tableName="BO_ROLE">
-      <column name="ID" valueNumeric="2"/>
-      <column name="NAME" value="RL_WBO-OPERATION"/>
-      <column name="DESCRIPTION" value="WBO - Role Operation"/>
     </insert>
   </changeSet>
   <changeSet author="massimoscattarella (generated)" id="1675157661557-4">
