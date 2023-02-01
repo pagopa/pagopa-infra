@@ -32,6 +32,6 @@ locals {
   pagopa_apim_rg   = "${local.product}-api-rg"
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  nodo_hostname = "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
+  nodo_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
 }
