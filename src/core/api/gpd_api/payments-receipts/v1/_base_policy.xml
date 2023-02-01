@@ -1,5 +1,21 @@
 <policies>
     <inbound>
+        <cors>
+          <allowed-origins>
+            <origin>https://pagopa.github.io</origin>
+            <origin>*</origin>
+          </allowed-origins>
+          <allowed-methods>
+            <method>GET</method>
+            <method>POST</method>
+            <method>PUT</method>
+            <method>DELETE</method>
+            <method>OPTIONS</method>
+          </allowed-methods>
+          <allowed-headers>
+            <header>*</header>
+          </allowed-headers>
+        </cors>
         <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
         <set-variable name="envshort" value="${env_short}" />
         <set-variable name="sub" value="@(context.Subscription.Name)" />
@@ -9,8 +25,8 @@
             return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;
         }" />
         <base />
-        <!-- 
-            subset/restriced api of src/core/api/gpd_api/payments/v1/rest/_openapi.json.tpl (INTERNAL) without /payments/{organizationfiscalcode} 
+        <!--
+            subset/restriced api of src/core/api/gpd_api/payments/v1/rest/_openapi.json.tpl (INTERNAL) without /payments/{organizationfiscalcode}
         -->
         <rewrite-uri template="@("/payments/"+(string)context.Variables["organizationFiscalCode"]+"/"+(string)context.Variables["requestPath"])" copy-unmatched-params="true" />
         <set-backend-service base-url="@(String.Format("https://pagopa-{0}-app-payments.azurewebsites.net", (string)context.Variables["envshort"]))" />

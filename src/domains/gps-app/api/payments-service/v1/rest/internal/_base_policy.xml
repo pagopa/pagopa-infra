@@ -3,6 +3,7 @@
       <cors>
         <allowed-origins>
           <origin>https://pagopa.github.io</origin>
+          <origin>*</origin>
         </allowed-origins>
         <allowed-methods>
           <method>GET</method>
