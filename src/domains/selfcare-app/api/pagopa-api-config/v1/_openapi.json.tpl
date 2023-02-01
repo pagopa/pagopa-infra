@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.46
+  version: 0.0.57
 servers:
   - url: 'https://${host}/${basePath}'
     description: Inferred Url
@@ -88,8 +88,344 @@ paths:
       security:
         - bearerAuth:
             - global
+    post:
+      tags:
+        - channels
+      summary: createChannel
+      description: Create a channel
+      operationId: createChannelUsingPOST
+      parameters:
+        - name: X-Request-Id
+          in: header
+          description: internal request trace id
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelDetailsDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
 components:
   schemas:
+    ChannelDetailsDto:
+      title: ChannelDetailsDto
+      type: object
+      properties:
+        agid:
+          type: boolean
+          description: agid
+          example: false
+        broker_description:
+          type: string
+          description: Broker description. Read only field
+        broker_psp_code:
+          type: string
+          description: 'psp code '
+        card_chart:
+          type: boolean
+          description: card chart
+          example: false
+        channel_code:
+          type: string
+          description: Channel code
+        digital_stamp_brand:
+          type: boolean
+          description: digital stamp brand
+          example: false
+        enabled:
+          type: boolean
+        flag_io:
+          type: boolean
+          description: flag io
+          example: false
+        ip:
+          type: string
+          description: channel's ip
+        new_fault_code:
+          type: boolean
+          description: new fault code
+          example: false
+        new_password:
+          type: string
+          description: channel's new password
+        npm_service:
+          type: string
+          description: npm service
+        on_us:
+          type: boolean
+          description: on us
+          example: false
+        password:
+          type: string
+          description: channel's password
+        payment_model:
+          type: string
+          description: payment model
+          enum:
+            - ACTIVATED_AT_PSP
+            - DEFERRED
+            - IMMEDIATE
+            - IMMEDIATE_MULTIBENEFICIARY
+        port:
+          type: integer
+          description: channel's port
+          format: int64
+        protocol:
+          type: string
+          description: channel's protocol
+          enum:
+            - HTTP
+            - HTTPS
+        proxy_enabled:
+          type: boolean
+          description: proxy Enabled
+          example: false
+        proxy_host:
+          type: string
+          description: proxy Host
+        proxy_password:
+          type: string
+          description: proxy Password
+        proxy_port:
+          type: integer
+          description: proxy Port
+          format: int64
+        proxy_username:
+          type: string
+          description: proxy Username
+        recovery:
+          type: boolean
+          description: recovery
+          example: false
+        redirect_ip:
+          type: string
+          description: redirect ip
+        redirect_path:
+          type: string
+          description: redirect path
+        redirect_port:
+          type: integer
+          description: redirect port
+          format: int64
+        redirect_protocol:
+          type: string
+          description: redirect protocol
+          enum:
+            - HTTP
+            - HTTPS
+        redirect_query_string:
+          type: string
+          description: redirect query string
+        rt_push:
+          type: boolean
+          description: rt Push
+          example: false
+        serv_plugin:
+          type: string
+          description: service plugin
+        service:
+          type: string
+          description: channel's service
+        target_host:
+          type: string
+          description: target host
+        target_path:
+          type: string
+          description: 'target path''s '
+        target_port:
+          type: integer
+          description: target port
+          format: int64
+        thread_number:
+          type: integer
+          description: thread number
+          format: int64
+        timeout_a:
+          type: integer
+          description: timeout A
+          format: int64
+        timeout_b:
+          type: integer
+          description: timeout B
+          format: int64
+        timeout_c:
+          type: integer
+          description: timeout C
+          format: int64
+    ChannelDetailsResource:
+      title: ChannelDetailsResource
+      type: object
+      properties:
+        agid:
+          type: boolean
+          description: agid
+          example: false
+        broker_description:
+          type: string
+          description: Broker description. Read only field
+        broker_psp_code:
+          type: string
+          description: 'psp code '
+        card_chart:
+          type: boolean
+          description: card chart
+          example: false
+        channel_code:
+          type: string
+          description: Channel code
+        digital_stamp_brand:
+          type: boolean
+          description: digital stamp brand
+          example: false
+        enabled:
+          type: boolean
+        flag_io:
+          type: boolean
+          description: flag io
+          example: false
+        ip:
+          type: string
+          description: channel's ip
+        new_fault_code:
+          type: boolean
+          description: new fault code
+          example: false
+        new_password:
+          type: string
+          description: channel's new password
+        npm_service:
+          type: string
+          description: npm service
+        on_us:
+          type: boolean
+          description: on us
+          example: false
+        password:
+          type: string
+          description: channel's password
+        payment_model:
+          type: string
+          description: payment model
+          enum:
+            - ACTIVATED_AT_PSP
+            - DEFERRED
+            - IMMEDIATE
+            - IMMEDIATE_MULTIBENEFICIARY
+        port:
+          type: integer
+          description: channel's port
+          format: int64
+        protocol:
+          type: string
+          description: channel's protocol
+          enum:
+            - HTTP
+            - HTTPS
+        proxy_enabled:
+          type: boolean
+          description: proxy Enabled
+          example: false
+        proxy_host:
+          type: string
+          description: proxy Host
+        proxy_password:
+          type: string
+          description: proxy Password
+        proxy_port:
+          type: integer
+          description: proxy Port
+          format: int64
+        proxy_username:
+          type: string
+          description: proxy Username
+        recovery:
+          type: boolean
+          description: recovery
+          example: false
+        redirect_ip:
+          type: string
+          description: redirect ip
+        redirect_path:
+          type: string
+          description: redirect path
+        redirect_port:
+          type: integer
+          description: redirect port
+          format: int64
+        redirect_protocol:
+          type: string
+          description: redirect protocol
+          enum:
+            - HTTP
+            - HTTPS
+        redirect_query_string:
+          type: string
+          description: redirect query string
+        rt_push:
+          type: boolean
+          description: rt Push
+          example: false
+        serv_plugin:
+          type: string
+          description: service plugin
+        service:
+          type: string
+          description: channel's service
+        target_host:
+          type: string
+          description: target host
+        target_path:
+          type: string
+          description: 'target path''s '
+        target_port:
+          type: integer
+          description: target port
+          format: int64
+        thread_number:
+          type: integer
+          description: thread number
+          format: int64
+        timeout_a:
+          type: integer
+          description: timeout A
+          format: int64
+        timeout_b:
+          type: integer
+          description: timeout B
+          format: int64
+        timeout_c:
+          type: integer
+          description: timeout C
+          format: int64
     ChannelResource:
       title: ChannelResource
       type: object
