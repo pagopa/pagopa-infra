@@ -15,6 +15,7 @@
         <cors>
             <allowed-origins>
                 <origin>${origin}</origin>
+                <origin>https://pagopa.github.io</origin>
             </allowed-origins>
             <allowed-methods>
                 <method>GET</method>

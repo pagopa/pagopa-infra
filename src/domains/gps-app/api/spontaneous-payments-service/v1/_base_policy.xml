@@ -1,5 +1,20 @@
 <policies>
     <inbound>
+      <cors>
+        <allowed-origins>
+          <origin>https://pagopa.github.io</origin>
+        </allowed-origins>
+        <allowed-methods>
+          <method>GET</method>
+          <method>POST</method>
+          <method>PUT</method>
+          <method>DELETE</method>
+          <method>OPTIONS</method>
+        </allowed-methods>
+        <allowed-headers>
+          <header>*</header>
+        </allowed-headers>
+      </cors>
       <base />
       <set-backend-service base-url="https://${hostname}/pagopa-spontaneous-payments-service" />
     </inbound>
