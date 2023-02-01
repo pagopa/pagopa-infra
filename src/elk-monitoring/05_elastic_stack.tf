@@ -19,10 +19,10 @@ module "elastic_stack" {
 
   kibana_external_domain = "https://kibana.dev.platform.pagopa.it/kibana" ####TEMP "${local.apim_hostname}/kibana"
 
-  secret_name   = "weu${var.env}-kibana-internal-${var.env}-platform-pagopa-it"
+  secret_name   = var.env_short == "p" ? "${var.location_short}${var.env}-kibana-internal-platform-pagopa-it" : "${var.location_short}${var.env}-kibana-internal-${var.env}-platform-pagopa-it"
   keyvault_name = module.key_vault.name
 
-  kibana_internal_hostname = local.kibana_hostname
+  kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.it" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
 }
 
 
