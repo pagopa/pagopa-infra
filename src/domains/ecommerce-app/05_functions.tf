@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "ecommerce_functions_rg" {
 # Subnet to host ecommerce transactions function
 module "ecommerce_transactions_functions_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.3.2"
-  name                                           = format("%s-ecommerce-transactions-fns-snet", local.project)
+  name                                           = format("%s-ecommerce-transactions-fn-snet", local.project)
   address_prefixes                               = [var.cidr_subnet_ecommerce_functions]
   resource_group_name                            = azurerm_resource_group.ecommerce_functions_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet.name
@@ -50,7 +50,7 @@ module "ecommerce_transactions_function_app" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_name = replace(format("%s-sa-fn", local.project), "-", "")
+  storage_account_name = replace(format("pagopa-%s%s-ecommtx-sa-fn", var.env, var.location_short), "-", "")
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "java"
@@ -64,7 +64,7 @@ module "ecommerce_transactions_function_app" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "ecommerce_transactions_functions" {
+resource "azurerm_monitor_autoscale_setting" "ecommerce_transactions_function" {
   count = var.env_short != "d" ? 1 : 0
 
   name                = format("%s-autoscale", module.ecommerce_transactions_function_app.name)
