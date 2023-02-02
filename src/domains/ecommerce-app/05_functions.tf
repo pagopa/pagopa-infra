@@ -42,7 +42,7 @@ module "ecommerce_transactions_function_app" {
   always_on                                = var.ecommerce_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_service_plan_name = format("%s-plan-fn", local.project)
+  app_service_plan_name = format("%s-plan-transactions-fn", local.project)
   app_service_plan_info = {
     kind                         = var.ecommerce_functions_app_sku.kind
     sku_tier                     = var.ecommerce_functions_app_sku.sku_tier
@@ -57,7 +57,7 @@ module "ecommerce_transactions_function_app" {
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
   }
 
-  allowed_subnets = []
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
 
   allowed_ips = []
 
