@@ -179,7 +179,7 @@ locals {
     display_name          = "Token Manager - tkm-ms-acquirer-manager"
     description           = "RESTful APIs provided to acquirers"
     path                  = "tkm/tkmacquirermanager"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
@@ -216,7 +216,9 @@ module "apim_tkm_acquirer_manager_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/tkm_api/tkm-ms-acquirer-manager/v1/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/tkm_api/tkm-ms-acquirer-manager/v1/_base_policy.xml.tpl", {
+    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[2] # CSTAR
+  })
 }
 
 #################################

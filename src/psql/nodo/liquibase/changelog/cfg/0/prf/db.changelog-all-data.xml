@@ -1,5 +1,6 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
+  <include file="./0/prf/data/0-changelog-CONFIGURATION_KEYS.xml" />
   <include file="./0/prf/data/0-changelog-WFESP_PLUGIN_CONF.xml" />
   <include file="./0/prf/data/1-changelog-TIPI_VERSAMENTO.xml"/>
   <include file="./0/prf/data/2-changelog-INTERMEDIARI_PSP.xml"/>
@@ -37,5 +38,6 @@
   <include file="./0/prf/data/34-changelog-STAZIONI.xml"/>
   <include file="./0/prf/data/35-changelog-PA_STAZIONE_PA.xml"/>
   <include file="./0/prf/data/36-changelog-PDD.xml"/>
+  <include file="./0/prf/data/99-changelog-update-stazioni-canali.xml"/>
 
 </databaseChangeLog>
