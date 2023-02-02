@@ -113,7 +113,13 @@
         "operationId": "newTransaction",
         "summary": "Make a new transaction",
         "requestBody": {
-          "$ref": "#/components/requestBodies/NewTransactionRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewTransactionRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
@@ -122,6 +128,66 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NewTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFaultPaymentProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict on payment status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentStatusFaultPaymentProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "PagoPA services are not available or request is rejected by PagoPa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "EC services are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyConfigurationFaultPaymentProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout from PagoPA services",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyTimeoutFaultPaymentProblemJson"
                 }
               }
             }
@@ -207,7 +273,13 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/RequestAuthorizationRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestAuthorizationRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
@@ -955,9 +1027,6 @@
           "status": {
             "$ref": "#/components/schemas/TransactionStatus"
           },
-          "amountTotal": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
           "feeTotal": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
@@ -977,7 +1046,6 @@
         },
         "required": [
           "transactionId",
-          "amountTotal",
           "status",
           "payments"
         ]
