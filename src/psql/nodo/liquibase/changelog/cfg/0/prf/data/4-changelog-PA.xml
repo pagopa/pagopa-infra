@@ -1,5 +1,5 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-<changeSet author="liquibase" id="1674739293312-32">
+  <changeSet author="liquibase" id="1675246863359-35">
     <insert tableName="PA">
       <column name="OBJ_ID" valueNumeric="300"/>
       <column name="ID_DOMINIO" value="paStress56"/>
@@ -2788,8 +2788,8 @@
       <column name="OBJ_ID" valueNumeric="33"/>
       <column name="ID_DOMINIO" value="02084870019"/>
       <column name="ENABLED" value="Y"/>
-      <column name="DESCRIZIONE" value="Comune di Ciri&#232;"/>
-      <column name="RAGIONE_SOCIALE" value="Comune di Ciri&#232;"/>
+      <column name="DESCRIZIONE" value="Comune di Ciriè"/>
+      <column name="RAGIONE_SOCIALE" value="Comune di Ciriè"/>
       <column name="FK_INT_QUADRATURE"/>
       <column name="INDIRIZZO_DOMICILIO_FISCALE"/>
       <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE"/>
@@ -2980,8 +2980,8 @@
       <column name="OBJ_ID" valueNumeric="49"/>
       <column name="ID_DOMINIO" value="02406911202"/>
       <column name="ENABLED" value="Y"/>
-      <column name="DESCRIZIONE" value="Azienda Unit&#224; Sanitaria di Bologna - Lepida"/>
-      <column name="RAGIONE_SOCIALE" value="Azienda Unit&#224; Sanitaria di Bologna"/>
+      <column name="DESCRIZIONE" value="Azienda Unità Sanitaria di Bologna - Lepida"/>
+      <column name="RAGIONE_SOCIALE" value="Azienda Unità Sanitaria di Bologna"/>
       <column name="FK_INT_QUADRATURE"/>
       <column name="INDIRIZZO_DOMICILIO_FISCALE"/>
       <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE" value="BO"/>
@@ -2996,8 +2996,8 @@
       <column name="OBJ_ID" valueNumeric="50"/>
       <column name="ID_DOMINIO" value="02241740360"/>
       <column name="ENABLED" value="Y"/>
-      <column name="DESCRIZIONE" value="Azienda Unit&#224; Sanitaria di Modena - Lepida"/>
-      <column name="RAGIONE_SOCIALE" value="Azienda Unit&#224; Sanitaria di Modena"/>
+      <column name="DESCRIZIONE" value="Azienda Unità Sanitaria di Modena - Lepida"/>
+      <column name="RAGIONE_SOCIALE" value="Azienda Unità Sanitaria di Modena"/>
       <column name="FK_INT_QUADRATURE"/>
       <column name="INDIRIZZO_DOMICILIO_FISCALE"/>
       <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE" value="MO"/>
@@ -3156,8 +3156,8 @@
       <column name="OBJ_ID" valueNumeric="60"/>
       <column name="ID_DOMINIO" value="04222030233"/>
       <column name="ENABLED" value="Y"/>
-      <column name="DESCRIZIONE" value="Societ&#224; Locale di Riscossione Spa"/>
-      <column name="RAGIONE_SOCIALE" value="Societ&#224; Locale di Riscossione Spa"/>
+      <column name="DESCRIZIONE" value="Società Locale di Riscossione Spa"/>
+      <column name="RAGIONE_SOCIALE" value="Società Locale di Riscossione Spa"/>
       <column name="FK_INT_QUADRATURE"/>
       <column name="INDIRIZZO_DOMICILIO_FISCALE"/>
       <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE"/>
@@ -3380,8 +3380,8 @@
       <column name="OBJ_ID" valueNumeric="81"/>
       <column name="ID_DOMINIO" value="80213750583"/>
       <column name="ENABLED" value="Y"/>
-      <column name="DESCRIZIONE" value="Universit&#224; Studi Roma Tor Vergata"/>
-      <column name="RAGIONE_SOCIALE" value="Universit&#224; Studi Roma Tor Vergata"/>
+      <column name="DESCRIZIONE" value="Università Studi Roma Tor Vergata"/>
+      <column name="RAGIONE_SOCIALE" value="Università Studi Roma Tor Vergata"/>
       <column name="FK_INT_QUADRATURE"/>
       <column name="INDIRIZZO_DOMICILIO_FISCALE"/>
       <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE"/>
@@ -4116,8 +4116,8 @@
       <column name="OBJ_ID" valueNumeric="134"/>
       <column name="ID_DOMINIO" value="80007010376"/>
       <column name="ENABLED" value="Y"/>
-      <column name="DESCRIZIONE" value="Universit&#224; di Bologna"/>
-      <column name="RAGIONE_SOCIALE" value="Universit&#224; di Bologna"/>
+      <column name="DESCRIZIONE" value="Università di Bologna"/>
+      <column name="RAGIONE_SOCIALE" value="Università di Bologna"/>
       <column name="FK_INT_QUADRATURE"/>
       <column name="INDIRIZZO_DOMICILIO_FISCALE"/>
       <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE"/>
@@ -4276,8 +4276,8 @@
       <column name="OBJ_ID" valueNumeric="144"/>
       <column name="ID_DOMINIO" value="93017450128"/>
       <column name="ENABLED" value="Y"/>
-      <column name="DESCRIZIONE" value="Comunit&#224; Montana Valli del Verbano"/>
-      <column name="RAGIONE_SOCIALE" value="Comunit&#224; Montana Valli del Verbano"/>
+      <column name="DESCRIZIONE" value="Comunità Montana Valli del Verbano"/>
+      <column name="RAGIONE_SOCIALE" value="Comunità Montana Valli del Verbano"/>
       <column name="FK_INT_QUADRATURE"/>
       <column name="INDIRIZZO_DOMICILIO_FISCALE"/>
       <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE"/>
@@ -4308,8 +4308,8 @@
       <column name="OBJ_ID" valueNumeric="146"/>
       <column name="ID_DOMINIO" value="80034390585"/>
       <column name="ENABLED" value="Y"/>
-      <column name="DESCRIZIONE" value="Citt&#224; Metropolitana di Roma Capitale"/>
-      <column name="RAGIONE_SOCIALE" value="Citt&#224; Metropolitana di Roma Capitale"/>
+      <column name="DESCRIZIONE" value="Città Metropolitana di Roma Capitale"/>
+      <column name="RAGIONE_SOCIALE" value="Città Metropolitana di Roma Capitale"/>
       <column name="FK_INT_QUADRATURE"/>
       <column name="INDIRIZZO_DOMICILIO_FISCALE"/>
       <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE"/>
@@ -4436,8 +4436,8 @@
       <column name="OBJ_ID" valueNumeric="156"/>
       <column name="ID_DOMINIO" value="80007720271"/>
       <column name="ENABLED" value="Y"/>
-      <column name="DESCRIZIONE" value="Universit&#224; Ca' Foscari di Venezia"/>
-      <column name="RAGIONE_SOCIALE" value="Universit&#224; Ca' Foscari di Venezia"/>
+      <column name="DESCRIZIONE" value="Università Ca' Foscari di Venezia"/>
+      <column name="RAGIONE_SOCIALE" value="Università Ca' Foscari di Venezia"/>
       <column name="FK_INT_QUADRATURE"/>
       <column name="INDIRIZZO_DOMICILIO_FISCALE"/>
       <column name="SIGLA_PROVINCIA_DOMICILIO_FISCALE"/>
