@@ -33,5 +33,6 @@
   <include file="./0/it/data/30-changelog-INFORMATIVE_PA_DETAIL.xml" />
   <include file="./0/it/data/31-changelog-INFORMATIVE_PA_FASCE.xml" />
   <include file="./0/it/data/32-changelog-PDD.xml" />
+  <include file="./0/it/data/99-changelog-update-stazioni-canali.xml"/>
 
 </databaseChangeLog>
