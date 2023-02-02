@@ -5,5 +5,9 @@
 
   <include file="./0/db.changelog-0.xml" labels="init"/>
   <include file="./0/db.changelog-0-dev-data.xml" context="dev" labels="init"/>
+  <include file="./0/db.changelog-0-it-data.xml" context="it,prf" labels="init"/>
+  <include file="./0/db.changelog-0-uat-data.xml" context="uat" labels="init"/>
+
+  <include file="./0/db.changelog-0-update-sequences.xml" context="dev,it,prf,uat" labels="init"/>
 
 </databaseChangeLog>

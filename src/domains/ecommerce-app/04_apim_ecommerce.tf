@@ -69,6 +69,29 @@ module "apim_ecommerce_transactions_service_api_v1" {
   })
 }
 
+data "azurerm_key_vault_secret" "sessions-jwt-secret" {
+  name         = "sessions-jwt-secret"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "transaction_jwt_signing_key" {
+  name                = "transaction-jwt-signing-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "transaction-jwt-signing-key"
+  value               = data.azurerm_key_vault_secret.sessions-jwt-secret.value
+  secret              = true
+}
+
+resource "azurerm_api_management_api_operation_policy" "transaction_validate_jwt_get_transaction_info" {
+  api_name            = format("%s-transactions-service-api-v1", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getTransactionInfo"
+
+  xml_content = file("./api/ecommerce-transactions-service/v1/_validate_transactions_jwt_token.tpl")
+}
+
 ###########################################
 ## API transaction auth requests service ##
 ###########################################
