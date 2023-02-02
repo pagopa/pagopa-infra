@@ -18,6 +18,7 @@ data "external" "external" {
   query = {
     env = "${var.location_short}-${var.env}"
   }
+
 }
 
 locals {
@@ -40,12 +41,18 @@ locals {
 }
 
 
-## Upload all encryted secrets
+## Upload all encrypted secrets
 resource "azurerm_key_vault_secret" "secret" {
   for_each = { for i, v in local.all_secrets_value : local.all_secrets_value[i].chiave => i }
 
   key_vault_id = module.key_vault.id
   name         = local.all_secrets_value[each.value].chiave
   value        = local.all_secrets_value[each.value].valore
+
+  depends_on = [
+    module.key_vault,
+    azurerm_key_vault_key.generated,
+    data.external.external
+  ]
 }
 

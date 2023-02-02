@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+
+  liquibase-web-bo-update:
+    image: liquibase/liquibase:4.17
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./docker-entrypoint.sh:/liquibase/docker-entrypoint.sh
+      - ../web-bo/liquibase/changelog/web-bo:/liquibase/changelog/
+      - ../web-bo/liquibase/properties/web-bo.properties:/liquibase/liquibase.properties
+    networks:
+      - db-nodo-net
+    command: >
+      --defaultsFile=/liquibase/liquibase.properties
+      --changelogFile=db.changelog-master-$WEB_BO_VERSION.xml
+      update
+
+networks:
+  db-nodo-net:

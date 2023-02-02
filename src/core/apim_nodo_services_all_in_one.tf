@@ -21,7 +21,10 @@ module "apim_nodo_oncloud_product" {
   subscription_required = var.nodo_pagamenti_subkey_required
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_oncloud_api" {
@@ -83,7 +86,10 @@ module "apim_nodo_oncloud_dev_product" {
   subscription_required = var.nodo_pagamenti_subkey_required
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_oncloud_dev_api" {
