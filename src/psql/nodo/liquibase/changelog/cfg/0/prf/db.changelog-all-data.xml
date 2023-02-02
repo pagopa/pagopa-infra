@@ -38,5 +38,6 @@
   <include file="./0/prf/data/34-changelog-STAZIONI.xml"/>
   <include file="./0/prf/data/35-changelog-PA_STAZIONE_PA.xml"/>
   <include file="./0/prf/data/36-changelog-PDD.xml"/>
+  <include file="./0/prf/data/99-changelog-update-stazioni-canali.xml"/>
 
 </databaseChangeLog>
