@@ -9,7 +9,6 @@ other=$@
 
 if [ -z "$action" ]; then
 helpmessage=$(cat <<EOF
-Usage:
 
 ./sops.sh d env -> decrypt json file in specified environment
     example: ./sops.sh d weu-dev
@@ -44,25 +43,25 @@ if echo "d a s n e" | grep -w $action > /dev/null; then
 
   azurekvurl=`az keyvault key show --name $prefix-$env_short-$domain-sops-key --vault-name $prefix-$env_short-$domain-kv --query key.kid | sed 's/"//g'`
 
-  
-    
+
+
     case $action in
       "d")
-      
+
         filesecret="./secret/$localenv/$file_crypted"
-        sops --decrypt --azure-kv $azurekvurl ./secret/$localenv/$file_crypted 
+        sops --decrypt --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
         if [ $? -eq 1 ]
         then
           echo "-------------------------------"
           echo "--->>> File $filesecret NOT encrypted"
           exit 0
         fi
-      
+
       ;;
       "s")
       read -p 'key: ' key
       sops --decrypt --azure-kv $azurekvurl ./secret/$localenv/$file_crypted | grep -i $key
-      
+
       ;;
 
       "a")
@@ -84,14 +83,14 @@ if echo "d a s n e" | grep -w $action > /dev/null; then
         if [ -f ./secret/$localenv/$file_crypted ]
         then
           sops  --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
-          
+
         else
           echo "file ./secret/$localenv/$file_crypted not found"
-          
+
         fi
       ;;
     esac
-  
+
 else
     echo "Action not allowed."
     exit 1

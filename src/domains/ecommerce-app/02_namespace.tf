@@ -53,3 +53,36 @@ resource "helm_release" "reloader" {
     value = "false"
   }
 }
+
+resource "helm_release" "cert-mounter" {
+  name       = "cert-mounter-blueprint"
+  chart      = "cert-mounter-blueprint"
+  repository = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
+  version    = "1.0.4"
+  namespace  = kubernetes_namespace.namespace.metadata[0].name
+
+  set {
+    name  = "namespace"
+    value = kubernetes_namespace.namespace.metadata[0].name
+  }
+
+  set {
+    name  = "deployment.create"
+    value = "true"
+  }
+
+  set {
+    name  = "kvCertificatesName[0]"
+    value = replace("${local.ingress_hostname}.${local.internal_dns_zone_name}", ".", "-")
+  }
+
+  set {
+    name  = "keyvault.name"
+    value = data.azurerm_key_vault.kv.name
+  }
+
+  set {
+    name  = "keyvault.tenantId"
+    value = data.azurerm_client_config.current.tenant_id
+  }
+}

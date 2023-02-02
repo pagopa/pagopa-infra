@@ -73,6 +73,18 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     verbs      = ["get", "list", "watch", ]
   }
 
+  rule {
+    api_groups = ["batch"]
+    resources  = ["cronjobs"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+
+  rule {
+    api_groups = ["monitoring.coreos.com"]
+    resources  = ["servicemonitors", "podmonitors"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+
   depends_on = [
     module.aks
   ]

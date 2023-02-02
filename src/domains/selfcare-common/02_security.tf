@@ -25,14 +25,14 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   object_id = data.azuread_group.adgroup_admin.object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Recover", "Restore", ]
   storage_permissions     = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
 }
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
 
   key_vault_id = module.key_vault.id
 
@@ -40,7 +40,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   object_id = data.azuread_group.adgroup_developers.object_id
 
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", "Restore", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -48,10 +48,30 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   ]
 }
 
+## ad group policy ##
+resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
+  count = var.env_short != "p" ? 1 : 0
+
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_externals.object_id
+
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", "Restore", ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
+  ]
+}
+
+#
 # azure devops policy
+#
 data "azuread_service_principal" "iac_principal" {
   count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
+  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
 }
 
 resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
@@ -68,7 +88,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
 }
 
 resource "azurerm_key_vault_secret" "ai_connection_string" {
-  name         = format("ai-%s-connection-string", var.env_short)
+  name         = "ai-${var.env_short}-connection-string"
   value        = data.azurerm_application_insights.application_insights.connection_string
   content_type = "text/plain"
 

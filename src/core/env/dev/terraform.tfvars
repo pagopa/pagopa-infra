@@ -11,6 +11,11 @@ tags = {
 
 lock_enable = false
 
+# monitoring
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = 10
+
 # networking
 # main vnet
 cidr_vnet = ["10.1.0.0/16"]
@@ -54,6 +59,7 @@ external_domain   = "pagopa.it"
 dns_zone_prefix   = "dev.platform"
 dns_zone_checkout = "dev.checkout"
 dns_zone_wisp2    = "dev.wisp2"
+dns_zone_wfesp    = ""
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
@@ -74,6 +80,7 @@ app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = ""
+app_gateway_wfespgovit_certificate_name = ""
 app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
@@ -315,7 +322,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -337,6 +344,12 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pn"
         listen = true
         send   = false
         manage = false
@@ -369,6 +382,77 @@ eventhubs = [
       }
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt-ndp"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-io"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pn"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-re-ndp"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-SIA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-sia-rx" # oper
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
 ]
 
 # acr
@@ -381,7 +465,6 @@ dns_a_reconds_dbnodo_ips           = ["10.70.67.18"] # db onCloud
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
 
 # API Config
-xsd_ica                 = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
 api_config_always_on    = false
 apiconfig_logging_level = "DEBUG"
 
@@ -567,3 +650,5 @@ dexp_db = {
 dexp_re_db_linkes_service = {
   enable = true
 }
+
+nodo_pagamenti_x_forwarded_for = "10.230.8.5"

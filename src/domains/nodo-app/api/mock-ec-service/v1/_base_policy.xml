@@ -1,0 +1,16 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- https://weudev.nodo.internal.dev.platform.pagopa.it/mock-ec(/|$)(.*) -->
+        <set-backend-service base-url="https://${hostname}/mock-ec" />
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

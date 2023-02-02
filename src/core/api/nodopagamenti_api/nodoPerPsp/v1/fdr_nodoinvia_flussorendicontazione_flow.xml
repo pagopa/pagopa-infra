@@ -56,15 +56,12 @@
             var fdrFileName=(string) context.Variables["identificativoPSP"]+"--"+context.Variables["identificativoIntermediarioPSP"]+"--"+context.Variables["identificativoCanale"]+"--"+context.Variables["identificativoDominio"]+"--"+context.Variables["identificativoFlusso"]+"--"+context.Variables["dataOraFlusso"];
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
-
-        <!-- <set-backend-service base-url="{{urlnodo}}" />  onprem -->
-        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
+        <set-backend-service base-url="${base-url}" />
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
                 <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
             </when>
         </choose>
-        
     </inbound>
     <backend>
         <base />
@@ -97,7 +94,6 @@
                     <set-method>PUT</set-method>
                     <set-header name="Host" exists-action="override">
                         <value>{{fdrsaname}}.blob.core.windows.net</value>
-                        <!-- <value>pagopaunodotestsa.blob.core.windows.net</value> -->
                     </set-header>
                     <set-header name="X-Ms-Blob-Type" exists-action="override">
                         <value>BlockBlob</value>

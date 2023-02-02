@@ -37,6 +37,7 @@ resource "azurerm_storage_container" "fdr_rend_flow_out" {
 }
 
 
+## 🐞https://github.com/hashicorp/terraform-provider-azurerm/pull/15832
 ## blob lifecycle policy
 # https://azure.microsoft.com/it-it/blog/azure-blob-storage-lifecycle-management-now-generally-available/
 resource "azurerm_storage_management_policy" "storage_account_fdr_management_policy" {
@@ -54,15 +55,17 @@ resource "azurerm_storage_management_policy" "storage_account_fdr_management_pol
     actions {
       # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy#delete_after_days_since_modification_greater_than
       base_blob {
-        tier_to_cool_after_days_since_modification_greater_than    = 0
-        tier_to_archive_after_days_since_modification_greater_than = 0
-        delete_after_days_since_modification_greater_than          = var.reporting_fdr_blobs_retention_days
+        tier_to_cool_after_days_since_modification_greater_than     = 0
+        tier_to_archive_after_days_since_modification_greater_than  = 0
+        delete_after_days_since_modification_greater_than           = var.reporting_fdr_blobs_retention_days
+        tier_to_cool_after_days_since_last_access_time_greater_than = 0
       }
       snapshot {
         delete_after_days_since_creation_greater_than = 30
       }
     }
   }
+
 }
 
 

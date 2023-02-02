@@ -18,7 +18,11 @@ module "apim_nodo_ppt_lmi_dev_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
+
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_dev_api" {
@@ -83,7 +87,10 @@ module "apim_nodo_sync_dev_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_sync_dev_api" {
@@ -147,7 +154,10 @@ module "apim_nodo_wfesp_dev_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_wfesp_dev_api" {
@@ -211,7 +221,10 @@ module "apim_nodo_fatturazione_dev_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_fatturazione_dev_api" {
@@ -276,7 +289,10 @@ module "apim_nodo_web_bo_dev_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 # resource "azurerm_api_management_api_version_set" "nodo_web_bo_api" {
@@ -350,7 +366,10 @@ module "apim_nodo_web_bo_dev_product_history" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+  })
 }
 
 # resource "azurerm_api_management_api_version_set" "nodo_web_bo_api" {

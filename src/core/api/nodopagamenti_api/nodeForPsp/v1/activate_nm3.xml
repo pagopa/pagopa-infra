@@ -162,7 +162,7 @@
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
-                            <set-url>http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input</set-url>
+                            <set-url>${base-url}</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
                                 <value>text/xml</value>
@@ -245,8 +245,10 @@
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 														<amount>{{context.Variables["amount"]}}</amount>
-                                                        {{context.Variables["dueDate"]}}
-                                                        {{context.Variables["paymentNote"]}}
+                                                        <!--
+														{{context.Variables["dueDate"]}}
+														{{context.Variables["paymentNote"]}}
+                                                        -->
 													</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
@@ -271,8 +273,10 @@
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 														<amount>{{context.Variables["amount"]}}</amount>
-                                                        {{context.Variables["dueDate"]}}
-                                                        {{context.Variables["paymentNote"]}}
+                                                        <!--
+														{{context.Variables["dueDate"]}}
+														{{context.Variables["paymentNote"]}}
+                                                        -->
 													</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
@@ -297,8 +301,10 @@
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
 														<amount>{{context.Variables["amount"]}}</amount>
-                                                        {{context.Variables["dueDate"]}}
-                                                        {{context.Variables["paymentNote"]}}
+                                                        <!--
+														{{context.Variables["dueDate"]}}
+														{{context.Variables["paymentNote"]}}
+                                                        -->
 													</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
@@ -323,8 +329,10 @@
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
 														<amount>{{context.Variables["amount"]}}</amount>
-                                                        {{context.Variables["dueDate"]}}
-                                                        {{context.Variables["paymentNote"]}}                                                        
+                                                        <!--
+														{{context.Variables["dueDate"]}}
+														{{context.Variables["paymentNote"]}}
+                                                        -->
 													</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
@@ -396,10 +404,8 @@
                             }
 
                         }" />
-
                                 <!-- on KO response custoim delete cache attvazionePrenotata #1 -->
                                 <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
-
                                 <choose>
                                     <when condition="@("".Equals((string)context.Variables["originalFaultCode"]))">
                                         <return-response>
@@ -448,7 +454,6 @@
 											</set-body>
                                         </return-response>
                                     </otherwise>
-
                                 </choose>
                             </otherwise>
                         </choose>
@@ -490,8 +495,10 @@
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 												<amount>{{context.Variables["amount"]}}</amount>
-                                                {{context.Variables["dueDate"]}}
-                                                {{context.Variables["paymentNote"]}}                                                
+                                                <!--
+												{{context.Variables["dueDate"]}}
+												{{context.Variables["paymentNote"]}}
+                                                -->
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
@@ -516,8 +523,10 @@
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
 												<amount>{{context.Variables["amount"]}}</amount>
-                                                {{context.Variables["dueDate"]}}
-                                                {{context.Variables["paymentNote"]}}                                                
+                                                <!--
+												{{context.Variables["dueDate"]}}
+												{{context.Variables["paymentNote"]}}
+                                                -->
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
@@ -542,8 +551,10 @@
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
 												<amount>{{context.Variables["amount"]}}</amount>
-                                                {{context.Variables["dueDate"]}}
-                                                {{context.Variables["paymentNote"]}}                                                
+                                                <!--
+												{{context.Variables["dueDate"]}}
+												{{context.Variables["paymentNote"]}}
+                                                -->
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
@@ -568,8 +579,10 @@
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
 												<amount>{{context.Variables["amount"]}}</amount>
-                                                {{context.Variables["dueDate"]}}
-                                                {{context.Variables["paymentNote"]}}                                                
+                                                <!--
+												{{context.Variables["dueDate"]}}
+												{{context.Variables["paymentNote"]}}
+                                                -->
 											</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
@@ -581,8 +594,7 @@
             </otherwise>
         </choose>
 
-        <!-- <set-backend-service base-url="{{urlnodo}}" />  onprem -->
-        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" />
+        <set-backend-service base-url="${base-url}" />
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
                 <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />

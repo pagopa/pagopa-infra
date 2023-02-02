@@ -22,6 +22,12 @@ module "api_config_snet" {
   virtual_network_name                           = module.vnet_integration.name
   enforce_private_link_endpoint_network_policies = true
 
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
+
   delegation = {
     name = "default"
     service_delegation = {
@@ -84,6 +90,15 @@ module "api_config_app_service" {
     XSD_COUNTERPART            = var.xsd_counterpart
     XSD_CDI                    = var.xsd_cdi
     LOGGING_LEVEL              = var.apiconfig_logging_level
+
+    COSMOS_URI = azurerm_key_vault_secret.apiconfig_cosmos_uri.value
+    COSMOS_KEY = azurerm_key_vault_secret.apiconfig_cosmos_key.value
+
+    AFM_MARKETPLACE_HOST             = var.env_short == "p" ? "https://api.platform.pagopa.it/afm/marketplace-service/v1" : format("https://api.%s.platform.pagopa.it/afm/marketplace-service/v1", lower(var.tags["Environment"]))
+    AFM_MARKETPLACE_SUBSCRIPTION_KEY = azurerm_key_vault_secret.apiconfig_afm_marketplace_subscription_key.value
+
+    AFM_UTILS_HOST             = var.env_short == "p" ? "https://api.platform.pagopa.it/afm/utils/v1" : format("https://api.%s.platform.pagopa.it/afm/utils/v1", lower(var.tags["Environment"]))
+    AFM_UTILS_SUBSCRIPTION_KEY = azurerm_key_vault_secret.apiconfig_afm_utils_subscription_key.value
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080

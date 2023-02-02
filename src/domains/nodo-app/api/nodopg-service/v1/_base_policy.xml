@@ -1,0 +1,16 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- https://weudev.nodo.internal.dev.platform.pagopa.it/nodo(/|$)(.*) -->
+        <set-backend-service base-url="https://${hostname}/nodo" />
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

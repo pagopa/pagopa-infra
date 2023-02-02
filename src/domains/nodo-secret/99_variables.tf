@@ -95,3 +95,40 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
+
+
+variable "kv-key-permissions-read" {
+  type        = list(string)
+  description = "List of read key permissions"
+  default     = ["Get", "List"]
+}
+
+variable "kv-secret-permissions-read" {
+  type        = list(string)
+  description = "List of read secret permissions"
+  default     = ["Get", "List"]
+}
+
+variable "kv-certificate-permissions-read" {
+  type        = list(string)
+  description = "List of read certificate permissions"
+  default     = ["Get", "GetIssuers", "List", "ListIssuers"]
+}
+
+variable "kv-storage-permissions-read" {
+  type        = list(string)
+  description = "List of read storage permissions"
+  default     = ["Get", "GetSAS", "List", "ListSAS"]
+}
+variable "az_nodo_sa_share_name_firmatore" {
+  type        = string
+  description = "Azure storage account share name"
+}
+variable "upload_firmatore" {
+  type = map(string)
+}
+
+variable "cacerts_path" {
+  type        = string
+  description = "Java cacerts"
+}
