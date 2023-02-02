@@ -3,14 +3,9 @@
       <cors>
         <allowed-origins>
           <origin>https://pagopa.github.io</origin>
-          <origin>*</origin>
         </allowed-origins>
         <allowed-methods>
-          <method>GET</method>
-          <method>POST</method>
-          <method>PUT</method>
-          <method>DELETE</method>
-          <method>OPTIONS</method>
+          <method>*</method>
         </allowed-methods>
         <allowed-headers>
           <header>*</header>
