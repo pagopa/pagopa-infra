@@ -38,7 +38,7 @@ ecommerce_vpos_psps_list = "testPSP3,testPSP4"
 
 dns_zone_checkout = "uat.checkout"
 
-cidr_subnet_ecommerce_functions = "10.1.155.0/24"
+cidr_subnet_ecommerce_functions = "10.1.157.0/24"
 
 ecommerce_function_always_on = false
 
