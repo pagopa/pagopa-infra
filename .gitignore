@@ -44,3 +44,4 @@ __*.sh
 *.env
 **/nodo-secret/**/*.zip
 **/*copy.xml
+**/libs

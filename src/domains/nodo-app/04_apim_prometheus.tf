@@ -66,7 +66,7 @@ module "apim_api_prometheus_api_v1" {
   })
 
   xml_content = templatefile("./api/prometheus-service/v1/_base_policy.xml", {
-    hostname            = "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
+    hostname            = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.it" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
     dns_pagopa_platform = format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain)
     apim_base_path      = "/prometheus"
   })
