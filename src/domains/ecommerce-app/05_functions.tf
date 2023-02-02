@@ -5,10 +5,10 @@ resource "azurerm_resource_group" "ecommerce_functions_rg" {
   tags = var.tags
 }
 
-# Subnet to host ecommerce function
-module "ecommerce_function_snet" {
+# Subnet to host ecommerce transactions function
+module "ecommerce_transactions_functions_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.3.2"
-  name                                           = format("%s-ecommerce-fn-snet", local.project)
+  name                                           = format("%s-ecommerce-transactions-fns-snet", local.project)
   address_prefixes                               = [var.cidr_subnet_ecommerce_functions]
   resource_group_name                            = azurerm_resource_group.ecommerce_functions_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet.name
@@ -27,14 +27,14 @@ module "ecommerce_function_snet" {
   }
 }
 
-module "ecommerce_function_app" {
+module "ecommerce_transactions_function_app" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v4.3.2"
 
   resource_group_name = azurerm_resource_group.ecommerce_functions_rg.name
-  name                = format("%s-fn", local.project)
+  name                = format("%s-transactions-fn", local.project)
   location            = var.location
   health_check_path   = "info"
-  subnet_id           = module.ecommerce_function_snet.id
+  subnet_id           = module.ecommerce_transactions_functions_snet.id
   runtime_version     = "~4"
   os_type             = "linux"
   linux_fx_version    = "Java|17"
@@ -64,13 +64,13 @@ module "ecommerce_function_app" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "ecommerce_function" {
+resource "azurerm_monitor_autoscale_setting" "ecommerce_transactions_functions" {
   count = var.env_short != "d" ? 1 : 0
 
-  name                = format("%s-autoscale", module.ecommerce_function_app.name)
+  name                = format("%s-autoscale", module.ecommerce_transactions_function_app.name)
   resource_group_name = azurerm_resource_group.ecommerce_functions_rg.name
   location            = var.location
-  target_resource_id  = module.ecommerce_function_app.app_service_plan_id
+  target_resource_id  = module.ecommerce_transactions_function_app.app_service_plan_id
 
   profile {
     name = "default"
@@ -84,7 +84,7 @@ resource "azurerm_monitor_autoscale_setting" "ecommerce_function" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.ecommerce_function_app.id
+        metric_resource_id       = module.ecommerce_transactions_function_app.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -106,7 +106,7 @@ resource "azurerm_monitor_autoscale_setting" "ecommerce_function" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.ecommerce_function_app.id
+        metric_resource_id       = module.ecommerce_transactions_function_app.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"

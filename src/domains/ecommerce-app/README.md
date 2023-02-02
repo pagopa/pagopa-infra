@@ -24,8 +24,8 @@
 | <a name="module_apim_ecommerce_transaction_results_service_api_v1"></a> [apim\_ecommerce\_transaction\_results\_service\_api\_v1](#module\_apim\_ecommerce\_transaction\_results\_service\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_ecommerce_transactions_service_api_v1"></a> [apim\_ecommerce\_transactions\_service\_api\_v1](#module\_apim\_ecommerce\_transactions\_service\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pagopa_notifications_service_api_v1"></a> [apim\_pagopa\_notifications\_service\_api\_v1](#module\_apim\_pagopa\_notifications\_service\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
-| <a name="module_ecommerce_function_app"></a> [ecommerce\_function\_app](#module\_ecommerce\_function\_app) | git::https://github.com/pagopa/azurerm.git//function_app | v4.3.2 |
-| <a name="module_ecommerce_function_snet"></a> [ecommerce\_function\_snet](#module\_ecommerce\_function\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v4.3.2 |
+| <a name="module_ecommerce_transactions_function_app"></a> [ecommerce\_transactions\_function\_app](#module\_ecommerce\_transactions\_function\_app) | git::https://github.com/pagopa/azurerm.git//function_app | v4.3.2 |
+| <a name="module_ecommerce_transactions_functions_snet"></a> [ecommerce\_transactions\_functions\_snet](#module\_ecommerce\_transactions\_functions\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v4.3.2 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/azurerm.git//kubernetes_pod_identity | v2.13.1 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/azurerm.git//tls_checker | v2.19.0 |
 
@@ -50,7 +50,7 @@
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_monitor_autoscale_setting.ecommerce_function](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_autoscale_setting.ecommerce_transactions_functions](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_resource_group.ecommerce_functions_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [helm_release.cert-mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
