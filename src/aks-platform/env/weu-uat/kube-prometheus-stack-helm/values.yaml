@@ -45,12 +45,23 @@ thanosRuler:
       sha: ""
 grafana:
   enabled: true
+  #env:
+  #  GF_SERVER_ROOT_URL: https://api.uat.platform.pagopa.it/grafana
+  #  GF_SERVER_SERVE_FROM_SUB_PATH: 'true'
+  grafana.ini:
+    server:
+      domain: "api.uat.platform.pagopa.it"
+      root_url: "%(protocol)s://%(domain)s/grafana"
+      serve_from_sub_path: true
   ingress:
     enabled: true
     annotations:
+      kubernetes.io/ingress.class: nginxelk
       nginx.ingress.kubernetes.io/rewrite-target: /$2
-      nginx.ingress.kubernetes.io/ssl-redirect: 'false'
-      nginx.ingress.kubernetes.io/use-regex: 'true'
+      #nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+      #nginx.ingress.kubernetes.io/use-regex: 'true'
+    hosts: 
+      - weuuat.kibana.internal.uat.platform.pagopa.it
     path: /grafana(/|$)(.*)
     tls:
       - secretName: weuuat-kibana-internal-uat-platform-pagopa-it
