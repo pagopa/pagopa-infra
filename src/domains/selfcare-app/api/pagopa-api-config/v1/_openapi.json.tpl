@@ -9,6 +9,8 @@ servers:
 tags:
   - name: channels
     description: Api config channels operations
+  - name: institution
+    description: Institution operations
 paths:
   '/channels':
     get:
@@ -121,6 +123,60 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '401':
           description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  '/channels/{pspcode}':
+    get:
+      tags:
+        - channels
+      summary: getPspChannels
+      operationId: getPspChannelsUsingGET
+      parameters:
+        - name: pspcode
+          in: path
+          description: Code of the payment service provider
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: X-Request-Id
+          in: header
+          description: internal request trace id
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PspChannelsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
           content:
             application/problem+json:
               schema:
@@ -512,6 +568,37 @@ components:
           type: string
           description: A URL to a page with more details regarding the problem.
       description: A "problem detail" as a way to carry machine-readable details of errors (https://datatracker.ietf.org/doc/html/rfc7807)
+    PspChannelResource:
+      title: PspChannelResource
+      required:
+        - channel_code
+        - enabled
+        - payment_types
+      type: object
+      properties:
+        channel_code:
+          type: string
+          description: Channel codes
+        enabled:
+          type: boolean
+          description: Channel enabled
+          example: false
+        payment_types:
+          type: array
+          description: List of payment types
+          items:
+            type: string
+    PspChannelsResource:
+      title: PspChannelsResource
+      required:
+        - channels
+      type: object
+      properties:
+        channels:
+          type: array
+          description: Channel list
+          items:
+            $ref: '#/components/schemas/PspChannelResource'
   securitySchemes:
     bearerAuth:
       type: http
