@@ -13,6 +13,8 @@ parameters:
     default: dev
     values:
       - dev
+      - it
+      - prf
       - uat
       - prd
 
@@ -21,16 +23,33 @@ variables:
     DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-dev-linux'
+  ${{ if eq(parameters.k8sEnv, 'it') }}:
+    DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
+    KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+    DATABASE_NAME: 'nodo-replica'
+    poolImage: 'pagopa-dev-linux'
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-uat-linux'
+  ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
+    DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
+    KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+    DATABASE_NAME: 'nodo-replica'
+    poolImage: 'pagopa-uat-linux'
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-prod-linux'
   ADMIN_USERNAME: azureuser
-  DATABASE_NAME: nodo
   CFG_USERNAME: cfg
   CFG_SCHEMA: cfg
   OFFLINE_USERNAME: offline
@@ -47,6 +66,7 @@ stages:
     displayName: "Init ${{ parameters.k8sEnv }}"
     jobs:
       - job: initialization
+        pool: $(poolImage)
         displayName: "Schemas creation job"
         steps:
           - task: AzureKeyVault@2
@@ -56,31 +76,43 @@ stages:
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
           - task: AzureCLI@2
-            displayName: "cfg schema"
+            displayName: "create all schemas"
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
               scriptType: bash
               inlineScript: |
-                az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
-                --querytext "
-                do \$\$
-                BEGIN
-                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$CFG_USERNAME') THEN
-                    RAISE NOTICE 'Role "$CFG_USERNAME" already exists. Skipping.';
-                  ELSE
-                    CREATE ROLE $CFG_USERNAME LOGIN PASSWORD '$(db-cfg-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $CFG_USERNAME;
-                    GRANT $CFG_USERNAME to $ADMIN_USERNAME;
-                    CREATE SCHEMA IF NOT EXISTS $CFG_SCHEMA AUTHORIZATION $CFG_USERNAME;
+
+                create_schema () {
+                  SCHEMA=$1
+                  USER=$2
+                  PASS=$3
+                  az config set extension.use_dynamic_install=yes_without_prompt
+                  az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                  --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
+                  --querytext "
+                  do \$\$
+                  BEGIN
+                  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$USER') THEN
+                  CREATE ROLE $USER LOGIN PASSWORD '$PASS';
                   END IF;
-                END
-                \$\$;
-                "
+
+                  GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO \"$USER\";
+                  GRANT \"$USER\" to $ADMIN_USERNAME;
+                  CREATE SCHEMA IF NOT EXISTS \"$SCHEMA\" AUTHORIZATION \"$USER\";
+                  END
+                  \$\$;
+                  "
+                }
+
+                create_schema "$CFG_SCHEMA"     "$CFG_USERNAME"     "$(db-cfg-password)"
+                create_schema "$ONLINE_SCHEMA"  "$ONLINE_USERNAME"  "$(db-online-password)"
+                create_schema "$OFFLINE_SCHEMA" "$OFFLINE_USERNAME" "$(db-offline-password)"
+                create_schema "$RE_SCHEMA"      "$RE_USERNAME"      "$(db-re-password)"
+                create_schema "$WFESP_SCHEMA"   "$WFESP_USERNAME"   "$(db-wfesp-password)"
+
           - task: AzureCLI@2
-            displayName: "online schema"
+            displayName: "create online trunc function"
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
@@ -88,31 +120,7 @@ stages:
               inlineScript: |
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
-                --querytext "
-                do \$\$
-                BEGIN
-                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$ONLINE_USERNAME') THEN
-                    RAISE NOTICE 'Role "$ONLINE_USERNAME" already exists. Skipping.';
-                  ELSE
-                    CREATE ROLE $ONLINE_USERNAME LOGIN PASSWORD '$(db-online-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $ONLINE_USERNAME;
-                    GRANT $ONLINE_USERNAME to $ADMIN_USERNAME;
-                    CREATE SCHEMA IF NOT EXISTS $ONLINE_SCHEMA AUTHORIZATION $ONLINE_USERNAME;
-                  END IF;
-                END
-                \$\$;
-                "
-          - task: AzureCLI@2
-            displayName: "online trunc function"
-            inputs:
-              azureSubscription: $(AZURE_SERVICE_CONNECTION)
-              scriptLocation: inlineScript
-              scriptType: bash
-              inlineScript: |
-                az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
                 --querytext "
                 do \$\$
                 BEGIN
@@ -121,78 +129,6 @@ stages:
                     LANGUAGE SQL
                     IMMUTABLE
                     RETURNS NULL ON NULL INPUT;
-                END
-                \$\$;
-                "
-          - task: AzureCLI@2
-            displayName: "offline schema"
-            inputs:
-              azureSubscription: $(AZURE_SERVICE_CONNECTION)
-              scriptLocation: inlineScript
-              scriptType: bash
-              inlineScript: |
-                az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
-                --querytext "
-                do \$\$
-                BEGIN
-                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$OFFLINE_USERNAME') THEN
-                    RAISE NOTICE 'Role "$OFFLINE_USERNAME" already exists. Skipping.';
-                  ELSE
-                    CREATE ROLE $OFFLINE_USERNAME LOGIN PASSWORD '$(db-offline-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $OFFLINE_USERNAME;
-                    GRANT $OFFLINE_USERNAME to $ADMIN_USERNAME;
-                    CREATE SCHEMA IF NOT EXISTS $OFFLINE_SCHEMA AUTHORIZATION $OFFLINE_USERNAME;
-                  END IF;
-                END
-                \$\$;
-                "
-          - task: AzureCLI@2
-            displayName: "re schema"
-            inputs:
-              azureSubscription: $(AZURE_SERVICE_CONNECTION)
-              scriptLocation: inlineScript
-              scriptType: bash
-              inlineScript: |
-                az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
-                --querytext "
-                do \$\$
-                BEGIN
-                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$RE_USERNAME') THEN
-                    RAISE NOTICE 'Role "$RE_USERNAME" already exists. Skipping.';
-                  ELSE
-                    CREATE ROLE $RE_USERNAME LOGIN PASSWORD '$(db-re-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $RE_USERNAME;
-                    GRANT $RE_USERNAME to $ADMIN_USERNAME;
-                    CREATE SCHEMA IF NOT EXISTS $RE_SCHEMA AUTHORIZATION $RE_USERNAME;
-                  END IF;
-                END
-                \$\$;
-                "
-          - task: AzureCLI@2
-            displayName: "wfesp schema"
-            inputs:
-              azureSubscription: $(AZURE_SERVICE_CONNECTION)
-              scriptLocation: inlineScript
-              scriptType: bash
-              inlineScript: |
-                az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name $(DATABASE_NAME) \
-                --querytext "
-                do \$\$
-                BEGIN
-                  IF EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$WFESP_USERNAME') THEN
-                    RAISE NOTICE 'Role "$WFESP_USERNAME" already exists. Skipping.';
-                  ELSE
-                    CREATE ROLE $WFESP_USERNAME LOGIN PASSWORD '$(db-wfesp-password)';
-                    GRANT ALL PRIVILEGES ON DATABASE "$DATABASE_NAME" TO $WFESP_USERNAME;
-                    GRANT $WFESP_USERNAME to $ADMIN_USERNAME;
-                    CREATE SCHEMA IF NOT EXISTS $WFESP_SCHEMA AUTHORIZATION $WFESP_USERNAME;
-                  END IF;
                 END
                 \$\$;
                 "

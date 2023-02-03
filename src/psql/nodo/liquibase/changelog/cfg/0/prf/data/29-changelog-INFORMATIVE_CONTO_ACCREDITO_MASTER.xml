@@ -1,5 +1,5 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-<changeSet author="liquibase" id="1674739293312-26">
+  <changeSet author="liquibase" id="1675246863359-14">
     <insert tableName="INFORMATIVE_CONTO_ACCREDITO_MASTER">
       <column name="OBJ_ID" valueNumeric="387"/>
       <column name="DATA_INIZIO_VALIDITA" valueDate="2018-01-01T00:00:00"/>
@@ -1355,7 +1355,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2015-02-27T00:24:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2015-02-27T00:24:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="1"/>
-      <column name="RAGIONE_SOCIALE" value="Comune di Ciri&#232;"/>
+      <column name="RAGIONE_SOCIALE" value="Comune di Ciriè"/>
       <column name="FK_PA" valueNumeric="33"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -1555,7 +1555,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2015-09-25T00:00:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2015-09-24T12:00:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="PAYER_02_MA"/>
-      <column name="RAGIONE_SOCIALE" value="Azienda Unit&#224; Sanitaria di Bologna"/>
+      <column name="RAGIONE_SOCIALE" value="Azienda Unità Sanitaria di Bologna"/>
       <column name="FK_PA" valueNumeric="49"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -1565,7 +1565,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2015-09-25T00:00:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2015-09-24T12:00:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="PAYER_01_MA"/>
-      <column name="RAGIONE_SOCIALE" value="Azienda Unit&#224; Sanitaria di Modena"/>
+      <column name="RAGIONE_SOCIALE" value="Azienda Unità Sanitaria di Modena"/>
       <column name="FK_PA" valueNumeric="50"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -1705,7 +1705,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2015-11-13T00:00:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2015-11-06T00:00:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="SLRS-IBAN-20151201000000"/>
-      <column name="RAGIONE_SOCIALE" value="Societ&#224; Locale di Riscossione Spa"/>
+      <column name="RAGIONE_SOCIALE" value="Società Locale di Riscossione Spa"/>
       <column name="FK_PA" valueNumeric="60"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -2455,7 +2455,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2016-06-24T00:01:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2016-06-22T00:01:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="PayERTest_b911be"/>
-      <column name="RAGIONE_SOCIALE" value="Universit&#224; di Bologna"/>
+      <column name="RAGIONE_SOCIALE" value="Università di Bologna"/>
       <column name="FK_PA" valueNumeric="134"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -2585,7 +2585,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2016-07-29T00:00:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2016-07-28T10:04:24"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="CMVV2016072800004375"/>
-      <column name="RAGIONE_SOCIALE" value="Comunit&#224; Montana Valli del Verbano"/>
+      <column name="RAGIONE_SOCIALE" value="Comunità Montana Valli del Verbano"/>
       <column name="FK_PA" valueNumeric="144"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -2605,7 +2605,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2016-08-03T00:00:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2016-08-02T00:00:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="CMRC_CMRC_002"/>
-      <column name="RAGIONE_SOCIALE" value="Citt&#224; Metropolitana di Roma Capitale"/>
+      <column name="RAGIONE_SOCIALE" value="Città Metropolitana di Roma Capitale"/>
       <column name="FK_PA" valueNumeric="146"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -2685,7 +2685,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2016-09-20T00:00:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2016-09-16T00:00:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="2016-09-16-80007720271-1"/>
-      <column name="RAGIONE_SOCIALE" value="Universit&#224; Ca' Foscari di Venezia"/>
+      <column name="RAGIONE_SOCIALE" value="Università Ca' Foscari di Venezia"/>
       <column name="FK_PA" valueNumeric="156"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -2745,7 +2745,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2016-10-27T00:00:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2016-10-25T00:15:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="PayER_09-007"/>
-      <column name="RAGIONE_SOCIALE" value="Universit&#224; di Bologna"/>
+      <column name="RAGIONE_SOCIALE" value="Università di Bologna"/>
       <column name="FK_PA" valueNumeric="134"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -2765,7 +2765,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2016-11-05T00:01:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2016-11-03T00:15:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="PayER_09-009"/>
-      <column name="RAGIONE_SOCIALE" value="Universit&#224; di Bologna"/>
+      <column name="RAGIONE_SOCIALE" value="Università di Bologna"/>
       <column name="FK_PA" valueNumeric="134"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>
@@ -2845,7 +2845,7 @@
       <column name="DATA_INIZIO_VALIDITA" valueDate="2016-10-11T00:00:00"/>
       <column name="DATA_PUBBLICAZIONE" valueDate="2016-10-10T00:00:00"/>
       <column name="ID_INFORMATIVA_CONTO_ACCREDITO_PA" value="000000000005"/>
-      <column name="RAGIONE_SOCIALE" value="Universit&#224; Studi Roma Tor Vergata"/>
+      <column name="RAGIONE_SOCIALE" value="Università Studi Roma Tor Vergata"/>
       <column name="FK_PA" valueNumeric="81"/>
       <column name="FK_BINARY_FILE" valueNumeric="1"/>
       <column name="VERSIONE"/>

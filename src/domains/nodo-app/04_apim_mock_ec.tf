@@ -4,6 +4,7 @@
 
 module "apim_mock_ec_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  count  = var.env_short == "p" ? 0 : 1
 
   product_id   = "mock_ec"
   display_name = "Mock EC for NDP"
@@ -34,6 +35,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "api_mock_ec_api" {
+  count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-mock-ec-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -45,13 +47,14 @@ resource "azurerm_api_management_api_version_set" "api_mock_ec_api" {
 
 module "apim_api_mock_ec_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  count  = var.env_short == "p" ? 0 : 1
 
   name                  = format("%s-mock-ec-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_ec_product.product_id]
+  product_ids           = [module.apim_mock_ec_product[0].product_id]
   subscription_required = local.apim_mock_ec_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_mock_ec_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_mock_ec_api[0].id
   api_version           = "v1"
 
   description  = local.apim_mock_ec_service_api.description

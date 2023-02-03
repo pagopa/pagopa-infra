@@ -31,4 +31,6 @@ locals {
   storage_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
+
 }
+

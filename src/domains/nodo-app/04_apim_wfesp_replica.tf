@@ -3,7 +3,7 @@
 ######################
 
 module "apim_wfesp_product_replica" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source       = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
   count        = var.env_short == "p" ? 0 : 1
   product_id   = "wfesp-replica"
   display_name = "WFESP for REPLICA NDP"
@@ -34,7 +34,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "api_wfesp_api_replica" {
-  count        = var.env_short == "p" ? 0 : 1
+  count               = var.env_short == "p" ? 0 : 1
   name                = format("%s-wfesp-service-api-replica", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -44,8 +44,8 @@ resource "azurerm_api_management_api_version_set" "api_wfesp_api_replica" {
 
 
 module "apim_api_wfesp_api_replica_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
-  count        = var.env_short == "p" ? 0 : 1
+  source                = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-wfesp-service-api-replica", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
