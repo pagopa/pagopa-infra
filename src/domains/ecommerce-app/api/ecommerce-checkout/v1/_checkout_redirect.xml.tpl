@@ -12,7 +12,7 @@
     <return-response>
       <set-status code="302" reason="Temporary Redirect" />
       <set-header name="Location" exists-action="override">
-        <value>@($"https://${checkout_hostname}/c/{(string)context.Request.MatchedParameters["id"]}")</value>
+        <value>@($"https://${checkout_hostname}/c/{(string)context.Request.MatchedParameters["id_cart"]}")</value>
       </set-header>
     </return-response>
     <base />
