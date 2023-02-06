@@ -19,7 +19,7 @@
         <choose>
             <when condition="@((string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId",""))">
                 <return-response>
-                    <set-status code="401" reason="Invalid token transaction id" />
+                    <set-status code="401" reason="Unauthorized" />
                 </return-response>
             </when>
         </choose>
