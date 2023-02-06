@@ -1,0 +1,69 @@
+alertmanager:
+  alertmanagerSpec:
+    image:
+      registry: quay.io
+      repository: prometheus/alertmanager
+      tag: v0.25.0
+      sha: ""
+prometheusOperator:
+  admissionWebhooks:
+    patch:
+      enabled: true
+      image:
+        registry: registry.k8s.io
+        repository: ingress-nginx/kube-webhook-certgen
+        tag: v1.3.0
+        sha: ""
+  image:
+    registry: quay.io
+    repository: prometheus-operator/prometheus-operator
+    tag: ""
+    sha: ""
+  prometheusConfigReloader:
+    image:
+      registry: quay.io
+      repository: prometheus-operator/prometheus-config-reloader
+      tag: ""
+      sha: ""
+  thanosImage:
+    registry: quay.io
+    repository: thanos/thanos
+    tag: v0.30.1
+    sha: ""
+  prometheusSpec:
+    image:
+      registry: quay.io
+      repository: prometheus/prometheus
+      tag: v2.41.0
+      sha: ""
+thanosRuler:
+  thanosRulerSpec:
+    image:
+      registry: quay.io
+      repository: thanos/thanos
+      tag: v0.30.1
+      sha: ""
+grafana:
+  enabled: false
+prometheus:
+  prometheusSpec:
+    externalUrl: https://api.platform.pagopa.it/prometheus
+  ingress:
+    enabled: true
+    ingressClassName: nginxelk
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /$2
+      nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+      nginx.ingress.kubernetes.io/use-regex: 'true'
+      nginx.ingress.kubernetes.io/auth-type: basic
+      nginx.ingress.kubernetes.io/auth-secret: prometheus-basic-auth
+      nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+    hosts: 
+      - weuprod.kibana.internal.platform.pagopa.it
+    pathType: Prefix
+    paths:
+      - /prometheus(/|$)(.*)
+    tls:
+      - secretName: weuprod-kibana-internal-platform-pagopa-it
+        hosts:
+          - weuprod.kibana.internal.platform.pagopa.it

@@ -6,8 +6,8 @@ module "apim_nodo_dei_pagamenti_product_ndp" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "nodo-ndp"
-  display_name = "Nodo dei Pagamenti NPD"
-  description  = "Product for Nodo dei Pagamenti NPD"
+  display_name = "Nodo dei Pagamenti NDP"
+  description  = "Product for Nodo dei Pagamenti NDP"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg

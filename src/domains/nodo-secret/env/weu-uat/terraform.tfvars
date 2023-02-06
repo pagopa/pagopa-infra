@@ -25,9 +25,9 @@ input_file = "./secret/weu-uat/configs.json"
 
 enable_iac_pipeline = true
 
-
-
 az_nodo_sa_share_name_firmatore = "firmatore"
 upload_firmatore = {
-  "firmatore.zip" = "./env/uat/resources/firmatore-sit.zip"
+  "firmatore.zip" = "./env/weu-uat/resources/firmatore.zip"
 }
+
+cacerts_path = "./env/weu-uat/resources/cacerts"
