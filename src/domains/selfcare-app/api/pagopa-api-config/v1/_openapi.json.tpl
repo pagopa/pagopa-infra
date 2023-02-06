@@ -238,7 +238,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{pspcode}'':
+  '/channels/{pspcode}':
     get:
       tags:
         - channels
