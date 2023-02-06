@@ -21,5 +21,6 @@
   <include file="./0/dev/data/18-changelog-INFORMATIVE_CONTO_ACCREDITO_MASTER.xml"/>
   <include file="./0/dev/data/19-changelog-INFORMATIVE_CONTO_ACCREDITO_DETAIL.xml"/>
   <include file="./0/dev/data/20-changelog-CDS_SERVIZIO.xml"/>
+  <include file="./0/dev/data/99-changelog-update-stazioni-canali.xml"/>
 
 </databaseChangeLog>
