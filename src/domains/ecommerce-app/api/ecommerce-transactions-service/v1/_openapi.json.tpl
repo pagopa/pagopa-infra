@@ -35,11 +35,6 @@
     "/transactions/{transactionId}": {
       "get": {
         "operationId": "getTransactionInfo",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "in": "path",
@@ -337,13 +332,6 @@
             }
           }
         }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
       }
     }
   }

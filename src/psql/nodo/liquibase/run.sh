@@ -75,8 +75,6 @@ password: ${NODO_CFG_PASSWORD}
 defaultSchemaName: ${NODO_CFG_SCHEMA}
 liquibaseSchemaName: ${NODO_CFG_SCHEMA}
 parameter.schema: ${NODO_CFG_SCHEMA}
-parameter.domain: ${DOMAIN}
-parameter.replica: \"${REPLICA}\"
 liquibase.hub.mode: OFF
 log-level: INFO
 " > cfg.properties
