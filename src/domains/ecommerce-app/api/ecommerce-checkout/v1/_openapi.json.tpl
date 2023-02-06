@@ -1155,6 +1155,14 @@
           "holderName": {
             "type": "string",
             "description": "The card holder name"
+          },
+          "brand": {
+           "type": "string",
+           "description": "The card brand name"
+          },
+          "threeDsData": {
+            "type": "string",
+            "description": "the 3ds data evaluated by the client"
           }
         },
         "required": [
@@ -1162,14 +1170,18 @@
           "cvv",
           "pan",
           "expiryDate",
-          "holderName"
+          "holderName",
+          "brand",
+          "threeDsData"
         ],
         "example": {
           "detailType": "card",
           "cvv": 0,
           "pan": "0123456789012345",
           "expiryDate": "209901",
-          "holderName": "Name Surname"
+          "holderName": "Name Surname",
+          "brand": "VISA",
+          "threeDsData": "threeDsData"
         }
       },
       "UpdateAuthorizationRequest": {
