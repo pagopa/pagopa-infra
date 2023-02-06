@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.57
+  version: 0.0.63
 servers:
   - url: 'https://${host}/${basePath}'
     description: Inferred Url
@@ -136,7 +136,109 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{pspcode}':
+  '/channels/details/{channelcode}':
+    get:
+      tags:
+        - channels
+      summary: getChannelDetails
+      operationId: getChannelDetailsUsingGET
+      parameters:
+        - name: channelcode
+          in: path
+          description: Code of the payment channel
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: X-Request-Id
+          in: header
+          description: internal request trace id
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  '/channels/{channelcode}/paymenttypes':
+    post:
+      tags:
+        - channels
+      summary: createChannelPaymentType
+      description: Create a payment types of a channel
+      operationId: createChannelPaymentTypeUsingPOST
+      parameters:
+        - name: channelcode
+          in: path
+          description: Channel's unique identifier
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PspChannelPaymentTypes'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PspChannelPaymentTypesResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  '/channels/{pspcode}'':
     get:
       tags:
         - channels
@@ -251,6 +353,11 @@ components:
             - DEFERRED
             - IMMEDIATE
             - IMMEDIATE_MULTIBENEFICIARY
+        payment_types:
+          type: array
+          description: List of payment types
+          items:
+            type: string
         port:
           type: integer
           description: channel's port
@@ -396,6 +503,11 @@ components:
             - DEFERRED
             - IMMEDIATE
             - IMMEDIATE_MULTIBENEFICIARY
+        payment_types:
+          type: array
+          description: List of payment types
+          items:
+            type: string
         port:
           type: integer
           description: channel's port
@@ -568,6 +680,25 @@ components:
           type: string
           description: A URL to a page with more details regarding the problem.
       description: A "problem detail" as a way to carry machine-readable details of errors (https://datatracker.ietf.org/doc/html/rfc7807)
+    PspChannelPaymentTypes:
+      title: PspChannelPaymentTypes
+      type: object
+      properties:
+        payment_types:
+          type: array
+          items:
+            type: string
+    PspChannelPaymentTypesResource:
+      title: PspChannelPaymentTypesResource
+      required:
+        - payment_types
+      type: object
+      properties:
+        payment_types:
+          type: array
+          description: List of payment types
+          items:
+            type: string
     PspChannelResource:
       title: PspChannelResource
       required:
@@ -578,7 +709,7 @@ components:
       properties:
         channel_code:
           type: string
-          description: Channel codes
+          description: Channel's unique identifier
         enabled:
           type: boolean
           description: Channel enabled
