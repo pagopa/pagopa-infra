@@ -678,7 +678,7 @@ dexp_re_db_linkes_service = {
 }
 
 
-ingress_load_balancer_ip       = "10.1.100.250"
+ingress_load_balancer_ip = "10.1.100.250"
 
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
