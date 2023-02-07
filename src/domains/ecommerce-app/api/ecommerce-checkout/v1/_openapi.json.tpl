@@ -601,17 +601,17 @@
         }
       }
     },
-    "/carts/{id_cart}/checkout-url": {
+    "/carts/{cart_id}/redirect": {
       "get": {
         "tags": [
           "ecommerce-carts"
         ],
-        "operationId": "GetCartsCheckoutUrl",
-        "description": "Get a cart data",
+        "operationId": "GetCartsRedirect",
+        "description": "Redirect to checkout with cart",
         "parameters": [
           {
             "in": "path",
-            "name": "id_cart",
+            "name": "cart_id",
             "description": "Unique identifier for cart",
             "schema": {
               "type": "string",
@@ -621,17 +621,8 @@
           }
         ],
         "responses": {
-          "302": {
-            "description": "Redirect",
-            "headers": {
-              "location": {
-                "description": "redirect to checkout url",
-                "schema": {
-                  "type": "string",
-                  "format": "uri"
-                }
-              }
-            }
+          "200": {
+            "description": "Redirect with meta http-equiv"
           }
         }
       }

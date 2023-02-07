@@ -113,13 +113,13 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_cart_checkout_url" {
+resource "azurerm_api_management_api_operation_policy" "get_carts_redirect" {
   api_name            = "${local.project}-ecommerce-checkout-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = "GetCartsCheckoutUrl"
+  operation_id        = "GetCartsRedirect"
 
-  xml_content = templatefile("./api/ecommerce-checkout/v1/_checkout_redirect.xml.tpl",{
+  xml_content = templatefile("./api/ecommerce-checkout/v1/_carts_redirect.xml.tpl", {
     checkout_hostname = "${var.dns_zone_checkout}.${var.external_domain}"
   })
 }
