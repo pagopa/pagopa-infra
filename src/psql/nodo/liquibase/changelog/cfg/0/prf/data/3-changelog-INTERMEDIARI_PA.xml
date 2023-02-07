@@ -1,5 +1,5 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-<changeSet author="liquibase" id="1674739293312-30">
+  <changeSet author="liquibase" id="1675246863359-34">
     <insert tableName="INTERMEDIARI_PA">
       <column name="OBJ_ID" valueNumeric="221"/>
       <column name="ID_INTERMEDIARIO_PA" value="06655971007"/>
@@ -67,7 +67,7 @@
       <column name="OBJ_ID" valueNumeric="9"/>
       <column name="ID_INTERMEDIARIO_PA" value="80185250588"/>
       <column name="ENABLED" value="Y"/>
-      <column name="CODICE_INTERMEDIARIO" value="Min. Universit&#224; Ricerca"/>
+      <column name="CODICE_INTERMEDIARIO" value="Min. Università Ricerca"/>
       <column name="FAULT_BEAN_ESTESO" value="N"/>
     </insert>
     <insert tableName="INTERMEDIARI_PA">
@@ -130,7 +130,7 @@
       <column name="OBJ_ID" valueNumeric="18"/>
       <column name="ID_INTERMEDIARIO_PA" value="02084870019"/>
       <column name="ENABLED" value="Y"/>
-      <column name="CODICE_INTERMEDIARIO" value="Comune di Ciri&#232;"/>
+      <column name="CODICE_INTERMEDIARIO" value="Comune di Ciriè"/>
       <column name="FAULT_BEAN_ESTESO" value="N"/>
     </insert>
     <insert tableName="INTERMEDIARI_PA">
@@ -417,7 +417,7 @@
       <column name="OBJ_ID" valueNumeric="59"/>
       <column name="ID_INTERMEDIARIO_PA" value="80034390585"/>
       <column name="ENABLED" value="Y"/>
-      <column name="CODICE_INTERMEDIARIO" value="Citt&#224; Metropolitana di Roma Capitale"/>
+      <column name="CODICE_INTERMEDIARIO" value="Città Metropolitana di Roma Capitale"/>
       <column name="FAULT_BEAN_ESTESO" value="N"/>
     </insert>
     <insert tableName="INTERMEDIARI_PA">
