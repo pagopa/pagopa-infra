@@ -1138,7 +1138,7 @@
             "description": "Pan of the card",
             "example": 16589654852
           },
-          "exipiryDate": {
+          "expiryDate": {
             "type": "string",
             "description": "Expiration date of the card, yyyyMM format",
             "example": 203012
