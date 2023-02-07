@@ -242,11 +242,11 @@
         }
       }
     },
-    "/request-payments/creditCard/{requestId}": {
+    "/request-payments/vpos/{requestId}": {
       "get": {
-        "summary": "retrieve CreditCard payment request",
+        "summary": "retrieve vpos payment request",
         "tags": [
-          "CreditCard-external"
+          "Vpos-external"
         ],
         "parameters": [
           {
@@ -276,14 +276,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/PaymentRequestVposResponse"
                 }
               }
             }
@@ -293,7 +286,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CcPaymentInfoError"
+                  "$ref": "#/components/schemas/PaymentRequestVposErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentRequestVposErrorResponse"
                 }
               }
             }
@@ -301,11 +304,11 @@
         }
       }
     },
-    "/request-payments/creditCard/{requestId}/resume/method": {
+    "/request-payments/vpos/{requestId}/resume/method": {
       "post": {
-        "summary": "resume CreditCard payment request",
+        "summary": "resume vpos payment request",
         "tags": [
-          "CreditCard-external"
+          "Vpos-external"
         ],
         "parameters": [
           {
@@ -333,24 +336,31 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreditCardResumeRequest"
+                "$ref": "#/components/schemas/VposResumeRequest"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "302": {
-            "description": "FOUND, Redirect to url"
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposResumeResponse"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/request-payments/creditCard/{requestId}/resume/challenge": {
+    "/request-payments/vpos/{requestId}/resume/challenge": {
       "post": {
-        "summary": "resume CreditCard payment request",
+        "summary": "resume Vpos payment request",
         "tags": [
-          "CreditCard-external"
+          "Vpos-external"
         ],
         "parameters": [
           {
@@ -377,6 +387,35 @@
         "responses": {
           "302": {
             "description": "FOUND, Redirect to url"
+          }
+        }
+      }
+    },
+    "/request-payments/vpos/{requestId}/method/notifications": {
+      "post": {
+        "summary": "API used to notify the end of the method step (invoked inside the iframe)",
+        "tags": [
+          "Vpos-external"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK, returns html",
+            "content": {
+              "text/html": {}
+            }
           }
         }
       }
@@ -481,61 +520,49 @@
           }
         }
       },
-      "CcPaymentInfoAcsResponse": {
+      "PaymentRequestVposResponse": {
         "type": "object",
         "properties": {
           "status": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED"
+            ]
           },
           "responseType": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "METHOD",
+              "CHALLENGE"
+            ]
           },
           "requestId": {
             "type": "string"
           },
-          "acsUrl": {
+          "vposUrl": {
+            "type": "string"
+          },
+          "clientReturnUrl": {
             "type": "string"
           }
         },
         "required": [
           "status",
-          "responseType",
-          "requestId",
-          "acsUrl"
+          "requestId"
         ]
       },
-      "CcPaymentInfoError": {
+      "PaymentRequestVposErrorResponse": {
         "type": "object",
         "properties": {
           "reason": {
             "type": "string",
-            "example": "RequestId non trovato"
+            "example": "Error for RequestId"
           }
         }
       },
-      "CcPaymentInfoAcceptedResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string"
-          },
-          "responseType": {
-            "type": "string"
-          },
-          "requestId": {
-            "type": "string"
-          },
-          "acsUrl": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "status",
-          "responseType",
-          "requestId"
-        ]
-      },
-      "CreditCardResumeRequest": {
+      "VposResumeRequest": {
         "type": "object",
         "required": [
           "methodCompleted"
@@ -544,6 +571,19 @@
           "methodCompleted": {
             "type": "string",
             "example": "Y"
+          }
+        }
+      },
+      "VposResumeResponse": {
+        "type": "object",
+        "required": [
+          "requestId"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "1f3af548-f9d3-423f-b7b0-4e68948d41d2"
           }
         }
       }
