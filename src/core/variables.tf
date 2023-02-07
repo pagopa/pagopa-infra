@@ -519,6 +519,18 @@ variable "apim_alerts_enabled" {
 }
 
 ## Redis cache
+variable "redis_cache_params" {
+  type = object({
+    capacity    = number
+    sku_name    = string
+    family      = string
+  })
+  default = {
+    capacity    = 1
+    sku_name    = "Basic"
+    family      = "C"
+  }
+}
 
 variable "redis_cache_enabled" {
   type        = bool
@@ -526,24 +538,10 @@ variable "redis_cache_enabled" {
   default     = false
 }
 
-variable "redis_capacity" {
-  type    = number
-  default = 1
-}
-
-variable "redis_sku_name" {
-  type    = string
-  default = "Standard"
-}
-
-variable "redis_family" {
-  type    = string
-  default = "C"
-}
 variable "cidr_subnet_redis" {
   type        = list(string)
   description = "Redis network address space."
-  default     = []
+  default     = ["10.1.162.0/24"]
 }
 
 variable "redis_private_endpoint_enabled" {
