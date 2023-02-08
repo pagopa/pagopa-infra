@@ -5,6 +5,6 @@ data "azurerm_virtual_network" "vnet" {
 
 data "azurerm_subnet" "apim_vnet" {
   name                 = local.pagopa_apim_snet
-  resource_group_name  = local.pagopa_apim_rg
-  virtual_network_name = local.pagopa_apim_virtual_network
+  resource_group_name  = local.pagopa_vnet_rg
+  virtual_network_name = local.pagopa_vnet_integration
 }
