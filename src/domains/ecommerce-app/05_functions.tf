@@ -50,7 +50,7 @@ module "ecommerce_transactions_function_app" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_name = replace("${local.project}-ecommtx-sa-fn", "-", "")
+  storage_account_name = replace("${local.project}-tx-sa-fn", "-", "")
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "java"
