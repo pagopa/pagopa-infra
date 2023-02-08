@@ -50,7 +50,7 @@ module "ecommerce_transactions_function_app" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_name = replace("${local.project}-tx-sa-fn", "-", "")
+  storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecommtx-sa-fn", "-", "")
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "java"
