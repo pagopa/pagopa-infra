@@ -19,12 +19,12 @@
         <choose>
             <when condition="@(context.User.Groups.Select(g => g.Id).Contains("payment-manager"))">
                 <set-header name="X-Client-ID" exists-action="override">
-                    <value>APP</value>
+                    <value>ECOMMERCE_APP</value>
                 </set-header>
             </when>
             <when condition="@(context.User.Groups.Select(g => g.Id).Contains("ecommerce"))" >
               <set-header name="X-Client-ID" exists-action="override">
-                <value>WEB</value>
+                <value>ECOMMERCE_WEB</value>
               </set-header>
             </when>
             <otherwise>

@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "0.1.0",
-    "title": "Pagopa eCommerce payment instruments service",
-    "description": "This microservice handles payment instruments."
+    "title": "Pagopa eCommerce payment methods service",
+    "description": "This microservice handles payment methods."
   },
   "servers": [
     {
@@ -11,12 +11,12 @@
     }
   ],
   "paths": {
-    "/payment-instruments": {
+    "/payment-methods": {
       "post": {
-        "operationId": "newPaymentInstrument",
-        "summary": "Make a new payment instruments",
+        "operationId": "newPaymentMethod",
+        "summary": "Make a new payment methods",
         "requestBody": {
-          "$ref": "#/components/requestBodies/PaymentInstrumentRequest"
+          "$ref": "#/components/requestBodies/PaymentMethodRequest"
         },
         "responses": {
           "200": {
@@ -24,7 +24,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentInstrumentResponse"
+                  "$ref": "#/components/schemas/PaymentMethodResponse"
                 }
               }
             }
@@ -32,8 +32,8 @@
         }
       },
       "get": {
-        "operationId": "getAllPaymentInstruments",
-        "summary": "Retrive all Payment Instruments (by filter)",
+        "operationId": "getAllPaymentMethods",
+        "summary": "Retrive all Payment Methods (by filter)",
         "parameters": [
           {
             "in": "query",
@@ -41,7 +41,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Payment Instrument Category ID",
+            "description": "Payment Method Category ID",
             "required": false
           }
         ],
@@ -53,7 +53,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PaymentInstrumentResponse"
+                    "$ref": "#/components/schemas/PaymentMethodResponse"
                   }
                 }
               }
@@ -62,15 +62,15 @@
         }
       }
     },
-    "/payment-instruments/{id}": {
+    "/payment-methods/{id}": {
       "patch": {
-        "operationId": "patchPaymentInstrument",
-        "summary": "Update payment instruments",
+        "operationId": "patchPaymentMethod",
+        "summary": "Update payment methods",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "Payment Instrument ID",
+            "description": "Payment Method ID",
             "required": true,
             "schema": {
               "type": "string"
@@ -78,7 +78,7 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/PatchPaymentInstrumentRequest"
+          "$ref": "#/components/requestBodies/PatchPaymentMethodRequest"
         },
         "responses": {
           "200": {
@@ -86,7 +86,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentInstrumentResponse"
+                  "$ref": "#/components/schemas/PaymentMethodResponse"
                 }
               }
             }
@@ -94,13 +94,13 @@
         }
       },
       "get": {
-        "operationId": "getPaymentInstrument",
+        "operationId": "getPaymentMethod",
         "summary": "Retrive payment instrument by ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "Payment Instrument ID",
+            "description": "Payment Method ID",
             "required": true,
             "schema": {
               "type": "string"
@@ -113,7 +113,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentInstrumentResponse"
+                  "$ref": "#/components/schemas/PaymentMethodResponse"
                 }
               }
             }
@@ -121,7 +121,7 @@
         }
       }
     },
-    "/payment-instruments/psps": {
+    "/payment-methods/psps": {
       "put": {
         "operationId": "scheduleUpdatePSPs",
         "summary": "Update psp list",
@@ -184,7 +184,7 @@
         }
       }
     },
-    "/payment-instruments/{id}/psps": {
+    "/payment-methods/{id}/psps": {
       "get": {
         "operationId": "getPiPSPs",
         "summary": "Retrive payment instrument by ID",
@@ -192,7 +192,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "Payment Instrument ID",
+            "description": "Payment Method ID",
             "required": true,
             "schema": {
               "type": "string"
@@ -250,7 +250,7 @@
     "/payment-instrument-categories": {
       "post": {
         "operationId": "addCategory",
-        "summary": "Add new Payment Instrument Category",
+        "summary": "Add new Payment Method Category",
         "requestBody": {
           "$ref": "#/components/requestBodies/CategoryRequest"
         },
@@ -269,7 +269,7 @@
       },
       "get": {
         "operationId": "getCategories",
-        "summary": "Retrieve Payment Instrument Categors",
+        "summary": "Retrieve Payment Method Categors",
         "responses": {
           "200": {
             "description": "Category list successfully retrieved",
@@ -346,9 +346,9 @@
   },
   "components": {
     "schemas": {
-      "PaymentInstrumentRequest": {
+      "PaymentMethodRequest": {
         "type": "object",
-        "description": "New Payment Instrument Request",
+        "description": "New Payment Method Request",
         "properties": {
           "name": {
             "type": "string"
@@ -375,9 +375,9 @@
           "categoryId"
         ]
       },
-      "PatchPaymentInstrumentRequest": {
+      "PatchPaymentMethodRequest": {
         "type": "object",
-        "description": "Patch Payment Instrument Request",
+        "description": "Patch Payment Method Request",
         "properties": {
           "status": {
             "type": "string",
@@ -392,9 +392,9 @@
           "status"
         ]
       },
-      "PaymentInstrumentResponse": {
+      "PaymentMethodResponse": {
         "type": "object",
-        "description": "New Payment Instrument Response",
+        "description": "New Payment Method Response",
         "properties": {
           "id": {
             "type": "string"
@@ -537,7 +537,7 @@
         },
         "required": [
           "code",
-          "paymentInstrumentID",
+          "paymentMethodID",
           "description",
           "status",
           "type",
@@ -571,22 +571,22 @@
           }
         }
       },
-      "PaymentInstrumentRequest": {
+      "PaymentMethodRequest": {
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/PaymentInstrumentRequest"
+              "$ref": "#/components/schemas/PaymentMethodRequest"
             }
           }
         }
       },
-      "PatchPaymentInstrumentRequest": {
+      "PatchPaymentMethodRequest": {
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/PatchPaymentInstrumentRequest"
+              "$ref": "#/components/schemas/PatchPaymentMethodRequest"
             }
           }
         }
