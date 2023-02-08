@@ -535,7 +535,7 @@ variable "redis_cache_params" {
 variable "redis_cache_enabled" {
   type        = bool
   description = "redis cache enabled"
-  default     = false
+  default     = true
 }
 
 variable "cidr_subnet_redis" {
@@ -1754,7 +1754,6 @@ variable "env" {
   type    = string
   default = ""
 }
-
 variable "node_forwarder_autoscale_enabled" {
   type    = bool
   default = true
@@ -1769,4 +1768,11 @@ variable "github_runner" {
   default = {
     subnet_address_prefixes = ["10.1.200.0/23"]
   }
+}
+
+# node decoupler
+variable "node_decoupler_primitives" {
+  type        = string
+  description = "Node decoupler primitives"
+  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
 }
