@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "ecommerce_functions_rg" {
 # Subnet to host ecommerce transactions function
 module "ecommerce_transactions_functions_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.3.2"
-  name                                           = format("%s-ecommerce-transactions-fn-snet", local.project)
+  name                                           = "${local.project}-ecommerce-transactions-fn-snet"
   address_prefixes                               = [var.cidr_subnet_ecommerce_functions]
   resource_group_name                            = azurerm_resource_group.ecommerce_functions_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet.name
@@ -31,7 +31,7 @@ module "ecommerce_transactions_function_app" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v4.3.2"
 
   resource_group_name = azurerm_resource_group.ecommerce_functions_rg.name
-  name                = format("%s-transactions-fn", local.project)
+  name                = "${local.project}-transactions-fn"
   location            = var.location
   health_check_path   = "info"
   subnet_id           = module.ecommerce_transactions_functions_snet.id
@@ -42,7 +42,7 @@ module "ecommerce_transactions_function_app" {
   always_on                                = var.ecommerce_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_service_plan_name = format("%s-plan-transactions-fn", local.project)
+  app_service_plan_name = "${local.project}-plan-transactions-fn"
   app_service_plan_info = {
     kind                         = var.ecommerce_functions_app_sku.kind
     sku_tier                     = var.ecommerce_functions_app_sku.sku_tier
@@ -50,7 +50,7 @@ module "ecommerce_transactions_function_app" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_name = replace(format("pagopa-%s%s-ecommtx-sa-fn", var.env, var.location_short), "-", "")
+  storage_account_name = replace("${local.project}-ecommtx-sa-fn", "-", "")
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "java"
@@ -67,7 +67,7 @@ module "ecommerce_transactions_function_app" {
 resource "azurerm_monitor_autoscale_setting" "ecommerce_transactions_function" {
   count = var.env_short != "d" ? 1 : 0
 
-  name                = format("%s-autoscale", module.ecommerce_transactions_function_app.name)
+  name                = "${module.ecommerce_transactions_function_app.name}-autoscale"
   resource_group_name = azurerm_resource_group.ecommerce_functions_rg.name
   location            = var.location
   target_resource_id  = module.ecommerce_transactions_function_app.app_service_plan_id
