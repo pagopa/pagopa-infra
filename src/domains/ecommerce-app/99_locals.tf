@@ -28,7 +28,7 @@ locals {
   internal_dns_zone_name = "${var.dns_zone_internal_prefix}.${var.external_domain}"
 
   pagopa_apim_name = "${local.product}-apim"
-  pagopa_apim_rg   = "${local.product}-api-rg"
+  pagopa_apim_rg   = "${local.product}-vnet-rg"
   pagopa_apim_virtual_network = "pagopa-${var.env_short}-vnet-integration"
   pagopa_apim_snet = "${local.product}-apim-snet"
 
