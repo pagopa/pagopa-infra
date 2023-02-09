@@ -22,12 +22,13 @@
     <include-fragment fragment-id="decoupler-configuration" />
     <!-- the following is the default baseUrl -->
     <set-variable name="baseUrl" value="${base-url}" />
+    <!-- used for convention in the cache key -->
+    <set-variable name="domain" value="nodo" />
     <!-- used for debugging -->
     <trace source="json-configuration" severity="information">@{
       var configuration = JArray.Parse(((string) context.Variables["configuration"]));
       return configuration.FirstOrDefault()["node_id"].Value<string>();
       }</trace>
-    <!-- used for debugging -->
     <set-variable name="primitives" value="{{node-decoupler-primitives}}" />
     <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction"))" />
     <set-variable name="primitiveType" value="@{

@@ -72,8 +72,9 @@
       </choose>
       <!-- check if key is cached -->
       <cache-lookup-value key="@{
+                        var domain = (string)context.Variables["domain"];
                         var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                        return (string)requestData["key"];
+                        return domain + "_" + (string)requestData["key"];
                     }" variable-name="nodeId" default-value="LIST" />
       <choose>
         <!-- if key not in cache -->
@@ -128,8 +129,9 @@
                                 return !dataToSet.GetValue("nodeId").ToString().Equals("NONE");
                             }">
               <cache-store-value key="@{
+                                    var domain = (string)context.Variables["domain"];
                                     var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                                    return (string)requestData["key"];
+                                    return domain + "_" + (string)requestData["key"];
                                 }" value="@{
                                     var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                                     return (string)requestData["nodeId"];
