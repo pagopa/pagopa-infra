@@ -10,66 +10,68 @@ resource "azurerm_api_management_named_value" "node_decoupler_primitives" {
 }
 
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
-resource "azapi_resource" "decoupler_configuration" {
-  provider  = azapi.apim
-  type      = "Microsoft.ApiManagement/service/policyFragments@2021-12-01-preview"
-  name      = "decoupler-configuration"
-  parent_id = module.apim.id
+# resource "azapi_resource" "decoupler_configuration" {
+#   provider  = azapi.apim
+#   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+#   name      = "decoupler-configuration"
+#   parent_id = module.apim.id
 
-  body = jsonencode({
-    properties = {
-      description = "Configuration of NDP decoupler"
-      format      = "xml"
-      value       = file(format("./api_product/nodo_pagamenti_api/decoupler/decoupler-configuration-%s.xml", var.env_short))
-    }
-  })
+#   body = jsonencode({
+#     properties = {
+#       description = "Configuration of NDP decoupler"
+#       format      = "xml"
+#       value       = file(format("./api_product/nodo_pagamenti_api/decoupler/decoupler-configuration-%s.xml", var.env_short))
+#     }
+#   })
 
-  #  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
-  #    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-  #  })
 
-  lifecycle {
-    ignore_changes = [output]
-  }
-}
 
-resource "azapi_resource" "decoupler_algorithm" {
-  provider  = azapi.apim
-  type      = "Microsoft.ApiManagement/service/policyFragments@2021-12-01-preview"
-  name      = "decoupler-configuration"
-  parent_id = module.apim.id
+#   #  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
+#   #    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+#   #  })
 
-  body = jsonencode({
-    properties = {
-      description = "Logic about NPD decoupler"
-      format      = "xml"
-      value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-algorithm.xml")
-    }
-  })
+#   lifecycle {
+#     ignore_changes = [output]
+#   }
+# }
 
-  lifecycle {
-    ignore_changes = [output]
-  }
-}
+# resource "azapi_resource" "decoupler_algorithm" {
+#   provider  = azapi.apim
+#   type      = "Microsoft.ApiManagement/service/policyFragments@2021-12-01-preview"
+#   name      = "decoupler-configuration"
+#   parent_id = module.apim.id
 
-resource "azapi_resource" "decoupler_activate_outbound" {
-  provider  = azapi.apim
-  type      = "Microsoft.ApiManagement/service/policyFragments@2021-12-01-preview"
-  name      = "decoupler-activate-outbound"
-  parent_id = module.apim.id
+#   body = jsonencode({
+#     properties = {
+#       description = "Logic about NPD decoupler"
+#       format      = "xml"
+#       value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-algorithm.xml")
+#     }
+#   })
 
-  body = jsonencode({
-    properties = {
-      description = "Outbound logic for Activate primitive of NDP decoupler"
-      format      = "xml"
-      value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-activate-outbound.xml")
-    }
-  })
+#   lifecycle {
+#     ignore_changes = [output]
+#   }
+# }
 
-  lifecycle {
-    ignore_changes = [output]
-  }
-}
+# resource "azapi_resource" "decoupler_activate_outbound" {
+#   provider  = azapi.apim
+#   type      = "Microsoft.ApiManagement/service/policyFragments@2021-12-01-preview"
+#   name      = "decoupler-activate-outbound"
+#   parent_id = module.apim.id
+
+#   body = jsonencode({
+#     properties = {
+#       description = "Outbound logic for Activate primitive of NDP decoupler"
+#       format      = "xml"
+#       value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-activate-outbound.xml")
+#     }
+#   })
+
+#   lifecycle {
+#     ignore_changes = [output]
+#   }
+# }
 
 
 ##############
@@ -91,9 +93,9 @@ module "apim_nodo_dei_pagamenti_product" {
   approval_required     = false
 
   policy_xml = templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", {
-    address-range-from  = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
-    address-range-to    = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
-    base-url            = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+    base-url           = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
   })
 
 }

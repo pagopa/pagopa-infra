@@ -521,14 +521,14 @@ variable "apim_alerts_enabled" {
 ## Redis cache
 variable "redis_cache_params" {
   type = object({
-    capacity    = number
-    sku_name    = string
-    family      = string
+    capacity = number
+    sku_name = string
+    family   = string
   })
   default = {
-    capacity    = 1
-    sku_name    = "Basic"
-    family      = "C"
+    capacity = 1
+    sku_name = "Basic"
+    family   = "C"
   }
 }
 

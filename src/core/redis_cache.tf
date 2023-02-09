@@ -5,12 +5,12 @@ data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
 
 ## Redis subnet
 module "redis_snet" {
-  source                                          = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.18.3"
-  name                                            = format("%s-redis-snet", local.project)
-  address_prefixes                                = var.cidr_subnet_redis
-  resource_group_name                             = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                            = module.vnet.name
-  enforce_private_link_endpoint_network_policies  = true
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.18.3"
+  name                                           = format("%s-redis-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_redis
+  resource_group_name                            = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = module.vnet.name
+  enforce_private_link_endpoint_network_policies = true
 }
 
 module "redis" {

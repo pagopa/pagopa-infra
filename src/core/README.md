@@ -6,6 +6,7 @@
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | = 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.6.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 2.99.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.2.3 |
@@ -207,8 +208,8 @@
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.1.13 |
 | <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | git::https://github.com/pagopa/azurerm.git//postgresql_server | v2.0.28 |
 | <a name="module_postgresql_snet"></a> [postgresql\_snet](#module\_postgresql\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
-| <a name="module_redis"></a> [redis](#module\_redis) | git::https://github.com/pagopa/azurerm.git//redis_cache | v1.0.90 |
-| <a name="module_redis_snet"></a> [redis\_snet](#module\_redis\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
+| <a name="module_redis"></a> [redis](#module\_redis) | git::https://github.com/pagopa/azurerm.git//redis_cache | v2.18.3 |
+| <a name="module_redis_snet"></a> [redis\_snet](#module\_redis\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.18.3 |
 | <a name="module_reporting_analysis_function"></a> [reporting\_analysis\_function](#module\_reporting\_analysis\_function) | git::https://github.com/pagopa/azurerm.git//function_app | v2.2.0 |
 | <a name="module_reporting_analysis_function_slot_staging"></a> [reporting\_analysis\_function\_slot\_staging](#module\_reporting\_analysis\_function\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v2.2.0 |
 | <a name="module_reporting_batch_function"></a> [reporting\_batch\_function](#module\_reporting\_batch\_function) | git::https://github.com/pagopa/azurerm.git//function_app | v2.2.0 |
@@ -418,6 +419,7 @@
 | [azurerm_api_management_named_value.fdrsaname](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.io_backend_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ip_nodo_value](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.node_decoupler_primitives](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.nodo_auth_password_value](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.pagopa_appservice_proxy_url_value](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.pagopa_fn_buyerbanks_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
@@ -685,6 +687,7 @@
 | [azurerm_key_vault_secret.sec_workspace_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.user_pm_test_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kusto_cluster.dexp_cluster](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/kusto_cluster) | data source |
+| [azurerm_private_dns_zone.privatelink_redis_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subscription) | data source |
 
 ## Inputs
@@ -792,7 +795,7 @@
 | <a name="input_cidr_subnet_pagopa_proxy_redis"></a> [cidr\_subnet\_pagopa\_proxy\_redis](#input\_cidr\_subnet\_pagopa\_proxy\_redis) | Address prefixes subnet redis for pagopa proxy | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pg_flex_dbms"></a> [cidr\_subnet\_pg\_flex\_dbms](#input\_cidr\_subnet\_pg\_flex\_dbms) | Postgres Flexible Server network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_postgresql"></a> [cidr\_subnet\_postgresql](#input\_cidr\_subnet\_postgresql) | Address prefixes subnet postgresql | `list(string)` | `null` | no |
-| <a name="input_cidr_subnet_redis"></a> [cidr\_subnet\_redis](#input\_cidr\_subnet\_redis) | Redis network address space. | `list(string)` | `[]` | no |
+| <a name="input_cidr_subnet_redis"></a> [cidr\_subnet\_redis](#input\_cidr\_subnet\_redis) | Redis network address space. | `list(string)` | <pre>[<br>  "10.1.162.0/24"<br>]</pre> | no |
 | <a name="input_cidr_subnet_reporting_common"></a> [cidr\_subnet\_reporting\_common](#input\_cidr\_subnet\_reporting\_common) | Address prefixes subnet reporting\_common function | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_reporting_fdr"></a> [cidr\_subnet\_reporting\_fdr](#input\_cidr\_subnet\_reporting\_fdr) | Address prefixes subnet reporting\_fdr function | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_vpn"></a> [cidr\_subnet\_vpn](#input\_cidr\_subnet\_vpn) | VPN network address space. | `list(string)` | n/a | yes |
@@ -891,6 +894,7 @@
 | <a name="input_mock_psp_service_enabled"></a> [mock\_psp\_service\_enabled](#input\_mock\_psp\_service\_enabled) | Mock PSP service Nexi | `bool` | `false` | no |
 | <a name="input_nat_gateway_enabled"></a> [nat\_gateway\_enabled](#input\_nat\_gateway\_enabled) | Nat Gateway enabled | `bool` | `false` | no |
 | <a name="input_nat_gateway_public_ips"></a> [nat\_gateway\_public\_ips](#input\_nat\_gateway\_public\_ips) | Number of public outbound ips | `number` | `1` | no |
+| <a name="input_node_decoupler_primitives"></a> [node\_decoupler\_primitives](#input\_node\_decoupler\_primitives) | Node decoupler primitives | `string` | `"nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"` | no |
 | <a name="input_node_forwarder_always_on"></a> [node\_forwarder\_always\_on](#input\_node\_forwarder\_always\_on) | Node Forwarder always on property | `bool` | `true` | no |
 | <a name="input_node_forwarder_autoscale_enabled"></a> [node\_forwarder\_autoscale\_enabled](#input\_node\_forwarder\_autoscale\_enabled) | n/a | `bool` | `true` | no |
 | <a name="input_node_forwarder_logging_level"></a> [node\_forwarder\_logging\_level](#input\_node\_forwarder\_logging\_level) | Logging level of Node Forwarder | `string` | `"INFO"` | no |
@@ -935,11 +939,9 @@
 | <a name="input_prostgresql_db_mockpsp"></a> [prostgresql\_db\_mockpsp](#input\_prostgresql\_db\_mockpsp) | n/a | `string` | `null` | no |
 | <a name="input_psql_password"></a> [psql\_password](#input\_psql\_password) | n/a | `string` | `null` | no |
 | <a name="input_psql_username"></a> [psql\_username](#input\_psql\_username) | n/a | `string` | `null` | no |
-| <a name="input_redis_cache_enabled"></a> [redis\_cache\_enabled](#input\_redis\_cache\_enabled) | redis cache enabled | `bool` | `false` | no |
-| <a name="input_redis_capacity"></a> [redis\_capacity](#input\_redis\_capacity) | n/a | `number` | `1` | no |
-| <a name="input_redis_family"></a> [redis\_family](#input\_redis\_family) | n/a | `string` | `"C"` | no |
+| <a name="input_redis_cache_enabled"></a> [redis\_cache\_enabled](#input\_redis\_cache\_enabled) | redis cache enabled | `bool` | `true` | no |
+| <a name="input_redis_cache_params"></a> [redis\_cache\_params](#input\_redis\_cache\_params) | # Redis cache | <pre>object({<br>    capacity = number<br>    sku_name = string<br>    family   = string<br>  })</pre> | <pre>{<br>  "capacity": 1,<br>  "family": "C",<br>  "sku_name": "Basic"<br>}</pre> | no |
 | <a name="input_redis_private_endpoint_enabled"></a> [redis\_private\_endpoint\_enabled](#input\_redis\_private\_endpoint\_enabled) | Enable private endpoints for redis instances? | `bool` | `true` | no |
-| <a name="input_redis_sku_name"></a> [redis\_sku\_name](#input\_redis\_sku\_name) | n/a | `string` | `"Standard"` | no |
 | <a name="input_reporting_analysis_function_always_on"></a> [reporting\_analysis\_function\_always\_on](#input\_reporting\_analysis\_function\_always\_on) | Always on property | `bool` | `false` | no |
 | <a name="input_reporting_batch_function_always_on"></a> [reporting\_batch\_function\_always\_on](#input\_reporting\_batch\_function\_always\_on) | Always on property | `bool` | `false` | no |
 | <a name="input_reporting_fdr_blobs_retention_days"></a> [reporting\_fdr\_blobs\_retention\_days](#input\_reporting\_fdr\_blobs\_retention\_days) | The number of day for storage\_management\_policy | `number` | `30` | no |
