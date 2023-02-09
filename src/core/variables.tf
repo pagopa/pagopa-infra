@@ -18,6 +18,11 @@ variable "env_short" {
   type = string
 }
 
+variable "env" {
+  type        = string
+  description = "Contains env description in extend format (dev,uat,prod)"
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false

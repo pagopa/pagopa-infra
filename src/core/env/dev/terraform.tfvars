@@ -2,7 +2,6 @@
 env_short = "d"
 env       = "dev"
 
-
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"

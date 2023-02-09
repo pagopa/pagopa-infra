@@ -9,69 +9,77 @@ resource "azurerm_api_management_named_value" "node_decoupler_primitives" {
   value               = var.node_decoupler_primitives
 }
 
+resource "null_resource" "decoupler_configuration_from_json_2_xml" {
+
+  triggers = {
+    "changes-in-config-decoupler" : sha1(file("./api_product/nodo_pagamenti_api/decoupler/cfg/${var.env}/decoupler_configuration.json"))
+  }
+  provisioner "local-exec" {
+    command = "sh ./api_product/nodo_pagamenti_api/decoupler/cfg/decoupler_configurator.sh ${var.env}"
+  }
+}
+
+
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
-# resource "azapi_resource" "decoupler_configuration" {
-#   provider  = azapi.apim
-#   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
-#   name      = "decoupler-configuration"
-#   parent_id = module.apim.id
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "azapi_resource" "decoupler_configuration" {
+  # provider  = azapi.apim
+  depends_on = [null_resource.decoupler_configuration_from_json_2_xml]
 
-#   body = jsonencode({
-#     properties = {
-#       description = "Configuration of NDP decoupler"
-#       format      = "xml"
-#       value       = file(format("./api_product/nodo_pagamenti_api/decoupler/decoupler-configuration-%s.xml", var.env_short))
-#     }
-#   })
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "decoupler-configuration"
+  parent_id = module.apim.id
 
+  body = jsonencode({
+    properties = {
+      description = "Configuration of NDP decoupler"
+      format      = "rawxml"
+      value       = file("./api_product/nodo_pagamenti_api/decoupler/cfg/${var.env}/decoupler-configuration.xml")
+    }
+  })
 
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
 
-#   #  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
-#   #    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-#   #  })
+resource "azapi_resource" "decoupler_algorithm" {
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "decoupler-algorithm"
+  parent_id = module.apim.id
 
-#   lifecycle {
-#     ignore_changes = [output]
-#   }
-# }
+  body = jsonencode({
+    properties = {
+      description = "Logic about NPD decoupler"
+      format      = "rawxml"
+      value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-algorithm.xml")
+    }
+  })
 
-# resource "azapi_resource" "decoupler_algorithm" {
-#   provider  = azapi.apim
-#   type      = "Microsoft.ApiManagement/service/policyFragments@2021-12-01-preview"
-#   name      = "decoupler-configuration"
-#   parent_id = module.apim.id
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
 
-#   body = jsonencode({
-#     properties = {
-#       description = "Logic about NPD decoupler"
-#       format      = "xml"
-#       value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-algorithm.xml")
-#     }
-#   })
+resource "azapi_resource" "decoupler_activate_outbound" {
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "decoupler-activate-outbound"
+  parent_id = module.apim.id
 
-#   lifecycle {
-#     ignore_changes = [output]
-#   }
-# }
+  body = jsonencode({
+    properties = {
+      description = "Outbound logic for Activate primitive of NDP decoupler"
+      format      = "rawxml"
+      value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-activate-outbound.xml")
+    }
+  })
 
-# resource "azapi_resource" "decoupler_activate_outbound" {
-#   provider  = azapi.apim
-#   type      = "Microsoft.ApiManagement/service/policyFragments@2021-12-01-preview"
-#   name      = "decoupler-activate-outbound"
-#   parent_id = module.apim.id
-
-#   body = jsonencode({
-#     properties = {
-#       description = "Outbound logic for Activate primitive of NDP decoupler"
-#       format      = "xml"
-#       value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-activate-outbound.xml")
-#     }
-#   })
-
-#   lifecycle {
-#     ignore_changes = [output]
-#   }
-# }
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
 
 
 ##############
