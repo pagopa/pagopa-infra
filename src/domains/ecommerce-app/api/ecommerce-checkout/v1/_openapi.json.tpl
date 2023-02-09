@@ -13,6 +13,9 @@
   "paths": {
     "/payment-requests/{rpt_id}": {
       "get": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
         "operationId": "getPaymentRequestInfo",
         "parameters": [
           {
@@ -110,6 +113,9 @@
     },
     "/transactions": {
       "post": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
         "operationId": "newTransaction",
         "summary": "Make a new transaction",
         "requestBody": {
@@ -197,6 +203,9 @@
     },
     "/transactions/{transactionId}": {
       "get": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
         "operationId": "getTransactionInfo",
         "parameters": [
           {
@@ -255,6 +264,9 @@
     "/transactions/{transactionId}/auth-requests": {
       "summary": "Request authorization for the transaction identified by payment token",
       "post": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
         "operationId": "requestTransactionAuthorization",
         "parameters": [
           {
@@ -350,6 +362,9 @@
     },
     "/payment-methods": {
       "get": {
+        "tags": [
+          "ecommerce-methods"
+        ],
         "operationId": "getAllPaymentMethods",
         "summary": "Retrieve all Payment Methods (by filter)",
         "parameters": [
@@ -379,6 +394,9 @@
     },
     "/payment-methods/{id}": {
       "get": {
+        "tags": [
+          "ecommerce-methods"
+        ],
         "operationId": "getPaymentMethod",
         "summary": "Retrive payment method by ID",
         "parameters": [
@@ -408,6 +426,9 @@
     },
     "/payment-methods/psps": {
       "get": {
+        "tags": [
+          "ecommerce-methods"
+        ],
         "operationId": "getPSPs",
         "summary": "Retrieve psps",
         "parameters": [
@@ -462,6 +483,9 @@
     },
     "/payment-methods/{id}/psps": {
       "get": {
+        "tags": [
+          "ecommerce-methods"
+        ],
         "operationId": "getPaymentMethodsPSPs",
         "summary": "Retrive PSPs by payment method ID",
         "parameters": [
@@ -516,6 +540,9 @@
     },
     "/carts/{id_cart}": {
       "get": {
+        "tags": [
+          "ecommerce-carts"
+        ],
         "operationId": "GetCarts",
         "description": "Get a cart data",
         "parameters": [
@@ -570,6 +597,32 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/carts/{cart_id}/redirect": {
+      "get": {
+        "tags": [
+          "ecommerce-carts"
+        ],
+        "operationId": "GetCartsRedirect",
+        "description": "Redirect to checkout with cart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart_id",
+            "description": "Unique identifier for cart",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Redirect with meta http-equiv"
           }
         }
       }
