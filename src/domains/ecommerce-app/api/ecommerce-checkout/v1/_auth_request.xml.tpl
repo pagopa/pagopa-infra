@@ -29,7 +29,7 @@
         if (vposList.Contains(pspId)) {
             return "VPOS";
         }
-        return "";
+        return "XPAY";
     }" />
         <choose>
             <when condition="@((string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId",""))">
