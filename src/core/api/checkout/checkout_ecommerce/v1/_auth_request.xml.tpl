@@ -14,7 +14,7 @@
         if (vposList.Contains(pspId)) {
             return "VPOS";
         }
-        return "XPAY";
+        return "";
     }" />
     <choose>
       <when condition="@((string)context.Variables["pgsId"] != "")">
