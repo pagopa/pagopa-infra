@@ -733,16 +733,6 @@
         "parameters": [
           {
             "in": "header",
-            "name": "X-Client-ID",
-            "description": "channel origin (APP/Web)",
-            "example": "APP",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "in": "header",
             "name": "MDC-Fields",
             "description": "MDC information",
             "example": "97g10t83x7bb0437bbc50sdf58e970gt",
@@ -1342,7 +1332,6 @@
       "VposAuthRequest": {
         "required": [
           "idTransaction",
-          "reqRefNumber",
           "amount",
           "pan",
           "securitycode",
@@ -1360,10 +1349,6 @@
             "type": "string",
             "description": "transaction id on Payment Manager",
             "example": "123456"
-          },
-          "reqRefNumber": {
-            "type": "string",
-            "example": "reqRefNumber"
           },
           "amount": {
             "type": "number",
