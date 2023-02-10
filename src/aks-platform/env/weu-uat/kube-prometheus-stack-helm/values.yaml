@@ -44,7 +44,23 @@ thanosRuler:
       tag: v0.30.1
       sha: ""
 grafana:
-  enabled: false
+  enabled: true
+  #grafana.ini:
+  #  server:
+  #    domain: "kibana.uat.platform.pagopa.it"
+  #    root_url: "%(protocol)s://%(domain)s/grafana"
+  #    serve_from_sub_path: true
+  #ingress:
+  #  enabled: true
+  #  annotations:
+  #    kubernetes.io/ingress.class: nginxelk
+  #  hosts: 
+  #    - weuuat.kibana.internal.uat.platform.pagopa.it
+  #  path: /grafana
+  #  tls:
+  #    - secretName: weuuat-kibana-internal-uat-platform-pagopa-it
+  #      hosts:
+  #        - weuuat.kibana.internal.uat.platform.pagopa.it
 prometheus:
   prometheusSpec:
     externalUrl: https://api.uat.platform.pagopa.it/prometheus
