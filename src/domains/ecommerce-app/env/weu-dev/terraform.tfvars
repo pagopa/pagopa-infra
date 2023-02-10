@@ -37,3 +37,19 @@ ecommerce_xpay_psps_list = "XPAY"
 ecommerce_vpos_psps_list = "BIC36019,PSPtest1,CHARITY_AMEX,CHARITY_IDPSPFNZ,CHARITY_ISP,40000000001,DINERS,BCITITMM,MARIOGAM,73473473473,60000000001,PAYTITM1,POSTE1,ProvaCDI,50000000001,IDPSPFNZ,70000000001,10000000001,idPsp2,irraggiungibile_wisp,prova_ila_1,pspStress50,pspStress79,pspStress80,pspStress81"
 
 dns_zone_checkout = "dev.checkout"
+
+cidr_subnet_ecommerce_functions = "10.1.157.0/24"
+
+ecommerce_function_always_on = false
+
+ecommerce_functions_app_sku = {
+  kind     = "Linux"
+  sku_tier = "Standard"
+  sku_size = "S1"
+}
+
+ecommerce_functions_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}

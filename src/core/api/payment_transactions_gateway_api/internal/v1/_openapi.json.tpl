@@ -723,24 +723,14 @@
         }
       }
     },
-    "/request-payments/creditCard": {
+    "/request-payments/vpos": {
       "post": {
         "summary": "payment authorization request to Vpos",
         "tags": [
-          "CreditCard-internal"
+          "Vpos-internal"
         ],
-        "operationId": "step0-creditCard",
+        "operationId": "step0-vpos",
         "parameters": [
-          {
-            "in": "header",
-            "name": "X-Client-ID",
-            "description": "channel origin (APP/Web)",
-            "example": "APP",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
           {
             "in": "header",
             "name": "MDC-Fields",
@@ -756,7 +746,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreditCardAuthRequest"
+                "$ref": "#/components/schemas/VposAuthRequest"
               }
             }
           },
@@ -768,7 +758,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditCardAuthResponse"
+                  "$ref": "#/components/schemas/VposAuthResponse"
                 }
               }
             }
@@ -778,7 +768,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditCardAuthResponseBadRequest"
+                  "$ref": "#/components/schemas/VposAuthResponseBadRequest"
                 }
               }
             }
@@ -788,7 +778,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditCardAuthResponseUnauthorized"
+                  "$ref": "#/components/schemas/VposAuthResponseUnauthorized"
                 }
               }
             }
@@ -798,7 +788,59 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreditCardAuthResponseGenericError"
+                  "$ref": "#/components/schemas/VposAuthResponseGenericError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/request-payments/vpos/{requestId}": {
+      "delete": {
+        "summary": "delete vpos payment request",
+        "tags": [
+          "Vpos-internal"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse500"
                 }
               }
             }
@@ -1086,7 +1128,7 @@
             "description": "Pan of the card",
             "example": 16589654852
           },
-          "exipiryDate": {
+          "expiryDate": {
             "type": "string",
             "description": "Expiration date of the card, yyyyMM format",
             "example": 203012
@@ -1287,10 +1329,9 @@
           "correlationId"
         ]
       },
-      "CreditCardAuthRequest": {
+      "VposAuthRequest": {
         "required": [
           "idTransaction",
-          "reqRefNumber",
           "amount",
           "pan",
           "securitycode",
@@ -1308,10 +1349,6 @@
             "type": "string",
             "description": "transaction id on Payment Manager",
             "example": "123456"
-          },
-          "reqRefNumber": {
-            "type": "string",
-            "example": "reqRefNumber"
           },
           "amount": {
             "type": "number",
@@ -1358,7 +1395,7 @@
           }
         }
       },
-      "CreditCardAuthResponse": {
+      "VposAuthResponse": {
         "type": "object",
         "required": [
           "requestId",
@@ -1388,7 +1425,7 @@
           }
         }
       },
-      "CreditCardAuthResponseBadRequest": {
+      "VposAuthResponseBadRequest": {
         "type": "object",
         "required": [
           "error"
@@ -1401,7 +1438,7 @@
           }
         }
       },
-      "CreditCardAuthResponseUnauthorized": {
+      "VposAuthResponseUnauthorized": {
         "type": "object",
         "required": [
           "error"
@@ -1414,7 +1451,7 @@
           }
         }
       },
-      "CreditCardAuthResponseGenericError": {
+      "VposAuthResponseGenericError": {
         "type": "object",
         "required": [
           "error"
@@ -1424,6 +1461,86 @@
             "type": "string",
             "description": "error description",
             "example": "Generic error"
+          }
+        }
+      },
+      "VposDeleteResponse": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "refundOutcome",
+          "status"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string",
+            "description": "null if no error occurred"
+          }
+        }
+      },
+      "VposDeleteResponse404": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "refundOutcome",
+          "error"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "VposDeleteResponse500": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "refundOutcome",
+          "status",
+          "error"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
           }
         }
       }
