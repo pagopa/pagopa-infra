@@ -394,7 +394,7 @@ module "apim_nodo_web_bo_api_onprem" {
 ############################
 
 module "apim_nodo_web_bo_product_history" {
-  count = var.env_short == "p" ? 0 : 1
+  # count = var.env_short == "p" ? 0 : 1
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
@@ -426,14 +426,14 @@ module "apim_nodo_web_bo_product_history" {
 # }
 
 module "apim_nodo_web_bo_api_history" {
-  count = var.env_short == "p" ? 0 : 1
+  # count = var.env_short == "p" ? 0 : 1
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-api-history", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_web_bo_product_history[0].product_id]
+  product_ids           = [module.apim_nodo_web_bo_product_history.product_id]
   subscription_required = false
 
   # version_set_id = azurerm_api_management_api_version_set.nodo_web_bo_api[0].id
