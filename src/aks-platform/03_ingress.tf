@@ -33,7 +33,14 @@ module "nginx_ingress" {
             type = "cpu"
             metadata = {
               type  = "Utilization"
-              value = "60"
+              value = "70"
+            }
+          },
+          {
+            type = "memory"
+            metadata = {
+              type  = "Utilization"
+              value = "70"
             }
           }
         ]
@@ -77,6 +84,10 @@ module "nginx_ingress" {
     {
       name  = "controller.ingressClassResource.default"
       value = "true"
+    },
+    {
+      name  = "controller.resources.requests.memory"
+      value = var.nginx_helm.controller.resources.requests.memory
     },
     {
       # To overcome 1m size limit of https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-body-size
