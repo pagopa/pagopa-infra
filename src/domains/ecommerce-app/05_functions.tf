@@ -60,9 +60,9 @@ module "ecommerce_transactions_function_app" {
     FUNCTIONS_WORKER_PROCESS_COUNT      = 4
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
-    #DOCKER_REGISTRY_SERVER_URL          = data.azurerm_container_registry.acr.login_server
-    #DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.acr.admin_username
-    #DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.acr.admin_password
+    # DOCKER_REGISTRY_SERVER_URL          = data.azurerm_container_registry.acr.login_server
+    # DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.acr.admin_username
+    # DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.acr.admin_password
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
