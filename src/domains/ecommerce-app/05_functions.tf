@@ -37,7 +37,7 @@ module "ecommerce_transactions_function_app" {
   subnet_id           = module.ecommerce_transactions_functions_snet.id
   runtime_version     = "~4"
   os_type             = "linux"
-  linux_fx_version    = "Java|17"
+  linux_fx_version    = "DOCKER|${data.azurerm_container_registry.acr.login_server}/pagopaecommercetransactionsfunctions:latest"
   
   system_identity_enabled = true
   
@@ -60,7 +60,9 @@ module "ecommerce_transactions_function_app" {
     FUNCTIONS_WORKER_PROCESS_COUNT      = 4
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
-
+    #DOCKER_REGISTRY_SERVER_URL          = data.azurerm_container_registry.acr.login_server
+    #DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.acr.admin_username
+    #DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.acr.admin_password
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
