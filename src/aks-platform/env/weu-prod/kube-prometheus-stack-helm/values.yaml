@@ -44,7 +44,7 @@ thanosRuler:
       tag: v0.30.1
       sha: ""
 grafana:
-  enabled: false
+  enabled: true
 prometheus:
   prometheusSpec:
     externalUrl: https://api.platform.pagopa.it/prometheus
