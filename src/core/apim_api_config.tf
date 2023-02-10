@@ -62,7 +62,8 @@ module "apim_api_config_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    service = module.apim_api_config_product.product_id
   })
 
   xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
@@ -165,7 +166,8 @@ module "apim_api_config_auth_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    service = module.apim_api_config_auth_product.product_id
   })
 
   xml_content = templatefile("./api/apiconfig_api/auth/v1/_base_policy.xml.tpl", {
