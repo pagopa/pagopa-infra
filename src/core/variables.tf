@@ -523,6 +523,18 @@ variable "apim_alerts_enabled" {
   default     = true
 }
 
+variable "apim_nodo_decoupler_enable" {
+  type        = bool
+  default     = false
+  description = "Apply decoupler to nodo product apim policy"
+}
+
+variable "apim_nodo_auth_decoupler_enable" {
+  type        = bool
+  default     = false
+  description = "Apply decoupler to nodo-auth product apim policy"
+}
+
 ## Redis cache
 variable "redis_cache_params" {
   type = object({

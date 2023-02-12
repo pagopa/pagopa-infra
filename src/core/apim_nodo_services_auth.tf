@@ -17,7 +17,13 @@ module "apim_nodo_dei_pagamenti_product_auth" {
   approval_required     = true
   subscriptions_limit   = var.nodo_auth_subscription_limit
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/auth/_base_policy.xml")
+
+  policy_xml = var.apim_nodo_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
+    address-range-from       = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to         = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+    base-url                 = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-auth-pwd-replace = true
+  }) : file("./api_product/nodo_pagamenti_api/auth/_base_policy.xml") # decoupler ON
 }
 
 locals {

@@ -1,17 +1,9 @@
 [
   {
-    "node_id": "NDP002UAT",
+    "node_id": "NDP002PROD",
     "description": "Nodo OnCloud Nexi",
     "node_uri": "https://nodo-nexi.cloud/endpoint",
     "routing": 100,
-    "broker_psps": [],
-    "cis": []
-  },
-  {
-    "node_id": "NDP001UAT",
-    "description": "Nodo OnCloud PagoPA - Azure",
-    "node_uri": "https://nodo-pagopa.azure/endpoint",
-    "routing": 0,
     "broker_psps": [],
     "cis": []
   }
