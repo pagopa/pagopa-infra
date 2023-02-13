@@ -38,9 +38,9 @@ module "ecommerce_transactions_function_app" {
   runtime_version     = "~4"
   os_type             = "linux"
   linux_fx_version    = "DOCKER|${data.azurerm_container_registry.acr.login_server}/pagopaecommercetransactionsfunctions:latest"
-  
+
   system_identity_enabled = true
-  
+
   always_on                                = var.ecommerce_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
