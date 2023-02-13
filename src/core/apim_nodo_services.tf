@@ -120,6 +120,9 @@ locals {
     azurerm_api_management_api.apim_node_for_io_api_v1.name,
     azurerm_api_management_api.apim_psp_for_node_api_v1.name,
     azurerm_api_management_api.apim_nodo_per_pa_api_v1.name,
+    azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1.name,
+    module.apim_nodo_per_pm_api_v1.name,
+    module.apim_nodo_per_pm_api_v2.name,
   ]
 
 }

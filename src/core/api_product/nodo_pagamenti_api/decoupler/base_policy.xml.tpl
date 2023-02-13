@@ -87,7 +87,7 @@
       return configuration.FirstOrDefault()["node_id"].Value<string>();
       }</trace>
     <set-variable name="primitives" value="{{node-decoupler-primitives}}" />
-    <set-variable name="soapAction" value="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction")).Replace("\"",""))" />
+    <set-variable name="soapAction" value="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Replace("\"",""))" />
     <set-variable name="primitiveType" value="@{
             string[] primitives = ((string) context.Variables["primitives"]).Split(',');
 

@@ -4,12 +4,11 @@
 
         <choose>
             <when condition="@(${is-nodo-decoupler-enabled})">
-                <!-- URL by decoupler -->
             </when>
             <otherwise>
                 <set-backend-service base-url="${base-url}" />
             </otherwise>
-        </choose>    
+        </choose>
 
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">

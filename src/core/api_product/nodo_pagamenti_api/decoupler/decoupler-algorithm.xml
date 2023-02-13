@@ -36,17 +36,26 @@
                             // retrieve data from request body
                             XElement request = context.Request.Body.As<XElement>(preserveContent: true);
                             XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
-                            XElement primitive = (XElement) body.FirstNode;
-                            XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
-                            XElement paymentToken = primitive.Descendants("paymentToken").FirstOrDefault();
-                            var ptoken = paymentToken.Value;
-                            // ttl in seconds
-                            return new JObject(
-                                new JProperty("brokerPsp", idBrokerPSP.Value),
-                                new JProperty("paymentToken", paymentToken.Value),
-                                new JProperty("key", paymentToken.Value),
-                                new JProperty("ttl", 86400)
-                            ).ToString();
+                            if (body != null ) {
+                                XElement primitive = (XElement) body.FirstNode;
+                                XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
+                                XElement paymentToken = primitive.Descendants("paymentToken").FirstOrDefault();
+                                var ptoken = paymentToken.Value;
+                                // ttl in seconds
+                                return new JObject(
+                                    new JProperty("brokerPsp", idBrokerPSP.Value),
+                                    new JProperty("paymentToken", paymentToken.Value),
+                                    new JProperty("key", paymentToken.Value),
+                                    new JProperty("ttl", 86400)
+                                ).ToString();
+                            } else {
+                                return new JObject(
+                                    new JProperty("brokerPsp", ""),
+                                    new JProperty("paymentToken", ""),
+                                    new JProperty("key", ""),
+                                    new JProperty("ttl", 0)
+                                ).ToString();
+                            }
                         }" />
       </when>
         <otherwise>
