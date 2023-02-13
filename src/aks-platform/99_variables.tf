@@ -180,6 +180,11 @@ variable "nginx_helm" {
         digest       = string,
         digestchroot = string,
       }),
+      resources = object({
+        requests = object({
+          memory : string
+        })
+      }),
       config = object({
         proxy-body-size : string
       })

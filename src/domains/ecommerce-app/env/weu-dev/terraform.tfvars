@@ -37,3 +37,19 @@ ecommerce_xpay_psps_list = "testPSP1,testPSP2"
 ecommerce_vpos_psps_list = "testPSP3,testPSP4"
 
 dns_zone_checkout = "dev.checkout"
+
+cidr_subnet_ecommerce_functions = "10.1.157.0/24"
+
+ecommerce_function_always_on = true
+
+ecommerce_functions_app_sku = {
+  kind     = "Linux"
+  sku_tier = "Basic"
+  sku_size = "B1"
+}
+
+ecommerce_functions_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}
