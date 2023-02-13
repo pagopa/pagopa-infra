@@ -31,6 +31,7 @@ locals {
     subscription_required = false
     service_url           = null
   }
+  aks_path = var.env == "prod" ? "weuprod.%s.internal.platform.pagopa.it" : "weu${var.env}.%s.internal.${var.env}.platform.pagopa.it"
 }
 
 resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
@@ -45,6 +46,11 @@ resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
 data "azurerm_app_service" "api_config" {
   name                = format("%s-%s-app-api-config", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-api-config-rg", var.prefix, var.env_short)
+}
+
+data "azurerm_app_service" "gpd" {
+  name                = format("%s-%s-app-gpd", var.prefix, var.env_short)
+  resource_group_name = format("%s-%s-gpd-rg", var.prefix, var.env_short)
 }
 
 module "apim_api_statuspage_api_v1" {
@@ -72,10 +78,15 @@ module "apim_api_statuspage_api_v1" {
   xml_content = templatefile("./api/status-page-service/v1/_base_policy.xml", {
     hostname = local.shared_hostname
     services = replace(jsonencode({
-      "apiconfig" = format("%s/apiconfig/api/v1", data.azurerm_app_service.api_config.default_site_hostname)
-      "afmcalcuator" = format("%s/pagopa-afm-calculator-service", var.env == "prod" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it")
-      "afmutils" = format("%s/pagopa-afm-utils-service", var.env == "prod" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it")
-      "afmmarketplace" = format("%s/pagopa-afm-marketplace-service", var.env == "prod" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it")
+      "afmcalculator"   = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
+      "afmmarketplace"  = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
+      "afmutils"        = format("%s/pagopa-afm-afmutils-service", format(local.aks_path, "afm"))
+      "apiconfig"       = format("%s/apiconfig/api/v1", data.azurerm_app_service.api_config.default_site_hostname)
+      "bizevents"       = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
+      "gpd"             = format("%s/", data.azurerm_app_service.gpd.default_site_hostname)
+      "gpdpayments"     = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
+      "gps"             = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
+      "gpsdonation"             = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
     }), "\"", "\\\"")
   })
 }
