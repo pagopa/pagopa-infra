@@ -51,7 +51,7 @@ module "apim_api_influxdb_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_influxdb_product.product_id]
   subscription_required = local.apim_influxdb_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_influxdb_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_statuspage_api.id
   api_version           = "v1"
 
   description  = local.apim_influxdb_service_api.description
@@ -101,7 +101,7 @@ module "apim_api_influxdb_api_v2" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_influxdb_product.product_id]
   subscription_required = local.apim_influxdb_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_influxdb_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_statuspage_api.id
   api_version           = "v2"
 
   description  = local.apim_influxdb_service_api.description
