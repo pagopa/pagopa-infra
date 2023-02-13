@@ -1423,18 +1423,6 @@
       <column name="CONFIG_VALUE" value="true"/>
       <column name="CONFIG_DESCRIPTION" value="paInviaRtRecovery enabled"/>
     </insert>
-<!--    <insert tableName="CONFIGURATION_KEYS">-->
-<!--      <column name="CONFIG_CATEGORY" value="info-wisp"/>-->
-<!--      <column name="CONFIG_KEY" value="chiediListaPSP.listaPspLisPay"/>-->
-<!--      <column name="CONFIG_VALUE" value="BIC36019"/>-->
-<!--      <column name="CONFIG_DESCRIPTION" value="id PSP LisPay,divisi da virgola"/>-->
-<!--    </insert>-->
-<!--    <insert tableName="CONFIGURATION_KEYS">-->
-<!--      <column name="CONFIG_CATEGORY" value="info-wisp"/>-->
-<!--      <column name="CONFIG_KEY" value="chiediListaPSP.listaCanaliLisPay"/>-->
-<!--      <column name="CONFIG_VALUE" value="13212880150_07"/>-->
-<!--      <column name="CONFIG_DESCRIPTION" value="id Canali LisPay,divisi da virgola"/>-->
-<!--    </insert>-->
   </changeSet>
   <changeSet author="liquibase" id="1674553032784-23">
     <insert tableName="DENYLIST">
@@ -1850,6 +1838,21 @@
       <column name="TYPE" value="RESP"/>
       <column name="EVENT_HUB" valueNumeric="1"/>
       <column name="EVENT_HUB_PAYLOAD" valueNumeric="1"/>
+    </insert>
+  </changeSet>
+
+  <changeSet author="liquibase" id="1674553032784-27-1">
+    <insert tableName="CONFIGURATION_KEYS">
+      <column name="CONFIG_CATEGORY" value="info-wisp"/>
+      <column name="CONFIG_KEY" value="chiediListaPSP.listaPspLisPay"/>
+      <column name="CONFIG_VALUE" value="BIC36019"/>
+      <column name="CONFIG_DESCRIPTION" value="id PSP LisPay,divisi da virgola"/>
+    </insert>
+    <insert tableName="CONFIGURATION_KEYS">
+      <column name="CONFIG_CATEGORY" value="info-wisp"/>
+      <column name="CONFIG_KEY" value="chiediListaPSP.listaCanaliLisPay"/>
+      <column name="CONFIG_VALUE" value="13212880150_07"/>
+      <column name="CONFIG_DESCRIPTION" value="id Canali LisPay,divisi da virgola"/>
     </insert>
   </changeSet>
 </databaseChangeLog>
