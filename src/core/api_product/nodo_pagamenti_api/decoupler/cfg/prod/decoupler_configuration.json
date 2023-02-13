@@ -2,7 +2,7 @@
   {
     "node_id": "NDP002PROD",
     "description": "Nodo OnCloud Nexi",
-    "node_uri": "https://nodo-nexi.cloud/endpoint",
+    "node_uri": "http://10.70.135.200/nodo-prd",
     "routing": 100,
     "broker_psps": [],
     "cis": []

@@ -18,12 +18,12 @@ module "apim_nodo_dei_pagamenti_product_auth" {
   subscriptions_limit   = var.nodo_auth_subscription_limit
 
 
-  policy_xml = var.apim_nodo_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
+  policy_xml = var.apim_nodo_auth_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
     address-range-from       = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
     address-range-to         = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
-    base-url                 = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url                 = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
     is-nodo-auth-pwd-replace = true
-  }) : file("./api_product/nodo_pagamenti_api/auth/_base_policy.xml") # decoupler ON
+  }) : file("./api_product/nodo_pagamenti_api/auth/_base_policy.xml") # decoupler OFF
 }
 
 locals {
@@ -105,7 +105,8 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_auth" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 
@@ -187,7 +188,8 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_auth" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 
@@ -258,7 +260,8 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 
 }
@@ -319,7 +322,8 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_auth" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodeForIO/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 
 }
@@ -447,7 +451,8 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_auth" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 
@@ -554,7 +559,8 @@ module "apim_nodo_per_pm_api_v1_auth" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 
@@ -564,7 +570,8 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_aut
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "closePayment"
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 
@@ -591,7 +598,8 @@ module "apim_nodo_per_pm_api_v2_auth" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 

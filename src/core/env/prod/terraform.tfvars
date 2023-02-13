@@ -182,6 +182,8 @@ mock_payment_gateway_enabled = false
 
 
 # apim x nodo pagamenti
+apim_nodo_decoupler_enable      = false
+apim_nodo_auth_decoupler_enable = true
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "97249640588,08658331007,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"

@@ -2,7 +2,7 @@
   {
     "node_id": "NDP001UAT",
     "description": "Nodo OnCloud PagoPA - Azure",
-    "node_uri": "https://nodo-pagopa.azure/endpoint",
+    "node_uri": "http://10.70.74.200/nodo-uat",
     "routing": 0,
     "broker_psps": ["intPspStress100"],
     "cis": ["00000000069"]

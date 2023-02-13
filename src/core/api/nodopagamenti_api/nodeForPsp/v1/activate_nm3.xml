@@ -162,7 +162,7 @@
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
-                            <set-url>${base-url}</set-url>
+                            <!-- <set-url>${base-url}</set-url> --> <!-- pas7b -->
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
                                 <value>text/xml</value>
@@ -594,12 +594,20 @@
             </otherwise>
         </choose>
 
-        <set-backend-service base-url="${base-url}" />
+
+        <!-- <choose>
+            <when condition="@(${is-nodo-decoupler-enabled})">
+            </when>
+            <otherwise>
+                <set-backend-service base-url="${base-url}" />
+            </otherwise>
+        </choose>   
+        
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
                 <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
             </when>
-        </choose>
+        </choose> -->
         
     </inbound>
     <backend>
