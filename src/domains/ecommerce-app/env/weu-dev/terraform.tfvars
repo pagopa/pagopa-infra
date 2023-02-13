@@ -40,12 +40,12 @@ dns_zone_checkout = "dev.checkout"
 
 cidr_subnet_ecommerce_functions = "10.1.157.0/24"
 
-ecommerce_function_always_on = false
+ecommerce_function_always_on = true
 
 ecommerce_functions_app_sku = {
   kind     = "Linux"
-  sku_tier = "Standard"
-  sku_size = "S1"
+  sku_tier = "Basic"
+  sku_size = "B1"
 }
 
 ecommerce_functions_autoscale = {

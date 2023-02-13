@@ -37,7 +37,9 @@ module "ecommerce_transactions_function_app" {
   subnet_id           = module.ecommerce_transactions_functions_snet.id
   runtime_version     = "~4"
   os_type             = "linux"
-  linux_fx_version    = "Java|17"
+  linux_fx_version    = "DOCKER|${data.azurerm_container_registry.acr.login_server}/pagopaecommercetransactionsfunctions:latest"
+
+  system_identity_enabled = true
 
   always_on                                = var.ecommerce_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -53,8 +55,14 @@ module "ecommerce_transactions_function_app" {
   storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecommtx-sa-fn", "-", "")
 
   app_settings = {
-    FUNCTIONS_WORKER_RUNTIME       = "java"
-    FUNCTIONS_WORKER_PROCESS_COUNT = 4
+    linux_fx_version                    = "JAVA|17"
+    FUNCTIONS_WORKER_RUNTIME            = "java"
+    FUNCTIONS_WORKER_PROCESS_COUNT      = 4
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
+    # DOCKER_REGISTRY_SERVER_URL          = data.azurerm_container_registry.acr.login_server
+    # DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.acr.admin_username
+    # DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.acr.admin_password
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
@@ -125,4 +133,16 @@ resource "azurerm_monitor_autoscale_setting" "ecommerce_transactions_function" {
       }
     }
   }
+}
+
+data "azurerm_container_registry" "acr" {
+  name                = local.acr_name
+  resource_group_name = local.acr_resource_group_name
+}
+
+resource "azurerm_role_assignment" "transactions_functions_to_acr" {
+  depends_on           = [module.ecommerce_transactions_function_app]
+  scope                = data.azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = module.ecommerce_transactions_function_app.system_identity_principal
 }
