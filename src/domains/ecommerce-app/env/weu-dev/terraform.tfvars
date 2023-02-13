@@ -33,8 +33,8 @@ tls_cert_check_helm = {
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
-ecommerce_xpay_psps_list = "testPSP1,testPSP2"
-ecommerce_vpos_psps_list = "testPSP3,testPSP4"
+ecommerce_xpay_psps_list = "XPAY"
+ecommerce_vpos_psps_list = "BIC36019,PSPtest1,CHARITY_AMEX,CHARITY_IDPSPFNZ,CHARITY_ISP,40000000001,DINERS,BCITITMM,MARIOGAM,73473473473,60000000001,PAYTITM1,POSTE1,ProvaCDI,50000000001,IDPSPFNZ,70000000001,10000000001,idPsp2,irraggiungibile_wisp,prova_ila_1,pspStress50,pspStress79,pspStress80,pspStress81"
 
 dns_zone_checkout = "dev.checkout"
 
