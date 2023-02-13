@@ -1,8 +1,32 @@
 <policies>
     <inbound>
       <base />
-      <!--<set-backend-service base-url="https://${hostname}/status-page-service" />-->
-      <trace source="DATA" severity="information">${services.apiconfig}</trace>
+      <set-variable name="services" value="@{
+        return "${services}";
+      }" />
+<!--      <trace source="DATA" severity="information">@(context.Variables["services"])</trace>-->
+<!--      <set-variable name="product" value="@(context.Request.Url.Query.GetValueOrDefault("product", "NONE"))" />-->
+<!--      <trace source="services" severity="information">@((string)context.Variables["services"])</trace>-->
+<!--      <choose>-->
+<!--        <when condition="@(context.Variables["product"] != "NONE")">-->
+<!--          <set-backend-service base-url="@{-->
+<!--            var services = JObject.parse(context.Variables["services"]);-->
+<!--            return services[context.Variables["product"]] + "/info";-->
+<!--          }" />-->
+<!--        </when>-->
+<!--        <otherwise>-->
+<!--          <return-response>-->
+<!--            <set-status code="401" />-->
+<!--            <set-header name="Content-Type" exists-action="override">-->
+<!--              <value>application/json</value>-->
+<!--            </set-header>-->
+<!--            <set-body>{-->
+<!--              "statusCode": 401,-->
+<!--              "message": "The product is incorrect"-->
+<!--              }</set-body>-->
+<!--          </return-response>-->
+<!--        </otherwise>-->
+<!--      </choose>-->
     </inbound>
     <outbound>
       <base />

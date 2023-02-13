@@ -71,8 +71,11 @@ module "apim_api_statuspage_api_v1" {
 
   xml_content = templatefile("./api/status-page-service/v1/_base_policy.xml", {
     hostname = local.shared_hostname
-    services = {
+    services = replace(jsonencode({
       "apiconfig" = format("%s/apiconfig/api/v1", data.azurerm_app_service.api_config.default_site_hostname)
-    }
+      "afmcalcuator" = format("%s/pagopa-afm-calculator-service", var.env == "prod" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it")
+      "afmutils" = format("%s/pagopa-afm-utils-service", var.env == "prod" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it")
+      "afmmarketplace" = format("%s/pagopa-afm-marketplace-service", var.env == "prod" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it")
+    }), "\"", "\\\"")
   })
 }
