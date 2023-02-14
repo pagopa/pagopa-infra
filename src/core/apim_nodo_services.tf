@@ -208,6 +208,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
     base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+    urlenvpath                = var.env_short
   })
 }
 
@@ -222,6 +223,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
 #   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
 #     base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
 #     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+#     urlenvpath                = var.env_short
 #   })
 
 # }

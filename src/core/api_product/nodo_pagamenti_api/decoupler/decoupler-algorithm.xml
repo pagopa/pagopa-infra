@@ -83,7 +83,7 @@
                                     new JProperty("brokerPsp", ""),
                                     new JProperty("paymentToken", ""),
                                     new JProperty("key", ""),
-                                    new JProperty("ttl", 0)
+                                    new JProperty("ttl", "0")
                                 ).ToString();
                             }
                         }" />

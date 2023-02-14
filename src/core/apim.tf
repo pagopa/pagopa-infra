@@ -583,7 +583,7 @@ resource "azurerm_api_management_named_value" "checkout_v2_test_key" {
   secret              = true
 }
 
-# verificatore keys for apiconfig ( ottimizizzaione ecs )
+# verificatore keys for apiconfig ( ottimizzazione ecs )
 
 data "azurerm_key_vault_secret" "verificatore_key_secret_apiconfig" {
   name         = "verificatore-api-key-apiconfig"
@@ -591,7 +591,6 @@ data "azurerm_key_vault_secret" "verificatore_key_secret_apiconfig" {
 }
 
 resource "azurerm_api_management_named_value" "verificatore_api_key_apiconfig" {
-  count               = var.env_short == "d" ? 1 : 0
   name                = "verificatore-api-key-apiconfig"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
