@@ -75,7 +75,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
 
   rule {
     api_groups = ["batch"]
-    resources  = ["cronjobs"]
+    resources  = ["cronjobs", "jobs"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
