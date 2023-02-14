@@ -63,20 +63,31 @@
                             // retrieve data from request body
                             XElement request = context.Request.Body.As<XElement>(preserveContent: true);
                             XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
-                            XElement primitive = (XElement) body.FirstNode;
-                            XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
-                            XElement idCi = primitive.Descendants("fiscalCode").FirstOrDefault();
-                            XElement noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault();
-                            var brokerPsp = idBrokerPSP.Value;
-                            var ci = idCi.Value;
-                            // ttl in seconds
-                            return new JObject(
-                                new JProperty("brokerPsp", idBrokerPSP.Value),
-                                new JProperty("ci", idCi.Value),
-                                new JProperty("key", brokerPsp + "_" + ci + "_" + noticeNumber.Value),
-                                new JProperty("ttl", 3600)
-                            ).ToString();
+
+                            if (body != null ) {
+                                XElement primitive = (XElement) body.FirstNode;
+                                XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
+                                XElement idCi = primitive.Descendants("fiscalCode").FirstOrDefault();
+                                XElement noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault();
+                                var brokerPsp = idBrokerPSP.Value;
+                                var ci = idCi.Value;
+                                // ttl in seconds
+                                return new JObject(
+                                    new JProperty("brokerPsp", idBrokerPSP.Value),
+                                    new JProperty("ci", idCi.Value),
+                                    new JProperty("key", brokerPsp + "_" + ci + "_" + noticeNumber.Value),
+                                    new JProperty("ttl", 3600)
+                                ).ToString();
+                            } else {
+                                return new JObject(
+                                    new JProperty("brokerPsp", ""),
+                                    new JProperty("paymentToken", ""),
+                                    new JProperty("key", ""),
+                                    new JProperty("ttl", 0)
+                                ).ToString();
+                            }
                         }" />
+                        
       </otherwise>
       </choose>
       <!-- check if key is cached -->
