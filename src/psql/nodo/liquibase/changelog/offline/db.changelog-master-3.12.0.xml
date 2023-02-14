@@ -7,6 +7,4 @@
 
   <include file="./db.changelog-master-3.10.0.xml"/>
 
-  <include file="./${version}/db.changelog-20230120114500_restore_dropped_column.xml"            labels="${version}"/>
-
 </databaseChangeLog>
