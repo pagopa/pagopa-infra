@@ -552,7 +552,7 @@ variable "redis_cache_params" {
 variable "redis_cache_enabled" {
   type        = bool
   description = "redis cache enabled"
-  default     = true
+  default     = false
 }
 
 variable "cidr_subnet_redis" {

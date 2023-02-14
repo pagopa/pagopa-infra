@@ -131,7 +131,7 @@
                             return new JObject(
                                         new JProperty("nodeId", "NONE"),
                                         new JProperty("nodeUri", "NONE"),
-                                        new JProperty("ttl", 3600)
+                                        new JProperty("ttl", "3600")
                                     ).ToString();
 
                         }" />
