@@ -113,6 +113,9 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_dev" {
   })
 }
 
+################################
+# NOT USED in DEV NEXI only SIT
+################################
 
 # resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_policy_dev" {
 

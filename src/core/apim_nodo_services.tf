@@ -212,21 +212,21 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
   })
 }
 
-# resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy" { # activatePaymentNoticeV2 verificatore
+resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy" { # activatePaymentNoticeV2 verificatore
 
-#   api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1.name
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "TODO"
+  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "63c559672a92e811a8f33a00"
 
-#   #tfsec:ignore:GEN005
-#   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
-#     base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-#     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
-#     urlenvpath                = var.env_short
-#   })
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+    urlenvpath                = var.env_short
+  })
 
-# }
+}
 
 ######################
 ## WS nodo per psp ##
