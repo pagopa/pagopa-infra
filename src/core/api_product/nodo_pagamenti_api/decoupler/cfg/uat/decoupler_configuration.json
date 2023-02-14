@@ -1,10 +1,10 @@
 [
   {
-    "node_id": "NDP001UAT",
-    "description": "Nodo OnCloud PagoPA - Azure",
+    "node_id": "NDP002UAT",
+    "description": "Nodo OnCloud Nexi",
     "node_uri": "http://10.70.74.200/nodo-uat",
-    "routing": 0,
-    "broker_psps": ["intPspStress100"],
-    "cis": ["00000000069"]
+    "routing": 100,
+    "broker_psps": [],
+    "cis": []
   }
 ]
