@@ -53,7 +53,7 @@
                                     new JProperty("brokerPsp", ""),
                                     new JProperty("paymentToken", ""),
                                     new JProperty("key", ""),
-                                    new JProperty("ttl", 0)
+                                    new JProperty("ttl", 1)
                                 ).ToString();
                             }
                         }" />
@@ -83,7 +83,7 @@
                                     new JProperty("brokerPsp", ""),
                                     new JProperty("paymentToken", ""),
                                     new JProperty("key", ""),
-                                    new JProperty("ttl", "0")
+                                    new JProperty("ttl", 1)
                                 ).ToString();
                             }
                         }" />
@@ -131,7 +131,7 @@
                             return new JObject(
                                         new JProperty("nodeId", "NONE"),
                                         new JProperty("nodeUri", "NONE"),
-                                        new JProperty("ttl", "3600")
+                                        new JProperty("ttl", 1)
                                     ).ToString();
 
                         }" />
@@ -176,14 +176,16 @@
                                 if (currentNodeId.Equals(nodeId)) {
                                     return new JObject(
                                         new JProperty("nodeId", item.GetValue("node_id").ToString()),
-                                        new JProperty("nodeUri", item.GetValue("node_uri").ToString())
+                                        new JProperty("nodeUri", item.GetValue("node_uri").ToString()),
+                                        new JProperty("ttl", 3600)
                                     ).ToString();
                                 }
                             }
 
                             return new JObject(
                                         new JProperty("nodeId", "NONE"),
-                                        new JProperty("nodeUri", "NONE")
+                                        new JProperty("nodeUri", "NONE"),
+                                        new JProperty("ttl", 1)
                                     ).ToString();
 
                         }" />

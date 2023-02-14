@@ -21,6 +21,7 @@
 
                 return paymentToken != null ? paymentToken.Value.ToString() : "NONE";
             }" />
+      <trace source="activate-data-set" severity="information">@((string)context.Variables["dataToSet"])</trace>
       <choose>
         <when condition="@(!((string)context.Variables["paymentToken"]).Equals("NONE"))">
           <cache-store-value key="@((string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"])" value="@{
