@@ -78,15 +78,15 @@ module "apim_api_statuspage_api_v1" {
   xml_content = templatefile("./api/status-page-service/v1/_base_policy.xml", {
     hostname = local.shared_hostname
     services = replace(jsonencode({
-      "afmcalculator"   = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
-      "afmmarketplace"  = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
-      "afmutils"        = format("%s/pagopa-afm-afmutils-service", format(local.aks_path, "afm"))
-      "apiconfig"       = format("%s/apiconfig/api/v1", data.azurerm_app_service.api_config.default_site_hostname)
-      "bizevents"       = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
-      "gpd"             = format("%s/", data.azurerm_app_service.gpd.default_site_hostname)
-      "gpdpayments"     = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
-      "gps"             = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
-      "gpsdonation"             = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
+      "afmcalculator"  = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
+      "afmmarketplace" = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
+      "afmutils"       = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
+      "apiconfig"      = format("%s/apiconfig/api/v1", data.azurerm_app_service.api_config.default_site_hostname)
+      "bizevents"      = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
+      "gpd"            = format("%s/", data.azurerm_app_service.gpd.default_site_hostname)
+      "gpdpayments"    = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
+      "gps"            = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
+      "gpsdonation"    = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
     }), "\"", "\\\"")
   })
 }
