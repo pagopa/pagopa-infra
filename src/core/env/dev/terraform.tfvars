@@ -168,9 +168,6 @@ checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azureweb
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
 
-ecommerce_xpay_psps_list = "XPAY"
-ecommerce_vpos_psps_list = "BIC36019,PSPtest1,CHARITY_AMEX,CHARITY_IDPSPFNZ,CHARITY_ISP,40000000001,DINERS,BCITITMM,MARIOGAM,73473473473,60000000001,PAYTITM1,POSTE1,ProvaCDI,50000000001,IDPSPFNZ,70000000001,10000000001,idPsp2,irraggiungibile_wisp,prova_ila_1,pspStress50,pspStress79,pspStress80,pspStress81"
-
 ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
