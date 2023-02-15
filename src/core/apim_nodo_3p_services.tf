@@ -49,7 +49,7 @@ module "apim_nodo_ppt_lmi_api" {
 
   description  = "NodeDeiPagamenti (ppt-lmi)"
   display_name = "NodeDeiPagamenti (ppt-lmi)"
-  path         = "ppt-lmi/api"
+  path         = "admin"
   protocols    = ["https"]
 
   service_url = null
