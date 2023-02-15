@@ -1157,15 +1157,7 @@
               "threeDsData": "threeDsData"
             }
           }
-        ],
-        "discriminator": {
-          "propertyName": "detailType",
-          "type": "string",
-          "mapping": {
-            "postepay": "#/components/schemas/PaymentInstrumentDetail[0]",
-            "card": "#/components/schemas/PaymentInstrumentDetail[1]"
-          }
-        }
+        ]
       },
       "UpdateAuthorizationRequest": {
         "type": "object",
