@@ -28,7 +28,7 @@
       <!-- Handle X-Client-Id - multi channel - END -->
 
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
-      <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-notifications-service")"/>
+      <set-backend-service base-url="@("https://${hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-notifications-service")"/>
 
     </inbound>
     <outbound>
