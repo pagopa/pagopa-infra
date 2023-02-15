@@ -5,7 +5,12 @@
         <choose>
             <when condition="@(${is-nodo-decoupler-enabled})">
                 <!-- URL by decoupler -->
-                <rewrite-uri template="/webservices/input/" copy-unmatched-params="true" />
+                <choose>
+                <when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") && !((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
+                    <rewrite-uri template="/webservices/input/" copy-unmatched-params="true" />
+                </when>
+                </choose>
+
             </when>
             <otherwise>
                 <set-backend-service base-url="${base-url}" />
