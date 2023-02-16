@@ -182,7 +182,7 @@ mock_payment_gateway_enabled = false
 
 
 # apim x nodo pagamenti
-apim_nodo_decoupler_enable      = false
+apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
