@@ -1191,7 +1191,8 @@
               },
               "expiryDate": {
                 "type": "string",
-                "description": "Credit card expiry date. The date format is `YYYYMM`"
+                "description": "Credit card expiry date. The date format is `YYYYMM`",
+                "pattern": "^/\\d{6}$"
               },
               "holderName": {
                 "type": "string",
