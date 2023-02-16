@@ -106,7 +106,7 @@ app_gateway_waf_enabled                 = true
 app_gateway_alerts_enabled              = true
 app_gateway_deny_paths = [
   "/nodo/.*",
-  "/nodo-auth/.*", # non serve in quanto queste API sono con subkey required 🔐
+  # "/nodo-auth/.*", # non serve in quanto queste API sono con subkey required 🔐
   "/payment-manager/clients/.*",
   "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
