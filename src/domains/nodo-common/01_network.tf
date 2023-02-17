@@ -52,3 +52,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "adf_vnet" {
   private_dns_zone_name = azurerm_private_dns_zone.adf.name
   virtual_network_id    = data.azurerm_virtual_network.vnet.id
 }
+
+data "azurerm_subnet" "private_endpoint_snet" {
+  name                 = "${local.product}-common-private-endpoint-snet"
+  virtual_network_name = data.azurerm_virtual_network.vnet.name
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+}

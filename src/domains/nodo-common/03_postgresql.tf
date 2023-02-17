@@ -70,11 +70,11 @@ module "postgres_flexible_server" {
     {
       action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
-    },
-    {
-      action_group_id    = azurerm_monitor_action_group.push.id
-      webhook_properties = null
     }
+    # {
+    #   action_group_id    = azurerm_monitor_action_group.push.id
+    #   webhook_properties = null
+    # }
   ]
   tags = var.tags
 }

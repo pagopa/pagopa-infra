@@ -18,10 +18,7 @@ data "azurerm_key_vault_secret" "slackemail" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "techemail" {
-  name         = "nodo-tech-support"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
+
 
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
@@ -41,7 +38,17 @@ resource "azurerm_monitor_action_group" "slack" {
 
 }
 
-resource "azurerm_monitor_action_group" "push" {
+/* data "azurerm_key_vault_secret" "techemail" {
+  name         = "nodo-tech-support"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+locals {
+  pushlocal = jsondecode(data.azurerm_key_vault_secret.techemail.value)
+  #all_users = [for user in local.pushlocal.users : user.email]
+}
+
+ resource "azurerm_monitor_action_group" "push" {
   name                = "PushNodoPagoPA"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   short_name          = "PushNodo"
@@ -49,11 +56,13 @@ resource "azurerm_monitor_action_group" "push" {
 
   dynamic "azure_app_push_receiver" {
 
-    for_each = data.azurerm_key_vault_secret.tech_support.value
+    for_each = { for item in local.pushlocal: item.users => item }
     content {
-      name          = format("nodo-push-%s", replace(azure_app_push_receiver.value, "@", "_"))
-      email_address = azure_app_push_receiver.value
+      name          = format("nodo-push-%s", replace(azure_app_push_receiver.value.email, "@", "_"))
+      email_address = azure_app_push_receiver.value.email
     }
   }
 
-}
+} 
+ */
+

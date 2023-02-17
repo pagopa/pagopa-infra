@@ -33,7 +33,7 @@ resource "azurerm_private_endpoint" "data_factory_pe" {
   name                = format("%s-pe", azurerm_data_factory.data_factory.name)
   location            = azurerm_resource_group.data_factory_rg.location
   resource_group_name = azurerm_resource_group.data_factory_rg.name
-  subnet_id           = module.postgres_flexible_snet.id
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
 
   private_dns_zone_group {
     name                 = format("%s-private-dns-zone-group", azurerm_data_factory.data_factory.name)
