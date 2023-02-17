@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.13.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.17"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -15,6 +15,12 @@ module "key_vault" {
   soft_delete_retention_days = 90
 
   tags = var.tags
+}
+
+
+data "azurerm_key_vault" "postgres_key_vault" {
+  name                = "${local.product}-nodo-kv"
+  resource_group_name = "${local.product}-nodo-sec-rg"
 }
 
 ## ad group policy ##
@@ -66,6 +72,10 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
 
   storage_permissions = []
 }
+
+################
+##   Secrets  ##
+################
 
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = "ai-${var.env_short}-connection-string"

@@ -33,3 +33,20 @@ data "azurerm_subnet" "apiconfig_subnet" {
   virtual_network_name = format("%s-%s-vnet-integration", var.prefix, var.env_short)
   resource_group_name  = format("%s-%s-vnet-rg", var.prefix, var.env_short)
 }
+
+data "azurerm_resource_group" "rg_vnet" {
+  name = local.vnet_resource_group_name
+}
+
+data "azurerm_private_dns_zone" "postgres" {
+  count               = var.env_short != "d" ? 1 : 0
+  name                = "private.postgres.database.azure.com"
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+}
+
+
+data "azurerm_private_dns_zone" "storage" {
+  count               = var.env_short != "d" ? 1 : 0
+  name                = local.storage_dns_zone_name
+  resource_group_name = local.storage_dns_zone_resource_group_name
+}

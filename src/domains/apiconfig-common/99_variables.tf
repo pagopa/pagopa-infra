@@ -100,60 +100,40 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-variable "apiconfig_marketplace_cosmos_db_params" {
-  type = object({
-    kind           = string
-    capabilities   = list(string)
-    offer_type     = string
-    server_version = string
-    consistency_policy = object({
-      consistency_level       = string
-      max_interval_in_seconds = number
-      max_staleness_prefix    = number
-    })
-    main_geo_location_zone_redundant = bool
-    enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
-    additional_geo_locations = list(object({
-      location          = string
-      failover_priority = number
-      zone_redundant    = bool
-    }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
-  })
-}
-
-variable "apiconfig_storage_params" {
-  type = object({
-    enabled                    = bool,
-    kind                       = string,
-    tier                       = string,
-    account_replication_type   = string,
-    advanced_threat_protection = bool,
-    retention_days             = number
-  })
-
-  default = {
-    enabled                    = false,
-    kind                       = "StorageV2"
-    tier                       = "Standard",
-    account_replication_type   = "LRS",
-    advanced_threat_protection = false,
-    retention_days             = 30
-  }
-}
-
-variable "cidr_subnet_apiconfig_marketplace_cosmosdb" {
-  type        = list(string)
-  description = "Cosmos DB address space"
-  default     = null
-}
-
 variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
+}
+
+
+# Postgres Flexible
+variable "pgres_flex_params" {
+  type = object({
+    enabled                                = bool
+    sku_name                               = string
+    db_version                             = string
+    storage_mb                             = string
+    zone                                   = number
+    backup_retention_days                  = number
+    geo_redundant_backup_enabled           = bool
+    create_mode                            = string
+    pgres_flex_private_endpoint_enabled    = bool
+    pgres_flex_ha_enabled                  = bool
+    pgres_flex_pgbouncer_enabled           = bool
+    pgres_flex_diagnostic_settings_enabled = bool
+    max_connections                        = number
+  })
+
+}
+
+variable "pgres_flex_nodo_db_name" {
+  type        = string
+  description = "Nodo DB name"
+  default     = "nodo"
+}
+
+variable "cidr_subnet_flex_dbms" {
+  type        = list(string)
+  description = "Postgresql network address space."
 }
