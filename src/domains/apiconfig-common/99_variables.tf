@@ -105,35 +105,3 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
-
-
-# Postgres Flexible
-variable "pgres_flex_params" {
-  type = object({
-    enabled                                = bool
-    sku_name                               = string
-    db_version                             = string
-    storage_mb                             = string
-    zone                                   = number
-    backup_retention_days                  = number
-    geo_redundant_backup_enabled           = bool
-    create_mode                            = string
-    pgres_flex_private_endpoint_enabled    = bool
-    pgres_flex_ha_enabled                  = bool
-    pgres_flex_pgbouncer_enabled           = bool
-    pgres_flex_diagnostic_settings_enabled = bool
-    max_connections                        = number
-  })
-
-}
-
-variable "pgres_flex_nodo_db_name" {
-  type        = string
-  description = "Nodo DB name"
-  default     = "nodo"
-}
-
-variable "cidr_subnet_flex_dbms" {
-  type        = list(string)
-  description = "Postgresql network address space."
-}

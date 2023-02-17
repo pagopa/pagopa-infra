@@ -17,12 +17,6 @@ module "key_vault" {
   tags = var.tags
 }
 
-
-data "azurerm_key_vault" "postgres_key_vault" {
-  name                = "${local.product}-nodo-kv"
-  resource_group_name = "${local.product}-nodo-sec-rg"
-}
-
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   key_vault_id = module.key_vault.id
