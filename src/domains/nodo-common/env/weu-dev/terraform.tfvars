@@ -110,9 +110,5 @@ custom_metric_alerts = {
   }
 }
 
-support_push_list = {
-  enabled      = true
-  name         = "PushNodo"
-  tech_support = []
-}
+
 

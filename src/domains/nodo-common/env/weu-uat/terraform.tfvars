@@ -111,9 +111,4 @@ custom_metric_alerts = {
   }
 }
 
-support_push_list = {
-  enabled      = true
-  name         = "PushNodo"
-  tech_support = ["matteo.alongi.esterno@pagopa.it", "stefano.menotti@pagopa.it"]
-}
 
