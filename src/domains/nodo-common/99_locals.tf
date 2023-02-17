@@ -32,5 +32,6 @@ locals {
 
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 
+ 
 }
 

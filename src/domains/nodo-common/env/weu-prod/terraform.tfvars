@@ -37,7 +37,7 @@ cidr_subnet_storage_account = ["10.1.137.16/29"]
 pgres_flex_params = {
 
   enabled    = true
-  sku_name   = "GP_Standard_D8s_v3"
+  sku_name   = "GP_Standard_D16ds_v4"
   db_version = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
@@ -50,10 +50,70 @@ pgres_flex_params = {
   pgres_flex_ha_enabled                  = true
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = true
-  max_connections                        = 3400
+  max_connections                        = 5000
 }
 
 sftp_account_replication_type = "LRS"
 sftp_enable_private_endpoint  = true
 sftp_ip_rules                 = [] # List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed
+
+custom_metric_alerts = {
+
+  cpu_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "cpu_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  memory_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "memory_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  storage_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "storage_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  active_connections = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "active_connections"
+    operator         = "GreaterThan"
+    threshold        = 4500
+    severity         = 2
+  },
+  connections_failed = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Total"
+    metric_name      = "connections_failed"
+    operator         = "GreaterThan"
+    threshold        = 50
+    severity         = 2
+  }
+}
+
+support_push_list = {
+  enabled      = true
+  name         = "PushNodo"
+  tech_support = ["matteo.alongi.esterno@pagopa.it", "stefano.menotti@pagopa.it"]
+}
 

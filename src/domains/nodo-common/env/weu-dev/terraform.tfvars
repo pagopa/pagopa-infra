@@ -55,3 +55,64 @@ pgres_flex_params = {
 sftp_account_replication_type = "LRS"
 sftp_enable_private_endpoint  = false
 sftp_disable_network_rules    = true
+
+custom_metric_alerts = {
+
+  cpu_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "cpu_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  memory_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "memory_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  storage_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "storage_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  active_connections = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "active_connections"
+    operator         = "GreaterThan"
+    threshold        = 1000
+    severity         = 2
+  },
+  connections_failed = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Total"
+    metric_name      = "connections_failed"
+    operator         = "GreaterThan"
+    threshold        = 50
+    severity         = 2
+  }
+}
+
+support_push_list = {
+  enabled      = true
+  name         = "PushNodo"
+  tech_support = []
+}
+

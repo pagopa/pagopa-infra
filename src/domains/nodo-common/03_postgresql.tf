@@ -61,18 +61,18 @@ module "postgres_flexible_server" {
   create_mode                  = var.pgres_flex_params.create_mode
 
   log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
-  custom_metric_alerts = var.custom_metric_alerts
+  custom_metric_alerts       = var.custom_metric_alerts
   alert_action = [
     {
       action_group_id    = data.azurerm_monitor_action_group.email.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = azurerm_monitor_action_group.sms.id
+      action_group_id    = azurerm_monitor_action_group.push.id
       webhook_properties = null
     }
   ]
