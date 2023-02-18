@@ -1,21 +1,57 @@
 module "elastic_stack" {
-  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.2.0"
+  #source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.2.0"
+  source = "/Users/massimoscattarella/projects/pagopa/azurerm/elastic_stack"
 
-  balancer_node_number   = var.elastic_cluster_config.num_node_balancer
-  master_node_number     = var.elastic_cluster_config.num_node_master
-  hot_node_number        = var.elastic_cluster_config.num_node_hot
-  warm_node_number       = var.elastic_cluster_config.num_node_warm
-  cold_node_number       = var.elastic_cluster_config.num_node_cold
-  balancer_storage_size  = var.elastic_cluster_config.storage_size_balancer
-  master_storage_size    = var.elastic_cluster_config.storage_size_master
-  hot_storage_size       = var.elastic_cluster_config.storage_size_hot
-  warm_storage_size      = var.elastic_cluster_config.storage_size_warm
-  cold_storage_size      = var.elastic_cluster_config.storage_size_cold
-  balancer_storage_class = "${local.project}-elastic-aks-storage-hot"
-  master_storage_class   = "${local.project}-elastic-aks-storage-hot"
-  hot_storage_class      = "${local.project}-elastic-aks-storage-hot"
-  warm_storage_class     = "${local.project}-elastic-aks-storage-warm"
-  cold_storage_class     = "${local.project}-elastic-aks-storage-cold"
+  namespace = "elastic-system"
+
+  nodeset_config = {
+    balancer-nodes = {
+      count = var.elastic_cluster_config.num_node_balancer
+      roles = []
+      storage = var.elastic_cluster_config.storage_size_balancer
+      storageClassName = "${local.project}-elastic-aks-storage-hot"
+    },
+    master-nodes = {
+      count = var.elastic_cluster_config.num_node_master
+      roles = ["master"]
+      storage = var.elastic_cluster_config.storage_size_master
+      storageClassName = "${local.project}-elastic-aks-storage-hot"
+    },
+    data-hot-nodes = {
+      count = var.elastic_cluster_config.num_node_hot
+      roles = ["ingest","data_content","data_hot"]
+      storage = var.elastic_cluster_config.storage_size_hot
+      storageClassName = "${local.project}-elastic-aks-storage-hot"
+    },
+    data-warm-nodes = {
+      count = var.elastic_cluster_config.num_node_warm
+      roles = ["ingest","data_content", "data_warm"]
+      storage = var.elastic_cluster_config.storage_size_warm
+      storageClassName = "${local.project}-elastic-aks-storage-warm"
+    },
+    data-cold-nodes = {
+      count = var.elastic_cluster_config.num_node_cold
+      roles = ["ingest","data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
+      storage = var.elastic_cluster_config.storage_size_cold
+      storageClassName = "${local.project}-elastic-aks-storage-cold"
+    }
+  }
+
+  # balancer_node_number   = var.elastic_cluster_config.num_node_balancer
+  # master_node_number     = var.elastic_cluster_config.num_node_master
+  # hot_node_number        = var.elastic_cluster_config.num_node_hot
+  # warm_node_number       = var.elastic_cluster_config.num_node_warm
+  # cold_node_number       = var.elastic_cluster_config.num_node_cold
+  # balancer_storage_size  = var.elastic_cluster_config.storage_size_balancer
+  # master_storage_size    = var.elastic_cluster_config.storage_size_master
+  # hot_storage_size       = var.elastic_cluster_config.storage_size_hot
+  # warm_storage_size      = var.elastic_cluster_config.storage_size_warm
+  # cold_storage_size      = var.elastic_cluster_config.storage_size_cold
+  # balancer_storage_class = "${local.project}-elastic-aks-storage-hot"
+  # master_storage_class   = "${local.project}-elastic-aks-storage-hot"
+  # hot_storage_class      = "${local.project}-elastic-aks-storage-hot"
+  # warm_storage_class     = "${local.project}-elastic-aks-storage-warm"
+  # cold_storage_class     = "${local.project}-elastic-aks-storage-cold"
 
   kibana_external_domain = "https://kibana.dev.platform.pagopa.it/kibana" ####TEMP "${local.apim_hostname}/kibana"
 
