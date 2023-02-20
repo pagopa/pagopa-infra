@@ -218,7 +218,7 @@
   },
   "components": {
     "schemas": {
-      "PollingResponseEntity": {
+      "PostePayPollingResponseEntity": {
         "type": "object",
         "required": [
           "channel",
