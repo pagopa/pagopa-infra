@@ -15,8 +15,8 @@
         </expose-headers>
       </cors>
       <base />
-      <set-variable name="requestTransactionId" value="@{
-        return context.Request.MatchedParameters["transactionId"];
+      <set-variable name="requestId" value="@{
+        return context.Request.MatchedParameters["requestId"];
       }" />
       <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
           <issuer-signing-keys>
