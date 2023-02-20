@@ -115,58 +115,6 @@
         }
       }
     },
-    "/request-payments/vpos/{requestId}/resume/method": {
-      "post": {
-        "summary": "resume vpos payment request",
-        "tags": [
-          "Vpos-external"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "requestId",
-            "description": "Id of the request",
-            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VposResumeRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VposResumeResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/request-payments/vpos/{requestId}/resume/challenge": {
       "post": {
         "summary": "resume Vpos payment request",
@@ -227,35 +175,6 @@
             "content": {
               "text/html": {}
             }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "VposResumeRequest": {
-        "type": "object",
-        "required": [
-          "methodCompleted"
-        ],
-        "properties": {
-          "methodCompleted": {
-            "type": "string",
-            "example": "Y"
-          }
-        }
-      },
-      "VposResumeResponse": {
-        "type": "object",
-        "required": [
-          "requestId"
-        ],
-        "properties": {
-          "requestId": {
-            "type": "string",
-            "format": "uuid",
-            "example": "1f3af548-f9d3-423f-b7b0-4e68948d41d2"
           }
         }
       }
