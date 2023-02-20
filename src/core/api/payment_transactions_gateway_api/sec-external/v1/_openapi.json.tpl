@@ -41,7 +41,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
                 }
               }
             }
@@ -51,7 +51,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
                 }
               }
             }
@@ -61,7 +61,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
                 }
               }
             }
@@ -71,7 +71,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
                 }
               }
             }
@@ -81,7 +81,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
+                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
                 }
               }
             }
