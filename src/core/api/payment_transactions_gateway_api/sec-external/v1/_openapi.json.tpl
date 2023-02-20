@@ -153,6 +153,7 @@
         "tags": [
           "Vpos-external"
         ],
+        "operationId": "auth-response-vpos",
         "parameters": [
           {
             "in": "path",
