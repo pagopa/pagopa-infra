@@ -2,7 +2,7 @@ module "elastic_stack" {
   #source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.2.0"
   source = "/Users/massimoscattarella/projects/pagopa/azurerm/elastic_stack"
 
-  namespace = "elastic-system"
+  namespace = local.elk_namespace
 
   nodeset_config = {
     balancer-nodes = {
@@ -37,6 +37,17 @@ module "elastic_stack" {
     }
   }
 
+  agent_config_container_logs = {
+    nodo = {
+      id = "1" 
+      data_stream_namespace = "nodo"
+    }
+    nodo-cron = {
+      id = "2" 
+      data_stream_namespace = "nodo_cron"
+    }
+  }
+
   kibana_external_domain = var.env_short == "p" ? "https://kibana.platform.pagopa.it/kibana" : "https://kibana.${var.env}.platform.pagopa.it/kibana"
 
   secret_name   = var.env_short == "p" ? "${var.location_short}${var.env}-kibana-internal-platform-pagopa-it" : "${var.location_short}${var.env}-kibana-internal-${var.env}-platform-pagopa-it"
@@ -44,5 +55,3 @@ module "elastic_stack" {
 
   kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.it" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
 }
-
-
