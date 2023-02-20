@@ -221,6 +221,7 @@
         "tags": [
           "Vpos-external"
         ],
+        "operationId": "resume-method-vpos",
         "parameters": [
           {
             "in": "path",
