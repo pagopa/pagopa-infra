@@ -23,15 +23,15 @@
               <key>{{ecommerce-checkout-transaction-jwt-signing-key}}</key>
           </issuer-signing-keys>
       </validate-jwt>
-      <set-variable name="tokenTransactionId" value="@{
+      <set-variable name="tokenRequestId" value="@{
       var jwt = (Jwt)context.Variables["jwtToken"];
-      if(jwt.Claims.ContainsKey("transactionId")){
-          return jwt.Claims["transactionId"][0];
+      if(jwt.Claims.ContainsKey("requestId")){
+          return jwt.Claims["requestId"][0];
       }
       return "";
       }" />
       <choose>
-          <when condition="@((string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId",""))">
+          <when condition="@((string)context.Variables.GetValueOrDefault("tokenRequestId","") != (string)context.Variables.GetValueOrDefault("requestId",""))">
               <return-response>
                   <set-status code="401" reason="Unauthorized" />
               </return-response>
