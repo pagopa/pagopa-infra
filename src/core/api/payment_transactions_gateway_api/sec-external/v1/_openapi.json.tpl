@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "${host}/payment-gateway"
+      "url": "/payment-transactions-gateway/pgsfe/v1"
     }
   ],
   "paths": {
@@ -16,7 +16,7 @@
         "tags": [
           "Postepay-external"
         ],
-        "operationId": "webviewPolling",
+        "operationId": "GetPostepayPaymentRequest",
         "parameters": [
           {
             "in": "path",
@@ -95,7 +95,7 @@
         "tags": [
           "XPay-external"
         ],
-        "operationId": "auth-response-xpay",
+        "operationId": "GetXpayPaymentRequest",
         "parameters": [
           {
             "in": "path",
@@ -153,7 +153,7 @@
         "tags": [
           "Vpos-external"
         ],
-        "operationId": "auth-response-vpos",
+        "operationId": "GetVposPaymentRequest",
         "parameters": [
           {
             "in": "path",
@@ -221,7 +221,7 @@
         "tags": [
           "Vpos-external"
         ],
-        "operationId": "resume-method-vpos",
+        "operationId": "ResumeVposPaymentRequest",
         "parameters": [
           {
             "in": "path",
@@ -403,6 +403,14 @@
           },
           "clientReturnUrl": {
             "type": "string"
+          },
+          "threeDsMethodData": {
+            "type": "string",
+            "format": "base64"
+          },
+          "creq": {
+            "type": "string",
+            "format": "base64"
           }
         },
         "required": [
