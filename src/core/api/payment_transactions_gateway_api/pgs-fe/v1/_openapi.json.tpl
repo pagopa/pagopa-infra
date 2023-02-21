@@ -282,6 +282,7 @@
           "channel",
           "authOutcome",
           "urlRedirect",
+          "logoResourcePath",
           "error"
         ],
         "properties": {
@@ -289,6 +290,11 @@
             "type": "string",
             "description": "request payment channel (APP or WEB)",
             "example": "APP"
+          },
+          "logoResourcePath": {
+            "type": "string",
+            "description": "logo",
+            "example": "logoExamplePath"
           },
           "urlRedirect": {
             "type": "string",
