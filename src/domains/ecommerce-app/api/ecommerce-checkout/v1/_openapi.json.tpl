@@ -1199,8 +1199,16 @@
                 "description": "The card holder name"
               },
               "brand": {
+                "description": "The card brand name",
                 "type": "string",
-                "description": "The card brand name"
+                "enum": [
+                  "VISA",
+                  "MASTERCARD",
+                  "UNKNOWN",
+                  "DINERS",
+                  "MAESTRO",
+                  "AMEX"
+                ]
               },
               "threeDsData": {
                 "type": "string",
