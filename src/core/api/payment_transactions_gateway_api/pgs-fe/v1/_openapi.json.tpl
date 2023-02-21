@@ -6,15 +6,15 @@
   },
   "servers": [
     {
-      "url": "/payment-transactions-gateway/pgsfe/v1"
+      "url": "${host}/payment-gateway"
     }
   ],
   "paths": {
     "/request-payments/postepay/{requestId}": {
       "get": {
-        "summary": "PGS webview polling call",
+        "summary": "postepay webview polling call",
         "tags": [
-          "Postepay-external"
+          "Postepay-pgs-fe"
         ],
         "operationId": "GetPostepayPaymentRequest",
         "parameters": [
@@ -93,7 +93,7 @@
       "get": {
         "summary": "retrieve XPay payment request",
         "tags": [
-          "XPay-external"
+          "XPay-pgs-fe"
         ],
         "operationId": "GetXpayPaymentRequest",
         "parameters": [
@@ -141,7 +141,7 @@
       "get": {
         "summary": "retrieve vpos payment request",
         "tags": [
-          "Vpos-external"
+          "Vpos-pgs-fe"
         ],
         "operationId": "GetVposPaymentRequest",
         "parameters": [
@@ -199,7 +199,7 @@
       "post": {
         "summary": "resume vpos payment request",
         "tags": [
-          "Vpos-external"
+          "Vpos-pgs-fe"
         ],
         "operationId": "ResumeVposPaymentRequest",
         "parameters": [
