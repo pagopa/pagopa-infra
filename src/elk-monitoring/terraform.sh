@@ -20,6 +20,10 @@ fi
 source "./env/$env/backend.ini"
 az account set -s "${subscription}"
 
+# aks_name_from_cli=$(az aks list -o tsv --query "[?contains(name,'$env-aks')].{Name:name}")
+# aks_name=${aks_name_from_cli//[$'\r']}
+# kubectl config use-context "${aks_name}"
+
 if echo "init plan apply refresh import output state taint destroy" | grep -w $action > /dev/null; then
   if [ $action = "init" ]; then
     terraform $action -reconfigure -backend-config="./env/$env/backend.tfvars" $other

@@ -15,7 +15,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_elastic_stack"></a> [elastic\_stack](#module\_elastic\_stack) | git::https://github.com/pagopa/azurerm.git//elastic_stack | v4.2.0 |
+| <a name="module_elastic_stack"></a> [elastic\_stack](#module\_elastic\_stack) | git::https://github.com/pagopa/azurerm.git//elastic_stack | v4.5.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
 | <a name="module_letsencrypt_dev_elk"></a> [letsencrypt\_dev\_elk](#module\_letsencrypt\_dev\_elk) | git::https://github.com/pagopa/azurerm.git//letsencrypt_credential | v3.8.1 |
 | <a name="module_nginx_ingress"></a> [nginx\_ingress](#module\_nginx\_ingress) | terraform-module/release/helm | 2.8.0 |
@@ -28,6 +28,7 @@
 |------|------|
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.adgroup_externals_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_kubernetes_cluster_node_pool.elastic](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/kubernetes_cluster_node_pool) | resource |
@@ -63,7 +64,6 @@
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_elastic_cluster_config"></a> [elastic\_cluster\_config](#input\_elastic\_cluster\_config) | n/a | <pre>object({<br>    num_node_balancer     = string<br>    num_node_master       = string<br>    num_node_hot          = string<br>    num_node_warm         = string<br>    num_node_cold         = string<br>    storage_size_balancer = string<br>    storage_size_master   = string<br>    storage_size_hot      = string<br>    storage_size_warm     = string<br>    storage_size_cold     = string<br>  })</pre> | n/a | yes |
 | <a name="input_elastic_cold_storage"></a> [elastic\_cold\_storage](#input\_elastic\_cold\_storage) | n/a | <pre>object({<br>    storage_type           = string,<br>    allow_volume_expansion = bool,<br>    initialStorageSize     = string<br>  })</pre> | n/a | yes |
 | <a name="input_elastic_hot_storage"></a> [elastic\_hot\_storage](#input\_elastic\_hot\_storage) | n/a | <pre>object({<br>    storage_type           = string,<br>    allow_volume_expansion = bool,<br>    initialStorageSize     = string<br>  })</pre> | n/a | yes |
 | <a name="input_elastic_node_pool"></a> [elastic\_node\_pool](#input\_elastic\_node\_pool) | AKS node pool user configuration | <pre>object({<br>    enabled               = bool,<br>    name                  = string,<br>    vm_size               = string,<br>    os_disk_type          = string,<br>    os_disk_size_gb       = string,<br>    node_count_min        = number,<br>    node_count_max        = number,<br>    node_labels           = map(any),<br>    node_taints           = list(string),<br>    node_tags             = map(any),<br>    elastic_pool_max_pods = number,<br>  })</pre> | n/a | yes |
@@ -85,6 +85,7 @@
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_nginx_helm"></a> [nginx\_helm](#input\_nginx\_helm) | nginx ingress helm chart configuration | <pre>object({<br>    version = string,<br>    controller = object({<br>      image = object({<br>        registry     = string,<br>        image        = string,<br>        tag          = string,<br>        digest       = string,<br>        digestchroot = string,<br>      }),<br>      config = object({<br>        proxy-body-size : string<br>      })<br>    })<br>  })</pre> | n/a | yes |
+| <a name="input_nodeset_config"></a> [nodeset\_config](#input\_nodeset\_config) | n/a | <pre>map(object({<br>    count            = string<br>    roles            = list(string)<br>    storage          = string<br>    storageClassName = string<br>  }))</pre> | <pre>{<br>  "default": {<br>    "count": 1,<br>    "roles": [<br>      "master",<br>      "data",<br>      "data_content",<br>      "data_hot",<br>      "data_warm",<br>      "data_cold",<br>      "data_frozen",<br>      "ingest",<br>      "ml",<br>      "remote_cluster_client",<br>      "transform"<br>    ],<br>    "storage": "5Gi",<br>    "storageClassName": "standard"<br>  }<br>}</pre> | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_subscription_name"></a> [subscription\_name](#input\_subscription\_name) | Subscription name | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |

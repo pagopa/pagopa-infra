@@ -1,7 +1,7 @@
 module "elastic_stack" {
   source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.5.0"
 
-  namespace = local.elk_namespace
+  namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
 
   kibana_external_domain = var.env_short == "p" ? "https://kibana.platform.pagopa.it/kibana" : "https://kibana.${var.env}.platform.pagopa.it/kibana"

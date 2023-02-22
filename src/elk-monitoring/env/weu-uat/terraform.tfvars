@@ -10,7 +10,7 @@ instance        = "uat"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
-  Owner       = "IO"
+  Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/elk-monitoring"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
@@ -93,33 +93,33 @@ nginx_helm = {
 
 nodeset_config = {
   balancer-nodes = {
-    count = "1"
-    roles = []
-    storage = "20Gi"
+    count            = "1"
+    roles            = []
+    storage          = "20Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
   },
   master-nodes = {
-    count = "2"
-    roles = ["master"]
-    storage = "20Gi"
+    count            = "2"
+    roles            = ["master"]
+    storage          = "20Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
   },
   data-hot-nodes = {
-    count = "2"
-    roles = ["ingest","data_content","data_hot"]
-    storage = "200Gi"
+    count            = "1"
+    roles            = ["ingest", "data_content", "data_hot"]
+    storage          = "200Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
   },
   data-warm-nodes = {
-    count = "2"
-    roles = ["ingest","data_content", "data_warm"]
-    storage = "200Gi"
+    count            = "1"
+    roles            = ["ingest", "data_content", "data_warm"]
+    storage          = "200Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-warm"
   },
   data-cold-nodes = {
-    count = "2"
-    roles = ["ingest","data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
-    storage = "200Gi"
+    count            = "1"
+    roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
+    storage          = "200Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-cold"
   }
 }
