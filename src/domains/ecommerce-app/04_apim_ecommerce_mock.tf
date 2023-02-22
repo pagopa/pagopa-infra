@@ -36,6 +36,7 @@ locals {
 
 # Transactions service APIs
 resource "azurerm_api_management_api_version_set" "apim_ecommerce_nodo_mock_api" {
+  count               = var.env_short == "u" ? 1 : 0
   name                = format("%s-apim_ecommerce_nodo_mock", local.project)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
