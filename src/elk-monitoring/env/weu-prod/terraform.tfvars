@@ -96,30 +96,30 @@ nodeset_config = {
     count            = "1"
     roles            = []
     storage          = "20Gi"
-    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
+    storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
   },
   master-nodes = {
     count            = "2"
     roles            = ["master"]
     storage          = "20Gi"
-    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
+    storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
   },
   data-hot-nodes = {
     count            = "1"
     roles            = ["ingest", "data_content", "data_hot"]
     storage          = "300Gi"
-    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
+    storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
   },
   data-warm-nodes = {
     count            = "1"
     roles            = ["ingest", "data_content", "data_warm"]
     storage          = "300Gi"
-    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-warm"
+    storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-warm"
   },
   data-cold-nodes = {
     count            = "1"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
     storage          = "300Gi"
-    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-cold"
+    storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-cold"
   }
 }
