@@ -15,11 +15,8 @@
                       <soapenv:Header />
                       <soapenv:Body>
                           <outcome>OK</outcome>
-                          <paymentList></paymentList>
-                          <paymentDescription></paymentDescription>
-                          <fiscalCodePA></fiscalCodePA>
-                          <companyName></companyName>
-                          <officeName></officeName>
+                          <fiscalCodePA>77777777777</fiscalCodePA>
+                          <companyName>Test Company Name</companyName>
                       </soapenv:Body>
                   </soapenv:Envelope>
               </set-body>
@@ -41,12 +38,8 @@
                           <outcome>OK</outcome>
                           <totalAmount>100</totalAmount>
                           <paymentDescription>Pagamento di test</paymentDescription>
-                          <fiscalCodePA>PLACEHOLDER</fiscalCodePA>
-                          <companyName>PLACEHOLDER</companyName>
-                          <officeName>PLACEHOLDER</officeName> 
-                          <paymentToken>PLACEHOLDER</paymentToken>
-                          <transferList>PLACEHOLDER</transferList> 
-                          <creditorReferenceId>PLACEHOLDER</creditorReferenceId>
+                          <fiscalCodePA>77777777777</fiscalCodePA>
+                          <paymentToken>1c9d21390f2e4f4a9cb7d7e004c7deee</paymentToken>
                       </soapenv:Body>
                   </soapenv:Envelope>
               </set-body>
@@ -54,7 +47,6 @@
         </when>
 
         <!-- auth -->
-
     </inbound>
     <outbound>
       <base />

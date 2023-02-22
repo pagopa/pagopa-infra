@@ -3,7 +3,7 @@
 ##############
 
 module "apim_ecommerce_mock_product" {
-  count = var.env_short == "u" ? 1 : 0
+  count  = var.env_short == "u" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
   product_id   = "ecommerce-mock"
