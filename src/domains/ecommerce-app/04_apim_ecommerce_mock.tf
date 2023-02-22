@@ -51,7 +51,7 @@ resource "azurerm_api_management_api" "apim_ecommerce_nodo_mock" {
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   subscription_required = local.apim_ecommerce_nodo_mock_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_nodo_mock_api.id
+  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_nodo_mock_api[0].id
   version               = "v1"
   revision              = "1"
 
