@@ -1133,23 +1133,7 @@
             "description": "Requested language"
           },
           "details": {
-            "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
-            "type": "object",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/PostePayAuthRequestDetails"
-              },
-              {
-                "$ref": "#/components/schemas/CardAuthRequestDetails"
-              }
-            ],
-            "discriminator": {
-              "propertyName": "detailType",
-              "mapping": {
-                "postepay": "#/components/schemas/PostePayAuthRequestDetails",
-                "card": "#/components/schemas/CardAuthRequestDetails"
-              }
-            }
+            "$ref": "#/components/schemas/PaymentInstrumentDetail"
           }
         },
         "required": [
@@ -1161,81 +1145,96 @@
           "details"
         ]
       },
-      "PostePayAuthRequestDetails": {
-        "type": "object",
-        "description": "Additional payment authorization details for the PostePay payment method",
-        "properties": {
-          "detailType": {
-            "type": "string"
+      "PaymentInstrumentDetail": {
+        "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for the PostePay payment method",
+            "properties": {
+              "detailType": {
+                "type": "string",
+                "description": "fixed value 'postepay'"
+              },
+              "accountEmail": {
+                "type": "string",
+                "format": "email",
+                "description": "PostePay account email"
+              }
+            },
+            "required": [
+              "detailType",
+              "accountEmail"
+            ],
+            "example": {
+              "detailType": "postepay",
+              "accountEmail": "user@example.com"
+            }
           },
-          "accountEmail": {
-            "type": "string",
-            "format": "email",
-            "description": "PostePay account email"
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for credit cards",
+            "properties": {
+              "detailType": {
+                "type": "string",
+                "description": "fixed value 'card'"
+              },
+              "cvv": {
+                "type": "string",
+                "description": "Credit card CVV",
+                "pattern": "^[0-9]{3,4}$"
+              },
+              "pan": {
+                "type": "string",
+                "description": "Credit card PAN",
+                "pattern": "^[0-9]{14,16}$"
+              },
+              "expiryDate": {
+                "type": "string",
+                "description": "Credit card expiry date. The date format is `YYYYMM`",
+                "pattern": "^[0-9]{6}$"
+              },
+              "holderName": {
+                "type": "string",
+                "description": "The card holder name"
+              },
+              "brand": {
+                "description": "The card brand name",
+                "type": "string",
+                "enum": [
+                  "VISA",
+                  "MASTERCARD",
+                  "UNKNOWN",
+                  "DINERS",
+                  "MAESTRO",
+                  "AMEX"
+                ]
+              },
+              "threeDsData": {
+                "type": "string",
+                "description": "the 3ds data evaluated by the client"
+              }
+            },
+            "required": [
+              "detailType",
+              "cvv",
+              "pan",
+              "expiryDate",
+              "holderName",
+              "brand",
+              "threeDsData"
+            ],
+            "example": {
+              "detailType": "card",
+              "cvv": 0,
+              "pan": "0123456789012345",
+              "expiryDate": "209901",
+              "holderName": "Name Surname",
+              "brand": "VISA",
+              "threeDsData": "threeDsData"
+            }
           }
-        },
-        "required": [
-          "detailType",
-          "accountEmail"
-        ],
-        "example": {
-          "detailType": "postepay",
-          "accountEmail": "user@example.com"
-        }
-      },
-      "CardAuthRequestDetails": {
-        "type": "object",
-        "description": "Additional payment authorization details for credit cards",
-        "properties": {
-          "detailType": {
-            "type": "string"
-          },
-          "cvv": {
-            "type": "string",
-            "description": "Credit card CVV",
-            "pattern": "^[0-9]{3,4}$"
-          },
-          "pan": {
-            "type": "string",
-            "description": "Credit card PAN",
-            "pattern": "^[0-9]{14,16}$"
-          },
-          "expiryDate": {
-            "type": "string",
-            "description": "Credit card expiry date. The date format is `YYYYMM`",
-            "pattern": "^\\d{6}$"
-          },
-          "holderName": {
-            "type": "string",
-            "description": "The card holder name"
-          },
-          "brand": {
-           "type": "string",
-           "description": "The card brand name"
-          },
-          "threeDsData": {
-            "type": "string",
-            "description": "the 3ds data evaluated by the client"
-          }
-        },
-        "required": [
-          "detailType",
-          "cvv",
-          "pan",
-          "expiryDate",
-          "holderName",
-          "brand",
-          "threeDsData"
-        ],
-        "example": {
-          "detailType": "card",
-          "cvv": 0,
-          "pan": "0123456789012345",
-          "expiryDate": "209901",
-          "holderName": "Name Surname",
-          "brand": "VISA",
-          "threeDsData": "threeDsData"
-        }
+        ]
       },
       "UpdateAuthorizationRequest": {
         "type": "object",
@@ -1272,13 +1271,19 @@
             "type": "string",
             "format": "url",
             "description": "URL where to redirect clients to continue the authorization process"
+          },
+          "authorizationRequestId": {
+            "type": "string",
+            "description": "Authorization request id"
           }
         },
         "required": [
-          "authorizationUrl"
+          "authorizationUrl",
+          "authorizationRequestId"
         ],
         "example": {
-          "authorizationUrl": "https://example.com"
+          "authorizationUrl": "https://example.com",
+          "authorizationRequestId": "auth-request-id"
         }
       },
       "TransactionInfo": {
