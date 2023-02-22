@@ -1,36 +1,38 @@
 <policies>
     <inbound>
       <base />
-
       <!-- verifyPaymentNotice -->
-      <when condition="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Equals("verifyPaymentNotice")">
-        <return-response>
-              <set-status code="200" reason="OK" />
-              <set-header name="Content-Type" exists-action="override">
-                  <value>application/xml</value>
-              </set-header>
-              <set-body template="liquid">
-                  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-                      xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
-                      <soapenv:Header />
-                      <soapenv:Body>
-                          <outcome>OK</outcome>
-                          <fiscalCodePA>77777777777</fiscalCodePA>
-                          <companyName>Test Company Name</companyName>
-                      </soapenv:Body>
-                  </soapenv:Envelope>
-              </set-body>
+      <choose>
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Equals("verifyPaymentNotice"))">
+          <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/xml</value>
+            </set-header>
+            <set-body template="liquid">
+              <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+              <soapenv:Header />
+              <soapenv:Body>
+                <outcome>OK</outcome>
+                <fiscalCodePA>77777777777</fiscalCodePA>
+                <companyName>Test Company Name</companyName>
+              </soapenv:Body>
+              </soapenv:Envelope>
+            </set-body>
           </return-response>
         </when>
+      </choose>
 
       <!-- activatePaymentNotice -->
-      <when condition="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Equals("activatePaymentNotice")">
-        <return-response>
-              <set-status code="200" reason="OK" />
-              <set-header name="Content-Type" exists-action="override">
-                  <value>application/xml</value>
-              </set-header>
-              <set-body template="liquid">
+      <choose>
+        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Equals("activatePaymentNotice"))">
+          <return-response>
+                <set-status code="200" reason="OK" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/xml</value>
+                </set-header>
+                <set-body template="liquid">
                   <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                       xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
                       <soapenv:Header />
@@ -45,8 +47,7 @@
               </set-body>
           </return-response>
         </when>
-
-        <!-- auth -->
+      </choose>
     </inbound>
     <outbound>
       <base />
