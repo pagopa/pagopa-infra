@@ -15,8 +15,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_api_apiconfig_core_api_v1"></a> [apim\_api\_apiconfig\_core\_api\_v1](#module\_apim\_api\_apiconfig\_core\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.17 |
-| <a name="module_apim_apiconfig_product"></a> [apim\_apiconfig\_product](#module\_apim\_apiconfig\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.17 |
+| <a name="module_apim_api_apiconfig_core_subkey_api_v1"></a> [apim\_api\_apiconfig\_core\_subkey\_api\_v1](#module\_apim\_api\_apiconfig\_core\_subkey\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.17 |
+| <a name="module_apim_apiconfig_core_product"></a> [apim\_apiconfig\_core\_product](#module\_apim\_apiconfig\_core\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.17 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.17 |
 
 ## Resources
@@ -33,6 +33,8 @@
 | [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
 | [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/service_account) | resource |
+| [azuread_application.apiconfig-be](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/application) | data source |
+| [azuread_application.apiconfig-fe](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/application) | data source |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -54,6 +56,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
+| <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | `"config"` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |

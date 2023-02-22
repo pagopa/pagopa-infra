@@ -117,3 +117,8 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
+
+variable "cname_record_name" {
+  type    = string
+  default = "config"
+}

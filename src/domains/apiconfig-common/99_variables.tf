@@ -112,6 +112,6 @@ variable "github_runner" {
   })
   description = "GitHub runner variables"
   default = {
-    subnet_address_prefixes = ["10.1.164.0/23"]
+    subnet_address_prefixes = ["10.0.164.0/23"]
   }
 }
