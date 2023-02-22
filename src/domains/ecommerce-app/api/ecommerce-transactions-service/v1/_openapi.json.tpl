@@ -322,4 +322,17 @@
         "example": 200
       }
     },
- 
+    "requestBodies": {
+      "NewTransactionRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NewTransactionRequest"
+            }
+          }
+        }
+      }
+    }
+  }
+}
