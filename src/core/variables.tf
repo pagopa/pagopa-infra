@@ -3,6 +3,11 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "location_short" {
+  type    = string
+  default = ""
+}
+
 variable "prefix" {
   type    = string
   default = "pagopa"
