@@ -7,7 +7,7 @@ module "apim_ecommerce_mock_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
 
   product_id   = "ecommerce-mock"
-  display_name = "ecommerce pagoPA"
+  display_name = "ecommerce pagoPA mock for nodeForPsp API"
   description  = "Product for ecommerce mocks pagoPA"
 
   api_management_name = local.pagopa_apim_name
@@ -49,7 +49,6 @@ resource "azurerm_api_management_api" "apim_ecommerce_nodo_mock" {
   name                  = format("%s-apim_ecommerce_nodo_mock", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_ecommerce_product.product_id]
   subscription_required = local.apim_ecommerce_nodo_mock_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_nodo_mock_api.id
   version               = "v1"
