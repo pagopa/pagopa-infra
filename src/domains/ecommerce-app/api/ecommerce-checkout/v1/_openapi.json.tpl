@@ -1199,8 +1199,16 @@
                 "description": "The card holder name"
               },
               "brand": {
+                "description": "The card brand name",
                 "type": "string",
-                "description": "The card brand name"
+                "enum": [
+                  "VISA",
+                  "MASTERCARD",
+                  "UNKNOWN",
+                  "DINERS",
+                  "MAESTRO",
+                  "AMEX"
+                ]
               },
               "threeDsData": {
                 "type": "string",
@@ -1315,17 +1323,17 @@
         "type": "string",
         "description": "Possible statuses a transaction can be in",
         "enum": [
-          "ACTIVATION_REQUESTED",
           "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
-          "AUTHORIZED",
-          "AUTHORIZATION_FAILED",
+          "AUTHORIZATION_COMPLETED",
           "CLOSED",
-          "CLOSURE_FAILED",
+          "CLOSURE_ERROR",
           "NOTIFIED",
-          "NOTIFIED_FAILED",
           "EXPIRED",
-          "REFUNDED"
+          "REFUNDED",
+          "CANCELED",
+          "EXPIRED_NOT_AUTHORIZED",
+          "UNAUTHORIZED"
         ]
       },
       "PaymentMethodResponse": {
