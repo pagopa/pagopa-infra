@@ -4,15 +4,15 @@
         <allowed-origins>
           <origin>${origin}</origin>
         </allowed-origins>
-        <allowed-methods preflight-result-max-age="300">
-          <method>*</method>
+        <allowed-methods>
+          <method>POST</method>
+          <method>GET</method>
+          <method>OPTIONS</method>
         </allowed-methods>
         <allowed-headers>
-          <header>*</header>
+          <header>Content-Type</header>
+          <header>Authorization</header>
         </allowed-headers>
-        <expose-headers>
-          <header>*</header>
-        </expose-headers>
       </cors>
       <base />
       <set-variable name="requestId" value="@{
