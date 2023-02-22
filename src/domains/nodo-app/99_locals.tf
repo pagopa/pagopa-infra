@@ -11,7 +11,7 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name = "SlackPagoPA"
+  monitor_action_group_slack_name = "SlackPagoPANODO"
   monitor_action_group_email_name = "PagoPA"
   monitor_appinsights_name        = "${local.product}-appinsights"
 
