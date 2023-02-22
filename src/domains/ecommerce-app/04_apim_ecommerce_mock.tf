@@ -1,26 +1,3 @@
-##############
-## Products ##
-##############
-
-module "apim_ecommerce_mock_product" {
-  count  = var.env_short == "u" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
-
-  product_id   = "ecommerce-mock"
-  display_name = "ecommerce pagoPA mock for nodeForPsp API"
-  description  = "Product for ecommerce mocks pagoPA"
-
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-
-  published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
-
-  policy_xml = file("./api_product/_base_policy.xml")
-}
-
 ##############################
 ## API transactions service ##
 ##############################
@@ -34,10 +11,9 @@ locals {
   }
 }
 
-# Transactions service APIs
 resource "azurerm_api_management_api_version_set" "apim_ecommerce_nodo_mock_api" {
   count               = var.env_short == "u" ? 1 : 0
-  name                = format("%s-apim_ecommerce_nodo_mock", local.project)
+  name                = "${local.project}-nodo_mock"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_ecommerce_nodo_mock_api.display_name
@@ -47,7 +23,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_nodo_mock_api"
 resource "azurerm_api_management_api" "apim_ecommerce_nodo_mock" {
   count = var.env_short == "u" ? 1 : 0
 
-  name                  = format("%s-apim_ecommerce_nodo_mock", local.project)
+  name                  = "${local.project}-nodo_mock"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   subscription_required = local.apim_ecommerce_nodo_mock_api.subscription_required
@@ -69,4 +45,19 @@ resource "azurerm_api_management_api" "apim_ecommerce_nodo_mock" {
       endpoint_name = "nodeForPsp_Port"
     }
   }
+}
+
+resource "azurerm_api_management_product_api" "apim_ecommerce_nodo_mock_product_api" {
+  api_name            = azurerm_api_management_api.apim_ecommerce_nodo_mock[0].name
+  product_id          = module.apim_ecommerce_product.product_id
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+}
+
+resource "azurerm_api_management_api_policy" "apim_ecommerce_nodo_mock_policy" {
+  api_name            = azurerm_api_management_api.apim_ecommerce_nodo_mock[0].name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  xml_content = file("./api/ecommerce-mock/nodeForPsp/v1/_base_policy.xml.tpl")
 }
