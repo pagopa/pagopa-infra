@@ -270,17 +270,17 @@
         "type": "string",
         "description": "Possible statuses a transaction can be in",
         "enum": [
-          "ACTIVATION_REQUESTED",
           "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
-          "AUTHORIZED",
-          "AUTHORIZATION_FAILED",
+          "AUTHORIZATION_COMPLETED",
           "CLOSED",
-          "CLOSURE_FAILED",
+          "CLOSURE_ERROR",
           "NOTIFIED",
-          "NOTIFIED_FAILED",
           "EXPIRED",
-          "REFUNDED"
+          "REFUNDED",
+          "CANCELED",
+          "EXPIRED_NOT_AUTHORIZED",
+          "UNAUTHORIZED"
         ]
       },
       "ProblemJson": {
