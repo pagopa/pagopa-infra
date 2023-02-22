@@ -65,19 +65,6 @@ elastic_cold_storage = {
   initialStorageSize     = "100Gi"
 }
 
-elastic_cluster_config = {
-  num_node_balancer     = "1"
-  num_node_master       = "2"
-  num_node_hot          = "2"
-  num_node_warm         = "2"
-  num_node_cold         = "1"
-  storage_size_balancer = "20Gi"
-  storage_size_master   = "20Gi"
-  storage_size_hot      = "200Gi"
-  storage_size_warm     = "250Gi"
-  storage_size_cold     = "250Gi"
-}
-
 enable_iac_pipeline = true
 
 ingress_load_balancer_ip = "10.1.100.250"
@@ -101,5 +88,39 @@ nginx_helm = {
     config = {
       proxy-body-size : 0,
     }
+  }
+}
+
+
+nodeset_config = {
+  balancer-nodes = {
+    count = "1"
+    roles = []
+    storage = "20Gi"
+    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
+  },
+  master-nodes = {
+    count = "2"
+    roles = ["master"]
+    storage = "20Gi"
+    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
+  },
+  data-hot-nodes = {
+    count = "2"
+    roles = ["ingest","data_content","data_hot"]
+    storage = "300Gi"
+    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
+  },
+  data-warm-nodes = {
+    count = "2"
+    roles = ["ingest","data_content", "data_warm"]
+    storage = "300Gi"
+    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-warm"
+  },
+  data-cold-nodes = {
+    count = "2"
+    roles = ["ingest","data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
+    storage = "300Gi"
+    storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-cold"
   }
 }

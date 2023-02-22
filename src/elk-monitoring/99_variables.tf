@@ -157,21 +157,6 @@ variable "elastic_cold_storage" {
   })
 }
 
-variable "elastic_cluster_config" {
-  type = object({
-    num_node_balancer     = string
-    num_node_master       = string
-    num_node_hot          = string
-    num_node_warm         = string
-    num_node_cold         = string
-    storage_size_balancer = string
-    storage_size_master   = string
-    storage_size_hot      = string
-    storage_size_warm     = string
-    storage_size_cold     = string
-  })
-}
-
 variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
@@ -215,4 +200,21 @@ variable "ingress_min_replica_count" {
 
 variable "ingress_max_replica_count" {
   type = string
+}
+
+variable "nodeset_config" {
+  type = map(object({
+    count            = string
+    roles            = list(string)
+    storage          = string
+    storageClassName = string
+  }))
+  default = {
+    default = {
+      count            = 1
+      roles            = ["master", "data", "data_content", "data_hot", "data_warm", "data_cold", "data_frozen", "ingest", "ml", "remote_cluster_client", "transform"]
+      storage          = "5Gi"
+      storageClassName = "standard"
+    }
+  }
 }

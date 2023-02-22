@@ -1,52 +1,8 @@
 module "elastic_stack" {
-  #source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.2.0"
-  source = "/Users/massimoscattarella/projects/pagopa/azurerm/elastic_stack"
+  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.5.0"
 
   namespace = local.elk_namespace
-
-  nodeset_config = {
-    balancer-nodes = {
-      count = var.elastic_cluster_config.num_node_balancer
-      roles = []
-      storage = var.elastic_cluster_config.storage_size_balancer
-      storageClassName = "${local.project}-elastic-aks-storage-hot"
-    },
-    master-nodes = {
-      count = var.elastic_cluster_config.num_node_master
-      roles = ["master"]
-      storage = var.elastic_cluster_config.storage_size_master
-      storageClassName = "${local.project}-elastic-aks-storage-hot"
-    },
-    data-hot-nodes = {
-      count = var.elastic_cluster_config.num_node_hot
-      roles = ["ingest","data_content","data_hot"]
-      storage = var.elastic_cluster_config.storage_size_hot
-      storageClassName = "${local.project}-elastic-aks-storage-hot"
-    },
-    data-warm-nodes = {
-      count = var.elastic_cluster_config.num_node_warm
-      roles = ["ingest","data_content", "data_warm"]
-      storage = var.elastic_cluster_config.storage_size_warm
-      storageClassName = "${local.project}-elastic-aks-storage-warm"
-    },
-    data-cold-nodes = {
-      count = var.elastic_cluster_config.num_node_cold
-      roles = ["ingest","data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
-      storage = var.elastic_cluster_config.storage_size_cold
-      storageClassName = "${local.project}-elastic-aks-storage-cold"
-    }
-  }
-
-  agent_config_container_logs = {
-    nodo = {
-      id = "1" 
-      data_stream_namespace = "nodo"
-    }
-    nodo-cron = {
-      id = "2" 
-      data_stream_namespace = "nodo_cron"
-    }
-  }
+  nodeset_config = var.nodeset_config
 
   kibana_external_domain = var.env_short == "p" ? "https://kibana.platform.pagopa.it/kibana" : "https://kibana.${var.env}.platform.pagopa.it/kibana"
 
