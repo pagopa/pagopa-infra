@@ -17,7 +17,71 @@ data "azurerm_monitor_action_group" "slack" {
   name                = local.monitor_action_group_slack_name
 }
 
+data "azurerm_monitor_action_group" "slacknodo" {
+  resource_group_name = var.monitor_resource_group_name
+  name                = local.monitor_action_group_slack_name
+}
+
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
+}
+
+
+resource "azurerm_monitor_metric_alert" "aks_nodo_moetrics" {
+  name                = "${local.aks_name}-nodo-cron-pod_number"
+  resource_group_name = var.monitor_resource_group_name
+  scopes              = [data.azurerm_kubernetes_cluster.aks.id]
+  description         = "Action will be triggered when Pod count nodo-cron is greater than 200."
+
+  criteria {
+    aggregation      = "Average"
+    metric_namespace = "Insights.Container/pods"
+    metric_name      = "podCount"
+    operator         = "GreaterThan"
+    threshold        = 200
+    dimension {
+      name     = "kubernetes namespace"
+      operator = "Include"
+      values   = ["nodo-cron"]
+    }
+  }
+  action {
+    action_group_id    = data.azurerm_monitor_action_group.slack.id
+    webhook_properties = null
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "aks_nodo_moetrics_error" {
+  name                = "${local.aks_name}-nodo-cron-pod_error"
+  resource_group_name = var.monitor_resource_group_name
+  scopes              = [data.azurerm_kubernetes_cluster.aks.id]
+  description         = "Action will be triggered when Pod count nodo-cron is greater than 200."
+
+  criteria {
+    aggregation      = "Average"
+    metric_namespace = "Insights.Container/pods"
+    metric_name      = "podCount"
+    operator         = "GreaterThan"
+    threshold        = 20
+    dimension {
+      name     = "kubernetes namespace"
+      operator = "Include"
+      values   = ["nodo-cron"]
+    }
+    dimension {
+      name     = "phase"
+      operator = "Include"
+      values   = ["Failed", "Pending"]
+    }
+
+  }
+
+
+
+
+  action {
+    action_group_id    = data.azurerm_monitor_action_group.slack.id
+    webhook_properties = null
+  }
 }
