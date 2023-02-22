@@ -15,6 +15,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_api_apiconfig_core_oauth_api_v1"></a> [apim\_api\_apiconfig\_core\_oauth\_api\_v1](#module\_apim\_api\_apiconfig\_core\_oauth\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.17 |
 | <a name="module_apim_api_apiconfig_core_subkey_api_v1"></a> [apim\_api\_apiconfig\_core\_subkey\_api\_v1](#module\_apim\_api\_apiconfig\_core\_subkey\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.17 |
 | <a name="module_apim_apiconfig_core_product"></a> [apim\_apiconfig\_core\_product](#module\_apim\_apiconfig\_core\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.17 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.17 |
@@ -23,7 +24,8 @@
 
 | Name | Type |
 |------|------|
-| [azurerm_api_management_api_version_set.api_apiconfig_core_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_apiconfig_core_oauth_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_apiconfig_core_subkey_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
