@@ -108,6 +108,7 @@
 | <a name="module_apim_payment_manager_product"></a> [apim\_payment\_manager\_product](#module\_apim\_payment\_manager\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_payment_transactions_gateway_external_api_v1"></a> [apim\_payment\_transactions\_gateway\_external\_api\_v1](#module\_apim\_payment\_transactions\_gateway\_external\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_payment_transactions_gateway_internal_api_v1"></a> [apim\_payment\_transactions\_gateway\_internal\_api\_v1](#module\_apim\_payment\_transactions\_gateway\_internal\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_payment_transactions_gateway_pgsfe_api_v1"></a> [apim\_payment\_transactions\_gateway\_pgsfe\_api\_v1](#module\_apim\_payment\_transactions\_gateway\_pgsfe\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_payment_transactions_gateway_product"></a> [apim\_payment\_transactions\_gateway\_product](#module\_apim\_payment\_transactions\_gateway\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_payment_transactions_gateway_update_api_v1"></a> [apim\_payment\_transactions\_gateway\_update\_api\_v1](#module\_apim\_payment\_transactions\_gateway\_update\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_payments_receipts_product"></a> [apim\_payments\_receipts\_product](#module\_apim\_payments\_receipts\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
@@ -352,6 +353,7 @@
 | [azurerm_api_management_api_version_set.nodo_wfesp_dev_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.payment_transactions_gateway_external_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.payment_transactions_gateway_internal_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.payment_transactions_gateway_pgsfe_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.payment_transactions_gateway_update_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_adminpanel_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_auth_rtd_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -444,6 +446,7 @@
 | [azurerm_application_insights_web_test.checkout_fe_web_test](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/application_insights_web_test) | resource |
 | [azurerm_dns_a_record.dns_a_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_api_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
+| [azurerm_dns_a_record.dns_a_kibana](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_management](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_management_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_portal](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
@@ -627,6 +630,7 @@
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault_certificate.app_gw_platform](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.app_gw_platform_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_certificate) | data source |
+| [azurerm_key_vault_certificate.kibana](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.management_platform](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.portal_platform](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.wfespgovit](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_certificate) | data source |
@@ -702,6 +706,7 @@
 | <a name="input_app_gateway_api_certificate_name"></a> [app\_gateway\_api\_certificate\_name](#input\_app\_gateway\_api\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_deny_paths"></a> [app\_gateway\_deny\_paths](#input\_app\_gateway\_deny\_paths) | Deny paths on app gateway | `list(string)` | `[]` | no |
 | <a name="input_app_gateway_deny_paths_2"></a> [app\_gateway\_deny\_paths\_2](#input\_app\_gateway\_deny\_paths\_2) | Deny paths on app gateway | `list(string)` | `[]` | no |
+| <a name="input_app_gateway_kibana_certificate_name"></a> [app\_gateway\_kibana\_certificate\_name](#input\_app\_gateway\_kibana\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | `""` | no |
 | <a name="input_app_gateway_management_certificate_name"></a> [app\_gateway\_management\_certificate\_name](#input\_app\_gateway\_management\_certificate\_name) | Application gateway api management certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_max_capacity"></a> [app\_gateway\_max\_capacity](#input\_app\_gateway\_max\_capacity) | n/a | `number` | `2` | no |
 | <a name="input_app_gateway_min_capacity"></a> [app\_gateway\_min\_capacity](#input\_app\_gateway\_min\_capacity) | n/a | `number` | `0` | no |
@@ -819,6 +824,7 @@
 | <a name="input_ehns_zone_redundant"></a> [ehns\_zone\_redundant](#input\_ehns\_zone\_redundant) | Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones). | `bool` | `false` | no |
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Enable Azure DevOps agent. | `bool` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
+| <a name="input_env"></a> [env](#input\_env) | n/a | `string` | `""` | no |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_eventhub_enabled"></a> [eventhub\_enabled](#input\_eventhub\_enabled) | eventhub enable? | `bool` | `false` | no |
 | <a name="input_eventhubs"></a> [eventhubs](#input\_eventhubs) | A list of event hubs to add to namespace. | <pre>list(object({<br>    name              = string<br>    partitions        = number<br>    message_retention = number<br>    consumers         = list(string)<br>    keys = list(object({<br>      name   = string<br>      listen = bool<br>      send   = bool<br>      manage = bool<br>    }))<br>  }))</pre> | `[]` | no |
@@ -855,6 +861,8 @@
 | <a name="input_gpd_reporting_delete_retention_days"></a> [gpd\_reporting\_delete\_retention\_days](#input\_gpd\_reporting\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_gpd_reporting_schedule_batch"></a> [gpd\_reporting\_schedule\_batch](#input\_gpd\_reporting\_schedule\_batch) | Cron scheduling (NCRON example '*/45 * * * * *') | `string` | `"0 0 1 * * *"` | no |
 | <a name="input_gpd_schema_name"></a> [gpd\_schema\_name](#input\_gpd\_schema\_name) | Name of the schema of the DB | `string` | `"apd"` | no |
+| <a name="input_ingress_elk_load_balancer_ip"></a> [ingress\_elk\_load\_balancer\_ip](#input\_ingress\_elk\_load\_balancer\_ip) | n/a | `string` | `""` | no |
+| <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | `""` | no |
 | <a name="input_io_bpd_hostname"></a> [io\_bpd\_hostname](#input\_io\_bpd\_hostname) | IO BPD hostname | `string` | `""` | no |
 | <a name="input_ip_nodo"></a> [ip\_nodo](#input\_ip\_nodo) | Nodo pagamenti ip | `string` | n/a | yes |
 | <a name="input_law_daily_quota_gb"></a> [law\_daily\_quota\_gb](#input\_law\_daily\_quota\_gb) | The workspace daily quota for ingestion in GB. | `number` | `-1` | no |
