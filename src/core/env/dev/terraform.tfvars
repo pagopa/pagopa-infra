@@ -654,8 +654,9 @@ dexp_re_db_linkes_service = {
   enable = true
 }
 
-ingress_load_balancer_ip = "10.1.100.250"
+# node forwarder
+nodo_pagamenti_x_forwarded_for = "10.230.8.5"
 
+# lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
-nodo_pagamenti_x_forwarded_for = "10.230.8.5"
