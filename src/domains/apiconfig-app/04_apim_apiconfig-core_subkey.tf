@@ -4,7 +4,7 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_core_subkey_api
   name                = format("%s-apiconfig-core-subkey-%s-api", var.env_short, each.key)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = "${local.apiconfig_core_service_api.display_name} - Subkey"
+  display_name        = "${local.apiconfig_core_service_api.display_name} - Subkey ${each.key}"
   versioning_scheme   = "Segment"
 }
 
@@ -16,14 +16,14 @@ module "apim_api_apiconfig_core_subkey_api_v1" {
   name                  = format("%s-apiconfig-core-%s-subkey-api", local.project, each.key)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_apiconfig_core_product.product_id]
+  product_ids           = [module.apim_apiconfig_core_subkey_product.product_id]
   subscription_required = local.apiconfig_core_service_api.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.api_apiconfig_core_subkey_api[each.key].id
   api_version    = "v1"
 
   description  = local.apiconfig_core_service_api.description
-  display_name = "${local.apiconfig_core_service_api.display_name} - ${each.key}"
+  display_name = "${local.apiconfig_core_service_api.display_name} - Subkey ${each.key}"
 
   path        = "${local.apiconfig_core_service_api.path}/subkey/${each.key}"
   protocols   = ["https"]

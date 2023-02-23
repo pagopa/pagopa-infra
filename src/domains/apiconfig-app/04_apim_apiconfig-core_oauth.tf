@@ -16,14 +16,14 @@ module "apim_api_apiconfig_core_oauth_api_v1" {
   name                  = format("%s-apiconfig-core-%s-oauth-api", local.project, each.key)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_apiconfig_core_product.product_id]
+  product_ids           = [module.apim_apiconfig_core_oauth_product.product_id]
   subscription_required = local.apiconfig_core_service_api.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.api_apiconfig_core_oauth_api[each.key].id
   api_version    = "v1"
 
   description  = local.apiconfig_core_service_api.description
-  display_name = "${local.apiconfig_core_service_api.display_name} - ${each.key}"
+  display_name = "${local.apiconfig_core_service_api.display_name} - Oauth ${each.key}"
 
   path        = "${local.apiconfig_core_service_api.path}/oauth/${each.key}"
   protocols   = ["https"]
@@ -44,4 +44,29 @@ module "apim_api_apiconfig_core_oauth_api_v1" {
     apiconfig_be_client_id = local.apiconfig_core_service_api.apiconfig_be_client_id
     apiconfig_fe_client_id = local.apiconfig_core_service_api.apiconfig_fe_client_id
   })
+}
+
+
+resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
+  name                         = "apiconfig-core-oauth2"
+  api_management_name          = local.pagopa_apim_name
+  resource_group_name          = local.pagopa_apim_rg
+  display_name                 = "apiconfig-core-oauth2"
+  authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
+  client_id                    = data.azuread_application.apiconfig-fe.application_id
+  client_registration_endpoint = "http://localhost"
+
+  grant_types           = ["authorizationCode"]
+  authorization_methods = ["GET", "POST"]
+
+  #tfsec:ignore:GEN003
+  token_endpoint = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
+  default_scope = format("%s/%s",
+    data.azuread_application.apiconfig-be.identifier_uris[0],
+  "access-apiconfig-be")
+  client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
+
+  bearer_token_sending_methods = ["authorizationHeader"]
+  client_authentication_method = ["Body"]
+
 }
