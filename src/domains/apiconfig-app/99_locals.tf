@@ -32,7 +32,7 @@ locals {
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
-  apiconfig_core_service_api = {
+  apiconfig_core_locals = {
     hostname = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
 
     product_id            = "apiconfig-core"
