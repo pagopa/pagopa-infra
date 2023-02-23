@@ -4,7 +4,7 @@
 
 module "apim_mock_psp_secondary_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
-  count  = var.env_short == "p" ? 0 : 1
+  count  = contains(["p", "u"], var.env_short) ? 0 : 1
 
   product_id   = "mock_psp_secondary"
   display_name = "Mock PSP (Secondary) for NDP"
@@ -35,7 +35,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "api_mock_psp_secondary_api" {
-  count = var.env_short == "p" ? 0 : 1
+  count = contains(["p", "u"], var.env_short) ? 0 : 1
 
   name                = format("%s-mock-psp-secondary-service-ndp-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -47,7 +47,7 @@ resource "azurerm_api_management_api_version_set" "api_mock_psp_secondary_api" {
 
 module "apim_api_mock_psp_secondary_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
-  count  = var.env_short == "p" ? 0 : 1
+  count  = contains(["p", "u"], var.env_short) ? 0 : 1
 
   name                  = format("%s-mock-psp-secondary-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
