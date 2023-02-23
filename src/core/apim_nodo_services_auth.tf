@@ -458,6 +458,14 @@ locals {
   }
 }
 
+resource "azurerm_api_management_api_version_set" "node_for_pa_api_auth" {
+  name                = format("%s-node-for-pa-api-auth", var.env_short)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_node_for_pa_api_auth.display_name
+  versioning_scheme   = "Segment"
+}
+
 resource "azurerm_api_management_api" "apim_node_for_pa_api_v1_auth" {
   name                  = format("%s-node-for-pa-api-auth", var.env_short)
   api_management_name   = module.apim.name
