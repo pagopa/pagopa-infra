@@ -88,7 +88,6 @@ locals {
       }
     }
   }
-
   listeners_apiprf = {
     apiprf = {
       protocol           = "Https"
@@ -123,6 +122,7 @@ locals {
         )
       }
     }
+  }
 
   listeners_wfespgovit = {
     wfespgovit = {
@@ -175,7 +175,6 @@ locals {
       rewrite_rule_set_name = null
     }
   }
-
   routes_apiprf = {
     apiprf = {
       listener              = "apiprf"
