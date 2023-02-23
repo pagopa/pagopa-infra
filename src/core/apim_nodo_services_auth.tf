@@ -26,7 +26,6 @@ locals {
     azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name,
     azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.name,
     azurerm_api_management_api.apim_node_for_io_api_v1_auth.name,
-    azurerm_api_management_api.apim_psp_for_node_api_v1_auth.name,
     azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.name,
     azurerm_api_management_api.apim_node_for_pa_api_v1_auth.name,
   ]
