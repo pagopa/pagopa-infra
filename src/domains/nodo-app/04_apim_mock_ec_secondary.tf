@@ -4,7 +4,7 @@
 
 module "apim_mock_ec_secondary_product" {
   source       = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
-  count        = contains(["p", "u"], var.env_short) ? 0 : 1
+  count        = var.env_short == "d" ? 1 : 0
   product_id   = "mock_ec_secondary"
   display_name = "Mock EC (Secondary) for NDP"
   description  = "Mock EC (Secondary) for NDP"
@@ -34,7 +34,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "api_mock_ec_secondary_api" {
-  count = contains(["p", "u"], var.env_short) ? 0 : 1
+  count = var.env_short == "d" ? 1 : 0
 
   name                = format("%s-mock-ec-secondary-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -45,7 +45,7 @@ resource "azurerm_api_management_api_version_set" "api_mock_ec_secondary_api" {
 
 
 module "apim_api_mock_ec_secondary_api_v1" {
-  count = contains(["p", "u"], var.env_short) ? 0 : 1
+  count = var.env_short == "d" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
