@@ -520,7 +520,8 @@ resource "azurerm_api_management_api_policy" "apim_node_for_pa_policy_auth" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPa/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 
