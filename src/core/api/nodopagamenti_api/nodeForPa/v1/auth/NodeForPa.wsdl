@@ -1,58 +1,43 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<wsdl:definitions
-  xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/"
-  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-  xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPa.xsd"
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="nodeForPa"
   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
   xmlns:nfpa="http://pagopa-api.pagopa.gov.it/node/nodeForPa.xsd"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="nodeForPa"
-  targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPa.xsd"
->
+  xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPa.wsdl" targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPa.wsdl">
   <wsdl:types>
-    <xsd:schema version="1.0.0" xmlns="http://www.w3.org/2001/XMLSchema"
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPa.xsd"
-            xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPa.xsd"
-            xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/">
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPa.xsd" targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPa.xsd">
 
       <xsd:complexType name="tipoElencoFlussiRendicontazione">
         <xsd:sequence>
           <xsd:element name="totRestituiti" type="xsd:int" />
-          <xsd:element name="idRendicontazione"
-                       type="tns:tipoIdRendicontazione" nillable="true" minOccurs="0"
-                       maxOccurs="unbounded" />
+          <xsd:element name="idRendicontazione" type="tns:tipoIdRendicontazione" nillable="true" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
       </xsd:complexType>
 
       <xsd:complexType name="tipoIdRendicontazione">
         <xsd:sequence>
-          <xsd:element name="identificativoFlusso"
-                       type="xsd:string" />
+          <xsd:element name="identificativoFlusso" type="xsd:string" />
           <xsd:element name="dataOraFlusso" type="xsd:dateTime" />
         </xsd:sequence>
       </xsd:complexType>
 
-      <xsd:complexType
-        name="nodoChiediElencoFlussiRendicontazione">
+      <xsd:complexType name="nodoChiediElencoFlussiRendicontazione">
         <xsd:sequence>
-          <xsd:element name="identificativoIntermediarioPA"
-                       type="common:stText35" />
-          <xsd:element name="identificativoStazioneIntermediarioPA"
-                       type="common:stText35" />
-          <xsd:element name="identificativoDominio"
-                       type="common:stText35" minOccurs="0" />
-          <xsd:element name="identificativoPSP"
-                       type="common:stText35" minOccurs="0" />
+          <xsd:element name="identificativoIntermediarioPA" type="tns:stText35" />
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="tns:stText35" />
+          <xsd:element name="identificativoDominio" type="tns:stText35" minOccurs="0" />
+          <xsd:element name="identificativoPSP" type="tns:stText35" minOccurs="0" />
         </xsd:sequence>
       </xsd:complexType>
 
-      <xsd:complexType
-        name="nodoChiediElencoFlussiRendicontazioneRisposta">
+      <xsd:complexType name="nodoChiediElencoFlussiRendicontazioneRisposta">
         <xsd:complexContent>
-          <xsd:extension base="common:ctRisposta">
+          <xsd:extension base="tns:ctRisposta">
             <xsd:sequence>
-              <xsd:element name="elencoFlussiRendicontazione"
-                           type="tns:tipoElencoFlussiRendicontazione" minOccurs="0" />
+              <xsd:element name="elencoFlussiRendicontazione" type="tns:tipoElencoFlussiRendicontazione" minOccurs="0" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -60,50 +45,30 @@
 
       <xsd:complexType name="nodoChiediFlussoRendicontazioneRequest">
         <xsd:sequence>
-          <xsd:element name="identificativoIntermediarioPA"
-                       type="common:stText35" />
-          <xsd:element name="identificativoStazioneIntermediarioPA"
-                       type="common:stText35" />
-          <xsd:element name="identificativoDominio"
-                       type="common:stText35" minOccurs="0" />
-          <xsd:element name="identificativoPSP"
-                       type="common:stText35" minOccurs="0" />
-          <xsd:element name="identificativoFlusso"
-                       type="xsd:string" />
+          <xsd:element name="identificativoIntermediarioPA" type="tns:stText35" />
+          <xsd:element name="identificativoStazioneIntermediarioPA" type="tns:stText35" />
+          <xsd:element name="identificativoDominio" type="tns:stText35" minOccurs="0" />
+          <xsd:element name="identificativoPSP" type="tns:stText35" minOccurs="0" />
+          <xsd:element name="identificativoFlusso" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
 
-      <xsd:complexType
-        name="nodoChiediFlussoRendicontazioneResponse">
+      <xsd:complexType name="nodoChiediFlussoRendicontazioneResponse">
         <xsd:complexContent>
-          <xsd:extension base="common:ctRisposta">
+          <xsd:extension base="tns:ctRisposta">
             <xsd:sequence>
-              <xsd:element name="xmlRendicontazione"
-                           type="xsd:base64Binary" minOccurs="0"
-                           xmime:expectedContentTypes="application/octet-stream"
-                           xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
+              <xsd:element name="xmlRendicontazione" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/octet-stream"
+                xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
 
-      <xsd:element name="nodoChiediElencoFlussiRendicontazione" type="tns:nodoChiediElencoFlussiRendicontazione" />
-      <xsd:element name="nodoChiediElencoFlussiRendicontazioneRisposta" type="tns:nodoChiediElencoFlussiRendicontazioneRisposta" />
-      <xsd:element name="nodoChiediFlussoRendicontazioneRequest" type="tns:nodoChiediFlussoRendicontazioneRequest" />
-      <xsd:element name="nodoChiediFlussoRendicontazioneResponse" type="tns:nodoChiediFlussoRendicontazioneResponse" />
-    </xsd:schema>
-
-    <xsd:schema attributeFormDefault="unqualified"
-                targetNamespace="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/"
-                version="1.0"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/">
-
       <xsd:complexType name="ctRichiestaMarcaDaBollo">
         <xsd:sequence>
-          <xsd:element name="hashDocumento" type="stBase64Binary72" />
-          <xsd:element name="tipoBollo" type="stTipoBolloDigitale" />
-          <xsd:element name="provinciaResidenza" type="stNazioneProvincia" />
+          <xsd:element name="hashDocumento" type="tns:stBase64Binary72" />
+          <xsd:element name="tipoBollo" type="tns:stTipoBolloDigitale" />
+          <xsd:element name="provinciaResidenza" type="tns:stNazioneProvincia" />
         </xsd:sequence>
       </xsd:complexType>
 
@@ -190,14 +155,14 @@
 
       <xsd:complexType name="ctMapEntry">
         <xsd:sequence>
-          <xsd:element name="key" type="stText140" />
-          <xsd:element name="value" type="stText140" />
+          <xsd:element name="key" type="tns:stText140" />
+          <xsd:element name="value" type="tns:stText140" />
         </xsd:sequence>
       </xsd:complexType>
 
       <xsd:complexType name="ctMetadata">
         <xsd:sequence>
-          <xsd:element name="mapEntry" type="ctMapEntry" minOccurs="1" maxOccurs="10"></xsd:element>
+          <xsd:element name="mapEntry" type="tns:ctMapEntry" minOccurs="1" maxOccurs="10"></xsd:element>
         </xsd:sequence>
       </xsd:complexType>
 
@@ -235,7 +200,7 @@
 
       <xsd:complexType name="ctFaultBean">
         <xsd:sequence>
-          <xsd:element name="faultCode" type="stFaultCode" />
+          <xsd:element name="faultCode" type="tns:stFaultCode" />
           <xsd:element name="faultString" type="xsd:string" />
           <xsd:element name="id" type="xsd:string" />
           <xsd:element name="description" type="xsd:string" minOccurs="0" />
@@ -248,17 +213,23 @@
 
       <xsd:complexType name="ctResponse">
         <xsd:sequence>
-          <xsd:element name="outcome" type="stOutcome" />
-          <xsd:element name="fault" type="ctFaultBean" minOccurs="0" />
+          <xsd:element name="outcome" type="tns:stOutcome" />
+          <xsd:element name="fault" type="tns:ctFaultBean" minOccurs="0" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ctRisposta">
         <xsd:sequence>
-          <xsd:element name="fault" type="ctFaultBean" minOccurs="0" />
+          <xsd:element name="fault" type="tns:ctFaultBean" minOccurs="0" />
         </xsd:sequence>
       </xsd:complexType>
 
+      <xsd:element name="nodoChiediElencoFlussiRendicontazione" type="tns:nodoChiediElencoFlussiRendicontazione" />
+      <xsd:element name="nodoChiediElencoFlussiRendicontazioneRisposta" type="tns:nodoChiediElencoFlussiRendicontazioneRisposta" />
+      <xsd:element name="nodoChiediFlussoRendicontazioneRequest" type="tns:nodoChiediFlussoRendicontazioneRequest" />
+      <xsd:element name="nodoChiediFlussoRendicontazioneResponse" type="tns:nodoChiediFlussoRendicontazioneResponse" />
     </xsd:schema>
+
+
 
   </wsdl:types>
   <wsdl:message name="nodoChiediElencoFlussiRendicontazione">
@@ -273,7 +244,7 @@
   <wsdl:message name="nodoChiediFlussoRendicontazioneResponse">
     <wsdl:part name="bodyresponse" element="nfpa:nodoChiediFlussoRendicontazioneResponse"></wsdl:part>
   </wsdl:message>
-  <wsdl:portType name="nodeForPa">
+  <wsdl:portType name="nodeForPa_PortType">
     <wsdl:operation name="nodoChiediElencoFlussiRendicontazione">
       <wsdl:input message="tns:nodoChiediElencoFlussiRendicontazione" />
       <wsdl:output message="tns:nodoChiediElencoFlussiRendicontazioneRisposta" />
@@ -283,13 +254,10 @@
       <wsdl:output message="tns:nodoChiediFlussoRendicontazioneResponse"></wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="nodeForPaBinding"
-                type="tns:nodeForPa">
-    <soap:binding style="document"
-                  transport="http://schemas.xmlsoap.org/soap/http" />
+  <wsdl:binding name="nodeForPa_Binding" type="tns:nodeForPa_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="nodoChiediElencoFlussiRendicontazione">
-      <soap:operation
-        soapAction="nodoChiediElencoFlussiRendicontazione" />
+      <soap:operation soapAction="nodoChiediElencoFlussiRendicontazione" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -298,8 +266,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="nodoChiediFlussoRendicontazione">
-      <soap:operation
-        soapAction="nodoChiediFlussoRendicontazione" />
+      <soap:operation soapAction="nodoChiediFlussoRendicontazione" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -308,9 +275,8 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="nodeForPaService">
-    <wsdl:port binding="tns:nodeForPaBinding"
-               name="nodeForPaPort">
+  <wsdl:service name="nodeForPa_Service">
+    <wsdl:port binding="tns:nodeForPa_Binding" name="nodeForPa_Port">
       <soap:address location="https://api.uat.platform.pagopa.it/nodo-auth/node-for-pa/v1" />
     </wsdl:port>
   </wsdl:service>
