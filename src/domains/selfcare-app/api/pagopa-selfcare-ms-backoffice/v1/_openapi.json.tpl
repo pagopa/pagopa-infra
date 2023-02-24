@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.37
+  version: 0.0.78
 servers:
   - url:  'https://${host}/${basePath}'
 tags:
@@ -355,6 +355,16 @@ components:
         secondaryKey:
           type: string
           description: Institution's secondary Api Key
+    AssistanceContactsResource:
+      title: AssistanceContactsResource
+      type: object
+      properties:
+        supportEmail:
+          type: string
+          description: Institution's support email contact
+        supportPhone:
+          type: string
+          description: Institution's support phone contact
     AttributeResource:
       title: AttributeResource
       required:
@@ -372,6 +382,36 @@ components:
         origin:
           type: string
           description: Institution data origin
+    CompanyInformationsResource:
+      title: CompanyInformationsResource
+      type: object
+      properties:
+        businessRegisterPlace:
+          type: string
+          description: Institution's business register place
+        rea:
+          type: string
+          description: Institution's REA
+        shareCapital:
+          type: string
+          description: Institution's share capital value
+    DpoDataResource:
+      title: DpoDataResource
+      required:
+        - address
+        - email
+        - pec
+      type: object
+      properties:
+        address:
+          type: string
+          description: DPO's address
+        email:
+          type: string
+          description: DPO's email
+        pec:
+          type: string
+          description: DPO's PEC
     InstitutionDetailResource:
       title: InstitutionDetailResource
       required:
@@ -447,6 +487,15 @@ components:
         address:
           type: string
           description: Institution's physical address
+        assistanceContacts:
+          description: Institution's assistance contacts
+          $ref: '#/components/schemas/AssistanceContactsResource'
+        companyInformations:
+          description: GPS, SCP, PT optional data
+          $ref: '#/components/schemas/CompanyInformationsResource'
+        dpoData:
+          description: Data Protection Officer (DPO) specific data
+          $ref: '#/components/schemas/DpoDataResource'
         externalId:
           type: string
           description: Institution's unique external identifier
@@ -477,6 +526,12 @@ components:
         originId:
           type: string
           description: Institution's details origin Id
+        pspData:
+          description: Payment Service Provider (PSP) specific data
+          $ref: '#/components/schemas/PspDataResource'
+        recipientCode:
+          type: string
+          description: Billing recipient code
         status:
           type: string
           description: Institution onboarding status
@@ -552,6 +607,32 @@ components:
         urlPublic:
           type: string
           description: URL that redirects to the public information webpage of the product
+    PspDataResource:
+      title: PspDataResource
+      required:
+        - abiCode
+        - businessRegisterNumber
+        - legalRegisterName
+        - legalRegisterNumber
+        - vatNumberGroup
+      type: object
+      properties:
+        abiCode:
+          type: string
+          description: PSP's ABI code
+        businessRegisterNumber:
+          type: string
+          description: PSP's Business Register number
+        legalRegisterName:
+          type: string
+          description: PSP's legal register name
+        legalRegisterNumber:
+          type: string
+          description: PSP's legal register number
+        vatNumberGroup:
+          type: boolean
+          description: PSP's Vat Number group
+          example: false
   securitySchemes:
     bearerAuth:
       type: http
