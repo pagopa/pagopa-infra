@@ -278,6 +278,52 @@ paths:
       security:
         - bearerAuth:
             - global
+  /channels/paymenttypes/{channelcode}/{pspcode}:
+    delete:
+      tags:
+        - channels
+      summary: deletePaymentServiceProvidersChannels
+      description: Delete a relation between a PSP and a channel
+      operationId: deletePaymentServiceProvidersChannelsUsingDELETE
+      parameters:
+        - name: channelcode
+          in: path
+          description: Channel's unique identifier
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: pspcode
+          in: path
+          description: Code of the payment service provider
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   '/channels/{channelcode}':
     put:
       tags:
