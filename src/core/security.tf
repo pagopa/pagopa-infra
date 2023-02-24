@@ -40,7 +40,7 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
 
 # Azure AD
 data "azuread_group" "adgroup_admin" {
-  display_name = format("%s-adgroup-admin", local.project)
+  display_name = format("%s-adgroup-admin", local.project_noenv)
 }
 
 ## ad group policy ##
@@ -60,7 +60,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 }
 
 data "azuread_group" "adgroup_developers" {
-  display_name = format("%s-adgroup-developers", local.project)
+  display_name = format("%s-adgroup-developers", local.project_noenv)
 }
 
 ## ad group policy ##
@@ -82,7 +82,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
 }
 
 data "azuread_group" "adgroup_externals" {
-  display_name = format("%s-adgroup-externals", local.project)
+  display_name = format("%s-adgroup-externals", local.project_noenv)
 }
 
 ## ad group policy ##
@@ -104,7 +104,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
 }
 
 data "azuread_group" "adgroup_security" {
-  display_name = format("%s-adgroup-security", local.project)
+  display_name = format("%s-adgroup-security", local.project_noenv)
 }
 
 ## ad group policy ##

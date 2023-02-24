@@ -180,7 +180,7 @@ module "buyerbanks_storage" {
 
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
 
-  name                       = replace(format("%s-buyerbanks-storage", local.project), "-", "")
+  name                       = replace(format("%s-buyerbanks-storage", local.project_noenv), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   account_replication_type   = "LRS"

@@ -11,7 +11,7 @@ module "vpn_snet" {
 }
 
 data "azuread_application" "vpn_app" {
-  display_name = format("%s-app-vpn", local.project)
+  display_name = format("%s-app-vpn", local.project_noenv)
 }
 
 module "vpn" {

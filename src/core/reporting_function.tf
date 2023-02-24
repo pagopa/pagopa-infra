@@ -29,7 +29,7 @@ module "reporting_fdr_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.reporting_fdr_rg.name
-  name                                     = format("%s-fn-reportingfdr", local.project)
+  name                                     = format("%s-fn-reportingfdr", local.project_noenv)
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_fdr_function_snet[0].id

@@ -30,7 +30,7 @@ module "logic_app_biz_evt_snet" {
 module "logic_app_biz_evt_sa" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
 
-  name                       = replace(format("%s-logic-app-biz-evt-sa", local.project), "-", "")
+  name                       = replace(format("%s-logic-app-biz-evt-sa", local.project_noenv), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   account_replication_type   = "LRS"
