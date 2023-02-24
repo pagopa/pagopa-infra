@@ -592,6 +592,11 @@ variable "app_gateway_wfespgovit_certificate_name" {
   type        = string
   description = "Application gateway wfespgovit certificate name on Key Vault"
 }
+variable "app_gateway_kibana_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
 
 variable "app_gateway_sku_name" {
   type        = string
@@ -1745,4 +1750,14 @@ variable "node_forwarder_logging_level" {
   type        = string
   description = "Logging level of Node Forwarder"
   default     = "INFO"
+}
+
+variable "ingress_elk_load_balancer_ip" {
+  type    = string
+  default = ""
+}
+
+variable "env" {
+  type    = string
+  default = ""
 }

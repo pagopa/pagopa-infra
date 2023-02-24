@@ -1,5 +1,7 @@
 # general
 env_short = "d"
+env       = "dev"
+
 
 tags = {
   CreatedBy   = "Terraform"
@@ -81,6 +83,7 @@ app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = ""
 app_gateway_wfespgovit_certificate_name = ""
+app_gateway_kibana_certificate_name     = "kibana-dev-platform-pagopa-it"
 app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
@@ -651,4 +654,9 @@ dexp_re_db_linkes_service = {
   enable = true
 }
 
+# node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.8.5"
+
+# lb elk
+ingress_elk_load_balancer_ip = "10.1.100.251"
+
