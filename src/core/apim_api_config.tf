@@ -127,6 +127,7 @@ module "apim_api_config_auth_product" {
   published             = true
   subscription_required = true
   approval_required     = true
+  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/apiconfig_api/_base_policy_auth.xml")
 }
