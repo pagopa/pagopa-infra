@@ -29,12 +29,12 @@
         </cors>
         <base />
 
-      <set-backend-service base-url="https://${hostname}/pagopa-api-config-service/${database}/stable" />
-      <choose>
-        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Pod-Version","")).Equals("canary"))">
-          <set-backend-service base-url="https://${hostname}/pagopa-apiconfig-core/${database}/canary" />
-        </when>
-      </choose>
+      <set-backend-service base-url="https://${hostname}/pagopa-api-config-service/${database}" />
+<!--      <choose>-->
+<!--        <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Pod-Version","")).Equals("canary"))">-->
+<!--          <set-backend-service base-url="https://${hostname}/pagopa-apiconfig-core/${database}/canary" />-->
+<!--        </when>-->
+<!--      </choose>-->
 
         <choose>
             <when condition="@(context.User == null || !context.User.Groups.Select(g => g.Id).Contains("api-config-be-writer"))">

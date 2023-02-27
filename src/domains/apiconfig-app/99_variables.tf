@@ -24,6 +24,13 @@ variable "env_short" {
   }
 }
 
+variable "github" {
+  type = object({
+    org = string
+  })
+  default = { org = "pagopa" }
+}
+
 variable "domain" {
   type = string
   validation {

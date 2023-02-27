@@ -1760,4 +1760,15 @@ variable "env" {
 variable "node_forwarder_autoscale_enabled" {
   type    = bool
   default = true
+
+}
+
+variable "github_runner" {
+  type = object({
+    subnet_address_prefixes = list(string)
+  })
+  description = "GitHub runner variables"
+  default = {
+    subnet_address_prefixes = ["10.1.200.0/23"]
+  }
 }

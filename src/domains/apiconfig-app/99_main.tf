@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">=1.3.0"
+
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -6,43 +8,23 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "= 2.21.0"
+      version = "2.30.0"
     }
-    null = {
-      source  = "hashicorp/null"
-      version = "= 3.1.1"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "= 2.11.0"
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "= 2.5.1"
+    github = {
+      source  = "integrations/github"
+      version = "5.12.0"
     }
   }
-
-  backend "azurerm" {}
 }
 
 provider "azurerm" {
-  features {
-    key_vault {
-      purge_soft_delete_on_destroy = false
-    }
-  }
+  features {}
+}
+
+provider "github" {
+  owner = var.github.org
 }
 
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
-
-provider "kubernetes" {
-  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
-}
-
-provider "helm" {
-  kubernetes {
-    config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
-  }
-}
