@@ -158,7 +158,7 @@ resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 250
+        threshold                = 3000
         divide_by_instance_count = false
       }
 
@@ -180,7 +180,7 @@ resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 250
+        threshold                = 2500
         divide_by_instance_count = false
       }
 
