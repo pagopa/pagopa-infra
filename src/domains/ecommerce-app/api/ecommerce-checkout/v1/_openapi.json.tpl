@@ -1722,7 +1722,7 @@
           }
         }
       },
-      "PostPaymentMethodPSP": {
+      "PaymentOption": {
         "required": true,
         "content": {
           "application/json": {
