@@ -500,7 +500,13 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/PostPaymentMethodPSP"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentOption"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
