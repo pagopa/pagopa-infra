@@ -24,6 +24,13 @@ variable "env_short" {
   }
 }
 
+variable "github" {
+  type = object({
+    org = string
+  })
+  default = { org = "pagopa" }
+}
+
 variable "domain" {
   type = string
   validation {
@@ -49,6 +56,11 @@ variable "location_short" {
   }
   description = "One of wue, neu"
 }
+
+#variable "location_string" {
+#  type        = string
+#  description = "One of West Europe, North Europe"
+#}
 
 variable "instance" {
   type        = string
@@ -88,6 +100,13 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
+### Aks
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
+
 variable "external_domain" {
   type        = string
   default     = null
@@ -100,18 +119,14 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+variable "apim_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for apim."
+}
+
 variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
-}
-
-variable "github_runner" {
-  type = object({
-    subnet_address_prefixes = list(string)
-  })
-  description = "GitHub runner variables"
-  default = {
-    subnet_address_prefixes = ["10.0.164.0/23"]
-  }
 }
