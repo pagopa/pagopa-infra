@@ -37,7 +37,7 @@ locals {
     SCHEMA_NAME                             = "apd"
     LOG_LEVEL                               = "INFO"
     SQL_LOG_LEVEL                           = "DEBUG"
-SQL_BINDER_LOG_LEVEL                        = "TRACE"
+    SQL_BINDER_LOG_LEVEL                    = "TRACE"
     CRON_JOB_SCHEDULE_ENABLED               = var.gpd_cron_job_enable # default disable
     CRON_JOB_SCHEDULE_EXPRESSION_TO_VALID   = var.gpd_cron_schedule_valid_to
     CRON_JOB_SCHEDULE_EXPRESSION_TO_EXPIRED = var.gpd_cron_schedule_expired_to
