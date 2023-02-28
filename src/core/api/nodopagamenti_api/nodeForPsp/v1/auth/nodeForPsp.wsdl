@@ -6,13 +6,14 @@
   xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
   xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd"
   xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl"
-  targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl">
+  xmlns:ppt="http://ws.pagamenti.telematici.gov/"
+  targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl"
+>
 
   <wsdl:types>
     <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
       xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd"
       targetNamespace="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
-
 
       <!--Simple type-->
 
@@ -685,27 +686,27 @@
       </xsd:complexType>
 
       <!-- TEMPORARY -->
-      <xsd:complexType name="nodoInviaFlussoRendicontazioneRequest">
-        <xsd:sequence>
-          <xsd:element name="identificativoPSP" type="tns:stText35" />
-          <xsd:element name="identificativoIntermediarioPSP" type="tns:stText35" />
-          <xsd:element name="identificativoCanale" type="tns:stText35" />
-          <xsd:element name="identificativoDominio" type="tns:stText35" />
-          <xsd:element name="identificativoFlusso" type="xsd:string" />
-          <xsd:element name="dataOraFlusso" type="xsd:dateTime" />
-          <xsd:element name="xmlRendicontazione" type="xsd:base64Binary" />
-        </xsd:sequence>
-      </xsd:complexType>
+<!--      <xsd:complexType name="nodoInviaFlussoRendicontazione" xmlns:ppt="http://ws.pagamenti.telematici.gov/">-->
+<!--        <xsd:sequence>-->
+<!--          <xsd:element name="identificativoPSP" type="tns:stText35" />-->
+<!--          <xsd:element name="identificativoIntermediarioPSP" type="tns:stText35" />-->
+<!--          <xsd:element name="identificativoCanale" type="tns:stText35" />-->
+<!--          <xsd:element name="identificativoDominio" type="tns:stText35" />-->
+<!--          <xsd:element name="identificativoFlusso" type="xsd:string" />-->
+<!--          <xsd:element name="dataOraFlusso" type="xsd:dateTime" />-->
+<!--          <xsd:element name="xmlRendicontazione" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />-->
+<!--        </xsd:sequence>-->
+<!--      </xsd:complexType>-->
 
-      <xsd:complexType name="nodoInviaFlussoRendicontazioneResponse">
-        <xsd:complexContent>
-          <xsd:extension base="tns:risposta">
-            <xsd:sequence>
-              <xsd:element name="esito" type="xsd:string" minOccurs="1" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
+<!--      <xsd:complexType name="nodoInviaFlussoRendicontazioneRisposta" xmlns:ppt="http://ws.pagamenti.telematici.gov/">-->
+<!--        <xsd:complexContent>-->
+<!--          <xsd:extension base="tns:risposta">-->
+<!--            <xsd:sequence>-->
+<!--              <xsd:element name="esito" type="xsd:string" minOccurs="1" />-->
+<!--            </xsd:sequence>-->
+<!--          </xsd:extension>-->
+<!--        </xsd:complexContent>-->
+<!--      </xsd:complexType>-->
 
       <xsd:complexType name="risposta">
         <xsd:sequence>
@@ -1155,8 +1156,8 @@
       <xsd:element name="handledException" type="tns:ctHandledException" />
 
       <!-- TEMPORARY -->
-      <xsd:element name="nodoInviaFlussoRendicontazioneRequest" type="tns:nodoInviaFlussoRendicontazioneRequest" />
-      <xsd:element name="nodoInviaFlussoRendicontazioneResponse" type="tns:nodoInviaFlussoRendicontazioneResponse" />
+<!--      <xsd:element name="nodoInviaFlussoRendicontazione" type="ppt:nodoInviaFlussoRendicontazione" />-->
+<!--      <xsd:element name="nodoInviaFlussoRendicontazioneRisposta" type="ppt:nodoInviaFlussoRendicontazioneRisposta" />-->
 
       <xsd:element name="nodoChiediInformativaPARequest" type="tns:nodoChiediInformativaPARequest" />
       <xsd:element name="nodoChiediInformativaPAResponse" type="tns:nodoChiediInformativaPAResponse" />
@@ -1165,8 +1166,62 @@
       <xsd:element name="nodoChiediTemplateInformativaPSPResponse" type="tns:nodoChiediTemplateInformativaPSPResponse" />
       <!-- END TEMPORARY -->
 
-
     </xsd:schema>
+
+    <!-- TEMPORARY -->
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:ppt="http://ws.pagamenti.telematici.gov/"
+                targetNamespace="http://ws.pagamenti.telematici.gov/">
+      <xsd:simpleType name="stText35">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="35" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="nodoInviaFlussoRendicontazione">
+        <xsd:sequence>
+          <xsd:element name="identificativoPSP" type="ppt:stText35" />
+          <xsd:element name="identificativoIntermediarioPSP" type="ppt:stText35" />
+          <xsd:element name="identificativoCanale" type="ppt:stText35" />
+          <xsd:element name="identificativoDominio" type="ppt:stText35" />
+          <xsd:element name="identificativoFlusso" type="xsd:string" />
+          <xsd:element name="dataOraFlusso" type="xsd:dateTime" />
+          <xsd:element name="xmlRendicontazione" type="xsd:base64Binary" xmime:expectedContentTypes="application/octet-stream" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="nodoInviaFlussoRendicontazioneRisposta">
+        <xsd:complexContent>
+          <xsd:extension base="ppt:risposta">
+            <xsd:sequence>
+              <xsd:element name="esito" type="xsd:string" minOccurs="1" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+      <xsd:complexType name="risposta">
+        <xsd:sequence>
+          <xsd:element name="fault" type="ppt:faultBean" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="faultBean">
+        <xsd:sequence>
+          <xsd:element name="faultCode" type="xsd:string" />
+          <xsd:element name="faultString" type="xsd:string" />
+          <xsd:element name="id" type="xsd:string" />
+          <xsd:element name="description" type="xsd:string" minOccurs="0" />
+          <xsd:element name="serial" type="xsd:int" minOccurs="0" />
+          <xsd:element name="originalFaultCode" type="xsd:string" minOccurs="0" />
+          <xsd:element name="originalFaultString" type="xsd:string" minOccurs="0" />
+          <xsd:element name="originalDescription" type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:element name="nodoInviaFlussoRendicontazione" type="ppt:nodoInviaFlussoRendicontazione" />
+      <xsd:element name="nodoInviaFlussoRendicontazioneRisposta" type="ppt:nodoInviaFlussoRendicontazioneRisposta" />
+    </xsd:schema>
+    <!-- END TEMPORARY -->
   </wsdl:types>
 
   <!-- step#3 -->
@@ -1233,11 +1288,11 @@
   </wsdl:message>
 
   <!-- TEMPORARY -->
-  <wsdl:message name="nodoInviaFlussoRendicontazione">
-    <wsdl:part name="bodyrequest" element="nfpsp:nodoInviaFlussoRendicontazioneRequest" />
+  <wsdl:message name="nodoInviaFlussoRendicontazioneRequest">
+    <wsdl:part name="bodyrequest" element="ppt:nodoInviaFlussoRendicontazione"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="nodoInviaFlussoRendicontazioneResponse">
-    <wsdl:part name="bodyresponse" element="nfpsp:nodoInviaFlussoRendicontazioneResponse" />
+    <wsdl:part name="bodyresponse" element="ppt:nodoInviaFlussoRendicontazioneRisposta"></wsdl:part>
   </wsdl:message>
 
   <wsdl:message name="nodoChiediInformativaPA">
@@ -1348,8 +1403,8 @@
 
     <!-- TEMPORARY -->
     <wsdl:operation name="nodoInviaFlussoRendicontazione">
-      <wsdl:input message="tns:nodoInviaFlussoRendicontazione" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/nodoInviaFlussoRendicontazione" />
-      <wsdl:output message="tns:nodoInviaFlussoRendicontazioneResponse" wsam:Action="http://pagopa-api.pagopa.gov.it/service/node/nodeForPsp/nodoInviaFlussoRendicontazioneResponse" />
+      <wsdl:input message="tns:nodoInviaFlussoRendicontazioneRequest" />
+      <wsdl:output message="tns:nodoInviaFlussoRendicontazioneResponse" />
     </wsdl:operation>
 
     <wsdl:operation name="nodoChiediInformativaPA">
