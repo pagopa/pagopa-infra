@@ -13,6 +13,7 @@ resource "azurerm_subnet" "github_runner_snet" {
 }
 
 module "github_runner" {
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v4.1.18"
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=try-remove-outBoundType-managedEnvironments"
 
   name                      = "${local.project}-github-runner-cae"
@@ -24,6 +25,6 @@ module "github_runner" {
   log_analytics_customer_id = data.azurerm_log_analytics_workspace.log_analytics.workspace_id
   log_analytics_shared_key  = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
   zone_redundant            = false
-
+  # outbound_type             = "loadBalancer"
   tags = var.tags
 }
