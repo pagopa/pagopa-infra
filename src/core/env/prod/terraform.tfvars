@@ -483,6 +483,7 @@ reporting_fdr_function_always_on = true
 gpd_plan_kind                = "Linux"
 gpd_plan_sku_tier            = "PremiumV3"
 gpd_plan_sku_size            = "P1v3"
+gpd_cron_job_enable          = true
 gpd_cron_schedule_valid_to   = "0 */30 * * * *"
 gpd_cron_schedule_expired_to = "0 */40 * * * *"
 
@@ -596,7 +597,10 @@ dexp_re_db_linkes_service = {
 }
 
 # node forwarder
-node_forwarder_tier = "PremiumV3"
-node_forwarder_size = "P1v3"
-
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"
+node_forwarder_tier            = "PremiumV3"
+node_forwarder_size            = "P1v3"
+
+# lb elk
+ingress_elk_load_balancer_ip = "10.1.100.251"
+

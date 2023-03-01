@@ -518,8 +518,9 @@ gpd_plan_kind                = "Linux"
 gpd_plan_sku_tier            = "Standard"
 gpd_plan_sku_size            = "S1"
 gpd_always_on                = false
-gpd_cron_schedule_valid_to   = "0 */30 * * * *"
-gpd_cron_schedule_expired_to = "0 */40 * * * *"
+gpd_cron_job_enable          = true
+gpd_cron_schedule_valid_to   = "0 */10 * * * *"
+gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
 reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
@@ -654,8 +655,9 @@ dexp_re_db_linkes_service = {
   enable = true
 }
 
-ingress_load_balancer_ip = "10.1.100.250"
+# node forwarder
+nodo_pagamenti_x_forwarded_for = "10.230.8.5"
 
+# lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
-nodo_pagamenti_x_forwarded_for = "10.230.8.5"
