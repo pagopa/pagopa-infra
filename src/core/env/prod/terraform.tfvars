@@ -483,6 +483,7 @@ reporting_fdr_function_always_on = true
 gpd_plan_kind                = "Linux"
 gpd_plan_sku_tier            = "PremiumV3"
 gpd_plan_sku_size            = "P1v3"
+gpd_cron_job_enable          = true
 gpd_cron_schedule_valid_to   = "0 */30 * * * *"
 gpd_cron_schedule_expired_to = "0 */40 * * * *"
 

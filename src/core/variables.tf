@@ -1303,7 +1303,7 @@ variable "gpd_reporting_schedule_batch" {
 variable "gpd_cron_job_enable" {
   type        = bool
   description = "GPD cron job enable"
-  default     = true
+  default     = false
 }
 
 variable "gpd_cron_schedule_valid_to" {

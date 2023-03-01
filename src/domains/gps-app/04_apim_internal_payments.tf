@@ -155,11 +155,11 @@ module "apim_api_gpd_payments_rest_internal_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payments-service/v1/rest/internal/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_gpd_payments_rest_internal_product.product_id
   })
 
   xml_content = templatefile("./api/payments-service/v1/rest/internal/_base_policy.xml", {
     hostname = local.gps_hostname
   })
 }
-
