@@ -99,19 +99,19 @@ nodeset_config = {
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
   },
   master-nodes = {
-    count            = "1"
+    count            = "2"
     roles            = ["master"]
     storage          = "20Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
   },
   data-hot-nodes = {
-    count            = "1"
+    count            = "3"
     roles            = ["ingest", "data_content", "data_hot"]
     storage          = "70Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
   },
   data-warm-nodes = {
-    count            = "1"
+    count            = "3"
     roles            = ["ingest", "data_content", "data_warm"]
     storage          = "100Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-warm"
