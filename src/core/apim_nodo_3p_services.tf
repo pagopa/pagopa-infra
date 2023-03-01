@@ -24,16 +24,6 @@ module "apim_nodo_ppt_lmi_product" {
   })
 }
 
-resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_api" {
-  count = var.env_short == "p" ? 0 : 1
-
-  name                = format("%s-nodo-ppt-lmi-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
-  display_name        = "Nodo OnCloud PPT LMI"
-  versioning_scheme   = "Segment"
-}
-
 module "apim_nodo_ppt_lmi_api" {
   count  = var.env_short == "p" ? 0 : 1
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
@@ -43,9 +33,6 @@ module "apim_nodo_ppt_lmi_api" {
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_ppt_lmi_product[0].product_id]
   subscription_required = false
-
-  version_set_id = azurerm_api_management_api_version_set.nodo_ppt_lmi_api[0].id
-  api_version    = "v1"
 
   description  = "NodeDeiPagamenti (ppt-lmi)"
   display_name = "NodeDeiPagamenti (ppt-lmi)"
@@ -61,7 +48,7 @@ module "apim_nodo_ppt_lmi_api" {
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/ppt-lmi/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path      = "/ppt-lmi/api/v1"
+    apim_base_path      = "/admin"
   })
 
 }
