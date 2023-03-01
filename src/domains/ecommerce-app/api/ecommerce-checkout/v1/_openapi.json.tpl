@@ -481,21 +481,21 @@
         }
       }
     },
-    "/payment-methods/{id}/psps": {
+    "/fee/calculate": {
       "post": {
         "tags": [
           "ecommerce-methods"
         ],
-        "operationId": "getPaymentMethodsPSPs",
-        "summary": "Retrive PSPs by payment method ID",
+        "operationId": "calculateFees",
+        "summary": "Invoke GEC for calculate fees",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "Payment Method ID",
-            "required": true,
+            "name": "maxOccurrences",
+            "in": "query",
+            "description": "max occurrences",
+            "required": false,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           }
         ],
@@ -1576,6 +1576,12 @@
       "PaymentOption": {
         "type": "object",
         "properties": {
+          "touchpoint": {
+            "type": "string"
+          },
+          "paymentMethodId": {
+            "type": "string"
+          },
           "bin": {
             "type": "string"
           },
@@ -1601,6 +1607,8 @@
         },
         "required": [
           "bin",
+          "touchpoint",
+          "paymentMethodId",
           "paymentAmount",
           "primaryCreditorInstitution",
           "transferList"
