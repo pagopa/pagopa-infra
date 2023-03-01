@@ -71,7 +71,8 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payments-service/v1/rest/external/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_gpd_payments_rest_external_product.product_id
   })
 
   xml_content = templatefile("./api/payments-service/v1/rest/external/_base_policy.xml", {
