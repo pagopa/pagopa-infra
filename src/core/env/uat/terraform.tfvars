@@ -587,7 +587,7 @@ pgres_flex_params = {
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                   = 32768
+  storage_mb                   = 1048576
   zone                         = 1
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
