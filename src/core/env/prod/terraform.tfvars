@@ -134,6 +134,7 @@ app_gateway_deny_paths_2 = [
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
   "/gps/gpd-payments/.*",                 # internal use no sub-keys
   "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
+  "/gps/gpd-reporting-orgs-enrollment/.*" # internal use
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
