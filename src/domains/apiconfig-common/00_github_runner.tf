@@ -13,7 +13,7 @@ resource "azurerm_subnet" "github_runner_snet" {
 }
 
 module "github_runner" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v4.1.17"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=try-remove-outBoundType-managedEnvironments"
 
   name                      = "${local.project}-github-runner-cae"
   resource_group_name       = azurerm_resource_group.github_runner_rg.name
