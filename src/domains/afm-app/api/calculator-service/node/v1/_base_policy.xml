@@ -50,15 +50,23 @@
             data.Add("touchpoint", "ATM");
             data.Add("idBundle", "1");
             data.Add("idCiBundle", "1");
+            data.Add("idChannel", "88888888899_01");
+            data.Add("idBrokerPsp", "88888888899");
             data.Add("bundleName", "bundle 1");
             data.Add("bundleDescription", "bundle description 1");
+            data.Add("onUse", false);
+            data.Add("abi", "14156");
             if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
             data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]);
             } else {
             data.Add("idPsp", "00000000010");
             }
             JArray list = new JArray(data);
-            return list.ToString();
+
+            JObject response = new JObject();
+            response.Add("belowThreshold", false);
+            response.Add("bundleOptions", list);
+            return response.ToString();
             }</set-body>
         </return-response>
       </when>
@@ -84,14 +92,17 @@
           data.Add("touchpoint", "PSP");
           data.Add("idBundle", "2");
           data.Add("idCiBundle", JValue.CreateNull());
+          data.Add("idChannel", "88888888899_01");
+          data.Add("idBrokerPsp", "88888888899");
           data.Add("bundleName", "bundle 2");
           data.Add("bundleDescription", "bundle description 2");
+          data.Add("onUse", false);
+          data.Add("abi", "14156");
           if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
           data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]);
           } else {
           data.Add("idPsp", "00000000010");
           }
-
           list.Add(data);
 
           data = new JObject();
@@ -101,17 +112,23 @@
           data.Add("touchpoint", "PSP");
           data.Add("idBundle", "1");
           data.Add("idCiBundle", "1");
+          data.Add("idChannel", "88888888899_01");
+          data.Add("idBrokerPsp", "88888888899");
           data.Add("bundleName", "bundle 1");
           data.Add("bundleDescription", "bundle description 1");
+          data.Add("onUse", false);
+          data.Add("abi", "14156");
           if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
           data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]);
           } else {
           data.Add("idPsp", "00000000010");
           }
-
           list.Add(data);
 
-          return list.ToString();
+          JObject response = new JObject();
+          response.Add("belowThreshold", false);
+          response.Add("bundleOptions", list);
+          return response.ToString();
           }</set-body>
       </return-response>
     </when>
@@ -167,8 +184,12 @@
     data.Add("touchpoint", "PSP");
     data.Add("idBundle", "3");
     data.Add("idCiBundle", JValue.CreateNull());
+    data.Add("idChannel", "88888888899_01");
+    data.Add("idBrokerPsp", "88888888899");
     data.Add("bundleName", "bundle 3");
     data.Add("bundleDescription", "bundle description 3");
+    data.Add("onUse", false);
+    data.Add("abi", "14156");
     data.Add("idPsp", "TEST5678901");
 
     list.Add(data);
@@ -180,8 +201,12 @@
     data.Add("touchpoint", "ATM");
     data.Add("idBundle", "1");
     data.Add("idCiBundle", "1");
+    data.Add("idChannel", "88888888899_01");
+    data.Add("idBrokerPsp", "88888888899");
     data.Add("bundleName", "bundle 1");
     data.Add("bundleDescription", "bundle description 1");
+    data.Add("onUse", false);
+    data.Add("abi", "14156");
     if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
     data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]);
     } else {
@@ -190,7 +215,10 @@
 
     list.Add(data);
 
-    return list.ToString();
+    JObject response = new JObject();
+    response.Add("belowThreshold", false);
+    response.Add("bundleOptions", list);
+    return response.ToString();
     }</set-body>
 </return-response>
 </when>
@@ -216,13 +244,20 @@
     data.Add("touchpoint", "PSP");
     data.Add("idBundle", "5");
     data.Add("idCiBundle", JValue.CreateNull());
+    data.Add("idChannel", "88888888899_01");
+    data.Add("idBrokerPsp", "88888888899");
     data.Add("bundleName", "bundle 5");
     data.Add("bundleDescription", "bundle description 5");
+    data.Add("onUse", false);
+    data.Add("abi", "14156");
     data.Add("idPsp", "TEST5678901");
 
     list.Add(data);
 
-    return list.ToString();
+    JObject response = new JObject();
+    response.Add("belowThreshold", false);
+    response.Add("bundleOptions", list);
+    return response.ToString();
     }</set-body>
 </return-response>
 </when>
