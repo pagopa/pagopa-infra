@@ -12,16 +12,28 @@ module "elastic_stack" {
   kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.it" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
 }
 
-#data "http" "elastic_health_check" {
-#  depends_on = [module.elastic_stack]
-#
-#  url    = "https://elastic:6MvwX984Z72Gme6Ee24RH0pk@kibana.${var.env}.platform.pagopa.it/_cluster/health"
-#  method = "GET"
-#
-#  request_headers = {}
-#
-#  request_body = ""
-#}
+data "kubernetes_secret" "get_elastic_credential" {
+  depends_on = [
+    module.elastic_stack
+  ]
+
+  metadata {
+    name      = "quickstart-es-elastic-user"
+    namespace = local.elk_namespace
+  }
+}
+
+data "http" "elastic_health_check" {
+  depends_on = [data.kubernetes_secret.get_elastic_credential]
+
+  #########!!!!! user/password da leggere da kv? !!!!!!######
+  url    = "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@kibana.${var.env}.platform.pagopa.it/_cluster/health"
+  method = "GET"
+
+  request_headers = {}
+
+  request_body = ""
+}
 
 #data "http" "create_nodo_api_key" {
 #  depends_on = [data.http.elastic_health_check]
