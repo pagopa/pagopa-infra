@@ -92,8 +92,6 @@ module "node_forwarder_app_service" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
-  count = var.env_short != "d" ? 1 : 0
-
   name                = format("%s-autoscale-node-forwarder", local.project)
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
   location            = azurerm_resource_group.node_forwarder_rg.location
@@ -103,9 +101,9 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     name = "default"
 
     capacity {
-      default = 1
+      default = 5
       minimum = 1
-      maximum = 15
+      maximum = 10
     }
 
     rule {
@@ -125,7 +123,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "3"
+        value     = "2"
         cooldown  = "PT5M"
       }
     }
@@ -148,7 +146,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT15M"
+        cooldown  = "PT20M"
       }
     }
   }
