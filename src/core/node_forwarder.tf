@@ -96,6 +96,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
   location            = azurerm_resource_group.node_forwarder_rg.location
   target_resource_id  = module.node_forwarder_app_service.plan_id
+  enabled             = true # enabled for dev, uat and prod
 
   profile {
     name = "default"
