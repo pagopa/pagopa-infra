@@ -1,5 +1,6 @@
 # general
 env_short = "u"
+env       = "uat"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -82,6 +83,7 @@ app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-test-pagopa-gov-it"
+app_gateway_kibana_certificate_name     = "kibana-uat-platform-pagopa-it"
 app_gateway_sku_name                    = "WAF_v2"
 app_gateway_sku_tier                    = "WAF_v2"
 app_gateway_waf_enabled                 = true
@@ -118,6 +120,7 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   #"/pagopa-node-forwarder/.*"
+  "/gps/gpd-reporting-orgs-enrollment/.*" # internal use
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -206,8 +209,8 @@ checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azureweb
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 
-ecommerce_xpay_psps_list = "CIPBITMM"
-ecommerce_vpos_psps_list = "testPSP3,testPSP4"
+ecommerce_xpay_psps_list = "CHARITY_NEXI,CIPBITMM"
+ecommerce_vpos_psps_list = "ATPIITM1,ABI36080,NIPSITR1,BIC36019,CHARITY_AMEX,CRGEITGG,BCEPITMM,BMLUIT3L,ABI03048,ABI03211,POCAIT3C,BPBAIT3B,SELBIT2B,ABI03268,ABI08899,ABI08327,BPMOIT22,CRACIT33,ABI03266,ABI01030,PASCITMM,PASBITGG,SENVITT1,BPPNIT2PXXX,BPPUIT33,ABI05033,BEPOIT21,BAPPIT21,POSOIT22XXX,ABI02008,ABI08913,BCABIT21,SARDIT31,CRBIIT2B,CHARITY_MPS,CHARITY_UNCR,CASRIT22,CRFIIT2SXXX,CRPPIT2PXXX,MICSITM1,CIPYIT31,RSANIT3P,BPCVIT2S,ABI14156,ABI19164,ABI03110,ABI36925,ABI36772,IFSPIT21,ABI03395,ABI03069,BCITITMM,BIC32698,SIGPITM1XXX,MOETIT31,ABI36092,idPsp1,AGID_02,PAYTITM1,BPPIITRRXXX,PPAYITR1XXX,RZSBIT2B,LB000484,SEPFIT31XXX,PIRLITM1XXX,SATYLUL1,SATYGB21,ABI36052,ABI36068,UNPLIT22,BLOPIT22,UNCRITMM,BNLIITRR,ABI18164,ABI03667,UNGCIT21"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
@@ -550,8 +553,9 @@ reporting_fdr_function_always_on = true
 gpd_plan_kind                = "Linux"
 gpd_plan_sku_tier            = "Standard"
 gpd_plan_sku_size            = "S1"
-gpd_cron_schedule_valid_to   = "0 */30 * * * *"
-gpd_cron_schedule_expired_to = "0 */40 * * * *"
+gpd_cron_job_enable          = true
+gpd_cron_schedule_valid_to   = "0 */10 * * * *"
+gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
 reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
@@ -584,7 +588,7 @@ pgres_flex_params = {
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                   = 32768
+  storage_mb                   = 1048576
   zone                         = 1
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
@@ -675,4 +679,9 @@ dexp_re_db_linkes_service = {
   enable = true
 }
 
+# node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.9.5"
+
+# lb elk
+ingress_elk_load_balancer_ip = "10.1.100.251"
+

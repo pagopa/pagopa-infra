@@ -1334,12 +1334,12 @@
           "idTransaction",
           "amount",
           "pan",
-          "securitycode",
+          "securityCode",
           "expireDate",
           "holder",
           "circuit",
           "threeDsData",
-          "emailCh",
+          "emailCH",
           "isFirstPayment",
           "idPsp"
         ],
@@ -1359,7 +1359,7 @@
             "description": "Pan of the card",
             "example": 16589654852
           },
-          "securitycode": {
+          "securityCode": {
             "type": "string",
             "description": "Card verification code",
             "example": 123
@@ -1381,7 +1381,7 @@
             "type": "string",
             "example": "threeDsData"
           },
-          "emailCh": {
+          "emailCH": {
             "type": "string",
             "example": "mariorossi@gmail.com"
           },

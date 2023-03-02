@@ -1,10 +1,10 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "PagoPA API configuration",
+    "title": "PagoPA API configuration ${service}",
     "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.30.0-1"
+    "version": "0.32.1"
   },
   "servers": [
     {
@@ -30,8 +30,16 @@
       "name": "Configuration"
     },
     {
+      "description": "Everything about Cache",
+      "name": "Cache"
+    },
+    {
       "description": "Everything about Utilities",
       "name": "Utilities"
+    },
+    {
+      "description": "Refresh and trigger job for node configuration",
+      "name": "Refresh Operation"
     }
   ],
   "paths": {
@@ -470,11 +478,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -484,11 +492,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -1413,11 +1421,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -1427,11 +1435,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -2304,6 +2312,798 @@
           "Payment Service Providers"
         ]
       }
+    },
+    "/brokerspsp/{brokerpspcode}/paymentserviceproviders": {
+      "get": {
+        "operationId": "getPspBrokerPsp",
+        "parameters": [
+          {
+            "description": "Number of elements on one page. Default = 50",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "description": "Page number. Page value starts from 0",
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "description": "Broker code of a PSP.",
+            "in": "path",
+            "name": "brokerpspcode",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentServiceProviders"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Get the PSP list of a broker",
+        "tags": [
+          "Payment Service Providers"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cache/versions": {
+      "get": {
+        "operationId": "getCacheVersions",
+        "parameters": [
+          {
+            "description": "Number of elements on one page. Default = 3",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 3
+            }
+          },
+          {
+            "description": "Page number. Page value starts from 0",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CacheVersions"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Get cache versions",
+        "tags": [
+          "Cache"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cache/versions/{version}": {
+      "get": {
+        "operationId": "getCacheByVersion",
+        "parameters": [
+          {
+            "description": "Node version",
+            "in": "path",
+            "name": "version",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              },
+              "application/octet-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Get cache by version",
+        "tags": [
+          "Cache"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cache/versions/{version}/id": {
+      "get": {
+        "operationId": "getCacheId",
+        "parameters": [
+          {
+            "description": "Node version",
+            "in": "path",
+            "name": "version",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cache"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Get cache id by version",
+        "tags": [
+          "Cache"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     },
     "/cdis": {
       "get": {
@@ -3370,11 +4170,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -10762,11 +11562,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -10776,11 +11576,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -15237,11 +16037,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "CODE",
               "enum": [
                 "CODE",
                 "NAME"
-              ]
+              ],
+              "default": "CODE"
             }
           },
           {
@@ -15251,11 +16051,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -16933,11 +17733,505 @@
             "Authorization": []
           }
         ],
-        "summary": "Update a relation between creditor institution and station",
+        "summary": "Update a relation between PSP and channel",
         "tags": [
           "Payment Service Providers"
         ]
       }
+    },
+    "/refresh/config": {
+      "get": {
+        "operationId": "getRefreshGlobalConfig",
+        "responses": {
+          "200": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Global Refresh Configuration activation: for all domains",
+        "tags": [
+          "Refresh Operation"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/refresh/config/{configtype}": {
+      "get": {
+        "operationId": "getRefreshConfig",
+        "parameters": [
+          {
+            "description": "Configuration domain",
+            "in": "path",
+            "name": "configtype",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "FTP_SERVER",
+                "INFORMATIVA_CDI",
+                "INFORMATIVA_PA",
+                "PA",
+                "PDD",
+                "PSP",
+                "GLOBAL"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Refresh Configuration activation for a specific domain",
+        "tags": [
+          "Refresh Operation"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/refresh/job/{jobtype}": {
+      "get": {
+        "operationId": "getJobTrigger",
+        "parameters": [
+          {
+            "description": "Job Trigger",
+            "in": "path",
+            "name": "jobtype",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PA_INVIA_RT",
+                "PA_RETRY_PA_INVIA_RT_NEGATIVE",
+                "PA_INVIA_RT_RECOVERY",
+                "PA_SEND_RT",
+                "REFRESH_CONFIGURATION"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Warning": {
+                "description": "This header identifies response validation error",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ],
+        "summary": "Job trigger activation ",
+        "tags": [
+          "Refresh Operation"
+        ]
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     },
     "/services": {
       "get": {
@@ -17299,11 +18593,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "DESC",
               "enum": [
                 "ASC",
                 "DESC"
-              ]
+              ],
+              "default": "DESC"
             }
           }
         ],
@@ -19072,6 +20366,35 @@
           },
           "page_info": {
             "$ref": "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "Cache": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      },
+      "CacheVersions": {
+        "required": [
+          "page_info",
+          "version_list"
+        ],
+        "type": "object",
+        "properties": {
+          "page_info": {
+            "$ref": "#/components/schemas/PageInfo"
+          },
+          "version_list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Cache"
+            }
           }
         }
       },

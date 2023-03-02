@@ -25,7 +25,7 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
 
 # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/482870619/VPN+-+pagoPA+platform
-aks_sku_tier                   = "Free"
+aks_sku_tier                   = "Paid"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
 
@@ -72,6 +72,11 @@ nginx_helm = {
       tag          = "v1.2.0"
       digest       = "sha256:d8196e3bc1e72547c5dec66d6556c0ff92a23f6d0919b206be170bc90d5f9185"
       digestchroot = "sha256:fb17f1700b77d4fcc52ca6f83ffc2821861ae887dbb87149cf5cbc52bea425e5"
+    },
+    resources = {
+      requests = {
+        memory = "300Mi"
+      }
     },
     config = {
       proxy-body-size : 0,

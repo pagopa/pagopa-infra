@@ -3,7 +3,7 @@
 ##############
 
 ################
-# INTERNAL USE #
+# INTERNAL USE #
 ################
 
 module "apim_gpd_product" {
@@ -19,6 +19,7 @@ module "apim_gpd_product" {
   published             = false
   subscription_required = false
   approval_required     = false
+  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/gpd/_base_policy.xml")
 }

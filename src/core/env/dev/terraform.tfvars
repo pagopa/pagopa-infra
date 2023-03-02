@@ -1,5 +1,7 @@
 # general
 env_short = "d"
+env       = "dev"
+
 
 tags = {
   CreatedBy   = "Terraform"
@@ -81,6 +83,7 @@ app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = ""
 app_gateway_wfespgovit_certificate_name = ""
+app_gateway_kibana_certificate_name     = "kibana-dev-platform-pagopa-it"
 app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
@@ -168,8 +171,8 @@ checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azureweb
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
 
-ecommerce_xpay_psps_list = "testPSP1,testPSP2"
-ecommerce_vpos_psps_list = "testPSP3,testPSP4"
+ecommerce_xpay_psps_list = "XPAY"
+ecommerce_vpos_psps_list = "BIC36019,PSPtest1,CHARITY_AMEX,CHARITY_IDPSPFNZ,CHARITY_ISP,40000000001,DINERS,BCITITMM,MARIOGAM,73473473473,60000000001,PAYTITM1,POSTE1,ProvaCDI,50000000001,IDPSPFNZ,70000000001,10000000001,idPsp2,irraggiungibile_wisp,prova_ila_1,pspStress50,pspStress79,pspStress80,pspStress81"
 
 ehns_sku_name = "Standard"
 
@@ -515,8 +518,9 @@ gpd_plan_kind                = "Linux"
 gpd_plan_sku_tier            = "Standard"
 gpd_plan_sku_size            = "S1"
 gpd_always_on                = false
-gpd_cron_schedule_valid_to   = "0 */30 * * * *"
-gpd_cron_schedule_expired_to = "0 */40 * * * *"
+gpd_cron_job_enable          = true
+gpd_cron_schedule_valid_to   = "0 */10 * * * *"
+gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
 reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
@@ -651,4 +655,9 @@ dexp_re_db_linkes_service = {
   enable = true
 }
 
+# node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.8.5"
+
+# lb elk
+ingress_elk_load_balancer_ip = "10.1.100.251"
+

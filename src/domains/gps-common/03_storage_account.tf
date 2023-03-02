@@ -1,3 +1,7 @@
+##################
+## GPD PAYMENTS ##
+##################
+
 # storage
 module "payments_receipt_sa" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.18.10"

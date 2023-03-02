@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.1",
     "info": {
-        "title": "PagoPA API Payments",
+        "title": "PagoPA API Payments ${service}",
         "description": "Payments",
         "termsOfService": "https://www.pagopa.gov.it/",
         "version": "0.0.16-4"
