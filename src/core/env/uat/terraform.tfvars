@@ -120,6 +120,7 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   #"/pagopa-node-forwarder/.*"
+  "/gps/gpd-reporting-orgs-enrollment/.*" # internal use
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -552,8 +553,9 @@ reporting_fdr_function_always_on = true
 gpd_plan_kind                = "Linux"
 gpd_plan_sku_tier            = "Standard"
 gpd_plan_sku_size            = "S1"
-gpd_cron_schedule_valid_to   = "0 */30 * * * *"
-gpd_cron_schedule_expired_to = "0 */40 * * * *"
+gpd_cron_job_enable          = true
+gpd_cron_schedule_valid_to   = "0 */10 * * * *"
+gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
 reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
@@ -586,7 +588,7 @@ pgres_flex_params = {
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                   = 32768
+  storage_mb                   = 1048576
   zone                         = 1
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
