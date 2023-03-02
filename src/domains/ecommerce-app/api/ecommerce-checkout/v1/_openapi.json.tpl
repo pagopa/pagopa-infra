@@ -481,7 +481,7 @@
         }
       }
     },
-    "/fee/calculate": {
+    "/payment-methods/fee/calculate": {
       "post": {
         "tags": [
           "ecommerce-methods"
