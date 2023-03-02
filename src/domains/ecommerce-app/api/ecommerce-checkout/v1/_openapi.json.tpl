@@ -500,6 +500,7 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -1606,7 +1607,6 @@
           }
         },
         "required": [
-          "bin",
           "touchpoint",
           "paymentMethodId",
           "paymentAmount",
