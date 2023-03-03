@@ -39,8 +39,8 @@ elastic_node_pool = {
   vm_size         = "Standard_B8ms"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "1" #TODO change to 2 or 3 in prod
-  node_count_max  = "2"
+  node_count_min  = "3" #TODO change to 2 or 3 in prod
+  node_count_max  = "4"
   node_labels = {
     elastic : "eck",
   },
@@ -99,7 +99,7 @@ nodeset_config = {
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
   },
   master-nodes = {
-    count            = "1"
+    count            = "2"
     roles            = ["master"]
     storage          = "20Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
@@ -107,7 +107,7 @@ nodeset_config = {
   data-hot-nodes = {
     count            = "1"
     roles            = ["ingest", "data_content", "data_hot"]
-    storage          = "70Gi"
+    storage          = "100Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
   },
   data-warm-nodes = {
