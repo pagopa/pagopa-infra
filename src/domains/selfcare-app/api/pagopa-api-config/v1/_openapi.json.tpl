@@ -278,6 +278,171 @@ paths:
       security:
         - bearerAuth:
             - global
+  '/channels/psp/{channelcode}/{pspcode}':
+    put:
+      tags:
+        - channels
+      summary: updatePaymentServiceProvidersChannels
+      description: Update a relation between a PSP and a channel
+      operationId: updatePaymentServiceProvidersChannelsUsingPUT
+      parameters:
+        - name: channelcode
+          in: path
+          description: Channel's unique identifier
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: pspcode
+          in: path
+          description: Code of the payment service provider
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PspChannelPaymentTypes'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PspChannelPaymentTypesResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+    delete:
+      tags:
+        - channels
+      summary: deletePaymentServiceProvidersChannels
+      description: Delete a relation between a PSP and a channel
+      operationId: deletePaymentServiceProvidersChannelsUsingDELETE
+      parameters:
+        - name: channelcode
+          in: path
+          description: Channel's unique identifier
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: pspcode
+          in: path
+          description: Code of the payment service provider
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  '/channels/{brokerpspcode}/paymentserviceproviders':
+    get:
+      tags:
+        - channels
+      summary: getPspBrokerPsp
+      description: Get the PSP list of a broker
+      operationId: getPspBrokerPspUsingGET
+      parameters:
+        - name: limit
+          in: query
+          description: Number of elements on one page. Default = 50
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: Page number. Page value starts from 0
+          required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: brokerpspcode
+          in: path
+          description: Broker code of a PSP
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentServiceProvidersResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   '/channels/{channelcode}':
     put:
       tags:
@@ -876,6 +1041,26 @@ components:
         total_pages:
           type: integer
           format: int32
+    PaymentServiceProviderResource:
+      title: PaymentServiceProviderResource
+      type: object
+      properties:
+        business_name:
+          type: string
+        enabled:
+          type: boolean
+        psp_code:
+          type: string
+    PaymentServiceProvidersResource:
+      title: PaymentServiceProvidersResource
+      type: object
+      properties:
+        page_info:
+          $ref: '#/components/schemas/PageInfo'
+        payment_service_providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentServiceProviderResource'
     PaymentTypeResource:
       title: PaymentTypeResource
       required:
