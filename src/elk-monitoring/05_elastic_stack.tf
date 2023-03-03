@@ -2,7 +2,7 @@
 #   depends_on = [
 #     azurerm_kubernetes_cluster_node_pool.elastic
 #   ]
-#   #  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.9.0"
+#   #source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.9.0"
 #   source = "/Users/massimoscattarella/projects/pagopa/azurerm/elastic_stack"
 
 #   namespace      = local.elk_namespace
