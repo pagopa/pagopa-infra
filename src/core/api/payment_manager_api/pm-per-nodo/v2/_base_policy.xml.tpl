@@ -12,10 +12,10 @@
         <set-backend-service base-url="@((string)context.Variables["backend-base-url"])"/>
     </inbound>
     <outbound>
-        <base/>
+        <base />
         <choose>
             <when condition="@(context.Response.StatusCode == 200)">
-                <set-variable name="outcome" value="@(((string)((JObject)context.Response.Body.As<JObject>(preserveContent: true))["outcome"]))"/>
+                <set-variable name="outcome" value="@(((string)((JObject)context.Response.Body.As<JObject>(preserveContent: true))["outcome"]))" />
             </when>
         </choose>
         <choose>
@@ -32,13 +32,13 @@
             </when>
         </choose>
         <choose>
-            <when condition="@(context.Response.StatusCode >= 400 && context.Response.StatusCode < 500)">
+            <when condition="@(((IResponse)context.Variables["test-transaction"]).StatusCode >= 400 && ((IResponse)context.Variables["test-transaction"]).StatusCode < 500 )">
                 <return-response>
-                    <set-status code="404" reason="Transaction not found"/>
+                    <set-status code="404" reason="Transaction not found" />
                 </return-response>
             </when>
             <otherwise>
-                <return-response response-variable-name="test-transaction"/>
+                <return-response response-variable-name="test-transaction" />
             </otherwise>
         </choose>
     </outbound>
