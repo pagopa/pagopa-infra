@@ -8,6 +8,7 @@
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.21.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 2.99.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.5.1 |
+| <a name="requirement_http"></a> [http](#requirement\_http) | 3.2.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.11.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
 
@@ -39,6 +40,12 @@
 | [kubernetes_storage_class.kubernetes_storage_class_cold](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/storage_class) | resource |
 | [kubernetes_storage_class.kubernetes_storage_class_hot](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/storage_class) | resource |
 | [kubernetes_storage_class.kubernetes_storage_class_warm](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/storage_class) | resource |
+| [null_resource.component_template](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.ilm_policy](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.rollover](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.upload_dashboard](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.upload_dashboard_replica](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -55,7 +62,6 @@
 | [azurerm_subnet.aks_snet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/virtual_network) | data source |
-| [http_http.elastic_health_check](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/data-sources/namespace) | data source |
 | [kubernetes_secret.get_elastic_credential](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/data-sources/secret) | data source |
 
