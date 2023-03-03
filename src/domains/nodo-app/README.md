@@ -16,6 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_api_apiconfig_cache_api_v1"></a> [apim\_api\_apiconfig\_cache\_api\_v1](#module\_apim\_api\_apiconfig\_cache\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_api_config_oauth_api"></a> [apim\_api\_config\_oauth\_api](#module\_apim\_api\_config\_oauth\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_api_config_oauth_product"></a> [apim\_api\_config\_oauth\_product](#module\_apim\_api\_config\_oauth\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_api_config_subkey_api"></a> [apim\_api\_config\_subkey\_api](#module\_apim\_api\_config\_subkey\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
@@ -33,6 +34,7 @@
 | <a name="module_apim_api_web_bo_api_v1"></a> [apim\_api\_web\_bo\_api\_v1](#module\_apim\_api\_web\_bo\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_api_wfesp_api_replica_v1"></a> [apim\_api\_wfesp\_api\_replica\_v1](#module\_apim\_api\_wfesp\_api\_replica\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_api_wfesp_api_v1"></a> [apim\_api\_wfesp\_api\_v1](#module\_apim\_api\_wfesp\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
+| <a name="module_apim_apiconfig_cache_product"></a> [apim\_apiconfig\_cache\_product](#module\_apim\_apiconfig\_cache\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_mock_ec_product_replica"></a> [apim\_mock\_ec\_product\_replica](#module\_apim\_mock\_ec\_product\_replica) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_mock_ec_secondary_product"></a> [apim\_mock\_ec\_secondary\_product](#module\_apim\_mock\_ec\_secondary\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
@@ -87,6 +89,7 @@
 | [azurerm_api_management_api_policy.apim_nodo_per_psp_richiesta_avvisi_policy_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_psp_for_node_policy_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_psp_for_node_policy_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
+| [azurerm_api_management_api_version_set.api_apiconfig_cache_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_config_oauth_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_config_subkey_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_mock_ec_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
