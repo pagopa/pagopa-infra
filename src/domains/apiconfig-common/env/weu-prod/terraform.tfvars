@@ -27,7 +27,6 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
-apim_dns_zone_prefix     = "platform"
 
 # CosmosDb AFM Marketplace
 apiconfig_marketplace_cosmos_db_params = {
