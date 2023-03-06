@@ -9,6 +9,7 @@
             <set-variable name="walletResponseBody" value="@(context.Response.Body.As<JObject>())" />
 
             <!-- set USER  fiscalCode GET pp-restapi-CD/v1/users con request.header["Authorization"] -->
+            <!-- pay attention: IO user, not card holder -->
 
             <set-variable name="walletEvent" value="@{
                 
