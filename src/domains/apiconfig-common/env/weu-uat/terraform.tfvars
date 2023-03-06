@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "u"
 env            = "uat"
-domain         = "afm"
+domain         = "apiconfig"
 location       = "westeurope"
 location_short = "weu"
 instance       = "uat"
@@ -9,8 +9,8 @@ instance       = "uat"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Uat"
-  Owner       = "pagopa"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/afm"
+  Owner       = "PagoPA"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/apiconfig"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -29,7 +29,7 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 
 # CosmosDb AFM Marketplace
-afm_marketplace_cosmos_db_params = {
+apiconfig_marketplace_cosmos_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"
@@ -53,10 +53,10 @@ afm_marketplace_cosmos_db_params = {
 
 }
 
-cidr_subnet_afm_marketplace_cosmosdb = ["10.1.151.0/24"]
-cidr_subnet_afm_storage              = ["10.1.155.0/24"]
+cidr_subnet_apiconfig_marketplace_cosmosdb = ["10.1.151.0/24"]
+cidr_subnet_apiconfig_storage              = ["10.1.155.0/24"]
 
-afm_storage_params = {
+apiconfig_storage_params = {
   enabled                    = true
   tier                       = "Standard"
   kind                       = "StorageV2"
