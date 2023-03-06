@@ -1,35 +1,35 @@
 prefix         = "pagopa"
-env_short      = "u"
-env            = "uat"
-domain         = "afm"
+env_short      = "p"
+env            = "prod"
+domain         = "apiconfig"
 location       = "westeurope"
 location_short = "weu"
-instance       = "uat"
+instance       = "prod"
 
 tags = {
   CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagopa"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/afm"
+  Environment = "Prod"
+  Owner       = "PagoPA"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/apiconfig"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-u-monitor-rg"
-log_analytics_workspace_name                = "pagopa-u-law"
-log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
-application_insights_name                   = "pagopa-u-appinsights"
+monitor_resource_group_name                 = "pagopa-p-monitor-rg"
+log_analytics_workspace_name                = "pagopa-p-law"
+log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
+application_insights_name                   = "pagopa-p-appinsights"
 
 ### Aks
 
 ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.uat.platform"
+dns_zone_internal_prefix = "internal.platform"
 
 # CosmosDb AFM Marketplace
-afm_marketplace_cosmos_db_params = {
+apiconfig_marketplace_cosmos_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"
@@ -45,18 +45,22 @@ afm_marketplace_cosmos_db_params = {
   private_endpoint_enabled      = true
   public_network_access_enabled = false
 
-  additional_geo_locations = []
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
 
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
 }
 
-cidr_subnet_afm_marketplace_cosmosdb = ["10.1.151.0/24"]
-cidr_subnet_afm_storage              = ["10.1.155.0/24"]
+cidr_subnet_apiconfig_marketplace_cosmosdb = ["10.1.151.0/24"]
+cidr_subnet_apiconfig_storage              = ["10.1.155.0/24"]
 
-afm_storage_params = {
+apiconfig_storage_params = {
   enabled                    = true
   tier                       = "Standard"
   kind                       = "StorageV2"

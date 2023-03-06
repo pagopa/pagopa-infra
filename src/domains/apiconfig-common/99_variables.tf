@@ -24,6 +24,13 @@ variable "env_short" {
   }
 }
 
+variable "github" {
+  type = object({
+    org = string
+  })
+  default = { org = "pagopa" }
+}
+
 variable "domain" {
   type = string
   validation {
@@ -49,6 +56,11 @@ variable "location_short" {
   }
   description = "One of wue, neu"
 }
+
+#variable "location_string" {
+#  type        = string
+#  description = "One of West Europe, North Europe"
+#}
 
 variable "instance" {
   type        = string
@@ -88,6 +100,13 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
+### Aks
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
+
 variable "external_domain" {
   type        = string
   default     = null
@@ -100,60 +119,25 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-variable "bizevents_datastore_cosmos_db_params" {
-  type = object({
-    kind           = string
-    capabilities   = list(string)
-    offer_type     = string
-    server_version = string
-    consistency_policy = object({
-      consistency_level       = string
-      max_interval_in_seconds = number
-      max_staleness_prefix    = number
-    })
-    main_geo_location_zone_redundant = bool
-    enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
-    additional_geo_locations = list(object({
-      location          = string
-      failover_priority = number
-      zone_redundant    = bool
-    }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
-    container_default_ttl             = number
-  })
-}
-
-variable "cidr_subnet_bizevents_datastore_cosmosdb" {
-  type        = list(string)
-  description = "Cosmos DB address space"
+variable "apim_dns_zone_prefix" {
+  type        = string
   default     = null
-}
-
-
-variable "bizevents_datastore_fn_sa_enable_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
-variable "bizevents_datastore_fn_sa_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "bizevents_datastore_fn_sa_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
+  description = "The dns subdomain for apim."
 }
 
 variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
+}
+
+
+variable "github_runner" {
+  type = object({
+    subnet_address_prefixes = list(string)
+  })
+  description = "GitHub runner variables"
+  default = {
+    subnet_address_prefixes = ["10.1.164.0/23"]
+  }
 }
