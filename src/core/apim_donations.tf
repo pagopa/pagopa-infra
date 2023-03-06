@@ -15,7 +15,7 @@ module "apim_donations_product" {
   published             = true
   subscription_required = false # TO DISABLE DONA
   approval_required     = false
-  subscriptions_limit   = 1
+  # subscriptions_limit   = 1
 
   policy_xml = file("./api_product/donations/_base_policy.xml")
 }

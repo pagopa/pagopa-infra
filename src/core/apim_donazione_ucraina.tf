@@ -15,7 +15,7 @@ module "apim_donazioni_ucraina_product" {
   published             = true
   subscription_required = false # TO DISABLE
   approval_required     = false
-  subscriptions_limit   = 1
+  # subscriptions_limit   = 1
 
   policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
     address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"

@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.1",
     "info": {
-      "title": "Ukraine donations",
+      "title": "SiriaTurchia donations",
       "description": "",
       "version": "1.0"
     },
@@ -13,7 +13,7 @@
     "paths": {
       "/availabledonations": {
         "get": {
-          "summary": "GET avalable iuvs for Ukraine donations",
+          "summary": "GET avalable iuvs for SiriaTurchia donations",
           "operationId": "getavailabledonations",
           "responses": {
             "200": {
