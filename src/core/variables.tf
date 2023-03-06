@@ -1767,10 +1767,6 @@ variable "ingress_elk_load_balancer_ip" {
   default = ""
 }
 
-variable "env" {
-  type    = string
-  default = ""
-}
 variable "node_forwarder_autoscale_enabled" {
   type    = bool
   default = true
