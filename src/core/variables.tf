@@ -538,14 +538,16 @@ variable "apim_nodo_auth_decoupler_enable" {
 ## Redis cache
 variable "redis_cache_params" {
   type = object({
-    capacity = number
-    sku_name = string
-    family   = string
+    public_access = bool
+    capacity      = number
+    sku_name      = string
+    family        = string
   })
   default = {
-    capacity = 1
-    sku_name = "Basic"
-    family   = "C"
+    public_access = false
+    capacity      = 1
+    sku_name      = "Basic"
+    family        = "C"
   }
 }
 

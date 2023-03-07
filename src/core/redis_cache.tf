@@ -10,7 +10,7 @@ module "redis_snet" {
   address_prefixes                               = var.cidr_subnet_redis
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  enforce_private_link_endpoint_network_policies = !var.redis_cache_params.public_access
 }
 
 module "redis" {
@@ -24,8 +24,10 @@ module "redis" {
   sku_name              = var.redis_cache_params.sku_name
   enable_authentication = true
 
+  public_network_access_enabled = var.redis_cache_params.public_access
+
   private_endpoint = {
-    enabled              = true
+    enabled              = !var.redis_cache_params.public_access
     virtual_network_id   = module.vnet.id
     subnet_id            = module.redis_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis_azure_com.id]
