@@ -1444,7 +1444,7 @@
           "touchpoint": {
             "type": "string"
           },
-          "paymentMethodId": {
+          "paymentMethod": {
             "type": "string"
           },
           "bin": {
@@ -1472,7 +1472,7 @@
         },
         "required": [
           "touchpoint",
-          "paymentMethodId",
+          "paymentMethod",
           "paymentAmount",
           "primaryCreditorInstitution",
           "transferList"
