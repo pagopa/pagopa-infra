@@ -129,7 +129,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
   operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "TODO"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
+  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml", {
     base-url   = "https://${local.nodo_hostname}/nodo/webservices/input"
     urlenvpath = var.env_short
   })

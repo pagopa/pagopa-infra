@@ -201,7 +201,7 @@
                 var eclist = ((string) context.Variables["ecs"]).Split(',');
                 // ottimizzazione-ec-buoni - add to eclist dynamicGoodEc cache
                 if (context.Variables.ContainsKey("dynamicGoodEc") && (Convert.ToBoolean(context.Variables["dynamicGoodEc"]))) {
-                    eclist.Append((string) context.Variables["fiscalCode"]);
+                    eclist = eclist.Append((string) context.Variables["fiscalCode"]).ToArray();;
                 }
                 
 
@@ -213,7 +213,7 @@
                 var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
-                        <trace source="ottimizzazione-sent-veirfy" severity="information">ottimizzazione-sent-veirfy</trace>
+                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
                             <!-- <set-url>${base-url}</set-url> -->
                             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
@@ -513,6 +513,7 @@
                         </choose>
                     </when>
                     <otherwise>
+                        <trace source="ottimizzazione-sent-activate" severity="information">ottimizzazione-sent-activate</trace>
                         <set-variable name="amount" value="@{
                     var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                     if (isIdempotencyKeyNotAlreadytRx) {
@@ -647,8 +648,6 @@
                 </choose>
             </otherwise>
         </choose>
-
-
         <!-- <choose>
             <when condition="@(${is-nodo-decoupler-enabled})">
             </when>

@@ -135,7 +135,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
   operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe21" : var.env_short == "u" ? "63756cf1451c1c01c4186baa" : "63b6e2daea7c4a25440fdaa5"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
+  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml", {
     base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
