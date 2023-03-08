@@ -171,6 +171,7 @@ variable "sftp_enable_private_endpoint" {
   type        = bool
   description = "If true, create a private endpoint for the SFTP storage account"
 }
+
 variable "cidr_subnet_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
@@ -254,3 +255,22 @@ variable "custom_metric_alerts" {
 }
 
 
+# Redis
+variable "cidr_subnet_ndp_redis" {
+  type        = list(string)
+  description = "Redis DB address space for NDP."
+  default     = ["10.1.162.0/24"]
+}
+
+variable "ndp_redis_params" {
+  type = object({
+    capacity    = number
+    sku_name    = string
+    family      = string
+  })
+  default = {
+    capacity    = 0
+    sku_name    = "Basic"
+    family      = "C"
+  }
+}

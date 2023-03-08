@@ -18,6 +18,11 @@ variable "env_short" {
   type = string
 }
 
+variable "env" {
+  type        = string
+  description = "Contains env description in extend format (dev,uat,prod)"
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false
@@ -518,7 +523,33 @@ variable "apim_alerts_enabled" {
   default     = true
 }
 
+variable "apim_nodo_decoupler_enable" {
+  type        = bool
+  default     = false
+  description = "Apply decoupler to nodo product apim policy"
+}
+
+variable "apim_nodo_auth_decoupler_enable" {
+  type        = bool
+  default     = false
+  description = "Apply decoupler to nodo-auth product apim policy"
+}
+
 ## Redis cache
+variable "redis_cache_params" {
+  type = object({
+    public_access = bool
+    capacity      = number
+    sku_name      = string
+    family        = string
+  })
+  default = {
+    public_access = false
+    capacity      = 1
+    sku_name      = "Basic"
+    family        = "C"
+  }
+}
 
 variable "redis_cache_enabled" {
   type        = bool
@@ -526,24 +557,10 @@ variable "redis_cache_enabled" {
   default     = false
 }
 
-variable "redis_capacity" {
-  type    = number
-  default = 1
-}
-
-variable "redis_sku_name" {
-  type    = string
-  default = "Standard"
-}
-
-variable "redis_family" {
-  type    = string
-  default = "C"
-}
 variable "cidr_subnet_redis" {
   type        = list(string)
   description = "Redis network address space."
-  default     = []
+  default     = ["10.1.162.0/24"]
 }
 
 variable "redis_private_endpoint_enabled" {
@@ -1752,11 +1769,6 @@ variable "ingress_elk_load_balancer_ip" {
   default = ""
 }
 
-variable "env" {
-  type    = string
-  default = ""
-}
-
 variable "node_forwarder_autoscale_enabled" {
   type    = bool
   default = true
@@ -1771,4 +1783,11 @@ variable "github_runner" {
   default = {
     subnet_address_prefixes = ["10.1.200.0/23"]
   }
+}
+
+# node decoupler
+variable "node_decoupler_primitives" {
+  type        = string
+  description = "Node decoupler primitives"
+  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
 }

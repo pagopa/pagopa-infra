@@ -112,7 +112,7 @@
                     <set-body template="liquid">
 						<soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
 							<soapenv:Body>
-								<nfpsp:activatePaymentNoticeRes>
+								<nfpsp:activatePaymentNoticeV2Response>
 									<outcome>KO</outcome>
 									<fault>
 										<faultCode>PPT_ATTIVAZIONE_IN_CORSO</faultCode>
@@ -120,7 +120,7 @@
 										<id>NodoDeiPagamentiSPC</id>
 										<description>E' in corso un'altra attivazione per lo stesso avviso</description>
 									</fault>
-								</nfpsp:activatePaymentNoticeRes>
+								</nfpsp:activatePaymentNoticeV2Response>
 							</soapenv:Body>
 						</soapenv:Envelope>
 					</set-body>
@@ -276,7 +276,7 @@
                                     <value>text/xml</value>
                                 </set-header>
                                 <set-header name="SOAPAction" exists-action="override">
-                                    <value>activatePaymentNotice</value>
+                                    <value>activatePaymentNoticeV2</value>
                                 </set-header>
                                 <set-header name="proto" exists-action="override">
                                     <value>http</value>
@@ -287,7 +287,7 @@
 											<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 												<soapenv:Header />
 												<soapenv:Body>
-													<nod:activatePaymentNoticeReq>
+													<nod:activatePaymentNoticeV2Request>
 														<idPSP>{{context.Variables["idPSP"]}}</idPSP>
 														<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
 														<idChannel>{{context.Variables["idChannel"]}}</idChannel>
@@ -303,7 +303,7 @@
 														{{context.Variables["dueDate"]}}
 														{{context.Variables["paymentNote"]}}
                                                         -->
-													</nod:activatePaymentNoticeReq>
+													</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -315,7 +315,7 @@
 											<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 												<soapenv:Header />
 												<soapenv:Body>
-													<nod:activatePaymentNoticeReq>
+													<nod:activatePaymentNoticeV2Request>
 														<idPSP>{{context.Variables["idPSP"]}}</idPSP>
 														<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
 														<idChannel>{{context.Variables["idChannel"]}}</idChannel>
@@ -331,7 +331,7 @@
 														{{context.Variables["dueDate"]}}
 														{{context.Variables["paymentNote"]}}
                                                         -->
-													</nod:activatePaymentNoticeReq>
+													</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -343,7 +343,7 @@
 											<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 												<soapenv:Header />
 												<soapenv:Body>
-													<nod:activatePaymentNoticeReq>
+													<nod:activatePaymentNoticeV2Request>
 														<idPSP>{{context.Variables["idPSP"]}}</idPSP>
 														<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
 														<idChannel>{{context.Variables["idChannel"]}}</idChannel>
@@ -359,7 +359,7 @@
 														{{context.Variables["dueDate"]}}
 														{{context.Variables["paymentNote"]}}
                                                         -->
-													</nod:activatePaymentNoticeReq>
+													</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -371,7 +371,7 @@
 											<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 												<soapenv:Header />
 												<soapenv:Body>
-													<nod:activatePaymentNoticeReq>
+													<nod:activatePaymentNoticeV2Request>
 														<idPSP>{{context.Variables["idPSP"]}}</idPSP>
 														<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
 														<idChannel>{{context.Variables["idChannel"]}}</idChannel>
@@ -387,7 +387,7 @@
 														{{context.Variables["dueDate"]}}
 														{{context.Variables["paymentNote"]}}
                                                         -->
-													</nod:activatePaymentNoticeReq>
+													</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -469,7 +469,7 @@
                                             <set-body template="liquid">
 												<soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
 													<soapenv:Body>
-														<nfpsp:activatePaymentNoticeRes>
+														<nfpsp:activatePaymentNoticeV2Response>
 															<outcome>KO</outcome>
 															<fault>
 																<faultCode>{{context.Variables["faultCode"]}}</faultCode>
@@ -477,7 +477,7 @@
 																<id>{{context.Variables["id"]}}</id>
 																<description>{{context.Variables["description"]}}</description>
 															</fault>
-														</nfpsp:activatePaymentNoticeRes>
+														</nfpsp:activatePaymentNoticeV2Response>
 													</soapenv:Body>
 												</soapenv:Envelope>
 											</set-body>
@@ -491,7 +491,7 @@
                                             <set-body template="liquid">
 												<soapenv:Envelope xmlns:tns="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:nfpsp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
 													<soapenv:Body>
-														<nfpsp:activatePaymentNoticeRes>
+														<nfpsp:activatePaymentNoticeV2Response>
 															<outcome>KO</outcome>
 															<fault>
 																<faultCode>{{context.Variables["faultCode"]}}</faultCode>
@@ -502,7 +502,7 @@
 																<originalFaultString>{{context.Variables["originalFaultString"]}}</originalFaultString>
 																<originalDescription>{{context.Variables["originalDescription"]}}</originalDescription>
 															</fault>
-														</nfpsp:activatePaymentNoticeRes>
+														</nfpsp:activatePaymentNoticeV2Response>
 													</soapenv:Body>
 												</soapenv:Envelope>
 											</set-body>
@@ -527,7 +527,7 @@
                             <value>text/xml</value>
                         </set-header>
                         <set-header name="SOAPAction" exists-action="override">
-                            <value>activatePaymentNotice</value>
+                            <value>activatePaymentNoticeV2</value>
                         </set-header>
                         <set-header name="proto" exists-action="override">
                             <value>http</value>
@@ -538,7 +538,7 @@
 									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 										<soapenv:Header />
 										<soapenv:Body>
-											<nod:activatePaymentNoticeReq>
+											<nod:activatePaymentNoticeV2Request>
 												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
 												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
 												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
@@ -554,7 +554,7 @@
 												{{context.Variables["dueDate"]}}
 												{{context.Variables["paymentNote"]}}
                                                 -->
-											</nod:activatePaymentNoticeReq>
+											</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -566,7 +566,7 @@
 									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 										<soapenv:Header />
 										<soapenv:Body>
-											<nod:activatePaymentNoticeReq>
+											<nod:activatePaymentNoticeV2Request>
 												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
 												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
 												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
@@ -582,7 +582,7 @@
 												{{context.Variables["dueDate"]}}
 												{{context.Variables["paymentNote"]}}
                                                 -->
-											</nod:activatePaymentNoticeReq>
+											</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -594,7 +594,7 @@
 									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 										<soapenv:Header />
 										<soapenv:Body>
-											<nod:activatePaymentNoticeReq>
+											<nod:activatePaymentNoticeV2Request>
 												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
 												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
 												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
@@ -610,7 +610,7 @@
 												{{context.Variables["dueDate"]}}
 												{{context.Variables["paymentNote"]}}
                                                 -->
-											</nod:activatePaymentNoticeReq>
+											</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -622,7 +622,7 @@
 									<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nod="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
 										<soapenv:Header />
 										<soapenv:Body>
-											<nod:activatePaymentNoticeReq>
+											<nod:activatePaymentNoticeV2Request>
 												<idPSP>{{context.Variables["idPSP"]}}</idPSP>
 												<idBrokerPSP>{{context.Variables["idBrokerPSP"]}}</idBrokerPSP>
 												<idChannel>{{context.Variables["idChannel"]}}</idChannel>
@@ -638,7 +638,7 @@
 												{{context.Variables["dueDate"]}}
 												{{context.Variables["paymentNote"]}}
                                                 -->
-											</nod:activatePaymentNoticeReq>
+											</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -648,6 +648,19 @@
                 </choose>
             </otherwise>
         </choose>
+        <!-- <choose>
+            <when condition="@(${is-nodo-decoupler-enabled})">
+            </when>
+            <otherwise>
+                <set-backend-service base-url="${base-url}" />
+            </otherwise>
+        </choose>   
+        
+        <choose>
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
+                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
+            </when>
+        </choose> -->
         
     </inbound>
     <backend>
