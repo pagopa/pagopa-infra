@@ -424,14 +424,23 @@
         }
       }
     },
-    "/fee/calculate": {
+    "/payment-methods/{id}/fee/calculate": {
       "post": {
         "tags": [
           "ecommerce-methods"
         ],
         "operationId": "calculateFees",
-        "summary": "Invoke GEC for calculate fees",
+        "summary": "Retrieve list of psp",
         "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "maxOccurrences",
             "in": "query",
@@ -637,12 +646,7 @@
             "type": "string"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
+            "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
             "type": "string"
@@ -1308,12 +1312,7 @@
             "type": "string"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
+            "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
             "type": "string"
@@ -1444,9 +1443,6 @@
           "touchpoint": {
             "type": "string"
           },
-          "paymentMethod": {
-            "type": "string"
-          },
           "bin": {
             "type": "string"
           },
@@ -1472,7 +1468,6 @@
         },
         "required": [
           "touchpoint",
-          "paymentMethod",
           "paymentAmount",
           "primaryCreditorInstitution",
           "transferList"
@@ -1481,6 +1476,12 @@
       "BundleOption": {
         "type": "object",
         "properties": {
+          "paymentMethodName": {
+            "type": "string"
+          },
+          "paymentMethodStatus": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
           "belowThreshold": {
             "type": "boolean"
           },
@@ -1490,7 +1491,11 @@
               "$ref": "#/components/schemas/Transfer"
             }
           }
-        }
+        },
+        "required": [
+          "paymentMethodName",
+          "paymentMethodStatus"
+        ]
       },
       "Transfer": {
         "type": "object",
@@ -1551,6 +1556,15 @@
             "type": "string"
           }
         }
+      },
+      "PaymentMethodStatus": {
+        "type": "string",
+        "description": "the payment method status",
+        "enum": [
+          "ENABLED",
+          "DISABLED",
+          "INCOMING"
+        ]
       }
     },
     "requestBodies": {
