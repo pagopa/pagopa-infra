@@ -51,5 +51,5 @@ nodo_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
-cidr_subnet_vmss = ["10.230.8.144/28"]
-lb_frontend_private_ip_address  = "10.230.8.150"
+cidr_subnet_vmss               = ["10.230.8.144/28"]
+lb_frontend_private_ip_address = "10.230.8.150"

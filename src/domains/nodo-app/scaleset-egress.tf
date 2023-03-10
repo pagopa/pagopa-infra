@@ -19,7 +19,7 @@ module "vmss_snet" {
   enforce_private_link_endpoint_network_policies = true
 }
 
-/* data "azurerm_key_vault_secret" "vmss_admin_login" {
+data "azurerm_key_vault_secret" "vmss_admin_login" {
   name         = "vmss-administrator-login"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
@@ -27,21 +27,21 @@ module "vmss_snet" {
 data "azurerm_key_vault_secret" "vmss_admin_password" {
   name         = "vmss-administrator-password"
   key_vault_id = data.azurerm_key_vault.kv.id
-} */
+}
 
 resource "azurerm_linux_virtual_machine_scale_set" "vmss-egress" {
-  name                = format("%s-vmss", local.project)
-  resource_group_name = azurerm_resource_group.vmss_rg.name
-  location            = azurerm_resource_group.vmss_rg.location
-  sku                 = "Standard_D4ds_v5"
-  instances           = 1
-  admin_username      = "azureuser"
-  admin_password      = "Auasbfufbaisfbbasfbabsy!!"
-  disable_password_authentication   = false
-  zones               = ["1"]
+  name                            = format("%s-vmss", local.project)
+  resource_group_name             = azurerm_resource_group.vmss_rg.name
+  location                        = azurerm_resource_group.vmss_rg.location
+  sku                             = "Standard_D4ds_v5"
+  instances                       = 1
+  admin_username                  = data.azurerm_key_vault_secret.vmss_admin_login.value
+  admin_password                  = data.azurerm_key_vault_secret.vmss_admin_password.value
+  disable_password_authentication = false
+  zones                           = ["1"]
 
-  
-  
+
+
   source_image_reference {
     publisher = "RedHat"
     offer     = "RHEL"
@@ -55,24 +55,25 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss-egress" {
   }
 
   network_interface {
-    name    = "egress-input"
-    primary = true
-    enable_ip_forwarding  = true
-    enable_accelerated_networking   = true
-    
+    name                          = "egress-input"
+    primary                       = true
+    enable_ip_forwarding          = true
+    enable_accelerated_networking = true
+
     ip_configuration {
-      name      = "egress-in"
-      primary   = true
-      subnet_id = module.vmss_snet.id
-      #load_balancer_backend_address_pool_ids = [module.load_balancer_nodo_egress.azurerm_lb_backend_address_pool.azlb.id]
+      name                                   = "egress-in"
+      primary                                = true
+      subnet_id                              = module.vmss_snet.id
+      load_balancer_backend_address_pool_ids = [module.load_balancer_nodo_egress.azurerm_lb_backend_address_pool_id]
     }
   }
   network_interface {
-    name    = "egress-output"
-    enable_ip_forwarding  = true
-    enable_accelerated_networking   = true
+    name                          = "egress-output"
+    enable_ip_forwarding          = true
+    enable_accelerated_networking = true
     ip_configuration {
       name      = "egress-out"
+      primary   = true
       subnet_id = module.vmss_snet.id
     }
   }
@@ -85,11 +86,8 @@ resource "azurerm_virtual_machine_scale_set_extension" "vmss-extension" {
   type                         = "CustomScript"
   type_handler_version         = "2.0"
   settings = jsonencode({
-  "fileUris": [
-    "https://raw.githubusercontent.com/pagopa/pagopa-infra/pagopa-scaleset-egress/src/domains/nodo-app/network-config.sh"
-  ],
-  "commandToExecute": "./network-config.sh"
-})
+    "script" : "c3VkbyBzeXNjdGwgbmV0LmlwdjQuaXBfZm9yd2FyZD0xCnN1ZG8gZmlyZXdhbGwtY21kIC0tcGVybWFuZW50IC0tZGlyZWN0IC0tcGFzc3Rocm91Z2ggaXB2NCAtdCBuYXQgLUkgUE9TVFJPVVRJTkcgLW8gZXRoMCAtaiBNQVNRVUVSQURFCnN1ZG8gZmlyZXdhbGwtY21kIC0tcGVybWFuZW50IC0tZGlyZWN0IC0tcGFzc3Rocm91Z2ggaXB2NCAtSSBGT1JXQVJEIC1pIGV0aDEgLWogQUNDRVBUCnN1ZG8gZmlyZXdhbGwtY21kIC0tcGVybWFuZW50IC0tZGlyZWN0IC0tcGFzc3Rocm91Z2ggaXB2NCAtQSBGT1JXQVJEIC1pIGV0aDAgLW8gZXRoMSAtbSBzdGF0ZSAtLXN0YXRlIFJFTEFURUQsRVNUQUJMSVNIRUQgLWogQUNDRVBUCnN1ZG8gZmlyZXdhbGwtY21kIC0tcGVybWFuZW50IC0tZGlyZWN0IC0tcGFzc3Rocm91Z2ggaXB2NCAtdCBuYXQgLUkgUE9TVFJPVVRJTkcgLW8gZXRoMSAtaiBNQVNRVUVSQURFCnN1ZG8gZmlyZXdhbGwtY21kIC0tcGVybWFuZW50IC0tZGlyZWN0IC0tcGFzc3Rocm91Z2ggaXB2NCAtSSBGT1JXQVJEIC1pIGV0aDAgLWogQUNDRVBUCnN1ZG8gZmlyZXdhbGwtY21kIC0tcGVybWFuZW50IC0tZGlyZWN0IC0tcGFzc3Rocm91Z2ggaXB2NCAtQSBGT1JXQVJEIC1pIGV0aDEgLW8gZXRoMCAtbSBzdGF0ZSAtLXN0YXRlIFJFTEFURUQsRVNUQUJMSVNIRUQgLWogQUNDRVBUCnN1ZG8gZmlyZXdhbGwtY21kIC0tcmVsb2FkCg=="
+  })
 }
 
 
@@ -104,7 +102,7 @@ module "load_balancer_nodo_egress" {
   frontend_private_ip_address_allocation = "Static"
   frontend_private_ip_address            = var.lb_frontend_private_ip_address
   lb_sku                                 = "Standard"
-  pip_sku                                = "Standard" 
+  pip_sku                                = "Standard"
 
   lb_port = {
     http = ["0", "All", "0"]
@@ -118,3 +116,33 @@ module "load_balancer_nodo_egress" {
 
   depends_on = []
 }
+
+/* module "route_table_peering_nexi" {
+  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.90"
+
+  name                          = format("%s-aks-to-nexi-rt", local.project)
+  location                      = azurerm_resource_group.rg_vnet.location
+  resource_group_name           = azurerm_resource_group.rg_vnet.name
+  disable_bgp_route_propagation = false
+
+  subnet_ids = [data.azurerm_subnet.aks_snet]
+
+  routes = [
+    {
+      # dev aks nodo oncloud
+      name                   = "aks-outbound-to-nexy-sianet-subnet"
+      address_prefix         = "10.97.20.33/32"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.230.8.150"
+    },
+    {
+      # dev aks nodo oncloud
+      name                   = "aks-outbound-to-nexi-sfg-subnet"
+      address_prefix         = "10.101.38.180/32"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.230.8.150"
+    },
+  ]
+
+  tags = var.tags
+} */
