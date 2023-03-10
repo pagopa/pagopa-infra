@@ -9,6 +9,8 @@ servers:
 tags:
   - name: channels
     description: Api config channels operations
+  - name: stations
+    description: Api config stations operations
 paths:
   '/channels':
     get:
@@ -677,6 +679,134 @@ paths:
       security:
         - bearerAuth:
             - global
+  '/stations':
+    get:
+      tags:
+        - stations
+      summary: getStations
+      description: Get paginated list of stations
+      operationId: getStationsUsingGET
+      parameters:
+        - name: limit
+          in: query
+          description: Number of elements on one page. Default = 50
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: Page number. Page value starts from 0
+          required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: stationCode
+          in: query
+          description: Station's unique identifier
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: creditorInstitutionCode
+          in: query
+          description: Creditor institution associated to given station
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: ordering
+          in: query
+          description: Sort Direction ordering
+          required: false
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  '/stations/details/{stationId}':
+    get:
+      tags:
+        - stations
+      summary: getStation
+      description: Get station's details
+      operationId: getStationUsingGET
+      parameters:
+        - name: stationId
+          in: path
+          description: Station's unique identifier
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationDetailResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
 components:
   schemas:
     ChannelDetailsDto:
@@ -1165,6 +1295,236 @@ components:
           description: Channel list
           items:
             $ref: '#/components/schemas/PspChannelResource'
+    StationDetailResource:
+      title: StationDetailResource
+      required:
+        - enabled
+        - stationCode
+        - stationStatus
+      type: object
+      properties:
+        activationDate:
+          type: string
+          description: Station's activation date
+          format: date-time
+        associatedCreditorInstitutions:
+          type: integer
+          description: Number of station's creditor institutions
+          format: int32
+        brokerCode:
+          type: string
+          description: Station's broker code
+        brokerDescription:
+          type: string
+          description: Station broker's description
+        brokerObjId:
+          type: integer
+          description: Station's broker object id
+          format: int64
+        createdAt:
+          type: string
+          description: Station created on
+          format: date-time
+        enabled:
+          type: boolean
+          description: Station's activation state
+          example: false
+        flagOnline:
+          type: boolean
+          description: 'Station''s online flag '
+          example: false
+        ip:
+          type: string
+          description: Station's ip address
+        ip4Mod:
+          type: string
+          description: Station's ip v4
+        modifiedAt:
+          type: string
+          description: Station's last modified date
+          format: date-time
+        newPassword:
+          type: string
+          description: Station's new password
+        operatedBy:
+          type: string
+          description: Station's operator
+        password:
+          type: string
+          description: Station's password
+        pofService:
+          type: string
+          description: Station's pof service
+        port:
+          type: integer
+          description: Station's port
+          format: int64
+        port4Mod:
+          type: integer
+          description: Station's v4 port
+          format: int64
+        primitiveVersion:
+          type: integer
+          description: Station's primitive version
+          format: int32
+        protocol:
+          type: string
+          description: Station's http protocol
+          enum:
+            - HTTP
+            - HTTPS
+        protocol4Mod:
+          type: string
+          description: Station's protocol v4
+          enum:
+            - HTTP
+            - HTTPS
+        proxyEnabled:
+          type: boolean
+          description: Station's proxy enabled variable
+          example: false
+        proxyHost:
+          type: string
+          description: Station's proxy host
+        proxyPassword:
+          type: string
+          description: Station's proxy password
+        proxyPort:
+          type: integer
+          description: Station's proxy port
+          format: int64
+        proxyUsername:
+          type: string
+          description: Station's proxy username
+        redirectIp:
+          type: string
+          description: Station's redirect Ip
+        redirectPath:
+          type: string
+          description: Station's redirect path
+        redirectPort:
+          type: integer
+          description: Station's redirect port
+          format: int64
+        redirectProtocol:
+          type: string
+          description: Station's redirect http protocol
+          enum:
+            - HTTP
+            - HTTPS
+        redirectQueryString:
+          type: string
+          description: Station's redirect query string
+        rtInstantaneousDispatch:
+          type: boolean
+          description: Station's instantaneous rt dispatch
+          example: false
+        service:
+          type: string
+          description: Station's service
+        service4Mod:
+          type: string
+          description: Station's service 4
+        stationCode:
+          type: string
+          description: Station's unique identifier
+        stationStatus:
+          type: string
+          description: Station's status
+          enum:
+            - ACTIVE
+            - ON_REVISION
+            - TO_BE_CORRECTED
+        targetHost:
+          type: string
+          description: Station's target host
+        targetPath:
+          type: string
+          description: Station's target path
+        targetPort:
+          type: integer
+          description: Station target's port
+          format: int64
+        threadNumber:
+          type: integer
+          description: Station's max thread number
+          format: int64
+        timeoutA:
+          type: integer
+          description: Station's timeoutA
+          format: int64
+        timeoutB:
+          type: integer
+          description: Station's timeoutB
+          format: int64
+        timeoutC:
+          type: integer
+          description: Station's timeoutC
+          format: int64
+        version:
+          type: integer
+          description: Station's version
+          format: int64
+    StationResource:
+      title: StationResource
+      required:
+        - enabled
+        - stationCode
+        - stationStatus
+      type: object
+      properties:
+        activationDate:
+          type: string
+          description: Station's activation date
+          format: date-time
+        associatedCreditorInstitutions:
+          type: integer
+          description: Number of station's creditor institutions
+          format: int32
+        brokerDescription:
+          type: string
+          description: Station broker's description
+        createdAt:
+          type: string
+          description: Station created on
+          format: date-time
+        enabled:
+          type: boolean
+          description: Station's activation state
+          example: false
+        modifiedAt:
+          type: string
+          description: Station's last modified date
+          format: date-time
+        stationCode:
+          type: string
+          description: Station's unique identifier
+        stationStatus:
+          type: string
+          description: Station's status
+          enum:
+            - ACTIVE
+            - ON_REVISION
+            - TO_BE_CORRECTED
+        version:
+          type: integer
+          description: Station's version
+          format: int64
+    StationsResource:
+      title: StationsResource
+      required:
+        - pageInfo
+        - stationsList
+      type: object
+      properties:
+        pageInfo:
+          description: info pageable
+          $ref: '#/components/schemas/PageInfo'
+        stationsList:
+          type: array
+          description: List of ec stations
+          items:
+            $ref: '#/components/schemas/StationResource'
   securitySchemes:
     bearerAuth:
       type: http
