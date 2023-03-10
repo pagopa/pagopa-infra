@@ -1493,6 +1493,7 @@
           }
         },
         "required": [
+          "bundles",
           "paymentMethodName",
           "paymentMethodStatus"
         ]
