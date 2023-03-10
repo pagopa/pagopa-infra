@@ -117,32 +117,17 @@ module "load_balancer_nodo_egress" {
   depends_on = []
 }
 
-/* module "route_table_peering_nexi" {
+module "route_table_peering_nexi" {
   source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.90"
 
   name                          = format("%s-aks-to-nexi-rt", local.project)
-  location                      = azurerm_resource_group.rg_vnet.location
-  resource_group_name           = azurerm_resource_group.rg_vnet.name
+  location                      = var.location
+  resource_group_name           = local.vnet_resource_group_name
   disable_bgp_route_propagation = false
 
-  subnet_ids = [data.azurerm_subnet.aks_snet]
+  subnet_ids = [data.azurerm_subnet.aks_snet.id]
 
-  routes = [
-    {
-      # dev aks nodo oncloud
-      name                   = "aks-outbound-to-nexy-sianet-subnet"
-      address_prefix         = "10.97.20.33/32"
-      next_hop_type          = "VirtualAppliance"
-      next_hop_in_ip_address = "10.230.8.150"
-    },
-    {
-      # dev aks nodo oncloud
-      name                   = "aks-outbound-to-nexi-sfg-subnet"
-      address_prefix         = "10.101.38.180/32"
-      next_hop_type          = "VirtualAppliance"
-      next_hop_in_ip_address = "10.230.8.150"
-    },
-  ]
+  routes = var.route_aks
 
   tags = var.tags
-} */
+}

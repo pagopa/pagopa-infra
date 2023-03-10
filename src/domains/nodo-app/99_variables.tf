@@ -161,3 +161,12 @@ variable "lb_frontend_private_ip_address" {
   default = "load balancer egress nodo private ip"
 }
 
+variable "route_aks" {
+  type = list(object({
+    name                   = string
+    address_prefix         = string
+    next_hop_type          = string
+    next_hop_in_ip_address = string
+  }))
+  description = "AKS routing table"
+}

@@ -53,3 +53,20 @@ aks_cidr_subnet = ["10.1.0.0/17"]
 
 cidr_subnet_vmss               = ["10.230.8.144/28"]
 lb_frontend_private_ip_address = "10.230.8.150"
+
+route_aks = [
+    {
+      # dev aks nodo oncloud
+      name                   = "aks-outbound-to-nexy-sianet-subnet"
+      address_prefix         = "10.97.20.33/32"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.230.8.150"
+    },
+    {
+      # dev aks nodo oncloud
+      name                   = "aks-outbound-to-nexi-sfg-subnet"
+      address_prefix         = "10.101.38.180/32"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.230.8.150"
+    },
+]

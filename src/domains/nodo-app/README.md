@@ -52,6 +52,7 @@
 | <a name="module_apim_wfesp_product_replica"></a> [apim\_wfesp\_product\_replica](#module\_apim\_wfesp\_product\_replica) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_load_balancer_nodo_egress"></a> [load\_balancer\_nodo\_egress](#module\_load\_balancer\_nodo\_egress) | Azure/loadbalancer/azurerm | 3.4.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/azurerm.git//kubernetes_pod_identity | v2.13.1 |
+| <a name="module_route_table_peering_nexi"></a> [route\_table\_peering\_nexi](#module\_route\_table\_peering\_nexi) | git::https://github.com/pagopa/azurerm.git//route_table | v1.0.90 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/azurerm.git//tls_checker | v2.19.0 |
 | <a name="module_vmss_snet"></a> [vmss\_snet](#module\_vmss\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.1.13 |
 
@@ -160,6 +161,7 @@
 | <a name="input_nodo_ndp_subscription_limit"></a> [nodo\_ndp\_subscription\_limit](#input\_nodo\_ndp\_subscription\_limit) | subscriptions limit | `number` | `1000` | no |
 | <a name="input_nodo_user_node_pool"></a> [nodo\_user\_node\_pool](#input\_nodo\_user\_node\_pool) | AKS node pool user configuration | <pre>object({<br>    enabled            = bool,<br>    name               = string,<br>    vm_size            = string,<br>    os_disk_type       = string,<br>    os_disk_size_gb    = string,<br>    node_count_min     = number,<br>    node_count_max     = number,<br>    node_labels        = map(any),<br>    node_taints        = list(string),<br>    node_tags          = map(any),<br>    nodo_pool_max_pods = number,<br>  })</pre> | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
+| <a name="input_route_aks"></a> [route\_aks](#input\_route\_aks) | AKS routing table | <pre>list(object({<br>    name                   = string<br>    address_prefix         = string<br>    next_hop_type          = string<br>    next_hop_in_ip_address = string<br>  }))</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 
