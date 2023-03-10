@@ -54,7 +54,7 @@
             data.Add("idBrokerPsp", "88888888899");
             data.Add("bundleName", "bundle 1");
             data.Add("bundleDescription", "bundle description 1");
-            data.Add("onUse", false);
+            data.Add("onUs", false);
             data.Add("abi", "14156");
             if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
             data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]);
@@ -96,7 +96,7 @@
           data.Add("idBrokerPsp", "88888888899");
           data.Add("bundleName", "bundle 2");
           data.Add("bundleDescription", "bundle description 2");
-          data.Add("onUse", false);
+          data.Add("onUs", false);
           data.Add("abi", "14156");
           if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
           data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]);
@@ -116,7 +116,7 @@
           data.Add("idBrokerPsp", "88888888899");
           data.Add("bundleName", "bundle 1");
           data.Add("bundleDescription", "bundle description 1");
-          data.Add("onUse", false);
+          data.Add("onUs", false);
           data.Add("abi", "14156");
           if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
           data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]);
@@ -188,7 +188,7 @@
     data.Add("idBrokerPsp", "88888888899");
     data.Add("bundleName", "bundle 3");
     data.Add("bundleDescription", "bundle description 3");
-    data.Add("onUse", false);
+    data.Add("onUs", false);
     data.Add("abi", "14156");
     data.Add("idPsp", "TEST5678901");
 
@@ -205,7 +205,7 @@
     data.Add("idBrokerPsp", "88888888899");
     data.Add("bundleName", "bundle 1");
     data.Add("bundleDescription", "bundle description 1");
-    data.Add("onUse", false);
+    data.Add("onUs", false);
     data.Add("abi", "14156");
     if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
     data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]);
@@ -248,7 +248,7 @@
     data.Add("idBrokerPsp", "88888888899");
     data.Add("bundleName", "bundle 5");
     data.Add("bundleDescription", "bundle description 5");
-    data.Add("onUse", false);
+    data.Add("onUs", false);
     data.Add("abi", "14156");
     data.Add("idPsp", "TEST5678901");
 
