@@ -139,6 +139,11 @@ variable "aks_cidr_subnet" {
   description = "Aks network address space."
 }
 
+variable "cidr_subnet_vmss" {
+  type        = list(string)
+  description = "VMSS network address space."
+}
+
 variable "cname_record_name" {
   type    = string
   default = "config"
@@ -150,3 +155,9 @@ variable "nodo_ndp_subscription_limit" {
   description = "subscriptions limit"
   default     = 1000
 }
+
+variable "lb_frontend_private_ip_address" {
+  type    = string
+  default = "load balancer egress nodo private ip"
+}
+
