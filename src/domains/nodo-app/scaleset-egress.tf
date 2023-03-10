@@ -59,10 +59,12 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss-egress" {
     primary = true
     enable_ip_forwarding  = true
     enable_accelerated_networking   = true
+    
     ip_configuration {
       name      = "egress-in"
       primary   = true
       subnet_id = module.vmss_snet.id
+      #load_balancer_backend_address_pool_ids = [module.load_balancer_nodo_egress.azurerm_lb_backend_address_pool.azlb.id]
     }
   }
   network_interface {
@@ -82,11 +84,11 @@ resource "azurerm_virtual_machine_scale_set_extension" "vmss-extension" {
   publisher                    = "Microsoft.Azure.Extensions"
   type                         = "CustomScript"
   type_handler_version         = "2.0"
-  settings = jsonencode({{
-    "fileUris": [
-        "https://raw.githubusercontent.com/pagopa/pagopa-infra/pagopa-scaleset-egress/nodo-app/network-config.sh"
-    ],
-    "commandToExecute": "./network-config.sh"
+  settings = jsonencode({
+  "fileUris": [
+    "https://raw.githubusercontent.com/pagopa/pagopa-infra/pagopa-scaleset-egress/src/domains/nodo-app/network-config.sh"
+  ],
+  "commandToExecute": "./network-config.sh"
 })
 }
 
