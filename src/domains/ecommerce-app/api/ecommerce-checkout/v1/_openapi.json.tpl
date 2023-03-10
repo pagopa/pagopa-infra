@@ -456,7 +456,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PaymentOption"
+                "$ref": "#/components/schemas/CalculateFeeRequest"
               }
             }
           }
@@ -467,7 +467,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BundleOption"
+                  "$ref": "#/components/schemas/CalculateFeeResponse"
                 }
               }
             }
@@ -1437,7 +1437,7 @@
           }
         }
       },
-      "PaymentOption": {
+      "CalculateFeeRequest": {
         "type": "object",
         "properties": {
           "touchpoint": {
@@ -1473,7 +1473,7 @@
           "transferList"
         ]
       },
-      "BundleOption": {
+      "CalculateFeeResponse": {
         "type": "object",
         "properties": {
           "paymentMethodName": {
@@ -1485,10 +1485,10 @@
           "belowThreshold": {
             "type": "boolean"
           },
-          "bundleOptions": {
+          "bundles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Transfer"
+              "$ref": "#/components/schemas/Bundle"
             }
           }
         },
@@ -1497,7 +1497,7 @@
           "paymentMethodStatus"
         ]
       },
-      "Transfer": {
+      "Bundle": {
         "type": "object",
         "properties": {
           "abi": {
@@ -1608,12 +1608,12 @@
           }
         }
       },
-      "PaymentOption": {
+      "CalculateFeeRequest": {
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/PaymentOption"
+              "$ref": "#/components/schemas/CalculateFeeRequest"
             }
           }
         }
