@@ -25,6 +25,17 @@
             },
             "required": true,
             "example": "90000000000"
+          },
+          {
+            "name": "flowDate",
+            "in": "query",
+            "description": "Filter by flow date (use the format yyyy-MM-dd)",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": false,
+            "example": "2020-01-01"
           }
         ],
         "responses": {
