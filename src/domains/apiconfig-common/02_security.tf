@@ -156,3 +156,33 @@ resource "azurerm_key_vault_secret" "postgresql_db_cfg_password" {
   }
 }
 
+data "azurerm_redis_cache" "redis_cache" {
+  name                = format("%s-%s-redis", var.prefix, var.env_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
+resource "azurerm_key_vault_secret" "redis_password" {
+  name         = "redis-password"
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "github_token_read_packages" {
+  name         = "github-token-read-packages"
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+
