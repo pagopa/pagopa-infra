@@ -26,14 +26,6 @@ terraform {
       source  = "Azure/azapi"
       version = "= 1.3.0"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "= 2.11.0"
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "= 2.5.1"
-    }
   }
 
   backend "azurerm" {}
