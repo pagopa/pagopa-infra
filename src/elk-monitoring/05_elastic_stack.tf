@@ -3,8 +3,7 @@ module "elastic_stack" {
     azurerm_kubernetes_cluster_node_pool.elastic
   ]
 
-  #source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.11.0"
-  source = "/Users/massimoscattarella/projects/pagopa/azurerm/elastic_stack"
+  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.12.0"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
