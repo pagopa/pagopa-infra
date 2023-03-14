@@ -17,7 +17,7 @@ locals {
   apim_gpd_payments_rest_internal_api = {
     display_name = "GPD Payments pagoPA - REST - aks"
     description  = "REST API del servizio Payments per Gestione Posizione Debitorie"
-    # temporary path for migration purpose - the official one will be gpd-payments/api
+    # temporary path for migration purpose - the official one will be payment-receipts/api
     path                  = "payment-receipts/api"
     published             = true
     subscription_required = false
