@@ -4,11 +4,12 @@ module "elastic_stack" {
   ]
 
   source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.11.0"
+  #source = "/Users/massimoscattarella/projects/pagopa/azurerm/elastic_stack"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
 
-  eck_license = file("${path.module}/env/eck_license/pagopa-spa-non_production-37c2b1cf-8300-468b-aa62-ae266d02f76b-v5.json")
+  #eck_license = file("${path.module}/env/eck_license/pagopa-spa-non_production-37c2b1cf-8300-468b-aa62-ae266d02f76b-v5.json")
 
   env_short = var.env_short
   env = var.env
