@@ -123,3 +123,8 @@ nodeset_config = {
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-cold"
   }
 }
+
+opentelemetry_operator_helm = {
+  chart_version = "0.24.3"
+  values_file   = "./env/opentelemetry_operator_helm/values.yaml"
+}
