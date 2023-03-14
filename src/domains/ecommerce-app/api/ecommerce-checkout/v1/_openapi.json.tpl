@@ -360,6 +360,70 @@
         }
       }
     },
+    "/transactions/{transactionId}/cancel": {
+      "summary": "Request authorization for the transaction identified by payment token",
+      "delete": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "requestTransactionUserCancellation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Performs the cancellation of the transaction",
+        "responses": {
+          "204": {
+            "description": "Transaction cancellation request successfully processed"
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/payment-methods": {
       "get": {
         "tags": [
