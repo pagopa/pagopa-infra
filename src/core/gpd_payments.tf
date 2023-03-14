@@ -1,54 +1,54 @@
-locals {
-  gpd_payments_app_settings = {
-    # Monitoring
-    APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
-    APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
-    APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
-    APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
-    ApplicationInsightsAgent_EXTENSION_VERSION      = "~3"
-    DiagnosticServices_EXTENSION_VERSION            = "~3"
-    InstrumentationEngine_EXTENSION_VERSION         = "disabled"
-    SnapshotDebugger_EXTENSION_VERSION              = "disabled"
-    XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
-    XDT_MicrosoftApplicationInsights_Mode           = "recommended"
-    XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
-    TIMEOUT_DELAY                                   = 300
-    # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
-    WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
-    WEBSITE_RUN_FROM_PACKAGE                        = "1"
-    WEBSITE_VNET_ROUTE_ALL                          = "1"
-    WEBSITE_DNS_SERVER                              = "168.63.129.16"
+# locals {
+#   gpd_payments_app_settings = {
+#     # Monitoring
+#     APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
+#     APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+#     APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
+#     APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
+#     APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
+#     ApplicationInsightsAgent_EXTENSION_VERSION      = "~3"
+#     DiagnosticServices_EXTENSION_VERSION            = "~3"
+#     InstrumentationEngine_EXTENSION_VERSION         = "disabled"
+#     SnapshotDebugger_EXTENSION_VERSION              = "disabled"
+#     XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
+#     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
+#     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
+#     WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
+#     TIMEOUT_DELAY                                   = 300
+#     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
+#     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
+#     WEBSITE_RUN_FROM_PACKAGE                        = "1"
+#     WEBSITE_VNET_ROUTE_ALL                          = "1"
+#     WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
-    # Spring Environment
-    PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
-    PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
-    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST                      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
-    GPS_HOST                      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gps/spontaneous-payments-service", "v1")
-    API_CONFIG_HOST               = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "apiconfig/auth/api", "v1")
-    APICONFIG_SUBSCRIPTION_KEY    = data.azurerm_key_vault_secret.gpd_payments_apiconfig_subkey.value
-    # PAYMENTS_SA_CONNECTION_STRING = module.payments_receipt.primary_connection_string
-    # RECEIPTS_TABLE                = azurerm_storage_table.payments_receipts_table.name
-    CONNECTION_TIMEOUT            = 3000
-    RETRY_MAX_ATTEMPTS            = 1
-    RETRY_MAX_DELAY               = 2000
-    LOGGING_LEVEL                 = var.payments_logging_level
-    CACHE_SIZE                    = 1000
-    CACHE_EXPIRATION_TIME         = "1d" # 1 day
+#     # Spring Environment
+#     PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
+#     PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
+#     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
+#     GPD_HOST                      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+#     GPS_HOST                      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gps/spontaneous-payments-service", "v1")
+#     API_CONFIG_HOST               = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "apiconfig/auth/api", "v1")
+#     APICONFIG_SUBSCRIPTION_KEY    = data.azurerm_key_vault_secret.gpd_payments_apiconfig_subkey.value
+#     # PAYMENTS_SA_CONNECTION_STRING = module.payments_receipt.primary_connection_string
+#     # RECEIPTS_TABLE                = azurerm_storage_table.payments_receipts_table.name
+#     CONNECTION_TIMEOUT            = 3000
+#     RETRY_MAX_ATTEMPTS            = 1
+#     RETRY_MAX_DELAY               = 2000
+#     LOGGING_LEVEL                 = var.payments_logging_level
+#     CACHE_SIZE                    = 1000
+#     CACHE_EXPIRATION_TIME         = "1d" # 1 day
 
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    WEBSITES_PORT                       = 8080
+#     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
+#     WEBSITES_PORT                       = 8080
 
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
+#     DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
+#     DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
+#     DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
 
-  }
+#   }
 
-  gpd_payments_allowed_subnets = [module.apim_snet.id]
-}
+#   gpd_payments_allowed_subnets = [module.apim_snet.id]
+# }
 
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/467435830/App+service#pricing-e-reservation
 # Quando si raggruppano app service o function nello stesso app service plan
