@@ -3,13 +3,13 @@ module "elastic_stack" {
     azurerm_kubernetes_cluster_node_pool.elastic
   ]
 
-  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.11.0"
-  #source = "/Users/massimoscattarella/projects/pagopa/azurerm/elastic_stack"
+  #source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.11.0"
+  source = "/Users/massimoscattarella/projects/pagopa/azurerm/elastic_stack"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
 
-  #eck_license = file("${path.module}/env/eck_license/pagopa-spa-non_production-37c2b1cf-8300-468b-aa62-ae266d02f76b-v5.json")
+  eck_license = file("${path.module}/env/eck_license/pagopa-spa-4a1285e5-9c2c-4f9f-948a-9600095edc2f-orchestration.json")
 
   env_short = var.env_short
   env = var.env
@@ -21,6 +21,9 @@ module "elastic_stack" {
 
   kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.sSit" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
 }
+# output "test1" {
+#   value = module.elastic_stack.test
+# }
 
 data "kubernetes_secret" "get_elastic_credential" {
   depends_on = [
