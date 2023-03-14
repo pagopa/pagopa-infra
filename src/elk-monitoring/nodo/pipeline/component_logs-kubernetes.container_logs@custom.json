@@ -1,0 +1,17 @@
+{
+  "template": {
+    "settings": {
+      "index" : {
+        "default_pipeline": "rule_pipeline",
+        "lifecycle.name": "logs_pagopa"
+      }
+    }
+  },
+  "_meta": {
+    "package": {
+      "name": "kubernetes"
+    },
+    "managed_by": "fleet",
+    "managed": true
+  }
+}

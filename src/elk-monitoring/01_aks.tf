@@ -33,7 +33,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "elastic" {
 
   ### autoscaling
   enable_auto_scaling = true
-  node_count          = var.elastic_node_pool.node_count_min
+  #node_count          = var.elastic_node_pool.node_count_min
   min_count           = var.elastic_node_pool.node_count_min
   max_count           = var.elastic_node_pool.node_count_max
 
@@ -48,5 +48,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "elastic" {
 
 
   tags = merge(var.tags, var.elastic_node_pool.node_tags)
+
+  #lifecycle {
+  #  ignore_changes = [
+  #    node_count
+  #  ]
+  #}
 
 }
