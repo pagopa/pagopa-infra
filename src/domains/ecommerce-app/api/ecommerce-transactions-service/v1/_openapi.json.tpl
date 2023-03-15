@@ -35,17 +35,6 @@
           "transactions"
         ],
         "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "X-Client-Id",
-            "required": true,
-            "description": "Transaction origin (populated by APIM policy)",
-            "schema": {
-              "$ref": "#/components/schemas/ClientId"
-            }
-          }
-        ],
         "summary": "Make a new transaction",
         "requestBody": {
           "$ref": "#/components/requestBodies/NewTransactionRequest"
