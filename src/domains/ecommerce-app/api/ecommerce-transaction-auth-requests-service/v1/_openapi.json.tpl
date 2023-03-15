@@ -3,7 +3,7 @@
   "info": {
     "version": "0.0.1",
     "title": "Pagopa eCommerce transaction auth requests service",
-    "description": "This microservice handles transaction auth requests update"
+    "description": "This microservice handles transaction auth requests update",
     "contact": {
       "name": "pagoPA - Touchpoints team"
     }
