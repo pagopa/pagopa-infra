@@ -11,14 +11,14 @@ module "elastic_stack" {
   eck_license = file("${path.module}/env/eck_license/pagopa-spa-4a1285e5-9c2c-4f9f-948a-9600095edc2f-orchestration.json")
 
   env_short = var.env_short
-  env = var.env
+  env       = var.env
 
   kibana_external_domain = var.env_short == "p" ? "https://kibana.platform.pagopa.it/kibana" : "https://kibana.${var.env}.platform.pagopa.it/kibana"
 
   secret_name   = var.env_short == "p" ? "${var.location_short}${var.env}-kibana-internal-platform-pagopa-it" : "${var.location_short}${var.env}-kibana-internal-${var.env}-platform-pagopa-it"
   keyvault_name = module.key_vault.name
 
-  kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.sSit" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
+  kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.it" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
 }
 # output "test1" {
 #   value = module.elastic_stack.test
@@ -44,11 +44,11 @@ locals {
   ilm_policy             = { for filename in fileset(path.module, "nodo/pipeline/ilm_*.json") : replace(replace(basename(filename), "ilm_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
   component_template     = { for filename in fileset(path.module, "nodo/pipeline/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
 
-  fdr_ilm_policy             = { for filename in fileset(path.module, "fdr/ilm_policy_*.json") : replace(replace(basename(filename), "ilm_policy_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  fdr_component_template     = { for filename in fileset(path.module, "fdr/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  fdr_index_template         = { for filename in fileset(path.module, "fdr/index_template_*.json") : replace(replace(basename(filename), "index_template_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  fdr_kibana_space           = file("${path.module}/fdr/space.json")
-  fdr_kibana_data_view       = file("${path.module}/fdr/data_view.json")
+  fdr_ilm_policy         = { for filename in fileset(path.module, "fdr/ilm_policy_*.json") : replace(replace(basename(filename), "ilm_policy_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  fdr_component_template = { for filename in fileset(path.module, "fdr/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  fdr_index_template     = { for filename in fileset(path.module, "fdr/index_template_*.json") : replace(replace(basename(filename), "index_template_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  fdr_kibana_space       = file("${path.module}/fdr/space.json")
+  fdr_kibana_data_view   = file("${path.module}/fdr/data_view.json")
 }
 
 resource "null_resource" "ingest_pipeline" {
@@ -331,7 +331,7 @@ resource "kubectl_manifest" "otel_collector" {
   depends_on = [
     helm_release.opentelemetry_operator_helm
   ]
-  yaml_body =  templatefile("${path.module}/env/opentelemetry_operator_helm/otel.yaml", {
+  yaml_body = templatefile("${path.module}/env/opentelemetry_operator_helm/otel.yaml", {
     namespace = local.elk_namespace
   })
 
