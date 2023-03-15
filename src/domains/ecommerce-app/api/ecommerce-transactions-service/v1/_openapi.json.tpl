@@ -22,6 +22,11 @@
     "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
     "description": "Design review"
   },
+  "servers": [
+    {
+      "url": "https://${host}"
+    }
+  ],
   "paths": {
     "/transactions": {
       "post": {
