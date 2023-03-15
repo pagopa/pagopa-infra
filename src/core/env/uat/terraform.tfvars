@@ -176,6 +176,8 @@ mock_payment_gateway_enabled = true
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
+node_decoupler_primitives       = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
+
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -183,6 +185,7 @@ nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,001031
 nodo_pagamenti_url     = "https://10.70.74.200/nodo-uat/webservices/input"
 ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/input shall use lb_aks
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
+
 
 base_path_nodo_oncloud        = "/nodo-uat"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-uat"

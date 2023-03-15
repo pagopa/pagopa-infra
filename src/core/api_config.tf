@@ -154,6 +154,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
     operator  = "GreaterThanOrEqual"
     threshold = 3
   }
+
+  tags = {
+    PagoPAService = "API Config"
+  }
 }
 
 resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
