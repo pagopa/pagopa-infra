@@ -424,70 +424,13 @@
         }
       }
     },
-    "/payment-methods/psps": {
-      "get": {
+    "/payment-methods/{id}/fee/calculate": {
+      "post": {
         "tags": [
           "ecommerce-methods"
         ],
-        "operationId": "getPSPs",
-        "summary": "Retrieve psps",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "amount",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Amount in cents",
-            "required": false
-          },
-          {
-            "in": "query",
-            "name": "lang",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "IT",
-                "EN",
-                "FR",
-                "DE",
-                "SL"
-              ]
-            },
-            "description": "Service language",
-            "required": false
-          },
-          {
-            "in": "query",
-            "name": "paymentTypeCode",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Payment Type Code",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "PSP list successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PSPsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/payment-methods/{id}/psps": {
-      "get": {
-        "tags": [
-          "ecommerce-methods"
-        ],
-        "operationId": "getPaymentMethodsPSPs",
-        "summary": "Retrive PSPs by payment method ID",
+        "operationId": "calculateFees",
+        "summary": "Retrieve list of psp",
         "parameters": [
           {
             "name": "id",
@@ -499,38 +442,62 @@
             }
           },
           {
+            "name": "maxOccurrences",
             "in": "query",
-            "name": "amount",
+            "description": "max occurrences",
+            "required": false,
             "schema": {
               "type": "integer"
-            },
-            "description": "Amount in cents",
-            "required": false
-          },
-          {
-            "in": "query",
-            "name": "lang",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "IT",
-                "EN",
-                "FR",
-                "DE",
-                "SL"
-              ]
-            },
-            "description": "Service language",
-            "required": false
+            }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculateFeeRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "New payment method successfully updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PSPsResponse"
+                  "$ref": "#/components/schemas/CalculateFeeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -679,12 +646,7 @@
             "type": "string"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
+            "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
             "type": "string"
@@ -1350,12 +1312,7 @@
             "type": "string"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
+            "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
             "type": "string"
@@ -1382,85 +1339,6 @@
         "items": {
           "$ref": "#/components/schemas/PaymentMethodResponse"
         }
-      },
-      "PSPsResponse": {
-        "type": "object",
-        "description": "Get available PSP list Response",
-        "properties": {
-          "psp": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Psp"
-            }
-          }
-        }
-      },
-      "Psp": {
-        "type": "object",
-        "description": "PSP object",
-        "properties": {
-          "code": {
-            "type": "string"
-          },
-          "paymentTypeCode": {
-            "type": "string"
-          },
-          "channelCode": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
-          },
-          "businessName": {
-            "type": "string"
-          },
-          "brokerName": {
-            "type": "string"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "IT",
-              "EN",
-              "FR",
-              "DE",
-              "SL"
-            ]
-          },
-          "minAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "maxAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "fixedCost": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "code",
-          "paymentMethodID",
-          "description",
-          "status",
-          "type",
-          "name",
-          "brokerName",
-          "language",
-          "minAmount",
-          "maxAmount",
-          "fixedCost"
-        ]
       },
       "CartRequest": {
         "type": "object",
@@ -1558,6 +1436,136 @@
             "maxLength": 140
           }
         }
+      },
+      "CalculateFeeRequest": {
+        "type": "object",
+        "properties": {
+          "touchpoint": {
+            "type": "string"
+          },
+          "bin": {
+            "type": "string"
+          },
+          "idPspList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "primaryCreditorInstitution": {
+            "type": "string"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          }
+        },
+        "required": [
+          "touchpoint",
+          "paymentAmount",
+          "primaryCreditorInstitution",
+          "transferList"
+        ]
+      },
+      "CalculateFeeResponse": {
+        "type": "object",
+        "properties": {
+          "paymentMethodName": {
+            "type": "string"
+          },
+          "paymentMethodStatus": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "belowThreshold": {
+            "type": "boolean"
+          },
+          "bundles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bundle"
+            }
+          }
+        },
+        "required": [
+          "bundles",
+          "paymentMethodName",
+          "paymentMethodStatus"
+        ]
+      },
+      "Bundle": {
+        "type": "object",
+        "properties": {
+          "abi": {
+            "type": "string"
+          },
+          "bundleDescription": {
+            "type": "string"
+          },
+          "bundleName": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idBundle": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idCiBundle": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
+          },
+          "paymentMethod": {
+            "type": "string"
+          },
+          "primaryCiIncurredFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "taxPayerFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "touchpoint": {
+            "type": "string"
+          }
+        }
+      },
+      "TransferListItem": {
+        "type": "object",
+        "properties": {
+          "creditorInstitution": {
+            "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
+          },
+          "transferCategory": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentMethodStatus": {
+        "type": "string",
+        "description": "the payment method status",
+        "enum": [
+          "ENABLED",
+          "DISABLED",
+          "INCOMING"
+        ]
       }
     },
     "requestBodies": {
@@ -1597,6 +1605,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/UpdateAuthorizationRequest"
+            }
+          }
+        }
+      },
+      "CalculateFeeRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CalculateFeeRequest"
             }
           }
         }
