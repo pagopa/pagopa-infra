@@ -1,20 +1,53 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0",
+    "version": "0.0.1",
     "title": "Pagopa eCommerce services for Checkout",
-    "description": "This microservice that expose eCommerce services to Checkout."
+    "description": "This microservice that expose eCommerce services to Checkout.",
+    "contact": {
+      "name": "pagoPA - Touchpoints team"
+    }
   },
+  "tags": [
+    {
+      "name": "ecommerce-transactions",
+      "description": "Api's for performing a transaction",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611287199/-servizio+transactions+service",
+        "description": "Technical specifications"
+      }
+    },
+    {
+      "name": "ecommerce-methods",
+      "description": "Api's for retrieve payment methods for perform transactions",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611516433/-servizio+payment+methods+service",
+        "description": "Technical specifications"
+      }
+    },
+    {
+      "name": "ecommerce-payment-requests",
+      "description": "Api's for initiate a transaction given an array of payment tokens",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611745793/-servizio+payment+requests+service",
+        "description": "Technical specifications"
+      }
+    }
+  ],
   "servers": [
     {
       "url": "https://${host}"
     }
   ],
+  "externalDocs": {
+    "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
+    "description": "Design review"
+  },
   "paths": {
     "/payment-requests/{rpt_id}": {
       "get": {
         "tags": [
-          "ecommerce-transactions"
+          "ecommerce-payment-requests"
         ],
         "operationId": "getPaymentRequestInfo",
         "parameters": [
@@ -118,6 +151,7 @@
         ],
         "operationId": "newTransaction",
         "summary": "Make a new transaction",
+        "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
         "requestBody": {
           "content": {
             "application/json": {
@@ -223,7 +257,8 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get information about a specific transaction",
+        "summary": "Get transaction information",
+        "description": "Return information for the input specific transaction resource",
         "responses": {
           "200": {
             "description": "Transaction data successfully retrieved",
@@ -257,13 +292,24 @@
                 }
               }
             }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
     },
     "/transactions/{transactionId}/auth-requests": {
-      "summary": "Request authorization for the transaction identified by payment token",
       "post": {
+        "summary": "Request authorization",
+        "description": "Request authorization for the transaction identified by payment token",
         "tags": [
           "ecommerce-transactions"
         ],
@@ -508,7 +554,7 @@
     "/carts/{id_cart}": {
       "get": {
         "tags": [
-          "ecommerce-carts"
+          "ecommerce-payment-requests"
         ],
         "operationId": "GetCarts",
         "description": "Get a cart data",
@@ -564,6 +610,16 @@
                 }
               }
             }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
@@ -571,7 +627,7 @@
     "/carts/{cart_id}/redirect": {
       "get": {
         "tags": [
-          "ecommerce-carts"
+          "ecommerce-payment-requests"
         ],
         "operationId": "GetCartsRedirect",
         "description": "Redirect to checkout with cart",
@@ -944,7 +1000,7 @@
         ],
         "example": {
           "rptId": "string",
-          "paymentContextCode": "paymentContextCode",
+          "paymentContextCode": "12345678901234567890123456789012",
           "amount": 100
         }
       },
@@ -991,12 +1047,12 @@
             "example": [
               {
                 "rptId": "77777777777302012387654312384",
-                "paymentContextCode": "paymentContextCode1",
+                "paymentContextCode": "12345678901234567890123456789011",
                 "amount": 100
               },
               {
                 "rptId": "77777777777302012387654312385",
-                "paymentContextCode": "paymentContextCode2",
+                "paymentContextCode": "12345678901234567890123456789012",
                 "amount": 200
               }
             ]
@@ -1188,7 +1244,7 @@
             ],
             "example": {
               "detailType": "card",
-              "cvv": 0,
+              "cvv": "123",
               "pan": "0123456789012345",
               "expiryDate": "209901",
               "holderName": "Name Surname",
@@ -1222,7 +1278,8 @@
         ],
         "example": {
           "authorizationResult": "OK",
-          "timestampOperation": "2022-02-11T12:00:00.000Z"
+          "timestampOperation": "2022-02-11T12:00:00.000Z",
+          "authorizationCode": "auth-code"
         }
       },
       "RequestAuthorizationResponse": {
@@ -1387,17 +1444,17 @@
               "returnOkUrl": {
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/success.html"
+                "example": "https://www.comune.di.prova.it/pagopa/success.html"
               },
               "returnCancelUrl": {
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/cancel.html"
+                "example": "https://www.comune.di.prova.it/pagopa/cancel.html"
               },
               "returnErrorUrl": {
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/error.html"
+                "example": "https://www.comune.di.prova.it/pagopa/error.html"
               }
             }
           }
