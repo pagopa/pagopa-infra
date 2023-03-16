@@ -18,7 +18,7 @@ module "elastic_stack" {
   secret_name   = var.env_short == "p" ? "${var.location_short}${var.env}-kibana-internal-platform-pagopa-it" : "${var.location_short}${var.env}-kibana-internal-${var.env}-platform-pagopa-it"
   keyvault_name = module.key_vault.name
 
-  kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.sSit" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
+  kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.it" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
 }
 # output "test1" {
 #   value = module.elastic_stack.test
