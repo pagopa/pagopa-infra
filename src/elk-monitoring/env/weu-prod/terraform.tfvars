@@ -39,7 +39,7 @@ elastic_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "1" #TODO change to 2 or 3 in prod
+  node_count_min  = "2" #TODO change to 2 or 3 in prod
   node_count_max  = "3"
   node_labels = {
     elastic : "eck",
@@ -93,31 +93,31 @@ nginx_helm = {
 
 nodeset_config = {
   balancer-nodes = {
-    count            = "1"
+    count            = "3"
     roles            = []
     storage          = "20Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
   },
   master-nodes = {
-    count            = "2"
+    count            = "3"
     roles            = ["master"]
     storage          = "20Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
   },
   data-hot-nodes = {
-    count            = "1"
+    count            = "3"
     roles            = ["ingest", "data_content", "data_hot"]
     storage          = "300Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
   },
   data-warm-nodes = {
-    count            = "1"
+    count            = "3"
     roles            = ["ingest", "data_content", "data_warm"]
     storage          = "300Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-warm"
   },
   data-cold-nodes = {
-    count            = "1"
+    count            = "3"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
     storage          = "300Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-cold"

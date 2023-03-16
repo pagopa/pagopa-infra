@@ -14,17 +14,37 @@
     "/payment-methods": {
       "post": {
         "operationId": "newPaymentMethod",
-        "summary": "Make a new payment methods",
+        "summary": "Make a new payment method",
         "requestBody": {
           "$ref": "#/components/requestBodies/PaymentMethodRequest"
         },
         "responses": {
           "200": {
-            "description": "New payment instrument successfully created",
+            "description": "New payment method successfully created",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -33,21 +53,21 @@
       },
       "get": {
         "operationId": "getAllPaymentMethods",
-        "summary": "Retrive all Payment Methods (by filter)",
+        "summary": "Retrieve all Payment Methods (by filter)",
         "parameters": [
           {
+            "name": "amount",
             "in": "query",
-            "name": "categoryId",
+            "description": "Payment Amount",
+            "required": false,
             "schema": {
-              "type": "string"
-            },
-            "description": "Payment Method Category ID",
-            "required": false
+              "type": "number"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Payment instrument successfully retrived",
+            "description": "Payment method successfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -58,6 +78,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
@@ -65,7 +95,7 @@
     "/payment-methods/{id}": {
       "patch": {
         "operationId": "patchPaymentMethod",
-        "summary": "Update payment methods",
+        "summary": "Update payment method",
         "parameters": [
           {
             "name": "id",
@@ -82,11 +112,41 @@
         },
         "responses": {
           "200": {
-            "description": "Payment instrument successfully retrived",
+            "description": "Payment method successfully retrived",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -95,7 +155,7 @@
       },
       "get": {
         "operationId": "getPaymentMethod",
-        "summary": "Retrive payment instrument by ID",
+        "summary": "Retrive payment method by ID",
         "parameters": [
           {
             "name": "id",
@@ -109,7 +169,7 @@
         ],
         "responses": {
           "200": {
-            "description": "New payment instrument successfully updated",
+            "description": "New payment method successfully updated",
             "content": {
               "application/json": {
                 "schema": {
@@ -117,66 +177,23 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/payment-methods/psps": {
-      "put": {
-        "operationId": "scheduleUpdatePSPs",
-        "summary": "Update psp list",
-        "responses": {
-          "200": {
-            "description": "Update successfully scheduled"
-          }
-        }
-      },
-      "get": {
-        "operationId": "getPSPs",
-        "summary": "Retrieve payment instrument by ID",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "amount",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Amount in cents",
-            "required": false
           },
-          {
-            "in": "query",
-            "name": "lang",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "IT",
-                "EN",
-                "FR",
-                "DE",
-                "SL"
-              ]
-            },
-            "description": "Service language",
-            "required": false
-          },
-          {
-            "in": "query",
-            "name": "paymentTypeCode",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Payment Type Code",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "PSP list successfully retrieved",
+          "404": {
+            "description": "Payment method not found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PSPsResponse"
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -184,10 +201,10 @@
         }
       }
     },
-    "/payment-methods/{id}/psps": {
-      "get": {
-        "operationId": "getPiPSPs",
-        "summary": "Retrive payment instrument by ID",
+    "/payment-methods/{id}/fee/calculate": {
+      "post": {
+        "operationId": "calculateFees",
+        "summary": "Retrieve payment method psps",
         "parameters": [
           {
             "name": "id",
@@ -199,143 +216,55 @@
             }
           },
           {
+            "name": "maxOccurrences",
             "in": "query",
-            "name": "amount",
+            "description": "max occurrences",
+            "required": false,
             "schema": {
               "type": "integer"
-            },
-            "description": "Amount in cents",
-            "required": false
-          },
-          {
-            "in": "query",
-            "name": "lang",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "IT",
-                "EN",
-                "FR",
-                "DE",
-                "SL"
-              ]
-            },
-            "description": "Service language",
-            "required": false
-          },
-          {
-            "in": "query",
-            "name": "paymentTypeCode",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Payment Type Code",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "New payment instrument successfully updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PSPsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/payment-instrument-categories": {
-      "post": {
-        "operationId": "addCategory",
-        "summary": "Add new Payment Method Category",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/CategoryRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "Category successfully created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Category"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "getCategories",
-        "summary": "Retrieve Payment Method Categors",
-        "responses": {
-          "200": {
-            "description": "Category list successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CategoriesResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/payment-instrument-categories/{id}": {
-      "get": {
-        "operationId": "getCategoryByID",
-        "summary": "Retrieve category by Id",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Category ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Category successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Category"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "operationId": "patchCategory",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Category ID",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/PatchCategoryRequest"
+          "$ref": "#/components/requestBodies/PostPaymentMethodPSP"
         },
-        "summary": "Update category",
         "responses": {
           "200": {
-            "description": "Category successfully created",
+            "description": "Return list of psp ordered by fee.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Category"
+                  "$ref": "#/components/schemas/CalculateFeeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -348,7 +277,7 @@
     "schemas": {
       "PaymentMethodRequest": {
         "type": "object",
-        "description": "New Payment Method Request",
+        "description": "New Payment method Request",
         "properties": {
           "name": {
             "type": "string"
@@ -356,36 +285,53 @@
           "description": {
             "type": "string"
           },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
-          },
-          "categoryId": {
+          "asset": {
             "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "paymentTypeCode": {
+            "type": "string"
+          },
+          "ranges": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/Range"
+            }
           }
         },
         "required": [
           "name",
           "description",
           "status",
-          "categoryId"
+          "paymentTypeCode",
+          "ranges"
         ]
+      },
+      "Range": {
+        "type": "object",
+        "description": "Payment amount range in cents",
+        "properties": {
+          "min": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "max": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          }
+        }
       },
       "PatchPaymentMethodRequest": {
         "type": "object",
         "description": "Patch Payment Method Request",
         "properties": {
           "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
+            "$ref": "#/components/schemas/PaymentMethodStatus"
           }
         },
         "required": [
@@ -394,7 +340,7 @@
       },
       "PaymentMethodResponse": {
         "type": "object",
-        "description": "New Payment Method Response",
+        "description": "Payment method Response",
         "properties": {
           "id": {
             "type": "string"
@@ -405,16 +351,21 @@
           "description": {
             "type": "string"
           },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
+          "asset": {
+            "type": "string"
           },
-          "category": {
-            "$ref": "#/components/schemas/Category"
+          "status": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "paymentTypeCode": {
+            "type": "string"
+          },
+          "ranges": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/Range"
+            }
           }
         },
         "required": [
@@ -422,155 +373,160 @@
           "name",
           "description",
           "status",
-          "category"
+          "paymentTypeCode",
+          "ranges"
         ]
       },
-      "PSPsResponse": {
+      "CalculateFeeRequest": {
         "type": "object",
-        "description": "Get available PSP list Response",
         "properties": {
-          "psp": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Psp"
-            }
-          }
-        }
-      },
-      "CategoriesResponse": {
-        "type": "object",
-        "description": "Get category",
-        "properties": {
-          "categories": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Category"
-            }
-          }
-        }
-      },
-      "Category": {
-        "type": "object",
-        "description": "Category object",
-        "properties": {
-          "id": {
+          "touchpoint": {
             "type": "string"
           },
-          "name": {
+          "bin": {
             "type": "string"
           },
-          "paymentTypeCodes": {
+          "idPspList": {
             "type": "array",
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "CategoryRequest": {
-        "type": "object",
-        "description": "Category object",
-        "properties": {
-          "name": {
+          },
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "primaryCreditorInstitution": {
             "type": "string"
           },
-          "paymentTypeCodes": {
+          "transferList": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/TransferListItem"
             }
-          }
-        }
-      },
-      "Psp": {
-        "type": "object",
-        "description": "PSP object",
-        "properties": {
-          "code": {
-            "type": "string"
-          },
-          "paymentTypeCode": {
-            "type": "string"
-          },
-          "channelCode": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
-          },
-          "businessName": {
-            "type": "string"
-          },
-          "brokerName": {
-            "type": "string"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "IT",
-              "EN",
-              "FR",
-              "DE",
-              "SL"
-            ]
-          },
-          "minAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "maxAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "fixedCost": {
-            "type": "number",
-            "format": "double"
           }
         },
         "required": [
-          "code",
-          "paymentMethodID",
-          "description",
-          "status",
-          "type",
-          "name",
-          "brokerName",
-          "language",
-          "minAmount",
-          "maxAmount",
-          "fixedCost"
+          "paymentAmount",
+          "primaryCreditorInstitution",
+          "transferList",
+          "touchpoint"
+        ]
+      },
+      "CalculateFeeResponse": {
+        "type": "object",
+        "properties": {
+          "paymentMethodName": {
+            "type": "string"
+          },
+          "paymentMethodStatus": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "belowThreshold": {
+            "type": "boolean"
+          },
+          "bundles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bundle"
+            }
+          }
+        },
+        "required": [
+          "bundles",
+          "paymentMethodName",
+          "paymentMethodStatus"
+        ]
+      },
+      "Bundle": {
+        "type": "object",
+        "properties": {
+          "abi": {
+            "type": "string"
+          },
+          "bundleDescription": {
+            "type": "string"
+          },
+          "bundleName": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idBundle": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idCiBundle": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
+          },
+          "paymentMethod": {
+            "type": "string"
+          },
+          "primaryCiIncurredFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "taxPayerFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "touchpoint": {
+            "type": "string"
+          }
+        }
+      },
+      "TransferListItem": {
+        "type": "object",
+        "properties": {
+          "creditorInstitution": {
+            "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
+          },
+          "transferCategory": {
+            "type": "string"
+          }
+        }
+      },
+      "ProblemJson": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "status": {
+            "maximum": 600,
+            "minimum": 100,
+            "type": "integer",
+            "format": "int32",
+            "example": 200
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentMethodStatus": {
+        "type": "string",
+        "description": "the payment method status",
+        "enum": [
+          "ENABLED",
+          "DISABLED",
+          "INCOMING"
         ]
       }
     },
     "requestBodies": {
-      "PatchCategoryRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/CategoryRequest"
-            }
-          }
-        }
-      },
-      "CategoryRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/CategoryRequest"
-            }
-          }
-        }
-      },
       "PaymentMethodRequest": {
         "required": true,
         "content": {
@@ -587,6 +543,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/PatchPaymentMethodRequest"
+            }
+          }
+        }
+      },
+      "PostPaymentMethodPSP": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CalculateFeeRequest"
             }
           }
         }
