@@ -177,6 +177,49 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "transactions"
+        ],
+        "operationId": "requestTransactionUserCancellation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "summary": "Performs the transaction cancellation",
+        "responses": {
+          "202": {
+            "description": "Transaction cancellation request successfully accepted"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
