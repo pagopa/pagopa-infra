@@ -60,6 +60,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "404": {
             "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
             "content": {
@@ -105,7 +108,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PartyTimeoutFaultPaymentProblemJson"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -158,6 +161,105 @@
           },
           "404": {
             "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{transactionId}/auth-requests": {
+      "post": {
+        "tags": [
+          "transactions"
+        ],
+        "operationId": "requestTransactionAuthorization",
+        "summary": "Request authorization",
+        "description": "Request authorization for the transaction identified by payment token",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          },
+          {
+            "in": "header",
+            "name": "x-pgs-id",
+            "schema": {
+              "type": "string",
+              "pattern": "XPAY|VPOS"
+            },
+            "required": false,
+            "description": "Pgs identifier (populated by APIM policy)"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RequestAuthorizationRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction authorization request successfully processed, redirecting client to authorization web page",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestAuthorizationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Transaction already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -322,6 +424,164 @@
           "payments",
           "clientId"
         ]
+      },
+      "RequestAuthorizationRequest": {
+        "type": "object",
+        "description": "Request body for requesting an authorization for a transaction",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "paymentInstrumentId": {
+            "type": "string",
+            "description": "Payment instrument id"
+          },
+          "pspId": {
+            "type": "string",
+            "description": "PSP id"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "IT",
+              "EN",
+              "FR",
+              "DE",
+              "SL"
+            ],
+            "description": "Requested language"
+          },
+          "details": {
+            "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PostePayAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/CardAuthRequestDetails"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "detailType",
+              "mapping": {
+                "postepay": "#/components/schemas/PostePayAuthRequestDetails",
+                "card": "#/components/schemas/CardAuthRequestDetails"
+              }
+            }
+          }
+        },
+        "required": [
+          "amount",
+          "fee",
+          "paymentInstrumentId",
+          "pspId",
+          "language",
+          "details"
+        ]
+      },
+      "PostePayAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for the PostePay payment method",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail instance",
+            "type": "string"
+          },
+          "accountEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "PostePay account email"
+          }
+        },
+        "required": [
+          "detailType",
+          "accountEmail"
+        ],
+        "example": {
+          "detailType": "postepay",
+          "accountEmail": "user@example.com"
+        }
+      },
+      "CardAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for credit cards",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail",
+            "type": "string"
+          },
+          "cvv": {
+            "type": "string",
+            "description": "Credit card CVV",
+            "pattern": "^[0-9]{3,4}$"
+          },
+          "pan": {
+            "type": "string",
+            "description": "Credit card PAN",
+            "pattern": "^[0-9]{14,16}$"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "Credit card expiry date. The date format is `YYYYMM`",
+            "pattern": "^\\d{6}$"
+          },
+          "holderName": {
+            "type": "string",
+            "description": "The card holder name"
+          },
+          "brand": {
+            "type": "string",
+            "description": "The card brand name"
+          },
+          "threeDsData": {
+            "type": "string",
+            "description": "The 3ds data evaluated by the client"
+          }
+        },
+        "required": [
+          "detailType",
+          "cvv",
+          "pan",
+          "expiryDate",
+          "holderName",
+          "brand",
+          "threeDsData"
+        ],
+        "example": {
+          "detailType": "card",
+          "cvv": "000",
+          "pan": "0123456789012345",
+          "expiryDate": "209901",
+          "holderName": "Name Surname",
+          "brand": "VISA",
+          "threeDsData": "threeDsData"
+        }
+      },
+      "RequestAuthorizationResponse": {
+        "type": "object",
+        "description": "Response body for requesting an authorization for a transaction",
+        "properties": {
+          "authorizationUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "URL where to redirect clients to continue the authorization process"
+          },
+          "authorizationRequestId": {
+            "type": "string",
+            "description": "Authorization request id"
+          }
+        },
+        "required": [
+          "authorizationUrl",
+          "authorizationRequestId"
+        ],
+        "example": {
+          "authorizationUrl": "https://example.com",
+          "authorizationRequestId": "authRequestId"
+        }
       },
       "TransactionInfo": {
         "description": "Transaction data returned when querying for an existing transaction",
@@ -493,26 +753,6 @@
           "faultCodeDetail"
         ]
       },
-      "PartyTimeoutFaultPaymentProblemJson": {
-        "description": "A PaymentProblemJson-like type specific for the GetPayment an operations.",
-        "type": "object",
-        "properties": {
-          "faultCodeCategory": {
-            "$ref": "#/components/schemas/FaultCategory"
-          },
-          "faultCodeDetail": {
-            "$ref": "#/components/schemas/PartyTimeoutFault"
-          },
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-          }
-        },
-        "required": [
-          "faultCodeCategory",
-          "faultCodeDetail"
-        ]
-      },
       "FaultCategory": {
         "description": "Fault code categorization for the PagoPA Verifica and Attiva operations.\nPossible categories are:\n- `PAYMENT_DUPLICATED`\n- `PAYMENT_ONGOING`\n- `PAYMENT_EXPIRED`\n- `PAYMENT_UNAVAILABLE`\n- `PAYMENT_UNKNOWN`\n- `DOMAIN_UNKNOWN`\n- `PAYMENT_CANCELED`\n- `GENERIC_ERROR`",
         "type": "string",
@@ -588,16 +828,6 @@
           "PAA_STAZIONE_INT_ERRATA",
           "PAA_ATTIVA_RPT_IMPORTO_NON_VALIDO"
         ]
-      },
-      "PartyTimeoutFault": {
-        "description": "Fault codes for timeout errors, should be mapped to 504 HTTP status code.\nFor further information visit https://docs.pagopa.it/gestionedeglierrori/struttura-degli-errori/fault-code.\nPossible fault codes are:\n- `PPT_STAZIONE_INT_PA_TIMEOUT`\n- `PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE`\n- `PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO`\n- `GENERIC_ERROR`",
-        "type": "string",
-        "enum": [
-          "PPT_STAZIONE_INT_PA_TIMEOUT",
-          "PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE",
-          "PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO",
-          "GENERIC_ERROR"
-        ]
       }
     },
     "requestBodies": {
@@ -607,6 +837,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/NewTransactionRequest"
+            }
+          }
+        }
+      },
+      "RequestAuthorizationRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RequestAuthorizationRequest"
             }
           }
         }

@@ -73,6 +73,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "500": {
             "description": "Generic server error",
             "content": {
