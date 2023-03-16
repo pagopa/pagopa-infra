@@ -1,9 +1,26 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "0.1.0",
+    "version": "0.0.1",
     "title": "Pagopa eCommerce payment transactions service",
-    "description": "This microservice that handles transactions' lifecycle and workflow."
+    "description": "This microservice handles transaction's lifecycle and workflow.",
+    "contact": {
+      "name": "pagoPA - Touchpoints team"
+    }
+  },
+  "tags": [
+    {
+      "name": "transactions",
+      "description": "Api's for performing a transaction",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611287199/-servizio+transactions+service",
+        "description": "Technical specifications"
+      }
+    }
+  ],
+  "externalDocs": {
+    "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
+    "description": "Design review"
   },
   "servers": [
     {
@@ -14,17 +31,10 @@
     "/transactions": {
       "post": {
         "operationId": "newTransaction",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "X-Client-Id",
-            "required": true,
-            "description": "Transaction origin (populated by APIM policy)",
-            "schema": {
-              "$ref": "#/components/schemas/ClientId"
-            }
-          }
+        "tags": [
+          "transactions"
         ],
+        "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
         "summary": "Make a new transaction",
         "requestBody": {
           "$ref": "#/components/requestBodies/NewTransactionRequest"
@@ -105,7 +115,12 @@
     },
     "/transactions/{transactionId}": {
       "get": {
+        "tags": [
+          "transactions"
+        ],
         "operationId": "getTransactionInfo",
+        "summary": "Get transaction information",
+        "description": "Return information for the input specific transaction resource",
         "parameters": [
           {
             "in": "path",
@@ -117,7 +132,6 @@
             "description": "Transaction ID"
           }
         ],
-        "summary": "Get information about a specific transaction",
         "responses": {
           "200": {
             "description": "Transaction data successfully retrieved",
@@ -139,130 +153,11 @@
               }
             }
           },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "requestTransactionUserCancellation",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          }
-        ],
-        "summary": "Performs the cancellation of the transaction",
-        "responses": {
-          "202": {
-            "description": "Transaction cancellation request successfully accepted"
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/transactions/{transactionId}/auth-requests": {
-      "summary": "Request authorization for the transaction identified by payment token",
-      "post": {
-        "operationId": "requestTransactionAuthorization",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          },
-          {
-            "in": "header",
-            "name": "x-pgs-id",
-            "schema": {
-              "type": "string",
-              "pattern": "XPAY|VPOS"
-            },
-            "required": false,
-            "description": "Pgs identifier (populated by APIM policy)"
-          }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/RequestAuthorizationRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction authorization request successfully processed, redirecting client to authorization web page",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RequestAuthorizationResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid transaction id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Transaction already processed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -273,147 +168,6 @@
           },
           "504": {
             "description": "Gateway timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "operationId": "updateTransactionAuthorization",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Base64 of bytes related to TransactionId"
-          }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/UpdateAuthorizationRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction authorization request successfully updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid transaction id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Bad gateway",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/transactions/{transactionId}/user-receipts": {
-      "post": {
-        "operationId": "addUserReceipt",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          }
-        ],
-        "summary": "Add receipt for user to specific transaction",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/AddUserReceiptRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "Receipt successfully added",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddUserReceiptResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid transaction id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unprocessable entity (most likely the transaction is in an invalid state)",
             "content": {
               "application/json": {
                 "schema": {
@@ -429,6 +183,7 @@
   "components": {
     "schemas": {
       "RptId": {
+        "description": "Digital payment receipt identifier",
         "type": "string",
         "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
       },
@@ -481,8 +236,8 @@
         }
       },
       "NewTransactionRequest": {
-        "type": "object",
         "description": "Request body for creating a new transaction",
+        "type": "object",
         "properties": {
           "paymentNotices": {
             "type": "array",
@@ -503,6 +258,7 @@
             ]
           },
           "email": {
+            "description": "Email string format",
             "type": "string",
             "pattern": "(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])",
             "example": "mario.rossi@gmail.it"
@@ -518,6 +274,7 @@
         "description": "Transaction data returned when creating a new transaction",
         "properties": {
           "transactionId": {
+            "description": "the transaction unique identifier",
             "type": "string"
           },
           "status": {
@@ -554,6 +311,7 @@
             ]
           },
           "authToken": {
+            "description": "authorization token",
             "type": "string"
           }
         },
@@ -563,306 +321,6 @@
           "status",
           "payments",
           "clientId"
-        ]
-      },
-      "RequestAuthorizationRequest": {
-        "type": "object",
-        "description": "Request body for requesting an authorization for a transaction",
-        "properties": {
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
-          "fee": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
-          "paymentInstrumentId": {
-            "type": "string",
-            "description": "Payment instrument id"
-          },
-          "pspId": {
-            "type": "string",
-            "description": "PSP id"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "IT",
-              "EN",
-              "FR",
-              "DE",
-              "SL"
-            ],
-            "description": "Requested language"
-          },
-          "details": {
-            "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/PostePayAuthRequestDetails"
-              },
-              {
-                "$ref": "#/components/schemas/CardAuthRequestDetails"
-              }
-            ],
-            "discriminator": {
-              "propertyName": "detailType",
-              "mapping": {
-                "postepay": "#/components/schemas/PostePayAuthRequestDetails",
-                "card": "#/components/schemas/CardAuthRequestDetails"
-              }
-            }
-          }
-        },
-        "required": [
-          "amount",
-          "fee",
-          "paymentInstrumentId",
-          "pspId",
-          "language",
-          "details"
-        ]
-      },
-      "PostePayAuthRequestDetails": {
-        "type": "object",
-        "description": "Additional payment authorization details for the PostePay payment method",
-        "properties": {
-          "detailType": {
-            "type": "string"
-          },
-          "accountEmail": {
-            "type": "string",
-            "format": "email",
-            "description": "PostePay account email"
-          }
-        },
-        "required": [
-          "detailType",
-          "accountEmail"
-        ],
-        "example": {
-          "detailType": "postepay",
-          "accountEmail": "user@example.com"
-        }
-      },
-      "CardAuthRequestDetails": {
-        "type": "object",
-        "description": "Additional payment authorization details for credit cards",
-        "properties": {
-          "detailType": {
-            "type": "string"
-          },
-          "cvv": {
-            "type": "string",
-            "description": "Credit card CVV",
-            "pattern": "^[0-9]{3,4}$"
-          },
-          "pan": {
-            "type": "string",
-            "description": "Credit card PAN",
-            "pattern": "^[0-9]{14,16}$"
-          },
-          "expiryDate": {
-            "type": "string",
-            "description": "Credit card expiry date. The date format is `YYYYMM`",
-            "pattern": "^\\d{6}$"
-          },
-          "holderName": {
-            "type": "string",
-            "description": "The card holder name"
-          },
-          "brand": {
-            "type": "string",
-            "description": "The card brand name"
-          },
-          "threeDsData": {
-            "type": "string",
-            "description": "The 3ds data evaluated by the client"
-          }
-        },
-        "required": [
-          "detailType",
-          "cvv",
-          "pan",
-          "expiryDate",
-          "holderName",
-          "brand",
-          "threeDsData"
-        ],
-        "example": {
-          "detailType": "card",
-          "cvv": 0,
-          "pan": 123456789012345,
-          "expiryDate": "209901",
-          "holderName": "Name Surname",
-          "brand": "VISA",
-          "threeDsData": "threeDsData"
-        }
-      },
-      "RequestAuthorizationResponse": {
-        "type": "object",
-        "description": "Response body for requesting an authorization for a transaction",
-        "properties": {
-          "authorizationUrl": {
-            "type": "string",
-            "format": "url",
-            "description": "URL where to redirect clients to continue the authorization process"
-          },
-          "authorizationRequestId": {
-            "type": "string",
-            "description": "Authorization request id"
-          }
-        },
-        "required": [
-          "authorizationUrl",
-          "authorizationRequestId"
-        ],
-        "example": {
-          "authorizationUrl": "https://example.com"
-        }
-      },
-      "UpdateAuthorizationRequest": {
-        "type": "object",
-        "description": "Request body for updating an authorization for a transaction",
-        "properties": {
-          "authorizationResult": {
-            "$ref": "#/components/schemas/AuthorizationResult"
-          },
-          "timestampOperation": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Payment timestamp"
-          },
-          "authorizationCode": {
-            "type": "string",
-            "description": "Payment gateway-specific authorization code related to the transaction"
-          }
-        },
-        "required": [
-          "authorizationResult",
-          "timestampOperation",
-          "authorizationCode"
-        ],
-        "example": {
-          "authorizationResult": "OK",
-          "timestampOperation": "2022-02-11T12:00:00.000Z"
-        }
-      },
-      "AddUserReceiptRequest": {
-        "type": "object",
-        "description": "Request body for adding a user receipt to a transaction",
-        "properties": {
-          "outcome": {
-            "type": "string",
-            "description": "Nodo outcome enum",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          },
-          "paymentDate": {
-            "type": "string",
-            "description": "Timestamp of transaction verification/activation",
-            "format": "date-time"
-          },
-          "payments": {
-            "type": "array",
-            "description": "Payments associated to this transaction",
-            "items": {
-              "type": "object",
-              "description": "Payment",
-              "properties": {
-                "paymentToken": {
-                  "type": "string",
-                  "description": "Payment token associated to this payment"
-                },
-                "description": {
-                  "type": "string",
-                  "description": "Payment description"
-                },
-                "creditorReferenceId": {
-                  "type": "string",
-                  "description": "Creditor reference id"
-                },
-                "fiscalCode": {
-                  "type": "string",
-                  "description": "Receiving body fiscal code"
-                },
-                "companyName": {
-                  "type": "string",
-                  "description": "Receiving body public name"
-                },
-                "officeName": {
-                  "type": "string",
-                  "description": "Receiving office name"
-                },
-                "debtor": {
-                  "type": "string",
-                  "description": "Debtor's id"
-                }
-              },
-              "required": [
-                "paymentToken",
-                "description",
-                "creditorReferenceId",
-                "fiscalCode",
-                "companyName",
-                "officeName",
-                "debtor"
-              ]
-            },
-            "minItems": 1,
-            "maxItems": 5
-          }
-        },
-        "required": [
-          "outcome",
-          "paymentDate",
-          "payments"
-        ]
-      },
-      "ActivationResultRequest": {
-        "type": "object",
-        "description": "Request body for activation result",
-        "properties": {
-          "paymentToken": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "paymentToken"
-        ]
-      },
-      "ActivationResultResponse": {
-        "type": "object",
-        "description": "Response body for activation result",
-        "properties": {
-          "outcome": {
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          }
-        },
-        "required": [
-          "outcome"
-        ]
-      },
-      "AddUserReceiptResponse": {
-        "type": "object",
-        "description": "Response body for adding user receipt",
-        "properties": {
-          "outcome": {
-            "type": "string",
-            "description": "Nodo outcome enum",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          }
-        },
-        "required": [
-          "outcome"
         ]
       },
       "TransactionInfo": {
@@ -889,108 +347,6 @@
         "type": "integer",
         "minimum": 0,
         "maximum": 99999999
-      },
-      "AuthorizationResult": {
-        "description": "Authorization result",
-        "type": "string",
-        "enum": [
-          "OK",
-          "KO"
-        ]
-      },
-      "Beneficiary": {
-        "description": "Beneficiary institution related to a payment",
-        "type": "object",
-        "properties": {
-          "beneficiaryId": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "denominazioneBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "codiceUnitOperBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "denomUnitOperBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "address": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "streetNumber": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "postalCode": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "city": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "province": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "country": {
-            "type": "string",
-            "pattern": "[A-Z]{2}"
-          }
-        },
-        "required": [
-          "beneficiaryId",
-          "denominazioneBeneficiario"
-        ]
-      },
-      "PaymentInstallments": {
-        "description": "Payment installments (optional)",
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Installment"
-        }
-      },
-      "Installment": {
-        "description": "Payment installment",
-        "type": "object",
-        "properties": {
-          "installment": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "data": {
-            "$ref": "#/components/schemas/InstallmentDetails"
-          }
-        }
-      },
-      "InstallmentDetails": {
-        "description": "Amount and reason related to a payment installment",
-        "type": "object",
-        "properties": {
-          "reason": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 25
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        }
       },
       "TransactionStatus": {
         "type": "string",
@@ -1019,6 +375,7 @@
         ]
       },
       "ProblemJson": {
+        "description": "Body definition for error responses containing failure details",
         "type": "object",
         "properties": {
           "type": {
@@ -1241,103 +598,6 @@
           "PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO",
           "GENERIC_ERROR"
         ]
-      },
-      "CartRequest": {
-        "type": "object",
-        "required": [
-          "paymentNotices",
-          "returnUrls"
-        ],
-        "properties": {
-          "emailNotice": {
-            "type": "string",
-            "format": "email",
-            "example": "my_email@mail.it"
-          },
-          "paymentNotices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PaymentNotice"
-            },
-            "minItems": 1,
-            "maxItems": 5,
-            "example": [
-              {
-                "noticeNumber": "302012387654312384",
-                "fiscalCode": "77777777777",
-                "amount": 10000,
-                "companyName": "companyName",
-                "description": "description"
-              },
-              {
-                "noticeNumber": "302012387654312385",
-                "fiscalCode": "77777777777",
-                "amount": 5000,
-                "companyName": "companyName",
-                "description": "description"
-              }
-            ]
-          },
-          "returnUrls": {
-            "type": "object",
-            "required": [
-              "returnOkUrl",
-              "returnCancelUrl",
-              "returnErrorUrl"
-            ],
-            "properties": {
-              "returnOkUrl": {
-                "type": "string",
-                "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/success.html"
-              },
-              "returnCancelUrl": {
-                "type": "string",
-                "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/cancel.html"
-              },
-              "returnErrorUrl": {
-                "type": "string",
-                "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/error.html"
-              }
-            }
-          }
-        }
-      },
-      "PaymentNotice": {
-        "type": "object",
-        "required": [
-          "noticeNumber",
-          "fiscalCode",
-          "amount",
-          "companyName",
-          "description"
-        ],
-        "properties": {
-          "noticeNumber": {
-            "type": "string",
-            "minLength": 18,
-            "maxLength": 18
-          },
-          "fiscalCode": {
-            "type": "string",
-            "minLength": 11,
-            "maxLength": 11
-          },
-          "amount": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "companyName": {
-            "type": "string",
-            "maxLength": 140
-          },
-          "description": {
-            "type": "string",
-            "maxLength": 140
-          }
-        }
       }
     },
     "requestBodies": {
@@ -1347,36 +607,6 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/NewTransactionRequest"
-            }
-          }
-        }
-      },
-      "RequestAuthorizationRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/RequestAuthorizationRequest"
-            }
-          }
-        }
-      },
-      "UpdateAuthorizationRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/UpdateAuthorizationRequest"
-            }
-          }
-        }
-      },
-      "AddUserReceiptRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/AddUserReceiptRequest"
             }
           }
         }
