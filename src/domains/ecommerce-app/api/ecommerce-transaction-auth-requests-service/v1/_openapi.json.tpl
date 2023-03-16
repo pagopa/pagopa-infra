@@ -71,6 +71,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "404": {
             "description": "Transaction not found",
             "content": {
