@@ -3,7 +3,10 @@
   "info": {
     "version": "0.1.0",
     "title": "Pagopa eCommerce transaction results update service",
-    "description": "This microservice handles transaction results update according SendPaymentResult."
+    "description": "This microservice handles transaction results update according SendPaymentResult.",
+    "contact": {
+      "name": "pagoPA - Touchpoints team"
+    }
   },
   "servers": [
     {
@@ -62,6 +65,16 @@
           },
           "409": {
             "description": "Illegal transaction status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
             "content": {
               "application/json": {
                 "schema": {

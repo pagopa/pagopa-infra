@@ -13,8 +13,9 @@ module "apim_donazioni_ucraina_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = false # TO DISABLE
   approval_required     = false
+  subscriptions_limit   = 1
 
   policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
     address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
@@ -39,8 +40,8 @@ resource "azurerm_api_management_api" "apim_api_donazioni_ucraina_api" {
   name                  = format("%s-api-donazioni-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  subscription_required = false
-  service_url           = null // no BE
+  subscription_required = false # TO DISABLE
+  service_url           = null  // no BE
   version_set_id        = azurerm_api_management_api_version_set.api_donazioni_ucraina_api.id
   version               = "v1"
   revision              = "1"

@@ -3,24 +3,37 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 37,
-  "iteration": 1643964857356,
+  "id": 31,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -29,8 +42,16 @@
       },
       "id": 9,
       "panels": [],
-      "repeat": null,
-      "title": "$Applications",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "$namespace",
       "type": "row"
     },
     {
@@ -38,11 +59,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
       "description": "",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -50,6 +75,7 @@
         "x": 0,
         "y": 1
       },
+      "hiddenSeries": false,
       "id": 3,
       "interval": "10s",
       "isNew": true,
@@ -66,26 +92,34 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "9.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "akka_actor_running_actors{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\", dispatcher=~\"$Dispatchers\", actor=~\"$Actors\"}",
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "akka_actor_running_actors{namespace=~\"$namespace\", pod=~\"$pod\",dispatcher=~\"$dispatcher\", actor=~\"$actor\"}",
           "format": "time_series",
           "legendFormat": "{{host}} / {{dispatcher}} / {{actor}}",
+          "range": true,
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Running actors",
       "tooltip": {
         "msResolution": false,
@@ -95,33 +129,25 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": 0,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -129,11 +155,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
       "description": "",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -141,6 +171,7 @@
         "x": 12,
         "y": 1
       },
+      "hiddenSeries": false,
       "id": 1,
       "interval": "10s",
       "isNew": true,
@@ -157,27 +188,35 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "9.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(akka_message_sent_messages_total{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\", dispatcher=~\"$Dispatchers\", actor=~\"$Actors\"}[1m])",
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "irate(akka_message_sent_messages_total{namespace=~\"$namespace\", pod=~\"$pod\",dispatcher=~\"$dispatcher\", actor=~\"$actor\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{host}} / {{dispatcher}} / {{actor}}",
+          "range": true,
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Sent messages: 1min rate",
       "tooltip": {
         "msResolution": false,
@@ -187,9 +226,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -198,22 +235,17 @@
           "format": "ops",
           "label": "messages/second",
           "logBase": 1,
-          "max": null,
           "min": 0,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -221,11 +253,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
       "description": "",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -233,6 +269,7 @@
         "x": 0,
         "y": 8
       },
+      "hiddenSeries": false,
       "id": 7,
       "interval": "10s",
       "isNew": true,
@@ -249,27 +286,35 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "9.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(akka_actor_dropped_messages_total{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\", dispatcher=~\"$Dispatchers\", actor=~\"$Actors\"}[1m])",
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "irate(akka_actor_dropped_messages_total{namespace=~\"$namespace\", pod=~\"$pod\",dispatcher=~\"$dispatcher\", actor=~\"$actor\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{host}} / {{dispatcher}} / {{actor}}",
+          "range": true,
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Dropped messages: 1min rate",
       "tooltip": {
         "msResolution": false,
@@ -279,9 +324,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -290,22 +333,17 @@
           "format": "ops",
           "label": "messages/second",
           "logBase": 1,
-          "max": null,
           "min": 0,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -313,11 +351,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
       "description": "",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -325,6 +367,7 @@
         "x": 12,
         "y": 8
       },
+      "hiddenSeries": false,
       "id": 8,
       "interval": "10s",
       "isNew": true,
@@ -341,27 +384,35 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "9.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(akka_message_processed_messages_total{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\", dispatcher=~\"$Dispatchers\", actor=~\"$Actors\"}[1m])",
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "irate(akka_message_processed_messages_total{namespace=~\"$namespace\", pod=~\"$pod\",dispatcher=~\"$dispatcher\", actor=~\"$actor\"}[1m])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{host}} / {{dispatcher}} / {{actor}} ",
+          "range": true,
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Processed messages: 1min rate",
       "tooltip": {
         "msResolution": false,
@@ -371,9 +422,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -382,22 +431,17 @@
           "format": "ops",
           "label": "messages/second",
           "logBase": 1,
-          "max": null,
           "min": 0,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -405,11 +449,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
       "description": "",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -417,6 +465,7 @@
         "x": 0,
         "y": 15
       },
+      "hiddenSeries": false,
       "id": 4,
       "interval": "10s",
       "isNew": true,
@@ -433,27 +482,35 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "9.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "akka_actor_mailbox_time_ns{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\", dispatcher=~\"$Dispatchers\", actor=~\"$Actors\", quantile=~\"$Quantile\"}",
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "akka_actor_mailbox_time_ns{namespace=~\"$namespace\", pod=~\"$pod\",dispatcher=~\"$dispatcher\", actor=~\"$actor\", quantile=~\"$Quantile\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{host}} / {{dispatcher}} / {{actor}}",
+          "range": true,
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Mailbox time ($Quantile quantile)",
       "tooltip": {
         "msResolution": false,
@@ -463,33 +520,25 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "format": "ns",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": 0,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -497,11 +546,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
       "description": "",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -509,6 +562,7 @@
         "x": 12,
         "y": 15
       },
+      "hiddenSeries": false,
       "id": 5,
       "interval": "10s",
       "isNew": true,
@@ -525,27 +579,35 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "9.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "akka_message_processing_time_ns{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\", dispatcher=~\"$Dispatchers\", actor=~\"$Actors\", quantile=~\"$Quantile\"}",
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "akka_message_processing_time_ns{namespace=~\"$namespace\", pod=~\"$pod\",dispatcher=~\"$dispatcher\", actor=~\"$actor\", quantile=~\"$Quantile\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{host}} / {{dispatcher}} / {{actor}} ",
+          "range": true,
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Processing time ($Quantile quantile)",
       "tooltip": {
         "msResolution": false,
@@ -555,33 +617,25 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "format": "ns",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": 0,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -589,11 +643,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
       "description": "",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -601,6 +659,7 @@
         "x": 0,
         "y": 22
       },
+      "hiddenSeries": false,
       "id": 6,
       "interval": "10s",
       "isNew": true,
@@ -617,27 +676,35 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "9.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "akka_actor_mailbox_size{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\", dispatcher=~\"$Dispatchers\", actor=~\"$Actors\", quantile=~\"$Quantile\"}",
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "akka_actor_mailbox_size{namespace=~\"$namespace\", pod=~\"$pod\",dispatcher=~\"$dispatcher\", actor=~\"$actor\", quantile=~\"$Quantile\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{host}} / {{dispatcher}} / {{actor}}",
+          "range": true,
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Mailbox size ($Quantile quantile)",
       "tooltip": {
         "msResolution": false,
@@ -647,33 +714,25 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": 0,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -681,11 +740,15 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
       "description": "",
       "editable": true,
       "error": false,
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -693,6 +756,7 @@
         "x": 12,
         "y": 22
       },
+      "hiddenSeries": false,
       "id": 2,
       "interval": "10s",
       "isNew": true,
@@ -709,27 +773,35 @@
       "linewidth": 2,
       "links": [],
       "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "9.3.1",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "akka_actor_stash_size{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\", dispatcher=~\"$Dispatchers\", actor=~\"$Actors\", quantile=~\"$Quantile\"}",
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "akka_actor_stash_size{namespace=~\"$namespace\", pod=~\"$pod\",dispatcher=~\"$dispatcher\", actor=~\"$actor\", quantile=~\"$Quantile\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{host}} / {{dispatcher}} / {{actor}}",
+          "range": true,
           "refId": "A"
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Stash size ($Quantile quantile)",
       "tooltip": {
         "msResolution": false,
@@ -739,38 +811,30 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
       "yaxes": [
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
           "min": 0,
           "show": true
         },
         {
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 18,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "nodo"
@@ -779,174 +843,191 @@
     "list": [
       {
         "current": {
+          "selected": true,
           "text": "Prometheus",
           "value": "Prometheus"
         },
         "hide": 0,
+        "includeAll": false,
         "label": "Data Source",
+        "multi": false,
         "name": "datasource",
-        "options": [
-
-        ],
+        "options": [],
         "query": "prometheus",
+        "queryValue": "",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "allValue": ".*",
         "current": {
-          "text": "nodo-sit",
-          "value": "nodo-sit"
+          "selected": true,
+          "text": [
+            "nodo"
+          ],
+          "value": [
+            "nodo"
+          ]
         },
-        "datasource": "$datasource",
-        "definition": "label_values(akka_actor_running_actors{namespace=~\"nodo|nodo-cron\"}, application)",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "definition": "label_values(akka_actor_running_actors{namespace=~\"nodo|nodo-cron\"}, namespace)",
         "hide": 0,
         "includeAll": false,
-        "label": null,
+        "label": "Namespace",
         "multi": true,
-        "name": "Applications",
+        "name": "namespace",
         "options": [],
-        "query": "label_values(akka_actor_running_actors{namespace=~\"nodo|nodo-cron\"}, application)",
+        "query": {
+          "query": "label_values(akka_actor_running_actors{namespace=~\"nodo|nodo-cron\"}, namespace)",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "name",
         "type": "query",
         "useTags": false
       },
       {
         "allValue": ".*",
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
-        "datasource": "$datasource",
-        "definition": "label_values(akka_actor_running_actors{application=~\"$Applications\"}, host)",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(akka_actor_running_actors{namespace=\"$namespace\"}, pod)",
+        "description": "",
         "hide": 0,
         "includeAll": true,
-        "label": null,
+        "label": "Pod",
         "multi": true,
-        "name": "Servers",
+        "name": "pod",
         "options": [],
-        "query": "label_values(akka_actor_running_actors{application=~\"$Applications\"}, host)",
-        "refresh": 2,
+        "query": {
+          "query": "label_values(akka_actor_running_actors{namespace=\"$namespace\"}, pod)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "name",
-        "type": "query",
-        "useTags": false
+        "type": "query"
       },
       {
         "allValue": ".*",
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
-        "datasource": "$datasource",
-        "definition": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "definition": "label_values(akka_actor_running_actors{namespace=\"$namespace\",pod=~\"$pod\"}, dispatcher)",
         "hide": 0,
         "includeAll": true,
-        "label": null,
+        "label": "Dispatchers",
         "multi": true,
-        "name": "ActorSystems",
+        "name": "dispatcher",
         "options": [],
-        "query": "label_values(akka_actor_running_actors{host=~\"$Servers\", application=~\"$Applications\"}, actor_system)",
+        "query": {
+          "query": "label_values(akka_actor_running_actors{namespace=\"$namespace\",pod=~\"$pod\"}, dispatcher)",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "name",
         "type": "query",
         "useTags": false
       },
       {
         "allValue": ".*",
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
-        "datasource": "$datasource",
-        "definition": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "definition": "label_values(akka_actor_running_actors{namespace=\"$namespace\",pod=~\"$pod\"}, actor)",
         "hide": 0,
         "includeAll": true,
-        "label": null,
+        "label": "Actors",
         "multi": true,
-        "name": "Dispatchers",
+        "name": "actor",
         "options": [],
-        "query": "label_values(akka_actor_running_actors{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\"}, dispatcher)",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "name",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": ".*",
-        "current": {
-          "text": "All",
-          "value": "$__all"
+        "query": {
+          "query": "label_values(akka_actor_running_actors{namespace=\"$namespace\",pod=~\"$pod\"}, actor)",
+          "refId": "StandardVariableQuery"
         },
-        "datasource": "$datasource",
-        "definition": "",
-        "hide": 0,
-        "includeAll": true,
-        "label": null,
-        "multi": true,
-        "name": "Actors",
-        "options": [],
-        "query": "label_values(akka_actor_running_actors{host=~\"$Servers\", application=~\"$Applications\", actor_system=~\"$ActorSystems\", dispatcher=~\"$Dispatchers\"}, actor)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "name",
         "type": "query",
         "useTags": false
       },
       {
         "allValue": ".*",
         "current": {
+          "selected": false,
           "text": "0.5",
           "value": "0.5"
         },
-        "datasource": "$datasource",
-        "definition": "",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "definition": "label_values(akka_actor_mailbox_size, quantile)",
         "hide": 0,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "Quantile",
         "options": [],
-        "query": "label_values(akka_actor_mailbox_size, quantile)",
+        "query": {
+          "query": "label_values(akka_actor_mailbox_size, quantile)",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "name",
         "type": "query",
         "useTags": false
       }
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -977,5 +1058,6 @@
   "timezone": "browser",
   "title": "Akka Actors",
   "uid": "dT3bhma7k",
-  "version": 7
+  "version": 2,
+  "weekStart": ""
 }

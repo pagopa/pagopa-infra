@@ -5,7 +5,7 @@
 
     <property name="version" value="3.10.0" global="false"/>
 
-    <include file="./db.changelog-master-3.9.0.xml" />
+    <include file="./0/db.changelog-0.xml" labels="init"/>
 
     <!-- 3.10.0 -->
 </databaseChangeLog>

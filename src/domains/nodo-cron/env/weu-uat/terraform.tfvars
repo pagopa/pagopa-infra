@@ -39,11 +39,11 @@ nodo_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "1" #TODO change to 2 or 3 in prod
-  node_count_max  = "2"
+  node_count_min  = "2"
+  node_count_max  = "8"
   node_labels = {
   "nodo-cron" = "true", },
-  node_taints        = [],
+  node_taints        = ["dedicated=nodo-cron:NoSchedule"],
   node_tags          = { node_tag_1 : "1" },
   nodo_pool_max_pods = "250",
 }

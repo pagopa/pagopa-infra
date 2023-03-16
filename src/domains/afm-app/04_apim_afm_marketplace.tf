@@ -25,6 +25,14 @@ locals {
     subscription_required = true
     service_url           = null
   }
+
+  apim_afm_utils_api = {
+    display_name          = "AFM Utils pagoPA - utilities of advanced fees management service API"
+    description           = "Utility API to support advanced fees management service"
+    path                  = "afm/utils"
+    subscription_required = true
+    service_url           = null
+  }
 }
 module "apim_afm_marketplace_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
@@ -76,6 +84,46 @@ module "apim_api_afm_marketplace_api_v1" {
   })
 
   xml_content = templatefile("./api/marketplace-service/v1/_base_policy.xml", {
+    hostname = local.afm_hostname
+  })
+}
+
+
+##################################
+##  API AFM Utils ##
+##################################
+
+resource "azurerm_api_management_api_version_set" "api_afm_utils_api" {
+  name                = format("%s-afm-utils-api", var.env_short)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_afm_utils_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_api_afm_utils_v1" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+
+  name                  = format("%s-afm-utils-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_afm_marketplace_product.product_id]
+  subscription_required = local.apim_afm_utils_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_utils_api.id
+  api_version           = "v1"
+
+  description  = local.apim_afm_utils_api.description
+  display_name = local.apim_afm_utils_api.display_name
+  path         = local.apim_afm_utils_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_afm_utils_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/marketplace-service/utils/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/marketplace-service/utils/_base_policy.xml", {
     hostname = local.afm_hostname
   })
 }

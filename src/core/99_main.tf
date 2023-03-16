@@ -16,6 +16,10 @@ terraform {
       source  = "hashicorp/time"
       version = ">= 0.9.0"
     }
+    azapi = {
+      source  = "Azure/azapi"
+      version = "= 1.3.0"
+    }
   }
 
   backend "azurerm" {}
@@ -27,6 +31,10 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = false
     }
   }
+}
+
+provider "azapi" {
+
 }
 
 data "azurerm_subscription" "current" {}

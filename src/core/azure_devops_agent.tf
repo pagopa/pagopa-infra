@@ -17,7 +17,7 @@ module "azdoa_snet" {
 }
 
 module "azdoa_li" {
-  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v3.5.0"
+  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v4.8.0"
   count               = var.enable_azdoa ? 1 : 0
   name                = format("%s-azdoa-vmss-li", local.project)
   resource_group_name = azurerm_resource_group.azdo_rg[0].name

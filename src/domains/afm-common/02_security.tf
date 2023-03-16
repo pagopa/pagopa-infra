@@ -32,7 +32,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
 
   key_vault_id = module.key_vault.id
 
@@ -78,6 +78,14 @@ resource "azurerm_key_vault_secret" "afm_marketplace_cosmos_pkey" {
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = "ai-${var.env_short}-connection-string"
   value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "storage_connection_string" {
+  name         = format("afm-%s-sa-connection-string", var.env_short)
+  value        = module.afm_storage.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

@@ -1,0 +1,10 @@
+[
+  {
+    "node_id": "NDP003PROD",
+    "description": "Nexi on premise PROD",
+    "node_uri": "https://10.79.20.34",
+    "routing": 100,
+    "broker_psps": [],
+    "cis": []
+  }
+]

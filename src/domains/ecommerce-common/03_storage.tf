@@ -79,12 +79,48 @@ resource "azurerm_storage_queue" "notifications_service_errors_queue" {
   storage_account_name = module.ecommerce_storage.name
 }
 
+resource "azurerm_storage_queue" "transactions_expiration_queue" {
+  name                 = "${local.project}-transactions-expiration-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
+resource "azurerm_storage_queue" "transactions_close_payment_queue" {
+  name                 = "${local.project}-transactions-close-payment-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
+resource "azurerm_storage_queue" "transactions_close_payment_retry_queue" {
+  name                 = "${local.project}-transactions-close-payment-retry-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
+resource "azurerm_storage_queue" "transactions_refund_retry_queue" {
+  name                 = "${local.project}-transactions-refund-retry-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
+resource "azurerm_storage_queue" "transactions_refund_queue" {
+  name                 = "${local.project}-transactions-refund-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
+resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
+  name                 = "${local.project}-transactions-dead-letter-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
+#TODO to be deleted after all module have been switched off this queue
 resource "azurerm_storage_queue" "activated_events_queue" {
   name                 = "${local.project}-activated-events-queue"
   storage_account_name = module.ecommerce_storage.name
 }
-
+#TODO to be deleted after all module have been switched off this queue
 resource "azurerm_storage_queue" "closed_events_queue" {
   name                 = "${local.project}-closed-events-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+#TODO to be deleted after all module have been switched off this queue
+resource "azurerm_storage_queue" "expired_events_queue" {
+  name                 = "${local.project}-expired-events-queue"
   storage_account_name = module.ecommerce_storage.name
 }

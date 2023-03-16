@@ -11,7 +11,7 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name = "SlackPagoPA"
+  monitor_action_group_slack_name = "SlackPagoPANODO"
   monitor_action_group_email_name = "PagoPA"
   monitor_appinsights_name        = "${local.product}-appinsights"
 
@@ -32,6 +32,6 @@ locals {
   pagopa_apim_rg   = "${local.product}-api-rg"
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  nodo_hostname = "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
+  nodo_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
 }

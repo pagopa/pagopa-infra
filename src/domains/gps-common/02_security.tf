@@ -32,7 +32,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
 
   key_vault_id = module.key_vault.id
 
@@ -81,6 +81,38 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "storage_reporting_connection_string" {
+  # refers to pagopa<env>flowsa primary key
+  name         = format("gpd-reporting-flow-%s-sa-connection-string", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_reporting_enrollment_subscription_key" {
+  name         = format("gpd-%s-reporting-enrollment-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
 
 resource "azurerm_key_vault_secret" "storage_connection_string" {

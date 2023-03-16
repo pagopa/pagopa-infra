@@ -1,0 +1,10 @@
+[
+  {
+    "node_id": "NDP002UAT",
+    "description": "Nodo OnCloud Nexi",
+    "node_uri": "http://10.70.74.200/nodo-uat",
+    "routing": 100,
+    "broker_psps": [],
+    "cis": []
+  }
+]

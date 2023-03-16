@@ -32,7 +32,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
 
   key_vault_id = module.key_vault.id
 
@@ -65,4 +65,17 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
 
   storage_permissions = []
+}
+
+
+resource "azurerm_key_vault_secret" "email-encryption-key" {
+  name         = "email-encryption-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>" #base64 AES encryption key
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }

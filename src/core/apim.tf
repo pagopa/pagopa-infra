@@ -43,8 +43,8 @@ module "apim" {
   sku_name             = var.apim_sku
   virtual_network_type = "Internal"
 
-  redis_connection_string = var.redis_cache_enabled ? module.redis[0].primary_connection_string : null
-  redis_cache_id          = var.redis_cache_enabled ? module.redis[0].id : null
+  redis_connection_string = var.redis_cache_enabled ? module.redis.primary_connection_string : null
+  redis_cache_id          = var.redis_cache_enabled ? module.redis.id : null
 
   # This enables the Username and Password Identity Provider
   sign_up_enabled = false
@@ -582,6 +582,23 @@ resource "azurerm_api_management_named_value" "checkout_v2_test_key" {
   value               = data.azurerm_key_vault_secret.checkout_v2_test_key_secret[0].value
   secret              = true
 }
+
+# verificatore keys for apiconfig ( ottimizzazione ecs )
+
+data "azurerm_key_vault_secret" "verificatore_key_secret_apiconfig" {
+  name         = "verificatore-api-key-apiconfig"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "verificatore_api_key_apiconfig" {
+  name                = "verificatore-api-key-apiconfig"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "verificatore-api-key-apiconfig"
+  value               = data.azurerm_key_vault_secret.verificatore_key_secret_apiconfig.value
+  secret              = true
+}
+
 
 # donazioni
 resource "azurerm_api_management_named_value" "donazioni_config_name" {

@@ -1,9 +1,26 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "0.1.0",
+    "version": "0.0.1",
     "title": "Pagopa eCommerce transaction auth requests service",
-    "description": "This microservice handles transaction auth requests update"
+    "description": "This microservice handles transaction auth requests update",
+    "contact": {
+      "name": "pagoPA - Touchpoints team"
+    }
+  },
+  "tags": [
+    {
+      "name": "transactions",
+      "description": "Api's for performing a transaction",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611287199/-servizio+transactions+service",
+        "description": "Technical specifications"
+      }
+    }
+  ],
+  "externalDocs": {
+    "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
+    "description": "Design review"
   },
   "servers": [
     {
@@ -12,8 +29,12 @@
   ],
   "paths": {
     "/transactions/{transactionId}/auth-requests": {
+      "summary": "Request authorization for the transaction identified by a trnsaction id",
       "post": {
         "operationId": "requestTransactionAuthorization",
+        "tags": [
+          "transactions"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -92,7 +113,12 @@
         }
       },
       "patch": {
+        "tags": [
+          "transactions"
+        ],
         "operationId": "updateTransactionAuthorization",
+        "summary": "Update authorization",
+        "description": "Callback endpoint used for notify authorization outcome",
         "parameters": [
           {
             "in": "path",
@@ -101,7 +127,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "Transaction Id"
+            "description": "Base64 of bytes related to TransactionId"
           }
         ],
         "requestBody": {
@@ -174,6 +200,93 @@
   },
   "components": {
     "schemas": {
+      "RptId": {
+        "description": "Digital payment receipt identifier",
+        "type": "string",
+        "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+      },
+      "PaymentInfo": {
+        "description": "Informations about transaction payments",
+        "type": "object",
+        "properties": {
+          "paymentToken": {
+            "type": "string"
+          },
+          "rptId": {
+            "$ref": "#/components/schemas/RptId"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "rptId",
+          "amount"
+        ],
+        "example": {
+          "rptId": "77777777777302012387654312384",
+          "paymentToken": "paymentToken1",
+          "reason": "reason1",
+          "amount": 100
+        }
+      },
+      "NewTransactionResponse": {
+        "type": "object",
+        "description": "Transaction data returned when creating a new transaction",
+        "properties": {
+          "transactionId": {
+            "description": "the transaction unique identifier",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentToken": "paymentToken1",
+                "reason": "reason1",
+                "amount": 100
+              },
+              {
+                "rptId": "77777777777302012387654312385",
+                "paymentToken": "paymentToken2",
+                "reason": "reason2",
+                "amount": 100
+              }
+            ]
+          },
+          "clientId": {
+            "description": "transaction client id",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART"
+            ]
+          },
+          "authToken": {
+            "description": "authorization token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "transactionId",
+          "amountTotal",
+          "status",
+          "payments",
+          "clientId"
+        ]
+      },
       "RequestAuthorizationResponse": {
         "type": "object",
         "description": "Response body for requesting an authorization for a transaction",
@@ -182,21 +295,87 @@
             "type": "string",
             "format": "url",
             "description": "URL where to redirect clients to continue the authorization process"
-          },
-          "authorizationRequestId": {
-            "type": "string",
-            "description": "Authorization request id"
           }
         },
         "required": [
-          "authorizationUrl",
-          "authorizationRequestId"
+          "authorizationUrl"
         ],
         "example": {
           "authorizationUrl": "https://example.com"
         }
       },
+      "UpdateAuthorizationRequest": {
+        "type": "object",
+        "description": "Request body for updating an authorization for a transaction",
+        "properties": {
+          "authorizationResult": {
+            "$ref": "#/components/schemas/AuthorizationResult"
+          },
+          "timestampOperation": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Payment timestamp"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          }
+        },
+        "required": [
+          "authorizationResult",
+          "timestampOperation",
+          "authorizationCode"
+        ],
+        "example": {
+          "authorizationResult": "OK",
+          "timestampOperation": "2022-02-11T12:00:00.000Z",
+          "authorizationCode": "auth-code"
+        }
+      },
+      "TransactionInfo": {
+        "description": "Transaction data returned when querying for an existing transaction",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NewTransactionResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "feeTotal": {
+                "$ref": "#/components/schemas/AmountEuroCents"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        ]
+      },
+      "AmountEuroCents": {
+        "description": "Amount for payments, in euro cents",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 99999999
+      },
+      "TransactionStatus": {
+        "type": "string",
+        "description": "Possible statuses a transaction can be in",
+        "enum": [
+          "ACTIVATED",
+          "AUTHORIZATION_REQUESTED",
+          "AUTHORIZATION_COMPLETED",
+          "CLOSED",
+          "CLOSURE_ERROR",
+          "NOTIFIED",
+          "EXPIRED",
+          "REFUNDED",
+          "CANCELED",
+          "EXPIRED_NOT_AUTHORIZED",
+          "UNAUTHORIZED"
+        ]
+      },
       "ProblemJson": {
+        "description": "Body definition for error responses containing failure details",
         "type": "object",
         "properties": {
           "type": {
@@ -225,29 +404,6 @@
           }
         }
       },
-      "TransactionInfo": {
-        "description": "Transaction data returned when querying for an existing transaction",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/NewTransactionResponse"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "status": {
-                "$ref": "#/components/schemas/TransactionStatus"
-              }
-            },
-            "required": [
-              "status"
-            ]
-          }
-        ],
-        "example": {
-          "amount": 200,
-          "status": "ACTIVATED"
-        }
-      },
       "HttpStatusCode": {
         "type": "integer",
         "format": "int32",
@@ -256,60 +412,6 @@
         "maximum": 600,
         "exclusiveMaximum": true,
         "example": 200
-      },
-      "NewTransactionResponse": {
-        "type": "object",
-        "description": "Transaction data returned when creating a new transaction",
-        "properties": {
-          "transactionId": {
-            "type": "string"
-          },
-          "paymentToken": {
-            "type": "string"
-          },
-          "rptId": {
-            "$ref": "#/components/schemas/RptId"
-          },
-          "status": {
-            "$ref": "#/components/schemas/TransactionStatus"
-          },
-          "reason": {
-            "type": "string"
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents",
-            "minLength": 1,
-            "maxLength": 140
-          },
-          "authToken": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "transactionId",
-          "amount",
-          "status"
-        ],
-        "example": {
-          "amount": 200
-        }
-      },
-      "TransactionStatus": {
-        "type": "string",
-        "description": "Possible statuses a transaction can be in",
-        "enum": [
-          "ACTIVATION_REQUESTED",
-          "ACTIVATED",
-          "AUTHORIZATION_REQUESTED",
-          "AUTHORIZED",
-          "AUTHORIZATION_FAILED",
-          "CLOSED",
-          "CLOSURE_FAILED",
-          "NOTIFIED",
-          "NOTIFIED_FAILED",
-          "EXPIRED",
-          "REFUNDED"
-        ]
       },
       "RequestAuthorizationRequest": {
         "type": "object",
@@ -367,43 +469,6 @@
           "language",
           "details"
         ]
-      },
-      "UpdateAuthorizationRequest": {
-        "type": "object",
-        "description": "Request body for updating an authorization for a transaction",
-        "properties": {
-          "authorizationResult": {
-            "$ref": "#/components/schemas/AuthorizationResult"
-          },
-          "timestampOperation": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Payment timestamp"
-          },
-          "authorizationCode": {
-            "type": "string",
-            "description": "Payment gateway-specific authorization code related to the transaction"
-          }
-        },
-        "required": [
-          "authorizationResult",
-          "timestampOperation",
-          "authorizationCode"
-        ],
-        "example": {
-          "authorizationResult": "OK",
-          "timestampOperation": "2022-02-11T12:00:00.000Z"
-        }
-      },
-      "RptId": {
-        "type": "string",
-        "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
-      },
-      "AmountEuroCents": {
-        "description": "Amount for payments, in euro cents",
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 99999999
       },
       "PostePayAuthRequestDetails": {
         "type": "object",
