@@ -264,13 +264,13 @@ variable "cidr_subnet_ndp_redis" {
 
 variable "ndp_redis_params" {
   type = object({
-    capacity    = number
-    sku_name    = string
-    family      = string
+    capacity = number
+    sku_name = string
+    family   = string
   })
   default = {
-    capacity    = 0
-    sku_name    = "Basic"
-    family      = "C"
+    capacity = 0
+    sku_name = "Basic"
+    family   = "C"
   }
 }
