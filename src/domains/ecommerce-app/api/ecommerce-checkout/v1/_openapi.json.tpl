@@ -46,6 +46,8 @@
   "paths": {
     "/payment-requests/{rpt_id}": {
       "get": {
+        "summary": "Verify single payment notice",
+        "description": "Api used to perform verify on payment notice by mean of Nodo call",
         "tags": [
           "ecommerce-payment-requests"
         ],
@@ -64,6 +66,7 @@
           {
             "in": "query",
             "name": "recaptchaResponse",
+            "description": "Recaptcha response",
             "schema": {
               "type": "string"
             },
@@ -72,7 +75,7 @@
         ],
         "responses": {
           "200": {
-            "description": "New transaction successfully created",
+            "description": "Payment request retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -557,7 +560,8 @@
           "ecommerce-payment-requests"
         ],
         "operationId": "GetCarts",
-        "description": "Get a cart data",
+        "summary": "Get a cart data",
+        "description": "Retrieve cart information",
         "parameters": [
           {
             "in": "path",
@@ -745,35 +749,36 @@
         "description": "Response with payment request information",
         "properties": {
           "rptId": {
+            "description": "Digital payment request id",
             "type": "string",
             "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
           },
           "paFiscalCode": {
+            "description": "Fiscal code associated to the payment notice",
             "type": "string",
             "minLength": 11,
             "maxLength": 11
           },
           "paName": {
+            "description": "Name of the payment notice issuer",
             "type": "string",
             "minLength": 1,
             "maxLength": 70
           },
           "description": {
+            "description": "Payment notice description",
             "type": "string",
             "minLength": 1,
             "maxLength": 140
           },
           "amount": {
+            "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
             "maximum": 99999999
           },
-          "paymentContextCode": {
-            "type": "string",
-            "minLength": 32,
-            "maxLength": 32
-          },
           "dueDate": {
+            "description": "Payment notice due date",
             "type": "string",
             "pattern": "([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])",
             "example": "2025-07-31"
@@ -1398,6 +1403,7 @@
         }
       },
       "CartRequest": {
+        "description": "Cart request body",
         "type": "object",
         "required": [
           "paymentNotices",
@@ -1405,11 +1411,13 @@
         ],
         "properties": {
           "emailNotice": {
+            "description": "Email to which send the payment receipt",
             "type": "string",
             "format": "email",
             "example": "my_email@mail.it"
           },
           "paymentNotices": {
+            "description": "List of payment notices in the cart",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PaymentNotice"
@@ -1434,6 +1442,7 @@
             ]
           },
           "returnUrls": {
+            "description": "Structure containing all the returning URL's to which user will be redirect after payment process has been completed",
             "type": "object",
             "required": [
               "returnOkUrl",
@@ -1442,16 +1451,19 @@
             ],
             "properties": {
               "returnOkUrl": {
+                "description": "Return URL in case of payment operation is completed successfully",
                 "type": "string",
                 "format": "uri",
                 "example": "https://www.comune.di.prova.it/pagopa/success.html"
               },
               "returnCancelUrl": {
+                "description": "Return URL in case of payment operation is cancelled",
                 "type": "string",
                 "format": "uri",
                 "example": "https://www.comune.di.prova.it/pagopa/cancel.html"
               },
               "returnErrorUrl": {
+                "description": "Return URL in case an error occurred during payment operation processing",
                 "type": "string",
                 "format": "uri",
                 "example": "https://www.comune.di.prova.it/pagopa/error.html"
@@ -1461,6 +1473,7 @@
         }
       },
       "PaymentNotice": {
+        "description": "Payment notice informations",
         "type": "object",
         "required": [
           "noticeNumber",
@@ -1471,24 +1484,29 @@
         ],
         "properties": {
           "noticeNumber": {
+            "description": "Payment notice number",
             "type": "string",
             "minLength": 18,
             "maxLength": 18
           },
           "fiscalCode": {
+            "description": "Payment notice fiscal code",
             "type": "string",
             "minLength": 11,
             "maxLength": 11
           },
           "amount": {
+            "description": "Payment notice amount",
             "type": "integer",
             "minimum": 1
           },
           "companyName": {
+            "description": "Payment notice company name",
             "type": "string",
             "maxLength": 140
           },
           "description": {
+            "description": "Payment notice description",
             "type": "string",
             "maxLength": 140
           }
