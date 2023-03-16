@@ -5,6 +5,11 @@
     "title": "Pagopa eCommerce payment transactions service",
     "description": "This microservice that handles transactions' lifecycle and workflow."
   },
+  "servers": [
+    {
+      "url": "https://${hostname}"
+    }
+  ],
   "paths": {
     "/transactions": {
       "post": {
@@ -136,6 +141,46 @@
           },
           "404": {
             "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "requestTransactionUserCancellation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "summary": "Performs the cancellation of the transaction",
+        "responses": {
+          "202": {
+            "description": "Transaction cancellation request successfully accepted"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -369,59 +414,6 @@
           },
           "422": {
             "description": "Unprocessable entity (most likely the transaction is in an invalid state)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/transactions/{transactionId}/cancel": {
-      "summary": "Request authorization for the transaction identified by payment token",
-      "delete": {
-        "operationId": "requestTransactionUserCancellation",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          }
-        ],
-        "summary": "Performs the cancellation of the transaction",
-        "responses": {
-          "204": {
-            "description": "Transaction cancellation request successfully processed"
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway timeout",
             "content": {
               "application/json": {
                 "schema": {
