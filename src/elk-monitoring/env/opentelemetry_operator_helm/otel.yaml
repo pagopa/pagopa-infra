@@ -1,0 +1,33 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+  namespace: ${namespace}
+spec:
+  mode: deployment # This configuration is omittable.
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+
+    processors:
+
+    exporters:
+      logging:
+
+      otlphttp/elastic:
+        tls:
+          insecure: true
+        # Elastic APM server https endpoint without the "https://" prefix
+        endpoint: "quickstart-apm-http.elastic-system.svc.cluster.local:8200"
+        headers:
+          # Elastic APM Server secret token
+          Authorization: "Bearer 30K8q56M9r3jhKrIdhf968PO"
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: []
+          exporters: [logging, otlphttp/elastic]

@@ -218,3 +218,11 @@ variable "nodeset_config" {
     }
   }
 }
+
+variable "opentelemetry_operator_helm" {
+  type = object({
+    chart_version = string,
+    values_file   = string
+  })
+  description = "open-telemetry/opentelemetry-operator helm chart configuration"
+}
