@@ -20,6 +20,15 @@ terraform {
       source  = "hashicorp/helm"
       version = "= 2.5.1"
     }
+    http = {
+      source  = "hashicorp/http"
+      version = "3.2.1"
+    }
+
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
   }
 
   backend "azurerm" {}
