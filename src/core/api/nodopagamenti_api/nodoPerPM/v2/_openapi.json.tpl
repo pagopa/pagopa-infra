@@ -17,13 +17,13 @@
           "nodo"
         ],
         "summary": "closePaymentV2",
-        "description": "Called after the request is validated by PPay",
+        "description": "Called after the request is validated by the pgs",
         "operationId": "closePaymentV2",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClosePaymentRequestV2"
+                "$ref": "#/components/schemas/ClosePaymentRequestV2KO"
               }
             }
           },
@@ -114,7 +114,7 @@
           }
         }
       },
-      "CancelPaymentRequestV2": {
+      "ClosePaymentRequestV2KO": {
         "type": "object",
         "properties": {
           "paymentTokens": {
@@ -147,24 +147,24 @@
         "discriminator": {
           "propertyName": "outcome",
           "mapping": {
-            "OK": "#/components/schemas/ClosePaymentRequestV2",
-            "KO": "#/components/schemas/CancelPaymentRequestV2"
+            "OK": "#/components/schemas/ClosePaymentRequestV2OK",
+            "KO": "#/components/schemas/ClosePaymentRequestV2KO"
           },
           "oneOf": [
             {
-              "$ref": "#/components/schemas/ClosePaymentRequestV2"
+              "$ref": "#/components/schemas/ClosePaymentRequestV2OK"
             },
             {
-              "$ref": "#/components/schemas/CancelPaymentRequestV2"
+              "$ref": "#/components/schemas/ClosePaymentRequestV2KO"
             }
           ]
         }
       },
-      "ClosePaymentRequestV2": {
+      "ClosePaymentRequestV2OK": {
         "type": "object",
         "allOf": [
           {
-            "$ref": "#/components/schemas/CancelPaymentRequestV2"
+            "$ref": "#/components/schemas/ClosePaymentRequestV2KO"
           }
         ],
         "properties": {
