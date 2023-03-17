@@ -1,0 +1,10 @@
+{
+  "template":{
+    "settings": {
+      "index.lifecycle.name": "logs-fdr"
+    }
+  },
+  "_meta": {
+    "description": "Settings for FDR"
+  }
+}
