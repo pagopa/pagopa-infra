@@ -23,21 +23,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "discriminator": {
-                  "propertyName": "outcome",
-                  "mapping": {
-                    "OK": "#/components/schemas/ClosePaymentRequestV2",
-                    "KO": "#/components/schemas/CancelPaymentRequestV2"
-                  }
-                },
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ClosePaymentRequestV2"
-                  },
-                  {
-                    "$ref": "#/components/schemas/CancelPaymentRequestV2"
-                  }
-                ]
+                "$ref": "#/components/schemas/ClosePaymentRequestV2"
               }
             }
           },
@@ -157,7 +143,22 @@
           "paymentTokens",
           "outcome",
           "transactionId"
-        ]
+        ],
+        "discriminator": {
+          "propertyName": "outcome",
+          "mapping": {
+            "OK": "#/components/schemas/ClosePaymentRequestV2",
+            "KO": "#/components/schemas/CancelPaymentRequestV2"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/ClosePaymentRequestV2"
+            },
+            {
+              "$ref": "#/components/schemas/CancelPaymentRequestV2"
+            }
+          ]
+        }
       },
       "ClosePaymentRequestV2": {
         "type": "object",
