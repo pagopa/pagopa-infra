@@ -758,6 +758,42 @@ paths:
       security:
         - bearerAuth:
             - global
+    post:
+      tags:
+        - stations
+      summary: createStation
+      description: Create new station
+      operationId: createStationUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationDetailsDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationDetailResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
   '/stations/details/{stationId}':
     get:
       tags:
@@ -1525,6 +1561,152 @@ components:
           description: List of ec stations
           items:
             $ref: '#/components/schemas/StationResource'
+    StationDetailsDto:
+      title: StationDetailsDto
+      required:
+        - primitiveVersion
+        - redirectIp
+        - redirectPath
+        - redirectPort
+        - redirectProtocol
+        - redirectQueryString
+        - stationCode
+        - targetHost
+        - targetPath
+        - targetPort
+      type: object
+      properties:
+        brokerCode:
+          type: string
+          description: Station's broker code
+        brokerDescription:
+          type: string
+          description: Station broker's description
+        brokerObjId:
+          type: integer
+          description: Station's broker object id
+          format: int64
+        enabled:
+          type: boolean
+          description: Station's activation state
+          example: false
+        flagOnline:
+          type: boolean
+          description: 'Station''s online flag '
+          example: false
+        ip:
+          type: string
+          description: Station's ip address
+        ip4Mod:
+          type: string
+          description: Station's ip v4
+        newPassword:
+          type: string
+          description: Station's new password
+        password:
+          type: string
+          description: Station's password
+        pofService:
+          type: string
+          description: Station's pof service
+        port:
+          type: integer
+          description: Station's port
+          format: int64
+        port4Mod:
+          type: integer
+          description: Station's v4 port
+          format: int64
+        primitiveVersion:
+          type: string
+          description: Station's primitive version
+        protocol:
+          type: string
+          description: Station's http protocol
+          enum:
+            - HTTP
+            - HTTPS
+        protocol4Mod:
+          type: string
+          description: Station's protocol v4
+          enum:
+            - HTTP
+            - HTTPS
+        proxyEnabled:
+          type: boolean
+          description: Station's proxy enabled variable
+          example: false
+        proxyHost:
+          type: string
+          description: Station's proxy host
+        proxyPassword:
+          type: string
+          description: Station's proxy password
+        proxyPort:
+          type: integer
+          description: Station's proxy port
+          format: int64
+        proxyUsername:
+          type: string
+          description: Station's proxy username
+        redirectIp:
+          type: string
+          description: Station's redirect Ip
+        redirectPath:
+          type: string
+          description: Station's redirect path
+        redirectPort:
+          type: integer
+          description: Station's redirect port
+          format: int64
+        redirectProtocol:
+          type: string
+          description: Station's redirect http protocol
+          enum:
+            - HTTP
+            - HTTPS
+        redirectQueryString:
+          type: string
+          description: Station's redirect query string
+        rtInstantaneousDispatch:
+          type: boolean
+          description: Station's instantaneous rt dispatch
+          example: false
+        service:
+          type: string
+          description: Station's service
+        service4Mod:
+          type: string
+          description: Station's service 4
+        stationCode:
+          type: string
+          description: Station's unique identifier
+        targetHost:
+          type: string
+          description: Station's target host
+        targetPath:
+          type: string
+          description: Station's target path
+        targetPort:
+          type: integer
+          description: Station target's port
+          format: int64
+        threadNumber:
+          type: integer
+          description: Station's max thread number
+          format: int64
+        timeoutA:
+          type: integer
+          description: Station's timeoutA
+          format: int64
+        timeoutB:
+          type: integer
+          description: Station's timeoutB
+          format: int64
+        timeoutC:
+          type: integer
+          description: Station's timeoutC
+          format: int64
   securitySchemes:
     bearerAuth:
       type: http
