@@ -18,7 +18,7 @@
     <when condition="@(((IResponse)context.Variables["cache-response"]).StatusCode == 200)">
 
     <!-- set cache data according to the related cache_key -->
-    <cache-store-value key="@(context.Variables.GetValueOrDefault("cache_key", "cache_key"))" caching-type="external" value="@(((IResponse)context.Variables["cache-response"]).Body.As<JObject>(preserveContent: true))" duration="1440" />
+    <cache-store-value key="@(context.Variables.GetValueOrDefault("cache_key", "cache_key"))" caching-type="external" value="@(((IResponse)context.Variables["cache-response"]).Body.As<JObject>(preserveContent: true))" duration="86400" />
     <!-- unset cache in progress -->
     <cache-remove-value key="@(context.Variables.GetValueOrDefault("cache_key_in_progress", "cache_key_in_progress"))" caching-type="internal" />
     <return-response response-variable-name="existing context variable">
