@@ -110,3 +110,36 @@ variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
 }
+
+variable "bopagopa_datastore_cosmos_db_params" {
+  type = object({
+    kind           = string
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    container_default_ttl             = number
+  })
+}
+
+variable "cidr_subnet_bopagopa_datastore_cosmosdb" {
+  type        = list(string)
+  description = "Cosmos DB address space"
+  default     = null
+}
