@@ -14,15 +14,17 @@ terraform {
       source  = "integrations/github"
       version = "5.12.0"
     }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "= 2.5.1"
-    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "= 2.11.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "= 2.5.1"
+    }
   }
+
+  backend "azurerm" {}
 }
 
 provider "azurerm" {
@@ -33,6 +35,10 @@ provider "github" {
   owner = var.github.org
 }
 
+data "azurerm_subscription" "current" {}
+
+data "azurerm_client_config" "current" {}
+
 provider "kubernetes" {
   config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
 }
@@ -42,7 +48,3 @@ provider "helm" {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
 }
-
-data "azurerm_subscription" "current" {}
-
-data "azurerm_client_config" "current" {}

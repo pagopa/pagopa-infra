@@ -47,7 +47,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
     "Delete", "Restore", "Purge", "Recover"
   ]
 }
-## ad group policy ##
+
 resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   count = var.env_short != "p" ? 1 : 0
 
@@ -96,122 +96,14 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "afm_marketplace_subscription_key" {
-  name         = "afm-marketplace-subscription-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
+# create json letsencrypt inside kv
+# requierd: Docker
+module "letsencrypt_fdr" {
+  source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
 
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
+  prefix            = var.prefix
+  env               = var.env_short
+  key_vault_name    = "${local.product}-${var.domain}-kv"
+  subscription_name = local.subscription_name
 }
 
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "afm_utils_subscription_key" {
-  name         = "afm-utils-subscription-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "afm_cosmos_key" {
-  name         = "afm-cosmos-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "oracle_db_cfg_password" {
-  name         = "oracle-db-cfg-password"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "postgresql_db_cfg_password" {
-  name         = "postgresql-db-cfg-password"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-data "azurerm_redis_cache" "redis_cache" {
-  name                = format("%s-%s-redis", var.prefix, var.env_short)
-  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
-}
-
-resource "azurerm_key_vault_secret" "redis_password" {
-  name         = "redis-password"
-  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "github_token_read_packages" {
-  name         = "github-token-read-packages"
-  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "apiconfig_selfcare_integration_api_subscription-key" {
-  name         = "apiconfig-selfcare-integration-api-subscription-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
