@@ -1,20 +1,55 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0",
+    "version": "0.0.1",
     "title": "Pagopa eCommerce services for Checkout",
-    "description": "This microservice that expose eCommerce services to Checkout."
+    "description": "This microservice that expose eCommerce services to Checkout.",
+    "contact": {
+      "name": "pagoPA - Touchpoints team"
+    }
   },
+  "tags": [
+    {
+      "name": "ecommerce-transactions",
+      "description": "Api's for performing a transaction",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611287199/-servizio+transactions+service",
+        "description": "Technical specifications"
+      }
+    },
+    {
+      "name": "ecommerce-methods",
+      "description": "Api's for retrieve payment methods for perform transactions",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611516433/-servizio+payment+methods+service",
+        "description": "Technical specifications"
+      }
+    },
+    {
+      "name": "ecommerce-payment-requests",
+      "description": "Api's for initiate a transaction given an array of payment tokens",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611745793/-servizio+payment+requests+service",
+        "description": "Technical specifications"
+      }
+    }
+  ],
   "servers": [
     {
       "url": "https://${host}"
     }
   ],
+  "externalDocs": {
+    "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
+    "description": "Design review"
+  },
   "paths": {
     "/payment-requests/{rpt_id}": {
       "get": {
+        "summary": "Verify single payment notice",
+        "description": "Api used to perform verify on payment notice by mean of Nodo call",
         "tags": [
-          "ecommerce-transactions"
+          "ecommerce-payment-requests"
         ],
         "operationId": "getPaymentRequestInfo",
         "parameters": [
@@ -31,6 +66,7 @@
           {
             "in": "query",
             "name": "recaptchaResponse",
+            "description": "Recaptcha response",
             "schema": {
               "type": "string"
             },
@@ -39,7 +75,7 @@
         ],
         "responses": {
           "200": {
-            "description": "New transaction successfully created",
+            "description": "Payment request retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -118,6 +154,7 @@
         ],
         "operationId": "newTransaction",
         "summary": "Make a new transaction",
+        "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
         "requestBody": {
           "content": {
             "application/json": {
@@ -223,7 +260,8 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get information about a specific transaction",
+        "summary": "Get transaction information",
+        "description": "Return information for the input specific transaction resource",
         "responses": {
           "200": {
             "description": "Transaction data successfully retrieved",
@@ -257,13 +295,85 @@
                 }
               }
             }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "requestTransactionUserCancellation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Performs the transaction cancellation",
+        "responses": {
+          "202": {
+            "description": "Transaction cancellation request successfully accepted"
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout from PagoPA services",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
     },
     "/transactions/{transactionId}/auth-requests": {
-      "summary": "Request authorization for the transaction identified by payment token",
       "post": {
+        "summary": "Request authorization",
+        "description": "Request authorization for the transaction identified by payment token",
         "tags": [
           "ecommerce-transactions"
         ],
@@ -508,10 +618,11 @@
     "/carts/{id_cart}": {
       "get": {
         "tags": [
-          "ecommerce-carts"
+          "ecommerce-payment-requests"
         ],
         "operationId": "GetCarts",
-        "description": "Get a cart data",
+        "summary": "Get a cart data",
+        "description": "Retrieve cart information",
         "parameters": [
           {
             "in": "path",
@@ -564,6 +675,16 @@
                 }
               }
             }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
@@ -571,7 +692,7 @@
     "/carts/{cart_id}/redirect": {
       "get": {
         "tags": [
-          "ecommerce-carts"
+          "ecommerce-payment-requests"
         ],
         "operationId": "GetCartsRedirect",
         "description": "Redirect to checkout with cart",
@@ -689,35 +810,36 @@
         "description": "Response with payment request information",
         "properties": {
           "rptId": {
+            "description": "Digital payment request id",
             "type": "string",
             "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
           },
           "paFiscalCode": {
+            "description": "Fiscal code associated to the payment notice",
             "type": "string",
             "minLength": 11,
             "maxLength": 11
           },
           "paName": {
+            "description": "Name of the payment notice issuer",
             "type": "string",
             "minLength": 1,
             "maxLength": 70
           },
           "description": {
+            "description": "Payment notice description",
             "type": "string",
             "minLength": 1,
             "maxLength": 140
           },
           "amount": {
+            "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
             "maximum": 99999999
           },
-          "paymentContextCode": {
-            "type": "string",
-            "minLength": 32,
-            "maxLength": 32
-          },
           "dueDate": {
+            "description": "Payment notice due date",
             "type": "string",
             "pattern": "([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])",
             "example": "2025-07-31"
@@ -944,7 +1066,7 @@
         ],
         "example": {
           "rptId": "string",
-          "paymentContextCode": "paymentContextCode",
+          "paymentContextCode": "12345678901234567890123456789012",
           "amount": 100
         }
       },
@@ -991,12 +1113,12 @@
             "example": [
               {
                 "rptId": "77777777777302012387654312384",
-                "paymentContextCode": "paymentContextCode1",
+                "paymentContextCode": "12345678901234567890123456789011",
                 "amount": 100
               },
               {
                 "rptId": "77777777777302012387654312385",
-                "paymentContextCode": "paymentContextCode2",
+                "paymentContextCode": "12345678901234567890123456789012",
                 "amount": 200
               }
             ]
@@ -1188,7 +1310,7 @@
             ],
             "example": {
               "detailType": "card",
-              "cvv": 0,
+              "cvv": "123",
               "pan": "0123456789012345",
               "expiryDate": "209901",
               "holderName": "Name Surname",
@@ -1222,7 +1344,8 @@
         ],
         "example": {
           "authorizationResult": "OK",
-          "timestampOperation": "2022-02-11T12:00:00.000Z"
+          "timestampOperation": "2022-02-11T12:00:00.000Z",
+          "authorizationCode": "auth-code"
         }
       },
       "RequestAuthorizationResponse": {
@@ -1341,6 +1464,7 @@
         }
       },
       "CartRequest": {
+        "description": "Cart request body",
         "type": "object",
         "required": [
           "paymentNotices",
@@ -1348,11 +1472,13 @@
         ],
         "properties": {
           "emailNotice": {
+            "description": "Email to which send the payment receipt",
             "type": "string",
             "format": "email",
             "example": "my_email@mail.it"
           },
           "paymentNotices": {
+            "description": "List of payment notices in the cart",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PaymentNotice"
@@ -1377,6 +1503,7 @@
             ]
           },
           "returnUrls": {
+            "description": "Structure containing all the returning URL's to which user will be redirect after payment process has been completed",
             "type": "object",
             "required": [
               "returnOkUrl",
@@ -1385,25 +1512,29 @@
             ],
             "properties": {
               "returnOkUrl": {
+                "description": "Return URL in case of payment operation is completed successfully",
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/success.html"
+                "example": "https://www.comune.di.prova.it/pagopa/success.html"
               },
               "returnCancelUrl": {
+                "description": "Return URL in case of payment operation is cancelled",
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/cancel.html"
+                "example": "https://www.comune.di.prova.it/pagopa/cancel.html"
               },
               "returnErrorUrl": {
+                "description": "Return URL in case an error occurred during payment operation processing",
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/error.html"
+                "example": "https://www.comune.di.prova.it/pagopa/error.html"
               }
             }
           }
         }
       },
       "PaymentNotice": {
+        "description": "Payment notice informations",
         "type": "object",
         "required": [
           "noticeNumber",
@@ -1414,24 +1545,29 @@
         ],
         "properties": {
           "noticeNumber": {
+            "description": "Payment notice number",
             "type": "string",
             "minLength": 18,
             "maxLength": 18
           },
           "fiscalCode": {
+            "description": "Payment notice fiscal code",
             "type": "string",
             "minLength": 11,
             "maxLength": 11
           },
           "amount": {
+            "description": "Payment notice amount",
             "type": "integer",
             "minimum": 1
           },
           "companyName": {
+            "description": "Payment notice company name",
             "type": "string",
             "maxLength": 140
           },
           "description": {
+            "description": "Payment notice description",
             "type": "string",
             "maxLength": 140
           }
