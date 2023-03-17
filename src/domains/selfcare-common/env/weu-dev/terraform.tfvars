@@ -33,9 +33,9 @@ enable_iac_pipeline = true
 
 # CosmosDB BO pagopa Datastore
 bopagopa_datastore_cosmos_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = ["EnableServerless"]
-  offer_type   = "Standard"
+  kind               = "GlobalDocumentDB"
+  capabilities       = ["EnableServerless"]
+  offer_type         = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"
     max_interval_in_seconds = 300
@@ -55,4 +55,6 @@ bopagopa_datastore_cosmos_db_params = {
   container_default_ttl = 2629800 # 1 month in second
 }
 
-cidr_subnet_bopagopa_datastore_cosmosdb = ["10.1.156.0/24"]
+# CosmosDb MongoDb
+cidr_subnet_cosmosdb_mongodb        = ["10.1.135.0/24"]
+cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]

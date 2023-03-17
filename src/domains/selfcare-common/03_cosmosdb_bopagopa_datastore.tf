@@ -5,24 +5,27 @@ resource "azurerm_resource_group" "bopagopa_rg" {
   tags = var.tags
 }
 
-module "bopagopa_datastore_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+locals {
+  base_capabilities = [
+    "EnableMongo"
+  ]
+  cosmosdb_mongodb_enable_serverless = contains(var.bopagopa_datastore_cosmos_db_params.cosmosdb_mongodb_extra_capabilities, "EnableServerless")
+}
+
+module "bopagopa_cosmosdb_mongodb_snet" {
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.58"
   name                 = "${local.project}-datastore-cosmosdb-snet"
-  address_prefixes     = var.cidr_subnet_bopagopa_datastore_cosmosdb
+  address_prefixes     = var.cidr_subnet_cosmosdb_mongodb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
   enforce_private_link_endpoint_network_policies = true
 
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-    "Microsoft.Storage",
-  ]
+  service_endpoints = ["Microsoft.Web"]
 }
 
-module "bopagopa_datastore_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
+module "bopagopa_cosmosdb_mongo_account" {
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb?ref=v2.0.19"
   name     = "${local.project}-ds-cosmos-account"
   location = var.location
 
@@ -30,11 +33,8 @@ module "bopagopa_datastore_cosmosdb_account" {
   offer_type          = var.bopagopa_datastore_cosmos_db_params.offer_type
   kind                = var.bopagopa_datastore_cosmos_db_params.kind
 
-  public_network_access_enabled    = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled
-  main_geo_location_zone_redundant = var.bopagopa_datastore_cosmos_db_params.main_geo_location_zone_redundant
-
-  enable_free_tier          = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
-  enable_automatic_failover = true
+  public_network_access_enabled-    = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled
+  main_geo_location_zone_redundant- = var.bopagopa_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
   capabilities       = var.bopagopa_datastore_cosmos_db_params.capabilities
   consistency_policy = var.bopagopa_datastore_cosmos_db_params.consistency_policy
@@ -45,53 +45,62 @@ module "bopagopa_datastore_cosmosdb_account" {
 
   is_virtual_network_filter_enabled = var.bopagopa_datastore_cosmos_db_params.is_virtual_network_filter_enabled
 
-  ip_range = ""
-
-  # add data.azurerm_subnet.<my_service>.id
-  # allowed_virtual_network_subnet_ids = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
-  allowed_virtual_network_subnet_ids = []
-
-  # private endpoint
-  private_endpoint_name    = "${local.project}-ds-cosmos-sql-endpoint"
+  ip_rangex = ""
   private_endpoint_enabled = var.bopagopa_datastore_cosmos_db_params.private_endpoint_enabled
-  subnet_id                = module.bopagopa_datastore_cosmosdb_snet.id
+  subnet_id                = module.bopagopa_cosmosdb_mongodb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
 
   tags = var.tags
 }
 
-# cosmosdb database
-module "bopagopa_datastore_cosmosdb_database" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
-  name                = "db"
+
+resource "azurerm_cosmosdb_mongo_database" "pagopa_backoffice" {
+  name                = "pagopaBackoffice"
   resource_group_name = azurerm_resource_group.bopagopa_rg.name
-  account_name        = module.bopagopa_datastore_cosmosdb_account.name
+  account_name        = module.bopagopa_cosmosdb_mongo_account.name
+
+  throughput = var.cosmosdb_mongodb_enable_autoscaling || local.cosmosdb_mongodb_enable_serverless ? null : var.cosmosdb_mongodb_throughput
+
+  dynamic "autoscale_settings" {
+    for_each = var.cosmosdb_mongodb_enable_autoscaling && !local.cosmosdb_mongodb_enable_serverless ? [""] : []
+    content {
+      max_throughput = var.cosmosdb_mongodb_max_throughput
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      autoscale_settings
+    ]
+  }
 }
 
-### Containers
-locals {
-  bopagopa_datastore_cosmosdb_containers = [
+resource "azurerm_management_lock" "mongodb_pagopa_backoffice" {
+  name       = "mongodb-pagopa-backoffice-lock"
+  scope      = azurerm_cosmosdb_mongo_database.pagopa_backoffice.id
+  lock_level = "CanNotDelete"
+  notes      = "This items can't be deleted in this subscription!"
+}
+
+# Collections
+module "mongdb_collection_products" {
+  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection?ref=v3.3.0"
+
+  name                = ""
+  resource_group_name = azurerm_resource_group.bopagopa_rg.name
+
+  cosmosdb_mongo_account_name  = module.bopagopa_cosmosdb_mongo_account.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pagopa_backoffice.name
+
+  indexes = [{
+    keys   = ["_id"]
+    unique = true
+  },
     {
-      name               = "bo-pagopa",
-      partition_key_path = "/id",
-      default_ttl        = var.bopagopa_datastore_cosmos_db_params.container_default_ttl,
-      autoscale_settings = { max_throughput = 6000 }
-    },
+      keys   = ["state"]
+      unique = false
+    }
   ]
-}
 
-# cosmosdb container for bopagopa datastore
-module "bopagopa_datastore_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
-  for_each = { for c in local.bopagopa_datastore_cosmosdb_containers : c.name => c }
-
-  name                = each.value.name
-  resource_group_name = azurerm_resource_group.bopagopa_rg.name
-  account_name        = module.bopagopa_datastore_cosmosdb_account.name
-  database_name       = module.bopagopa_datastore_cosmosdb_database.name
-  partition_key_path  = each.value.partition_key_path
-  throughput          = lookup(each.value, "throughput", null)
-  default_ttl         = lookup(each.value, "default_ttl", null)
-
-  autoscale_settings = contains(var.bopagopa_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+  lock_enable = true
 }
