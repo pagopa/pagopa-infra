@@ -56,4 +56,6 @@ bopagopa_datastore_cosmos_db_params = {
   container_default_ttl = 2629800 # 1 month in second
 }
 
-cidr_subnet_bopagopa_datastore_cosmosdb = ["10.1.156.0/24"]
+# CosmosDb MongoDb
+cidr_subnet_cosmosdb_mongodb        = ["10.1.135.0/24"]
+cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
