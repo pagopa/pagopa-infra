@@ -26,7 +26,7 @@ module "bopagopa_cosmosdb_mongodb_snet" {
 
 module "bopagopa_cosmosdb_mongo_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb?ref=v2.0.19"
-  name     = "${local.project}-ds-cosmos-account"
+  name     = "${local.project}-ds-cosmosdb_mongo_account"
   location = var.location
 
   resource_group_name = azurerm_resource_group.bopagopa_rg.name
