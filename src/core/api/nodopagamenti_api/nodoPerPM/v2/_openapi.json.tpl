@@ -221,8 +221,7 @@
           "paymentMethod",
           "totalAmount",
           "fee",
-          "timestampOperation",
-          "additionalPaymentInformations"
+          "timestampOperation"
         ]
       }
     }
