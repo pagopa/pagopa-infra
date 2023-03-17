@@ -17,22 +17,22 @@
   <choose>
     <when condition="@(((IResponse)context.Variables["cache-response"]).StatusCode == 200)">
 
-    <!-- set cache data according to the related cache_key -->
-    <cache-store-value key="@(context.Variables.GetValueOrDefault("cache_key", "cache_key"))" caching-type="external" value="@(((IResponse)context.Variables["cache-response"]).Body.As<JObject>(preserveContent: true))" duration="86400" />
-    <!-- unset cache in progress -->
-    <cache-remove-value key="@(context.Variables.GetValueOrDefault("cache_key_in_progress", "cache_key_in_progress"))" caching-type="internal" />
-    <return-response response-variable-name="existing context variable">
-      <set-status code="200" reason="OK" />
-      <set-header name="Content-Type" exists-action="override">
-        <value>application/json</value>
-      </set-header>
-      <set-body>@(((IResponse)context.Variables["cache-response"]).Body.As<JObject>(preserveContent: true).ToString())</set-body>
-    </return-response>
-  </when>
-  <otherwise>
-    <!-- unset cache in progress -->
-    <cache-remove-value key="@(context.Variables.GetValueOrDefault("cache_key_in_progress", "cache_key_in_progress"))" caching-type="internal" />
-    <mock-response status-code="503" content-type="application/json" />
-  </otherwise>
-</choose>
-  </fragment>
+      <!-- set cache data according to the related cache_key -->
+      <cache-store-value key="@(context.Variables.GetValueOrDefault("cache_key", "cache_key"))" caching-type="external" value="@(((IResponse)context.Variables["cache-response"]).Body.As<JObject>(preserveContent: true))" duration="86400" />
+      <!-- unset cache in progress -->
+      <cache-remove-value key="@(context.Variables.GetValueOrDefault("cache_key_in_progress", "cache_key_in_progress"))" caching-type="internal" />
+      <return-response response-variable-name="existing context variable">
+        <set-status code="200" reason="OK" />
+        <set-header name="Content-Type" exists-action="override">
+          <value>application/json</value>
+        </set-header>
+        <set-body>@(((IResponse)context.Variables["cache-response"]).Body.As<JObject>(preserveContent: true).ToString())</set-body>
+      </return-response>
+    </when>
+    <otherwise>
+      <!-- unset cache in progress -->
+      <cache-remove-value key="@(context.Variables.GetValueOrDefault("cache_key_in_progress", "cache_key_in_progress"))" caching-type="internal" />
+      <mock-response status-code="503" content-type="application/json" />
+    </otherwise>
+  </choose>
+</fragment>
