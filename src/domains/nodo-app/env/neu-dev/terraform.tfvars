@@ -40,7 +40,7 @@ nodo_user_node_pool = {
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
   node_count_min  = "1"
-  node_count_max  = "4"
+  node_count_max  = "1"
   node_labels = {
     "nodo" = "true",
   },
