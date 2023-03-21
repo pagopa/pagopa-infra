@@ -9,7 +9,7 @@ locals {
   base_capabilities = [
     "EnableMongo"
   ]
-  cosmosdb_mongodb_enable_serverless = contains(var.bopagopa_datastore_cosmos_db_params.cosmosdb_mongodb_extra_capabilities, "EnableServerless")
+  cosmosdb_mongodb_enable_serverless = contains(var.cosmosdb_mongodb_extra_capabilities, "EnableServerless")
 }
 
 module "bopagopa_cosmosdb_mongodb_snet" {
