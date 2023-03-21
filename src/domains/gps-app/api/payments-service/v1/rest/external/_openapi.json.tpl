@@ -8,7 +8,7 @@
     },
     "servers": [
         {
-            "url": "${host}/gps/gpd-payment-receipts-auth/api/v1",
+            "url": "${host}/gpd/payments-receipts-service/v1",
             "description": "Generated server url"
         }
     ],
