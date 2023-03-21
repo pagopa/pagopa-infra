@@ -106,7 +106,7 @@ resource "azurerm_api_management_api" "apim_ecommerce_nodo_per_pm_mock" {
 
   import {
     content_format = "swagger"
-    content_value  = file("./api/ecommerce-mock/nodePerPM/v1/_swagger.json.tpl")
+    content_value  = file("./api/ecommerce-mock/nodoPerPM/v1/_swagger.json.tpl")
   }
 }
 
@@ -124,5 +124,5 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_nodo_per_pm_mock_po
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  xml_content = file("./api/ecommerce-mock/nodePerPM/v1/_base_policy.xml.tpl")
+  xml_content = file("./api/ecommerce-mock/nodoPerPM/v1/_base_policy.xml.tpl")
 }
