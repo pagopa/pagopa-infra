@@ -3,7 +3,8 @@ module "elastic_stack" {
     azurerm_kubernetes_cluster_node_pool.elastic
   ]
 
-  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.13.0"
+  #source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.13.0"
+  source = "/Users/massimoscattarella/projects/pagopa/azurerm/elastic_stack"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
@@ -44,11 +45,11 @@ locals {
   ilm_policy             = { for filename in fileset(path.module, "nodo/pipeline/ilm_*.json") : replace(replace(basename(filename), "ilm_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
   component_template     = { for filename in fileset(path.module, "nodo/pipeline/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
 
-  fdr_ilm_policy         = { for filename in fileset(path.module, "fdr/ilm_policy_*.json") : replace(replace(basename(filename), "ilm_policy_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  fdr_component_template = { for filename in fileset(path.module, "fdr/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  fdr_index_template     = { for filename in fileset(path.module, "fdr/index_template_*.json") : replace(replace(basename(filename), "index_template_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  fdr_kibana_space       = file("${path.module}/fdr/space.json")
-  fdr_kibana_data_view   = file("${path.module}/fdr/data_view.json")
+  pagopafdr_ilm_policy         = { for filename in fileset(path.module, "pagopafdr/ilm_policy_*.json") : replace(replace(basename(filename), "ilm_policy_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  pagopafdr_component_template = { for filename in fileset(path.module, "pagopafdr/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  pagopafdr_index_template     = { for filename in fileset(path.module, "pagopafdr/index_template_*.json") : replace(replace(basename(filename), "index_template_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  pagopafdr_kibana_space       = file("${path.module}/pagopafdr/space.json")
+  pagopafdr_kibana_data_view   = file("${path.module}/pagopafdr/data_view.json")
 }
 
 resource "null_resource" "ingest_pipeline" {
@@ -56,9 +57,9 @@ resource "null_resource" "ingest_pipeline" {
 
   for_each = local.ingest_pipeline
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -76,9 +77,9 @@ resource "null_resource" "ilm_policy" {
 
   for_each = local.ilm_policy
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -96,9 +97,9 @@ resource "null_resource" "component_template" {
 
   for_each = local.component_template
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -114,9 +115,9 @@ resource "null_resource" "component_template" {
 resource "null_resource" "rollover" {
   depends_on = [null_resource.component_template]
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -131,9 +132,9 @@ resource "null_resource" "upload_query" {
 
   for_each = fileset(path.module, "nodo/query/*.ndjson")
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -148,9 +149,9 @@ resource "null_resource" "upload_query_replica" {
 
   for_each = fileset(path.module, local.replica_query_path)
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -165,9 +166,9 @@ resource "null_resource" "upload_dashboard" {
 
   for_each = fileset(path.module, "nodo/dashboard/*.ndjson")
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -182,9 +183,9 @@ resource "null_resource" "upload_dashboard_replica" {
 
   for_each = fileset(path.module, local.replica_dashboard_path)
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -194,14 +195,14 @@ resource "null_resource" "upload_dashboard_replica" {
   }
 }
 #################################### [FDR] ####################################
-resource "null_resource" "fdr_ilm_policy" {
+resource "null_resource" "pagopafdr_ilm_policy" {
   depends_on = [null_resource.upload_dashboard_replica]
 
-  for_each = local.fdr_ilm_policy
+  for_each = local.pagopafdr_ilm_policy
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -214,14 +215,14 @@ resource "null_resource" "fdr_ilm_policy" {
   }
 }
 
-resource "null_resource" "fdr_component_template" {
-  depends_on = [null_resource.fdr_ilm_policy]
+resource "null_resource" "pagopafdr_component_template" {
+  depends_on = [null_resource.pagopafdr_ilm_policy]
 
-  for_each = local.fdr_component_template
+  for_each = local.pagopafdr_component_template
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -234,14 +235,14 @@ resource "null_resource" "fdr_component_template" {
   }
 }
 
-resource "null_resource" "fdr_index_template" {
-  depends_on = [null_resource.fdr_component_template]
+resource "null_resource" "pagopafdr_index_template" {
+  depends_on = [null_resource.pagopafdr_component_template]
 
-  for_each = local.fdr_index_template
+  for_each = local.pagopafdr_index_template
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
@@ -254,41 +255,41 @@ resource "null_resource" "fdr_index_template" {
   }
 }
 
-resource "null_resource" "fdr_kibana_space" {
-  depends_on = [null_resource.fdr_index_template]
+resource "null_resource" "pagopafdr_kibana_space" {
+  depends_on = [null_resource.pagopafdr_index_template]
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
       curl -k -X POST "${local.kibana_url}/api/spaces/space" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.fdr_kibana_space}'
+      -d '${local.pagopafdr_kibana_space}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
 }
 
-resource "null_resource" "fdr_kibana_data_view" {
-  depends_on = [null_resource.fdr_kibana_space]
+resource "null_resource" "pagopafdr_kibana_data_view" {
+  depends_on = [null_resource.pagopafdr_kibana_space]
 
-  # triggers = {
-  #   always_run = "${timestamp()}"
-  # }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command     = <<EOT
-      data_view=$(curl -k -X POST "${local.kibana_url}/s/fdr/api/data_views/data_view" \
+      data_view=$(curl -k -X POST "${local.kibana_url}/s/pagopafdr/api/data_views/data_view" \
         -H 'kbn-xsrf: true' \
         -H 'Content-Type: application/json' \
-        -d '${local.fdr_kibana_data_view}')
+        -d '${local.pagopafdr_kibana_data_view}')
       
       data_view_id=$(echo $data_view | jq -r ".data_view.id")
 
-      curl -k -X POST "${local.kibana_url}/s/fdr/api/data_views/default" \
+      curl -k -X POST "${local.kibana_url}/s/pagopafdr/api/data_views/default" \
         -H 'kbn-xsrf: true' \
         -H 'Content-Type: application/json' \
         -d '{
@@ -302,7 +303,7 @@ resource "null_resource" "fdr_kibana_data_view" {
 
 
 resource "helm_release" "opentelemetry_operator_helm" {
-  depends_on = [null_resource.fdr_kibana_data_view]
+  depends_on = [null_resource.pagopafdr_kibana_data_view]
 
   provisioner "local-exec" {
     when        = destroy

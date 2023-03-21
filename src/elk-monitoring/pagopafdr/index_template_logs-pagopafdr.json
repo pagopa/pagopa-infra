@@ -1,0 +1,11 @@
+{
+  "index_patterns": [
+    "logs-pagopafdr-*"
+  ],
+  "data_stream": {},
+  "composed_of": [ "logs-pagopafdr-mappings", "logs-pagopafdr-settings" ],
+  "priority": 500,
+  "_meta": {
+    "description": "Index template for FDR - Flussi di rendicontazione"
+  }
+}
