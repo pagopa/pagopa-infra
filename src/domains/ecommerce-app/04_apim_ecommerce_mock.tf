@@ -105,7 +105,7 @@ resource "azurerm_api_management_api" "apim_ecommerce_nodo_per_pm_mock" {
   service_url  = local.apim_ecommerce_nodo_per_pm_mock_api.service_url
 
   import {
-    content_format = "swagger"
+    content_format = "swagger-json"
     content_value  = file("./api/ecommerce-mock/nodoPerPM/v1/_swagger.json.tpl")
   }
 }
