@@ -1,13 +1,12 @@
 <policies>
   <inbound>
     <base />
-    <!-- verifyPaymentNotice -->
     <choose>
       <when condition="@(((string)(context.Request.Url.Path)).Contains("checkPosition"))">
         <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">
-            <value>application/xml</value>
+            <value>application/json</value>
           </set-header>
           <set-body template="liquid">
             {
