@@ -4,10 +4,10 @@
 
 locals {
   apim_gpd_payments_rest_external_api = {
-    display_name = "GPD Payments pagoPA - REST for Auth - aks"
+    display_name = "GPD Payments pagoPA - REST for Auth"
     description  = "REST API del servizio Payments per Gestione Posizione Debitorie - for Auth"
     # temporary path for migration purpose - the official one will be gpd/payments-receipts-service
-    path                  = "gps/gpd-payment-receipts-auth/api"
+    path                  = "gpd/payments-receipts-service"
     published             = true
     subscription_required = true
     approval_required     = true
