@@ -1,6 +1,5 @@
 module "tls_checker" {
-#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v5.1.0"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=fix-tls-checker"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v6.2.1"
 
   https_endpoint                         = local.apiconfig_core_locals.hostname
   alert_name                             = local.apiconfig_core_locals.hostname
