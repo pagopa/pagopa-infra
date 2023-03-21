@@ -106,7 +106,9 @@ resource "azurerm_api_management_api" "apim_ecommerce_nodo_per_pm_mock" {
 
   import {
     content_format = "swagger-json"
-    content_value  = file("./api/ecommerce-mock/nodoPerPM/v1/_swagger.json.tpl")
+    content_value = templatefile("./api/ecommerce-checkout/v1/_openapi.json.tpl", {
+      host = local.apim_hostname
+    })
   }
 }
 
