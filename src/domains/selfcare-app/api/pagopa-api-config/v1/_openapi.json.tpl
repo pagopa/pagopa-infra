@@ -843,6 +843,55 @@ paths:
       security:
         - bearerAuth:
             - global
+  /stations/{ecCode}/generate:
+    get:
+      tags:
+        - stations
+      summary: getStationCode
+      description: Generate a station code given the creditor institution's code
+      operationId: getStationCodeUsingGET
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
 components:
   schemas:
     ChannelDetailsDto:
