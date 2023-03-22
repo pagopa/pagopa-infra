@@ -1,9 +1,9 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.0",
   "info": {
     "title": "Nodo-Per-PaymentManager",
     "description": "Specifiche di interfaccia Nodo per Payment Manager",
-    "version": "3.0.1"
+    "version": "3.0.0"
   },
   "servers": [
     {
@@ -23,7 +23,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClosePaymentRequestV2KO"
+                "$ref": "#/components/schemas/ClosePaymentRequestV2"
               }
             }
           },
@@ -114,7 +114,7 @@
           }
         }
       },
-      "ClosePaymentRequestV2KO": {
+      "ClosePaymentRequestV2": {
         "type": "object",
         "properties": {
           "paymentTokens": {
@@ -144,27 +144,31 @@
           "outcome",
           "transactionId"
         ],
-        "discriminator": {
-          "propertyName": "outcome",
-          "mapping": {
-            "OK": "#/components/schemas/ClosePaymentRequestV2OK",
-            "KO": "#/components/schemas/ClosePaymentRequestV2KO"
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ClosePaymentRequestV2KO"
           },
-          "oneOf": [
-            {
-              "$ref": "#/components/schemas/ClosePaymentRequestV2OK"
-            },
-            {
-              "$ref": "#/components/schemas/ClosePaymentRequestV2KO"
-            }
-          ]
+          {
+            "$ref": "#/components/schemas/ClosePaymentRequestV2OK"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "outcome"
         }
+      },
+      "ClosePaymentRequestV2KO": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ClosePaymentRequestV2"
+          }
+        ]
       },
       "ClosePaymentRequestV2OK": {
         "type": "object",
         "allOf": [
           {
-            "$ref": "#/components/schemas/ClosePaymentRequestV2KO"
+            "$ref": "#/components/schemas/ClosePaymentRequestV2"
           }
         ],
         "properties": {
