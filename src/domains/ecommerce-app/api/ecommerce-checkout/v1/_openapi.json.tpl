@@ -1413,12 +1413,17 @@
           "AUTHORIZATION_COMPLETED",
           "CLOSED",
           "CLOSURE_ERROR",
-          "NOTIFIED",
+          "NOTIFIED_OK",
+          "NOTIFIED_KO",
           "EXPIRED",
           "REFUNDED",
           "CANCELED",
           "EXPIRED_NOT_AUTHORIZED",
-          "UNAUTHORIZED"
+          "UNAUTHORIZED",
+          "REFUND_ERROR",
+          "REFUND_REQUESTED",
+          "CANCELLATION_REQUESTED",
+          "CANCELLATION_EXPIRED"
         ]
       },
       "PaymentMethodResponse": {

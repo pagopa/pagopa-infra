@@ -97,7 +97,7 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_kibana_certificate_name     = "kibana-platform-pagopa-it"
-app_gateway_wfespgovit_certificate_name = ""
+app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
 app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                = 50
 app_gateway_sku_name                    = "WAF_v2"
@@ -114,8 +114,7 @@ app_gateway_deny_paths = [
   "/payment-manager/internal*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd/.*",           # internal use no sub-keys
-  "/gpd-payments/.*",  # internal use no sub-keys
+  "/gpd-payments/.*",  # internal use no sub-keys SOAP
   "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
