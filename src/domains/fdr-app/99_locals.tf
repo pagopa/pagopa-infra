@@ -43,7 +43,7 @@ locals {
     path        = "fdr"
     service_url = null
 
-    pagopa_tenant_id       = data.azurerm_client_config.current.tenant_id
+    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
 
   }
 }
