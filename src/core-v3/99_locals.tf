@@ -1,5 +1,6 @@
 locals {
-  product = "${var.prefix}-${var.env_short}"
+  product        = "${var.prefix}-${var.env_short}"
+  location_short = "weu"
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
