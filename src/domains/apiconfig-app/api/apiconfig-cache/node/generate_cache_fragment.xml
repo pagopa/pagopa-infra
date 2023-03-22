@@ -26,6 +26,9 @@
         <set-header name="Content-Type" exists-action="override">
           <value>application/json</value>
         </set-header>
+        <set-header name="Content-Encoding" exists-action="override">
+          <value>gzip</value>
+        </set-header>
         <set-body>@(((IResponse)context.Variables["cache-response"]).Body.As<JObject>(preserveContent: true).ToString())</set-body>
       </return-response>
     </when>
