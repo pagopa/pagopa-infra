@@ -138,7 +138,6 @@ module "apim_nodo_sync_api" {
 ############################
 
 module "apim_nodo_wfesp_product" {
-  count  = var.env_short == "p" ? 0 : 1
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-nodo-wfesp"
@@ -153,13 +152,14 @@ module "apim_nodo_wfesp_product" {
   approval_required     = false
 
   policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
-    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
-    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+    # address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    # address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+    address-range-from = "0.0.0.0"
+    address-range-to   = "0.0.0.0"
   })
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
-  count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-wfesp-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -173,16 +173,15 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
 # PROD  https://wfesp.pagopa.gov.it/redirect (ex followed by /wpl05 )
 
 module "apim_nodo_wfesp_api" {
-  count  = var.env_short == "p" ? 0 : 1
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-wfesp-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_wfesp_product[0].product_id]
+  product_ids           = [module.apim_nodo_wfesp_product.product_id]
   subscription_required = false
 
-  version_set_id = azurerm_api_management_api_version_set.nodo_wfesp_api[0].id
+  version_set_id = azurerm_api_management_api_version_set.nodo_wfesp_api.id
   # api_version    = "v1"
 
   description  = "NodeDeiPagamenti (wfesp)"
@@ -195,11 +194,13 @@ module "apim_nodo_wfesp_api" {
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
     apim_base_path      = "/redirect"
+    base-url            = var.env_short == "p" ? "http://10.79.20.23:81" : "http://{{aks-lb-nexi}}{{base-path-wfesp}}"
   })
 
 }

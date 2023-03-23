@@ -91,6 +91,14 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_info" {
   xml_content = file("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "delete_transaction" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "requestTransactionUserCancellation"
+
+  xml_content = file("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl")
+}
 
 resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api" {
   api_name            = "${local.project}-ecommerce-checkout-api-v1"
