@@ -45,7 +45,7 @@
 | [azurerm_storage_queue.transactions_close_payment_retry_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.transactions_dead_letter_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.transactions_expiration_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_queue) | resource |
-| [azurerm_storage_queue.transactions_notification_retry_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_queue) | resource |
+| [azurerm_storage_queue.transactions_notifications_retry_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.transactions_refund_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.transactions_refund_retry_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_queue) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
