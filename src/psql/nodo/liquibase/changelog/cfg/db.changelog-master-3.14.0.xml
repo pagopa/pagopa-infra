@@ -8,5 +8,6 @@
   <include file="./db.changelog-master-3.10.0.xml"/>
 
   <include file="./${version}/db.changelog-20230314090150_target_columns.xml"                    labels="${version}"/>
+  <include file="./${version}/db.changelog-20230223101500_update_conf_keys.xml"                  labels="${version}"/>
 
 </databaseChangeLog>
