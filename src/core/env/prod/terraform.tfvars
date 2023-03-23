@@ -141,6 +141,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "/web-bo/.*",
     "/bo-nodo/.*",
     "/pp-admin-panel/.*",
+    "/nodo/monitoring.*",
     "/nodo-ndp/monitoring/.*",
     "/nodo-replica-ndp/monitoring/.*",
     "/wfesp-ndp/.*",
@@ -462,7 +463,7 @@ pagopa_proxy_size           = "P1v3"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
-# redis apim 
+# redis apim
 redis_cache_params = {
   public_access = false
   capacity      = 0

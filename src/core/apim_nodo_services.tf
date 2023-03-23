@@ -656,8 +656,6 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
-  count = var.env_short != "p" ? 1 : 0
-
   name                = format("%s-nodo-monitoring-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
