@@ -1,9 +1,16 @@
 resource "azurerm_dns_zone" "public" {
-  count               = (var.dns_zone_prefix == null || var.external_domain == null) ? 0 : 1
+  count               = (var.dns_zone_prefix == null || var.external_domain == null || var.location != "") ? 0 : 1
   name                = join(".", [var.dns_zone_prefix, var.external_domain])
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
   tags = var.tags
+}
+
+## data dns zone
+data "azurerm_dns_zone" "public_data" {
+  count               = var.location != ""  ? 1 : 0
+  name                = join(".", [var.dns_zone_prefix, var.external_domain])
+  resource_group_name = azurerm_resource_group.rg_vnet.name
 }
 
 resource "azurerm_dns_zone" "public_prf" {
@@ -16,7 +23,7 @@ resource "azurerm_dns_zone" "public_prf" {
 
 # Prod ONLY record to DEV public DNS delegation
 resource "azurerm_dns_ns_record" "dev_pagopa_it_ns" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" && var.location == "" ? 1 : 0
   name                = "dev"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -32,7 +39,7 @@ resource "azurerm_dns_ns_record" "dev_pagopa_it_ns" {
 
 # Prod ONLY record to UAT public DNS delegation
 resource "azurerm_dns_ns_record" "uat_pagopa_it_ns" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" && var.location == "" ? 1 : 0
   name                = "uat"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -48,7 +55,7 @@ resource "azurerm_dns_ns_record" "uat_pagopa_it_ns" {
 
 # Prod ONLY record to PRF public DNS delegation
 resource "azurerm_dns_ns_record" "prf_pagopa_it_ns" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" && var.location == ""  ? 1 : 0
   name                = "prf"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -63,6 +70,7 @@ resource "azurerm_dns_ns_record" "prf_pagopa_it_ns" {
 }
 
 resource "azurerm_dns_caa_record" "api_platform_pagopa_it" {
+  count               = var.location == ""  ? 1 : 0
   name                = "@"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -91,6 +99,7 @@ resource "azurerm_dns_caa_record" "api_platform_pagopa_it" {
 
 # application gateway records
 resource "azurerm_dns_a_record" "dns_a_api" {
+  count               = var.location == ""  ? 1 : 0
   name                = "api"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -99,7 +108,17 @@ resource "azurerm_dns_a_record" "dns_a_api" {
   tags                = var.tags
 }
 
+## data dns record - DATA SOUCE dalla versione 3
+/* data "azurerm_dns_a_record" "dns_a_api_data" {
+  count               = var.location != ""  ? 1 : 0
+  name                = "api"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+ 
+} */
+
 resource "azurerm_dns_a_record" "dns_a_portal" {
+  count               = var.location == ""  ? 1 : 0
   name                = "portal"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -109,6 +128,7 @@ resource "azurerm_dns_a_record" "dns_a_portal" {
 }
 
 resource "azurerm_dns_a_record" "dns_a_management" {
+  count               = var.location == ""  ? 1 : 0
   name                = "management"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -118,6 +138,7 @@ resource "azurerm_dns_a_record" "dns_a_management" {
 }
 
 resource "azurerm_dns_a_record" "dns_a_kibana" {
+  count               = var.location == ""  ? 1 : 0
   name                = "kibana"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name

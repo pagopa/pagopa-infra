@@ -245,10 +245,10 @@ module "app_gw" {
   backends = {
     apim = {
       protocol                    = "Https"
-      host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
+      host                        = format("api.%s", join(".", [var.dns_zone_prefix, var.external_domain]))
       port                        = 443
       ip_addresses                = module.apim.private_ip_addresses
-      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
+      fqdns                       = [format("api.%s", join(".", [var.dns_zone_prefix, var.external_domain]))]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 10
@@ -257,10 +257,10 @@ module "app_gw" {
 
     portal = {
       protocol                    = "Https"
-      host                        = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
+      host                        = format("portal.%s", join(".", [var.dns_zone_prefix, var.external_domain]))
       port                        = 443
       ip_addresses                = module.apim.private_ip_addresses
-      fqdns                       = [azurerm_dns_a_record.dns_a_portal.fqdn]
+      fqdns                       = [format("portal.%s", join(".", [var.dns_zone_prefix, var.external_domain]))]
       probe                       = "/signin"
       probe_name                  = "probe-portal"
       request_timeout             = 8
@@ -269,10 +269,10 @@ module "app_gw" {
 
     management = {
       protocol     = "Https"
-      host         = trim(azurerm_dns_a_record.dns_a_management.fqdn, ".")
+      host         = format("management.%s", join(".", [var.dns_zone_prefix, var.external_domain]))
       port         = 443
       ip_addresses = module.apim.private_ip_addresses
-      fqdns        = [azurerm_dns_a_record.dns_a_management.fqdn]
+      fqdns        = [format("management.%s", join(".", [var.dns_zone_prefix, var.external_domain]))]
 
       probe                       = "/ServiceStatus"
       probe_name                  = "probe-management"

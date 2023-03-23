@@ -1,6 +1,9 @@
 locals {
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  product = var.location_short != "neu" ? "${var.prefix}-${var.env_short}" : "${var.prefix}-${var.env_short}-${var.location_short}"
+  product_noenv = "${var.prefix}-${var.env_short}"
+
+  aks_name_for_dr = var.location_short != "neu" ? "${local.product}-${var.location_short}-${var.instance}" : "${local.product}-${var.instance}"
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
@@ -21,8 +24,8 @@ locals {
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
-  aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
-  aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
+  aks_name                = "${local.aks_name_for_dr}-aks"
+  aks_resource_group_name = "${local.aks_name_for_dr}-aks-rg"
   aks_subnet_name         = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 
   ingress_hostname       = "${var.location_short}${var.instance}.${var.domain}"
