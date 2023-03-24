@@ -946,7 +946,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  /channels/{pspcode}/generate:
+  '/channels/{pspcode}/generate':
     get:
       tags:
         - channels
@@ -995,7 +995,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  /stations:
+  '/stations':
     get:
       tags:
         - stations
@@ -1113,7 +1113,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  /stations/details/{stationId}:
+  '/stations/details/{stationId}':
     get:
       tags:
         - stations
