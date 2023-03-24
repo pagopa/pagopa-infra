@@ -33,7 +33,7 @@ enable_iac_pipeline = true
 
 # CosmosDB BO pagopa Datastore
 bopagopa_datastore_cosmos_db_params = {
-  kind         = "GlobalDocumentDB"
+  kind         = "MongoDB"
   capabilities = ["EnableMongo", "EnableServerless"]
   offer_type   = "Standard"
   consistency_policy = {
@@ -56,5 +56,5 @@ bopagopa_datastore_cosmos_db_params = {
 }
 
 # CosmosDb MongoDb
-cidr_subnet_cosmosdb_mongodb        = ["10.1.165.0/24"]
+cidr_subnet_cosmosdb_mongodb        = ["10.1.166.0/24"]
 cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
