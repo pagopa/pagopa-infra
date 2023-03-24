@@ -10,7 +10,10 @@
       <!-- if request is a specific one -->
       <when condition="@(context.Operation.UrlTemplate.CompareTo(context.Variables.GetValueOrDefault("cacheBasePath", "none")) == 0)">
         <trace source="debug-1" severity="information">Base path regards cache data</trace>
-        <set-variable name="cache_key" value="@(String.Concat(context.Variables["domain"], context.Variables["db_version"], "_node_v1"))" />
+        <set-variable name="canary" value="@{
+                      return context.Request.Headers.ContainsKey("X-Canary") == true ? "_canary" : "";
+        }" />
+        <set-variable name="cache_key" value="@(String.Concat(context.Variables["domain"], context.Variables["db_version"], "_node_v1", context.Variables["canary"]))" />
         <set-variable name="cache_key_in_progress" value="@(String.Concat(context.Variables["cache_key"], "_in_progress"))" />
         <!-- check if force cache refresh -->
         <choose>
