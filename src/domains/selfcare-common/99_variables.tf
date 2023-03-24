@@ -107,6 +107,7 @@ variable "enable_iac_pipeline" {
 }
 
 
+
 variable "bopagopa_datastore_cosmos_db_params" {
   type = object({
     kind           = string
@@ -163,3 +164,9 @@ variable "cosmosdb_mongodb_max_throughput" {
   description = "The maximum throughput of the MongoDB database (RU/s). Must be between 4,000 and 1,000,000. Must be set in increments of 1,000. Conflicts with throughput"
   default     = 4000
 }
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
+

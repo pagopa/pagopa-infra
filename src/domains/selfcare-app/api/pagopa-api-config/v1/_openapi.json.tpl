@@ -1921,8 +1921,9 @@ components:
           description: Station's v4 port
           format: int64
         primitiveVersion:
-          type: string
+          type: integer
           description: Station's primitive version
+          format: int32
         protocol:
           type: string
           description: Station's http protocol
@@ -2021,6 +2022,66 @@ components:
           type: integer
           description: Station's version
           format: int64
+    StationResource:
+      title: StationResource
+      required:
+        - enabled
+        - stationCode
+        - stationStatus
+      type: object
+      properties:
+        activationDate:
+          type: string
+          description: Station's activation date
+          format: date-time
+        associatedCreditorInstitutions:
+          type: integer
+          description: Number of station's creditor institutions
+          format: int32
+        brokerDescription:
+          type: string
+          description: Station broker's description
+        createdAt:
+          type: string
+          description: Station created on
+          format: date-time
+        enabled:
+          type: boolean
+          description: Station's activation state
+          example: false
+        modifiedAt:
+          type: string
+          description: Station's last modified date
+          format: date-time
+        stationCode:
+          type: string
+          description: Station's unique identifier
+        stationStatus:
+          type: string
+          description: Station's status
+          enum:
+            - ACTIVE
+            - ON_REVISION
+            - TO_BE_CORRECTED
+        version:
+          type: integer
+          description: Station's version
+          format: int64
+    StationsResource:
+      title: StationsResource
+      required:
+        - pageInfo
+        - stationsList
+      type: object
+      properties:
+        pageInfo:
+          description: info pageable
+          $ref: '#/components/schemas/PageInfo'
+        stationsList:
+          type: array
+          description: List of ec stations
+          items:
+            $ref: '#/components/schemas/StationResource'
     StationDetailsDto:
       title: StationDetailsDto
       required:
