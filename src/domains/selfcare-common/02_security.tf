@@ -97,7 +97,7 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 
 
 resource "azurerm_key_vault_secret" "cosmodb_mongo_bopagopa_connection_string" {
-  name         = format("cosmodb_mongo-%s-bopagopa-connection-string", var.env_short)
+  name         = "cosmodbmongo-${var.env_short}-bopagopa-connection-string"
   value        = module.bopagopa_cosmosdb_mongo_account.connection_strings[0]
   content_type = "text/plain"
 
@@ -105,7 +105,7 @@ resource "azurerm_key_vault_secret" "cosmodb_mongo_bopagopa_connection_string" {
 }
 
 resource "azurerm_key_vault_secret" "cosmodb_mongo_bopagopa_key" {
-  name         = format("cosmodb_mongo-%s-bopagopa-key", var.env_short)
+  name         = "cosmodbmongo-${var.env_short}-bopagopa-key"
   value        = module.bopagopa_cosmosdb_mongo_account.primary_key
   content_type = "text/plain"
 
