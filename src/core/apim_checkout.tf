@@ -353,5 +353,5 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "newTransaction"
 
-  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_rptIds_value.xml.tpl")
+  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_rpt_ids_value.xml.tpl")
 }

@@ -100,7 +100,7 @@ resource "azurerm_api_management_api_operation_policy" "delete_transaction" {
   xml_content = file("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl")
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api" {
+resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api_policy" {
   api_name            = "${local.project}-ecommerce-checkout-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -138,6 +138,6 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "newTransaction"
 
-  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_rptIds_value.xml.tpl")
+  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_rpt_ids_value.xml.tpl")
 }
 
