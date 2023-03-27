@@ -29,3 +29,37 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 
 enable_iac_pipeline = true
+
+# CosmosDB Bo Pagopa Datastore
+bopagopa_datastore_cosmos_db_params = {
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo", "EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
+
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+  private_endpoint_enabled      = true
+  public_network_access_enabled = false
+
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = true
+
+  container_default_ttl = 315576000 # 10 year in second
+}
+
+# CosmosDb MongoDb
+cidr_subnet_cosmosdb_mongodb        = ["10.1.165.0/24"]
+cosmosdb_mongodb_extra_capabilities = []
+cosmosdb_mongodb_enable_autoscaling = true
