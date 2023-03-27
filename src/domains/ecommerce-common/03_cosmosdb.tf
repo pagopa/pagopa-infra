@@ -65,4 +65,38 @@ resource "azurerm_cosmosdb_mongo_database" "ecommerce" {
       max_throughput = var.cosmos_mongo_db_ecommerce_params.max_throughput
     }
   }
+  
+}
+
+# Collections
+locals {
+  collections = [
+    {
+      name = "payment-methods"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        }
+      ]
+    },
+  ]
+}
+
+module "cosmosdb_ecommerce_collections" {
+  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection?ref=v4.13.1"
+
+  for_each = {
+    for index, coll in local.collections :
+    coll.name => coll
+  }
+
+  name                = each.value.name
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.ecommerce.name
+
+  indexes    = each.value.indexes
+
+  lock_enable = var.env_short == "p" ? true : false
 }
