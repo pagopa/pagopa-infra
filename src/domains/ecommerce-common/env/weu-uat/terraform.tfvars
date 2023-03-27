@@ -36,8 +36,8 @@ cosmos_mongo_db_params = {
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"
-    max_interval_in_seconds = 5
-    max_staleness_prefix    = 100000
+    max_interval_in_seconds = null
+    max_staleness_prefix    = null
   }
   server_version                   = "4.0"
   main_geo_location_zone_redundant = false
@@ -59,7 +59,7 @@ cidr_subnet_storage_ecommerce  = ["10.1.154.0/24"]
 cosmos_mongo_db_ecommerce_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 1000
+  max_throughput     = 4000
   throughput         = 1000
 }
 
