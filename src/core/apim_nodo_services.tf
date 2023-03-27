@@ -664,7 +664,6 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
 }
 
 module "apim_nodo_monitoring_api" {
-  count  = var.env_short != "p" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-monitoring-api", var.env_short)
@@ -673,7 +672,7 @@ module "apim_nodo_monitoring_api" {
   product_ids           = [module.apim_nodo_dei_pagamenti_product.product_id]
   subscription_required = local.apim_nodo_monitoring_api.subscription_required
 
-  version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api[0].id
+  version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api.id
   api_version    = "v1"
 
   description  = local.apim_nodo_monitoring_api.description
