@@ -59,7 +59,7 @@ cidr_subnet_storage_ecommerce  = ["10.1.154.0/24"]
 cosmos_mongo_db_ecommerce_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 1000
   throughput         = 1000
 }
 
