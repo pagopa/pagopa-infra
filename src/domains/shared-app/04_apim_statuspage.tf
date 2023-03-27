@@ -85,6 +85,7 @@ module "apim_api_statuspage_api_v1" {
       "bizevents"      = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
       "gpd"            = format("%s/", data.azurerm_app_service.gpd.default_site_hostname)
       "gpdpayments"    = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
+      "gpdenrollment"  = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
       "gps"            = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
       "gpsdonation"    = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
     }), "\"", "\\\"")
