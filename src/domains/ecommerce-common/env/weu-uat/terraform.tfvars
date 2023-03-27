@@ -32,10 +32,10 @@ dns_zone_internal_prefix = "internal.uat.platform"
 cosmos_mongo_db_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "BoundedStaleness"
+    consistency_level       = "Strong"
     max_interval_in_seconds = 5
     max_staleness_prefix    = 100000
   }

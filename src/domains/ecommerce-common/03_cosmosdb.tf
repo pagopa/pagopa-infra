@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "cosmosdb_ecommerce_rg" {
 
 module "cosmosdb_ecommerce_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.15.1"
-  name                 = format("%s-cosmosb-snet", local.project)
+  name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_ecommerce
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
