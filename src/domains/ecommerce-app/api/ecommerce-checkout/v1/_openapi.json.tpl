@@ -518,7 +518,8 @@
           "ecommerce-methods"
         ],
         "operationId": "getPaymentMethod",
-        "summary": "Retrive payment method by ID",
+        "summary": "Get payment method by ID",
+        "description": "API for retrieve payment method information for a given payment method ID",
         "parameters": [
           {
             "name": "id",
@@ -544,13 +545,14 @@
         }
       }
     },
-    "/payment-methods/{id}/fee/calculate": {
+    "/payment-methods/{id}/fees": {
       "post": {
         "tags": [
           "ecommerce-methods"
         ],
         "operationId": "calculateFees",
-        "summary": "Retrieve list of psp",
+        "summary": "Calculate payment method fees",
+        "description": "GET with body payload - no resources created: Return the fees for the choosen payment method based on transaction amount etc.\n",
         "parameters": [
           {
             "name": "id",
@@ -768,21 +770,29 @@
       },
       "PaymentMethodRequest": {
         "type": "object",
-        "description": "New Payment Instrument Request",
+        "description": "New Payment method Request",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method name"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method description string"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Asset name associated to this payment method"
           },
           "status": {
             "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method type code"
           },
           "ranges": {
+            "description": "Payment method ranges",
             "type": "array",
             "minItems": 1,
             "items": {
@@ -805,7 +815,8 @@
           "min": {
             "type": "integer",
             "format": "int64",
-            "minimum": 0
+            "minimum": 0,
+            "description": "Range min amount"
           },
           "max": {
             "type": "integer",
@@ -1425,6 +1436,7 @@
           "CLOSURE_ERROR",
           "NOTIFIED_OK",
           "NOTIFIED_KO",
+          "NOTIFICATION_ERROR",
           "EXPIRED",
           "REFUNDED",
           "CANCELED",
@@ -1441,21 +1453,30 @@
         "description": "Payment method Response",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method ID"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method name"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method description"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Payment method asset name"
           },
           "status": {
             "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method type code"
           },
           "ranges": {
+            "description": "Payment amount range in eurocents",
             "type": "array",
             "minItems": 1,
             "items": {
@@ -1473,9 +1494,15 @@
         ]
       },
       "PaymentMethodsResponse": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/PaymentMethodResponse"
+        "type": "object",
+        "description": "Payment methods response",
+        "properties": {
+          "paymentMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodResponse"
+            }
+          }
         }
       },
       "CartRequest": {
@@ -1589,28 +1616,35 @@
         }
       },
       "CalculateFeeRequest": {
+        "description": "Calculate fee request",
         "type": "object",
         "properties": {
           "touchpoint": {
-            "type": "string"
+            "type": "string",
+            "description": "The touchpoint name"
           },
           "bin": {
-            "type": "string"
+            "type": "string",
+            "description": "The user card bin"
           },
           "idPspList": {
+            "description": "List of psps",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "paymentAmount": {
+            "description": "The transaction payment amount",
             "type": "integer",
             "format": "int64"
           },
           "primaryCreditorInstitution": {
+            "description": "The primary creditor institution",
             "type": "string"
           },
           "transferList": {
+            "description": "Transfert list",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TransferListItem"
@@ -1618,25 +1652,29 @@
           }
         },
         "required": [
-          "touchpoint",
           "paymentAmount",
           "primaryCreditorInstitution",
-          "transferList"
+          "transferList",
+          "touchpoint"
         ]
       },
       "CalculateFeeResponse": {
+        "description": "Calculate fee response",
         "type": "object",
         "properties": {
           "paymentMethodName": {
+            "description": "Payment method name",
             "type": "string"
           },
           "paymentMethodStatus": {
             "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "belowThreshold": {
+            "description": "Boolean value indicating if the payment is below the configured threshold",
             "type": "boolean"
           },
           "bundles": {
+            "description": "Bundle list",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Bundle"
@@ -1650,68 +1688,86 @@
         ]
       },
       "Bundle": {
+        "description": "Bundle object",
         "type": "object",
         "properties": {
           "abi": {
+            "description": "Bundle ABI code",
             "type": "string"
           },
           "bundleDescription": {
+            "description": "Bundle description",
             "type": "string"
           },
           "bundleName": {
+            "description": "Bundle name",
             "type": "string"
           },
           "idBrokerPsp": {
+            "description": "Bundle PSP broker id",
             "type": "string"
           },
           "idBundle": {
+            "description": "Bundle id",
             "type": "string"
           },
           "idChannel": {
+            "description": "Channel id",
             "type": "string"
           },
           "idCiBundle": {
+            "description": "CI bundle id",
             "type": "string"
           },
           "idPsp": {
+            "description": "PSP id",
             "type": "string"
           },
           "onUs": {
+            "description": "Boolean value indicating if this bundle is an on-us ones",
             "type": "boolean"
           },
           "paymentMethod": {
+            "description": "Payment method",
             "type": "string"
           },
           "primaryCiIncurredFee": {
+            "description": "Primary CI incurred fee",
             "type": "integer",
             "format": "int64"
           },
           "taxPayerFee": {
+            "description": "Tax payer fee",
             "type": "integer",
             "format": "int64"
           },
           "touchpoint": {
+            "description": "The touchpoint name",
             "type": "string"
           }
         }
       },
       "TransferListItem": {
+        "description": "Transfert list item",
         "type": "object",
         "properties": {
           "creditorInstitution": {
+            "description": "Creditor institution",
             "type": "string"
           },
           "digitalStamp": {
+            "description": "Boolean value indicating if there is digital stamp",
             "type": "boolean"
           },
           "transferCategory": {
+            "description": "Transfer category",
             "type": "string"
           }
         }
       },
       "PaymentMethodStatus": {
         "type": "string",
-        "description": "the payment method status",
+        "description": "Payment method status",
         "enum": [
           "ENABLED",
           "DISABLED",
