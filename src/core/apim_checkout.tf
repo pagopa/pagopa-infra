@@ -347,11 +347,3 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "transaction_activation_request" {
-  api_name            = "${local.project}-checkout-ecommerce-api-v1"
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = "newTransaction"
-
-  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_rpt_ids_value.xml.tpl")
-}

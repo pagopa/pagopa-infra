@@ -106,7 +106,7 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_request_info
   api_management_name = local.pagopa_apim_name
   operation_id        = "getPaymentRequestInfo"
 
-  xml_content = file("./api/ecommerce-checkout/v1/_recaptcha_check.xml.tpl")
+  xml_content = file("./api/ecommerce-checkout/v1/_payment_request_policy.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "transaction_authorization_request" {
@@ -133,11 +133,11 @@ resource "azurerm_api_management_api_operation_policy" "get_carts_redirect" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "transaction_activation_request" {
-  api_name            = "${local.project}-checkout-ecommerce-api-v1"
+  api_name            = "${local.project}-ecommerce-checkout-api-v1"
   api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = local.pagopa_apim_rg
   operation_id        = "newTransaction"
 
-  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_rpt_ids_value.xml.tpl")
+  xml_content = file("./api/checkout/checkout_ecommerce/v1/_rpt_ids_value.xml.tpl")
 }
 
