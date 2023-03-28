@@ -2,7 +2,6 @@
     <inbound>
       <base />
       <ip-filter action="forbid">
-        <!-- pagopa-p-appgateway-snet  -->
         <address-range from="10.1.128.0" to="10.1.128.255" />
       </ip-filter>  
       <choose>
@@ -13,6 +12,26 @@
           <set-variable name="backend-base-url" value="@($"{{pm-host}}/payment-gateway")" />
         </otherwise>
       </choose>
+      <rewrite-uri template="/xpay/authorizations" />
+      <!-- Handle X-Client-ID - multi channel - START -->
+      <choose>
+        <when condition="@(context.User.Groups.Select(g => g.Id).Contains("payment-manager"))">
+            <set-header name="X-Client-ID" exists-action="override">
+                <value>ECOMMERCE_APP</value>
+            </set-header>
+        </when>
+        <when condition="@(context.User.Groups.Select(g => g.Id).Contains("ecommerce"))" >
+          <set-header name="X-Client-ID" exists-action="override">
+            <value>ECOMMERCE_WEB</value>
+          </set-header>
+        </when>
+        <otherwise>
+            <return-response>
+                <set-status code="404" reason="Not found" />
+            </return-response>
+        </otherwise>
+      </choose>
+      <!-- Handle X-Client-ID - multi channel - END -->
       <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
       <!-- Handle X-Client-ID - multi channel - START -->
         <set-header name="X-Client-ID" exists-action="delete" />
