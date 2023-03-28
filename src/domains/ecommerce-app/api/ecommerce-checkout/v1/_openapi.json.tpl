@@ -1132,13 +1132,13 @@
               "paFiscalCode": "77777777777",
               "digitalStamp": false,
               "transferCategory": "transferCategory1",
-              "amount": 500
+              "transferAmount": 500
             },
             {
               "paFiscalCode": "11111111111",
               "digitalStamp": true,
               "transferCategory": "transferCategory2",
-              "amount": 100
+              "transferAmount": 100
             }
           ]
         }
@@ -1201,13 +1201,13 @@
                     "paFiscalCode": "77777777777",
                     "digitalStamp": false,
                     "transferCategory": "transferCategory1",
-                    "amount": 500
+                    "transferAmount": 500
                   },
                   {
                     "paFiscalCode": "11111111111",
                     "digitalStamp": true,
                     "transferCategory": "transferCategory2",
-                    "amount": 100
+                    "transferAmount": 100
                   }
                 ]
               },
@@ -1221,13 +1221,13 @@
                     "paFiscalCode": "44444444444",
                     "digitalStamp": true,
                     "transferCategory": "transferCategory1",
-                    "amount": 200
+                    "transferAmount": 200
                   },
                   {
                     "paFiscalCode": "22222222222",
                     "digitalStamp": false,
                     "transferCategory": "transferCategory2",
-                    "amount": 100
+                    "transferAmount": 100
                   }
                 ]
               }
@@ -1676,7 +1676,7 @@
             "minLength": 11,
             "maxLength": 11
           },
-          "transferAmount": {
+          "amount": {
             "description": "Payment notice amount",
             "type": "integer",
             "minimum": 1
