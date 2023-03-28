@@ -23,7 +23,7 @@
     },
     {
       "pipeline": {
-        "description": "Nodo Cron Replica - if 'kubernetes.namespace' is 'nodo-cron' and 'kubernetes.labels.app_kubernetes_io/instance' is 'ndp-cron' use 'nodo_json_log_pipeline'",
+        "description": "Nodo Cron Replica - if 'kubernetes.namespace' is 'nodo-cron' and 'kubernetes.labels.app_kubernetes_io/instance' is 'ndp-cron-replica' use 'nodo_json_log_pipeline'",
         "if": "ctx.data_stream?.dataset == 'kubernetes.container_logs' && ctx.kubernetes?.namespace == 'nodo-cron' && ctx.kubernetes.labels['app_kubernetes_io/instance'] == 'ndp-cron-replica'",
         "name": "nodo_json_log_pipeline"
       }

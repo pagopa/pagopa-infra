@@ -9,6 +9,12 @@ module "elastic_stack" {
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
 
+  elastic_agent_custom_log_config = {
+    pagopafdr = {
+      data_stream_namespace = var.env
+    }
+  }
+
   eck_license = file("${path.module}/env/eck_license/pagopa-spa-4a1285e5-9c2c-4f9f-948a-9600095edc2f-orchestration.json")
 
   env_short = var.env_short
@@ -45,6 +51,7 @@ locals {
   ilm_policy             = { for filename in fileset(path.module, "nodo/pipeline/ilm_*.json") : replace(replace(basename(filename), "ilm_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
   component_template     = { for filename in fileset(path.module, "nodo/pipeline/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
 
+  pagopafdr_ingest_pipeline    = { for filename in fileset(path.module, "pagopafdr/ingest_*.json") : replace(replace(basename(filename), "ingest_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
   pagopafdr_ilm_policy         = { for filename in fileset(path.module, "pagopafdr/ilm_policy_*.json") : replace(replace(basename(filename), "ilm_policy_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
   pagopafdr_component_template = { for filename in fileset(path.module, "pagopafdr/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
   pagopafdr_index_template     = { for filename in fileset(path.module, "pagopafdr/index_template_*.json") : replace(replace(basename(filename), "index_template_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
@@ -194,9 +201,30 @@ resource "null_resource" "upload_dashboard_replica" {
     interpreter = ["/bin/bash", "-c"]
   }
 }
+
 #################################### [FDR] ####################################
+resource "null_resource" "pagopafdr_ingest_pipeline" {
+   depends_on = [null_resource.upload_dashboard_replica]
+
+  for_each = local.pagopafdr_ingest_pipeline
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X PUT "${local.elastic_url}/_ingest/pipeline/${each.key}" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '${each.value}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
 resource "null_resource" "pagopafdr_ilm_policy" {
-  depends_on = [null_resource.upload_dashboard_replica]
+  depends_on = [null_resource.pagopafdr_ingest_pipeline]
 
   for_each = local.pagopafdr_ilm_policy
 

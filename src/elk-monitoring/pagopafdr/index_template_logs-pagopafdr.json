@@ -1,10 +1,26 @@
 {
+  "priority": 500,
+  "template": {
+    "settings": {},
+    "mappings": {
+      "_meta": {
+        "package": {
+          "name": "kubernetes"
+        }
+      }
+    }
+  },
   "index_patterns": [
     "logs-pagopafdr-*"
   ],
-  "data_stream": {},
-  "composed_of": [ "logs-pagopafdr-mappings", "logs-pagopafdr-settings" ],
-  "priority": 500,
+  "data_stream": {
+    "hidden": false,
+    "allow_custom_routing": false
+  },
+  "composed_of": [
+    "logs-pagopafdr@package",
+    "logs-pagopafdr@custom"
+  ],
   "_meta": {
     "description": "Index template for FDR - Flussi di rendicontazione"
   }

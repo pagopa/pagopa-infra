@@ -1,0 +1,15 @@
+{
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "logs-pagopafdr"
+        },
+        "default_pipeline": "pagopafdr_pipeline"
+      }
+    }
+  },
+  "_meta": {
+    "description": "Settings for FDR - Flussi di rendicontazione"
+  }
+}
