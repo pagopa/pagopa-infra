@@ -387,17 +387,40 @@
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transfer"
+            },
+            "minItems": 1,
+            "maxItems": 5
           }
         },
         "required": [
           "rptId",
-          "amount"
+          "amount",
+          "transferList"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
-          "amount": 100
+          "amount": 100,
+          "transferList": [
+            {
+              "fiscalCode": "77777777777",
+              "digitalStamp": false,
+              "transferCategory": "transferCategory1",
+              "amount": 500
+            },
+            {
+              "fiscalCode": "11111111111",
+              "digitalStamp": true,
+              "transferCategory": "transferCategory2",
+              "amount": 100
+            }
+          ]
         }
       },
       "NewTransactionRequest": {
@@ -457,13 +480,41 @@
                 "rptId": "77777777777302012387654312384",
                 "paymentToken": "paymentToken1",
                 "reason": "reason1",
-                "amount": 100
+                "amount": 600,
+                "transferList": [
+                  {
+                    "fiscalCode": "77777777777",
+                    "digitalStamp": false,
+                    "transferCategory": "transferCategory1",
+                    "amount": 500
+                  },
+                  {
+                    "fiscalCode": "11111111111",
+                    "digitalStamp": true,
+                    "transferCategory": "transferCategory2",
+                    "amount": 100
+                  }
+                ]
               },
               {
                 "rptId": "77777777777302012387654312385",
                 "paymentToken": "paymentToken2",
                 "reason": "reason2",
-                "amount": 100
+                "amount": 300,
+                "transferList": [
+                  {
+                    "fiscalCode": "44444444444",
+                    "digitalStamp": true,
+                    "transferCategory": "transferCategory1",
+                    "amount": 200
+                  },
+                  {
+                    "fiscalCode": "22222222222",
+                    "digitalStamp": false,
+                    "transferCategory": "transferCategory2",
+                    "amount": 100
+                  }
+                ]
               }
             ]
           },
@@ -691,6 +742,34 @@
           "REFUND_REQUESTED",
           "CANCELLATION_REQUESTED",
           "CANCELLATION_EXPIRED"
+        ]
+      },
+      "Transfer": {
+        "type": "object",
+        "description": "The dto that contains information about the creditor entities",
+        "properties": {
+          "fiscalCode": {
+            "type": "string",
+            "description": "The creditor institution fiscal code",
+            "pattern": "^[a-zA-Z0-9]{11}"
+          },
+          "digitalStamp": {
+            "type": "boolean",
+            "description": "True if it is a digital stamp. False otherwise"
+          },
+          "transferCategory": {
+            "type": "string",
+            "description": "The taxonomy of the transfer"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "fiscalCode",
+          "digitalStamp",
+          "transferCategory",
+          "amount"
         ]
       },
       "ProblemJson": {
