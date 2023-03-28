@@ -6,6 +6,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3.0 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | = 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.30.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 3.38.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | 5.12.0 |
@@ -16,8 +17,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_api_apiconfig_cache_node_api_v1"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v5.1.0 |
 | <a name="module_apim_api_apiconfig_core_oauth_api_v1"></a> [apim\_api\_apiconfig\_core\_oauth\_api\_v1](#module\_apim\_api\_apiconfig\_core\_oauth\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v5.1.0 |
 | <a name="module_apim_api_apiconfig_core_subkey_api_v1"></a> [apim\_api\_apiconfig\_core\_subkey\_api\_v1](#module\_apim\_api\_apiconfig\_core\_subkey\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v5.1.0 |
+| <a name="module_apim_apiconfig_cache_product"></a> [apim\_apiconfig\_cache\_product](#module\_apim\_apiconfig\_cache\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
 | <a name="module_apim_apiconfig_core_oauth_product"></a> [apim\_apiconfig\_core\_oauth\_product](#module\_apim\_apiconfig\_core\_oauth\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
 | <a name="module_apim_apiconfig_core_subkey_product"></a> [apim\_apiconfig\_core\_subkey\_product](#module\_apim\_apiconfig\_core\_subkey\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.17 |
@@ -27,10 +30,13 @@
 
 | Name | Type |
 |------|------|
+| [azapi_resource.generate_cache_fragment](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
+| [azurerm_api_management_api_version_set.api_apiconfig_cache_node_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_apiconfig_core_oauth_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_apiconfig_core_subkey_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_authorization_server.apiconfig-oauth2](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_authorization_server) | resource |
 | [azurerm_api_management_product_group.access_control_developers](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_product_group) | resource |
+| [azurerm_api_management_product_group.access_control_developers_for_cache](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_product_group) | resource |
 | [azurerm_api_management_product_group.access_control_guests](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_product_group) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.apiconfig_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
@@ -48,6 +54,7 @@
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
+| [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management) | data source |
 | [azurerm_api_management_group.group_developers](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_group) | data source |
 | [azurerm_api_management_group.group_guests](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_group) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/application_insights) | data source |

@@ -30,7 +30,7 @@
                         }" duration="@{
                             var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                             return (int)requestData["ttl"];
-                        }" />
+                        }" caching-type="internal" />
         </when>
       </choose>
     </when>
