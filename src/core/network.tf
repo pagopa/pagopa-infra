@@ -126,6 +126,13 @@ module "route_table_peering_sia" {
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.70.249.10"
     },
+    {
+      # prod nodo db oncloud
+      name                   = "to-nodo-db-oncloud-sia-prod"
+      address_prefix         = "10.70.139.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10"
+    },
   ]
 
   tags = var.tags
