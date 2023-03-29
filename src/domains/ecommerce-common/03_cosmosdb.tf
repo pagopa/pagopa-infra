@@ -113,7 +113,7 @@ module "cosmosdb_ecommerce_collections" {
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.ecommerce.name
 
-  indexes = each.value.indexes
-
+  indexes     = each.value.indexes
+  shard_key   = each.value.shard_key
   lock_enable = var.env_short == "p" ? true : false
 }
