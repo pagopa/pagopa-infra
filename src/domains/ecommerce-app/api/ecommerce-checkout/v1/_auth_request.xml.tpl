@@ -44,7 +44,17 @@
             </when>
             <otherwise>
               <return-response>
+                <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+                </set-header>
                 <set-status code="400" reason="Invalid PSP - gateway matching" />
+                <set-body>@{
+                  return new JObject(
+                    new JProperty("title", "Bad request - invalid idPsp"),
+                    new JProperty("status", 400),
+                    new JProperty("detail", "Invalid PSP - gateway matching")
+                  ).ToString();
+                }</set-body>
               </return-response>
             </otherwise>
         </choose>
