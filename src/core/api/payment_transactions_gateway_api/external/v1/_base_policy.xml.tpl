@@ -23,6 +23,14 @@
           <set-variable name="backend-base-url" value="@($"{{pm-host}}/payment-gateway")" />
         </otherwise>
       </choose>
+      <choose>
+        <when condition="@(context.Request.Url.Path.Contains("xpay"))">
+          <rewrite-uri template="/xpay/authorizations" />      
+        </when>
+        <when condition="@(context.Request.Url.Path.Contains("vpos"))">
+          <rewrite-uri template="/vpos/authorizations" />      
+        </when>
+      </choose>
       <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after" />
     </inbound>

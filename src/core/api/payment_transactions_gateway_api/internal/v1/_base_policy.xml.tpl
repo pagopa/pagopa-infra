@@ -12,7 +12,16 @@
           <set-variable name="backend-base-url" value="@($"{{pm-host}}/payment-gateway")" />
         </otherwise>
       </choose>
-      <rewrite-uri template="/xpay/authorizations" />
+
+      <choose>
+        <when condition="@(context.Request.Url.Path.Contains("xpay"))">
+          <rewrite-uri template="/xpay/authorizations" />      
+        </when>
+        <when condition="@(context.Request.Url.Path.Contains("vpos"))">
+          <rewrite-uri template="/vpos/authorizations" />      
+        </when>
+      </choose>
+
       <!-- Handle X-Client-ID - multi channel - START -->
       <choose>
         <when condition="@(context.User.Groups.Select(g => g.Id).Contains("payment-manager"))">
