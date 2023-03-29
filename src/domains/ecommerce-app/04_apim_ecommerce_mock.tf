@@ -145,7 +145,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "apim_ecommerce_pdv_mock_api" {
   count               = var.env_short == "u" ? 1 : 0
-  name                = "${local.project}-pdv_mock"
+  name                = "${local.project}-pdv-mock"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_ecommerce_pdv_mock_api.display_name
@@ -155,7 +155,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_pdv_mock_api" 
 resource "azurerm_api_management_api" "apim_ecommerce_pdv_mock" {
   count = var.env_short == "u" ? 1 : 0
 
-  name                  = "${local.project}-pdv_mock"
+  name                  = "${local.project}-pdv-mock"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   subscription_required = local.apim_ecommerce_pdv_mock_api.subscription_required
