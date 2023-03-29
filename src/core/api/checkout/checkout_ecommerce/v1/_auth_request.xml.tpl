@@ -22,11 +22,6 @@
           <value>@((string)context.Variables.GetValueOrDefault("pgsId",""))</value>
         </set-header>
       </when>
-      <otherwise>
-       <return-response>
-          <set-status code="400" reason="Invalid PSP - gateway matching" />
-        </return-response>
-      </otherwise>
     </choose>
     <base />
   </inbound>
