@@ -5,7 +5,7 @@
         "lifecycle": {
           "name": "logs-pagopafdr"
         },
-        "default_pipeline": "pagopafdr_pipeline"
+        "default_pipeline": "logs-pagopafdr-pipeline"
       }
     }
   },

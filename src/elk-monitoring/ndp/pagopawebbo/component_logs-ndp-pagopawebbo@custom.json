@@ -1,0 +1,15 @@
+{
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "logs-ndp-pagopawebbo"
+        },
+        "default_pipeline": "logs-ndp-pagopawebbo-pipeline"
+      }
+    }
+  },
+  "_meta": {
+    "description": "Settings for NDP - Nodo dei pagamenti (pagopawebbo)"
+  }
+}

@@ -1,0 +1,8 @@
+{
+   "data_view": {
+      "title": "logs-ndp-nodocron-*",
+      "name": "Log NDP - Nodo dei pagamenti CRON",
+      "timeFieldName": "@timestamp"
+   },
+   "override": true
+}

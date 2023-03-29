@@ -1,0 +1,15 @@
+{
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "logs-ndp-nnodocronreplica"
+        },
+        "default_pipeline": "logs-ndp-nodocronreplica-pipeline"
+      }
+    }
+  },
+  "_meta": {
+    "description": "Settings for NDP - Nodo dei pagamenti CRON REPLICA"
+  }
+}

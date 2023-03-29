@@ -12,6 +12,11 @@ module "elastic_stack" {
   elastic_agent_custom_log_config = {
     pagopafdr = {
       data_stream_namespace = var.env
+      instance = ["pagopafdr"] 
+    }
+    ndp = {
+      data_stream_namespace = var.env
+      instance = ["nodo","nodoreplica","nodocron","nodocronreplica","pagopawebbo","pagopawfespwfesp"]
     }
   }
 
@@ -50,13 +55,6 @@ locals {
   ingest_pipeline        = { for filename in fileset(path.module, "nodo/pipeline/ingest_*.json") : replace(replace(basename(filename), "ingest_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
   ilm_policy             = { for filename in fileset(path.module, "nodo/pipeline/ilm_*.json") : replace(replace(basename(filename), "ilm_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
   component_template     = { for filename in fileset(path.module, "nodo/pipeline/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-
-  pagopafdr_ingest_pipeline    = { for filename in fileset(path.module, "pagopafdr/ingest_*.json") : replace(replace(basename(filename), "ingest_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  pagopafdr_ilm_policy         = { for filename in fileset(path.module, "pagopafdr/ilm_policy_*.json") : replace(replace(basename(filename), "ilm_policy_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  pagopafdr_component_template = { for filename in fileset(path.module, "pagopafdr/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  pagopafdr_index_template     = { for filename in fileset(path.module, "pagopafdr/index_template_*.json") : replace(replace(basename(filename), "index_template_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
-  pagopafdr_kibana_space       = file("${path.module}/pagopafdr/space.json")
-  pagopafdr_kibana_data_view   = file("${path.module}/pagopafdr/data_view.json")
 }
 
 resource "null_resource" "ingest_pipeline" {
@@ -203,6 +201,14 @@ resource "null_resource" "upload_dashboard_replica" {
 }
 
 #################################### [FDR] ####################################
+locals {
+  pagopafdr_ingest_pipeline    = { for filename in fileset(path.module, "pagopafdr/ingest_*.json") : replace(replace(basename(filename), "ingest_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  pagopafdr_ilm_policy         = { for filename in fileset(path.module, "pagopafdr/ilm_policy_*.json") : replace(replace(basename(filename), "ilm_policy_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  pagopafdr_component_template = { for filename in fileset(path.module, "pagopafdr/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  pagopafdr_index_template     = { for filename in fileset(path.module, "pagopafdr/index_template_*.json") : replace(replace(basename(filename), "index_template_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  pagopafdr_kibana_space       = file("${path.module}/pagopafdr/space.json")
+  pagopafdr_kibana_data_view   = file("${path.module}/pagopafdr/data_view.json")
+}
 resource "null_resource" "pagopafdr_ingest_pipeline" {
    depends_on = [null_resource.upload_dashboard_replica]
 
@@ -329,7 +335,132 @@ resource "null_resource" "pagopafdr_kibana_data_view" {
   }
 }
 
+#################################### [NDP] ####################################
+locals {
+  ndp_ingest_pipeline    = { for filename in fileset(path.module, "ndp/**/ingest_*.json") : replace(replace(basename(filename), "ingest_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  ndp_ilm_policy         = { for filename in fileset(path.module, "ndp/**/ilm_policy_*.json") : replace(replace(basename(filename), "ilm_policy_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  ndp_component_template = { for filename in fileset(path.module, "ndp/**/component_*.json") : replace(replace(basename(filename), "component_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  ndp_index_template     = { for filename in fileset(path.module, "ndp/**/index_template_*.json") : replace(replace(basename(filename), "index_template_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+  ndp_kibana_space       = file("${path.module}/ndp/space.json")
+  ndp_kibana_data_view   = { for filename in fileset(path.module, "ndp/**/data_view.json") : replace(replace(basename(filename), "data_view_", ""), ".json", "") => replace(trimsuffix(trimprefix(file("${path.module}/${filename}"), "\""), "\""), "'", "'\\''") }
+}
+resource "null_resource" "ndp_ingest_pipeline" {
+  depends_on = [null_resource.upload_dashboard_replica]
 
+  for_each = local.ndp_ingest_pipeline
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X PUT "${local.elastic_url}/_ingest/pipeline/${each.key}" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '${each.value}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "null_resource" "ndp_ilm_policy" {
+  depends_on = [null_resource.ndp_ingest_pipeline]
+
+  for_each = local.ndp_ilm_policy
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X PUT "${local.elastic_url}/_ilm/policy/${each.key}" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '${each.value}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "null_resource" "ndp_component_template" {
+  depends_on = [null_resource.ndp_ilm_policy]
+
+  for_each = local.ndp_component_template
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X PUT "${local.elastic_url}/_component_template/${each.key}" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '${each.value}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "null_resource" "ndp_index_template" {
+  depends_on = [null_resource.ndp_component_template]
+
+  for_each = local.ndp_index_template
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X PUT "${local.elastic_url}/_index_template/${each.key}" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '${each.value}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "null_resource" "ndp_kibana_space" {
+  depends_on = [null_resource.ndp_index_template]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X POST "${local.kibana_url}/api/spaces/space" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '${local.ndp_kibana_space}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "null_resource" "ndp_kibana_data_view" {
+  depends_on = [null_resource.ndp_kibana_space]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X POST "${local.kibana_url}/s/ndp/api/data_views/data_view" \
+        -H 'kbn-xsrf: true' \
+        -H 'Content-Type: application/json' \
+        -d '${local.ndp_kibana_data_view}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+## opentelemetry
 resource "helm_release" "opentelemetry_operator_helm" {
   depends_on = [null_resource.pagopafdr_kibana_data_view]
 

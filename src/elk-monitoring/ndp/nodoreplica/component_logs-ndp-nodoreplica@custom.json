@@ -1,0 +1,15 @@
+{
+  "template": {
+    "settings": {
+      "index": {
+        "lifecycle": {
+          "name": "logs-ndp-nodoreplica"
+        },
+        "default_pipeline": "logs-ndp-nodoreplica-pipeline"
+      }
+    }
+  },
+  "_meta": {
+    "description": "Settings for NDP - Nodo dei pagamenti REPLICA"
+  }
+}

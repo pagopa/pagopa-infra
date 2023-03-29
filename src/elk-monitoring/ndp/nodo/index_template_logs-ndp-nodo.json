@@ -1,0 +1,27 @@
+{
+  "priority": 500,
+  "template": {
+    "settings": {},
+    "mappings": {
+      "_meta": {
+        "package": {
+          "name": "kubernetes"
+        }
+      }
+    }
+  },
+  "index_patterns": [
+    "logs-ndp-nodo-*"
+  ],
+  "data_stream": {
+    "hidden": false,
+    "allow_custom_routing": false
+  },
+  "composed_of": [
+    "logs-ndp-nodo@package",
+    "logs-ndp-nodo@custom"
+  ],
+  "_meta": {
+    "description": "Index template for NDP - Nodo dei pagamenti"
+  }
+}
