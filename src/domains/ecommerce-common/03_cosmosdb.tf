@@ -78,6 +78,7 @@ locals {
         unique = true
         }
       ]
+      shard_key = null
     },
     {
       name = "eventstore"
@@ -95,6 +96,7 @@ locals {
         unique = true
         }
       ]
+      shard_key = null
     },
   ]
 }
