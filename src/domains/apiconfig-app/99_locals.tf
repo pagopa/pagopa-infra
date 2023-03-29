@@ -47,5 +47,20 @@ locals {
     apiconfig_be_client_id = data.azuread_application.apiconfig-be.application_id
     apiconfig_fe_client_id = data.azuread_application.apiconfig-fe.application_id
   }
+
+  apiconfig_cache_locals = {
+    hostname = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+
+    product_id            = "apiconfig-cache"
+    display_name          = "API Config Cache"
+    description           = "Management APIs to configure pagoPA cache"
+    subscription_required = true
+    subscription_limit    = 1000
+
+    path        = "api-config-cache"
+    service_url = null
+
+    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
+  }
 }
 

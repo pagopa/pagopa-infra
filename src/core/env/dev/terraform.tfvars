@@ -70,6 +70,7 @@ enable_iac_pipeline      = true
 
 # redis private endpoint
 redis_private_endpoint_enabled = true
+redis_cache_enabled            = true
 
 # apim
 apim_publisher_name = "pagoPA Platform DEV"
@@ -494,7 +495,7 @@ pagopa_proxy_tier           = "Standard"
 pagopa_proxy_size           = "S1"
 nodo_ip_filter              = "10.70.66.200"
 
-# redis apim 
+# redis apim
 redis_cache_params = {
   public_access = true
   capacity      = 0

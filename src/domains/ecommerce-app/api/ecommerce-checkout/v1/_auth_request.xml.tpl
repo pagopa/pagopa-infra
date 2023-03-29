@@ -43,11 +43,28 @@
                     <value>@((string)context.Variables.GetValueOrDefault("pgsId",""))</value>
                 </set-header>
             </when>
-            <when condition="@((string)context.Variables["requestTransactionId"] != "")">
-                <set-header name="x-transaction-id" exists-action="override">
-                    <value>@((string)context.Variables.GetValueOrDefault("requestTransactionId",""))</value>
+            <otherwise>
+              <return-response>
+                <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
                 </set-header>
-            </when>
+                <set-status code="400" reason="Invalid PSP - gateway matching" />
+                <set-body>@{
+                  return new JObject(
+                    new JProperty("title", "Bad request - invalid idPsp"),
+                    new JProperty("status", 400),
+                    new JProperty("detail", "Invalid PSP - gateway matching")
+                  ).ToString();
+                }</set-body>
+              </return-response>
+            </otherwise>
+        </choose>
+        <choose>
+          <when condition="@((string)context.Variables.GetValueOrDefault("requestTransactionId","") != "")">
+            <set-header name="x-transaction-id" exists-action="override">
+                <value>@((string)context.Variables.GetValueOrDefault("requestTransactionId",""))</value>
+            </set-header>
+          </when>
         </choose>
         <base />
     </inbound>
