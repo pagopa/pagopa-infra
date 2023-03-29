@@ -65,7 +65,7 @@ resource "azurerm_cosmosdb_mongo_database" "ecommerce" {
       max_throughput = var.cosmos_mongo_db_ecommerce_params.max_throughput
     }
   }
-  
+
 }
 
 # Collections
@@ -73,6 +73,23 @@ locals {
   collections = [
     {
       name = "payment-methods"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        }
+      ]
+    },
+    {
+      name = "eventstore"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        }
+      ]
+      shard_key = "transactionId"
+    },
+    {
+      name = "view"
       indexes = [{
         keys   = ["_id"]
         unique = true
@@ -96,7 +113,7 @@ module "cosmosdb_ecommerce_collections" {
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.ecommerce.name
 
-  indexes    = each.value.indexes
+  indexes = each.value.indexes
 
   lock_enable = var.env_short == "p" ? true : false
 }

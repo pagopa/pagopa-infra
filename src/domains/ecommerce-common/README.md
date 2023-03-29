@@ -13,6 +13,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.15.1 |
+| <a name="module_cosmosdb_ecommerce_collections"></a> [cosmosdb\_ecommerce\_collections](#module\_cosmosdb\_ecommerce\_collections) | git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection | v4.13.1 |
 | <a name="module_cosmosdb_ecommerce_snet"></a> [cosmosdb\_ecommerce\_snet](#module\_cosmosdb\_ecommerce\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.15.1 |
 | <a name="module_ecommerce_storage"></a> [ecommerce\_storage](#module\_ecommerce\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.18.10 |
 | <a name="module_ecommerce_storage_snet"></a> [ecommerce\_storage\_snet](#module\_ecommerce\_storage\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.18.10 |
