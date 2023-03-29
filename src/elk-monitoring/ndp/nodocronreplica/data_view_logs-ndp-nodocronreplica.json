@@ -1,7 +1,7 @@
 {
    "data_view": {
       "title": "logs-ndp-nodocronreplica-*",
-      "name": "Log NDP - Nodo dei pagamenti CRON REPLICA",
+      "name": "Nodo CRON REPLICA",
       "timeFieldName": "@timestamp"
    },
    "override": true

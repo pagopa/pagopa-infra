@@ -1,7 +1,7 @@
 {
    "data_view": {
       "title": "logs-ndp-nodoreplica-*",
-      "name": "Log NDP - Nodo dei pagamenti REPLICA",
+      "name": "Nodo REPLICA",
       "timeFieldName": "@timestamp"
    },
    "override": true

@@ -1,7 +1,7 @@
 {
    "data_view": {
       "title": "logs-ndp-pagopawfespwfesp-*",
-      "name": "Log NDP - Nodo dei pagamenti (pagopawfespwfesp)",
+      "name": "WFESP",
       "timeFieldName": "@timestamp"
    },
    "override": true
