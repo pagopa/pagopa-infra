@@ -24,7 +24,7 @@
 | <a name="module_apim_apiconfig_core_oauth_product"></a> [apim\_apiconfig\_core\_oauth\_product](#module\_apim\_apiconfig\_core\_oauth\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
 | <a name="module_apim_apiconfig_core_subkey_product"></a> [apim\_apiconfig\_core\_subkey\_product](#module\_apim\_apiconfig\_core\_subkey\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.17 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v5.1.0 |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.2.1 |
 
 ## Resources
 
