@@ -44,6 +44,9 @@
             </when>
             <otherwise>
               <return-response>
+                <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+                </set-header>
                 <set-status code="400" reason="Invalid PSP - gateway matching" />
                 <set-body>@{
                   return new JObject(
