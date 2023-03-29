@@ -1,8 +1,15 @@
+locals {
+  administrator_login    = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
+  administrator_password = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value
+
+}
+
 resource "azurerm_resource_group" "data_factory_rg" {
   name     = format("%s-df-rg", local.project)
   location = var.location
   tags     = var.tags
 }
+
 
 resource "azurerm_data_factory" "data_factory" {
   name                   = format("%s-df", local.project)
@@ -29,7 +36,6 @@ resource "azurerm_data_factory_integration_runtime_azure" "autoresolve" {
 }
 
 resource "azurerm_private_endpoint" "data_factory_pe" {
-
   name                = format("%s-pe", azurerm_data_factory.data_factory.name)
   location            = azurerm_resource_group.data_factory_rg.location
   resource_group_name = azurerm_resource_group.data_factory_rg.name
@@ -51,7 +57,6 @@ resource "azurerm_private_endpoint" "data_factory_pe" {
 }
 
 resource "azurerm_private_dns_a_record" "data_factory_a_record" {
-
   name                = azurerm_data_factory.data_factory.name
   zone_name           = azurerm_private_dns_zone.adf.name
   resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
@@ -61,3 +66,12 @@ resource "azurerm_private_dns_a_record" "data_factory_a_record" {
   tags = var.tags
 }
 
+resource "azurerm_data_factory_linked_service_postgresql" "data_factory_ls" {
+  name                = "AzurePostgreSqlLinkedService"
+  data_factory_id     = azurerm_data_factory.data_factory.id
+  resource_group_name = azurerm_resource_group.data_factory_rg.name
+  connection_string   = "host=pagopa-${var.env_short}-weu-nodo-flexible-postgresql.postgres.database.azure.com;port=5432;database=nodo;uid=${local.administrator_login};encryptionmethod=1;validateservercertificate=0;password=${local.administrator_password}"
+  additional_properties = {
+    "type" : "AzurePostgreSql"
+  }
+}

@@ -1,0 +1,94 @@
+{
+    "name": "onlineRtVersamenti",
+    "properties": {
+        "description": "dataset online messaggi",
+        "linkedServiceName": {
+            "referenceName": "AzurePostgreSqlLinkedService",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "online"
+        },
+        "annotations": [],
+        "type": "AzurePostgreSqlTable",
+        "schema": [
+            {
+                "name": "id",
+                "type": "numeric",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "progressivo",
+                "type": "numeric",
+                "precision": 19,
+                "scale": 0
+            },
+            {
+                "name": "importo_rt",
+                "type": "real",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "esito",
+                "type": "character varying",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "causale_versamento",
+                "type": "character varying",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "dati_specifici_riscossione",
+                "type": "character varying",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "commissione_applicate_psp",
+                "type": "real",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "fk_rt",
+                "type": "numeric",
+                "precision": 19,
+                "scale": 0
+            },
+            {
+                "name": "inserted_timestamp",
+                "type": "timestamp without time zone",
+                "precision": 6,
+                "scale": 0
+            },
+            {
+                "name": "updated_timestamp",
+                "type": "timestamp without time zone",
+                "precision": 6,
+                "scale": 0
+            },
+            {
+                "name": "commissione_carico_pa",
+                "type": "real",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "commissione_applicate_pa",
+                "type": "real",
+                "precision": 0,
+                "scale": 0
+            }
+        ],
+        "typeProperties": {
+            "schema": "online",
+            "table": "rt_versamenti"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,94 @@
+{
+    "name": "onlinePositionTransferMbd",
+    "properties": {
+        "description": "dataset online messaggi",
+        "linkedServiceName": {
+            "referenceName": "AzurePostgreSqlLinkedService",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "online"
+        },
+        "annotations": [],
+        "type": "AzurePostgreSqlTable",
+        "schema": [
+            {
+                "name": "id",
+                "type": "numeric",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "fk_position_transfer",
+                "type": "numeric",
+                "precision": 19,
+                "scale": 0
+            },
+            {
+                "name": "tipo_bollo",
+                "type": "character varying",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "tipo_allegato_ricevuta",
+                "type": "character varying",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "iubd",
+                "type": "character varying",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "importo",
+                "type": "numeric",
+                "precision": 19,
+                "scale": 0
+            },
+            {
+                "name": "ora_acquisto",
+                "type": "timestamp without time zone",
+                "precision": 6,
+                "scale": 0
+            },
+            {
+                "name": "inserted_timestamp",
+                "type": "timestamp without time zone",
+                "precision": 6,
+                "scale": 0
+            },
+            {
+                "name": "updated_timestamp",
+                "type": "timestamp without time zone",
+                "precision": 6,
+                "scale": 0
+            },
+            {
+                "name": "inserted_by",
+                "type": "character varying",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "updated_by",
+                "type": "character varying",
+                "precision": 0,
+                "scale": 0
+            },
+            {
+                "name": "xml_content",
+                "type": "bytea",
+                "precision": 0,
+                "scale": 0
+            }
+        ],
+        "typeProperties": {
+            "schema": "online",
+            "table": "position_transfer_mbd"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
