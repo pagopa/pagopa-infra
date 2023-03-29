@@ -171,7 +171,7 @@ resource "azurerm_api_management_api" "apim_ecommerce_pdv_mock" {
 
   import {
     content_format = "openapi"
-    content_value = templatefile("./api/ecommerce-mock/pdv/v1/_swagger.json.tpl", {
+    content_value = templatefile("./api/ecommerce-mock/pdv/v1/_openapi.json.tpl", {
       host = local.apim_hostname
     })
   }
