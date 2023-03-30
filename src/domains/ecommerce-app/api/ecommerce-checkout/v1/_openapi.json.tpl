@@ -1657,7 +1657,7 @@
         "type": "object",
         "required": [
           "noticeNumber",
-          "paFiscalCode",
+          "fiscalCode",
           "amount",
           "companyName",
           "description"
@@ -1669,7 +1669,7 @@
             "minLength": 18,
             "maxLength": 18
           },
-          "paFiscalCode": {
+          "fiscalCode": {
             "description": "Payment notice fiscal code",
             "type": "string",
             "minLength": 11,
