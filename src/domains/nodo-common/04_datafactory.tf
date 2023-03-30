@@ -290,5 +290,5 @@ resource "azurerm_data_factory_data_flow" "dataflow_online" {
     }
   }
 
-  script = templatefile("datafactory/dataflows/wfesp.dataflow", {})
+  script = templatefile("datafactory/dataflows/online.dataflow", {})
 }
