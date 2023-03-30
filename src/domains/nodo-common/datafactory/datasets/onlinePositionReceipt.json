@@ -1,150 +1,174 @@
 [
   {
-    "name": "obj_id",
+    "name": "id",
     "type": "numeric",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "id_carrello",
+    "name": "receipt_id",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "codice_carrello",
+    "name": "notice_id",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "staz_intermediariopa",
+    "name": "pa_fiscal_code",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "intermediariopa",
+    "name": "creditor_reference_id",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "canale",
+    "name": "payment_token",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "intermediariopsp",
+    "name": "outcome",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "psp",
+    "name": "payment_amount",
+    "type": "numeric",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "description",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "id_sessione",
+    "name": "company_name",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "parametri_pagamento_immediato",
+    "name": "office_name",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "parametri_profilo_pagamento",
+    "name": "debtor_id",
+    "type": "numeric",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "psp_id",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "url_redirezione_pa",
+    "name": "psp_fiscal_code",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "url_redirezione_psp",
+    "name": "psp_vat_number",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "stato",
+    "name": "psp_company_name",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "return_code",
+    "name": "channel_id",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "esito_redirect",
+    "name": "channel_description",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "tipo_interazione",
+    "name": "payer_id",
+    "type": "numeric",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "payment_method",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "mobile_token",
-    "type": "character varying",
+    "name": "fee",
+    "type": "numeric",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "rrn",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "esito_transazione_carta",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "codice_autorizzativo",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "parametri_pm",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "timestamp_operazione",
+    "name": "payment_date_time",
     "type": "timestamp without time zone",
     "precision": 6,
     "scale": 0
   },
   {
-    "name": "importo_totale_pagato",
+    "name": "application_date",
+    "type": "date",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "transfer_date",
+    "type": "date",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "metadata",
+    "type": "character varying",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "rt_id",
     "type": "numeric",
-    "precision": 19,
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "fk_position_payment",
+    "type": "numeric",
+    "precision": 0,
     "scale": 0
   },
   {
     "name": "inserted_timestamp",
+    "type": "timestamp without time zone",
+    "precision": 6,
+    "scale": 0
+  },
+  {
+    "name": "updated_timestamp",
     "type": "timestamp without time zone",
     "precision": 6,
     "scale": 0
@@ -156,13 +180,25 @@
     "scale": 0
   },
   {
-    "name": "updated_timestamp",
-    "type": "timestamp without time zone",
-    "precision": 6,
+    "name": "updated_by",
+    "type": "character varying",
+    "precision": 0,
     "scale": 0
   },
   {
-    "name": "updated_by",
+    "name": "fee_pa",
+    "type": "numeric",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "bundle_id",
+    "type": "character varying",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "bundle_pa_id",
     "type": "character varying",
     "precision": 0,
     "scale": 0

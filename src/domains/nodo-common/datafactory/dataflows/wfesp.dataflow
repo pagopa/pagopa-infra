@@ -38,7 +38,7 @@ source(output(
      validateSchema: false,
      isolationLevel: 'READ_UNCOMMITTED',
      query: ("SELECT * FROM wfesp.rpt WHERE inserted_timestamp < (NOW()::date - '{$daysToKeep} DAY'::interval)"),
-     format: 'query') ~> wfespRpt
+     format: 'query') ~> rptRead
 source(output(
           obj_id as long,
           id_carrello as string,
@@ -73,7 +73,7 @@ source(output(
      validateSchema: false,
      isolationLevel: 'READ_UNCOMMITTED',
      query: ("SELECT * FROM wfesp.carrello_rpt WHERE inserted_timestamp < (NOW()::date - '{$daysToKeep} DAY'::interval)"),
-     format: 'query') ~> wfespCarrelloRpt
+     format: 'query') ~> carrelloRptRead
 source(output(
           obj_id as long,
           id_dominio as string,
@@ -109,11 +109,11 @@ source(output(
      validateSchema: false,
      isolationLevel: 'READ_UNCOMMITTED',
      query: ("SELECT * FROM wfesp.redirect_my_bank WHERE inserted_timestamp < (NOW()::date - '{$daysToKeep} DAY'::interval)"),
-     format: 'query') ~> wfespRedirectMyBank
-wfespRpt alterRow(deleteIf(toDate(toString(inserted_timestamp,'dd-MM-yyyy','it-IT'),'dd-MM-yyyy','it-IT')<currentDate())) ~> checkRecordToDeleteRpt
-wfespCarrelloRpt alterRow(deleteIf(toDate(toString(inserted_timestamp,'dd-MM-yyyy','it-IT'),'dd-MM-yyyy','it-IT')<currentDate())) ~> checkRecordToDeleteCarrelloRpt
-wfespRedirectMyBank alterRow(deleteIf(toDate(toString(inserted_timestamp,'dd-MM-yyyy','it-IT'),'dd-MM-yyyy','it-IT')<currentDate())) ~> checkRecordToDeleteRedirectMyBank
-checkRecordToDeleteRpt sink(allowSchemaDrift: true,
+     format: 'query') ~> redirectMyBankRead
+rptRead alterRow(deleteIf(toDate(toString(inserted_timestamp,'dd-MM-yyyy','it-IT'),'dd-MM-yyyy','it-IT')<currentDate())) ~> markRecordRptToDelete
+carrelloRptRead alterRow(deleteIf(toDate(toString(inserted_timestamp,'dd-MM-yyyy','it-IT'),'dd-MM-yyyy','it-IT')<currentDate())) ~> markRecordCarrelloRptToDelete
+redirectMyBankRead alterRow(deleteIf(toDate(toString(inserted_timestamp,'dd-MM-yyyy','it-IT'),'dd-MM-yyyy','it-IT')<currentDate())) ~> markRecordRedirectMyBankToDelete
+markRecordRptToDelete sink(allowSchemaDrift: true,
      validateSchema: false,
      input(
           obj_id as decimal(0,0),
@@ -155,8 +155,8 @@ checkRecordToDeleteRpt sink(allowSchemaDrift: true,
      format: 'table',
      skipDuplicateMapInputs: true,
      skipDuplicateMapOutputs: true,
-     saveOrder: 1) ~> sinkRptDeleteDB
-checkRecordToDeleteCarrelloRpt sink(allowSchemaDrift: true,
+     saveOrder: 1) ~> executeRptDeleteDB
+markRecordCarrelloRptToDelete sink(allowSchemaDrift: true,
      validateSchema: false,
      input(
           obj_id as decimal(0,0),
@@ -196,8 +196,8 @@ checkRecordToDeleteCarrelloRpt sink(allowSchemaDrift: true,
      format: 'table',
      skipDuplicateMapInputs: true,
      skipDuplicateMapOutputs: true,
-     saveOrder: 2) ~> sinkCarrelloRptDeleteDB
-checkRecordToDeleteRedirectMyBank sink(allowSchemaDrift: true,
+     saveOrder: 2) ~> executeCarrelloRptDeleteDB
+markRecordRedirectMyBankToDelete sink(allowSchemaDrift: true,
      validateSchema: false,
      input(
           obj_id as decimal(0,0),
@@ -238,4 +238,4 @@ checkRecordToDeleteRedirectMyBank sink(allowSchemaDrift: true,
      format: 'table',
      skipDuplicateMapInputs: true,
      skipDuplicateMapOutputs: true,
-     saveOrder: 3) ~> sinkRedirectMyBankDeleteDB
+     saveOrder: 3) ~> executeRedirectMyBankDeleteDB

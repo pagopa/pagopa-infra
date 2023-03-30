@@ -1,18 +1,60 @@
 [
   {
-    "name": "obj_id",
+    "name": "id",
     "type": "numeric",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "id_carrello",
+    "name": "id_sessione",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "codice_carrello",
+    "name": "ccp",
+    "type": "character varying",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "ident_dominio",
+    "type": "character varying",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "iuv",
+    "type": "character varying",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "bic_addebito",
+    "type": "character varying",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "data_msg_rich",
+    "type": "timestamp without time zone",
+    "precision": 6,
+    "scale": 0
+  },
+  {
+    "name": "flag_canc",
+    "type": "character",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "iban_addebito",
+    "type": "character varying",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "id_msg_rich",
     "type": "character varying",
     "precision": 0,
     "scale": 0
@@ -36,26 +78,38 @@
     "scale": 0
   },
   {
-    "name": "intermediariopsp",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
     "name": "psp",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "id_sessione",
+    "name": "intermediariopsp",
     "type": "character varying",
     "precision": 0,
     "scale": 0
   },
   {
-    "name": "parametri_pagamento_immediato",
+    "name": "tipo_versamento",
     "type": "character varying",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "num_versamenti",
+    "type": "numeric",
+    "precision": 19,
+    "scale": 0
+  },
+  {
+    "name": "rt_signature_code",
+    "type": "numeric",
+    "precision": 19,
+    "scale": 0
+  },
+  {
+    "name": "somma_versamenti",
+    "type": "real",
     "precision": 0,
     "scale": 0
   },
@@ -66,79 +120,7 @@
     "scale": 0
   },
   {
-    "name": "url_redirezione_pa",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "url_redirezione_psp",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "stato",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "return_code",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "esito_redirect",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "tipo_interazione",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "mobile_token",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "rrn",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "esito_transazione_carta",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "codice_autorizzativo",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "parametri_pm",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
-    "name": "timestamp_operazione",
-    "type": "timestamp without time zone",
-    "precision": 6,
-    "scale": 0
-  },
-  {
-    "name": "importo_totale_pagato",
+    "name": "fk_carrello",
     "type": "numeric",
     "precision": 19,
     "scale": 0
@@ -150,20 +132,32 @@
     "scale": 0
   },
   {
-    "name": "inserted_by",
-    "type": "character varying",
-    "precision": 0,
-    "scale": 0
-  },
-  {
     "name": "updated_timestamp",
     "type": "timestamp without time zone",
     "precision": 6,
     "scale": 0
   },
   {
-    "name": "updated_by",
-    "type": "character varying",
+    "name": "ricevuta_pm",
+    "type": "character",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "wisp_2",
+    "type": "character",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "flag_seconda",
+    "type": "character",
+    "precision": 0,
+    "scale": 0
+  },
+  {
+    "name": "flag_io",
+    "type": "character",
     "precision": 0,
     "scale": 0
   }

@@ -39,9 +39,9 @@ source(output(
      validateSchema: false,
      isolationLevel: 'READ_UNCOMMITTED',
      query: ("SELECT * FROM re.re WHERE inserted_timestamp < (NOW()::date - '{$daysToKeep} DAY'::interval)"),
-     format: 'query') ~> reRe
-reRe alterRow(deleteIf(toDate(toString(inserted_timestamp,'dd-MM-yyyy','it-IT'),'dd-MM-yyyy','it-IT')<currentDate())) ~> checkRecordToDelete
-checkRecordToDelete sink(allowSchemaDrift: false,
+     format: 'query') ~> reRead
+reRead alterRow(deleteIf(toDate(toString(inserted_timestamp,'dd-MM-yyyy','it-IT'),'dd-MM-yyyy','it-IT')<currentDate())) ~> markRecordReToDelete
+markRecordReToDelete sink(allowSchemaDrift: false,
      validateSchema: false,
      input(
           id as decimal(0,0),
@@ -84,4 +84,4 @@ checkRecordToDelete sink(allowSchemaDrift: false,
      format: 'table',
      skipDuplicateMapInputs: true,
      skipDuplicateMapOutputs: true,
-     saveOrder: 1) ~> sinkReDeleteDB
+     saveOrder: 1) ~> executeReDeleteDB

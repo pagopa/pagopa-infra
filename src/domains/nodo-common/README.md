@@ -23,9 +23,11 @@
 |------|------|
 | [azurerm_data_factory.data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/data_factory) | resource |
 | [azurerm_data_factory_custom_dataset.datasets](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/data_factory_custom_dataset) | resource |
+| [azurerm_data_factory_data_flow.dataflow_online](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/data_factory_data_flow) | resource |
 | [azurerm_data_factory_data_flow.dataflow_re](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/data_factory_data_flow) | resource |
+| [azurerm_data_factory_data_flow.dataflow_wfesp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/data_factory_data_flow) | resource |
 | [azurerm_data_factory_integration_runtime_azure.autoresolve](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/data_factory_integration_runtime_azure) | resource |
-| [azurerm_data_factory_linked_service_postgresql.data_factory_ls](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/data_factory_linked_service_postgresql) | resource |
+| [azurerm_data_factory_linked_custom_service.azure_postgresql_ls](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/data_factory_linked_custom_service) | resource |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_action_group) | resource |
 | [azurerm_postgresql_flexible_server_configuration.nodo_db_flex_default_pool_size](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.nodo_db_flex_ignore_startup_parameters](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/postgresql_flexible_server_configuration) | resource |
