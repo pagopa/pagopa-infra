@@ -11,11 +11,9 @@ module "elastic_stack" {
 
   elastic_agent_custom_log_config = {
     pagopafdr = {
-      data_stream_namespace = var.env
       instance = ["pagopafdr"] 
     }
     ndp = {
-      data_stream_namespace = var.env
       instance = ["nodo","nodoreplica","nodocron","nodocronreplica","pagopawebbo","pagopawfespwfesp"]
     }
   }
