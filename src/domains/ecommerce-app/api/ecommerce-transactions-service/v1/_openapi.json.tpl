@@ -768,7 +768,6 @@
         "required": [
           "paFiscalCode",
           "digitalStamp",
-          "transferCategory",
           "transferAmount"
         ]
       },
