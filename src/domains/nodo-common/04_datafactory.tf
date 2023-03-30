@@ -66,7 +66,13 @@ resource "azurerm_private_dns_a_record" "data_factory_a_record" {
   tags = var.tags
 }
 
+locals {
+  datasets = { for filename in fileset(path.module, "datafactory/datasets/*.json") : replace(basename(filename), ".json", "") => file("${path.module}/${filename}") }
+}
+
+############### LINKED SERVICE ####################
 resource "azurerm_data_factory_linked_service_postgresql" "data_factory_ls" {
+  depends_on          = [azurerm_data_factory.data_factory]
   name                = "AzurePostgreSqlLinkedService"
   data_factory_id     = azurerm_data_factory.data_factory.id
   resource_group_name = azurerm_resource_group.data_factory_rg.name
@@ -74,4 +80,60 @@ resource "azurerm_data_factory_linked_service_postgresql" "data_factory_ls" {
   additional_properties = {
     "type" : "AzurePostgreSql"
   }
+}
+
+############### DATASET ####################
+resource "azurerm_data_factory_custom_dataset" "datasets" {
+  depends_on      = [azurerm_data_factory_linked_service_postgresql.data_factory_ls]
+  for_each        = local.datasets
+  name            = "${each.key}Dataset"
+  data_factory_id = azurerm_data_factory.data_factory.id
+  type            = "AzurePostgreSqlTable"
+
+  type_properties_json = file("datafactory/datasets/type_properties/${each.key}.json")
+
+  schema_json = <<JSON
+      ${each.value}
+  JSON
+
+  linked_service {
+    name = azurerm_data_factory_linked_service_postgresql.data_factory_ls.name
+  }
+
+  #  lifecycle { create_before_destroy = true }
+}
+
+
+############### DATAFLOW ####################
+resource "azurerm_data_factory_data_flow" "dataflow_re" {
+  depends_on      = [azurerm_data_factory_custom_dataset.datasets]
+  data_factory_id = azurerm_data_factory.data_factory.id
+  name            = "reDataflow"
+
+  source {
+    name        = "reExtract"
+    description = "Extract re where inserted_timestamp < (today-n)"
+
+    dataset {
+      name = "reDataset"
+    }
+  }
+  transformation {
+    name        = "checkRecordToDelete"
+    description = "deleting record if inserted_timestamp < now - 'n days' "
+  }
+
+  sink {
+    name        = "sinkReDeleteDB"
+    description = "Delete data of re"
+
+    dataset {
+      name = "reDataset"
+    }
+  }
+
+  script = templatefile("datafactory/dataflows/re.dataflow", {
+    daysToKeep = 90
+  })
+
 }
