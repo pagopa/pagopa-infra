@@ -15,7 +15,7 @@
             </not>
         </preConditions>
         <addColumn tableName="CDS_SOGGETTO_SERVIZIO">
-            <column name="DESCRIZIONE_SERVIZIO" type="VARCHAR2(255 CHAR)"/>
+            <column name="DESCRIZIONE_SERVIZIO" type="VARCHAR2(255)"/>
         </addColumn>
     </changeSet>
 
