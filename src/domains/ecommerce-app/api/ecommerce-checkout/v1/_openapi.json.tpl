@@ -1129,16 +1129,16 @@
           "authToken": "authToken1",
           "transferList": [
             {
-              "fiscalCode": "77777777777",
+              "paFiscalCode": "77777777777",
               "digitalStamp": false,
               "transferCategory": "transferCategory1",
-              "amount": 500
+              "transferAmount": 500
             },
             {
-              "fiscalCode": "11111111111",
+              "paFiscalCode": "11111111111",
               "digitalStamp": true,
               "transferCategory": "transferCategory2",
-              "amount": 100
+              "transferAmount": 100
             }
           ]
         }
@@ -1198,16 +1198,16 @@
                 "amount": 600,
                 "transferList": [
                   {
-                    "fiscalCode": "77777777777",
+                    "paFiscalCode": "77777777777",
                     "digitalStamp": false,
                     "transferCategory": "transferCategory1",
-                    "amount": 500
+                    "transferAmount": 500
                   },
                   {
-                    "fiscalCode": "11111111111",
+                    "paFiscalCode": "11111111111",
                     "digitalStamp": true,
                     "transferCategory": "transferCategory2",
-                    "amount": 100
+                    "transferAmount": 100
                   }
                 ]
               },
@@ -1218,16 +1218,16 @@
                 "amount": 300,
                 "transferList": [
                   {
-                    "fiscalCode": "44444444444",
+                    "paFiscalCode": "44444444444",
                     "digitalStamp": true,
                     "transferCategory": "transferCategory1",
-                    "amount": 200
+                    "transferAmount": 200
                   },
                   {
-                    "fiscalCode": "22222222222",
+                    "paFiscalCode": "22222222222",
                     "digitalStamp": false,
                     "transferCategory": "transferCategory2",
-                    "amount": 100
+                    "transferAmount": 100
                   }
                 ]
               }
@@ -1503,7 +1503,7 @@
         "type": "object",
         "description": "The dto that contains information about the creditor entities",
         "properties": {
-          "fiscalCode": {
+          "paFiscalCode": {
             "type": "string",
             "description": "The creditor institution fiscal code",
             "pattern": "^[a-zA-Z0-9]{11}"
@@ -1516,15 +1516,14 @@
             "type": "string",
             "description": "The taxonomy of the transfer"
           },
-          "amount": {
+          "transferAmount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           }
         },
         "required": [
-          "fiscalCode",
+          "paFiscalCode",
           "digitalStamp",
-          "transferCategory",
-          "amount"
+          "transferAmount"
         ]
       },
       "PaymentMethodResponse": {
