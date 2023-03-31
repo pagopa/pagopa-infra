@@ -1,6 +1,5 @@
 parameters{
-     daysToKeep as integer (90),
-     fileNameSuffix as string ("-until-"+toString(subDays(currentDate("GMT+1:00"),$daysToKeep),'yyyyMMdd'))
+     daysToKeep as integer (90)
 }
 source(output(
           obj_id as decimal(38,18),

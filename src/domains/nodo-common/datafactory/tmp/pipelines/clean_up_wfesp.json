@@ -1,9 +1,9 @@
 {
-    "name": "clean_up_re",
+    "name": "clean_up_wfesp",
     "properties": {
         "activities": [
             {
-                "name": "df_clean_up_re",
+                "name": "df_clean_up_wfesp",
                 "type": "ExecuteDataFlow",
                 "dependsOn": [],
                 "policy": {
@@ -16,11 +16,13 @@
                 "userProperties": [],
                 "typeProperties": {
                     "dataflow": {
-                        "referenceName": "df_clean_up_re",
+                        "referenceName": "df_clean_up_wfesp",
                         "type": "DataFlowReference",
                         "parameters": {
-                            "daysToKeep": "90",
-                            "fileNameSuffix": "\"-until-\"+toString(subDays(currentDate(\"GMT+1:00\"),$daysToKeep),'yyyyMMdd')"
+                            "daysToKeep": {
+                                "value": "@pipeline().parameters.daysToKeep",
+                                "type": "Expression"
+                            }
                         }
                     },
                     "compute": {
@@ -37,13 +39,8 @@
                 "defaultValue": 90
             }
         },
-        "variables": {
-            "fileName": {
-                "type": "String"
-            }
-        },
         "annotations": [],
-        "lastPublishTime": "2023-03-22T16:32:47Z"
+        "lastPublishTime": "2023-03-19T21:48:00Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

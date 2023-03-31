@@ -31,8 +31,7 @@
             ],
             "scriptLines": [
                 "parameters{",
-                "     daysToKeep as integer (90),",
-                "     fileNameSuffix as string (\"-until-\"+toString(subDays(currentDate(\"GMT+1:00\"),$daysToKeep),'yyyyMMdd'))",
+                "     daysToKeep as integer (90)",
                 "}",
                 "source(output(",
                 "          id as long,",
