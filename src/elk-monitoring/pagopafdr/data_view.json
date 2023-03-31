@@ -1,8 +1,0 @@
-{
-    "data_view": {
-       "title": "logs-pagopafdr-*",
-       "name": "Log FDR - Flussi di rendicontazione",
-       "timeFieldName": "@timestamp"
-    },
-    "override": true
-  }

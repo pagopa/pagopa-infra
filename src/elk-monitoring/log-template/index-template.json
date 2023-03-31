@@ -11,17 +11,17 @@
     }
   },
   "index_patterns": [
-    "logs-ndp-pagopawebbo-*"
+    "logs-${name}-*"
   ],
   "data_stream": {
     "hidden": false,
     "allow_custom_routing": false
   },
   "composed_of": [
-    "logs-ndp-pagopawebbo@package",
-    "logs-ndp-pagopawebbo@custom"
+    "${component_template_package}",
+    "${component_template_custom}"
   ],
   "_meta": {
-    "description": "Index template for NDP - Nodo dei pagamenti (pagopawebbo)"
+    "description": "Index template for ${name}"
   }
 }

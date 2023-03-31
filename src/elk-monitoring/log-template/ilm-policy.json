@@ -34,7 +34,7 @@
       }
     },
     "_meta": {
-      "description": "Policy for FDR - Flussi di rendicontazione"
+      "description": "Policy ${name}"
     }
   }
 }

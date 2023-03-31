@@ -1,8 +1,0 @@
-{
-   "data_view": {
-      "title": "logs-ndp-nodocronreplica-*",
-      "name": "Nodo CRON REPLICA",
-      "timeFieldName": "@timestamp"
-   },
-   "override": true
-}

@@ -1,8 +1,0 @@
-{
-   "data_view": {
-      "title": "logs-ndp-nodo-*",
-      "name": "Nodo",
-      "timeFieldName": "@timestamp"
-   },
-   "override": true
-}

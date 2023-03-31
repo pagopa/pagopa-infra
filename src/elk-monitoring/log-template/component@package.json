@@ -517,6 +517,6 @@
     }
   },
   "_meta": {
-    "description": "Mappings for NDP - Nodo dei pagamenti REPLICA"
+    "description": "Mappings for ${name}"
   }
 }

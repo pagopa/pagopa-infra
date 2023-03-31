@@ -1,8 +1,0 @@
-{
-    "id": "ndp",
-    "name": "NDP - Nodo dei pagamenti",
-    "description" : "Space for NDP - Nodo dei pagamenti",
-    "initials" : "ND",
-    "color": "#6092C0",
-    "disabledFeatures": []
-  }

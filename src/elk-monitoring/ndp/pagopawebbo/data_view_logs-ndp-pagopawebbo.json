@@ -1,8 +1,0 @@
-{
-   "data_view": {
-      "title": "logs-ndp-pagopawebbo-*",
-      "name": "WEB BO",
-      "timeFieldName": "@timestamp"
-   },
-   "override": true
-}
