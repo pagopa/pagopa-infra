@@ -733,6 +733,7 @@
           "CLOSURE_ERROR",
           "NOTIFIED_OK",
           "NOTIFIED_KO",
+          "NOTIFICATION_ERROR",
           "EXPIRED",
           "REFUNDED",
           "CANCELED",
