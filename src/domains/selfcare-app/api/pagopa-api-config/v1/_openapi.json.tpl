@@ -2,15 +2,13 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.92
+  version: 0.0.78
 servers:
   - url: 'https://${host}/${basePath}'
     description: Inferred Url
 tags:
   - name: channels
     description: Api config channels operations
-  - name: institution
-    description: Institution operations
   - name: stations
     description: Api config stations operations
 paths:
@@ -50,6 +48,12 @@ paths:
           description: Sort Direction ordering
           required: false
           style: form
+          schema:
+            type: string
+        - name: X-Request-Id
+          in: header
+          description: internal request trace id
+          required: false
           schema:
             type: string
       responses:
@@ -92,6 +96,13 @@ paths:
       summary: createChannel
       description: Create a channel
       operationId: createChannelUsingPOST
+      parameters:
+        - name: X-Request-Id
+          in: header
+          description: internal request trace id
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -104,46 +115,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChannelDetailsResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  '/channels/brokerspsp':
-    post:
-      tags:
-        - channels
-      summary: createBrokerPsp
-      description: Create a PSP broker
-      operationId: createBrokerPspUsingPOST
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BrokerPspDetailsDto'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BrokerPspDetailsResource'
         '400':
           description: Bad Request
           content:
@@ -206,50 +177,6 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/csv':
-    get:
-      tags:
-        - channels
-      summary: getChannelsCSV
-      description: Download the list of channelss as CSV file
-      operationId: getChannelsCSVUsingGET
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Resource'
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/Resource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '404':
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
   '/channels/details/{channelcode}':
     get:
       tags:
@@ -262,6 +189,12 @@ paths:
           description: Code of the payment channel
           required: true
           style: simple
+          schema:
+            type: string
+        - name: X-Request-Id
+          in: header
+          description: internal request trace id
+          required: false
           schema:
             type: string
       responses:
@@ -347,46 +280,6 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/psp':
-    post:
-      tags:
-        - channels
-      summary: createPaymentServiceProvider
-      description: Create a payment service provider
-      operationId: createPaymentServiceProviderUsingPOST
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentServiceProviderDetailsDto'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentServiceProviderDetailsResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
   '/channels/psp/{channelcode}/{pspcode}':
     put:
       tags:
@@ -433,12 +326,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        '409':
-          description: Conflict
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         '500':
           description: Internal Server Error
           content:
@@ -472,95 +359,6 @@ paths:
       responses:
         '200':
           description: OK
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  '/channels/psp/{pspcode}':
-    get:
-      tags:
-        - channels
-      summary: getPSPDetails
-      description: Get payment service provider's details
-      operationId: getPSPDetailsUsingGET
-      parameters:
-        - name: pspcode
-          in: path
-          description: Code of the payment service provider
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentServiceProviderDetailsResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '404':
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  /channels/pspdirect:
-    post:
-      tags:
-        - channels
-      summary: createPSPDirect
-      description: Create a payment service provider
-      operationId: createPSPDirectUsingPOST
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentServiceProviderDetailsDto'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentServiceProviderDetailsResource'
         '400':
           description: Bad Request
           content:
@@ -686,12 +484,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        '409':
-          description: Conflict
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
         '500':
           description: Internal Server Error
           content:
@@ -787,71 +579,6 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{channelcode}/psp':
-    get:
-      tags:
-        - channels
-      summary: getChannelPaymentServiceProviders
-      description: Get paginated list of PSPs associated with the channel
-      operationId: getChannelPaymentServiceProvidersUsingGET
-      parameters:
-        - name: limit
-          in: query
-          description: Number of elements on one page. Default = 50
-          required: false
-          style: form
-          schema:
-            type: integer
-            format: int32
-        - name: page
-          in: query
-          description: Page number. Page value starts from 0
-          required: true
-          style: form
-          schema:
-            type: integer
-            format: int32
-        - name: channelcode
-          in: path
-          description: Code of the payment channel
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChannelPspListResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '404':
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
   '/channels/{channelcode}/{paymenttypecode}':
     delete:
       tags:
@@ -912,6 +639,12 @@ paths:
           style: simple
           schema:
             type: string
+        - name: X-Request-Id
+          in: header
+          description: internal request trace id
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -919,55 +652,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PspChannelsResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '404':
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  '/channels/{pspcode}/generate':
-    get:
-      tags:
-        - channels
-      summary: getChannelCode
-      description: Generate new channel Code
-      operationId: getChannelCodeUsingGET
-      parameters:
-        - name: pspcode
-          in: path
-          description: Code of the payment service provider
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            text/plain:
-              schema:
-                type: object
         '400':
           description: Bad Request
           content:
@@ -1110,9 +794,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
   '/stations/details/{stationId}':
     get:
       tags:
@@ -1211,32 +892,56 @@ paths:
       security:
         - bearerAuth:
             - global
+  '/stations/{ecCode}/station':
+    post:
+      tags:
+        - stations
+      summary: associateStationToCreditorInstitution
+      description: Creates the relationship between the created station and the creditorInstitution
+      operationId: associateStationToCreditorInstitutionUsingPOST
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditorInstitutionStationDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionStationEditResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
 components:
   schemas:
-    BrokerPspDetailsDto:
-      title: BrokerPspDetailsDto
-      type: object
-      properties:
-        broker_psp_code:
-          type: string
-        description:
-          type: string
-        enabled:
-          type: boolean
-        extended_fault_bean:
-          type: boolean
-    BrokerPspDetailsResource:
-      title: BrokerPspDetailsResource
-      type: object
-      properties:
-        broker_psp_code:
-          type: string
-        description:
-          type: string
-        enabled:
-          type: boolean
-        extended_fault_bean:
-          type: boolean
     ChannelDetailsDto:
       title: ChannelDetailsDto
       type: object
@@ -1543,37 +1248,6 @@ components:
           type: integer
           description: timeout C
           format: int64
-    ChannelPspListResource:
-      title: ChannelPspListResource
-      type: object
-      properties:
-        page_info:
-          description: info pageable
-          $ref: '#/components/schemas/PageInfo'
-        payment_service_providers:
-          type: array
-          description: enabled
-          items:
-            $ref: '#/components/schemas/ChannelPspResource'
-    ChannelPspResource:
-      title: ChannelPspResource
-      type: object
-      properties:
-        business_name:
-          type: string
-          description: business name of the payment service provider
-        enabled:
-          type: boolean
-          description: enabled
-          example: false
-        payment_types:
-          type: array
-          description: List of payment types
-          items:
-            type: string
-        psp_code:
-          type: string
-          description: Code of the payment service provider
     ChannelResource:
       title: ChannelResource
       type: object
@@ -1601,9 +1275,6 @@ components:
         page_info:
           description: info pageable
           $ref: '#/components/schemas/PageInfo'
-    InputStream:
-      title: InputStream
-      type: object
     InvalidParam:
       title: InvalidParam
       required:
@@ -1633,78 +1304,6 @@ components:
         total_pages:
           type: integer
           format: int32
-    PaymentServiceProviderDetailsDto:
-      title: PaymentServiceProviderDetailsDto
-      type: object
-      properties:
-        abi:
-          type: string
-        agid_psp:
-          type: boolean
-        bic:
-          type: string
-        business_name:
-          type: string
-        enabled:
-          type: boolean
-        my_bank_code:
-          type: string
-        psp_code:
-          type: string
-        stamp:
-          type: boolean
-        tax_code:
-          type: string
-        transfer:
-          type: boolean
-        vat_number:
-          type: string
-    PaymentServiceProviderDetailsResource:
-      title: PaymentServiceProviderDetailsResource
-      required:
-        - abi
-        - agid_psp
-        - bic
-        - my_bank_code
-        - stamp
-        - tax_code
-        - transfer
-        - vat_number
-      type: object
-      properties:
-        abi:
-          type: string
-          description: abi of the payment service provider
-        agid_psp:
-          type: boolean
-          description: agid code of the payment service provider
-          example: false
-        bic:
-          type: string
-          description: bic of the payment service provider
-        business_name:
-          type: string
-        enabled:
-          type: boolean
-        my_bank_code:
-          type: string
-          description: bank code of the payment service provider
-        psp_code:
-          type: string
-        stamp:
-          type: boolean
-          description: stamp of the payment service provider
-          example: false
-        tax_code:
-          type: string
-          description: tax code of the payment service provider
-        transfer:
-          type: boolean
-          description: transfer  of the payment service provider
-          example: false
-        vat_number:
-          type: string
-          description: of the payment service provider
     PaymentServiceProviderResource:
       title: PaymentServiceProviderResource
       type: object
@@ -1829,29 +1428,6 @@ components:
           description: Channel list
           items:
             $ref: '#/components/schemas/PspChannelResource'
-    Resource:
-      title: Resource
-      type: object
-      properties:
-        description:
-          type: string
-        file:
-          type: string
-          format: binary
-        filename:
-          type: string
-        inputStream:
-          $ref: '#/components/schemas/InputStream'
-        open:
-          type: boolean
-        readable:
-          type: boolean
-        uri:
-          type: string
-          format: uri
-        url:
-          type: string
-          format: url
     StationDetailResource:
       title: StationDetailResource
       required:
@@ -1888,7 +1464,7 @@ components:
           example: false
         flagOnline:
           type: boolean
-          description: 'Station''s online flag '
+          description: Station's online flag
           example: false
         ip:
           type: string
@@ -2228,6 +1804,44 @@ components:
           type: integer
           description: Station's timeoutC
           format: int64
+    CreditorInstitutionStationDto:
+      title: CreditorInstitutionStationDto
+      required:
+        - stationCode
+      type: object
+      properties:
+        stationCode:
+          type: string
+          description: Station's unique identifier
+    CreditorInstitutionStationEditResource:
+      title: CreditorInstitutionStationEditResource
+      required:
+        - stationCode
+      type: object
+      properties:
+        applicationCode:
+          type: integer
+          description: Station's application code
+          format: int64
+        auxDigit:
+          type: integer
+          description: Station's auxiliary digit
+          format: int64
+        broadcast:
+          type: boolean
+          description: Station's broadcast enabled
+          example: false
+        mod4:
+          type: boolean
+          description: Station's mod 4 enabled
+          example: false
+        segregationCode:
+          type: integer
+          description: Station's segregation code number
+          format: int64
+        stationCode:
+          type: string
+          description: Station's unique identifier
   securitySchemes:
     bearerAuth:
       type: http
