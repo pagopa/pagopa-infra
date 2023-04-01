@@ -42,7 +42,9 @@ locals {
 
 ## opentelemetry
 resource "helm_release" "opentelemetry_operator_helm" {
-  depends_on = [null_resource.pagopafdr_kibana_data_view]
+  depends_on = [
+    module.elastic_stack
+  ]
 
   # provisioner "local-exec" {
   #   when        = destroy
@@ -67,12 +69,23 @@ resource "helm_release" "opentelemetry_operator_helm" {
 
 }
 
-resource "kubectl_manifest" "otel_collector" {
+data "kubernetes_secret" "get_apm_token" {
   depends_on = [
     helm_release.opentelemetry_operator_helm
   ]
+
+  metadata {
+    name      = "quickstart-apm-token"
+    namespace = local.elk_namespace
+  }
+}
+resource "kubectl_manifest" "otel_collector" {
+  depends_on = [
+    data.kubernetes_secret.get_apm_token
+  ]
   yaml_body = templatefile("${path.module}/env/opentelemetry_operator_helm/otel.yaml", {
     namespace = local.elk_namespace
+    apm_token = data.kubernetes_secret.get_apm_token.data.secret-token
   })
 
   force_conflicts = true
