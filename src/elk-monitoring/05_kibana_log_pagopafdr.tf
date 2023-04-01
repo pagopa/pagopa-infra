@@ -1,8 +1,9 @@
 #################################### [FDR] ####################################
 locals {
   ## space
+  pagopafdr_space_name = "fdr"
   pagopafdr_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/space.json", {
-      name  = "fdr"
+      name  = "${local.pagopafdr_space_name}"
     }), "\""), "\""), "'", "'\\''")
 
   ## fdr
@@ -150,7 +151,7 @@ resource "null_resource" "pagopafdr_data_stream_rollover" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.pagopafdr_key}-default/${local.pagopafdr_key}/_rollover/" \
+      curl -k -X POST "${local.elastic_url}/logs-${local.pagopafdr_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json'
     EOT
@@ -169,7 +170,7 @@ resource "null_resource" "pagopafdr_kibana_data_view" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.pagopafdr_key}/api/data_views/data_view" \
+      curl -k -X POST "${local.kibana_url}/s/${local.pagopafdr_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.pagopafdr_data_view}'

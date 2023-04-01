@@ -1,8 +1,9 @@
 #################################### [NDP] ####################################
 locals {
   ## space
+  ndp_space_name = "ndp"
   ndp_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/space.json", {
-      name  = "ndp"
+      name  = "${local.ndp_space_name}"
     }), "\""), "\""), "'", "'\\''")
 
   ## nodo
@@ -49,7 +50,7 @@ locals {
     
   
   ndp_nodoreplica_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-      name  = local.ndp_nodo_key
+      name  = local.ndp_nodoreplica_key
     }), "\""), "\""), "'", "'\\''")
 
   ## nodocron
@@ -73,7 +74,7 @@ locals {
     
   
   ndp_nodocron_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-      name  = local.ndp_nodo_key
+      name  = local.ndp_nodocron_key
     }), "\""), "\""), "'", "'\\''")
 
   ## nodocronreplica
@@ -97,7 +98,7 @@ locals {
     
   
   ndp_nodocronreplica_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-      name  = local.ndp_nodo_key
+      name  = local.ndp_nodocronreplica_key
     }), "\""), "\""), "'", "'\\''")
   
   ## pagopawebbo
@@ -121,7 +122,7 @@ locals {
     
   
   ndp_pagopawebbo_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-      name  = local.ndp_nodo_key
+      name  = local.ndp_pagopawebbo_key
     }), "\""), "\""), "'", "'\\''")
 
   ## pagopawfespwfesp
@@ -145,7 +146,7 @@ locals {
     
   
   ndp_pagopawfespwfesp_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-      name  = local.ndp_nodo_key
+      name  = local.ndp_pagopawfespwfesp_key
     }), "\""), "\""), "'", "'\\''")
 }
 
@@ -269,7 +270,7 @@ resource "null_resource" "ndp_nodo_data_stream_rollover" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_nodo_key}-default/${local.ndp_nodo_key}/_rollover/" \
+      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_nodo_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json'
     EOT
@@ -286,7 +287,7 @@ resource "null_resource" "ndp_nodo_kibana_data_view" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.ndp_nodo_key}/api/data_views/data_view" \
+      curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.ndp_nodo_data_view}'
@@ -396,7 +397,7 @@ resource "null_resource" "ndp_nodoreplica_data_stream_rollover" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_nodoreplica_key}-default/${local.ndp_nodoreplica_key}/_rollover/" \
+      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_nodoreplica_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json'
     EOT
@@ -413,7 +414,7 @@ resource "null_resource" "ndp_nodoreplica_kibana_data_view" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.ndp_nodoreplica_key}/api/data_views/data_view" \
+      curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.ndp_nodoreplica_data_view}'
@@ -523,7 +524,7 @@ resource "null_resource" "ndp_nodocron_data_stream_rollover" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_nodocron_key}-default/${local.ndp_nodocron_key}/_rollover/" \
+      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_nodocron_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json'
     EOT
@@ -540,7 +541,7 @@ resource "null_resource" "ndp_nodocron_kibana_data_view" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.ndp_nodocron_key}/api/data_views/data_view" \
+      curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.ndp_nodocron_data_view}'
@@ -650,7 +651,7 @@ resource "null_resource" "ndp_nodocronreplica_data_stream_rollover" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_nodocronreplica_key}-default/${local.ndp_nodocronreplica_key}/_rollover/" \
+      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_nodocronreplica_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json'
     EOT
@@ -667,7 +668,7 @@ resource "null_resource" "ndp_nodocronreplica_kibana_data_view" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.ndp_nodocronreplica_key}/api/data_views/data_view" \
+      curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.ndp_nodocronreplica_data_view}'
@@ -777,7 +778,7 @@ resource "null_resource" "ndp_pagopawebbo_data_stream_rollover" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_pagopawebbo_key}-default/${local.ndp_pagopawebbo_key}/_rollover/" \
+      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_pagopawebbo_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json'
     EOT
@@ -794,7 +795,7 @@ resource "null_resource" "ndp_pagopawebbo_kibana_data_view" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.ndp_pagopawebbo_key}/api/data_views/data_view" \
+      curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.ndp_pagopawebbo_data_view}'
@@ -904,7 +905,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_data_stream_rollover" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_pagopawfespwfesp_key}-default/${local.ndp_pagopawfespwfesp_key}/_rollover/" \
+      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_pagopawfespwfesp_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json'
     EOT
@@ -921,7 +922,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_kibana_data_view" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.ndp_pagopawfespwfesp_key}/api/data_views/data_view" \
+      curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.ndp_pagopawfespwfesp_data_view}'
