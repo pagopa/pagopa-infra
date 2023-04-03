@@ -134,7 +134,7 @@ resource "azurerm_api_management_api_operation_policy" "get_carts_redirect" {
 
 resource "azurerm_api_management_api_operation_policy" "transaction_activation_request" {
   api_name            = "${local.project}-ecommerce-checkout-api-v1"
-  api_management_name = module.apim.name
+  api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   operation_id        = "newTransaction"
 
