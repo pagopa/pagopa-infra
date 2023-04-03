@@ -62,7 +62,7 @@ module "apim_api_fdr_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/fdr-service/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
     service = module.apim_fdr_product.product_id
   })
 
