@@ -1,7 +1,7 @@
 {
     "data_view": {
-       "title": "logs-fdr-log-*",
-       "name": "FDR log Data View",
+       "title": "logs-${name}-*",
+       "name": "Log ${name}",
        "timeFieldName": "@timestamp"
     },
     "override": true
