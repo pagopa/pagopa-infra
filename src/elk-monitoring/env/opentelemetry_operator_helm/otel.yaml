@@ -10,24 +10,32 @@ spec:
       otlp:
         protocols:
           grpc:
-
+        
     processors:
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 2000
+      batch:
 
     exporters:
       logging:
+        loglevel: warn
 
       otlphttp/elastic:
         tls:
           insecure: true
-        # Elastic APM server https endpoint without the "https://" prefix
-        endpoint: "quickstart-apm-http.elastic-system.svc.cluster.local:8200"
+        endpoint: "http://quickstart-apm-http.elastic-system.svc.cluster.local:8200"
         headers:
-          # Elastic APM Server secret token
-          Authorization: "Bearer 30K8q56M9r3jhKrIdhf968PO"
+          Authorization: "Bearer ${apm_token}"
 
     service:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: []
+          exporters: [logging, otlphttp/elastic]
+        metrics:
+          receivers: [otlp]
+          exporters: [logging, otlphttp/elastic]
+        logs: 
+          receivers: [otlp]
           exporters: [logging, otlphttp/elastic]

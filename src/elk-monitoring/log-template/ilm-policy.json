@@ -34,8 +34,7 @@
       }
     },
     "_meta": {
-      "description": "default policy for the logs index template installed pagopa",
-      "managed": false
+      "description": "Policy ${name}"
     }
   }
 }
