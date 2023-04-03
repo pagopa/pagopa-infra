@@ -34,6 +34,13 @@ locals {
     },
   ]
 
+  authorizer_cosmosdb_tables = [
+    {
+      name       = "subkeys",
+      throughput = 400
+    },
+  ]
+
   aks_name        = "${local.product}-${var.location_short}-${var.instance}-aks"
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 
