@@ -1,0 +1,55 @@
+
+<!-- 
+    WARNING! 
+    When you use this fragment, remember always to set:
+    - "application_domain", "authorization_entity" as variables in caller policy
+    - "hostname", "cache-generator-function-key" as parameter for templatefile
+-->
+<fragment>
+  
+    <!-- Saving information from request -->
+    <set-variable name="domain" value="@(context.Variables["application_domain"])" /> 
+    <set-variable name="auth_entity" value="@(context.Variables["authorization_entity"])" /> 
+    <set-variable name="subkey" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "")" />
+    <set-variable name="authorization_cache_key" value="@(context.Variables["domain"] + "_" + context.Variables["subkey"])">
+    
+    <cache-lookup-value variable-name="apim_cache_domain" key="@("apim-cache-" + context.Variables["domain"])" caching-type="internal" />
+    <cache-lookup-value variable-name="authorizer_domain_in_progress" key="@("authorizer-" + context.Variables["domain"] + "-in-progress")" caching-type="internal" />
+
+    <choose>
+        <when condition="@("store".Equals(context.Variables["apim_cache_domain"]) && !context.Variables.ContainsKey("authorizer_domain_in_progress")))">
+            
+            <!-- Save state variable for locking purpose -->
+            <cache-store-value key="@("authorizer-" + context.Variables["domain"] + "-in-progress")" value="True" duration="100000" caching-type="internal" />
+
+            <!-- Call cache-generator function with retrieved function key -->
+            <send-request mode="new" response-variable-name="response_state" timeout="20" ignore-error="true">
+                <set-url>@(String.Format("https://${hostname}/cache-generator/domains/{0}", (string) context.Variables["domain"])</set-url>
+                <set-method>GET</set-method>
+                <set-header name="x-function-key" exists-action="override">
+                    <value>${cache-generator-function-key}</value>
+                </set-header>
+            </send-request>
+
+            <!-- Save storage status -->
+            <cache-store-value key="@("apim-cache-" + context.Variables["domain"])" value="store" duration="100000" caching-type="external" />
+          
+            <!-- Removing locking state variable -->
+            <cache-remove-value key="@("authorizer-" + context.Variables["domain"] + "-in-progress")" caching-type="internal" />
+
+        </when>
+    </choose>
+    
+    <!-- Look up for cached authorized entity list stringified -->
+    <cache-lookup-value variable-name="cached_authorized_entities" key="@(context.Variables["authorization_cache_key"])" caching-type="external" />
+
+    <!-- Invalidating the client request if not authorized -->
+    <choose>
+        <when condition="@(context.Variables.ContainsKey("authorizer_domain_in_progress") || (context.Variables.ContainsKey("cached_authorized_entities"] && context.Variables["cached_authorized_entities"].Contains(context.Variables["auth_entity"])))">
+            <return-response>
+                <set-status code="401" reason="Unauthorized" />
+            </return-response>
+        </when>
+    </choose>
+    
+</fragment>
