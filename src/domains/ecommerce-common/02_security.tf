@@ -78,3 +78,16 @@ resource "azurerm_key_vault_secret" "personal-data-vault-api-key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "payment-gateway-service-jwt-key" {
+  count        = var.env_short == "d" || var.env_short == "u" ? 1 : 0
+  name         = "payment-gateway-service-jwt-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
