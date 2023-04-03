@@ -1450,10 +1450,12 @@
             }
           },
           "idCart": {
-            "type": "string"
+            "type": "string",
+            "example": "id_cart"
           },
           "allCCP": {
-            "type": "boolean"
+            "type": "boolean",
+            "example": "false"
           }
         }
       },
