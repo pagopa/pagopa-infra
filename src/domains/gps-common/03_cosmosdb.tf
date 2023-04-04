@@ -100,3 +100,17 @@ module "gps_cosmosdb_containers" {
 
   autoscale_settings = contains(var.cosmos_gps_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
+
+module "gpd_payments_cosmosdb_database" {
+  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
+  name                = replace(format("%s-payments-cosmos", local.project), "-", "")
+  resource_group_name = azurerm_resource_group.gps_rg.name
+  account_name        = module.gps_cosmosdb_account.name
+}
+
+resource "azurerm_cosmosdb_table" "payments_receipts_table" {
+  name                = format("%sreceiptstable", module.gpd_payments_cosmosdb_database.name)
+  resource_group_name = azurerm_resource_group.gps_rg.name
+  account_name        = module.gps_cosmosdb_account.name
+  throughput          = 400
+}
