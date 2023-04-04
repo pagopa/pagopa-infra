@@ -1,6 +1,7 @@
 <policies>
     <inbound>
-        <set-header name="x-pgs-id" exists-action="delete"/>
+        <set-header name="x-pgs-id" exists-action="delete" />
+        <set-header name="x-transaction-id" exists-action="delete" />
         <set-variable name="requestTransactionId" value="@{
             return context.Request.MatchedParameters["transactionId"];
         }"/>
@@ -58,7 +59,14 @@
                 </return-response>
             </otherwise>
         </choose>
-        <base/>
+        <choose>
+          <when condition="@((string)context.Variables.GetValueOrDefault("requestTransactionId","") != "")">
+            <set-header name="x-transaction-id" exists-action="override">
+                <value>@((string)context.Variables.GetValueOrDefault("requestTransactionId",""))</value>
+            </set-header>
+          </when>
+        </choose>
+        <base />
     </inbound>
     <outbound>
         <base/>

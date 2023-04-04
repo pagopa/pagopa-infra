@@ -100,13 +100,13 @@ resource "azurerm_api_management_api_operation_policy" "delete_transaction" {
   xml_content = file("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl")
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api" {
+resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api_policy" {
   api_name            = "${local.project}-ecommerce-checkout-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "getPaymentRequestInfo"
 
-  xml_content = file("./api/ecommerce-checkout/v1/_recaptcha_check.xml.tpl")
+  xml_content = file("./api/ecommerce-checkout/v1/_payment_request_policy.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "transaction_authorization_request" {
@@ -130,5 +130,14 @@ resource "azurerm_api_management_api_operation_policy" "get_carts_redirect" {
   xml_content = templatefile("./api/ecommerce-checkout/v1/_carts_redirect.xml.tpl", {
     checkout_hostname = "${var.dns_zone_checkout}.${var.external_domain}"
   })
+}
+
+resource "azurerm_api_management_api_operation_policy" "transaction_activation_request" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v1"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "newTransaction"
+
+  xml_content = file("./api/ecommerce-checkout/v1/_rpt_ids_value.xml.tpl")
 }
 
