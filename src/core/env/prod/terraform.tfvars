@@ -141,7 +141,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "/web-bo/.*",
     "/bo-nodo/.*",
     "/pp-admin-panel/.*",
-    "/nodo/monitoring.*",
+    "/nodo-monitoring/monitoring/.*",
     "/nodo-ndp/monitoring/.*",
     "/nodo-replica-ndp/monitoring/.*",
     "/wfesp-ndp/.*",

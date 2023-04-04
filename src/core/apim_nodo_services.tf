@@ -647,9 +647,10 @@ module "apim_nodo_per_pm_api_v2" {
 ######################
 locals {
   apim_nodo_monitoring_api = {
-    display_name          = "Nodo monitoring "
-    description           = "Nodo monitoring"
-    path                  = "nodo/monitoring"
+    display_name = "Nodo monitoring "
+    description  = "Nodo monitoring"
+    # path                  = "nodo/monitoring"
+    path                  = "nodo-monitoring/monitoring"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
@@ -684,7 +685,8 @@ module "apim_nodo_monitoring_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    service = module.apim_nodo_dei_pagamenti_product.product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
