@@ -1104,10 +1104,10 @@ resource "azurerm_data_factory_data_flow" "dataflow_online" {
 
 ############### PIPELINES ###############
 resource "azurerm_data_factory_pipeline" "pipeline_re" {
-  depends_on          = [azurerm_data_factory_data_flow.dataflow_re]
-  name                = "cleanRePipeline"
-  data_factory_id     = azurerm_data_factory.data_factory.id
-  resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
+  depends_on      = [azurerm_data_factory_data_flow.dataflow_re]
+  name            = "cleanRePipeline"
+  data_factory_id = azurerm_data_factory.data_factory.id
+  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
 
   parameters = {
     daysToKeep = 90
@@ -1118,10 +1118,10 @@ resource "azurerm_data_factory_pipeline" "pipeline_re" {
 }
 
 resource "azurerm_data_factory_pipeline" "pipeline_wfesp" {
-  depends_on          = [azurerm_data_factory_data_flow.dataflow_wfesp]
-  name                = "cleanWfespPipeline"
-  data_factory_id     = azurerm_data_factory.data_factory.id
-  resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
+  depends_on      = [azurerm_data_factory_data_flow.dataflow_wfesp]
+  name            = "cleanWfespPipeline"
+  data_factory_id = azurerm_data_factory.data_factory.id
+  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
 
   parameters = {
     daysToKeep = 90
@@ -1132,10 +1132,10 @@ resource "azurerm_data_factory_pipeline" "pipeline_wfesp" {
 }
 
 resource "azurerm_data_factory_pipeline" "pipeline_online" {
-  depends_on          = [azurerm_data_factory_data_flow.dataflow_online]
-  name                = "cleanOnlinePipeline"
-  data_factory_id     = azurerm_data_factory.data_factory.id
-  resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
+  depends_on      = [azurerm_data_factory_data_flow.dataflow_online]
+  name            = "cleanOnlinePipeline"
+  data_factory_id = azurerm_data_factory.data_factory.id
+  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
 
   parameters = {
     daysToKeep = 90
@@ -1155,9 +1155,9 @@ resource "azurerm_data_factory_trigger_schedule" "trigger_re" {
   interval  = 1
   frequency = "Day"
   #  time_zone           = local.time_zone
-  activated           = true
-  resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
-  pipeline_name       = azurerm_data_factory_pipeline.pipeline_re.name
+  activated = true
+  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_re.name
 
   pipeline_parameters = {
     daysToKeep = 90
@@ -1179,9 +1179,9 @@ resource "azurerm_data_factory_trigger_schedule" "trigger_wfesp" {
   interval  = 1
   frequency = "Day"
   #  time_zone           = local.time_zone
-  activated           = true
-  resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
-  pipeline_name       = azurerm_data_factory_pipeline.pipeline_wfesp.name
+  activated = true
+  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_wfesp.name
 
   pipeline_parameters = {
     daysToKeep = 90
@@ -1203,9 +1203,9 @@ resource "azurerm_data_factory_trigger_schedule" "trigger_online" {
   interval  = 1
   frequency = "Day"
   #  time_zone           = local.time_zone
-  activated           = true
-  resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
-  pipeline_name       = azurerm_data_factory_pipeline.pipeline_online.name
+  activated = true
+  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_online.name
 
   pipeline_parameters = {
     daysToKeep = 90
