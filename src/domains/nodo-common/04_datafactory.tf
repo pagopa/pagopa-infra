@@ -67,20 +67,49 @@ resource "azurerm_private_dns_a_record" "data_factory_a_record" {
 }
 
 ############### LINKED SERVICE ####################
-resource "azurerm_data_factory_linked_custom_service" "azure_postgresql_ls" {
-  name                 = "AzurePostgreSqlLinkedService"
-  data_factory_id      = azurerm_data_factory.data_factory.id
-  type                 = "AzurePostgreSql"
-  type_properties_json = <<JSON
-{
-  "connectionString":"host=pagopa-${var.env_short}-weu-nodo-flexible-postgresql.postgres.database.azure.com;port=5432;database=nodo;uid=${local.administrator_login};encryptionmethod=1;validateservercertificate=0;password=${local.administrator_password}"
-}
-JSON
+#resource "azurerm_data_factory_linked_custom_service" "azure_postgresql_ls" {
+#  name                 = "AzurePostgreSqlLinkedService"
+#  data_factory_id      = azurerm_data_factory.data_factory.id
+#  type                 = "AzurePostgreSql"
+#  type_properties_json = <<JSON
+#{
+#  "connectionString":"host=pagopa-${var.env_short}-weu-nodo-flexible-postgresql.postgres.database.azure.com;port=5432;database=nodo;uid=${local.administrator_login};encryptionmethod=1;validateservercertificate=0;password=${local.administrator_password}"
+#}
+#JSON
+#}
+
+resource "azapi_resource" "azure_postgresql_ls" {
+  type      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
+  name      = "AzurePostgreSqlLinkedService"
+  parent_id = azurerm_data_factory.data_factory.id
+  body = jsonencode({
+    properties = {
+      annotations = []
+      connectVia = {
+        parameters    = {}
+        referenceName = "AutoResolveIntegrationRuntime"
+        type          = "IntegrationRuntimeReference"
+      }
+      type = "AzurePostgreSql"
+      typeProperties = {
+        #                  password = {
+        #                    store = {
+        #                      parameters = {}
+        #                      referenceName = "AzurePostgreSqlLinkedService1"
+        #                      type = "LinkedServiceReference"
+        #                    }
+        #                    type = "string"
+        #                    secretName = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.name
+        #                  }
+        connectionString = "host=pagopa-${var.env_short}-weu-nodo-flexible-postgresql.postgres.database.azure.com;port=5432;database=nodo;uid=${local.administrator_login};encryptionmethod=1;validateservercertificate=0;password=${local.administrator_password}"
+      }
+    }
+  })
 }
 
-############### DATASET ####################
+################ DATASET ####################
 resource "azurerm_data_factory_custom_dataset" "datasets" {
-  depends_on      = [azurerm_data_factory_linked_custom_service.azure_postgresql_ls]
+  depends_on      = [azapi_resource.azure_postgresql_ls]
   for_each        = local.datasets
   name            = "${each.key}Dataset"
   data_factory_id = azurerm_data_factory.data_factory.id
@@ -93,13 +122,13 @@ resource "azurerm_data_factory_custom_dataset" "datasets" {
   JSON
 
   linked_service {
-    name = azurerm_data_factory_linked_custom_service.azure_postgresql_ls.name
+    name = azapi_resource.azure_postgresql_ls.name
   }
 
-  lifecycle { create_before_destroy = true }
+  #  lifecycle { create_before_destroy = true }
 }
 
-################ DATAFLOW ####################
+################# DATAFLOW ####################
 resource "azurerm_data_factory_data_flow" "dataflow_re" {
   depends_on      = [azurerm_data_factory_custom_dataset.datasets]
   data_factory_id = azurerm_data_factory.data_factory.id
@@ -130,7 +159,7 @@ resource "azurerm_data_factory_data_flow" "dataflow_re" {
 
   script = templatefile("datafactory/dataflows/reDataflow.dsl", {})
 
-  lifecycle { create_before_destroy = true }
+  #  lifecycle { create_before_destroy = true }
 }
 
 resource "azurerm_data_factory_data_flow" "dataflow_wfesp" {
@@ -203,7 +232,7 @@ resource "azurerm_data_factory_data_flow" "dataflow_wfesp" {
 
   script = templatefile("datafactory/dataflows/wfespDataflow.dsl", {})
 
-  lifecycle { create_before_destroy = true }
+  #  lifecycle { create_before_destroy = true }
 }
 
 resource "azurerm_data_factory_data_flow" "dataflow_online" {
@@ -1099,7 +1128,7 @@ resource "azurerm_data_factory_data_flow" "dataflow_online" {
 
   script = templatefile("datafactory/dataflows/onlineDataflow.dsl", {})
 
-  lifecycle { create_before_destroy = true }
+  #  lifecycle { create_before_destroy = true }
 }
 
 ############### PIPELINES ###############
@@ -1107,25 +1136,25 @@ resource "azurerm_data_factory_pipeline" "pipeline_re" {
   depends_on      = [azurerm_data_factory_data_flow.dataflow_re]
   name            = "cleanRePipeline"
   data_factory_id = azurerm_data_factory.data_factory.id
-  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
 
   parameters = {
     daysToKeep = 90
   }
+
   activities_json = file("datafactory/pipelines/reActivities.json")
 
-  lifecycle { create_before_destroy = true }
+  #  lifecycle { create_before_destroy = true }
 }
 
 resource "azurerm_data_factory_pipeline" "pipeline_wfesp" {
   depends_on      = [azurerm_data_factory_data_flow.dataflow_wfesp]
   name            = "cleanWfespPipeline"
   data_factory_id = azurerm_data_factory.data_factory.id
-  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
 
   parameters = {
     daysToKeep = 90
   }
+
   activities_json = file("datafactory/pipelines/wfespActivities.json")
 
   lifecycle { create_before_destroy = true }
@@ -1135,14 +1164,14 @@ resource "azurerm_data_factory_pipeline" "pipeline_online" {
   depends_on      = [azurerm_data_factory_data_flow.dataflow_online]
   name            = "cleanOnlinePipeline"
   data_factory_id = azurerm_data_factory.data_factory.id
-  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
 
   parameters = {
     daysToKeep = 90
   }
+
   activities_json = file("datafactory/pipelines/onlineActivities.json")
 
-  lifecycle { create_before_destroy = true }
+  #  lifecycle { create_before_destroy = true }
 }
 
 
@@ -1154,11 +1183,10 @@ resource "azurerm_data_factory_trigger_schedule" "trigger_re" {
 
   interval  = 1
   frequency = "Day"
-  #  time_zone           = local.time_zone
+  time_zone = local.time_zone
   activated = true
-  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
-  pipeline_name = azurerm_data_factory_pipeline.pipeline_re.name
 
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_re.name
   pipeline_parameters = {
     daysToKeep = 90
   }
@@ -1168,7 +1196,7 @@ resource "azurerm_data_factory_trigger_schedule" "trigger_re" {
     minutes = [1]
   }
 
-  lifecycle { create_before_destroy = true }
+  #  lifecycle { create_before_destroy = true }
 }
 
 resource "azurerm_data_factory_trigger_schedule" "trigger_wfesp" {
@@ -1178,11 +1206,10 @@ resource "azurerm_data_factory_trigger_schedule" "trigger_wfesp" {
 
   interval  = 1
   frequency = "Day"
-  #  time_zone           = local.time_zone
+  time_zone = local.time_zone
   activated = true
-  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
-  pipeline_name = azurerm_data_factory_pipeline.pipeline_wfesp.name
 
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_wfesp.name
   pipeline_parameters = {
     daysToKeep = 90
   }
@@ -1192,7 +1219,7 @@ resource "azurerm_data_factory_trigger_schedule" "trigger_wfesp" {
     minutes = [1]
   }
 
-  lifecycle { create_before_destroy = true }
+  #  lifecycle { create_before_destroy = true }
 }
 
 resource "azurerm_data_factory_trigger_schedule" "trigger_online" {
@@ -1202,11 +1229,10 @@ resource "azurerm_data_factory_trigger_schedule" "trigger_online" {
 
   interval  = 1
   frequency = "Day"
-  #  time_zone           = local.time_zone
+  time_zone = local.time_zone
   activated = true
-  # resource_group_name = azurerm_private_dns_zone.adf.resource_group_name
-  pipeline_name = azurerm_data_factory_pipeline.pipeline_online.name
 
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_online.name
   pipeline_parameters = {
     daysToKeep = 90
   }
@@ -1216,5 +1242,5 @@ resource "azurerm_data_factory_trigger_schedule" "trigger_online" {
     minutes = [1]
   }
 
-  lifecycle { create_before_destroy = true }
+  #  lifecycle { create_before_destroy = true }
 }

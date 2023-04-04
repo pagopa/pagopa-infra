@@ -4,6 +4,7 @@
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | = 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.21.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 3.40.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
@@ -21,13 +22,13 @@
 
 | Name | Type |
 |------|------|
+| [azapi_resource.azure_postgresql_ls](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
 | [azurerm_data_factory.data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory) | resource |
 | [azurerm_data_factory_custom_dataset.datasets](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_data_flow.dataflow_online](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_data_flow) | resource |
 | [azurerm_data_factory_data_flow.dataflow_re](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_data_flow) | resource |
 | [azurerm_data_factory_data_flow.dataflow_wfesp](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_data_flow) | resource |
 | [azurerm_data_factory_integration_runtime_azure.autoresolve](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_integration_runtime_azure) | resource |
-| [azurerm_data_factory_linked_custom_service.azure_postgresql_ls](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_linked_custom_service) | resource |
 | [azurerm_data_factory_pipeline.pipeline_online](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_re](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_wfesp](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_pipeline) | resource |
