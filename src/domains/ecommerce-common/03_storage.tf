@@ -109,6 +109,11 @@ resource "azurerm_storage_queue" "transactions_notifications_retry_queue" {
   storage_account_name = module.ecommerce_storage.name
 }
 
+resource "azurerm_storage_queue" "transactions_notifications_queue" {
+  name                 = "${local.project}-transaction-notifications-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
 resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
   name                 = "${local.project}-transactions-dead-letter-queue"
   storage_account_name = module.ecommerce_storage.name
