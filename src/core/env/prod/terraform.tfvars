@@ -1,5 +1,6 @@
 # general
 env_short = "p"
+env       = "prod"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -48,7 +49,7 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis = ["10.1.132.0/24"]
+cidr_subnet_redis = ["10.1.163.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -96,7 +97,7 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_kibana_certificate_name     = "kibana-platform-pagopa-it"
-app_gateway_wfespgovit_certificate_name = ""
+app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
 app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                = 50
 app_gateway_sku_name                    = "WAF_v2"
@@ -105,7 +106,7 @@ app_gateway_waf_enabled                 = true
 app_gateway_alerts_enabled              = true
 app_gateway_deny_paths = [
   "/nodo/.*",
-  "/nodo-auth/.*", # non serve in quanto queste API sono con subkey required 🔐
+  # "/nodo-auth/.*", # non serve in quanto queste API sono con subkey required 🔐
   "/payment-manager/clients/.*",
   "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
@@ -113,8 +114,7 @@ app_gateway_deny_paths = [
   "/payment-manager/internal*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd/.*",           # internal use no sub-keys
-  "/gpd-payments/.*",  # internal use no sub-keys
+  "/gpd-payments/.*",  # internal use no sub-keys SOAP
   "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
@@ -134,12 +134,14 @@ app_gateway_deny_paths_2 = [
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
   "/gps/gpd-payments/.*",                 # internal use no sub-keys
   "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
+  "/gps/gpd-reporting-orgs-enrollment/.*" # internal use
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
     "/web-bo/.*",
     "/bo-nodo/.*",
     "/pp-admin-panel/.*",
+    "/nodo-monitoring/monitoring/.*",
     "/nodo-ndp/monitoring/.*",
     "/nodo-replica-ndp/monitoring/.*",
     "/wfesp-ndp/.*",
@@ -180,9 +182,11 @@ mock_payment_gateway_enabled = false
 
 
 # apim x nodo pagamenti
+apim_nodo_decoupler_enable      = true
+apim_nodo_auth_decoupler_enable = true
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "97249640588,08658331007,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
+nodo_pagamenti_psp     = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec      = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
 nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
 ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
@@ -459,6 +463,14 @@ pagopa_proxy_size           = "P1v3"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
+# redis apim
+redis_cache_params = {
+  public_access = false
+  capacity      = 0
+  sku_name      = "Standard"
+  family        = "C"
+}
+
 # payment-manager clients
 io_bpd_hostname    = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
 xpay_hostname      = "ecommerce.nexi.it"
@@ -483,6 +495,7 @@ reporting_fdr_function_always_on = true
 gpd_plan_kind                = "Linux"
 gpd_plan_sku_tier            = "PremiumV3"
 gpd_plan_sku_size            = "P1v3"
+gpd_cron_job_enable          = true
 gpd_cron_schedule_valid_to   = "0 */30 * * * *"
 gpd_cron_schedule_expired_to = "0 */40 * * * *"
 

@@ -75,3 +75,9 @@ resource "azurerm_private_dns_cname_record" "database_ndp" {
   record              = module.postgres_flexible_server.fqdn
   tags                = var.tags
 }
+
+data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = local.vnet_resource_group_name
+}
+

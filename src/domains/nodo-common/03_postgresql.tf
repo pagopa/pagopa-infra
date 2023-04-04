@@ -17,13 +17,13 @@ data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
 
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.1.13"
-  name                                           = format("%s-pgres-flexible-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_flex_dbms
-  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  service_endpoints                              = ["Microsoft.Storage"]
-  enforce_private_link_endpoint_network_policies = true
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  name                                          = format("%s-pgres-flexible-snet", local.project)
+  address_prefixes                              = var.cidr_subnet_flex_dbms
+  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                          = data.azurerm_virtual_network.vnet.name
+  service_endpoints                             = ["Microsoft.Storage"]
+  private_link_service_network_policies_enabled = true
 
   delegation = {
     name = "delegation"
@@ -37,7 +37,7 @@ module "postgres_flexible_snet" {
 }
 
 module "postgres_flexible_server" {
-  source              = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.12.3"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v6.2.1"
   name                = format("%s-flexible-postgresql", local.project)
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name
