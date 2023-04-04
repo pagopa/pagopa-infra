@@ -17,7 +17,7 @@ steps:
         for keyvault_neu_name in $AllNeuKeyvaults; do
           
           echo "Get parent KeyVaults in NEU"
-          originVault=`echo $originVault |  sed 's/-neu//'`
+          originVault=`echo $keyvault_neu_name |  sed 's/-neu//'`
           
           destinationVault=$keyvault_neu_name
 
