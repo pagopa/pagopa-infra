@@ -3,7 +3,7 @@ pool:
 
 steps:
   - task: AzureCLI@2
-    displayName: Run apim $(APIM_NAME) backup
+    displayName: Run KEYVAULT Backup and Restore
     inputs:
       azureSubscription: DEV-PAGOPA-SERVICE-CONN
       scriptType: bash
@@ -15,9 +15,10 @@ steps:
         AllNeuKeyvaults=`az keyvault list --query "[?location == \`northeurope\`].name" -o tsv`
         
         for keyvault_neu_name in $AllNeuKeyvaults; do
-          echo "Get all parents KeyVaults in WEU"
-
+          
           originVault=$keyvault_neu_name
+
+          echo "Get all parents KeyVaults in WEU"
           destinationVault=`echo $originVault |  sed 's/-neu//'`
 
           echo "Listing all origin secrets from vault: $originVault"
