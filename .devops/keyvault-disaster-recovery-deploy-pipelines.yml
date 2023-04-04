@@ -16,7 +16,7 @@ steps:
         
         for keyvault_neu_name in $AllNeuKeyvaults; do
           
-          echo "Get parent KeyVaults in NEU"
+          echo "Get parent KeyVaults in $(AZURE_REGION_DR_LOCATION)"
           originVault=`echo $keyvault_neu_name |  sed 's/-neu//'`
           
           destinationVault=$keyvault_neu_name
@@ -27,7 +27,7 @@ steps:
               echo "READ Secret: "$secret_name
               secret_value=`az keyvault secret show --name $secret_name --vault-name $originVault -o tsv --query "value"`
               echo "WRITE Secret: "$secret_name
-              az keyvault secret set --name $secret_name  --vault-name $destinationVault -o none --value "$secret_value"
+              #az keyvault secret set --name $secret_name  --vault-name $destinationVault -o none --value "$secret_value"
           done
           
           echo "Listing all origin certificate from vault: $originVault"
@@ -36,7 +36,7 @@ steps:
               echo "BACKUP Cert: "$cert_name
               az keyvault certificate backup --name $cert_name --vault-name $originVault --file $cert_name.bck
               echo "RESTORE Cert: "$cert_name
-              az keyvault certificate restore  --vault-name $destinationVault  --file $cert_name.bck
+              #az keyvault certificate restore  --vault-name $destinationVault  --file $cert_name.bck
           done
 
           echo "Listing all origin keys from vault: $originVault"
@@ -45,7 +45,7 @@ steps:
               echo "BACKUP Key: "$key_name
               az keyvault certificate backup --name $key_name --vault-name $originVault --file $key_name.bck
               echo "RESTORE Key: "$key_name
-              az keyvault certificate restore  --vault-name $destinationVault  --file $key_name.bck
+              #az keyvault certificate restore  --vault-name $destinationVault  --file $key_name.bck
           done
         done
 
