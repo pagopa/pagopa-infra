@@ -89,7 +89,7 @@ module "aks" {
   tags = var.tags
 }
 
-/* data "azurerm_container_registry" "acr" {
+data "azurerm_container_registry" "acr" {
   name                = local.acr_name
   resource_group_name = local.acr_resource_group_name
 }
@@ -99,4 +99,4 @@ resource "azurerm_role_assignment" "aks_to_acr" {
   scope                = data.azurerm_container_registry.acr.id
   role_definition_name = "AcrPull"
   principal_id         = module.aks.kubelet_identity_id
-} */
+}

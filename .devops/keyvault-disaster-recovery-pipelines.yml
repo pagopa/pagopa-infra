@@ -1,0 +1,51 @@
+pool:
+  vmImage: "ubuntu-20.04"
+
+steps:
+  - task: AzureCLI@2
+    displayName: Run apim $(APIM_NAME) backup
+    inputs:
+      azureSubscription: DEV-PAGOPA-SERVICE-CONN
+      scriptType: bash
+      scriptLocation: inlineScript
+      failOnStandardError: false
+      inlineScript: |
+        set -e
+        echo "Get all KeyVaults in NEU"
+        AllNeuKeyvaults=`az keyvault list --query "[?location == \`northeurope\`].name" -o tsv`
+        
+        for keyvault_neu_name in $AllNeuKeyvaults; do
+          echo "Get all parents KeyVaults in WEU"
+
+          originVault=$keyvault_neu_name
+          destinationVault=`echo $originVault |  sed 's/-neu//'`
+
+          echo "Listing all origin secrets from vault: $originVault"
+          originSecretKeys=`az keyvault secret list --vault-name $originVault  -o tsv --query "[].name"`
+          for secret_name in $originSecretKeys; do
+              echo "READ Secret: "$secret_name
+              secret_value=`az keyvault secret show --name $secret_name --vault-name $originVault -o tsv --query "value"`
+              echo "WRITE Secret: "$secret_name
+              az keyvault secret set --name $secret_name  --vault-name $destinationVault -o none --value "$secret_value"
+          done
+          
+          echo "Listing all origin certificate from vault: $originVault"
+          originCertKeys=`az keyvault certificate list --vault-name $originVault  -o tsv --query "[].name"`
+          for cert_name in $originCertKeys; do
+              echo "BACKUP Cert: "$cert_name
+              az keyvault certificate backup --name $cert_name --vault-name $originVault --file $cert_name.bck
+              echo "RESTORE Cert: "$cert_name
+              az keyvault certificate restore  --vault-name $destinationVault  --file $cert_name.bck
+          done
+
+          echo "Listing all origin keys from vault: $originVault"
+          originKeys=`az keyvault key list --vault-name $originVault  -o tsv --query "[].name"`
+          for key_name in $originKeys; do
+              echo "BACKUP Key: "$key_name
+              az keyvault certificate backup --name $key_name --vault-name $originVault --file $key_name.bck
+              echo "RESTORE Key: "$key_name
+              az keyvault certificate restore  --vault-name $destinationVault  --file $key_name.bck
+          done
+        done
+
+       

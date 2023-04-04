@@ -33,6 +33,7 @@ locals {
 
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 
-
+  nodo_db_dns_zone = "${var.env_short}.db-nodo-pagamenti.com"
+  nodo_db_dns_zone_rg = "pagopa-${var.env_short}-data-rg"
 }
 

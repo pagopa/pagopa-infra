@@ -58,3 +58,20 @@ data "azurerm_subnet" "private_endpoint_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet.name
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 }
+
+
+data "azurerm_private_dns_zone" "db_nodo_dns" {
+  name                = local.nodo_db_dns_zone
+  resource_group_name = local.nodo_db_dns_zone_rg
+}
+
+
+resource "azurerm_private_dns_cname_record" "database_ndp" {
+
+  name                = "ndp"
+  zone_name           = data.azurerm_private_dns_zone.db_nodo_dns.name
+  resource_group_name = local.nodo_db_dns_zone_rg
+  ttl                 = 3600
+  record              = module.postgres_flexible_server.fqdn
+  tags                = var.tags
+}
