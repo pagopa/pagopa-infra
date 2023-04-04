@@ -12,7 +12,7 @@ steps:
       inlineScript: |
         set -e
         echo "Get all KeyVaults in NEU"
-        AllNeuKeyvaults=`az keyvault list --query "[?location == \`$(AZURE_REGION_DR_LOCATION)\`].name" -o tsv`
+        AllNeuKeyvaults=`az keyvault list --query "[?location == \`northeurope\`].name" -o tsv`
         
         for keyvault_neu_name in $AllNeuKeyvaults; do
           
