@@ -16,10 +16,10 @@ steps:
         
         for keyvault_neu_name in $AllNeuKeyvaults; do
           
-          originVault=$keyvault_neu_name
-
-          echo "Get all parents KeyVaults in WEU"
-          destinationVault=`echo $originVault |  sed 's/-neu//'`
+          echo "Get parent KeyVaults in NEU"
+          originVault=`echo $originVault |  sed 's/-neu//'`
+          
+          destinationVault=$keyvault_neu_name
 
           echo "Listing all origin secrets from vault: $originVault"
           originSecretKeys=`az keyvault secret list --vault-name $originVault  -o tsv --query "[].name"`
