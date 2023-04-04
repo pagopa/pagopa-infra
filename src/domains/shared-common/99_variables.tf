@@ -62,6 +62,26 @@ variable "tags" {
   }
 }
 
+### POC reporting enrollment variables
+
+variable "poc_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "poc_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "poc_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
