@@ -1,7 +1,3 @@
-locals {
-  time_zone = "W. Europe Standard Time"
-}
-
 resource "azurerm_data_factory_pipeline" "pipeline_re" {
   depends_on      = [azurerm_data_factory_data_flow.dataflow_re]
   name            = "cleanRePipeline"
