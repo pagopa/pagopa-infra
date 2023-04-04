@@ -650,7 +650,7 @@ locals {
     display_name = "Nodo monitoring "
     description  = "Nodo monitoring"
     # path                  = "nodo/monitoring"
-    path                  = "nodo-monitoring/monitoring"
+    path                  = var.env_short == "p" ? "nodo-monitoring/monitoring" : "nodo/monitoring"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
