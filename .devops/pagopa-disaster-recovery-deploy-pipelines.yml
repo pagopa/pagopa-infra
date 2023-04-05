@@ -1,0 +1,46 @@
+pool:
+  vmImage: "ubuntu-20.04"
+
+steps:
+  - task: AzureCLI@2
+    displayName: Run POSTGRES FLEXIBLE stopping replication
+    inputs:
+      azureSubscription: DEV-PAGOPA-SERVICE-CONN
+      scriptType: bash
+      scriptLocation: inlineScript
+      failOnStandardError: false
+      inlineScript: |
+        set -e
+        # STEP 1: update DR APIM to Premium SKU
+        az apim update --sku-name Premium --sku-capacity 1 --no-wait --name --resource-group
+        
+        # STEP 2: update AKS to paid SLA
+        az aks update --uptime-sla --name --resource-group
+
+        # STEP 3: update AKS system nodepool autoscale (default: min=2 max=8)
+        AllNeuAKSNodepool=`az aks nodepool list --cluster-name --resource-group`
+        for aksnodepool_neu_name in $AllNeuAKSNodepool; do
+
+          az aks nodepool update --cluster-name --name $aksnodepool_neu_name --resource-group --min-count 2 --max-count 8
+        
+        done
+
+
+        echo "Get all Postgres Flexible in NEU"
+        AllNeuPostgresFlex=`az postgres flexible-server list --query "[?location == 'North Europe'].id" -o tsv`
+        
+        echo "-- STARTING DISABLE REPLICATION FOR ALL FLEXIBLE SERVERS --"
+        for postgresflex_neu_name in $AllNeuPostgresFlex; do
+          echo "postgresID: $postgresflex_neu_name" 
+          
+          IFS='/' read -r -a PostGresFlexARR <<< "$postgresflex_neu_name"
+
+          echo "--> RG Name: ${PostGresFlexARR[4]}"
+          echo "--> PGFLEX Name: ${PostGresFlexARR[8]}"
+          echo "--> STOPPING REPLICATION AND WRITE ENABLE<--"
+          ## now only echo for testing
+          echo "az postgres flexible-server replica stop-replication -g ${PostGresFlexARR[4]} -n ${PostGresFlexARR[8]}"
+        done
+        echo "-- END DISABLE REPLICATION FOR ALL FLEXIBLE SERVERS --"
+
+       
