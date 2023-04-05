@@ -62,5 +62,20 @@ locals {
 
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
+
+  apiconfig_cache_replica_locals = {
+    hostname = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+
+    product_id            = "apiconfig-cache-replica"
+    display_name          = "API Config Cache Replica"
+    description           = "Management APIs to configure pagoPA cache replica"
+    subscription_required = true
+    subscription_limit    = 1000
+
+    path        = "api-config-cache-replica"
+    service_url = null
+
+    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
+  }
 }
 
