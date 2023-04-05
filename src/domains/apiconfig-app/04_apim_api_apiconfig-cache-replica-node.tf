@@ -20,7 +20,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
   count  = var.env_short == "p" ? 0 : 1
 
-  name                  = format("%s-apiconfig-cache-node-%s-api", local.project, "p")
+  name                  = format("%s-apiconfig-cache-replica-node-%s-api", local.project, "p")
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_apiconfig_cache_replica_product.product_id]
@@ -39,7 +39,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig-cache-replica/node/_openapi_nodev1.json.tpl", {
     host    = local.apim_hostname
-    service = "node-p"
+    service = "node-p-replica"
   })
 
   xml_content = templatefile("./api/apiconfig-cache-replica/node/_base_policy.xml", {
@@ -52,7 +52,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
   count  = var.env_short == "p" ? 0 : 1
 
-  name                  = format("%s-apiconfig-cache-node-%s-api", local.project, "o")
+  name                  = format("%s-apiconfig-cache-replica-node-%s-api", local.project, "o")
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_apiconfig_cache_replica_product.product_id]
@@ -71,7 +71,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig-cache-replica/node/_openapi_nodev1.json.tpl", {
     host    = local.apim_hostname
-    service = "node-o"
+    service = "node-o-replica"
   })
 
   xml_content = templatefile("./api/apiconfig-cache-replica/node/_base_policy.xml", {
