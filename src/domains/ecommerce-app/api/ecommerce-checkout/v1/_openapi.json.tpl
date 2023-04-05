@@ -1488,6 +1488,7 @@
           "NOTIFIED_OK",
           "NOTIFIED_KO",
           "NOTIFICATION_ERROR",
+          "NOTIFICATION_REQUESTED",
           "EXPIRED",
           "REFUNDED",
           "CANCELED",
