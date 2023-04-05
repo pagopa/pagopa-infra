@@ -17,10 +17,13 @@ steps:
         # STEP 2: Restore DR APIM backup
         az apim restore
         
-        # STEP 3: update AKS to paid SLA
+        # STEP 3: set APIM Redis
+        az apim update
+
+        # STEP 4: update AKS to paid SLA
         az aks update --uptime-sla --name --resource-group
 
-        # STEP 4: update AKS system nodepool autoscale (default: min=2 max=8)
+        # STEP 5: update AKS system nodepool autoscale (default: min=2 max=8)
         AllNeuAKSNodepool=`az aks nodepool list --cluster-name --resource-group`
         for aksnodepool_neu_name in $AllNeuAKSNodepool; do
 
@@ -31,7 +34,7 @@ steps:
 
         ## This step must be under pipeline approvals
 
-        # STEP 5: Switch Postgres Flexible
+        # STEP 6: Switch Postgres Flexible
         echo "Get all Postgres Flexible in NEU"
         AllNeuPostgresFlex=`az postgres flexible-server list --query "[?location == 'North Europe'].id" -o tsv`
         
@@ -49,6 +52,6 @@ steps:
         done
         echo "-- END DISABLE REPLICATION FOR ALL FLEXIBLE SERVERS --"
 
-        # STEP 6: Switch Postgres Flexible fqdn under private DNS
+        # STEP 7: Switch Postgres Flexible fqdn under private DNS
 
-        # STEP 7: Switch public DNS
+        # STEP 8: Switch public DNS
