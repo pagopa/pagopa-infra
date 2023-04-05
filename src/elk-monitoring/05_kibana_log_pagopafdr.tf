@@ -3,32 +3,32 @@ locals {
   ## space
   pagopafdr_space_name = "fdr"
   pagopafdr_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/space.json", {
-    name = "${local.pagopafdr_space_name}"
-  }), "\""), "\""), "'", "'\\''")
+      name  = "${local.pagopafdr_space_name}"
+    }), "\""), "\""), "'", "'\\''")
 
   ## fdr
   pagopafdr_key = "pagopafdr"
 
   pagopafdr_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/log-template/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdr_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.pagopafdr_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.pagopafdr_key
+    }), "\""), "\""), "'", "'\\''")
   pagopafdr_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-    name = local.pagopafdr_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.pagopafdr_key
+    }), "\""), "\""), "'", "'\\''")
   pagopafdr_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-    name = local.pagopafdr_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.pagopafdr_key
+    }), "\""), "\""), "'", "'\\''")
   pagopafdr_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-    name                       = local.pagopafdr_key
-    component_template_package = "${local.pagopafdr_key}@package"
-    component_template_custom  = "${local.pagopafdr_key}@custom"
-  }), "\""), "\""), "'", "'\\''")
+      name     = local.pagopafdr_key
+     component_template_package     = "${local.pagopafdr_key}@package"
+      component_template_custom     = "${local.pagopafdr_key}@custom"
+    }), "\""), "\""), "'", "'\\''")
 
-
+  
   pagopafdr_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-    name = local.pagopafdr_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.pagopafdr_key
+    }), "\""), "\""), "'", "'\\''")
 }
 
 ## space

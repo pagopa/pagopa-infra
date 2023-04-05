@@ -3,151 +3,151 @@ locals {
   ## space
   ndp_space_name = "ndp"
   ndp_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/space.json", {
-    name = "${local.ndp_space_name}"
-  }), "\""), "\""), "'", "'\\''")
+      name  = "${local.ndp_space_name}"
+    }), "\""), "\""), "'", "'\\''")
 
   ## nodo
   ndp_nodo_key = "nodo"
 
   ndp_nodo_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_nodo_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_nodo_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.ndp_nodo_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodo_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodo_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-    name = local.ndp_nodo_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodo_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodo_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-    name = local.ndp_nodo_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodo_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodo_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-    name                       = local.ndp_nodo_key
-    component_template_package = "${local.ndp_nodo_key}@package"
-    component_template_custom  = "${local.ndp_nodo_key}@custom"
-  }), "\""), "\""), "'", "'\\''")
-
+      name     = local.ndp_nodo_key
+      component_template_package     = "${local.ndp_nodo_key}@package"
+      component_template_custom     = "${local.ndp_nodo_key}@custom"
+    }), "\""), "\""), "'", "'\\''")
+  
   ndp_nodo_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-    name = local.ndp_nodo_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodo_key
+    }), "\""), "\""), "'", "'\\''")
 
   ## nodoreplica
   ndp_nodoreplica_key = "nodoreplica"
 
   ndp_nodoreplica_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_nodoreplica_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_nodoreplica_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.ndp_nodoreplica_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodoreplica_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodoreplica_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-    name = local.ndp_nodoreplica_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodoreplica_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodoreplica_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-    name = local.ndp_nodoreplica_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodoreplica_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodoreplica_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-    name                       = local.ndp_nodoreplica_key
-    component_template_package = "${local.ndp_nodoreplica_key}@package"
-    component_template_custom  = "${local.ndp_nodoreplica_key}@custom"
-  }), "\""), "\""), "'", "'\\''")
-
-
+      name     = local.ndp_nodoreplica_key
+      component_template_package     = "${local.ndp_nodoreplica_key}@package"
+      component_template_custom     = "${local.ndp_nodoreplica_key}@custom"
+    }), "\""), "\""), "'", "'\\''")
+    
+  
   ndp_nodoreplica_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-    name = local.ndp_nodoreplica_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodoreplica_key
+    }), "\""), "\""), "'", "'\\''")
 
   ## nodocron
   ndp_nodocron_key = "nodocron"
 
   ndp_nodocron_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_nodocron_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_nodocron_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.ndp_nodocron_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodocron_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodocron_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-    name = local.ndp_nodocron_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodocron_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodocron_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-    name = local.ndp_nodocron_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodocron_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodocron_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-    name                       = local.ndp_nodocron_key
-    component_template_package = "${local.ndp_nodocron_key}@package"
-    component_template_custom  = "${local.ndp_nodocron_key}@custom"
-  }), "\""), "\""), "'", "'\\''")
-
-
+      name     = local.ndp_nodocron_key
+      component_template_package     = "${local.ndp_nodocron_key}@package"
+      component_template_custom     = "${local.ndp_nodocron_key}@custom"
+    }), "\""), "\""), "'", "'\\''")
+    
+  
   ndp_nodocron_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-    name = local.ndp_nodocron_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodocron_key
+    }), "\""), "\""), "'", "'\\''")
 
   ## nodocronreplica
   ndp_nodocronreplica_key = "nodocronreplica"
 
   ndp_nodocronreplica_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_nodocronreplica_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_nodocronreplica_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.ndp_nodocronreplica_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodocronreplica_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodocronreplica_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-    name = local.ndp_nodocronreplica_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodocronreplica_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodocronreplica_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-    name = local.ndp_nodocronreplica_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_nodocronreplica_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_nodocronreplica_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-    name                       = local.ndp_nodocronreplica_key
-    component_template_package = "${local.ndp_nodocronreplica_key}@package"
-    component_template_custom  = "${local.ndp_nodocronreplica_key}@custom"
-  }), "\""), "\""), "'", "'\\''")
-
-
+      name     = local.ndp_nodocronreplica_key
+      component_template_package     = "${local.ndp_nodocronreplica_key}@package"
+      component_template_custom     = "${local.ndp_nodocronreplica_key}@custom"
+    }), "\""), "\""), "'", "'\\''")
+    
+  
   ndp_nodocronreplica_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-    name = local.ndp_nodocronreplica_key
-  }), "\""), "\""), "'", "'\\''")
-
+      name  = local.ndp_nodocronreplica_key
+    }), "\""), "\""), "'", "'\\''")
+  
   ## pagopawebbo
   ndp_pagopawebbo_key = "pagopawebbo"
 
   ndp_pagopawebbo_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_pagopawebbo_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_pagopawebbo_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.ndp_pagopawebbo_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_pagopawebbo_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_pagopawebbo_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-    name = local.ndp_pagopawebbo_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_pagopawebbo_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_pagopawebbo_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-    name = local.ndp_pagopawebbo_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_pagopawebbo_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_pagopawebbo_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-    name                       = local.ndp_pagopawebbo_key
-    component_template_package = "${local.ndp_pagopawebbo_key}@package"
-    component_template_custom  = "${local.ndp_pagopawebbo_key}@custom"
-  }), "\""), "\""), "'", "'\\''")
-
-
+      name     = local.ndp_pagopawebbo_key
+      component_template_package     = "${local.ndp_pagopawebbo_key}@package"
+      component_template_custom     = "${local.ndp_pagopawebbo_key}@custom"
+    }), "\""), "\""), "'", "'\\''")
+    
+  
   ndp_pagopawebbo_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-    name = local.ndp_pagopawebbo_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_pagopawebbo_key
+    }), "\""), "\""), "'", "'\\''")
 
   ## pagopawfespwfesp
   ndp_pagopawfespwfesp_key = "pagopawfespwfesp"
 
   ndp_pagopawfespwfesp_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_pagopawfespwfesp_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_pagopawfespwfesp_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.ndp_pagopawfespwfesp_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_pagopawfespwfesp_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_pagopawfespwfesp_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-    name = local.ndp_pagopawfespwfesp_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_pagopawfespwfesp_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_pagopawfespwfesp_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-    name = local.ndp_pagopawfespwfesp_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_pagopawfespwfesp_key
+    }), "\""), "\""), "'", "'\\''")
   ndp_pagopawfespwfesp_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-    name                       = local.ndp_pagopawfespwfesp_key
-    component_template_package = "${local.ndp_pagopawfespwfesp_key}@package"
-    component_template_custom  = "${local.ndp_pagopawfespwfesp_key}@custom"
-  }), "\""), "\""), "'", "'\\''")
-
-
+      name     = local.ndp_pagopawfespwfesp_key
+      component_template_package     = "${local.ndp_pagopawfespwfesp_key}@package"
+      component_template_custom     = "${local.ndp_pagopawfespwfesp_key}@custom"
+    }), "\""), "\""), "'", "'\\''")
+    
+  
   ndp_pagopawfespwfesp_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-    name = local.ndp_pagopawfespwfesp_key
-  }), "\""), "\""), "'", "'\\''")
+      name  = local.ndp_pagopawfespwfesp_key
+    }), "\""), "\""), "'", "'\\''")
 }
 
 ## space
