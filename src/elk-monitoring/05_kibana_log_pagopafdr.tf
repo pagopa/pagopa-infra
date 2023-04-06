@@ -25,7 +25,7 @@ locals {
       component_template_custom     = "${local.pagopafdrnodo_key}@custom"
     }), "\""), "\""), "'", "'\\''")
 
-  
+
   pagopafdrnodo_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
       name  = local.pagopafdrnodo_key
     }), "\""), "\""), "'", "'\\''")
@@ -49,7 +49,7 @@ locals {
       component_template_custom     = "${local.pagopafdrnodocron_key}@custom"
     }), "\""), "\""), "'", "'\\''")
 
-  
+
   pagopafdrnodocron_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
       name  = local.pagopafdrnodocron_key
     }), "\""), "\""), "'", "'\\''")
@@ -73,7 +73,7 @@ locals {
       component_template_custom     = "${local.pagopafdr_key}@custom"
     }), "\""), "\""), "'", "'\\''")
 
-  
+
   pagopafdr_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
       name  = local.pagopafdr_key
     }), "\""), "\""), "'", "'\\''")
