@@ -75,7 +75,6 @@
 | [null_resource.ndp_nodoreplica_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.ndp_nodoreplica_kibana_data_view](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.ndp_nodoreplica_upload_dashboard](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
-| [null_resource.ndp_nodoreplica_upload_query](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.ndp_pagopawebbo_component_template_custom](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.ndp_pagopawebbo_component_template_package](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.ndp_pagopawebbo_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
