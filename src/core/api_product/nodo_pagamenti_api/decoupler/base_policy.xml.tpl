@@ -13,6 +13,7 @@
 <policies>
   <inbound>
     <base/>
+    <set-variable name="renewrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
     <!-- read decoupler configuration json -->
     <choose>
         <when condition="@(${is-nodo-auth-pwd-replace})">
@@ -123,5 +124,6 @@
   </outbound>
   <on-error>
     <base/>
+    <include-fragment fragment-id="onerror-soap-req" />
   </on-error>
 </policies>
