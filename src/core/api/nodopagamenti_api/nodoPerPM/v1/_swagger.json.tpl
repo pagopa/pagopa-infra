@@ -630,26 +630,11 @@
           "400": {
             "description": "Bad Request",
             "schema": {
-              "$ref": "#/definitions/Error"
+              "$ref": "#/definitions/CheckPositionResponseError"
             }
           },
-          "404": {
-            "description": "Not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "408": {
-            "description": "Request Timeout",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "422": {
-            "description": "Unprocessable entry",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -1281,6 +1266,25 @@
           },
           "minItems": 1,
           "maxItems": 5
+        }
+      }
+    },
+    "CheckPositionResponseError": {
+      "type": "object",
+      "required": [
+        "outcome",
+        "description"
+      ],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "KO"
+          ]
+        },
+        "description": {
+          "type": "string"
         }
       }
     }
