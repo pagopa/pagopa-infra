@@ -17,7 +17,9 @@ resource "null_resource" "ndp_nodo_upload_query" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/saved_objects/_import?overwrite=true" -H 'kbn-xsrf: true' --form "file=@./${each.value}"
+      curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/saved_objects/_import?overwrite=true" \
+      -H 'kbn-xsrf: true' \
+      --form "file=@./${each.value}"
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
