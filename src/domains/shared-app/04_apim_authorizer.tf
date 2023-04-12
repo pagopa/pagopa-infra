@@ -32,7 +32,7 @@ module "apim_authorizer_product" {
   approval_required     = false
   # subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/authorizer/_authorizer_policy.xml")
+  policy_xml = file("./api_product/_authorizer_policy.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "api_authorizer_api" {

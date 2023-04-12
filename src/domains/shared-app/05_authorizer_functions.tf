@@ -45,7 +45,7 @@ module "authorizer_function_app" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_name = replace(format("%s-authorizer-sa", local.project), "-", "")
+  storage_account_name = replace(format("%s-auth-sa", local.project), "-", "")
 
   app_settings = {
     linux_fx_version                    = "JAVA|17"

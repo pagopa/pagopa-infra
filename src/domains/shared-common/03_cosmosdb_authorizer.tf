@@ -1,10 +1,3 @@
-resource "azurerm_resource_group" "shared_rg" {
-  name     = "${local.project}-rg"
-  location = var.location
-
-  tags = var.tags
-}
-
 module "authorizer_cosmosdb_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                 = "${local.project}-cosmosdb-snet"
@@ -23,7 +16,7 @@ module "authorizer_cosmosdb_snet" {
 
 module "authorizer_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = "${local.project}-authorizer-cosmos-account"
+  name     = "${local.project}-auth-cosmos-account"
   location = var.location
 
   resource_group_name = azurerm_resource_group.shared_rg.name
@@ -51,7 +44,7 @@ module "authorizer_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.cosmos_authorizer_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = "${local.project}-iuv-gen-cosmos-sql-endpoint"
+  private_endpoint_name    = "${local.project}-auth-cosmos-sql-endpoint"
   private_endpoint_enabled = var.cosmos_authorizer_db_params.private_endpoint_enabled
   subnet_id                = module.authorizer_cosmosdb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
