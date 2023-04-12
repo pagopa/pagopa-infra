@@ -1,6 +1,7 @@
 locals {
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  product = var.location_short != "neu" ? "${var.prefix}-${var.env_short}" : "${var.prefix}-${var.env_short}-${var.location_short}"
+  product_noenv = "${var.prefix}-${var.env_short}"
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
@@ -22,13 +23,13 @@ locals {
 
   ingress_hostname                      = "${var.location_short}${var.instance}.${var.domain}"
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
-  internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+  internal_dns_zone_resource_group_name = "${local.product_noenv}-vnet-rg"
 
   cosmos_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"
-  cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+  cosmos_dns_zone_resource_group_name = "${local.product_noenv}-vnet-rg"
 
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 
   storage_queue_dns_zone_name          = "privatelink.queue.core.windows.net"
-  storage_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+  storage_dns_zone_resource_group_name = "${local.product_noenv}-vnet-rg"
 }
