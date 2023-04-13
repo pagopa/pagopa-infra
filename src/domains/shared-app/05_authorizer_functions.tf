@@ -128,14 +128,14 @@ resource "azurerm_monitor_autoscale_setting" "authorizer_function" {
   }
 }
 
-# data "azurerm_container_registry" "acr" {
-#   name                = local.acr_name
-#   resource_group_name = local.acr_resource_group_name
-# }
+data "azurerm_container_registry" "acr" {
+  name                = local.acr_name
+  resource_group_name = local.acr_resource_group_name
+}
 
-# resource "azurerm_role_assignment" "authorizer_functions_to_acr" {
-#   depends_on           = [module.authorizer_function_app]
-#   scope                = data.azurerm_container_registry.acr.id
-#   role_definition_name = "AcrPull"
-#   principal_id         = module.authorizer_function_app.system_identity_principal
-# }
+resource "azurerm_role_assignment" "authorizer_functions_to_acr" {
+  depends_on           = [module.authorizer_function_app]
+  scope                = data.azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = module.authorizer_function_app.system_identity_principal
+}
