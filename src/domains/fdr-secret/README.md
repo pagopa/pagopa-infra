@@ -17,6 +17,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
+| <a name="module_letsencrypt_fdr"></a> [letsencrypt\_fdr](#module\_letsencrypt\_fdr) | git::https://github.com/pagopa/azurerm.git//letsencrypt_credential | v3.8.1 |
 
 ## Resources
 

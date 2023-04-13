@@ -102,3 +102,18 @@ resource "azurerm_key_vault_access_policy" "azdevops_pipe_policy" {
 
   storage_permissions = []
 }
+
+################
+##   Secrets  ##
+################
+
+# create json letsencrypt inside kv
+# requierd: Docker
+module "letsencrypt_fdr" {
+  source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
+
+  prefix            = var.prefix
+  env               = var.env_short
+  key_vault_name    = "${local.product}-${var.domain}-kv"
+  subscription_name = local.subscription_name
+}
