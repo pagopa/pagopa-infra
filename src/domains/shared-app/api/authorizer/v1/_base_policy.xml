@@ -1,6 +1,8 @@
 <policies>
   <inbound>
-    <base>
+    <base />
+ 
+      <set-backend-service base-url="https://${hostname}" /> <!-- NOT USED - only on apim -->
 
       <!-- Saving information from request -->
       <set-variable name="domain" value="@(context.Request.MatchedParameters["domain"])" />
@@ -23,7 +25,7 @@
         <when condition="@("false".Equals(context.Variables["must_add_in_progress"]))">
 
           <!-- Saving domain authorization variable -->
-          <cache-store-value key="@(context.Variables["domain_key"])" value="@(context.Variables["autorized_entities"])" duration="100000" caching-type="external" />
+          <cache-store-value key="@(context.Variables["domain_key"])" value="@((string) context.Variables["autorized_entities"])" duration="100000" caching-type="external" />
 
           <!-- Return OK response -->
           <return-response>
@@ -58,7 +60,6 @@
         </otherwise>
 
       </choose>
-    </base>
   </inbound>
   <backend>
     <base />
