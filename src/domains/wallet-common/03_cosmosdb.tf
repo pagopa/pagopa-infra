@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "cosmosdb_wallet_rg" {
 }
 
 module "cosmosdb_wallet_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v3.15.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.0"
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_wallet
   resource_group_name  = local.vnet_resource_group_name
@@ -22,11 +22,12 @@ module "cosmosdb_wallet_snet" {
 
 module "cosmosdb_account_mongodb" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v3.15.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.0"
 
   name                = "${local.project}-cosmos-account"
   location            = var.location
   resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg.name
+  domain              = var.domain
 
   offer_type           = var.cosmos_mongo_db_params.offer_type
   kind                 = var.cosmos_mongo_db_params.kind
