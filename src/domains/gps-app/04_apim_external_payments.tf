@@ -15,7 +15,6 @@ locals {
   }
 }
 
-
 ###################
 ## REST Products ##
 ###################
@@ -50,6 +49,26 @@ resource "azurerm_api_management_api_version_set" "api_gpd_payments_rest_externa
   versioning_scheme   = "Segment"
 }
 
+
+resource "azapi_resource" "authorizer_fragment" {
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "authorizer"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that permits to check the authorization on EC for the client"
+      format      = "rawxml"
+      value       = file("..//api/authorizer/authorizer-check.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
 module "apim_api_gpd_payments_rest_external_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
@@ -76,5 +95,6 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
 
   xml_content = templatefile("./api/payments-service/v1/rest/external/_base_policy.xml", {
     hostname = local.gps_hostname
+    cache-generator-function-key = "temp"
   })
 }
