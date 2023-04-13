@@ -11,7 +11,7 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
   Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/wallet"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/wallet-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
