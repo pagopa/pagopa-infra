@@ -30,7 +30,7 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
 
-  pagopa_apim_snet = "${local.product}-apim-snet"
+  pagopa_apim_snet        = "${local.product}-apim-snet"
   pagopa_vnet_integration = "pagopa-${var.env_short}-vnet-integration"
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 

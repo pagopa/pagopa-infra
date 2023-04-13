@@ -36,7 +36,7 @@ locals {
 
   authorizer_cosmosdb_tables = [
     {
-      name       = "subkeys",
+      name       = "skeydomains", # pagopa<env>skeydomains
       throughput = 400
     },
   ]

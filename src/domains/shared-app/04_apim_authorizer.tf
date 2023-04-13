@@ -11,7 +11,7 @@ locals {
 resource "azurerm_resource_group" "shared_rg" {
   name     = "${local.project}-rg"
   location = var.location
-  tags = var.tags
+  tags     = var.tags
 }
 
 ##############
