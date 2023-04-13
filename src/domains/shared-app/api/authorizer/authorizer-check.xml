@@ -13,15 +13,15 @@
     <set-variable name="subkey" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "")" />
     <set-variable name="authorization_cache_key" value="@(context.Variables["domain"] + "_" + context.Variables["subkey"])">
     
-    <cache-lookup-value variable-name="apim_cache_domain" key="@("apim-cache-" + context.Variables["domain"])" caching-type="external" /> <!-- already present on external cache -->
-    <cache-lookup-value variable-name="authorizer_domain_in_progress" key="@("authorizer-" + context.Variables["domain"] + "-in-progress")" caching-type="internal" />
+    <cache-lookup-value variable-name="apim_cache_domain" key="@("authorizer_" + context.Variables["domain"])" caching-type="external" /> <!-- already present on external cache -->
+    <cache-lookup-value variable-name="authorizer_domain_in_progress" key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
 
     <choose>
         <!-- RI-GENERATE cache -->
         <when condition="@("store".Equals(context.Variables["apim_cache_domain"]) && !context.Variables.ContainsKey("authorizer_domain_in_progress")))">
             
             <!-- Save state variable for locking purpose -->
-            <cache-store-value key="@("authorizer-" + context.Variables["domain"] + "-in-progress")" value="True" duration="100000" caching-type="internal" />
+            <cache-store-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" value="True" duration="100000" caching-type="internal" />
 
             <!-- Call cache-generator function with retrieved function key -->
             <send-request mode="new" response-variable-name="response_state" timeout="10" ignore-error="true">
@@ -33,10 +33,10 @@
             </send-request>
 
             <!-- Save storage status -->
-            <cache-store-value key="@("apim-cache-" + context.Variables["domain"])" value="store" duration="100000" caching-type="external" />
+            <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="100000" caching-type="external" />
           
             <!-- Removing locking state variable -->
-            <cache-remove-value key="@("authorizer-" + context.Variables["domain"] + "-in-progress")" caching-type="internal" />
+            <cache-remove-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
 
         </when>
     </choose>
