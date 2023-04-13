@@ -31,8 +31,8 @@ else
   #LOCAL
     echo "run on LOCAL"
   export POSTGRES_DB_HOST="localhost"
-  export POSTGRES_DB_PORT="6432"
-  export POSTGRES_DB="nodo"
+  export POSTGRES_DB_PORT="5432"
+  export POSTGRES_DB="postgres"
   export SCHEMA="fdr"
   export LQB_CONTEXTS=$LOCAL_CONTEXTS
   export USERNAME="fdr"
@@ -44,7 +44,7 @@ fi
 echo "
 classpath: ./changelog/fdr/
 liquibase.headless: true
-url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?sslmode=require&prepareThreshold=0&currentSchema=${SCHEMA}
+url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?prepareThreshold=0&currentSchema=${SCHEMA}
 contexts: ${LQB_CONTEXTS}
 username: ${USERNAME}
 password: ${PASSWORD}
