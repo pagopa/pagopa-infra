@@ -3,7 +3,7 @@
 ##############
 
 module "apim_wallet_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v3.11.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
   product_id   = "wallet"
   display_name = "wallet pagoPA"
