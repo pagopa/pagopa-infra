@@ -17,6 +17,7 @@ locals {
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
+  pagopa_vnet_integration  = "pagopa-${var.env_short}-vnet-integration"
 
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
@@ -29,6 +30,7 @@ locals {
 
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
+  pagopa_apim_snet = "${local.product}-apim-snet"
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   gps_hostname  = var.env == "prod" ? "weuprod.gps.internal.platform.pagopa.it" : "weu${var.env}.gps.internal.${var.env}.platform.pagopa.it"

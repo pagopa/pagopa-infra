@@ -1,14 +1,22 @@
+# gpd_rg
+resource "azurerm_resource_group" "gpd_rg" {
+  name     = "${local.product}-gpd-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
 module "flows" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
 
-  name                       = replace(format("%s-flow-sa", local.project), "-", "")
+  name                       = replace(format("%s-flow-sa", local.product), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   account_replication_type   = "LRS"
   access_tier                = "Hot"
   versioning_name            = "versioning"
   enable_versioning          = var.gpd_enable_versioning
-  resource_group_name        = azurerm_resource_group.gps_rg.name
+  resource_group_name        = azurerm_resource_group.gpd_rg.name
   location                   = var.location
   advanced_threat_protection = var.gpd_reporting_advanced_threat_protection
   allow_blob_public_access   = false

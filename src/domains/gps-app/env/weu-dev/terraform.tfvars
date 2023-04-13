@@ -32,3 +32,11 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
+
+cidr_subnet_reporting_functions = ["10.1.177.0/24"]
+
+reporting_functions_app_sku = {
+  kind     = "Linux"
+  sku_tier = "Basic"
+  sku_size = "B1"
+}
