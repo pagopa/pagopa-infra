@@ -27,6 +27,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "add_in_progress",
+            "in": "query",
+            "description": "The flag that permits to define a locking mechanism on concurrent sync operations on same domain. Default = true",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "requestBody": {
