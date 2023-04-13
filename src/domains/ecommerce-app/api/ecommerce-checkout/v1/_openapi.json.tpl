@@ -1169,6 +1169,11 @@
           },
           "email": {
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
