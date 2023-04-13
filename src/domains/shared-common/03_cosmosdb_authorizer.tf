@@ -1,6 +1,6 @@
 module "authorizer_cosmosdb_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
-  name                 = "${local.project}-cosmosdb-snet"
+  name                 = "${local.project}-auth-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_authorizer_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
