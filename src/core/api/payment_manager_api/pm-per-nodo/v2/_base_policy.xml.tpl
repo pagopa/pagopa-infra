@@ -7,7 +7,7 @@
       </ip-filter>  
         <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
         <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-restapi-CD/v2")" />
-        <set-variable name="ecommerce_url" value="weudev.ecommerce.internal.dev.platform.pagopa.it" />
+        <set-variable name="ecommerce_url" value="${ecommerce_ingress_hostname}" />
         <set-variable name="body_value" value="@(context.Request.Body.As<string>(preserveContent: true))" />
         <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
     </inbound>

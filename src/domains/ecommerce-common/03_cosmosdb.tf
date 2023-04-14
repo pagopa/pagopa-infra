@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "cosmosdb_ecommerce_rg" {
 
 module "cosmosdb_ecommerce_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.15.1"
-  name                 = format("%s-cosmosb-snet", local.project)
+  name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_ecommerce
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
@@ -62,7 +62,60 @@ resource "azurerm_cosmosdb_mongo_database" "ecommerce" {
   dynamic "autoscale_settings" {
     for_each = var.cosmos_mongo_db_ecommerce_params.enable_autoscaling && !var.cosmos_mongo_db_ecommerce_params.enable_serverless ? [""] : []
     content {
-      max_throughput = var.cosmos_mongo_db_ecommerce_params.enable_serverless.max_throughput
+      max_throughput = var.cosmos_mongo_db_ecommerce_params.max_throughput
     }
   }
+
+}
+
+# Collections
+locals {
+  collections = [
+    {
+      name = "payment-methods"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        }
+      ]
+      shard_key = null
+    },
+    {
+      name = "eventstore"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        }
+      ]
+      shard_key = "transactionId"
+    },
+    {
+      name = "view"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        }
+      ]
+      shard_key = null
+    },
+  ]
+}
+
+module "cosmosdb_ecommerce_collections" {
+  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection?ref=v4.13.1"
+
+  for_each = {
+    for index, coll in local.collections :
+    coll.name => coll
+  }
+
+  name                = each.value.name
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.ecommerce.name
+
+  indexes     = each.value.indexes
+  shard_key   = each.value.shard_key
+  lock_enable = var.env_short == "p" ? true : false
 }

@@ -518,7 +518,8 @@
           "ecommerce-methods"
         ],
         "operationId": "getPaymentMethod",
-        "summary": "Retrive payment method by ID",
+        "summary": "Get payment method by ID",
+        "description": "API for retrieve payment method information for a given payment method ID",
         "parameters": [
           {
             "name": "id",
@@ -544,13 +545,14 @@
         }
       }
     },
-    "/payment-methods/{id}/fee/calculate": {
+    "/payment-methods/{id}/fees": {
       "post": {
         "tags": [
           "ecommerce-methods"
         ],
         "operationId": "calculateFees",
-        "summary": "Retrieve list of psp",
+        "summary": "Calculate payment method fees",
+        "description": "GET with body payload - no resources created: Return the fees for the choosen payment method based on transaction amount etc.\n",
         "parameters": [
           {
             "name": "id",
@@ -768,21 +770,29 @@
       },
       "PaymentMethodRequest": {
         "type": "object",
-        "description": "New Payment Instrument Request",
+        "description": "New Payment method Request",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method name"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method description string"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Asset name associated to this payment method"
           },
           "status": {
             "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method type code"
           },
           "ranges": {
+            "description": "Payment method ranges",
             "type": "array",
             "minItems": 1,
             "items": {
@@ -805,7 +815,8 @@
           "min": {
             "type": "integer",
             "format": "int64",
-            "minimum": 0
+            "minimum": 0,
+            "description": "Range min amount"
           },
           "max": {
             "type": "integer",
@@ -1095,18 +1106,41 @@
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transfer"
+            },
+            "minItems": 1,
+            "maxItems": 5
           }
         },
         "required": [
           "rptId",
-          "amount"
+          "amount",
+          "transferList"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
-          "amount": 100,
-          "authToken": "authToken1"
+          "amount": 600,
+          "authToken": "authToken1",
+          "transferList": [
+            {
+              "paFiscalCode": "77777777777",
+              "digitalStamp": false,
+              "transferCategory": "transferCategory1",
+              "transferAmount": 500
+            },
+            {
+              "paFiscalCode": "11111111111",
+              "digitalStamp": true,
+              "transferCategory": "transferCategory2",
+              "transferAmount": 100
+            }
+          ]
         }
       },
       "NewTransactionRequest": {
@@ -1161,13 +1195,41 @@
                 "rptId": "77777777777302012387654312384",
                 "paymentToken": "paymentToken1",
                 "reason": "reason1",
-                "amount": 100
+                "amount": 600,
+                "transferList": [
+                  {
+                    "paFiscalCode": "77777777777",
+                    "digitalStamp": false,
+                    "transferCategory": "transferCategory1",
+                    "transferAmount": 500
+                  },
+                  {
+                    "paFiscalCode": "11111111111",
+                    "digitalStamp": true,
+                    "transferCategory": "transferCategory2",
+                    "transferAmount": 100
+                  }
+                ]
               },
               {
                 "rptId": "77777777777302012387654312385",
                 "paymentToken": "paymentToken2",
                 "reason": "reason2",
-                "amount": 100
+                "amount": 300,
+                "transferList": [
+                  {
+                    "paFiscalCode": "44444444444",
+                    "digitalStamp": true,
+                    "transferCategory": "transferCategory1",
+                    "transferAmount": 200
+                  },
+                  {
+                    "paFiscalCode": "22222222222",
+                    "digitalStamp": false,
+                    "transferCategory": "transferCategory2",
+                    "transferAmount": 100
+                  }
+                ]
               }
             ]
           },
@@ -1425,6 +1487,8 @@
           "CLOSURE_ERROR",
           "NOTIFIED_OK",
           "NOTIFIED_KO",
+          "NOTIFICATION_ERROR",
+          "NOTIFICATION_REQUESTED",
           "EXPIRED",
           "REFUNDED",
           "CANCELED",
@@ -1436,26 +1500,62 @@
           "CANCELLATION_EXPIRED"
         ]
       },
+      "Transfer": {
+        "type": "object",
+        "description": "The dto that contains information about the creditor entities",
+        "properties": {
+          "paFiscalCode": {
+            "type": "string",
+            "description": "The creditor institution fiscal code",
+            "pattern": "^[a-zA-Z0-9]{11}"
+          },
+          "digitalStamp": {
+            "type": "boolean",
+            "description": "True if it is a digital stamp. False otherwise"
+          },
+          "transferCategory": {
+            "type": "string",
+            "description": "The taxonomy of the transfer"
+          },
+          "transferAmount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "paFiscalCode",
+          "digitalStamp",
+          "transferAmount"
+        ]
+      },
       "PaymentMethodResponse": {
         "type": "object",
         "description": "Payment method Response",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method ID"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method name"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method description"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Payment method asset name"
           },
           "status": {
             "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method type code"
           },
           "ranges": {
+            "description": "Payment amount range in eurocents",
             "type": "array",
             "minItems": 1,
             "items": {
@@ -1473,9 +1573,15 @@
         ]
       },
       "PaymentMethodsResponse": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/PaymentMethodResponse"
+        "type": "object",
+        "description": "Payment methods response",
+        "properties": {
+          "paymentMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodResponse"
+            }
+          }
         }
       },
       "CartRequest": {
@@ -1545,6 +1651,14 @@
                 "example": "https://www.comune.di.prova.it/pagopa/error.html"
               }
             }
+          },
+          "idCart": {
+            "type": "string",
+            "example": "id_cart"
+          },
+          "allCCP": {
+            "type": "boolean",
+            "example": "false"
           }
         }
       },
@@ -1589,28 +1703,35 @@
         }
       },
       "CalculateFeeRequest": {
+        "description": "Calculate fee request",
         "type": "object",
         "properties": {
           "touchpoint": {
-            "type": "string"
+            "type": "string",
+            "description": "The touchpoint name"
           },
           "bin": {
-            "type": "string"
+            "type": "string",
+            "description": "The user card bin"
           },
           "idPspList": {
+            "description": "List of psps",
             "type": "array",
             "items": {
               "type": "string"
             }
           },
           "paymentAmount": {
+            "description": "The transaction payment amount",
             "type": "integer",
             "format": "int64"
           },
           "primaryCreditorInstitution": {
+            "description": "The primary creditor institution",
             "type": "string"
           },
           "transferList": {
+            "description": "Transfert list",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TransferListItem"
@@ -1618,25 +1739,29 @@
           }
         },
         "required": [
-          "touchpoint",
           "paymentAmount",
           "primaryCreditorInstitution",
-          "transferList"
+          "transferList",
+          "touchpoint"
         ]
       },
       "CalculateFeeResponse": {
+        "description": "Calculate fee response",
         "type": "object",
         "properties": {
           "paymentMethodName": {
+            "description": "Payment method name",
             "type": "string"
           },
           "paymentMethodStatus": {
             "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "belowThreshold": {
+            "description": "Boolean value indicating if the payment is below the configured threshold",
             "type": "boolean"
           },
           "bundles": {
+            "description": "Bundle list",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Bundle"
@@ -1650,68 +1775,86 @@
         ]
       },
       "Bundle": {
+        "description": "Bundle object",
         "type": "object",
         "properties": {
           "abi": {
+            "description": "Bundle ABI code",
             "type": "string"
           },
           "bundleDescription": {
+            "description": "Bundle description",
             "type": "string"
           },
           "bundleName": {
+            "description": "Bundle name",
             "type": "string"
           },
           "idBrokerPsp": {
+            "description": "Bundle PSP broker id",
             "type": "string"
           },
           "idBundle": {
+            "description": "Bundle id",
             "type": "string"
           },
           "idChannel": {
+            "description": "Channel id",
             "type": "string"
           },
           "idCiBundle": {
+            "description": "CI bundle id",
             "type": "string"
           },
           "idPsp": {
+            "description": "PSP id",
             "type": "string"
           },
           "onUs": {
+            "description": "Boolean value indicating if this bundle is an on-us ones",
             "type": "boolean"
           },
           "paymentMethod": {
+            "description": "Payment method",
             "type": "string"
           },
           "primaryCiIncurredFee": {
+            "description": "Primary CI incurred fee",
             "type": "integer",
             "format": "int64"
           },
           "taxPayerFee": {
+            "description": "Tax payer fee",
             "type": "integer",
             "format": "int64"
           },
           "touchpoint": {
+            "description": "The touchpoint name",
             "type": "string"
           }
         }
       },
       "TransferListItem": {
+        "description": "Transfert list item",
         "type": "object",
         "properties": {
           "creditorInstitution": {
+            "description": "Creditor institution",
             "type": "string"
           },
           "digitalStamp": {
+            "description": "Boolean value indicating if there is digital stamp",
             "type": "boolean"
           },
           "transferCategory": {
+            "description": "Transfer category",
             "type": "string"
           }
         }
       },
       "PaymentMethodStatus": {
         "type": "string",
-        "description": "the payment method status",
+        "description": "Payment method status",
         "enum": [
           "ENABLED",
           "DISABLED",

@@ -22,7 +22,13 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "= 2.11.0"
     }
+    azapi = {
+      source  = "Azure/azapi"
+      version = "= 1.3.0"
+    }
   }
+
+  backend "azurerm" {}
 }
 
 provider "azurerm" {
@@ -42,6 +48,11 @@ provider "helm" {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
 }
+
+provider "azapi" {
+
+}
+
 
 data "azurerm_subscription" "current" {}
 
