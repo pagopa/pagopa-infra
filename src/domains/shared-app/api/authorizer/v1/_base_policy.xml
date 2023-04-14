@@ -1,0 +1,71 @@
+<policies>
+  <inbound>
+    <base />
+
+    <!-- Saving information from request -->
+    <set-variable name="domain" value="@(context.Request.MatchedParameters["domain"])" />
+    <set-variable name="must_add_in_progress" value="@(context.Request.Url.Query.GetValueOrDefault("add_in_progress", "true"))" />
+    <set-variable name="request" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+    <set-variable name="domain_key" value="@(((JObject) context.Variables["request"])["key"].ToString())" />
+    <set-variable name="autorized_entities" value="@(((JObject) context.Variables["request"])["value"].ToString())" />
+
+    <!-- Look up for authorized-DOMAIN_in_progress variable -->
+    <choose>
+      <when condition="@("true".Equals(context.Variables["must_add_in_progress"]))">
+        <cache-lookup-value variable-name="authorizer_domain_in_progress" key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
+      </when>
+    </choose>
+
+    <!-- Executing the main operation -->
+    <choose>
+
+      <!-- If the client requested to not set 'in progress' lock, it can proceed to this branch of subscription keys caching operation. -->
+      <when condition="@("false".Equals(context.Variables["must_add_in_progress"]))">
+
+        <!-- Saving domain authorization variable -->
+        <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="@((string) context.Variables["autorized_entities"])" duration="100000" caching-type="external" />
+
+        <!-- Return OK response -->
+        <return-response>
+          <set-status code="200" reason="Operation executed successfully" />
+        </return-response>
+      </when>
+
+      <!-- If APIM doesn’t find the key in the cache and the client requested to set 'in progress' lock, it can proceed to this branch of subscription keys caching operation. -->
+      <when condition="@("true".Equals(context.Variables["must_add_in_progress"]) && !context.Variables.ContainsKey("authorizer_domain_in_progress"))">
+
+        <!-- Save state variable for locking purpose -->
+        <cache-store-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" value="True" duration="100000" caching-type="internal" />
+
+        <!-- Saving domain authorization variables -->
+        <cache-store-value key="@("authorizer_" + context.Variables["domain_key"])" value="@((string) context.Variables["autorized_entities"])" duration="100000" caching-type="external" />
+        <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="100000" caching-type="external" />
+
+        <!-- Removing locking state variable -->
+        <cache-remove-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
+
+        <!-- Return OK response -->
+        <return-response>
+          <set-status code="200" reason="Operation executed successfully" />
+        </return-response>
+      </when>
+
+      <!-- If APIM find the key in the cache, it means that the caching operation is in progress. -->
+      <otherwise>
+        <return-response>
+          <set-status code="503" reason="Operation in progress" />
+        </return-response>
+      </otherwise>
+
+    </choose>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

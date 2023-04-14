@@ -120,7 +120,8 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   #"/pagopa-node-forwarder/.*"
-  "/gps/gpd-reporting-orgs-enrollment/.*" # internal use
+  "/gps/gpd-reporting-orgs-enrollment/.*", # internal use
+  "shared/authorizer/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
