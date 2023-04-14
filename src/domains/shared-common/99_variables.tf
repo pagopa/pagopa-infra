@@ -191,3 +191,12 @@ variable "cosmos_authorizer_db_params" {
     backup_continuous_enabled         = bool
   })
 }
+
+variable "cosmos_mongo_db_authorizer_params" {
+  type = object({
+    enable_serverless  = bool
+    enable_autoscaling = bool
+    throughput         = number
+    max_throughput     = number
+  })
+}

@@ -10,7 +10,6 @@ module "authorizer_cosmosdb_snet" {
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.AzureCosmosDB",
-    "Microsoft.Storage",
   ]
 }
 
@@ -22,6 +21,7 @@ module "authorizer_cosmosdb_account" {
   resource_group_name = azurerm_resource_group.shared_rg.name
   offer_type          = var.cosmos_authorizer_db_params.offer_type
   kind                = var.cosmos_authorizer_db_params.kind
+  mongo_server_version = var.cosmos_authorizer_db_params.server_version
 
   public_network_access_enabled    = var.cosmos_authorizer_db_params.public_network_access_enabled
   main_geo_location_zone_redundant = var.cosmos_authorizer_db_params.main_geo_location_zone_redundant
@@ -44,7 +44,7 @@ module "authorizer_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.cosmos_authorizer_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = "${local.project}-auth-cosmos-sql-endpoint"
+  private_endpoint_name    = "${local.project}-auth-cosmos-endpoint"
   private_endpoint_enabled = var.cosmos_authorizer_db_params.private_endpoint_enabled
   subnet_id                = module.authorizer_cosmosdb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
@@ -52,12 +52,38 @@ module "authorizer_cosmosdb_account" {
   tags = var.tags
 }
 
-# cosmosdb table storage
-resource "azurerm_cosmosdb_table" "authorizer_cosmosdb_tables" {
-  for_each = { for c in local.authorizer_cosmosdb_tables : c.name => c }
 
-  name                = replace("${each.value.name}-table", "-", "")
+# cosmosdb table storage
+resource "azurerm_cosmosdb_mongo_database" "authorizer_cosmosdb_document" {
+  name                = "authorizer"
   resource_group_name = azurerm_resource_group.shared_rg.name
   account_name        = module.authorizer_cosmosdb_account.name
-  throughput          = each.value.throughput
+  throughput          = var.cosmos_mongo_db_authorizer_params.enable_autoscaling || var.cosmos_mongo_db_authorizer_params.enable_serverless ? null : var.cosmos_mongo_db_authorizer_params.throughput
+
+  dynamic "autoscale_settings" {
+    for_each = var.cosmos_mongo_db_authorizer_params.enable_autoscaling && !var.cosmos_mongo_db_authorizer_params.enable_serverless ? [""] : []
+    content {
+      max_throughput = var.cosmos_mongo_db_authorizer_params.max_throughput
+    }
+  }
+}
+
+resource "azurerm_cosmosdb_mongo_collection" "skeydomains" {
+  name                = "skeydomains"
+  resource_group_name = azurerm_resource_group.shared_rg.name
+  account_name        = module.authorizer_cosmosdb_account.name
+  database_name       = azurerm_cosmosdb_mongo_database.authorizer_cosmosdb_document.name
+
+  default_ttl_seconds = "777"
+  shard_key           = "domain"
+  throughput          = var.cosmos_mongo_db_authorizer_params.enable_autoscaling || var.cosmos_mongo_db_authorizer_params.enable_serverless ? null : var.cosmos_mongo_db_authorizer_params.throughput
+
+  index {
+    keys = ["_id"]
+    unique = true
+  }
+  index {
+    keys   = ["domain", "subkey"]
+    unique = true
+  }
 }
