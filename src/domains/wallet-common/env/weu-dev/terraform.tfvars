@@ -41,7 +41,7 @@ cosmos_mongo_db_params = {
   }
   server_version                   = "4.0"
   main_geo_location_zone_redundant = false
-  enable_free_tier                 = true
+  enable_free_tier                 = false
 
   additional_geo_locations          = []
   private_endpoint_enabled          = false
