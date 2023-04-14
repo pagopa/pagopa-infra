@@ -224,6 +224,7 @@ ehns_sku_name = "Standard"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
+ehns_capacity = 5
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
