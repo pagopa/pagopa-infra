@@ -211,11 +211,6 @@
       <column name="FK_TIPO_VERSAMENTO" valueNumeric="6"/>
     </insert>
     <insert tableName="CANALE_TIPO_VERSAMENTO">
-      <column name="OBJ_ID" valueNumeric="10613"/>
-      <column name="FK_CANALE" valueNumeric="10612"/>
-      <column name="FK_TIPO_VERSAMENTO" valueNumeric="2"/>
-    </insert>
-    <insert tableName="CANALE_TIPO_VERSAMENTO">
       <column name="OBJ_ID" valueNumeric="10614"/>
       <column name="FK_CANALE" valueNumeric="10612"/>
       <column name="FK_TIPO_VERSAMENTO" valueNumeric="2"/>
@@ -2776,19 +2771,9 @@
       <column name="FK_TIPO_VERSAMENTO" valueNumeric="6"/>
     </insert>
     <insert tableName="CANALE_TIPO_VERSAMENTO">
-      <column name="OBJ_ID" valueNumeric="1100004"/>
-      <column name="FK_CANALE" valueNumeric="1040002"/>
-      <column name="FK_TIPO_VERSAMENTO" valueNumeric="3"/>
-    </insert>
-    <insert tableName="CANALE_TIPO_VERSAMENTO">
       <column name="OBJ_ID" valueNumeric="1180001"/>
       <column name="FK_CANALE" valueNumeric="16648"/>
       <column name="FK_TIPO_VERSAMENTO" valueNumeric="2"/>
-    </insert>
-    <insert tableName="CANALE_TIPO_VERSAMENTO">
-      <column name="OBJ_ID" valueNumeric="1100002"/>
-      <column name="FK_CANALE" valueNumeric="1040002"/>
-      <column name="FK_TIPO_VERSAMENTO" valueNumeric="6"/>
     </insert>
   </changeSet>
   </databaseChangeLog>

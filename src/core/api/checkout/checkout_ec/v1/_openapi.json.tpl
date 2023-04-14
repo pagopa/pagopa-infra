@@ -159,6 +159,14 @@
                 "example": "www.comune.di.prova.it/pagopa/error.html"
               }
             }
+          },
+          "idCart": {
+            "type": "string",
+            "example": "id_cart"
+          },
+          "allCCP": {
+            "type": "boolean",
+            "example": "false"
           }
         }
       },

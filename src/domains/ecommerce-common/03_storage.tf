@@ -84,6 +84,11 @@ resource "azurerm_storage_queue" "transactions_expiration_queue" {
   storage_account_name = module.ecommerce_storage.name
 }
 
+resource "azurerm_storage_queue" "transactions_close_payment_queue" {
+  name                 = "${local.project}-transactions-close-payment-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
 resource "azurerm_storage_queue" "transactions_close_payment_retry_queue" {
   name                 = "${local.project}-transactions-close-payment-retry-queue"
   storage_account_name = module.ecommerce_storage.name
@@ -96,6 +101,16 @@ resource "azurerm_storage_queue" "transactions_refund_retry_queue" {
 
 resource "azurerm_storage_queue" "transactions_refund_queue" {
   name                 = "${local.project}-transactions-refund-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
+resource "azurerm_storage_queue" "transactions_notifications_retry_queue" {
+  name                 = "${local.project}-transaction-notifications-retry-queue"
+  storage_account_name = module.ecommerce_storage.name
+}
+
+resource "azurerm_storage_queue" "transactions_notifications_queue" {
+  name                 = "${local.project}-transaction-notifications-queue"
   storage_account_name = module.ecommerce_storage.name
 }
 

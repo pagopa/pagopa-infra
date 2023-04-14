@@ -305,7 +305,8 @@
             "enum": [
               "CREATED",
               "AUTHORIZED",
-              "DENIED"
+              "DENIED",
+              "CANCELLED"
             ]
           },
           "authOutcome": {
@@ -361,7 +362,8 @@
             "enum": [
               "CREATED",
               "AUTHORIZED",
-              "DENIED"
+              "DENIED",
+              "CANCELLED"
             ]
           },
           "responseType": {

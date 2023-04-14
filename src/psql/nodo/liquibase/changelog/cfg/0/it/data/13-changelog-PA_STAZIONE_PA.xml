@@ -8802,45 +8802,6 @@
       <column name="STAZIONE_NODO" value="Y"/> -->
     </insert>
     <insert tableName="PA_STAZIONE_PA">
-      <column name="OBJ_ID" valueNumeric="9979"/>
-      <column name="PROGRESSIVO"/>
-      <column name="FK_PA" valueNumeric="5950"/>
-      <column name="FK_STAZIONE" valueNumeric="54"/>
-      <column name="AUX_DIGIT"/>
-      <column name="SEGREGAZIONE" valueNumeric="30"/>
-      <column name="QUARTO_MODELLO" value="N"/>
-      <column name="BROADCAST" value="N"/>
-      <column name="PAGAMENTO_SPONTANEO" value="N"/>
-      <!-- <column name="STAZIONE_AVV" value="N"/>
-      <column name="STAZIONE_NODO" value="Y"/> -->
-    </insert>
-    <insert tableName="PA_STAZIONE_PA">
-      <column name="OBJ_ID" valueNumeric="9980"/>
-      <column name="PROGRESSIVO"/>
-      <column name="FK_PA" valueNumeric="5950"/>
-      <column name="FK_STAZIONE" valueNumeric="54"/>
-      <column name="AUX_DIGIT"/>
-      <column name="SEGREGAZIONE" valueNumeric="30"/>
-      <column name="QUARTO_MODELLO" value="N"/>
-      <column name="BROADCAST" value="N"/>
-      <column name="PAGAMENTO_SPONTANEO" value="N"/>
-      <!-- <column name="STAZIONE_AVV" value="N"/>
-      <column name="STAZIONE_NODO" value="Y"/> -->
-    </insert>
-    <insert tableName="PA_STAZIONE_PA">
-      <column name="OBJ_ID" valueNumeric="9981"/>
-      <column name="PROGRESSIVO"/>
-      <column name="FK_PA" valueNumeric="5950"/>
-      <column name="FK_STAZIONE" valueNumeric="54"/>
-      <column name="AUX_DIGIT"/>
-      <column name="SEGREGAZIONE" valueNumeric="30"/>
-      <column name="QUARTO_MODELLO" value="N"/>
-      <column name="BROADCAST" value="N"/>
-      <column name="PAGAMENTO_SPONTANEO" value="N"/>
-      <!-- <column name="STAZIONE_AVV" value="N"/>
-      <column name="STAZIONE_NODO" value="Y"/> -->
-    </insert>
-    <insert tableName="PA_STAZIONE_PA">
       <column name="OBJ_ID" valueNumeric="10395"/>
       <column name="PROGRESSIVO"/>
       <column name="FK_PA" valueNumeric="10391"/>
@@ -8990,19 +8951,6 @@
       <column name="FK_STAZIONE" valueNumeric="140"/>
       <column name="AUX_DIGIT"/>
       <column name="SEGREGAZIONE" valueNumeric="23"/>
-      <column name="QUARTO_MODELLO" value="N"/>
-      <column name="BROADCAST" value="N"/>
-      <column name="PAGAMENTO_SPONTANEO" value="N"/>
-      <!-- <column name="STAZIONE_AVV" value="N"/>
-      <column name="STAZIONE_NODO" value="Y"/> -->
-    </insert>
-    <insert tableName="PA_STAZIONE_PA">
-      <column name="OBJ_ID" valueNumeric="15288"/>
-      <column name="PROGRESSIVO"/>
-      <column name="FK_PA" valueNumeric="14648"/>
-      <column name="FK_STAZIONE" valueNumeric="17616"/>
-      <column name="AUX_DIGIT"/>
-      <column name="SEGREGAZIONE"/>
       <column name="QUARTO_MODELLO" value="N"/>
       <column name="BROADCAST" value="N"/>
       <column name="PAGAMENTO_SPONTANEO" value="N"/>
@@ -9881,19 +9829,6 @@
       <column name="STAZIONE_NODO" value="Y"/> -->
     </insert>
     <insert tableName="PA_STAZIONE_PA">
-      <column name="OBJ_ID" valueNumeric="4"/>
-      <column name="PROGRESSIVO"/>
-      <column name="FK_PA" valueNumeric="4"/>
-      <column name="FK_STAZIONE" valueNumeric="17616"/>
-      <column name="AUX_DIGIT"/>
-      <column name="SEGREGAZIONE"/>
-      <column name="QUARTO_MODELLO" value="N"/>
-      <column name="BROADCAST" value="N"/>
-      <column name="PAGAMENTO_SPONTANEO" value="N"/>
-      <!-- <column name="STAZIONE_AVV" value="N"/>
-      <column name="STAZIONE_NODO" value="Y"/> -->
-    </insert>
-    <insert tableName="PA_STAZIONE_PA">
       <column name="OBJ_ID" valueNumeric="5"/>
       <column name="PROGRESSIVO"/>
       <column name="FK_PA" valueNumeric="3"/>
@@ -9911,19 +9846,6 @@
       <column name="PROGRESSIVO"/>
       <column name="FK_PA" valueNumeric="3"/>
       <column name="FK_STAZIONE" valueNumeric="4"/>
-      <column name="AUX_DIGIT"/>
-      <column name="SEGREGAZIONE"/>
-      <column name="QUARTO_MODELLO" value="N"/>
-      <column name="BROADCAST" value="N"/>
-      <column name="PAGAMENTO_SPONTANEO" value="N"/>
-      <!-- <column name="STAZIONE_AVV" value="N"/>
-      <column name="STAZIONE_NODO" value="Y"/> -->
-    </insert>
-    <insert tableName="PA_STAZIONE_PA">
-      <column name="OBJ_ID" valueNumeric="7"/>
-      <column name="PROGRESSIVO"/>
-      <column name="FK_PA" valueNumeric="4"/>
-      <column name="FK_STAZIONE" valueNumeric="17616"/>
       <column name="AUX_DIGIT"/>
       <column name="SEGREGAZIONE"/>
       <column name="QUARTO_MODELLO" value="N"/>

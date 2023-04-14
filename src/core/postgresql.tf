@@ -6,6 +6,14 @@ module "postgresql_snet" {
   virtual_network_name                           = module.vnet.name
   service_endpoints                              = ["Microsoft.Sql"]
   enforce_private_link_endpoint_network_policies = true
+
+  delegation = {
+    name = "delegation"
+    service_delegation = {
+      name    = "Microsoft.ContainerInstance/containerGroups"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
 }
 
 # KV secrets single server

@@ -119,50 +119,50 @@ module "apim_ecommerce_transaction_auth_requests_service_api_v1" {
 }
 
 #####################################
-## API transaction results service ##
+## API transaction user receipts service ##
 #####################################
 locals {
-  apim_ecommerce_transaction_results_service_api = {
-    display_name          = "ecommerce pagoPA - transaction results service API"
+  apim_ecommerce_transaction_user_receipts_service_api = {
+    display_name          = "ecommerce pagoPA - transaction user receipts service API"
     description           = "API to support Nodo.sendPaymentResult"
-    path                  = "ecommerce/transaction-results-service"
+    path                  = "ecommerce/transaction-user-receipts-service"
     subscription_required = true
     service_url           = null
   }
 }
 
-# Transaction results service APIs
-resource "azurerm_api_management_api_version_set" "ecommerce_transaction_results_service_api" {
-  name                = format("%s-transaction-results-service-api", local.project)
+# Transaction user receipts service APIs
+resource "azurerm_api_management_api_version_set" "ecommerce_transaction_user_receipts_service_api" {
+  name                = format("%s-transaction-user-receipts-service-api", local.project)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_ecommerce_transaction_results_service_api.display_name
+  display_name        = local.apim_ecommerce_transaction_user_receipts_service_api.display_name
   versioning_scheme   = "Segment"
 }
 
-module "apim_ecommerce_transaction_results_service_api_v1" {
+module "apim_ecommerce_transaction_user_receipts_service_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
 
-  name                  = format("%s-transaction-results-service-api", local.project)
+  name                  = format("%s-transaction-user-receipts-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_ecommerce_product.product_id]
-  subscription_required = local.apim_ecommerce_transaction_results_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.ecommerce_transaction_results_service_api.id
+  subscription_required = local.apim_ecommerce_transaction_user_receipts_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_transaction_user_receipts_service_api.id
   api_version           = "v1"
 
-  description  = local.apim_ecommerce_transaction_results_service_api.description
-  display_name = local.apim_ecommerce_transaction_results_service_api.display_name
-  path         = local.apim_ecommerce_transaction_results_service_api.path
+  description  = local.apim_ecommerce_transaction_user_receipts_service_api.description
+  display_name = local.apim_ecommerce_transaction_user_receipts_service_api.display_name
+  path         = local.apim_ecommerce_transaction_user_receipts_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_ecommerce_transaction_results_service_api.service_url
+  service_url  = local.apim_ecommerce_transaction_user_receipts_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/ecommerce-transaction-results-service/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/ecommerce-transaction-user-receipts-service/v1/_openapi.json.tpl", {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/ecommerce-transaction-results-service/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/ecommerce-transaction-user-receipts-service/v1/_base_policy.xml.tpl", {
     hostname = local.ecommerce_hostname
   })
 }
@@ -353,8 +353,8 @@ module "apim_pagopa_notifications_service_api_v1" {
   protocols    = ["https"]
   service_url  = local.apim_pagopa_notifications_service_api.service_url
 
-  content_format = "swagger-json"
-  content_value = templatefile("./api/ecommerce-notifications-service/v1/_swagger.json.tpl", {
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-notifications-service/v1/_openapi.json.tpl", {
     hostname = local.apim_hostname
   })
 

@@ -67,10 +67,9 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
-
-resource "azurerm_key_vault_secret" "email-encryption-key" {
-  name         = "email-encryption-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>" #base64 AES encryption key
+resource "azurerm_key_vault_secret" "personal-data-vault-api-key" {
+  name         = "personal-data-vault-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
   lifecycle {
