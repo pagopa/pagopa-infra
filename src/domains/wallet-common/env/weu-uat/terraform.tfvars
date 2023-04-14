@@ -52,7 +52,7 @@ cosmos_mongo_db_params = {
 
 }
 
-cidr_subnet_cosmosdb_wallet = ["10.1.161.0/24"]
+cidr_subnet_cosmosdb_wallet = ["10.1.169.0/24"]
 
 cosmos_mongo_db_wallet_params = {
   enable_serverless  = false
