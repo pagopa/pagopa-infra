@@ -14,8 +14,9 @@
 <!--        </choose>-->
         <set-backend-service base-url="https://${hostname}/pagopa-gpd-payments" />
         
-        <set-variable name="domain" value="gpd" />
-        <set-variable name="auth_entity" value="@(context.Request.Url.Query.GetValueOrDefault("organizationfiscalcode", ""))" /> 
+        <set-variable name="application_domain" value="gpd" />
+        <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
+        <!-- <set-variable name="authorization_entity" value="@(context.Request.Url.Query.GetValueOrDefault("organizationfiscalcode", ""))" />  -->
         <include-fragment fragment-id="authorizer" />
     </inbound>
     <outbound>
