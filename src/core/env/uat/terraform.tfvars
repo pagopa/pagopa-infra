@@ -102,8 +102,7 @@ app_gateway_deny_paths = [
   "/payment-manager/internal/.*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd-payments/.*",  # internal use no sub-keys SOAP
-  "/gpd-reporting/.*", # internal use no sub-keys
+  "/gpd-payments/.*", # internal use no sub-keys SOAP
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
@@ -120,8 +119,6 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   #"/pagopa-node-forwarder/.*"
-  "/gps/gpd-reporting-orgs-enrollment/.*", # internal use
-  "shared/authorizer/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -530,7 +527,7 @@ pagopa_proxy_size           = "S1"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
-# redis apim 
+# redis apim
 redis_cache_params = {
   public_access = false
   capacity      = 0
