@@ -20,10 +20,16 @@ module "authorizer_functions_snet" {
   }
 }
 
+resource "azurerm_resource_group" "shared_fn_rg" {
+  name     = "${local.project}-fn-rg"
+  location = var.location
+  tags     = var.tags
+}
+
 module "authorizer_function_app" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v4.3.2"
 
-  resource_group_name = azurerm_resource_group.shared_rg.name
+  resource_group_name = azurerm_resource_group.shared_fn_rg.name
   name                = "${local.project}-authorizer-fn"
   location            = var.location
   health_check_path   = "info"
@@ -69,7 +75,7 @@ resource "azurerm_monitor_autoscale_setting" "authorizer_function" {
   count = var.env_short != "d" ? 1 : 0
 
   name                = "${module.authorizer_function_app.name}-autoscale"
-  resource_group_name = azurerm_resource_group.shared_rg.name
+  resource_group_name = azurerm_resource_group.shared_fn_rg.name
   location            = var.location
   target_resource_id  = module.authorizer_function_app.app_service_plan_id
 
