@@ -19,7 +19,6 @@ tags = {
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
-application_insights_name                   = "pagopa-d-appinsights"
 
 ### Aks
 
