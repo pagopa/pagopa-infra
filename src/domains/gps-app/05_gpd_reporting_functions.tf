@@ -39,10 +39,10 @@ locals {
 
     # custom configuration
     FLOW_SA_CONNECTION_STRING = data.azurerm_key_vault_secret.flows_sa_connection_string.value
-    ORGANIZATIONS_TABLE       = replace("${local.project}flowsaorgstable", "-", "")
-    FLOWS_TABLE               = replace("${local.project}flowsatable", "-", "")
-    ORGANIZATIONS_QUEUE       = replace("${local.project}flowsaqueueorg", "-", "")
-    FLOWS_QUEUE               = replace("${local.project}flowsaqueueflows", "-", "")
+    ORGANIZATIONS_TABLE       = replace("${local.product}flowsaorgstable", "-", "")
+    FLOWS_TABLE               = replace("${local.product}flowsatable", "-", "")
+    ORGANIZATIONS_QUEUE       = replace("${local.product}flowsaqueueorg", "-", "")
+    FLOWS_QUEUE               = replace("${local.product}flowsaqueueflows", "-", "")
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
     GPD_HOST             = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
     NODO_HOST            = format("https://api.%s.%s/%s-nodo-per-pa-api/v1", var.dns_zone_prefix, var.external_domain, var.env_short)
@@ -58,7 +58,7 @@ locals {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = data.azurerm_container_registry.acr.login_server
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
