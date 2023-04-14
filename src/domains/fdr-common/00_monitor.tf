@@ -7,10 +7,10 @@ data "azurerm_resource_group" "monitor_rg" {
   name = var.monitor_resource_group_name
 }
 
-/* data "azurerm_monitor_action_group" "slack" {
+data "azurerm_monitor_action_group" "slack" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_slack_name
-} */
+}
 
 
 data "azurerm_key_vault_secret" "slackemail" {
@@ -23,17 +23,4 @@ data "azurerm_key_vault_secret" "slackemail" {
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
-}
-
-resource "azurerm_monitor_action_group" "slack" {
-  name                = "SlackPagoPANODO"
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
-  short_name          = "SlackNodo"
-
-
-  email_receiver {
-    name          = "sendtoadminnodo"
-    email_address = data.azurerm_key_vault_secret.slackemail.value
-  }
-
 }
