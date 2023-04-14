@@ -8,17 +8,17 @@
 <fragment>
   
     <!-- Saving information from request -->
-    <set-variable name="domain" value="@(context.Variables["application_domain"])" /> <!-- ex. gpd -->
-    <set-variable name="auth_entity" value="@(context.Variables["authorization_entity"])" /> <!-- ex. ec 77777777777  -->
-    <set-variable name="subkey" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "")" />
-    <set-variable name="authorization_cache_key" value="@(context.Variables["domain"] + "_" + context.Variables["subkey"])">
+    <set-variable name="domain" value="@((string)context.Variables["application_domain"])" /> <!-- ex. gpd -->
+    <set-variable name="auth_entity" value="@((string)context.Variables["authorization_entity"])" /> <!-- ex. ec 77777777777  -->
+    <set-variable name="subkey" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", ""))" />
+    <set-variable name="authorization_cache_key" value="@((string)context.Variables["domain"] + "_" + (string)context.Variables["subkey"])" />
     
     <cache-lookup-value variable-name="apim_cache_domain" key="@("authorizer_" + context.Variables["domain"])" caching-type="external" /> <!-- already present on external cache -->
     <cache-lookup-value variable-name="authorizer_domain_in_progress" key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
 
     <choose>
         <!-- RI-GENERATE cache -->
-        <when condition="@("store".Equals(context.Variables["apim_cache_domain"]) && !context.Variables.ContainsKey("authorizer_domain_in_progress")))">
+        <when condition="@("store".Equals(context.Variables["apim_cache_domain"]) && !context.Variables.ContainsKey("authorizer_domain_in_progress"))">
             
             <!-- Save state variable for locking purpose -->
             <cache-store-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" value="True" duration="100000" caching-type="internal" />
@@ -42,11 +42,11 @@
     </choose>
     
     <!-- Look up for cached authorized entity list stringified -->
-    <cache-lookup-value variable-name="cached_authorized_entities" key="@(context.Variables["authorization_cache_key"])" caching-type="external" />
+    <cache-lookup-value variable-name="cached_authorized_entities" key="@((string)context.Variables["authorization_cache_key"])" caching-type="external" />
 
     <!-- Auth phase : Invalidating the client request if not authorized -->
-    <choose>
-        <when condition="@(context.Variables.ContainsKey("authorizer_domain_in_progress") || !context.Variables.ContainsKey("cached_authorized_entities"] || (context.Variables.ContainsKey("cached_authorized_entities"] && !context.Variables["cached_authorized_entities"].Contains(context.Variables["auth_entity"])))">
+    <choose>    
+        <when condition="@(context.Variables.ContainsKey("authorizer_domain_in_progress") || !context.Variables.ContainsKey("cached_authorized_entities") || (context.Variables.ContainsKey("cached_authorized_entities")|| !((string)context.Variables["cached_authorized_entities"]).Contains((string)context.Variables["auth_entity"])) )">
             <return-response>
                 <set-status code="401" reason="Unauthorized" />
             </return-response>
