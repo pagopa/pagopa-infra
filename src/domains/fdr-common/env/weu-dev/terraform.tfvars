@@ -27,10 +27,13 @@ ingress_load_balancer_ip = "10.1.100.250"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 
+## CIDR fdr per database pgsql
+cidr_subnet_flex_dbms = ["10.1.162.0/24"]
 
 enable_iac_pipeline = true
 
 pgres_flex_params = {
+
   enabled    = true
   sku_name   = "GP_Standard_D4s_v3"
   db_version = "13"
@@ -48,5 +51,59 @@ pgres_flex_params = {
   max_connections                        = 200
 }
 
-## CIDR nodo per database pgsql
-cidr_subnet_flex_dbms = ["10.1.160.0/24"]
+custom_metric_alerts = {
+
+  cpu_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "cpu_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  memory_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "memory_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  storage_percent = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "storage_percent"
+    operator         = "GreaterThan"
+    threshold        = 80
+    severity         = 2
+  },
+  active_connections = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Average"
+    metric_name      = "active_connections"
+    operator         = "GreaterThan"
+    threshold        = 1000
+    severity         = 2
+  },
+  connections_failed = {
+    frequency        = "PT5M"
+    window_size      = "PT30M"
+    metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+    aggregation      = "Total"
+    metric_name      = "connections_failed"
+    operator         = "GreaterThan"
+    threshold        = 50
+    severity         = 2
+  }
+}
+
+
+
