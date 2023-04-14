@@ -462,8 +462,8 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-negative-biz-evt"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
+    partitions        = 1
+    message_retention = 1
     consumers         = ["pagopa-negative-biz-evt-rx"]
     keys = [
       {
