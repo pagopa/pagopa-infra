@@ -28,7 +28,7 @@ apim_dns_zone_prefix     = "dev.platform"
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 tls_cert_check_helm = {
-  chart_version = "2.8.0"
+  chart_version = "2.0.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
