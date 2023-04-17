@@ -33,7 +33,7 @@ locals {
   }
 }
 
-# Payment requests service APIs
+# Wallet service APIs
 resource "azurerm_api_management_api_version_set" "wallet_service_api" {
   name                = format("%s-wallet-service-api", local.project)
   resource_group_name = local.pagopa_apim_rg
@@ -45,7 +45,7 @@ resource "azurerm_api_management_api_version_set" "wallet_service_api" {
 module "apim_wallet_service_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
 
-  name                  = format("%s-payment-requests-service-api", local.project)
+  name                  = format("%s-wallet-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_ecommerce_product.product_id]
