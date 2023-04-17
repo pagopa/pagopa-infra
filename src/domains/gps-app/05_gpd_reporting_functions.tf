@@ -44,8 +44,8 @@ locals {
     ORGANIZATIONS_QUEUE       = replace("${local.product}flowsaqueueorg", "-", "")
     FLOWS_QUEUE               = replace("${local.product}flowsaqueueflows", "-", "")
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST             = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
-    NODO_HOST            = format("https://api.%s.%s/%s-nodo-per-pa-api/v1", var.dns_zone_prefix, var.external_domain, var.env_short)
+    GPD_HOST             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    NODO_HOST            = format("https://api.%s.%s/nodo/nodo-per-pa/v1", var.apim_dns_zone_prefix, var.external_domain)
     PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
     PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
     PAA_PASSWORD         = data.azurerm_key_vault_secret.gpd_paa_pwd.value
@@ -80,7 +80,7 @@ module "reporting_batch_function" {
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings                             = local.function_batch_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
   tags = var.tags
@@ -111,7 +111,7 @@ module "reporting_batch_function_slot_staging" {
   # App settings
   app_settings = local.function_batch_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
