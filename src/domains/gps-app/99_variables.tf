@@ -109,12 +109,6 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
-variable "dns_zone_prefix" {
-  type        = string
-  default     = ""
-  description = "The dns subdomain."
-}
-
 variable "tls_cert_check_helm" {
   type = object({
     chart_version = string,

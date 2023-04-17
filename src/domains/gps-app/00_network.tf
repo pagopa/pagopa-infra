@@ -17,11 +17,7 @@ module "reporting_function_snet" {
   resource_group_name                            = local.vnet_resource_group_name
   virtual_network_name                           = data.azurerm_virtual_network.vnet.name
   enforce_private_link_endpoint_network_policies = true
-
-  service_endpoints = [
-    "Microsoft.Web",
-  ]
-
+  
   delegation = {
     name = "default"
     service_delegation = {
