@@ -66,7 +66,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it www.gstatic.com/recaptcha data:;"
+        value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data:;"
       },
       {
         action = "Append"
