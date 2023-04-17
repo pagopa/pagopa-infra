@@ -36,12 +36,11 @@ module "postgres_flexible_snet" {
   }
 }
 
-module "postgres_flexible_server" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v6.2.1"
-  name                = format("%s-flexible-postgresql", local.project)
-  location            = azurerm_resource_group.db_rg.location
-  resource_group_name = azurerm_resource_group.db_rg.name
-
+module "postgres_flexible_server_fdr" {
+  source                      = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v6.2.1"
+  name                        = format("%s-flexible-postgresql", local.project)
+  location                    = azurerm_resource_group.db_rg.location
+  resource_group_name         = azurerm_resource_group.db_rg.name
   private_endpoint_enabled    = var.pgres_flex_params.pgres_flex_private_endpoint_enabled
   private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
   delegated_subnet_id         = var.env_short != "d" ? module.postgres_flexible_snet.id : null
@@ -55,7 +54,7 @@ module "postgres_flexible_server" {
   sku_name                     = var.pgres_flex_params.sku_name
   db_version                   = var.pgres_flex_params.db_version
   storage_mb                   = var.pgres_flex_params.storage_mb
-  zone                         = var.pgres_flex_params.zone
+  zone                         = var.env_short == "d" ? 2 : var.pgres_flex_params.zone
   backup_retention_days        = var.pgres_flex_params.backup_retention_days
   geo_redundant_backup_enabled = var.pgres_flex_params.geo_redundant_backup_enabled
   create_mode                  = var.pgres_flex_params.create_mode
@@ -71,10 +70,6 @@ module "postgres_flexible_server" {
       action_group_id    = data.azurerm_monitor_action_group.slack.id
       webhook_properties = null
     }
-    # {
-    #   action_group_id    = azurerm_monitor_action_group.push.id
-    #   webhook_properties = null
-    # }
   ]
   tags = var.tags
 }
@@ -82,7 +77,7 @@ module "postgres_flexible_server" {
 # FdR database
 resource "azurerm_postgresql_flexible_server_database" "fdr_db" {
   name      = var.pgres_flex_fdr_db_name
-  server_id = module.postgres_flexible_server.id
+  server_id = module.postgres_flexible_server_fdr.id
   collation = "en_US.utf8"
   charset   = "utf8"
 }
@@ -93,7 +88,7 @@ resource "azurerm_postgresql_flexible_server_database" "fdr_db" {
 
 resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_max_connection" {
   name      = "max_connections"
-  server_id = module.postgres_flexible_server.id
+  server_id = module.postgres_flexible_server_fdr.id
   value     = var.pgres_flex_params.max_connections
 }
 
@@ -111,20 +106,20 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_max_con
 resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_ignore_startup_parameters" {
   count     = var.pgres_flex_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.ignore_startup_parameters"
-  server_id = module.postgres_flexible_server.id
+  server_id = module.postgres_flexible_server_fdr.id
   value     = "extra_float_digits,search_path"
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_min_pool_size" {
   count     = var.pgres_flex_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.min_pool_size"
-  server_id = module.postgres_flexible_server.id
+  server_id = module.postgres_flexible_server_fdr.id
   value     = 500
 }
 resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_default_pool_size" {
   count     = var.pgres_flex_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.default_pool_size"
-  server_id = module.postgres_flexible_server.id
+  server_id = module.postgres_flexible_server_fdr.id
   value     = 1000
 }
 
@@ -132,7 +127,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_default
 resource "azurerm_postgresql_flexible_server_database" "fdr_replica_db" {
   count     = var.env_short == "p" ? 0 : 1
   name      = "${var.pgres_flex_fdr_db_name}-replica"
-  server_id = module.postgres_flexible_server.id
+  server_id = module.postgres_flexible_server_fdr.id
   collation = "en_US.utf8"
   charset   = "utf8"
 }

@@ -57,11 +57,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-#variable "location_string" {
-#  type        = string
-#  description = "One of West Europe, North Europe"
-#}
-
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -101,7 +96,6 @@ variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
 }
-
 variable "external_domain" {
   type        = string
   default     = null
