@@ -27,7 +27,7 @@ locals {
   apim_wallet_service_api = {
     display_name          = "pagoPA - wallet API"
     description           = "API to support wallet service"
-    path                  = "wallet/service"
+    path                  = "wallet"
     subscription_required = true
     service_url           = null
   }
