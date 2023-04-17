@@ -15,9 +15,27 @@ data "azurerm_resource_group" "monitor_rg" {
 data "azurerm_monitor_action_group" "slack" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_slack_name
+  short_name          = "SlackPagoPA"
+
+  email_receiver {
+    name                    = "sendtoslack"
+    email_address           = data.azurerm_key_vault_secret.monitor_notification_slack_email.value
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
 }
 
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
+  short_name          = "PagoPA"
+
+  email_receiver {
+    name                    = "sendtooperations"
+    email_address           = data.azurerm_key_vault_secret.monitor_notification_email.value
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
 }

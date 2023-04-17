@@ -176,6 +176,18 @@ variable "reporting_batch_function_always_on" {
   default     = false
 }
 
+variable "reporting_service_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "reporting_analysis_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
 variable "reporting_functions_app_sku" {
   type = object({
     kind     = string
@@ -183,4 +195,22 @@ variable "reporting_functions_app_sku" {
     sku_size = string
   })
   description = "Reporting functions app plan SKU"
+}
+
+variable "reporting_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "reporting_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 10
+}
+
+variable "reporting_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 5
 }
