@@ -3,80 +3,80 @@ locals {
   ## space
   fdr_space_name = "fdr"
   fdr_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/space.json", {
-      name  = "${local.fdr_space_name}"
-    }), "\""), "\""), "'", "'\\''")
+    name = "${local.fdr_space_name}"
+  }), "\""), "\""), "'", "'\\''")
 
   ## fdr-nodo
   pagopafdrnodo_key = "pagopafdrnodo"
 
   pagopafdrnodo_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/fdr/${local.pagopafdrnodo_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdrnodo_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-      name  = local.pagopafdrnodo_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdrnodo_key
+  }), "\""), "\""), "'", "'\\''")
   pagopafdrnodo_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-      name  = local.pagopafdrnodo_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdrnodo_key
+  }), "\""), "\""), "'", "'\\''")
   pagopafdrnodo_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-      name  = local.pagopafdrnodo_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdrnodo_key
+  }), "\""), "\""), "'", "'\\''")
   pagopafdrnodo_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-      name     = local.pagopafdrnodo_key
-     component_template_package     = "${local.pagopafdrnodo_key}@package"
-      component_template_custom     = "${local.pagopafdrnodo_key}@custom"
-    }), "\""), "\""), "'", "'\\''")
+    name                       = local.pagopafdrnodo_key
+    component_template_package = "${local.pagopafdrnodo_key}@package"
+    component_template_custom  = "${local.pagopafdrnodo_key}@custom"
+  }), "\""), "\""), "'", "'\\''")
 
 
   pagopafdrnodo_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-      name  = local.pagopafdrnodo_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdrnodo_key
+  }), "\""), "\""), "'", "'\\''")
 
   ## fdr-nodo-cron
   pagopafdrnodocron_key = "pagopafdrnodocron"
 
   pagopafdrnodocron_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/fdr/${local.pagopafdrnodocron_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdrnodocron_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-      name  = local.pagopafdrnodocron_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdrnodocron_key
+  }), "\""), "\""), "'", "'\\''")
   pagopafdrnodocron_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-      name  = local.pagopafdrnodocron_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdrnodocron_key
+  }), "\""), "\""), "'", "'\\''")
   pagopafdrnodocron_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-      name  = local.pagopafdrnodocron_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdrnodocron_key
+  }), "\""), "\""), "'", "'\\''")
   pagopafdrnodocron_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-      name     = local.pagopafdrnodocron_key
-     component_template_package     = "${local.pagopafdrnodocron_key}@package"
-      component_template_custom     = "${local.pagopafdrnodocron_key}@custom"
-    }), "\""), "\""), "'", "'\\''")
+    name                       = local.pagopafdrnodocron_key
+    component_template_package = "${local.pagopafdrnodocron_key}@package"
+    component_template_custom  = "${local.pagopafdrnodocron_key}@custom"
+  }), "\""), "\""), "'", "'\\''")
 
 
   pagopafdrnodocron_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-      name  = local.pagopafdrnodocron_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdrnodocron_key
+  }), "\""), "\""), "'", "'\\''")
 
   ## fdr
   pagopafdr_key = "pagopafdr"
 
   pagopafdr_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/log-template/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdr_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-      name  = local.pagopafdr_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdr_key
+  }), "\""), "\""), "'", "'\\''")
   pagopafdr_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-      name  = local.pagopafdr_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdr_key
+  }), "\""), "\""), "'", "'\\''")
   pagopafdr_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
-      name  = local.pagopafdr_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdr_key
+  }), "\""), "\""), "'", "'\\''")
   pagopafdr_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-      name     = local.pagopafdr_key
-     component_template_package     = "${local.pagopafdr_key}@package"
-      component_template_custom     = "${local.pagopafdr_key}@custom"
-    }), "\""), "\""), "'", "'\\''")
+    name                       = local.pagopafdr_key
+    component_template_package = "${local.pagopafdr_key}@package"
+    component_template_custom  = "${local.pagopafdr_key}@custom"
+  }), "\""), "\""), "'", "'\\''")
 
 
   pagopafdr_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-      name  = local.pagopafdr_key
-    }), "\""), "\""), "'", "'\\''")
+    name = local.pagopafdr_key
+  }), "\""), "\""), "'", "'\\''")
 }
 
 ## space

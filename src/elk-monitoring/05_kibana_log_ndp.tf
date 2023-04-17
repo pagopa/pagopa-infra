@@ -659,6 +659,7 @@ resource "null_resource" "ndp_nodocronreplica_data_stream_rollover" {
   }
 }
 
+## query RE json log
 resource "null_resource" "ndp_nodocronreplica_kibana_data_view" {
   depends_on = [null_resource.ndp_kibana_space]
 
@@ -672,6 +673,26 @@ resource "null_resource" "ndp_nodocronreplica_kibana_data_view" {
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.ndp_nodocronreplica_data_view}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+## query RE for nodo
+resource "null_resource" "ndp_nodo_upload_query" {
+  depends_on = [null_resource.ndp_nodo_data_stream_rollover]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  for_each = fileset(path.module, local.query_path)
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/saved_objects/_import?overwrite=true" \
+      -H 'kbn-xsrf: true' \
+      --form "file=@./${each.value}"
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
