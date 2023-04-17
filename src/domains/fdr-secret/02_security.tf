@@ -117,3 +117,14 @@ module "letsencrypt_fdr" {
   key_vault_name    = "${local.product}-${var.domain}-kv"
   subscription_name = local.subscription_name
 }
+
+resource "kubernetes_config_map" "fdr_cacerts" {
+  metadata {
+    name      = "fdr-cacerts"
+    namespace = "fdr"
+  }
+
+  binary_data = {
+    "cacerts" = "${filebase64("${var.cacerts_path}")}"
+  }
+}

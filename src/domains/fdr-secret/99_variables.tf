@@ -120,3 +120,8 @@ variable "kv-storage-permissions-read" {
   description = "List of read storage permissions"
   default     = ["Get", "GetSAS", "List", "ListSAS"]
 }
+
+variable "cacerts_path" {
+  type        = string
+  description = "Java cacerts"
+}
