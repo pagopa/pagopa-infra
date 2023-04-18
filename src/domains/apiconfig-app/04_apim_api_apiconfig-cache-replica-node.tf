@@ -32,7 +32,8 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
   description  = local.apiconfig_cache_replica_locals.description
   display_name = "${local.apiconfig_cache_replica_locals.display_name} - Node p"
 
-  path        = "${local.apiconfig_cache_replica_locals.path}/p"
+#  path        = "${local.apiconfig_cache_replica_locals.path}/p"
+  path        = format("%s/%s", local.apiconfig_cache_replica_locals.path_apim, var.env_short == "d" ? "pit" : "pprf")
   protocols   = ["https"]
   service_url = local.apiconfig_cache_replica_locals.service_url
 
@@ -43,8 +44,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
   })
 
   xml_content = templatefile("./api/apiconfig-cache-replica/node/_base_policy.xml", {
-    hostname = local.apiconfig_cache_replica_locals.hostname
-    hostname = format("%s/%s", local.apiconfig_cache_replica_locals.hostname, "${local.apiconfig_cache_replica_locals.path}/p")
+    hostname = format("%s/%s/%s", local.apiconfig_cache_replica_locals.hostname, local.apiconfig_cache_replica_locals.path_aks, "p")
   })
 }
 
@@ -64,7 +64,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
   description  = local.apiconfig_cache_replica_locals.description
   display_name = "${local.apiconfig_cache_replica_locals.display_name} - Node o"
 
-  path        = "${local.apiconfig_cache_replica_locals.path}/o"
+  path        = format("%s/%s", local.apiconfig_cache_replica_locals.path_apim, var.env_short == "d" ? "oit" : "oprf")
   protocols   = ["https"]
   service_url = local.apiconfig_cache_replica_locals.service_url
 
@@ -75,7 +75,6 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
   })
 
   xml_content = templatefile("./api/apiconfig-cache-replica/node/_base_policy.xml", {
-    hostname = local.apiconfig_cache_replica_locals.hostname
-    hostname = format("%s/%s", local.apiconfig_cache_replica_locals.hostname, "${local.apiconfig_cache_replica_locals.path}/o")
+    hostname = format("%s/%s/%s", local.apiconfig_cache_replica_locals.hostname, local.apiconfig_cache_replica_locals.path_aks, "o")
   })
 }
