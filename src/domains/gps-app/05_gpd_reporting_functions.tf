@@ -191,7 +191,8 @@ module "reporting_service_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-service", local.project)
+  name                                     = format("%s-gpd-service", local.product_location)
+  storage_account_name                     = replace("${local.product_location}gpdservicest", "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet.id
@@ -245,7 +246,8 @@ module "reporting_analysis_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-analysis", local.project)
+  name                                     = format("%s-gpd-analysis", local.product_location)
+  storage_account_name                     = replace("${local.product_location}gpdanalysisst", "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet.id
