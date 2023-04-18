@@ -11,6 +11,8 @@ tags:
     description: Api config channels operations
   - name: stations
     description: Api config stations operations
+  - name: creditor-institutions
+    description: Api Config creditor institution's operations
 paths:
   /channels:
     get:
@@ -1244,6 +1246,95 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '401':
           description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /creditor-institutions:
+    post:
+      tags:
+        - creditor-institutions
+      summary: createCreditorInstitution
+      description: Service to add a Creditor Institution to Api Config
+      operationId: createCreditorInstitutionUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditorInstitutionDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /creditor-institutions/{ecCode}:
+    get:
+      tags:
+        - creditor-institutions
+      summary: getCreditorInstitutionDetails
+      description: Service to retrieve specific creditor institution details
+      operationId: getCreditorInstitutionDetailsUsingGET
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
           content:
             application/problem+json:
               schema:
@@ -2585,6 +2676,130 @@ components:
           description: List of ec stations
           items:
             $ref: '#/components/schemas/StationResource'
+    CreditorInstitutionDto:
+      title: CreditorInstitutionDto
+      required:
+        - address
+        - businessName
+        - creditorInstitutionCode
+        - enabled
+        - pspPayment
+        - reportingFtp
+        - reportingZip
+      type: object
+      properties:
+        address:
+          description: Creditor Institution's address object
+          $ref: '#/components/schemas/CreditorInstitutionAddressDto'
+        businessName:
+          type: string
+          description: Creditor Institution's business name
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        enabled:
+          type: boolean
+          description: Creditor Institution activation state on ApiConfig
+          example: false
+        pspPayment:
+          type: boolean
+          description: Creditor Institution's is a psp Payment broker
+          example: false
+        reportingFtp:
+          type: boolean
+          description: Enables flow towards Creditor Institution in fstp mode
+          example: false
+        reportingZip:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+    CreditorInstitutionAddressDto:
+      title: CreditorInstitutionAddressDto
+      required:
+        - city
+        - countryCode
+        - location
+        - taxDomicile
+        - zipCode
+      type: object
+      properties:
+        city:
+          type: string
+          description: Creditor Institution's city
+        countryCode:
+          type: string
+          description: Creditor Institution's country code
+        location:
+          type: string
+          description: Creditor Institution's physical address
+        taxDomicile:
+          type: string
+          description: Creditor Institution's tax domicile
+        zipCode:
+          type: string
+          description: Creditor Institution's zip code
+    CreditorInstitutionAddressResource:
+      title: CreditorInstitutionAddressResource
+      required:
+        - city
+        - countryCode
+        - location
+        - taxDomicile
+        - zipCode
+      type: object
+      properties:
+        city:
+          type: string
+          description: Creditor Institution's city
+        countryCode:
+          type: string
+          description: Creditor Institution's country code
+        location:
+          type: string
+          description: Creditor Institution's physical address
+        taxDomicile:
+          type: string
+          description: Creditor Institution's tax domicile
+        zipCode:
+          type: string
+          description: Creditor Institution's zip code
+    CreditorInstitutionDetailsResource:
+      title: CreditorInstitutionDetailsResource
+      required:
+        - address
+        - businessName
+        - creditorInstitutionCode
+        - enabled
+        - pspPayment
+        - reportingFtp
+        - reportingZip
+      type: object
+      properties:
+        address:
+          description: Creditor Institution's address object
+          $ref: '#/components/schemas/CreditorInstitutionAddressResource'
+        businessName:
+          type: string
+          description: Creditor Institution's business name
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        enabled:
+          type: boolean
+          description: Creditor Institution activation state on ApiConfig
+          example: false
+        pspPayment:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+        reportingFtp:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+        reportingZip:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
   securitySchemes:
     bearerAuth:
       type: http
