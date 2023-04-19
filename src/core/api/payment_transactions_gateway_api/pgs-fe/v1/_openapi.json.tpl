@@ -167,17 +167,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/VPosPollingResponse"
                 }
               }
             }
@@ -514,6 +504,20 @@
             "example": "1f3af548-f9d3-423f-b7b0-4e68948d41d2"
           }
         }
+      },
+      "VPosPollingResponse": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
+          }
+        ]
       }
     },
     "securitySchemes": {
