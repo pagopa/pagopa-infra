@@ -164,6 +164,7 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
     jwt_cert_signing_thumbprint = azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt.thumbprint,
     pagopa-portal-hostname      = local.pagopa-portal-hostname,
     origin                      = local.selfcare_fe_hostname,
+    local_origin = var.env_short == "d" ? "<origin>http://localhost:3000</origin>" : ""
   })
 
 }

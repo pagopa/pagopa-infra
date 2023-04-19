@@ -15,6 +15,7 @@
         <cors>
             <allowed-origins>
                 <origin>https://${origin}</origin>
+                ${local_origin}
             </allowed-origins>
             <allowed-methods>
                 <method>GET</method>
