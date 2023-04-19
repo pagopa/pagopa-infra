@@ -69,4 +69,21 @@ route_aks = [
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.230.8.150"
     },
+    {
+      #  aks nodo to nexi oncloud oracle
+      name                   = "aks-outbound-to-nexi-oracle-cloud-subnet"
+      address_prefix         = "10.70.67.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.230.8.150"
+    },
+    {
+      #  aks nodo to nexi oncloud app
+      name                   = "aks-outbound-to-nexi-app-cloud-subnet"
+      address_prefix         = "10.70.66.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.230.8.150"
+    },
 ]
+
+vmss_zones = ["1"]
+vmss_instance_number = 1

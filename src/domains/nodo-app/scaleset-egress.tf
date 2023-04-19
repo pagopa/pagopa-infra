@@ -34,13 +34,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss-egress" {
   resource_group_name             = azurerm_resource_group.vmss_rg.name
   location                        = azurerm_resource_group.vmss_rg.location
   sku                             = "Standard_D4ds_v5"
-  instances                       = 1
+  instances                       = var.vmss_instance_number
   admin_username                  = data.azurerm_key_vault_secret.vmss_admin_login.value
   admin_password                  = data.azurerm_key_vault_secret.vmss_admin_password.value
   disable_password_authentication = false
-  zones                           = ["1"]
-
-
+  zones                           = var.vmss_zones
 
   source_image_reference {
     publisher = "RedHat"
@@ -79,6 +77,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss-egress" {
   }
 }
 
+#
+# vmss extension script network-config.sh
+# N.B. vmss with private load balancer lost internet connection. script embedded in base64
+#
 resource "azurerm_virtual_machine_scale_set_extension" "vmss-extension" {
   name                         = "network-rule-forward"
   virtual_machine_scale_set_id = azurerm_linux_virtual_machine_scale_set.vmss-egress.id
@@ -90,6 +92,9 @@ resource "azurerm_virtual_machine_scale_set_extension" "vmss-extension" {
   })
 }
 
+#
+# create load balancer (NVA) with tcp/0 ports
+#
 
 module "load_balancer_nodo_egress" {
   source                                 = "Azure/loadbalancer/azurerm"
@@ -117,6 +122,9 @@ module "load_balancer_nodo_egress" {
   depends_on = []
 }
 
+#
+# create routing table from aks to external endpoint via load balancer NVA
+#
 module "route_table_peering_nexi" {
   source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.90"
 
@@ -130,4 +138,76 @@ module "route_table_peering_nexi" {
   routes = var.route_aks
 
   tags = var.tags
+}
+
+#
+# include VMSS subnet in primary route table on integration vnet
+#
+data "azurerm_route_table" "route_sia"{
+  name                          = format("%s-sia-rt", local.product)
+  resource_group_name           = local.vnet_resource_group_name
+}
+
+resource "azurerm_subnet_route_table_association" "snet_vmss_to_sia" {
+  subnet_id      = module.vmss_snet.id
+  route_table_id = data.azurerm_route_table.route_sia.id
+}
+
+resource "azurerm_monitor_autoscale_setting" "vmss-scale" {
+  count               = var.env_short != "d" ? 1 : 0
+  name                = format("%s-vmss-scale", local.project)
+  resource_group_name = azurerm_resource_group.vmss_rg.name
+  location            = azurerm_resource_group.vmss_rg.location
+  target_resource_id  = azurerm_linux_virtual_machine_scale_set.vmss-egress.id
+
+  profile {
+    name = format("%s-vmss-scale-rule-cpu", local.project)
+
+    capacity {
+      default = 1
+      minimum = 1
+      maximum = 3
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "Percentage CPU"
+        metric_resource_id = azurerm_linux_virtual_machine_scale_set.vmss-egress.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThan"
+        threshold          = 75
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "Percentage CPU"
+        metric_resource_id = azurerm_linux_virtual_machine_scale_set.vmss-egress.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 20
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+  }
+  
 }
