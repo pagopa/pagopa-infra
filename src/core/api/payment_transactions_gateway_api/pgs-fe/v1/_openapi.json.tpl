@@ -169,117 +169,13 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "type": "object",
-                      "properties": {
-                        "status": {
-                          "type": "string",
-                          "enum": [
-                            "CREATED",
-                            "AUTHORIZED",
-                            "DENIED",
-                            "CANCELLED"
-                          ]
-                        },
-                        "requestId": {
-                          "type": "string"
-                        },
-                        "vposUrl": {
-                          "type": "string"
-                        },
-                        "redirectUrl": {
-                          "type": "string"
-                        },
-                        "threeDsMethodData": {
-                          "type": "string",
-                          "format": "base64"
-                        },
-                        "creq": {
-                          "type": "string",
-                          "format": "base64"
-                        }
-                      },
-                      "required": [
-                        "status",
-                        "requestId"
-                      ]
+                      "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "status": {
-                          "type": "string",
-                          "enum": [
-                            "CREATED",
-                            "AUTHORIZED",
-                            "DENIED",
-                            "CANCELLED"
-                          ]
-                        },
-                        "responseType": {
-                          "type": "string",
-                          "enum": [
-                            "METHOD",
-                            "CHALLENGE",
-                            "AUTHORIZATION",
-                            "ERROR"
-                          ]
-                        },
-                        "requestId": {
-                          "type": "string"
-                        },
-                        "vposUrl": {
-                          "type": "string"
-                        },
-                        "threeDsMethodData": {
-                          "type": "string",
-                          "format": "base64"
-                        },
-                        "creq": {
-                          "type": "string",
-                          "format": "base64"
-                        }
-                      },
-                      "required": [
-                        "status",
-                        "responseType",
-                        "requestId",
-                        "vposUrl"
-                      ]
+                      "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "status": {
-                          "type": "string",
-                          "enum": [
-                            "CREATED",
-                            "AUTHORIZED",
-                            "DENIED",
-                            "CANCELLED"
-                          ]
-                        },
-                        "requestId": {
-                          "type": "string"
-                        },
-                        "redirectUrl": {
-                          "type": "string"
-                        },
-                        "creq": {
-                          "type": "string",
-                          "format": "base64"
-                        },
-                        "authCode": {
-                          "type": "string",
-                          "description": "authorization code received from XPay",
-                          "example": 123
-                        }
-                      },
-                      "required": [
-                        "status",
-                        "requestId",
-                        "redirectUrl",
-                        "authCode"
-                      ]
+                      "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
                     }
                   ]
                 }
@@ -457,6 +353,119 @@
             }
           }
         }
+      },
+      "CcPaymentInfoAcceptedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED",
+              "CANCELLED"
+            ]
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "vposUrl": {
+            "type": "string"
+          },
+          "redirectUrl": {
+            "type": "string"
+          },
+          "threeDsMethodData": {
+            "type": "string",
+            "format": "base64"
+          },
+          "creq": {
+            "type": "string",
+            "format": "base64"
+          }
+        },
+        "required": [
+          "status",
+          "requestId"
+        ]
+      },
+      "CcPaymentInfoAcsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED",
+              "CANCELLED"
+            ]
+          },
+          "responseType": {
+            "type": "string",
+            "enum": [
+              "METHOD",
+              "CHALLENGE",
+              "AUTHORIZATION",
+              "ERROR"
+            ]
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "vposUrl": {
+            "type": "string"
+          },
+          "threeDsMethodData": {
+            "type": "string",
+            "format": "base64"
+          },
+          "creq": {
+            "type": "string",
+            "format": "base64"
+          }
+        },
+        "required": [
+          "status",
+          "responseType",
+          "requestId",
+          "vposUrl"
+        ]
+      },
+      "CcPaymentInfoAuthorizedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED",
+              "CANCELLED"
+            ]
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "redirectUrl": {
+            "type": "string"
+          },
+          "creq": {
+            "type": "string",
+            "format": "base64"
+          },
+          "authCode": {
+            "type": "string",
+            "description": "authorization code received from XPay",
+            "example": 123
+          }
+        },
+        "required": [
+          "status",
+          "requestId",
+          "redirectUrl",
+          "authCode"
+        ]
       },
       "CcPaymentInfoError": {
         "type": "object",
