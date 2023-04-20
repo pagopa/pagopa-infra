@@ -1,5 +1,5 @@
 <fragment>
-        <trace source="renewrequestdebug" severity="information">@((string) context.Variables["renewrequest"])</trace>
+        <!-- <trace source="renewrequestdebug" severity="information">@((string) context.Variables["renewrequest"])</trace> -->
         <send-request mode="new" ignore-error="true" response-variable-name="risposta">
             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
             <set-method>POST</set-method>
@@ -20,31 +20,4 @@
                 return message; 
             }</set-body>
         </return-response>
-    <!-- <set-variable name="soapAction" value="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Replace("\"",""))" />
-<return-response>
-<set-header name="Content-Type" exists-action="override">
-<value>text/xml</value>
-</set-header>
-<set-body>@{     
-                string message = $"<soapenv:Envelope xmlns:tns=\"http://pagopa-api.pagopa.gov.it/node/nodeForPsp.wsdl\">"+
-                                        "        <soapenv:Body>"+
-                                            "            <nfpsp:"+(string)context.Variables["soapAction"]+">"+
-                                                "                <outcome>KO</outcome>"+
-                                                "                <fault>"+
-                                                    "                    <faultCode>PPT_SINTASSI_EXTRAXSD</faultCode>"+
-                                                    "                    <faultString>Errore di sintassi extra XSD.</faultString>"+
-                                                    "                    <id>NodoDeiPagamentiSPC-APIM</id>"+
-                                                    "                    <description>Errore validazione XML</description>"+
-                                                "   
-                </fault>"+
-                                            "  
-            </nfpsp:"+(string)context.Variables["soapAction"]+">"+
-                                        " 
-        </soapenv:Body>"+
-                                    "
-    </soapenv:Envelope>";
-                return message; 
-            }
-</set-body>
-</return-response> -->
 </fragment>
