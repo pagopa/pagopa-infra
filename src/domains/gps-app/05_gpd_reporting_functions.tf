@@ -116,7 +116,6 @@ locals {
     # custom configuration
     FLOW_SA_CONNECTION_STRING = data.azurerm_key_vault_secret.flows_sa_connection_string.value
     FLOWS_TABLE               = replace("${local.product}flowsatable", "-", "")
-    FLOWS_TABLE               = replace("${local.product}flowsatable", "-", "")
     FLOWS_CONTAINER           = replace("${local.product}flowsaflowscontainer", "-", "")
 
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.apim_dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
@@ -191,7 +190,7 @@ module "reporting_service_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-gpd-service", local.product_location)
+  name                                     = format("%s-fn-gpd-service", local.product_location)
   storage_account_name                     = replace("${local.product_location}gpdservicest", "-", "")
   location                                 = var.location
   health_check_path                        = "info"
@@ -246,7 +245,7 @@ module "reporting_analysis_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-gpd-analysis", local.product_location)
+  name                                     = format("%s-fn-gpd-analysis", local.product_location)
   storage_account_name                     = replace("${local.product_location}gpdanalysisst", "-", "")
   location                                 = var.location
   health_check_path                        = "info"
