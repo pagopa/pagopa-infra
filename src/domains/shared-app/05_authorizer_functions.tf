@@ -21,7 +21,7 @@ module "authorizer_functions_snet" {
 }
 
 data "azurerm_resource_group" "shared_rg" {
-  name     = "${local.project}-rg"
+  name = "${local.project}-rg"
 }
 
 module "authorizer_function_app" {
@@ -58,16 +58,16 @@ module "authorizer_function_app" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
-    DOCKER_REGISTRY_SERVER_URL          = "https://${data.azurerm_container_registry.acr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
 
-    COSMOS_CONN_STRING = data.azurerm_key_vault_secret.authorizer_cosmos_connection_string
-    REFRESH_CONFIGURATION_PATH = data.azurerm_key_vault_secret.authorizer_cosmos_key
-    SKEYDOMAINS_COSMOS_URI = data.azurerm_key_vault_secret.authorizer_cosmos_uri
-    SKEYDOMAINS_COSMOS_KEY = data.azurerm_key_vault_secret.authorizer_cosmos_key
-    SKEYDOMAINS_COSMOS_DB = data.azurerm_key_vault_secret.authorizer_cosmos_db
-    SKEYDOMAINS_COSMOS_CONTAINER = data.azurerm_key_vault_secret.authorizer_cosmos_container
+    COSMOS_CONN_STRING           = data.azurerm_key_vault_secret.authorizer_cosmos_connection_string.value
+    REFRESH_CONFIGURATION_PATH   = data.azurerm_key_vault_secret.authorizer_cosmos_key.value
+    SKEYDOMAINS_COSMOS_URI       = data.azurerm_key_vault_secret.authorizer_cosmos_uri.value
+    SKEYDOMAINS_COSMOS_KEY       = data.azurerm_key_vault_secret.authorizer_cosmos_key.value
+    SKEYDOMAINS_COSMOS_DB        = data.azurerm_key_vault_secret.authorizer_cosmos_db.value
+    SKEYDOMAINS_COSMOS_CONTAINER = data.azurerm_key_vault_secret.authorizer_cosmos_container.value
   }
 
   //allowed_subnets = [data.azurerm_subnet.apim_vnet.id]

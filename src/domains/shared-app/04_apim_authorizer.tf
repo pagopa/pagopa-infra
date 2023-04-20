@@ -79,7 +79,7 @@ resource "azapi_resource" "authorizer_fragment" {
       format      = "rawxml"
       # value       = file("./api/authorizer/authorizer-check.xml")
       value = templatefile("./api/authorizer/authorizer-check.xml", {
-        hostname  = local.shared_hostname
+        hostname = local.shared_hostname
       })
 
     }
