@@ -4,8 +4,7 @@ module "authorizer_functions_snet" {
   name                                           = "${local.project}-authorizer-fn-snet"
   address_prefixes                               = [var.cidr_subnet_authorizer_functions]
   resource_group_name                            = local.vnet_resource_group_name
-  //virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  virtual_network_name                           = format("%s-%s-vnet-integration", var.prefix, var.env_short)
+  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
   enforce_private_link_endpoint_network_policies = false
 
   delegation = {
