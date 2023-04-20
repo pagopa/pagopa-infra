@@ -107,4 +107,4 @@ route_aks = [
 ]
 
 vmss_zones           = ["1", "2", "3"]
-vmss_instance_number = 2
+vmss_instance_number = 1
