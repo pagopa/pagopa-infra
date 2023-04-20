@@ -506,7 +506,6 @@
         }
       },
       "VPosPollingResponse": {
-        "type": "object",
         "oneOf": [
           {
             "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
