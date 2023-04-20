@@ -5,7 +5,7 @@
     - Copy and paste your code here or simply start coding
 -->
 <fragment>
-  <trace source="primitive-type" severity="information">@((string) context.Variables["primitiveType"])</trace>
+<!--  <trace source="primitive-type" severity="information">@((string) context.Variables["primitiveType"])</trace>-->
   <choose>
     <!-- eveluate routing algorithm -->
     <when condition="@(((string)context.Variables["primitiveType"]).Equals("ROUTING"))">
@@ -164,7 +164,7 @@
         </when>
         <!-- key in cache -->
         <otherwise>
-          <trace source="retrieve-node-uri" severity="information">Node URI retrieved by cache</trace>
+<!--          <trace source="retrieve-node-uri" severity="information">Node URI retrieved by cache</trace>-->
           <!-- retrieve url by node_id according to configuration -->
           <set-variable name="dataToSet" value="@{
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
