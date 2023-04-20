@@ -102,8 +102,7 @@ app_gateway_deny_paths = [
   "/payment-manager/internal/.*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  #"/gpd/.*",           # internal use no sub-keys
-  "/gpd-payments/.*",  # internal use no sub-keys
+  "/gpd-payments/.*",  # internal use no sub-keys SOAP
   "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
@@ -121,7 +120,8 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   #"/pagopa-node-forwarder/.*"
-  "/gps/gpd-reporting-orgs-enrollment/.*" # internal use
+  "/gps/gpd-reporting-orgs-enrollment/.*", # internal use
+  "shared/authorizer/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [

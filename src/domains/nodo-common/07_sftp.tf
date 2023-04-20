@@ -7,17 +7,20 @@ resource "azurerm_resource_group" "sftp" {
 }
 
 module "sftp" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v4.3.0"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.2.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=add-SFTP-to-sa"
 
   name                = replace("${local.project}-sftp", "-", "")
   resource_group_name = azurerm_resource_group.sftp.name
   location            = azurerm_resource_group.sftp.location
 
-  account_kind             = "StorageV2"
-  account_tier             = "Standard"
-  account_replication_type = var.sftp_account_replication_type
-  access_tier              = "Hot"
-  is_hns_enabled           = true
+  public_network_access_enabled = true
+  sftp_enabled                  = true
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = var.sftp_account_replication_type
+  access_tier                   = "Hot"
+  is_hns_enabled                = true
 
   network_rules = {
     default_action             = var.sftp_disable_network_rules ? "Allow" : "Deny"
@@ -33,13 +36,13 @@ module "sftp" {
 module "storage_account_snet" {
   count = var.sftp_enable_private_endpoint ? 1 : 0
 
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.3.0"
-  name                                           = format("%s-storage-account-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_storage_account
-  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  service_endpoints                              = ["Microsoft.Storage"]
-  enforce_private_link_endpoint_network_policies = true
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  name                                          = format("%s-storage-account-snet", local.project)
+  address_prefixes                              = var.cidr_subnet_storage_account
+  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                          = data.azurerm_virtual_network.vnet.name
+  service_endpoints                             = ["Microsoft.Storage"]
+  private_link_service_network_policies_enabled = true
 }
 
 resource "azurerm_private_endpoint" "sftp_blob" {

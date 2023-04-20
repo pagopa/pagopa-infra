@@ -631,7 +631,8 @@ module "apim_nodo_monitoring_api_dev" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    service = module.apim_nodo_dei_pagamenti_product_dev[0].product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {

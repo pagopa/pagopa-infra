@@ -81,6 +81,10 @@ module "node_forwarder_app_service" {
     DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
 
+    # Connection Pool
+    MAX_CONNECTIONS           = 40
+    MAX_CONNECTIONS_PER_ROUTE = 20
+
   }
 
   allowed_subnets = [module.apim_snet.id]

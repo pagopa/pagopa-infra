@@ -647,17 +647,16 @@ module "apim_nodo_per_pm_api_v2" {
 ######################
 locals {
   apim_nodo_monitoring_api = {
-    display_name          = "Nodo monitoring "
-    description           = "Nodo monitoring"
-    path                  = "nodo/monitoring"
+    display_name = "Nodo monitoring "
+    description  = "Nodo monitoring"
+    # path                  = "nodo/monitoring"
+    path                  = var.env_short == "p" ? "nodo-monitoring/monitoring" : "nodo/monitoring"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
-  count = var.env_short != "p" ? 1 : 0
-
   name                = format("%s-nodo-monitoring-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
@@ -666,7 +665,6 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
 }
 
 module "apim_nodo_monitoring_api" {
-  count  = var.env_short != "p" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-monitoring-api", var.env_short)
@@ -675,7 +673,7 @@ module "apim_nodo_monitoring_api" {
   product_ids           = [module.apim_nodo_dei_pagamenti_product.product_id]
   subscription_required = local.apim_nodo_monitoring_api.subscription_required
 
-  version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api[0].id
+  version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api.id
   api_version    = "v1"
 
   description  = local.apim_nodo_monitoring_api.description
@@ -687,7 +685,8 @@ module "apim_nodo_monitoring_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    service = module.apim_nodo_dei_pagamenti_product.product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {

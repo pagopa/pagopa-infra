@@ -167,7 +167,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentRequestVposResponse"
+                  "$ref": "#/components/schemas/VPosPollingResponse"
                 }
               }
             }
@@ -177,17 +177,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentRequestVposErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentRequestVposErrorResponse"
+                  "$ref": "#/components/schemas/CcPaymentInfoError"
                 }
               }
             }
@@ -305,7 +295,8 @@
             "enum": [
               "CREATED",
               "AUTHORIZED",
-              "DENIED"
+              "DENIED",
+              "CANCELLED"
             ]
           },
           "authOutcome": {
@@ -353,7 +344,7 @@
           }
         }
       },
-      "PaymentRequestVposResponse": {
+      "CcPaymentInfoAcceptedResponse": {
         "type": "object",
         "properties": {
           "status": {
@@ -361,14 +352,8 @@
             "enum": [
               "CREATED",
               "AUTHORIZED",
-              "DENIED"
-            ]
-          },
-          "responseType": {
-            "type": "string",
-            "enum": [
-              "METHOD",
-              "CHALLENGE"
+              "DENIED",
+              "CANCELLED"
             ]
           },
           "requestId": {
@@ -377,7 +362,7 @@
           "vposUrl": {
             "type": "string"
           },
-          "clientReturnUrl": {
+          "redirectUrl": {
             "type": "string"
           },
           "threeDsMethodData": {
@@ -394,14 +379,106 @@
           "requestId"
         ]
       },
-      "PaymentRequestVposErrorResponse": {
+      "CcPaymentInfoAcsResponse": {
         "type": "object",
         "properties": {
-          "reason": {
+          "status": {
             "type": "string",
-            "example": "Error for RequestId"
+            "enum": [
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED",
+              "CANCELLED"
+            ]
+          },
+          "responseType": {
+            "type": "string",
+            "enum": [
+              "METHOD",
+              "CHALLENGE",
+              "AUTHORIZATION",
+              "ERROR"
+            ]
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "vposUrl": {
+            "type": "string"
+          },
+          "threeDsMethodData": {
+            "type": "string",
+            "format": "base64"
+          },
+          "creq": {
+            "type": "string",
+            "format": "base64"
           }
-        }
+        },
+        "required": [
+          "status",
+          "responseType",
+          "requestId",
+          "vposUrl"
+        ]
+      },
+      "CcPaymentInfoAuthorizedResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED",
+              "CANCELLED"
+            ]
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "redirectUrl": {
+            "type": "string"
+          },
+          "creq": {
+            "type": "string",
+            "format": "base64"
+          },
+          "authCode": {
+            "type": "string",
+            "description": "authorization code received from XPay",
+            "example": 123
+          }
+        },
+        "required": [
+          "status",
+          "requestId",
+          "redirectUrl",
+          "authCode"
+        ]
+      },
+      "CcPaymentInfoError": {
+        "type": "object",
+        "properties": {
+          "redirectUrl": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DENIED",
+              "CANCELLED"
+            ]
+          },
+          "requestId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "requestId",
+          "redirectUrl"
+        ]
       },
       "VposResumeRequest": {
         "type": "object",
@@ -427,6 +504,19 @@
             "example": "1f3af548-f9d3-423f-b7b0-4e68948d41d2"
           }
         }
+      },
+      "VPosPollingResponse": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
+          }
+        ]
       }
     },
     "securitySchemes": {

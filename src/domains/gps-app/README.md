@@ -6,6 +6,7 @@
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | = 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.21.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 2.99.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.5.1 |
@@ -18,13 +19,11 @@
 |------|--------|---------|
 | <a name="module_apim_api_gpd_enrollment_api_v1"></a> [apim\_api\_gpd\_enrollment\_api\_v1](#module\_apim\_api\_gpd\_enrollment\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v4.0.0 |
 | <a name="module_apim_api_gpd_payments_rest_external_api_v1"></a> [apim\_api\_gpd\_payments\_rest\_external\_api\_v1](#module\_apim\_api\_gpd\_payments\_rest\_external\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
-| <a name="module_apim_api_gpd_payments_rest_internal_api"></a> [apim\_api\_gpd\_payments\_rest\_internal\_api](#module\_apim\_api\_gpd\_payments\_rest\_internal\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_api_gps_api_v1"></a> [apim\_api\_gps\_api\_v1](#module\_apim\_api\_gps\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_api_gps_donation_api_v1"></a> [apim\_api\_gps\_donation\_api\_v1](#module\_apim\_api\_gps\_donation\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_api_gps_enrollments_api_v1"></a> [apim\_api\_gps\_enrollments\_api\_v1](#module\_apim\_api\_gps\_enrollments\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_gpd_enrollment_product"></a> [apim\_gpd\_enrollment\_product](#module\_apim\_gpd\_enrollment\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v4.0.0 |
 | <a name="module_apim_gpd_payments_rest_external_product"></a> [apim\_gpd\_payments\_rest\_external\_product](#module\_apim\_gpd\_payments\_rest\_external\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
-| <a name="module_apim_gpd_payments_rest_internal_product"></a> [apim\_gpd\_payments\_rest\_internal\_product](#module\_apim\_gpd\_payments\_rest\_internal\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_gpd_payments_soap_product"></a> [apim\_gpd\_payments\_soap\_product](#module\_apim\_gpd\_payments\_soap\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_gps_donation_product"></a> [apim\_gps\_donation\_product](#module\_apim\_gps\_donation\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_gps_enrollments_product"></a> [apim\_gps\_enrollments\_product](#module\_apim\_gps\_enrollments\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
@@ -39,7 +38,6 @@
 | [azurerm_api_management_api.apim_api_gpd_payments_soap_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_enrollment_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_payments_rest_external_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_gpd_payments_rest_internal_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_payments_soap_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gps_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gps_donation_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -58,6 +56,7 @@
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
+| [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/api_management) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault) | data source |

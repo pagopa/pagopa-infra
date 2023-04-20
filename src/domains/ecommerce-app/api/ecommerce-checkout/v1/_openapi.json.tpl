@@ -1,20 +1,55 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0",
+    "version": "0.0.1",
     "title": "Pagopa eCommerce services for Checkout",
-    "description": "This microservice that expose eCommerce services to Checkout."
+    "description": "This microservice that expose eCommerce services to Checkout.",
+    "contact": {
+      "name": "pagoPA - Touchpoints team"
+    }
   },
+  "tags": [
+    {
+      "name": "ecommerce-transactions",
+      "description": "Api's for performing a transaction",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611287199/-servizio+transactions+service",
+        "description": "Technical specifications"
+      }
+    },
+    {
+      "name": "ecommerce-methods",
+      "description": "Api's for retrieve payment methods for perform transactions",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611516433/-servizio+payment+methods+service",
+        "description": "Technical specifications"
+      }
+    },
+    {
+      "name": "ecommerce-payment-requests",
+      "description": "Api's for initiate a transaction given an array of payment tokens",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611745793/-servizio+payment+requests+service",
+        "description": "Technical specifications"
+      }
+    }
+  ],
   "servers": [
     {
       "url": "https://${host}"
     }
   ],
+  "externalDocs": {
+    "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
+    "description": "Design review"
+  },
   "paths": {
     "/payment-requests/{rpt_id}": {
       "get": {
+        "summary": "Verify single payment notice",
+        "description": "Api used to perform verify on payment notice by mean of Nodo call",
         "tags": [
-          "ecommerce-transactions"
+          "ecommerce-payment-requests"
         ],
         "operationId": "getPaymentRequestInfo",
         "parameters": [
@@ -31,6 +66,7 @@
           {
             "in": "query",
             "name": "recaptchaResponse",
+            "description": "Recaptcha response",
             "schema": {
               "type": "string"
             },
@@ -39,7 +75,7 @@
         ],
         "responses": {
           "200": {
-            "description": "New transaction successfully created",
+            "description": "Payment request retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -118,6 +154,7 @@
         ],
         "operationId": "newTransaction",
         "summary": "Make a new transaction",
+        "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
         "requestBody": {
           "content": {
             "application/json": {
@@ -223,7 +260,8 @@
             "bearerAuth": []
           }
         ],
-        "summary": "Get information about a specific transaction",
+        "summary": "Get transaction information",
+        "description": "Return information for the input specific transaction resource",
         "responses": {
           "200": {
             "description": "Transaction data successfully retrieved",
@@ -257,13 +295,95 @@
                 }
               }
             }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "requestTransactionUserCancellation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Performs the transaction cancellation",
+        "responses": {
+          "202": {
+            "description": "Transaction cancellation request successfully accepted"
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Transaction already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout from PagoPA services",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
     },
     "/transactions/{transactionId}/auth-requests": {
-      "summary": "Request authorization for the transaction identified by payment token",
       "post": {
+        "summary": "Request authorization",
+        "description": "Request authorization for the transaction identified by payment token",
         "tags": [
           "ecommerce-transactions"
         ],
@@ -398,7 +518,8 @@
           "ecommerce-methods"
         ],
         "operationId": "getPaymentMethod",
-        "summary": "Retrive payment method by ID",
+        "summary": "Get payment method by ID",
+        "description": "API for retrieve payment method information for a given payment method ID",
         "parameters": [
           {
             "name": "id",
@@ -424,70 +545,14 @@
         }
       }
     },
-    "/payment-methods/psps": {
-      "get": {
+    "/payment-methods/{id}/fees": {
+      "post": {
         "tags": [
           "ecommerce-methods"
         ],
-        "operationId": "getPSPs",
-        "summary": "Retrieve psps",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "amount",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "Amount in cents",
-            "required": false
-          },
-          {
-            "in": "query",
-            "name": "lang",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "IT",
-                "EN",
-                "FR",
-                "DE",
-                "SL"
-              ]
-            },
-            "description": "Service language",
-            "required": false
-          },
-          {
-            "in": "query",
-            "name": "paymentTypeCode",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Payment Type Code",
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "PSP list successfully retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PSPsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/payment-methods/{id}/psps": {
-      "get": {
-        "tags": [
-          "ecommerce-methods"
-        ],
-        "operationId": "getPaymentMethodsPSPs",
-        "summary": "Retrive PSPs by payment method ID",
+        "operationId": "calculateFees",
+        "summary": "Calculate payment method fees",
+        "description": "GET with body payload - no resources created: Return the fees for the choosen payment method based on transaction amount etc.\n",
         "parameters": [
           {
             "name": "id",
@@ -499,38 +564,62 @@
             }
           },
           {
+            "name": "maxOccurrences",
             "in": "query",
-            "name": "amount",
+            "description": "max occurrences",
+            "required": false,
             "schema": {
               "type": "integer"
-            },
-            "description": "Amount in cents",
-            "required": false
-          },
-          {
-            "in": "query",
-            "name": "lang",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "IT",
-                "EN",
-                "FR",
-                "DE",
-                "SL"
-              ]
-            },
-            "description": "Service language",
-            "required": false
+            }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculateFeeRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "New payment method successfully updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PSPsResponse"
+                  "$ref": "#/components/schemas/CalculateFeeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -541,10 +630,11 @@
     "/carts/{id_cart}": {
       "get": {
         "tags": [
-          "ecommerce-carts"
+          "ecommerce-payment-requests"
         ],
         "operationId": "GetCarts",
-        "description": "Get a cart data",
+        "summary": "Get a cart data",
+        "description": "Retrieve cart information",
         "parameters": [
           {
             "in": "path",
@@ -597,6 +687,16 @@
                 }
               }
             }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
@@ -604,7 +704,7 @@
     "/carts/{cart_id}/redirect": {
       "get": {
         "tags": [
-          "ecommerce-carts"
+          "ecommerce-payment-requests"
         ],
         "operationId": "GetCartsRedirect",
         "description": "Redirect to checkout with cart",
@@ -670,26 +770,29 @@
       },
       "PaymentMethodRequest": {
         "type": "object",
-        "description": "New Payment Instrument Request",
+        "description": "New Payment method Request",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method name"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method description string"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Asset name associated to this payment method"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
+            "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method type code"
           },
           "ranges": {
+            "description": "Payment method ranges",
             "type": "array",
             "minItems": 1,
             "items": {
@@ -712,7 +815,8 @@
           "min": {
             "type": "integer",
             "format": "int64",
-            "minimum": 0
+            "minimum": 0,
+            "description": "Range min amount"
           },
           "max": {
             "type": "integer",
@@ -727,35 +831,36 @@
         "description": "Response with payment request information",
         "properties": {
           "rptId": {
+            "description": "Digital payment request id",
             "type": "string",
             "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
           },
           "paFiscalCode": {
+            "description": "Fiscal code associated to the payment notice",
             "type": "string",
             "minLength": 11,
             "maxLength": 11
           },
           "paName": {
+            "description": "Name of the payment notice issuer",
             "type": "string",
             "minLength": 1,
             "maxLength": 70
           },
           "description": {
+            "description": "Payment notice description",
             "type": "string",
             "minLength": 1,
             "maxLength": 140
           },
           "amount": {
+            "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
             "maximum": 99999999
           },
-          "paymentContextCode": {
-            "type": "string",
-            "minLength": 32,
-            "maxLength": 32
-          },
           "dueDate": {
+            "description": "Payment notice due date",
             "type": "string",
             "pattern": "([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])",
             "example": "2025-07-31"
@@ -982,7 +1087,7 @@
         ],
         "example": {
           "rptId": "string",
-          "paymentContextCode": "paymentContextCode",
+          "paymentContextCode": "12345678901234567890123456789012",
           "amount": 100
         }
       },
@@ -1001,18 +1106,41 @@
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "transferList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transfer"
+            },
+            "minItems": 1,
+            "maxItems": 5
           }
         },
         "required": [
           "rptId",
-          "amount"
+          "amount",
+          "transferList"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
-          "amount": 100,
-          "authToken": "authToken1"
+          "amount": 600,
+          "authToken": "authToken1",
+          "transferList": [
+            {
+              "paFiscalCode": "77777777777",
+              "digitalStamp": false,
+              "transferCategory": "transferCategory1",
+              "transferAmount": 500
+            },
+            {
+              "paFiscalCode": "11111111111",
+              "digitalStamp": true,
+              "transferCategory": "transferCategory2",
+              "transferAmount": 100
+            }
+          ]
         }
       },
       "NewTransactionRequest": {
@@ -1029,18 +1157,23 @@
             "example": [
               {
                 "rptId": "77777777777302012387654312384",
-                "paymentContextCode": "paymentContextCode1",
+                "paymentContextCode": "12345678901234567890123456789011",
                 "amount": 100
               },
               {
                 "rptId": "77777777777302012387654312385",
-                "paymentContextCode": "paymentContextCode2",
+                "paymentContextCode": "12345678901234567890123456789012",
                 "amount": 200
               }
             ]
           },
           "email": {
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
@@ -1067,13 +1200,41 @@
                 "rptId": "77777777777302012387654312384",
                 "paymentToken": "paymentToken1",
                 "reason": "reason1",
-                "amount": 100
+                "amount": 600,
+                "transferList": [
+                  {
+                    "paFiscalCode": "77777777777",
+                    "digitalStamp": false,
+                    "transferCategory": "transferCategory1",
+                    "transferAmount": 500
+                  },
+                  {
+                    "paFiscalCode": "11111111111",
+                    "digitalStamp": true,
+                    "transferCategory": "transferCategory2",
+                    "transferAmount": 100
+                  }
+                ]
               },
               {
                 "rptId": "77777777777302012387654312385",
                 "paymentToken": "paymentToken2",
                 "reason": "reason2",
-                "amount": 100
+                "amount": 300,
+                "transferList": [
+                  {
+                    "paFiscalCode": "44444444444",
+                    "digitalStamp": true,
+                    "transferCategory": "transferCategory1",
+                    "transferAmount": 200
+                  },
+                  {
+                    "paFiscalCode": "22222222222",
+                    "digitalStamp": false,
+                    "transferCategory": "transferCategory2",
+                    "transferAmount": 100
+                  }
+                ]
               }
             ]
           },
@@ -1095,6 +1256,11 @@
           },
           "authToken": {
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
@@ -1226,7 +1392,7 @@
             ],
             "example": {
               "detailType": "card",
-              "cvv": 0,
+              "cvv": "123",
               "pan": "0123456789012345",
               "expiryDate": "209901",
               "holderName": "Name Surname",
@@ -1260,7 +1426,8 @@
         ],
         "example": {
           "authorizationResult": "OK",
-          "timestampOperation": "2022-02-11T12:00:00.000Z"
+          "timestampOperation": "2022-02-11T12:00:00.000Z",
+          "authorizationCode": "auth-code"
         }
       },
       "RequestAuthorizationResponse": {
@@ -1328,12 +1495,46 @@
           "AUTHORIZATION_COMPLETED",
           "CLOSED",
           "CLOSURE_ERROR",
-          "NOTIFIED",
+          "NOTIFIED_OK",
+          "NOTIFIED_KO",
+          "NOTIFICATION_ERROR",
+          "NOTIFICATION_REQUESTED",
           "EXPIRED",
           "REFUNDED",
           "CANCELED",
           "EXPIRED_NOT_AUTHORIZED",
-          "UNAUTHORIZED"
+          "UNAUTHORIZED",
+          "REFUND_ERROR",
+          "REFUND_REQUESTED",
+          "CANCELLATION_REQUESTED",
+          "CANCELLATION_EXPIRED"
+        ]
+      },
+      "Transfer": {
+        "type": "object",
+        "description": "The dto that contains information about the creditor entities",
+        "properties": {
+          "paFiscalCode": {
+            "type": "string",
+            "description": "The creditor institution fiscal code",
+            "pattern": "^[a-zA-Z0-9]{11}"
+          },
+          "digitalStamp": {
+            "type": "boolean",
+            "description": "True if it is a digital stamp. False otherwise"
+          },
+          "transferCategory": {
+            "type": "string",
+            "description": "The taxonomy of the transfer"
+          },
+          "transferAmount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "paFiscalCode",
+          "digitalStamp",
+          "transferAmount"
         ]
       },
       "PaymentMethodResponse": {
@@ -1341,26 +1542,30 @@
         "description": "Payment method Response",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method ID"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method name"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method description"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Payment method asset name"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
+            "$ref": "#/components/schemas/PaymentMethodStatus"
           },
           "paymentTypeCode": {
-            "type": "string"
+            "type": "string",
+            "description": "Payment method type code"
           },
           "ranges": {
+            "description": "Payment amount range in eurocents",
             "type": "array",
             "minItems": 1,
             "items": {
@@ -1378,91 +1583,19 @@
         ]
       },
       "PaymentMethodsResponse": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/PaymentMethodResponse"
-        }
-      },
-      "PSPsResponse": {
         "type": "object",
-        "description": "Get available PSP list Response",
+        "description": "Payment methods response",
         "properties": {
-          "psp": {
+          "paymentMethods": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Psp"
+              "$ref": "#/components/schemas/PaymentMethodResponse"
             }
           }
         }
       },
-      "Psp": {
-        "type": "object",
-        "description": "PSP object",
-        "properties": {
-          "code": {
-            "type": "string"
-          },
-          "paymentTypeCode": {
-            "type": "string"
-          },
-          "channelCode": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ENABLED",
-              "DISABLED",
-              "INCOMING"
-            ]
-          },
-          "businessName": {
-            "type": "string"
-          },
-          "brokerName": {
-            "type": "string"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "IT",
-              "EN",
-              "FR",
-              "DE",
-              "SL"
-            ]
-          },
-          "minAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "maxAmount": {
-            "type": "number",
-            "format": "double"
-          },
-          "fixedCost": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "required": [
-          "code",
-          "paymentMethodID",
-          "description",
-          "status",
-          "type",
-          "name",
-          "brokerName",
-          "language",
-          "minAmount",
-          "maxAmount",
-          "fixedCost"
-        ]
-      },
       "CartRequest": {
+        "description": "Cart request body",
         "type": "object",
         "required": [
           "paymentNotices",
@@ -1470,11 +1603,13 @@
         ],
         "properties": {
           "emailNotice": {
+            "description": "Email to which send the payment receipt",
             "type": "string",
             "format": "email",
             "example": "my_email@mail.it"
           },
           "paymentNotices": {
+            "description": "List of payment notices in the cart",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PaymentNotice"
@@ -1499,6 +1634,7 @@
             ]
           },
           "returnUrls": {
+            "description": "Structure containing all the returning URL's to which user will be redirect after payment process has been completed",
             "type": "object",
             "required": [
               "returnOkUrl",
@@ -1507,25 +1643,37 @@
             ],
             "properties": {
               "returnOkUrl": {
+                "description": "Return URL in case of payment operation is completed successfully",
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/success.html"
+                "example": "https://www.comune.di.prova.it/pagopa/success.html"
               },
               "returnCancelUrl": {
+                "description": "Return URL in case of payment operation is cancelled",
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/cancel.html"
+                "example": "https://www.comune.di.prova.it/pagopa/cancel.html"
               },
               "returnErrorUrl": {
+                "description": "Return URL in case an error occurred during payment operation processing",
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/error.html"
+                "example": "https://www.comune.di.prova.it/pagopa/error.html"
               }
             }
+          },
+          "idCart": {
+            "type": "string",
+            "example": "id_cart"
+          },
+          "allCCP": {
+            "type": "boolean",
+            "example": "false"
           }
         }
       },
       "PaymentNotice": {
+        "description": "Payment notice informations",
         "type": "object",
         "required": [
           "noticeNumber",
@@ -1536,28 +1684,192 @@
         ],
         "properties": {
           "noticeNumber": {
+            "description": "Payment notice number",
             "type": "string",
             "minLength": 18,
             "maxLength": 18
           },
           "fiscalCode": {
+            "description": "Payment notice fiscal code",
             "type": "string",
             "minLength": 11,
             "maxLength": 11
           },
           "amount": {
+            "description": "Payment notice amount",
             "type": "integer",
             "minimum": 1
           },
           "companyName": {
+            "description": "Payment notice company name",
             "type": "string",
             "maxLength": 140
           },
           "description": {
+            "description": "Payment notice description",
             "type": "string",
             "maxLength": 140
           }
         }
+      },
+      "CalculateFeeRequest": {
+        "description": "Calculate fee request",
+        "type": "object",
+        "properties": {
+          "touchpoint": {
+            "type": "string",
+            "description": "The touchpoint name"
+          },
+          "bin": {
+            "type": "string",
+            "description": "The user card bin"
+          },
+          "idPspList": {
+            "description": "List of psps",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "paymentAmount": {
+            "description": "The transaction payment amount",
+            "type": "integer",
+            "format": "int64"
+          },
+          "primaryCreditorInstitution": {
+            "description": "The primary creditor institution",
+            "type": "string"
+          },
+          "transferList": {
+            "description": "Transfert list",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          }
+        },
+        "required": [
+          "paymentAmount",
+          "primaryCreditorInstitution",
+          "transferList",
+          "touchpoint"
+        ]
+      },
+      "CalculateFeeResponse": {
+        "description": "Calculate fee response",
+        "type": "object",
+        "properties": {
+          "paymentMethodName": {
+            "description": "Payment method name",
+            "type": "string"
+          },
+          "paymentMethodStatus": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "belowThreshold": {
+            "description": "Boolean value indicating if the payment is below the configured threshold",
+            "type": "boolean"
+          },
+          "bundles": {
+            "description": "Bundle list",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bundle"
+            }
+          }
+        },
+        "required": [
+          "bundles",
+          "paymentMethodName",
+          "paymentMethodStatus"
+        ]
+      },
+      "Bundle": {
+        "description": "Bundle object",
+        "type": "object",
+        "properties": {
+          "abi": {
+            "description": "Bundle ABI code",
+            "type": "string"
+          },
+          "bundleDescription": {
+            "description": "Bundle description",
+            "type": "string"
+          },
+          "bundleName": {
+            "description": "Bundle name",
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "description": "Bundle PSP broker id",
+            "type": "string"
+          },
+          "idBundle": {
+            "description": "Bundle id",
+            "type": "string"
+          },
+          "idChannel": {
+            "description": "Channel id",
+            "type": "string"
+          },
+          "idCiBundle": {
+            "description": "CI bundle id",
+            "type": "string"
+          },
+          "idPsp": {
+            "description": "PSP id",
+            "type": "string"
+          },
+          "onUs": {
+            "description": "Boolean value indicating if this bundle is an on-us ones",
+            "type": "boolean"
+          },
+          "paymentMethod": {
+            "description": "Payment method",
+            "type": "string"
+          },
+          "primaryCiIncurredFee": {
+            "description": "Primary CI incurred fee",
+            "type": "integer",
+            "format": "int64"
+          },
+          "taxPayerFee": {
+            "description": "Tax payer fee",
+            "type": "integer",
+            "format": "int64"
+          },
+          "touchpoint": {
+            "description": "The touchpoint name",
+            "type": "string"
+          }
+        }
+      },
+      "TransferListItem": {
+        "description": "Transfert list item",
+        "type": "object",
+        "properties": {
+          "creditorInstitution": {
+            "description": "Creditor institution",
+            "type": "string"
+          },
+          "digitalStamp": {
+            "description": "Boolean value indicating if there is digital stamp",
+            "type": "boolean"
+          },
+          "transferCategory": {
+            "description": "Transfer category",
+            "type": "string"
+          }
+        }
+      },
+      "PaymentMethodStatus": {
+        "type": "string",
+        "description": "Payment method status",
+        "enum": [
+          "ENABLED",
+          "DISABLED",
+          "INCOMING"
+        ]
       }
     },
     "requestBodies": {
@@ -1597,6 +1909,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/UpdateAuthorizationRequest"
+            }
+          }
+        }
+      },
+      "CalculateFeeRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CalculateFeeRequest"
             }
           }
         }

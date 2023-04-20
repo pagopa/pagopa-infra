@@ -97,7 +97,7 @@ app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_kibana_certificate_name     = "kibana-platform-pagopa-it"
-app_gateway_wfespgovit_certificate_name = ""
+app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
 app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                = 50
 app_gateway_sku_name                    = "WAF_v2"
@@ -114,8 +114,7 @@ app_gateway_deny_paths = [
   "/payment-manager/internal*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd/.*",           # internal use no sub-keys
-  "/gpd-payments/.*",  # internal use no sub-keys
+  "/gpd-payments/.*",  # internal use no sub-keys SOAP
   "/gpd-reporting/.*", # internal use no sub-keys
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
@@ -130,18 +129,20 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   "/pagopa-node-forwarder/.*",
-  "/gps/donation-service/.*",             # internal use no sub-keys
-  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
-  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
-  "/gps/gpd-payments/.*",                 # internal use no sub-keys
-  "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
-  "/gps/gpd-reporting-orgs-enrollment/.*" # internal use
+  "/gps/donation-service/.*",              # internal use no sub-keys
+  "/shared/iuv-generator-service/.*",      # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*",  # internal use no sub-keys
+  "/gps/gpd-payments/.*",                  # internal use no sub-keys
+  "/gps/gpd-payment-receipts/.*",          # internal use no sub-keys
+  "/gps/gpd-reporting-orgs-enrollment/.*", # internal use
+  "shared/authorizer/.*"
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
     "/web-bo/.*",
     "/bo-nodo/.*",
     "/pp-admin-panel/.*",
+    "/nodo-monitoring/monitoring/.*",
     "/nodo-ndp/monitoring/.*",
     "/nodo-replica-ndp/monitoring/.*",
     "/wfesp-ndp/.*",
@@ -463,7 +464,7 @@ pagopa_proxy_size           = "P1v3"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
-# redis apim 
+# redis apim
 redis_cache_params = {
   public_access = false
   capacity      = 0

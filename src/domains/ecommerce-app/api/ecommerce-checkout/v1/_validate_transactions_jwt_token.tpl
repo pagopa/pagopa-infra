@@ -1,6 +1,7 @@
 <policies>
     <inbound>
         <base />
+        <set-header name="x-transaction-id" exists-action="delete" />
         <set-variable name="requestTransactionId" value="@{
             return context.Request.MatchedParameters["transactionId"];
         }" />
@@ -21,6 +22,11 @@
                 <return-response>
                     <set-status code="401" reason="Unauthorized" />
                 </return-response>
+            </when>
+            <when condition="@((string)context.Variables["requestTransactionId"] != "")">
+                <set-header name="x-transaction-id" exists-action="override">
+                    <value>@((string)context.Variables.GetValueOrDefault("requestTransactionId",""))</value>
+                </set-header>
             </when>
         </choose>
     </inbound>

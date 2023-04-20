@@ -33,9 +33,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "elastic" {
 
   ### autoscaling
   enable_auto_scaling = true
-  node_count          = var.elastic_node_pool.node_count_min
-  min_count           = var.elastic_node_pool.node_count_min
-  max_count           = var.elastic_node_pool.node_count_max
+  #node_count          = var.elastic_node_pool.node_count_min
+  min_count = var.elastic_node_pool.node_count_min
+  max_count = var.elastic_node_pool.node_count_max
 
   ### K8s node configuration
   max_pods    = var.elastic_node_pool.elastic_pool_max_pods
@@ -48,5 +48,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "elastic" {
 
 
   tags = merge(var.tags, var.elastic_node_pool.node_tags)
+
+  #lifecycle {
+  #  ignore_changes = [
+  #    node_count
+  #  ]
+  #}
 
 }

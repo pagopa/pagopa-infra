@@ -29,9 +29,7 @@
 | <a name="module_apim_api_debt_positions_api_v1"></a> [apim\_api\_debt\_positions\_api\_v1](#module\_apim\_api\_debt\_positions\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_api_donations_api"></a> [apim\_api\_donations\_api](#module\_apim\_api\_donations\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_api_gpd_api"></a> [apim\_api\_gpd\_api](#module\_apim\_api\_gpd\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
-| <a name="module_apim_api_gpd_payments_rest_api"></a> [apim\_api\_gpd\_payments\_rest\_api](#module\_apim\_api\_gpd\_payments\_rest\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_api_gpd_reporting_analysis_api"></a> [apim\_api\_gpd\_reporting\_analysis\_api](#module\_apim\_api\_gpd\_reporting\_analysis\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
-| <a name="module_apim_api_payments_receipts_api_v1"></a> [apim\_api\_payments\_receipts\_api\_v1](#module\_apim\_api\_payments\_receipts\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_buyerbanks_api_v1"></a> [apim\_buyerbanks\_api\_v1](#module\_apim\_buyerbanks\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_checkout_ec_api_v1"></a> [apim\_checkout\_ec\_api\_v1](#module\_apim\_checkout\_ec\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_checkout_ec_product"></a> [apim\_checkout\_ec\_product](#module\_apim\_checkout\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
@@ -44,11 +42,10 @@
 | <a name="module_apim_debt_positions_product"></a> [apim\_debt\_positions\_product](#module\_apim\_debt\_positions\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_donations_product"></a> [apim\_donations\_product](#module\_apim\_donations\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_donazioni_ucraina_product"></a> [apim\_donazioni\_ucraina\_product](#module\_apim\_donazioni\_ucraina\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_gpd_payments_product"></a> [apim\_gpd\_payments\_product](#module\_apim\_gpd\_payments\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_gpd_payments_rest_product"></a> [apim\_gpd\_payments\_rest\_product](#module\_apim\_gpd\_payments\_rest\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_gpd_product"></a> [apim\_gpd\_product](#module\_apim\_gpd\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_gpd_reporting_analysis_product"></a> [apim\_gpd\_reporting\_analysis\_product](#module\_apim\_gpd\_reporting\_analysis\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_ec_api"></a> [apim\_mock\_ec\_api](#module\_apim\_mock\_ec\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
+| <a name="module_apim_mock_ec_forwarder_api"></a> [apim\_mock\_ec\_forwarder\_api](#module\_apim\_mock\_ec\_forwarder\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_mock_ec_nexi_api"></a> [apim\_mock\_ec\_nexi\_api](#module\_apim\_mock\_ec\_nexi\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_mock_ec_nexi_product"></a> [apim\_mock\_ec\_nexi\_product](#module\_apim\_mock\_ec\_nexi\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
@@ -112,7 +109,6 @@
 | <a name="module_apim_payment_transactions_gateway_pgsfe_api_v1"></a> [apim\_payment\_transactions\_gateway\_pgsfe\_api\_v1](#module\_apim\_payment\_transactions\_gateway\_pgsfe\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_payment_transactions_gateway_product"></a> [apim\_payment\_transactions\_gateway\_product](#module\_apim\_payment\_transactions\_gateway\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_payment_transactions_gateway_update_api_v1"></a> [apim\_payment\_transactions\_gateway\_update\_api\_v1](#module\_apim\_payment\_transactions\_gateway\_update\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_payments_receipts_product"></a> [apim\_payments\_receipts\_product](#module\_apim\_payments\_receipts\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v2.18.3 |
 | <a name="module_apim_pm_adminpanel_api_v1"></a> [apim\_pm\_adminpanel\_api\_v1](#module\_apim\_pm\_adminpanel\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_auth_rtd_api_v1"></a> [apim\_pm\_auth\_rtd\_api\_v1](#module\_apim\_pm\_auth\_rtd\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pm_auth_rtd_api_v2"></a> [apim\_pm\_auth\_rtd\_api\_v2](#module\_apim\_pm\_auth\_rtd\_api\_v2) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
@@ -199,11 +195,8 @@
 | <a name="module_pagopa_proxy_redis"></a> [pagopa\_proxy\_redis](#module\_pagopa\_proxy\_redis) | git::https://github.com/pagopa/azurerm.git//redis_cache | v2.0.28 |
 | <a name="module_pagopa_proxy_redis_snet"></a> [pagopa\_proxy\_redis\_snet](#module\_pagopa\_proxy\_redis\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.28 |
 | <a name="module_pagopa_proxy_snet"></a> [pagopa\_proxy\_snet](#module\_pagopa\_proxy\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.28 |
-| <a name="module_payments_app_service"></a> [payments\_app\_service](#module\_payments\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service | v2.8.0 |
-| <a name="module_payments_app_service_slot_staging"></a> [payments\_app\_service\_slot\_staging](#module\_payments\_app\_service\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot | v2.2.0 |
 | <a name="module_payments_cosmos_db"></a> [payments\_cosmos\_db](#module\_payments\_cosmos\_db) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database | v2.1.15 |
 | <a name="module_payments_cosmosdb_containers"></a> [payments\_cosmosdb\_containers](#module\_payments\_cosmosdb\_containers) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v3.2.4 |
-| <a name="module_payments_receipt"></a> [payments\_receipt](#module\_payments\_receipt) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.8.0 |
 | <a name="module_postgres_flexible_server_private"></a> [postgres\_flexible\_server\_private](#module\_postgres\_flexible\_server\_private) | git::https://github.com/pagopa/azurerm.git//postgres_flexible_server | v2.8.1 |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.1.13 |
 | <a name="module_postgresql"></a> [postgresql](#module\_postgresql) | git::https://github.com/pagopa/azurerm.git//postgresql_server | v2.0.28 |
@@ -235,7 +228,6 @@
 | [azapi_resource.decoupler_algorithm](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
 | [azapi_resource.decoupler_configuration](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
 | [azurerm_api_management_api.apim_api_donazioni_ucraina_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
-| [azurerm_api_management_api.apim_api_gpd_payments_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_cd_info_wisp_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_node_for_io_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_node_for_io_api_v1_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
@@ -304,10 +296,7 @@
 | [azurerm_api_management_api_version_set.api_donations_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_donazioni_ucraina_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_gpd_payments_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_gpd_payments_rest_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_reporting_analysis_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_payments_receipts_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_pm_bpd_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_pm_cobadge_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_pm_fesp_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -381,6 +370,7 @@
 | [azurerm_api_management_api_version_set.psp_for_node_api_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.psp_for_node_api_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.secondary_mock_ec_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.secondary_mock_ec_forwarder_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.tkm_acquirer_manager_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.tkm_card_manager_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.tkm_consent_manager_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -522,7 +512,6 @@
 | [azurerm_monitor_scheduled_query_rules_alert.canoneunico_parsing_csv_error](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.checkout_availability](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.fdr_parsing_0_flows_alert](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.payments_gpd_inconsistency_error](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pm_payment_gateway_availability](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pm_restapi_availability](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pm_restapi_cd_availability](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -623,7 +612,6 @@
 | [azurerm_storage_table.cu_debtposition_table](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.cu_ecconfig_table](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.cu_iuvs_table](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_table) | resource |
-| [azurerm_storage_table.payments_receipts_table](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.reporting_flows_table](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.reporting_organizations_table](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_table) | resource |
 | [azurerm_user_assigned_identity.appgateway](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/user_assigned_identity) | resource |

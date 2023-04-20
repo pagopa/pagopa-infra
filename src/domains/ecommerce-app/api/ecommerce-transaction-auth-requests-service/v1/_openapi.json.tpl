@@ -1,9 +1,26 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "0.1.0",
+    "version": "0.0.1",
     "title": "Pagopa eCommerce transaction auth requests service",
-    "description": "This microservice handles transaction auth requests update"
+    "description": "This microservice handles transaction auth requests update",
+    "contact": {
+      "name": "pagoPA - Touchpoints team"
+    }
+  },
+  "tags": [
+    {
+      "name": "transactions",
+      "description": "Api's for performing a transaction",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611287199/-servizio+transactions+service",
+        "description": "Technical specifications"
+      }
+    }
+  ],
+  "externalDocs": {
+    "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
+    "description": "Design review"
   },
   "servers": [
     {
@@ -12,9 +29,13 @@
   ],
   "paths": {
     "/transactions/{transactionId}/auth-requests": {
-      "summary": "Request authorization for the transaction identified by payment token",
       "patch": {
+        "tags": [
+          "transactions"
+        ],
         "operationId": "updateTransactionAuthorization",
+        "summary": "Update authorization",
+        "description": "Callback endpoint used for notify authorization outcome",
         "parameters": [
           {
             "in": "path",
@@ -23,7 +44,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "Transaction Id"
+            "description": "Base64 of bytes related to TransactionId"
           }
         ],
         "requestBody": {
@@ -49,6 +70,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Transaction not found",
@@ -97,39 +121,14 @@
   "components": {
     "schemas": {
       "RptId": {
+        "description": "Digital payment receipt identifier",
         "type": "string",
         "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
       },
-      "NewTransactionRequest": {
+      "PaymentInfo": {
+        "description": "Informations about transaction payments",
         "type": "object",
-        "description": "Request body for creating a new transaction",
         "properties": {
-          "rptId": {
-            "$ref": "#/components/schemas/RptId"
-          },
-          "email": {
-            "type": "string"
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        },
-        "required": [
-          "rptId",
-          "email",
-          "amount"
-        ],
-        "example": {
-          "rptId": "string"
-        }
-      },
-      "NewTransactionResponse": {
-        "type": "object",
-        "description": "Transaction data returned when creating a new transaction",
-        "properties": {
-          "transactionId": {
-            "type": "string"
-          },
           "paymentToken": {
             "type": "string"
           },
@@ -140,76 +139,73 @@
             "type": "string"
           },
           "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents",
-            "minLength": 1,
-            "maxLength": 140
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "rptId",
+          "amount"
+        ],
+        "example": {
+          "rptId": "77777777777302012387654312384",
+          "paymentToken": "paymentToken1",
+          "reason": "reason1",
+          "amount": 100
+        }
+      },
+      "NewTransactionResponse": {
+        "type": "object",
+        "description": "Transaction data returned when creating a new transaction",
+        "properties": {
+          "transactionId": {
+            "description": "the transaction unique identifier",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentToken": "paymentToken1",
+                "reason": "reason1",
+                "amount": 100
+              },
+              {
+                "rptId": "77777777777302012387654312385",
+                "paymentToken": "paymentToken2",
+                "reason": "reason2",
+                "amount": 100
+              }
+            ]
+          },
+          "clientId": {
+            "description": "transaction client id",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART"
+            ]
           },
           "authToken": {
+            "description": "authorization token",
             "type": "string"
           }
         },
         "required": [
           "transactionId",
-          "amount"
-        ],
-        "example": {
-          "amount": 200
-        }
-      },
-      "RequestAuthorizationRequest": {
-        "type": "object",
-        "description": "Request body for requesting an authorization for a transaction",
-        "properties": {
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
-          "fee": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
-          "paymentInstrumentId": {
-            "type": "string",
-            "description": "Payment instrument id"
-          },
-          "pspId": {
-            "type": "string",
-            "description": "PSP id"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "IT",
-              "EN",
-              "FR",
-              "DE",
-              "SL"
-            ],
-            "description": "Requested language"
-          }
-        },
-        "required": [
-          "amount",
-          "fee",
-          "paymentInstrumentId",
-          "pspId",
-          "language"
+          "amountTotal",
+          "status",
+          "payments",
+          "clientId"
         ]
-      },
-      "RequestAuthorizationResponse": {
-        "type": "object",
-        "description": "Response body for requesting an authorization for a transaction",
-        "properties": {
-          "authorizationUrl": {
-            "type": "string",
-            "format": "url",
-            "description": "URL where to redirect clients to continue the authorization process"
-          }
-        },
-        "required": [
-          "authorizationUrl"
-        ],
-        "example": {
-          "authorizationUrl": "https://example.com"
-        }
       },
       "UpdateAuthorizationRequest": {
         "type": "object",
@@ -235,7 +231,8 @@
         ],
         "example": {
           "authorizationResult": "OK",
-          "timestampOperation": "2022-02-11T12:00:00.000Z"
+          "timestampOperation": "2022-02-11T12:00:00.000Z",
+          "authorizationCode": "auth-code"
         }
       },
       "TransactionInfo": {
@@ -247,19 +244,15 @@
           {
             "type": "object",
             "properties": {
-              "status": {
-                "$ref": "#/components/schemas/TransactionStatus"
+              "feeTotal": {
+                "$ref": "#/components/schemas/AmountEuroCents"
               }
             },
             "required": [
               "status"
             ]
           }
-        ],
-        "example": {
-          "amount": 200,
-          "status": "INITIALIZED"
-        }
+        ]
       },
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
@@ -275,113 +268,32 @@
           "KO"
         ]
       },
-      "Beneficiary": {
-        "description": "Beneficiary institution related to a payment",
-        "type": "object",
-        "properties": {
-          "beneficiaryId": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "denominazioneBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "codiceUnitOperBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "denomUnitOperBeneficiario": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "address": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 70
-          },
-          "streetNumber": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "postalCode": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 16
-          },
-          "city": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "province": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "country": {
-            "type": "string",
-            "pattern": "[A-Z]{2}"
-          }
-        },
-        "required": [
-          "beneficiaryId",
-          "denominazioneBeneficiario"
-        ]
-      },
-      "PaymentInstallments": {
-        "description": "Payment installments (optional)",
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Installment"
-        }
-      },
-      "Installment": {
-        "description": "Payment installment",
-        "type": "object",
-        "properties": {
-          "installment": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 35
-          },
-          "data": {
-            "$ref": "#/components/schemas/InstallmentDetails"
-          }
-        }
-      },
-      "InstallmentDetails": {
-        "description": "Amount and reason related to a payment installment",
-        "type": "object",
-        "properties": {
-          "reason": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 25
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        }
-      },
       "TransactionStatus": {
         "type": "string",
         "description": "Possible statuses a transaction can be in",
         "enum": [
-          "INITIALIZED",
+          "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
-          "AUTHORIZED",
-          "AUTHORIZATION_FAILED",
+          "AUTHORIZATION_COMPLETED",
           "CLOSED",
-          "CLOSURE_FAILED"
+          "CLOSURE_ERROR",
+          "NOTIFIED_OK",
+          "NOTIFIED_KO",
+          "NOTIFICATION_ERROR",
+          "NOTIFICATION_REQUESTED",
+          "EXPIRED",
+          "REFUNDED",
+          "CANCELED",
+          "EXPIRED_NOT_AUTHORIZED",
+          "UNAUTHORIZED",
+          "REFUND_ERROR",
+          "REFUND_REQUESTED",
+          "CANCELLATION_REQUESTED",
+          "CANCELLATION_EXPIRED"
         ]
       },
       "ProblemJson": {
+        "description": "Body definition for error responses containing failure details",
         "type": "object",
         "properties": {
           "type": {
@@ -421,26 +333,6 @@
       }
     },
     "requestBodies": {
-      "NewTransactionRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/NewTransactionRequest"
-            }
-          }
-        }
-      },
-      "RequestAuthorizationRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/RequestAuthorizationRequest"
-            }
-          }
-        }
-      },
       "UpdateAuthorizationRequest": {
         "required": true,
         "content": {

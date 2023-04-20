@@ -120,30 +120,6 @@ variable "pgres_flex_params" {
 
 }
 
-# variable "pgres_flex_private_endpoint_enabled" {
-#   type        = bool
-#   default     = false
-#   description = "Enable or Disable private endpoint for postgresql flex."
-# }
-
-# variable "pgres_flex_ha_enabled" {
-#   type        = bool
-#   default     = false
-#   description = "Enable or Disable hight availability postgresql flex."
-# }
-
-# variable "pgres_flex_pgbouncer_enabled" {
-#   type        = bool
-#   default     = false
-#   description = "Enable or Disable high availability postgresql flex."
-# }
-
-# variable "pgres_flex_diagnostic_settings_enabled" {
-#   type        = bool
-#   default     = false
-#   description = "Enable or Disable diagnostic postgresql flex."
-# }
-
 variable "pgres_flex_nodo_db_name" {
   type        = string
   description = "Nodo DB name"
@@ -264,13 +240,13 @@ variable "cidr_subnet_ndp_redis" {
 
 variable "ndp_redis_params" {
   type = object({
-    capacity    = number
-    sku_name    = string
-    family      = string
+    capacity = number
+    sku_name = string
+    family   = string
   })
   default = {
-    capacity    = 0
-    sku_name    = "Basic"
-    family      = "C"
+    capacity = 0
+    sku_name = "Basic"
+    family   = "C"
   }
 }

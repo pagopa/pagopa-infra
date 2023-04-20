@@ -4,10 +4,9 @@
 
 locals {
   apim_gpd_payments_rest_external_api = {
-    display_name = "GPD Payments pagoPA - REST for Auth - aks"
-    description  = "REST API del servizio Payments per Gestione Posizione Debitorie - for Auth"
-    # temporary path for migration purpose - the official one will be payment-receipts/api
-    path                  = "gps/gpd-payment-receipts-auth/api"
+    display_name          = "GPD Payments pagoPA - REST for Auth"
+    description           = "REST API del servizio Payments per Gestione Posizione Debitorie - for Auth"
+    path                  = "gpd/payments-receipts-service"
     published             = true
     subscription_required = true
     approval_required     = true
@@ -15,7 +14,6 @@ locals {
     service_url           = null
   }
 }
-
 
 ###################
 ## REST Products ##
@@ -51,6 +49,7 @@ resource "azurerm_api_management_api_version_set" "api_gpd_payments_rest_externa
   versioning_scheme   = "Segment"
 }
 
+
 module "apim_api_gpd_payments_rest_external_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
@@ -76,6 +75,7 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
   })
 
   xml_content = templatefile("./api/payments-service/v1/rest/external/_base_policy.xml", {
-    hostname = local.gps_hostname
+    hostname                     = local.gps_hostname
+    cache-generator-function-key = "temp"
   })
 }
