@@ -82,10 +82,10 @@
     <!-- used for convention in the cache key -->
     <set-variable name="domain" value="nodo" />
     <!-- used for debugging -->
-    <trace source="json-configuration" severity="information">@{
+    <!-- <trace source="json-configuration" severity="information">@{
       var configuration = JArray.Parse(((string) context.Variables["configuration"]));
       return configuration.FirstOrDefault()["node_id"].Value<string>();
-      }</trace>
+      }</trace> -->
     <set-variable name="primitives" value="{{node-decoupler-primitives}}" />
     <set-variable name="soapAction" value="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Replace("\"",""))" />
     <set-variable name="primitiveType" value="@{
@@ -108,7 +108,7 @@
         }" />
     <!-- apply algorithm logic -->
     <include-fragment fragment-id="decoupler-algorithm" />
-    <trace source="base-url" severity="information">@((string)context.Variables["baseUrl"])</trace>
+    <!-- <trace source="base-url" severity="information">@((string)context.Variables["baseUrl"])</trace> -->
 
     <!-- set backend service url -->
     <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
