@@ -4,8 +4,8 @@
     "description": "Nodo OnCloud PagoPa",
     "node_uri": "https://weuuat.nodo.internal.uat.platform.pagopa.it/nodo",
     "routing": 50,
-    "broker_psps": ["00799960158"],
-    "cis": ["80005570561"]
+    "broker_psps": [],
+    "cis": []
   },
   {
     "node_id": "NDP002UAT",
