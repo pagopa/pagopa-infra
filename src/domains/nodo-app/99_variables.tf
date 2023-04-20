@@ -157,7 +157,7 @@ variable "nodo_ndp_subscription_limit" {
 }
 
 variable "lb_frontend_private_ip_address" {
-  type    = string
+  type        = string
   description = "load balancer egress nodo private ip"
 }
 
@@ -171,13 +171,13 @@ variable "route_aks" {
   description = "AKS routing table"
 }
 
-variable "vmss_zones"{
-  type    = list(string)
+variable "vmss_zones" {
+  type        = list(string)
   description = "availability zones for vmss "
 }
 
-variable "vmss_instance_number"{
-  type    = number
+variable "vmss_instance_number" {
+  type        = number
   description = "availability zones for vmss "
 }
 

@@ -143,9 +143,9 @@ module "route_table_peering_nexi" {
 #
 # include VMSS subnet in primary route table on integration vnet
 #
-data "azurerm_route_table" "route_sia"{
-  name                          = format("%s-sia-rt", local.product)
-  resource_group_name           = local.vnet_resource_group_name
+data "azurerm_route_table" "route_sia" {
+  name                = format("%s-sia-rt", local.product)
+  resource_group_name = local.vnet_resource_group_name
 }
 
 resource "azurerm_subnet_route_table_association" "snet_vmss_to_sia" {
@@ -209,5 +209,5 @@ resource "azurerm_monitor_autoscale_setting" "vmss-scale" {
       }
     }
   }
-  
+
 }

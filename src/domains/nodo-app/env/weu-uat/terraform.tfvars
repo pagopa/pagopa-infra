@@ -54,42 +54,42 @@ cidr_subnet_vmss               = ["10.230.9.144/28"]
 lb_frontend_private_ip_address = "10.230.9.150"
 
 route_aks = [
-    {
-      #  aks nodo to nexi proxy
-      name                   = "aks-outbound-to-nexy-sianet-subnet"
-      address_prefix         = "10.101.1.95/32"
-      next_hop_type          = "VirtualAppliance"
-      next_hop_in_ip_address = "10.230.9.150"
-    },
-    {
-      #  aks nodo to nexi sfg
-      name                   = "aks-outbound-to-nexi-sfg-subnet"
-      address_prefix         = "10.101.38.180/32"
-      next_hop_type          = "VirtualAppliance"
-      next_hop_in_ip_address = "10.230.9.150"
-    },
-    {
-      #  aks nodo to nexi sftp
-      name                   = "aks-outbound-to-nexi-sftp-subnet"
-      address_prefix         = "10.48.23.0/24"
-      next_hop_type          = "VirtualAppliance"
-      next_hop_in_ip_address = "10.230.9.150"
-    },
-    {
-      #  aks nodo to nexi oncloud oracle
-      name                   = "aks-outbound-to-nexi-oracle-cloud-subnet"
-      address_prefix         = "10.70.73.0/24"
-      next_hop_type          = "VirtualAppliance"
-      next_hop_in_ip_address = "10.230.9.150"
-    },
-    {
-      #  aks nodo to nexi oncloud oracle
-      name                   = "aks-outbound-to-nexi-aks-cloud-subnet"
-      address_prefix         = "10.70.74.0/24"
-      next_hop_type          = "VirtualAppliance"
-      next_hop_in_ip_address = "10.230.9.150"
-    },
+  {
+    #  aks nodo to nexi proxy
+    name                   = "aks-outbound-to-nexy-sianet-subnet"
+    address_prefix         = "10.101.1.95/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    #  aks nodo to nexi sfg
+    name                   = "aks-outbound-to-nexi-sfg-subnet"
+    address_prefix         = "10.101.38.180/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    #  aks nodo to nexi sftp
+    name                   = "aks-outbound-to-nexi-sftp-subnet"
+    address_prefix         = "10.48.23.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-oracle-cloud-subnet"
+    address_prefix         = "10.70.73.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-aks-cloud-subnet"
+    address_prefix         = "10.70.74.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
 ]
 
-vmss_zones = ["1"]
+vmss_zones           = ["1"]
 vmss_instance_number = 1
