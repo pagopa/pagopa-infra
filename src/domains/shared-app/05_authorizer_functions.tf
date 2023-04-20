@@ -5,7 +5,11 @@ module "authorizer_functions_snet" {
   address_prefixes                               = [var.cidr_subnet_authorizer_functions]
   resource_group_name                            = local.vnet_resource_group_name
   virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  enforce_private_link_endpoint_network_policies = false
+  enforce_private_link_endpoint_network_policies = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+  ]
 
   delegation = {
     name = "default"
@@ -58,8 +62,12 @@ module "authorizer_function_app" {
     DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.acr.admin_password
 
-    //COSMOS_CONN_STRING = module.authorizer_cosmosdb_account.connection_string[4];
-    // TODO set here OTHER PARAMS
+    COSMOS_CONN_STRING = data.azurerm_key_vault_secret.authorizer_cosmos_connection_string
+    REFRESH_CONFIGURATION_PATH = data.azurerm_key_vault_secret.authorizer_cosmos_key
+    SKEYDOMAINS_COSMOS_URI = data.azurerm_key_vault_secret.authorizer_cosmos_uri
+    SKEYDOMAINS_COSMOS_KEY = data.azurerm_key_vault_secret.authorizer_cosmos_key
+    SKEYDOMAINS_COSMOS_DB = data.azurerm_key_vault_secret.authorizer_cosmos_db
+    SKEYDOMAINS_COSMOS_CONTAINER = data.azurerm_key_vault_secret.authorizer_cosmos_container
   }
 
   //allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
