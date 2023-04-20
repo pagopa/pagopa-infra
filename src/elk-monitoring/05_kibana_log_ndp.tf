@@ -1,5 +1,9 @@
 #################################### [NDP] ####################################
 locals {
+
+  ## query
+  query_path = "${path.module}/ndp/${local.ndp_nodo_key}/query/*.ndjson"
+
   ## space
   ndp_space_name = "ndp"
   ndp_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/space.json", {
