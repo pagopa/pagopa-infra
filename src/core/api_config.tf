@@ -93,6 +93,7 @@ module "api_config_app_service" {
     XSD_COUNTERPART            = var.xsd_counterpart
     XSD_CDI                    = var.xsd_cdi
     LOGGING_LEVEL              = var.apiconfig_logging_level
+    ENV                        = var.env_short == "p" ? "PROD" : "azure"
 
     COSMOS_URI = azurerm_key_vault_secret.apiconfig_cosmos_uri.value
     COSMOS_KEY = azurerm_key_vault_secret.apiconfig_cosmos_key.value
