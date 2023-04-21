@@ -128,7 +128,8 @@ resource "azurerm_api_management_api_operation_policy" "get_carts_redirect" {
   operation_id        = "GetCartsRedirect"
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_carts_redirect.xml.tpl", {
-    checkout_hostname = "${var.dns_zone_checkout}.${var.external_domain}"
+    #    checkout_hostname = "${var.dns_zone_checkout}.${var.external_domain}"
+    checkout_hostname = "dev.checkout.${var.external_domain}"
   })
 }
 
