@@ -170,6 +170,10 @@ variable "gpd_paa_stazione_int" {
   default     = false
 }
 
+variable "cname_record_name" {
+  type = string
+}
+
 variable "reporting_batch_function_always_on" {
   type        = bool
   description = "Always on property"

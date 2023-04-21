@@ -34,8 +34,8 @@ tls_cert_check_helm = {
 }
 
 # gpd-reporting-functions
-gpd_paa_id_intermediario  = "15376371009"
-gpd_paa_stazione_int      = "15376371009_06"
+gpd_paa_id_intermediario = "15376371009"
+gpd_paa_stazione_int     = "15376371009_06"
 
 cidr_subnet_reporting_functions = ["10.1.177.0/24"]
 
@@ -44,3 +44,5 @@ reporting_functions_app_sku = {
   sku_tier = "Basic"
   sku_size = "B1"
 }
+
+cname_record_name = "config"
