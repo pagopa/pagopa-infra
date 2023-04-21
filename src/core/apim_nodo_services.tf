@@ -317,7 +317,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
 
   })
 }
@@ -592,7 +592,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChi
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
   })
 }
 
@@ -609,7 +609,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChi
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
   })
 }
 

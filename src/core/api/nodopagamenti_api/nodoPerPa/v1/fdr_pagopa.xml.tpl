@@ -5,7 +5,6 @@
             <when condition="@(${is-fdr-nodo-pagopa-enable})">
                 <set-backend-service base-url="${base-url}" />
             </when>
-            <otherwise>
         </choose>  
     </inbound>
     <backend>
