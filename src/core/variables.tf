@@ -1732,3 +1732,9 @@ variable "node_decoupler_primitives" {
   description = "Node decoupler primitives"
   default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
 }
+
+variable "fdr_nodo_pagopa_enable" {
+  type        = bool
+  default     = false
+  description = "Fdr Nodo pagoPA legacy "
+}

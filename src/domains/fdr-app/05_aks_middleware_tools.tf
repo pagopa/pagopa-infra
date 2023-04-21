@@ -1,8 +1,8 @@
 module "tls_checker" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v6.2.1"
 
-  https_endpoint                         = local.fdr_locals.hostname
-  alert_name                             = local.fdr_locals.hostname
+  https_endpoint                         = local.hostname
+  alert_name                             = local.hostname
   alert_enabled                          = true
   helm_chart_present                     = true
   helm_chart_version                     = var.tls_cert_check_helm.chart_version

@@ -316,8 +316,9 @@ resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
-    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+    is-fdr-nodo-pagopa-enable = var.fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+
   })
 }
 
@@ -523,6 +524,8 @@ locals {
     path                  = "nodo/nodo-per-pa"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
+    fdr_hostname          = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
+
   }
 }
 
@@ -572,6 +575,45 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }
+
+# Fdr pagoPA legacy 
+
+
+# nodoChiediFlussoRendicontazione DEV 6218976195aa0303ccfcf902
+# nodoChiediFlussoRendicontazione UAT ???
+# nodoChiediFlussoRendicontazione PRD ???
+resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChiediFlussoRendicontazione" { # 
+
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf902" : var.env_short == "u" ? "UAT???" : "PROD???"
+
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+    is-fdr-nodo-pagopa-enable = var.fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+  })
+}
+
+# nodoChiediElencoFlussiRendicontazione DEV 6218976195aa0303ccfcf901
+# nodoChiediElencoFlussiRendicontazione UAT ???
+# nodoChiediElencoFlussiRendicontazione PRD ???
+resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChiediElencoFlussiRendicontazione" { # 
+
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf901" : var.env_short == "u" ? "UAT???" : "PROD???"
+
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+    is-fdr-nodo-pagopa-enable = var.fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+  })
+}
+
+
 
 ######################
 ## Nodo per PM API  ##
