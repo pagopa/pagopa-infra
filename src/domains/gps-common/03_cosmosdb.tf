@@ -141,7 +141,7 @@ module "gpd_payments_cosmosdb_account" {
 
 # cosmosdb gpd payments table
 resource "azurerm_cosmosdb_table" "payments_receipts_table" {
-  name                = "pagopadweugpdpaymentsreceiptstable"
+  name                = "pagopa${local.project}weugpdpaymentsreceiptstable"
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gpd_payments_cosmosdb_account.name
   throughput          = 400
