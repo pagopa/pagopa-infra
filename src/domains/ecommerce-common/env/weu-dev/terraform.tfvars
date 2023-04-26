@@ -36,7 +36,7 @@ cosmos_mongo_db_params = {
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
+    max_interval_in_seconds = 5
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
@@ -46,7 +46,7 @@ cosmos_mongo_db_params = {
   additional_geo_locations          = []
   private_endpoint_enabled          = false
   public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = true
+  is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
 

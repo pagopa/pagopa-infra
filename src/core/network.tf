@@ -7,22 +7,24 @@ resource "azurerm_resource_group" "rg_vnet" {
 
 # vnet
 module "vnet" {
-  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
-  name                = format("%s-vnet", local.project)
-  location            = azurerm_resource_group.rg_vnet.location
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  address_space       = var.cidr_vnet
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
+  name                 = format("%s-vnet", local.project)
+  location             = azurerm_resource_group.rg_vnet.location
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  address_space        = var.cidr_vnet
+  ddos_protection_plan = var.ddos_protection_plan
 
   tags = var.tags
 }
 
 # vnet integration
 module "vnet_integration" {
-  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
-  name                = format("%s-vnet-integration", local.project)
-  location            = azurerm_resource_group.rg_vnet.location
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  address_space       = var.cidr_vnet_integration
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
+  name                 = format("%s-vnet-integration", local.project)
+  location             = azurerm_resource_group.rg_vnet.location
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  address_space        = var.cidr_vnet_integration
+  ddos_protection_plan = var.ddos_protection_plan
 
   tags = var.tags
 }
@@ -114,6 +116,20 @@ module "route_table_peering_sia" {
       # dev nodo db oncloud
       name                   = "to-nodo-db-oncloud-sia-dev"
       address_prefix         = "10.70.67.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10"
+    },
+    {
+      # dev nodo db oncloud
+      name                   = "to-nodo-app-oncloud-sia-prod"
+      address_prefix         = "10.70.135.0/24"
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = "10.70.249.10"
+    },
+    {
+      # prod nodo db oncloud
+      name                   = "to-nodo-db-oncloud-sia-prod"
+      address_prefix         = "10.70.139.0/24"
       next_hop_type          = "VirtualAppliance"
       next_hop_in_ip_address = "10.70.249.10"
     },

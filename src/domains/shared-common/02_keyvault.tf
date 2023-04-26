@@ -32,7 +32,7 @@ resource "azurerm_key_vault_access_policy" "ad_admin_group_policy" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
 
   key_vault_id = module.key_vault.id
 
@@ -56,6 +56,29 @@ resource "azurerm_key_vault_secret" "iuv_generator_cosmos_connection_string" {
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "storage_connection_string" {
+  name         = format("poc-reporting-enrollment-%s-sa-connection-string", var.env_short)
+  value        = module.poc_reporting_enrollment_sa[0].primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "poc_reporting_enrollment_subscription_key" {
+  name         = format("poc-%s-reporting-enrollment-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
 
 #

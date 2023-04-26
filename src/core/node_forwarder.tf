@@ -81,6 +81,10 @@ module "node_forwarder_app_service" {
     DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
 
+    # Connection Pool
+    MAX_CONNECTIONS           = 40
+    MAX_CONNECTIONS_PER_ROUTE = 20
+
   }
 
   allowed_subnets = [module.apim_snet.id]
@@ -92,20 +96,19 @@ module "node_forwarder_app_service" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
-  count  = var.env_short != "d" ? 1 : 0
-
   name                = format("%s-autoscale-node-forwarder", local.project)
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
   location            = azurerm_resource_group.node_forwarder_rg.location
   target_resource_id  = module.node_forwarder_app_service.plan_id
+  enabled             = var.node_forwarder_autoscale_enabled
 
   profile {
     name = "default"
 
     capacity {
-      default = 1
+      default = 5
       minimum = 1
-      maximum = 15
+      maximum = 10
     }
 
     rule {
@@ -118,14 +121,14 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 300
+        threshold                = 3000
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "3"
+        value     = "2"
         cooldown  = "PT5M"
       }
     }
@@ -140,7 +143,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 200
+        threshold                = 2500
         divide_by_instance_count = false
       }
 
@@ -148,7 +151,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT15M"
+        cooldown  = "PT20M"
       }
     }
   }

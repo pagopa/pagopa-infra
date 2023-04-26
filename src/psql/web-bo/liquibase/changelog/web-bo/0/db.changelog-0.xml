@@ -1,0 +1,135 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd"
+                   >
+
+  <changeSet author="liquibase" id="1673857884880-1">
+    <createSequence maxValue="9223372036854775807" sequenceName="BO_USER_ID" startValue="61"/>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-2">
+    <createSequence maxValue="9223372036854775807" sequenceName="BO_USER_SESSION_ID" startValue="1"/>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-3">
+    <createTable tableName="BO_GROUP">
+      <column name="ID" type="NUMBER(38, 0)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="BO_GROUP_PK"/>
+      </column>
+      <column name="NAME" type="VARCHAR2(64 BYTE)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DESCRIPTION" type="VARCHAR2(128 BYTE)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-4">
+    <createTable tableName="BO_GROUP_ROLE">
+      <column name="GROUP_FK" type="NUMBER(38, 0)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="BO_GROUP_ROLE_PK"/>
+      </column>
+      <column name="ROLE_FK" type="NUMBER(38, 0)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="BO_GROUP_ROLE_PK"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-5">
+    <createTable tableName="BO_OAUTH_CLIENT_DETAILS">
+      <column name="CLIENT_ID" type="VARCHAR2(256 BYTE)"/>
+      <column name="RESOURCE_IDS" type="VARCHAR2(256 BYTE)"/>
+      <column name="CLIENT_SECRET" type="VARCHAR2(256 BYTE)"/>
+      <column name="SCOPE" type="VARCHAR2(256 BYTE)"/>
+      <column name="AUTHORIZED_GRANT_TYPES" type="VARCHAR2(256 BYTE)"/>
+      <column name="WEB_SERVER_REDIRECT_URI" type="VARCHAR2(256 BYTE)"/>
+      <column name="AUTHORITIES" type="VARCHAR2(256 BYTE)"/>
+      <column name="ACCESS_TOKEN_VALIDITY" type="NUMBER"/>
+      <column name="REFRESH_TOKEN_VALIDITY" type="NUMBER"/>
+      <column name="ADDITIONAL_INFORMATION" type="VARCHAR2(256 BYTE)"/>
+      <column name="AUTOAPPROVE" type="VARCHAR2(256 BYTE)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-6">
+    <createTable tableName="BO_ROLE">
+      <column name="ID" type="NUMBER(38, 0)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="BO_ROLE_PK"/>
+      </column>
+      <column name="NAME" type="VARCHAR2(64 BYTE)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DESCRIPTION" type="VARCHAR2(128 BYTE)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-7">
+    <createTable tableName="BO_USER">
+      <column name="ID" type="NUMBER(38, 0)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="BO_USER_PK"/>
+      </column>
+      <column name="USERNAME" type="VARCHAR2(128 BYTE)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="PASSWORD" type="VARCHAR2(128 BYTE)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="FIRST_NAME" type="VARCHAR2(256 BYTE)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="LAST_NAME" type="VARCHAR2(256 BYTE)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="EMAIL" type="VARCHAR2(512 BYTE)"/>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="UPDATED_TIMESTAMP" type="TIMESTAMP(6)"/>
+      <column defaultValueNumeric="1" name="STATUS" type="NUMBER(2, 0)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-8">
+    <createTable tableName="BO_USER_GROUP">
+      <column name="USER_FK" type="NUMBER(38, 0)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="BO_USER_GROUP_PK"/>
+      </column>
+      <column name="GROUP_FK" type="NUMBER(38, 0)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="BO_USER_GROUP_PK"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-9">
+    <createTable tableName="BO_USER_SESSION">
+      <column name="ID" type="NUMBER(38, 0)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="BO_USER_SESSION_PK"/>
+      </column>
+      <column name="USER_FK" type="NUMBER(38, 0)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="TOKEN" type="VARCHAR2(512 BYTE)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="EXPIRY_TIMESTAMP" type="TIMESTAMP(6)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-10">
+    <createIndex indexName="BO_USER_UK1" tableName="BO_USER" unique="true">
+      <column name="USERNAME"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-12">
+    <createIndex indexName="BO_USER_UK2" tableName="BO_USER" unique="true">
+      <column name="EMAIL"/>
+    </createIndex>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-14">
+    <addForeignKeyConstraint baseColumnNames="GROUP_FK" baseTableName="BO_GROUP_ROLE" constraintName="BO_GROUP_ROLE_FK1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="BO_GROUP" validate="true"/>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-15">
+    <addForeignKeyConstraint baseColumnNames="ROLE_FK" baseTableName="BO_GROUP_ROLE" constraintName="BO_GROUP_ROLE_FK2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="BO_ROLE" validate="true"/>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-16">
+    <addForeignKeyConstraint baseColumnNames="GROUP_FK" baseTableName="BO_USER_GROUP" constraintName="BO_USER_GROUP_FK1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="BO_GROUP" validate="true"/>
+  </changeSet>
+  <changeSet author="liquibase" id="1673857884880-17">
+    <addForeignKeyConstraint baseColumnNames="USER_FK" baseTableName="BO_USER_GROUP" constraintName="BO_USER_GROUP_FK2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="BO_USER" validate="true"/>
+  </changeSet>
+
+</databaseChangeLog>

@@ -138,3 +138,15 @@ variable "aks_cidr_subnet" {
   type        = list(string)
   description = "Aks network address space."
 }
+
+variable "cname_record_name" {
+  type    = string
+  default = "config"
+}
+
+# nodo dei pagamenti - ndp
+variable "nodo_ndp_subscription_limit" {
+  type        = number
+  description = "subscriptions limit"
+  default     = 1000
+}

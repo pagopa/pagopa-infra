@@ -1,5 +1,5 @@
 # Local .terraform directories
-**/.terraform/*
+**/.terraform
 
 # .tfstate files
 *.tfstate
@@ -42,4 +42,6 @@ __*.sh
 #sops decrypted files
 *_decrypted.json
 *.env
-**/nodo-secret/env/dev
+**/nodo-secret/**/*.zip
+**/*copy.xml
+**/libs

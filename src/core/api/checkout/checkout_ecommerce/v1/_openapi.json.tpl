@@ -113,7 +113,13 @@
         "operationId": "newTransaction",
         "summary": "Make a new transaction",
         "requestBody": {
-          "$ref": "#/components/requestBodies/NewTransactionRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewTransactionRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
@@ -122,6 +128,66 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NewTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationFaultPaymentProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict on payment status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentStatusFaultPaymentProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "PagoPA services are not available or request is rejected by PagoPa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "EC services are not available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyConfigurationFaultPaymentProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout from PagoPA services",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartyTimeoutFaultPaymentProblemJson"
                 }
               }
             }
@@ -194,7 +260,13 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/RequestAuthorizationRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestAuthorizationRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
@@ -821,9 +893,9 @@
         "minLength": 32,
         "maxLength": 32
       },
-      "NewTransactionRequest": {
+      "PaymentNoticeInfo": {
+        "description": "Informations about a single payment notice",
         "type": "object",
-        "description": "Request body for creating a new transaction",
         "properties": {
           "rptId": {
             "$ref": "#/components/schemas/RptId"
@@ -831,7 +903,31 @@
           "paymentContextCode": {
             "$ref": "#/components/schemas/PaymentContextCode"
           },
-          "email": {
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "rptId",
+          "amount"
+        ],
+        "example": {
+          "rptId": "string",
+          "paymentContextCode": "paymentContextCode",
+          "amount": 100
+        }
+      },
+      "PaymentInfo": {
+        "description": "Informations about transaction payments",
+        "type": "object",
+        "properties": {
+          "paymentToken": {
+            "type": "string"
+          },
+          "rptId": {
+            "$ref": "#/components/schemas/RptId"
+          },
+          "reason": {
             "type": "string"
           },
           "amount": {
@@ -840,12 +936,48 @@
         },
         "required": [
           "rptId",
-          "email",
           "amount"
         ],
         "example": {
-          "rptId": "string"
+          "rptId": "77777777777302012387654312384",
+          "paymentToken": "paymentToken1",
+          "reason": "reason1",
+          "amount": 100,
+          "authToken": "authToken1"
         }
+      },
+      "NewTransactionRequest": {
+        "type": "object",
+        "description": "Request body for creating a new transaction",
+        "properties": {
+          "paymentNotices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentNoticeInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentContextCode": "paymentContextCode1",
+                "amount": 100
+              },
+              {
+                "rptId": "77777777777302012387654312385",
+                "paymentContextCode": "paymentContextCode2",
+                "amount": 200
+              }
+            ]
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentNotices",
+          "email"
+        ]
       },
       "NewTransactionResponse": {
         "type": "object",
@@ -854,20 +986,43 @@
           "transactionId": {
             "type": "string"
           },
-          "paymentToken": {
-            "type": "string"
-          },
-          "rptId": {
-            "$ref": "#/components/schemas/RptId"
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentToken": "paymentToken1",
+                "reason": "reason1",
+                "amount": 100
+              },
+              {
+                "rptId": "77777777777302012387654312385",
+                "paymentToken": "paymentToken2",
+                "reason": "reason2",
+                "amount": 100
+              }
+            ]
           },
           "status": {
             "$ref": "#/components/schemas/TransactionStatus"
           },
-          "reason": {
-            "type": "string"
-          },
-          "amount": {
+          "feeTotal": {
             "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "clientId": {
+            "description": "transaction client id",
+            "type": "string",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART",
+              "UNKNOWN"
+            ]
           },
           "authToken": {
             "type": "string"
@@ -875,12 +1030,9 @@
         },
         "required": [
           "transactionId",
-          "amount",
-          "status"
-        ],
-        "example": {
-          "amount": 200
-        }
+          "status",
+          "payments"
+        ]
       },
       "RequestAuthorizationRequest": {
         "type": "object",
@@ -910,6 +1062,25 @@
               "SL"
             ],
             "description": "Requested language"
+          },
+          "details": {
+            "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PostePayAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/CardAuthRequestDetails"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "detailType",
+              "mapping": {
+                "postepay": "#/components/schemas/PostePayAuthRequestDetails",
+                "card": "#/components/schemas/CardAuthRequestDetails"
+              }
+            }
           }
         },
         "required": [
@@ -917,8 +1088,85 @@
           "fee",
           "paymentInstrumentId",
           "pspId",
-          "language"
+          "language",
+          "details"
         ]
+      },
+      "PostePayAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for the PostePay payment method",
+        "properties": {
+          "detailType": {
+            "type": "string"
+          },
+          "accountEmail": {
+            "type": "string",
+            "format": "email",
+            "description": "PostePay account email"
+          }
+        },
+        "required": [
+          "detailType",
+          "accountEmail"
+        ],
+        "example": {
+          "detailType": "postepay",
+          "accountEmail": "user@example.com"
+        }
+      },
+      "CardAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for credit cards",
+        "properties": {
+          "detailType": {
+            "type": "string"
+          },
+          "cvv": {
+            "type": "string",
+            "description": "Credit card CVV",
+            "pattern": "^[0-9]{3,4}$"
+          },
+          "pan": {
+            "type": "string",
+            "description": "Credit card PAN",
+            "pattern": "^[0-9]{14,16}$"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "Credit card expiry date. The date format is `YYYYMM`",
+            "pattern": "^\\d{6}$"
+          },
+          "holderName": {
+            "type": "string",
+            "description": "The card holder name"
+          },
+          "brand": {
+           "type": "string",
+           "description": "The card brand name"
+          },
+          "threeDsData": {
+            "type": "string",
+            "description": "the 3ds data evaluated by the client"
+          }
+        },
+        "required": [
+          "detailType",
+          "cvv",
+          "pan",
+          "expiryDate",
+          "holderName",
+          "brand",
+          "threeDsData"
+        ],
+        "example": {
+          "detailType": "card",
+          "cvv": 0,
+          "pan": "0123456789012345",
+          "expiryDate": "209901",
+          "holderName": "Name Surname",
+          "brand": "VISA",
+          "threeDsData": "threeDsData"
+        }
       },
       "UpdateAuthorizationRequest": {
         "type": "object",
@@ -981,11 +1229,7 @@
               "status"
             ]
           }
-        ],
-        "example": {
-          "amount": 200,
-          "status": "ACTIVATED"
-        }
+        ]
       },
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
@@ -1013,7 +1257,9 @@
           "CLOSED",
           "CLOSURE_FAILED",
           "NOTIFIED",
-          "NOTIFIED_FAILED"
+          "NOTIFIED_FAILED",
+          "EXPIRED",
+          "REFUNDED"
         ]
       },
       "PaymentMethodResponse": {

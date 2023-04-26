@@ -14,19 +14,11 @@ locals {
     module.apim_checkout_payment_activations_api_auth_v2.name,
     module.apim_checkout_payment_activations_api_v1.name,
     module.apim_nodo_per_pm_api_v1.name,
-    azurerm_api_management_api.apim_api_gpd_payments_api.name,
     module.apim_api_gpd_api.name,
+    # azurerm_api_management_api.apim_api_gpd_payments_api.name,
   ]
 
   api_info_log = [
-    module.apim_pm_restapi_api_v4.name,
-    module.apim_pm_restapirtd_api_v1.name,
-    module.apim_pm_restapirtd_api_v2.name,
-    module.apim_pm_auth_rtd_api_v1.name,
-    module.apim_pm_auth_rtd_api_v2.name,
-    module.apim_pm_restapicd_api_v1.name,
-    module.apim_pm_restapicd_api_v2.name,
-    module.apim_pm_restapicd_api_v3.name,
     module.apim_pm_restapicd_internal_api_v1.name,
     module.apim_pm_restapicd_internal_api_v2.name,
     module.apim_pm_ptg_api_v1.name,

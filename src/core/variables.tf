@@ -18,6 +18,11 @@ variable "env_short" {
   type = string
 }
 
+variable "env" {
+  type        = string
+  description = "Contains env description in extend format (dev,uat,prod)"
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false
@@ -186,18 +191,19 @@ variable "apiconfig_logging_level" {
 variable "xsd_ica" {
   type        = string
   description = "XML Schema of Informatica Conto Accredito"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/InformativaContoAccredito_1_2_1.xsd"
 }
 
 variable "xsd_counterpart" {
   type        = string
   description = "XML Schema of Tabelle delle Controparti"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/TabellaDelleControparti_1_0_8.xsd"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/TabellaDelleControparti_1_0_8.xsd"
 }
 
 variable "xsd_cdi" {
   type        = string
   description = "XML Schema of Catalogo Dati Informativi"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/CatalogoDatiInformativiPSP.xsd"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/CatalogoDatiInformativiPSP.xsd"
 }
 
 
@@ -329,8 +335,12 @@ variable "base_path_nodo_web_bo_history_dev" {
 }
 variable "nodo_pagamenti_auth_password" {
   type        = string
-  description = "Default passowrd used for nodo-auth"
+  description = "Default password used for nodo-auth"
   default     = "PLACEHOLDER"
+}
+variable "nodo_pagamenti_x_forwarded_for" {
+  type        = string
+  description = "X-Forwarded-For IP address used for nodo-auth"
 }
 
 
@@ -349,6 +359,14 @@ variable "nodo_auth_subscription_limit" {
 }
 
 # Network
+variable "ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
+}
+
 variable "cidr_vnet" {
   type        = list(string)
   description = "Virtual network address space."
@@ -418,6 +436,12 @@ variable "dns_zone_wisp2" {
   type        = string
   default     = null
   description = "The wisp2 dns subdomain."
+}
+
+variable "dns_zone_wfesp" {
+  type        = string
+  default     = null
+  description = "The wfesp dns subdomain."
 }
 
 # vpn
@@ -499,7 +523,33 @@ variable "apim_alerts_enabled" {
   default     = true
 }
 
+variable "apim_nodo_decoupler_enable" {
+  type        = bool
+  default     = false
+  description = "Apply decoupler to nodo product apim policy"
+}
+
+variable "apim_nodo_auth_decoupler_enable" {
+  type        = bool
+  default     = false
+  description = "Apply decoupler to nodo-auth product apim policy"
+}
+
 ## Redis cache
+variable "redis_cache_params" {
+  type = object({
+    public_access = bool
+    capacity      = number
+    sku_name      = string
+    family        = string
+  })
+  default = {
+    public_access = false
+    capacity      = 1
+    sku_name      = "Basic"
+    family        = "C"
+  }
+}
 
 variable "redis_cache_enabled" {
   type        = bool
@@ -507,24 +557,10 @@ variable "redis_cache_enabled" {
   default     = false
 }
 
-variable "redis_capacity" {
-  type    = number
-  default = 1
-}
-
-variable "redis_sku_name" {
-  type    = string
-  default = "Standard"
-}
-
-variable "redis_family" {
-  type    = string
-  default = "C"
-}
 variable "cidr_subnet_redis" {
   type        = list(string)
   description = "Redis network address space."
-  default     = []
+  default     = ["10.1.162.0/24"]
 }
 
 variable "redis_private_endpoint_enabled" {
@@ -562,6 +598,16 @@ variable "app_gateway_wisp2_certificate_name" {
 variable "app_gateway_wisp2govit_certificate_name" {
   type        = string
   description = "Application gateway wisp2govit certificate name on Key Vault"
+}
+
+variable "app_gateway_wfespgovit_certificate_name" {
+  type        = string
+  description = "Application gateway wfespgovit certificate name on Key Vault"
+}
+variable "app_gateway_kibana_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
 }
 
 variable "app_gateway_sku_name" {
@@ -822,6 +868,18 @@ variable "ecommerce_ingress_hostname" {
   type        = string
   description = "ecommerce ingress hostname"
   default     = null
+}
+
+variable "ecommerce_xpay_psps_list" {
+  type        = string
+  description = "psps list using xpay as comma separated value"
+  default     = ""
+}
+
+variable "ecommerce_vpos_psps_list" {
+  type        = string
+  description = "psps list using vpos as comma separated value"
+  default     = ""
 }
 
 variable "ehns_auto_inflate_enabled" {
@@ -1704,4 +1762,32 @@ variable "node_forwarder_logging_level" {
   type        = string
   description = "Logging level of Node Forwarder"
   default     = "INFO"
+}
+
+variable "ingress_elk_load_balancer_ip" {
+  type    = string
+  default = ""
+}
+
+variable "node_forwarder_autoscale_enabled" {
+  type    = bool
+  default = true
+
+}
+
+variable "github_runner" {
+  type = object({
+    subnet_address_prefixes = list(string)
+  })
+  description = "GitHub runner variables"
+  default = {
+    subnet_address_prefixes = ["10.1.200.0/23"]
+  }
+}
+
+# node decoupler
+variable "node_decoupler_primitives" {
+  type        = string
+  description = "Node decoupler primitives"
+  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
 }

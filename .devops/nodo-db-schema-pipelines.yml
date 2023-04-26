@@ -1,0 +1,134 @@
+pr: none
+trigger: none
+#trigger:
+#  - develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+  - name: k8sEnv
+    displayName: K8s Environment
+    type: string
+    default: dev
+    values:
+      - dev
+      - it
+      - prf
+      - uat
+      - prd
+
+variables:
+  ${{ if eq(parameters.k8sEnv, 'dev') }}:
+    DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
+    KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-dev-linux'
+  ${{ if eq(parameters.k8sEnv, 'it') }}:
+    DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
+    KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+    DATABASE_NAME: 'nodo-replica'
+    poolImage: 'pagopa-dev-linux'
+  ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
+    DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
+    KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-uat-linux'
+  ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
+    DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
+    KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+    DATABASE_NAME: 'nodo-replica'
+    poolImage: 'pagopa-uat-linux'
+  ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
+    DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
+    KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-prod-linux'
+  ADMIN_USERNAME: azureuser
+  CFG_USERNAME: cfg
+  CFG_SCHEMA: cfg
+  OFFLINE_USERNAME: offline
+  OFFLINE_SCHEMA: offline
+  ONLINE_USERNAME: online
+  ONLINE_SCHEMA: online
+  RE_USERNAME: re
+  RE_SCHEMA: re
+  WFESP_USERNAME: wfesp
+  WFESP_SCHEMA: wfesp
+
+stages:
+  - stage: initialization_jobs
+    displayName: "Init ${{ parameters.k8sEnv }}"
+    jobs:
+      - job: initialization
+        pool: $(poolImage)
+        displayName: "Schemas creation job"
+        steps:
+          - task: AzureKeyVault@2
+            displayName: "Get secrets"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              keyVaultName: $(KEY_VAULT_NAME)
+              secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
+          - task: AzureCLI@2
+            displayName: "create all schemas"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |
+
+                create_schema () {
+                  SCHEMA=$1
+                  USER=$2
+                  PASS=$3
+                  az config set extension.use_dynamic_install=yes_without_prompt
+                  az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                  --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
+                  --querytext "
+                  do \$\$
+                  BEGIN
+                  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$USER') THEN
+                  CREATE ROLE $USER LOGIN PASSWORD '$PASS';
+                  END IF;
+
+                  GRANT ALL PRIVILEGES ON DATABASE \"$DATABASE_NAME\" TO \"$USER\";
+                  GRANT \"$USER\" to $ADMIN_USERNAME;
+                  CREATE SCHEMA IF NOT EXISTS \"$SCHEMA\" AUTHORIZATION \"$USER\";
+                  END
+                  \$\$;
+                  "
+                }
+
+                create_schema "$CFG_SCHEMA"     "$CFG_USERNAME"     "$(db-cfg-password)"
+                create_schema "$ONLINE_SCHEMA"  "$ONLINE_USERNAME"  "$(db-online-password)"
+                create_schema "$OFFLINE_SCHEMA" "$OFFLINE_USERNAME" "$(db-offline-password)"
+                create_schema "$RE_SCHEMA"      "$RE_USERNAME"      "$(db-re-password)"
+                create_schema "$WFESP_SCHEMA"   "$WFESP_USERNAME"   "$(db-wfesp-password)"
+
+          - task: AzureCLI@2
+            displayName: "create online trunc function"
+            inputs:
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+              scriptLocation: inlineScript
+              scriptType: bash
+              inlineScript: |
+                az config set extension.use_dynamic_install=yes_without_prompt
+                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "$(DATABASE_NAME)" \
+                --querytext "
+                do \$\$
+                BEGIN
+                  CREATE or REPLACE FUNCTION "$ONLINE_USERNAME".trunc(timestamp without time zone) RETURNS date
+                    AS 'select DATE_TRUNC(''day'',\$1);'
+                    LANGUAGE SQL
+                    IMMUTABLE
+                    RETURNS NULL ON NULL INPUT;
+                END
+                \$\$;
+                "

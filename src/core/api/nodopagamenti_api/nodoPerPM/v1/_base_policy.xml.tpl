@@ -1,20 +1,19 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="${base-url}" />
-        <!-- onprem -->
-        <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input" /> -->
+
         <choose>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf" />
+            <when condition="@(${is-nodo-decoupler-enabled})">
+                <!-- URL by decoupler -->
             </when>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("uat.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("uat.platform.pagopa.it"))">
-                <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}" /> -->
+            <otherwise>
                 <set-backend-service base-url="${base-url}" />
-                <!-- onprem -->
-            </when>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("dev.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("dev.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}" />
+            </otherwise>
+        </choose>   
+        
+        <choose>
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
+                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf" /> <!-- PRF -->
             </when>
         </choose>
     </inbound>

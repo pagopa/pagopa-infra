@@ -17,7 +17,13 @@ module "apim_nodo_dei_pagamenti_product_auth" {
   approval_required     = true
   subscriptions_limit   = var.nodo_auth_subscription_limit
 
-  policy_xml = file("./api_product/nodo_pagamenti_api/auth/_base_policy.xml")
+
+  policy_xml = var.apim_nodo_auth_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
+    address-range-from       = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to         = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+    base-url                 = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    is-nodo-auth-pwd-replace = true
+  }) : file("./api_product/nodo_pagamenti_api/auth/_base_policy.xml") # decoupler OFF
 }
 
 locals {
@@ -26,8 +32,11 @@ locals {
     azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name,
     azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.name,
     azurerm_api_management_api.apim_node_for_io_api_v1_auth.name,
-    azurerm_api_management_api.apim_psp_for_node_api_v1_auth.name,
     azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.name,
+    azurerm_api_management_api.apim_node_for_pa_api_v1_auth.name,
+    azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_auth.name,
+    module.apim_nodo_per_pm_api_v1_auth.name,
+    module.apim_nodo_per_pm_api_v2_auth.name,
   ]
 
 }
@@ -95,20 +104,44 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_auth" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  xml_content = file("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml")
+  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
+  })
 }
 
 
-# resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_policy_auth" {
+resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_policy_auth" {
 
-#   api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = var.env_short == "d" ? "61d70973b78e982064458676" : var.env_short == "u" ? "61dedb1872975e13800fd7ff" : "61dedafc2a92e81a0c7a58fc"
+  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0"
 
-#   #tfsec:ignore:GEN005
-#   xml_content = file("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml")
-# }
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+    urlenvpath                = var.env_short
+  })
+
+}
+
+resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy_auth" { # activatePaymentNoticeV2 verificatore
+
+  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe21" : var.env_short == "u" ? "63756cf1451c1c01c4186baa" : "63b6e2daea7c4a25440fdaa5"
+
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml", {
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+    urlenvpath                = var.env_short
+  })
+
+}
 
 ######################
 ## WS nodo per psp ##
@@ -164,7 +197,10 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_auth" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  xml_content = file("./api/nodopagamenti_api/nodoPerPsp/v1/_base_policy.xml")
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/_base_policy.xml.tpl", {
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
+  })
 }
 
 # resource "azurerm_api_management_api_operation_policy" "fdr_policy_auth" {
@@ -174,7 +210,9 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_auth" {
 #   resource_group_name = azurerm_resource_group.rg_api.name
 #   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
 
-#   xml_content = file("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml")
+#   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
+#     base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+#   })
 # }
 
 ######################################
@@ -231,7 +269,11 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  xml_content = file("./api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/_base_policy.xml")
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/_base_policy.xml.tpl", {
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
+  })
+
 }
 
 
@@ -289,7 +331,11 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_auth" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  xml_content = file("./api/nodopagamenti_api/nodeForIO/v1/_base_policy.xml")
+  xml_content = templatefile("./api/nodopagamenti_api/nodeForIO/v1/_base_policy.xml.tpl", {
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
+  })
+
 }
 
 # resource "azurerm_api_management_api_operation_policy" "activateIO_reservation_policy_auth" {
@@ -407,7 +453,6 @@ resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_auth" {
       endpoint_name = "PagamentiTelematiciRPTPort"
     }
   }
-
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_auth" {
@@ -415,7 +460,69 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_auth" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
 
-  xml_content = file("./api/nodopagamenti_api/nodoPerPa/v1/_base_policy.xml")
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/_base_policy.xml.tpl", {
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
+  })
+}
+
+######################
+## Node for PA API  ##
+######################
+locals {
+  apim_node_for_pa_api_auth = {
+    display_name          = "Node for PA WS (AUTH)"
+    description           = "Web services to support PA in payment activations, defined in nodeForPa.wsdl"
+    path                  = "nodo-auth/node-for-pa"
+    subscription_required = true
+    service_url           = null
+  }
+}
+
+resource "azurerm_api_management_api_version_set" "node_for_pa_api_auth" {
+  name                = format("%s-node-for-pa-api-auth", var.env_short)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = local.apim_node_for_pa_api_auth.display_name
+  versioning_scheme   = "Segment"
+}
+
+resource "azurerm_api_management_api" "apim_node_for_pa_api_v1_auth" {
+  name                  = format("%s-node-for-pa-api-auth", var.env_short)
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  subscription_required = local.apim_node_for_pa_api_auth.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.node_for_pa_api_auth.id
+  version               = "v1"
+  service_url           = local.apim_node_for_pa_api_auth.service_url
+  revision              = "1"
+
+  description  = local.apim_node_for_pa_api_auth.description
+  display_name = local.apim_node_for_pa_api_auth.display_name
+  path         = local.apim_node_for_pa_api_auth.path
+  protocols    = ["https"]
+
+  soap_pass_through = true
+
+  import {
+    content_format = "wsdl"
+    content_value  = file("./api/nodopagamenti_api/nodeForPa/v1/auth/NodeForPa.wsdl")
+    wsdl_selector {
+      service_name  = "nodeForPa_Service"
+      endpoint_name = "nodeForPa_Port"
+    }
+  }
+}
+
+resource "azurerm_api_management_api_policy" "apim_node_for_pa_policy_auth" {
+  api_name            = resource.azurerm_api_management_api.apim_node_for_pa_api_v1_auth.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+
+  xml_content = templatefile("./api/nodopagamenti_api/nodeForPa/v1/_base_policy.xml.tpl", {
+    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
+  })
 }
 
 ######################
@@ -463,7 +570,8 @@ module "apim_nodo_per_pm_api_v1_auth" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}" : "https://{{ip-nodo}}"
+    base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 
@@ -473,7 +581,8 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_aut
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "closePayment"
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
-    base-url = var.env_short == "p" || var.env_short == "u" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 
@@ -500,7 +609,8 @@ module "apim_nodo_per_pm_api_v2_auth" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
-    base-url = var.env_short == "d" ? "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/v2" : "https://{{ip-nodo}}/v2"
+    base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
 
@@ -510,4 +620,12 @@ resource "azurerm_api_management_named_value" "nodo_auth_password_value" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "nodoAuthPassword"
   value               = var.nodo_pagamenti_auth_password
+}
+
+resource "azurerm_api_management_named_value" "x_forwarded_for_value" {
+  name                = "xForwardedFor"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "xForwardedFor"
+  value               = var.nodo_pagamenti_x_forwarded_for
 }

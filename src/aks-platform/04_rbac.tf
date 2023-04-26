@@ -27,7 +27,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
 
   rule {
     api_groups = [""]
-    resources  = ["services", "configmaps", "secrets"]
+    resources  = ["services", "configmaps", "secrets", "pods"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
@@ -71,6 +71,18 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     api_groups = ["rbac.authorization.k8s.io"]
     resources  = ["rolebindings"]
     verbs      = ["get", "list", "watch", ]
+  }
+
+  rule {
+    api_groups = ["batch"]
+    resources  = ["cronjobs", "jobs"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+
+  rule {
+    api_groups = ["monitoring.coreos.com"]
+    resources  = ["servicemonitors", "podmonitors"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
   depends_on = [
