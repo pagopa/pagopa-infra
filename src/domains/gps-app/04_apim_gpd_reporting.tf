@@ -30,7 +30,7 @@ module "apim_gpd_reporting_analysis_product" {
   approval_required     = local.apim_gpd_reporting_analysis_api.approval_required
   subscriptions_limit   = local.apim_gpd_reporting_analysis_api.subscriptions_limit
 
-  policy_xml = file("./api_product/reporting_analysis/_base_policy.xml")
+  policy_xml = file("./api_product/reporting-analysis/_base_policy.xml")
 }
 
 ##############
@@ -65,11 +65,11 @@ module "apim_api_gpd_reporting_analysis_api" {
   protocols    = ["https"]
 
   content_format = "openapi"
-  content_value = templatefile("./api/reporting_analysis/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/reporting-analysis/v1/_openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/reporting_analysis/v1/_base_policy.xml", {
+  xml_content = templatefile("./api/reporting-analysis/v1/_base_policy.xml", {
     origin = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
   })
 }
