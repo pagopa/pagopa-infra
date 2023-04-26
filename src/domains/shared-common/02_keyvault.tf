@@ -151,6 +151,63 @@ resource "azurerm_key_vault_secret" "authorizer_cosmos_container" {
   }
 }
 
+resource "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
+  name         = format("auth-%s-refresh-configuration-url", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "authorizer_integrationtest_external_subkey" {
+  name         = format("auth-%s-integrationtest-external-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "authorizer_integrationtest_valid_subkey" {
+  name         = format("auth-%s-integrationtest-valid-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "authorizer_integrationtest_invalid_subkey" {
+  name         = format("auth-%s-integrationtest-invalid-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
 #
 # IaC
 #

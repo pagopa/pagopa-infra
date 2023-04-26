@@ -28,3 +28,8 @@ data "azurerm_key_vault_secret" "authorizer_cosmos_connection_string" {
   name         = format("auth-%s-cosmos-connection-string", var.env_short)
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+data "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
+  name         = format("auth-%s-refresh-configuration-url", var.env_short)
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
