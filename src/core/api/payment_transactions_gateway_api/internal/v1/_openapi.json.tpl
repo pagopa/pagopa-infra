@@ -722,6 +722,434 @@
           }
         }
       }
+    },
+    "/request-payments/vpos": {
+      "post": {
+        "summary": "payment authorization request to Vpos",
+        "tags": [
+          "Vpos-internal"
+        ],
+        "operationId": "step0-vpos",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "MDC-Fields",
+            "description": "MDC information",
+            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VposAuthRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposAuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing mandatory parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposAuthResponseBadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "transactionId already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposAuthResponseUnauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "generic error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposAuthResponseGenericError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/request-payments/vpos/{requestId}": {
+      "delete": {
+        "summary": "delete vpos payment request",
+        "tags": [
+          "Vpos-internal"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/xpay/authorizations": {
+      "post": {
+        "summary": "payment authorization request to xPay",
+        "tags": [
+          "XPay-internal"
+        ],
+        "operationId": "auth-xpay",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "MDC-Fields",
+            "description": "MDC information",
+            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/XPayAuthRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayAuthResponseEntity"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing mandatory parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayAuthResponseEntity400"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "transactionId already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayAuthResponseEntity401"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayAuthResponseEntity500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/xpay/authorizations/{requestId}": {
+      "get": {
+        "summary": "retrieve XPay payment request",
+        "tags": [
+          "XPay-internal"
+        ],
+        "operationId": "get-auth-xpay",
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "MDC-Fields",
+            "description": "MDC information",
+            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayPollingResponseEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayPollingResponseEntity404"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "XPay-internal"
+        ],
+        "summary": "refund xpay requests",
+        "operationId": "refund-xpay-auth",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "PGS-generated GUID of the request to retrieve",
+            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayRefundResponse200"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Request doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayRefundResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Generic Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayRefundResponse500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vpos/authorizations": {
+      "post": {
+        "summary": "payment authorization request to Vpos",
+        "tags": [
+          "Vpos-internal"
+        ],
+        "operationId": "step0-vpos-auth",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "MDC-Fields",
+            "description": "MDC information",
+            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VposAuthRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposAuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing mandatory parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposAuthResponseBadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "transactionId already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposAuthResponseUnauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "generic error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposAuthResponseGenericError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vpos/authorizations/{requestId}": {
+      "delete": {
+        "summary": "delete vpos payment request",
+        "tags": [
+          "Vpos-internal"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "requestId",
+            "description": "Id of the request",
+            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse500"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1003,7 +1431,7 @@
             "description": "Pan of the card",
             "example": 16589654852
           },
-          "exipiryDate": {
+          "expiryDate": {
             "type": "string",
             "description": "Expiration date of the card, yyyyMM format",
             "example": 203012
@@ -1203,6 +1631,221 @@
         "required": [
           "correlationId"
         ]
+      },
+      "VposAuthRequest": {
+        "required": [
+          "idTransaction",
+          "amount",
+          "pan",
+          "securityCode",
+          "expireDate",
+          "holder",
+          "circuit",
+          "threeDsData",
+          "emailCH",
+          "isFirstPayment",
+          "idPsp"
+        ],
+        "type": "object",
+        "properties": {
+          "idTransaction": {
+            "type": "string",
+            "description": "transaction id on Payment Manager",
+            "example": "123456"
+          },
+          "amount": {
+            "type": "number",
+            "example": 12456
+          },
+          "pan": {
+            "type": "string",
+            "description": "Pan of the card",
+            "example": 16589654852
+          },
+          "securityCode": {
+            "type": "string",
+            "description": "Card verification code",
+            "example": 123
+          },
+          "expireDate": {
+            "type": "string",
+            "description": "Expiration date of the card, yyyyMM format",
+            "example": 203012
+          },
+          "holder": {
+            "type": "string",
+            "example": "Mario rossi"
+          },
+          "circuit": {
+            "type": "string",
+            "example": "AMEX"
+          },
+          "threeDsData": {
+            "type": "string",
+            "example": "threeDsData"
+          },
+          "emailCH": {
+            "type": "string",
+            "example": "mariorossi@gmail.com"
+          },
+          "isFirstPayment": {
+            "type": "boolean",
+            "example": true
+          },
+          "idPsp": {
+            "type": "string",
+            "example": "23456789876"
+          }
+        }
+      },
+      "VposAuthResponse": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "urlRedirect",
+          "status",
+          "timeStamp"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "description": "payment request Id"
+          },
+          "urlRedirect": {
+            "type": "string",
+            "description": "redirect URL generated by PGS logic",
+            "example": "urlRedirect.com"
+          },
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "CREATED"
+          },
+          "timeStamp": {
+            "type": "string",
+            "description": "timeStamp",
+            "example": 1667484646944
+          }
+        }
+      },
+      "VposAuthResponseBadRequest": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "error description",
+            "example": "Bad Request - mandatory parameters missing"
+          }
+        }
+      },
+      "VposAuthResponseUnauthorized": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "error description",
+            "example": "Transaction already processed"
+          }
+        }
+      },
+      "VposAuthResponseGenericError": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "error description",
+            "example": "Generic error"
+          }
+        }
+      },
+      "VposDeleteResponse": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "refundOutcome",
+          "status"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string",
+            "description": "null if no error occurred"
+          }
+        }
+      },
+      "VposDeleteResponse404": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "refundOutcome",
+          "error"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "VposDeleteResponse500": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "refundOutcome",
+          "status",
+          "error"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "refundOutcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
       }
     },
     "securitySchemes": {

@@ -1,9 +1,26 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "0.1.0",
-    "title": "Pagopa eCommerce payment transactions service - payment requests",
-    "description": "Api to support payment requests, so verificaRPT and verifyPaymentNotice with nodo"
+    "version": "0.0.1",
+    "title": "Pagopa eCommerce payment requests service",
+    "description": "pagoPA ecommerce microservice to retrieve payment request data or to manage carts (consisting of a group of payment requests) with redirects to checkout",
+    "contact": {
+      "name": "pagoPA - Touchpoints team"
+    }
+  },
+  "tags": [
+    {
+      "name": "payment-requests",
+      "description": "Api's for performing verification on payment notices",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611745793/-servizio+payment+requests+service",
+        "description": "Technical specifications"
+      }
+    }
+  ],
+  "externalDocs": {
+    "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
+    "description": "Design review"
   },
   "servers": [
     {
@@ -13,12 +30,17 @@
   "paths": {
     "/payment-requests/{rpt_id}": {
       "get": {
+        "summary": "Verify single payment notice",
+        "description": "Api used to perform verify on payment notice by mean of Nodo call",
+        "tags": [
+          "payment-requests"
+        ],
         "operationId": "getPaymentRequestInfo",
         "parameters": [
           {
             "in": "path",
             "name": "rpt_id",
-            "description": "Unique identifier for payment request, so the concatenation of the tax code and notice number.",
+            "description": "Unique identifier for payment request, so the concatenation of the fiscal code and notice number.",
             "schema": {
               "type": "string",
               "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
@@ -28,7 +50,7 @@
         ],
         "responses": {
           "200": {
-            "description": "New transaction successfully created",
+            "description": "Payment request retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -46,6 +68,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
@@ -102,8 +127,12 @@
     },
     "/carts/{id_cart}": {
       "get": {
+        "tags": [
+          "payment-requests"
+        ],
         "operationId": "GetCarts",
-        "description": "Get a cart data",
+        "summary": "Get a cart data",
+        "description": "Retrieve cart information",
         "parameters": [
           {
             "in": "path",
@@ -169,35 +198,36 @@
         "description": "Response with payment request information",
         "properties": {
           "rptId": {
+            "description": "Digital payment request id",
             "type": "string",
             "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
           },
-          "paTaxCode": {
+          "paFiscalCode": {
+            "description": "Fiscal code associated to the payment notice",
             "type": "string",
             "minLength": 11,
             "maxLength": 11
           },
           "paName": {
+            "description": "Name of the payment notice issuer",
             "type": "string",
             "minLength": 1,
             "maxLength": 70
           },
           "description": {
+            "description": "Payment notice description",
             "type": "string",
             "minLength": 1,
             "maxLength": 140
           },
           "amount": {
+            "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
             "maximum": 99999999
           },
-          "paymentContextCode": {
-            "type": "string",
-            "minLength": 32,
-            "maxLength": 32
-          },
           "dueDate": {
+            "description": "Payment notice due date",
             "type": "string",
             "pattern": "([0-9]{4})-(1[0-2]|0[1-9])-(0[1-9]|1[0-9]|2[0-9]|3[0-1])",
             "example": "2025-07-31"
@@ -304,23 +334,46 @@
           }
         },
         "required": [
-          "faultCodeDetail",
-          "faultCodeCategory"
+          "faultCodeCategory",
+          "faultCodeDetail"
         ]
       },
       "ProblemJson": {
         "type": "object",
         "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
+            "example": "https://example.com/problem/constraint-violation"
+          },
           "title": {
             "type": "string",
             "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "status": {
+            "$ref": "#/components/schemas/HttpStatusCode"
           },
           "detail": {
             "type": "string",
             "description": "A human readable explanation specific to this occurrence of the\nproblem.",
             "example": "There was an error processing the request"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri",
+            "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
           }
         }
+      },
+      "HttpStatusCode": {
+        "type": "integer",
+        "format": "int32",
+        "description": "The HTTP status code generated by the origin server for this occurrence\nof the problem.",
+        "minimum": 100,
+        "maximum": 600,
+        "exclusiveMaximum": true,
+        "example": 200
       },
       "FaultCategory": {
         "description": "Fault code categorization for the PagoPA Verifica and Attiva operations.\nPossible categories are:\n- `PAYMENT_DUPLICATED`\n- `PAYMENT_ONGOING`\n- `PAYMENT_EXPIRED`\n- `PAYMENT_UNAVAILABLE`\n- `PAYMENT_UNKNOWN`\n- `DOMAIN_UNKNOWN`\n- `PAYMENT_CANCELED`\n- `GENERIC_ERROR`",
@@ -409,6 +462,7 @@
         ]
       },
       "CartRequest": {
+        "description": "Cart request body",
         "type": "object",
         "required": [
           "paymentNotices",
@@ -416,11 +470,13 @@
         ],
         "properties": {
           "emailNotice": {
+            "description": "Email to which send the payment receipt",
             "type": "string",
             "format": "email",
             "example": "my_email@mail.it"
           },
           "paymentNotices": {
+            "description": "List of payment notices in the cart",
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PaymentNotice"
@@ -445,6 +501,7 @@
             ]
           },
           "returnUrls": {
+            "description": "Structure containing all the returning URL's to which user will be redirect after payment process has been completed",
             "type": "object",
             "required": [
               "returnOkUrl",
@@ -453,25 +510,37 @@
             ],
             "properties": {
               "returnOkUrl": {
+                "description": "Return URL in case of payment operation is completed successfully",
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/success.html"
+                "example": "https://www.comune.di.prova.it/pagopa/success.html"
               },
               "returnCancelUrl": {
+                "description": "Return URL in case of payment operation is cancelled",
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/cancel.html"
+                "example": "https://www.comune.di.prova.it/pagopa/cancel.html"
               },
               "returnErrorUrl": {
+                "description": "Return URL in case an error occurred during payment operation processing",
                 "type": "string",
                 "format": "uri",
-                "example": "www.comune.di.prova.it/pagopa/error.html"
+                "example": "https://www.comune.di.prova.it/pagopa/error.html"
               }
             }
+          },
+          "idCart": {
+            "type": "string",
+            "example": "id_cart"
+          },
+          "allCCP": {
+            "type": "boolean",
+            "example": "false"
           }
         }
       },
       "PaymentNotice": {
+        "description": "Payment notice informations",
         "type": "object",
         "required": [
           "noticeNumber",
@@ -482,24 +551,29 @@
         ],
         "properties": {
           "noticeNumber": {
+            "description": "Payment notice number",
             "type": "string",
             "minLength": 18,
             "maxLength": 18
           },
           "fiscalCode": {
+            "description": "Payment notice fiscal code",
             "type": "string",
             "minLength": 11,
             "maxLength": 11
           },
           "amount": {
+            "description": "Payment notice amount",
             "type": "integer",
             "minimum": 1
           },
           "companyName": {
+            "description": "Payment notice company name",
             "type": "string",
             "maxLength": 140
           },
           "description": {
+            "description": "Payment notice description",
             "type": "string",
             "maxLength": 140
           }

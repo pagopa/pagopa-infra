@@ -68,10 +68,6 @@ stages:
         TF_ENVIRONMENT_FOLDER: "weu-dev"
         WORKINGDIR: 'src/domains/ecommerce-common'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_DEV_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
     # DEV ecommerce APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
@@ -102,10 +98,6 @@ stages:
         TF_ENVIRONMENT_FOLDER: "weu-uat"
         WORKINGDIR: 'src/domains/ecommerce-common'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
     # UAT ecommerce APP
     - template: templates/terraform-plan-apply/template.yaml@terraform

@@ -13,8 +13,9 @@ module "apim_donations_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = false # TO DISABLE DONA
   approval_required     = false
+  subscriptions_limit   = 1
 
   policy_xml = file("./api_product/donations/_base_policy.xml")
 }
@@ -40,7 +41,7 @@ module "apim_api_donations_api" {
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_donations_product.product_id]
-  subscription_required = false
+  subscription_required = false # TO DISABLE DONA
   api_version           = "v1"
   version_set_id        = azurerm_api_management_api_version_set.api_donations_api.id
   service_url           = null // no BE

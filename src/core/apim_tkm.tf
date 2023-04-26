@@ -179,7 +179,7 @@ locals {
     display_name          = "Token Manager - tkm-ms-acquirer-manager"
     description           = "RESTful APIs provided to acquirers"
     path                  = "tkm/tkmacquirermanager"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
@@ -216,7 +216,9 @@ module "apim_tkm_acquirer_manager_api_v1" {
     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
   })
 
-  xml_content = file("./api/tkm_api/tkm-ms-acquirer-manager/v1/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/tkm_api/tkm-ms-acquirer-manager/v1/_base_policy.xml.tpl", {
+    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[2] # CSTAR
+  })
 }
 
 #################################
@@ -283,7 +285,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "tkm_mock_circuit_api" {
-  count = var.env_short == "u" ? 1 : 0
+  count = var.env_short == "u" || var.env_short == "d" ? 1 : 0
 
   name                = "${local.project}-tkm-mock-circuit-api"
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -293,7 +295,7 @@ resource "azurerm_api_management_api_version_set" "tkm_mock_circuit_api" {
 }
 
 module "apim_tkm_mock_circuit_api_v1" {
-  count = var.env_short == "u" ? 1 : 0
+  count = var.env_short == "u" || var.env_short == "d" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
@@ -317,6 +319,6 @@ module "apim_tkm_mock_circuit_api_v1" {
   })
 
   xml_content = templatefile("./api/tkm_api/tkm-mock-circuit-api/v1/_base_policy.xml.tpl", {
-    hostname = "weuuat.shared.internal.uat.platform.pagopa.it"
+    hostname = var.env_short == "u" ? "https://weuuat.shared.internal.uat.platform.pagopa.it" : "http://${var.lb_aks}/tkmcircuitmock"
   })
 }

@@ -28,7 +28,7 @@ locals {
     display_name          = "Biz Events Service"
     description           = "API to handle biz events payments"
     path                  = "bizevents/service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }

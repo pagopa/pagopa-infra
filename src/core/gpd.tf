@@ -36,6 +36,8 @@ locals {
     CORS_CONFIGURATION                      = jsonencode(local.gpd_cors_configuration)
     SCHEMA_NAME                             = "apd"
     LOG_LEVEL                               = "INFO"
+    SQL_LOG_LEVEL                           = "DEBUG"
+    SQL_BINDER_LOG_LEVEL                    = "TRACE"
     CRON_JOB_SCHEDULE_ENABLED               = var.gpd_cron_job_enable # default disable
     CRON_JOB_SCHEDULE_EXPRESSION_TO_VALID   = var.gpd_cron_schedule_valid_to
     CRON_JOB_SCHEDULE_EXPRESSION_TO_EXPIRED = var.gpd_cron_schedule_expired_to
@@ -158,7 +160,7 @@ resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 250
+        threshold                = 3000
         divide_by_instance_count = false
       }
 
@@ -180,7 +182,7 @@ resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 250
+        threshold                = 2500
         divide_by_instance_count = false
       }
 
@@ -193,5 +195,22 @@ resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
     }
 
 
+  }
+}
+
+# KV placeholder for subkey
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_subscription_key" {
+  count        = var.env_short != "p" ? 1 : 0 # only in DEV and UAT
+  name         = "gpd-api-subscription-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
   }
 }

@@ -70,8 +70,24 @@ locals {
         )
       }
     }
-  }
 
+    kibana = {
+      protocol           = "Https"
+      host               = format("kibana.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_kibana_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.kibana.secret_id,
+          "/${data.azurerm_key_vault_certificate.kibana.version}",
+          ""
+        )
+      }
+    }
+  }
   listeners_apiprf = {
     apiprf = {
       protocol           = "Https"
@@ -108,6 +124,24 @@ locals {
     }
   }
 
+  listeners_wfespgovit = {
+    wfespgovit = {
+      protocol           = "Https"
+      host               = format("%s.%s", var.dns_zone_wfesp, "pagopa.gov.it")
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+      certificate = {
+        name = var.app_gateway_wfespgovit_certificate_name
+        id = var.app_gateway_wfespgovit_certificate_name == "" ? null : replace(
+          data.azurerm_key_vault_certificate.wfespgovit[0].secret_id,
+          "/${data.azurerm_key_vault_certificate.wfespgovit[0].version}",
+          ""
+        )
+      }
+    }
+  }
+
   # routes
 
   routes = {
@@ -134,8 +168,13 @@ locals {
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
-  }
 
+    kibana = {
+      listener              = "kibana"
+      backend               = "kibana"
+      rewrite_rule_set_name = null
+    }
+  }
   routes_apiprf = {
     apiprf = {
       listener              = "apiprf"
@@ -147,6 +186,14 @@ locals {
   routes_wisp2govit = {
     wisp2govit = {
       listener              = "wisp2govit"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+  }
+
+  routes_wfespgovit = {
+    wfespgovit = {
+      listener              = "wfespgovit"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
@@ -204,7 +251,7 @@ module "app_gw" {
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 10
+      request_timeout             = 30 # workaround for FDR - set to 10s after new Fdr service deployed
       pick_host_name_from_backend = false
     }
 
@@ -232,6 +279,18 @@ module "app_gw" {
       request_timeout             = 8
       pick_host_name_from_backend = false
     }
+
+    kibana = {
+      protocol                    = "Https"
+      host                        = "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
+      port                        = 443
+      ip_addresses                = [var.ingress_elk_load_balancer_ip]
+      fqdns                       = ["weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
+      probe                       = "/kibana"
+      probe_name                  = "probe-kibana"
+      request_timeout             = 10
+      pick_host_name_from_backend = false
+    }
   }
 
   ssl_profiles = [{
@@ -257,6 +316,7 @@ module "app_gw" {
     local.listeners,
     var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
     var.app_gateway_wisp2govit_certificate_name != "" ? local.listeners_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.listeners_wfespgovit : {},
   )
 
   # maps listener to backend
@@ -264,6 +324,7 @@ module "app_gw" {
     local.routes,
     var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
     var.app_gateway_wisp2govit_certificate_name != "" ? local.routes_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.routes_wfespgovit : {},
   )
 
   rewrite_rule_sets = [

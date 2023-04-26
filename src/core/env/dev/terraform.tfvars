@@ -1,5 +1,6 @@
 # general
 env_short = "d"
+env       = "dev"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -42,6 +43,7 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder           = ["10.1.158.0/24"]
 
 # specific
+cidr_subnet_redis                = ["10.1.163.0/24"]
 cidr_subnet_mock_ec              = ["10.1.137.0/29"]
 cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
 
@@ -59,6 +61,7 @@ external_domain   = "pagopa.it"
 dns_zone_prefix   = "dev.platform"
 dns_zone_checkout = "dev.checkout"
 dns_zone_wisp2    = "dev.wisp2"
+dns_zone_wfesp    = ""
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
@@ -67,6 +70,7 @@ enable_iac_pipeline      = true
 
 # redis private endpoint
 redis_private_endpoint_enabled = true
+redis_cache_enabled            = true
 
 # apim
 apim_publisher_name = "pagoPA Platform DEV"
@@ -79,6 +83,8 @@ app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = ""
+app_gateway_wfespgovit_certificate_name = ""
+app_gateway_kibana_certificate_name     = "kibana-dev-platform-pagopa-it"
 app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
 app_gateway_waf_enabled                 = false
@@ -132,9 +138,11 @@ mock_psp_secondary_service_enabled = true
 mock_payment_gateway_enabled       = true
 
 # apim x nodo pagamenti
+apim_nodo_decoupler_enable      = true
+apim_nodo_auth_decoupler_enable = true
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,08658331007,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725"
+nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725"
 nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571"
 nodo_pagamenti_url     = "http://10.70.66.200/nodo-sit/webservices/input"
 ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/sit/webservices/input shall use lb_aks
@@ -166,8 +174,8 @@ checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxytest.azureweb
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
 
-ecommerce_xpay_psps_list = "testPSP1,testPSP2"
-ecommerce_vpos_psps_list = "testPSP3,testPSP4"
+ecommerce_xpay_psps_list = "XPAY"
+ecommerce_vpos_psps_list = "BIC36019,PSPtest1,CHARITY_AMEX,CHARITY_IDPSPFNZ,CHARITY_ISP,40000000001,DINERS,BCITITMM,MARIOGAM,73473473473,60000000001,PAYTITM1,POSTE1,ProvaCDI,50000000001,IDPSPFNZ,70000000001,10000000001,idPsp2,irraggiungibile_wisp,prova_ila_1,pspStress50,pspStress79,pspStress80,pspStress81"
 
 ehns_sku_name = "Standard"
 
@@ -320,7 +328,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -342,6 +350,12 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pn"
         listen = true
         send   = false
         manage = false
@@ -374,6 +388,77 @@ eventhubs = [
       }
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt-ndp"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-io"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pn"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-re-ndp"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-SIA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-sia-rx" # oper
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
 ]
 
 # acr
@@ -386,7 +471,6 @@ dns_a_reconds_dbnodo_ips           = ["10.70.67.18"] # db onCloud
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
 
 # API Config
-xsd_ica                 = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
 api_config_always_on    = false
 apiconfig_logging_level = "DEBUG"
 
@@ -410,6 +494,14 @@ pagopa_proxy_redis_family   = "C"
 pagopa_proxy_tier           = "Standard"
 pagopa_proxy_size           = "S1"
 nodo_ip_filter              = "10.70.66.200"
+
+# redis apim
+redis_cache_params = {
+  public_access = true
+  capacity      = 0
+  sku_name      = "Basic"
+  family        = "C"
+}
 
 # nodo-dei-pagamenti-test
 nodo_pagamenti_test_enabled = true
@@ -437,8 +529,9 @@ gpd_plan_kind                = "Linux"
 gpd_plan_sku_tier            = "Standard"
 gpd_plan_sku_size            = "S1"
 gpd_always_on                = false
-gpd_cron_schedule_valid_to   = "0 */30 * * * *"
-gpd_cron_schedule_expired_to = "0 */40 * * * *"
+gpd_cron_job_enable          = true
+gpd_cron_schedule_valid_to   = "0 */10 * * * *"
+gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
 reporting_function_autoscale_minimum = 1
 reporting_function_autoscale_maximum = 3
@@ -572,3 +665,11 @@ dexp_db = {
 dexp_re_db_linkes_service = {
   enable = true
 }
+
+# node forwarder
+nodo_pagamenti_x_forwarded_for = "10.230.8.5"
+
+# lb elk
+ingress_elk_load_balancer_ip = "10.1.100.251"
+
+node_forwarder_autoscale_enabled = false

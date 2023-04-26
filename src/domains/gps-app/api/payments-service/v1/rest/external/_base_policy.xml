@@ -1,0 +1,31 @@
+<policies>
+    <inbound>
+        <base />
+<!--        <set-variable name="fiscalCodeParam" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />-->
+<!--        <set-variable name="organizationFiscalCode" value="@{-->
+<!--            return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;-->
+<!--        }" />-->
+<!--        <choose>-->
+<!--            <when condition="@(!context.Variables.GetValueOrDefault<string>("fiscalCodeParam").Equals(context.Variables.GetValueOrDefault<string>("organizationFiscalCode")))">-->
+<!--                <return-response>-->
+<!--                    <set-status code="403" reason="Unauthorized, you have not permission access rights" />-->
+<!--                </return-response>-->
+<!--            </when>-->
+<!--        </choose>-->
+        <set-backend-service base-url="https://${hostname}/pagopa-gpd-payments" />
+        
+        <set-variable name="application_domain" value="gpd" />
+        <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
+        <!-- <set-variable name="authorization_entity" value="@(context.Request.Url.Query.GetValueOrDefault("organizationfiscalcode", ""))" />  -->
+        <include-fragment fragment-id="authorizer" />
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

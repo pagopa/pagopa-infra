@@ -57,6 +57,20 @@ resource "azurerm_monitor_action_group" "slack" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_action_group" "mo_email" {
+  name                = "MoManagement"
+  resource_group_name = azurerm_resource_group.monitor_rg.name
+  short_name          = "PagoPA"
+
+  email_receiver {
+    name                    = "sendtomomanagement"
+    email_address           = data.azurerm_key_vault_secret.monitor_mo_notification_email.value
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
+}
+
 #
 # Alerts
 #

@@ -22,6 +22,12 @@ module "api_config_snet" {
   virtual_network_name                           = module.vnet_integration.name
   enforce_private_link_endpoint_network_policies = true
 
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
+
   delegation = {
     name = "default"
     service_delegation = {
@@ -53,7 +59,6 @@ module "api_config_app_service" {
   linux_fx_version  = format("DOCKER|%s/api-apiconfig-backend:%s", module.container_registry.login_server, "latest")
   health_check_path = "/apiconfig/api/v1/info"
 
-
   app_settings = {
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
@@ -79,17 +84,27 @@ module "api_config_app_service" {
     SPRING_DATASOURCE_USERNAME = data.azurerm_key_vault_secret.db_nodo_usr.value
     SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.db_nodo_pwd.value
     SPRING_DATASOURCE_URL      = var.db_service_name == null ? null : format("jdbc:oracle:thin:@%s.%s:%s/%s", azurerm_private_dns_a_record.private_dns_a_record_db_nodo.name, azurerm_private_dns_zone.db_nodo_dns_zone.name, var.db_port, var.db_service_name)
+    SPRING_DATASOURCE_DRIVER   = "oracle.jdbc.OracleDriver"
+    SPRING_JPA_DB_PLATFORM     = "org.hibernate.dialect.Oracle12cDialect"
+    CONTEXT_PATH               = "/apiconfig/api/v1"
+    DATABASE_SCHEMA            = "NODO4_CFG"
     CORS_CONFIGURATION         = jsonencode(local.apiconfig_cors_configuration)
     XSD_ICA                    = var.xsd_ica
     XSD_COUNTERPART            = var.xsd_counterpart
     XSD_CDI                    = var.xsd_cdi
     LOGGING_LEVEL              = var.apiconfig_logging_level
+    ENV                        = var.env_short == "p" ? "PROD" : "azure"
 
     COSMOS_URI = azurerm_key_vault_secret.apiconfig_cosmos_uri.value
     COSMOS_KEY = azurerm_key_vault_secret.apiconfig_cosmos_key.value
 
     AFM_MARKETPLACE_HOST             = var.env_short == "p" ? "https://api.platform.pagopa.it/afm/marketplace-service/v1" : format("https://api.%s.platform.pagopa.it/afm/marketplace-service/v1", lower(var.tags["Environment"]))
     AFM_MARKETPLACE_SUBSCRIPTION_KEY = azurerm_key_vault_secret.apiconfig_afm_marketplace_subscription_key.value
+
+    AFM_UTILS_HOST             = var.env_short == "p" ? "https://api.platform.pagopa.it/afm/utils/v1" : format("https://api.%s.platform.pagopa.it/afm/utils/v1", lower(var.tags["Environment"]))
+    AFM_UTILS_SUBSCRIPTION_KEY = azurerm_key_vault_secret.apiconfig_afm_utils_subscription_key.value
+
+    NODO_MONITORING_HOST = var.env_short == "p" ? "https://api.platform.pagopa.it/nodo-monitoring/monitoring/v1" : format("https://api.%s.platform.pagopa.it/nodo/monitoring/v1", lower(var.tags["Environment"]))
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080

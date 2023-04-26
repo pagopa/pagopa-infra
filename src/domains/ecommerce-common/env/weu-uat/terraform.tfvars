@@ -32,12 +32,12 @@ dns_zone_internal_prefix = "internal.uat.platform"
 cosmos_mongo_db_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
+    max_interval_in_seconds = null
+    max_staleness_prefix    = null
   }
   server_version                   = "4.0"
   main_geo_location_zone_redundant = false
@@ -45,7 +45,7 @@ cosmos_mongo_db_params = {
 
   additional_geo_locations          = []
   private_endpoint_enabled          = true
-  public_network_access_enabled     = true
+  public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
@@ -57,9 +57,9 @@ cidr_subnet_redis_ecommerce    = ["10.1.148.0/24"]
 cidr_subnet_storage_ecommerce  = ["10.1.154.0/24"]
 
 cosmos_mongo_db_ecommerce_params = {
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 4000
   throughput         = 1000
 }
 
