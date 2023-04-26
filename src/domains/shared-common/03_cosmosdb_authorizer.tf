@@ -54,23 +54,20 @@ module "authorizer_cosmosdb_account" {
 }
 
 module "authorizer_cosmosdb_database" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.18"
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
 
   name                = "authorizer"
   resource_group_name = azurerm_resource_group.shared_rg.name
   account_name        = module.authorizer_cosmosdb_account.name
 }
 
-resource "azurerm_cosmosdb_sql_container" "authorizer_cosmosdb_container" {
+module "authorizer_cosmosdb_container" {
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
 
   name                = "skeydomains"
   database_name       = module.authorizer_cosmosdb_database.name
   partition_key_path  = "/domain"
   resource_group_name = azurerm_resource_group.shared_rg.name
   account_name        = module.authorizer_cosmosdb_account.name
-
-  unique_key {
-    paths   = ["/domain", "/subkey"]
-  }
 }
 

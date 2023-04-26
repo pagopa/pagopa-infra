@@ -58,6 +58,43 @@
           }
         }
       }
+    },
+    "/cache/domains/{domain}/subkeys/{subkey}": {
+      "delete": {
+        "tags": [
+          "Authorizer API"
+        ],
+        "summary": "Disable a subscription key into a specific domain.",
+        "operationId": "unsubscribeAuthorization",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "description": "The domain related to the authorization to be deleted.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subkey",
+            "in": "path",
+            "description": "The subscription key related to the authorization to be deleted.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Operation executed successfully."
+          },
+          "503": {
+            "description": "Operation in progress."
+          }
+        }
+      }
     }
   },
   "components": {

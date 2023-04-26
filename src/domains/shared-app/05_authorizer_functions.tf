@@ -70,7 +70,7 @@ module "authorizer_function_app" {
     SKEYDOMAINS_COSMOS_CONTAINER = data.azurerm_key_vault_secret.authorizer_cosmos_container.value
   }
 
-  //allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
 
   allowed_ips = []
 

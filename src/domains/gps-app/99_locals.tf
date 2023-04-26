@@ -36,4 +36,5 @@ locals {
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   gps_hostname  = var.env == "prod" ? "weuprod.gps.internal.platform.pagopa.it" : "weu${var.env}.gps.internal.${var.env}.platform.pagopa.it"
 
+  cache_generator_hostname = "https://${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net/api"
 }
