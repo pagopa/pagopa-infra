@@ -34,7 +34,7 @@ module "buyerbanks_function" {
   resource_group_name                      = azurerm_resource_group.buyerbanks_rg.name
   name                                     = format("%s-fn-buyerbanks", local.project)
   location                                 = var.location
-  health_check_path                        = "info"
+  health_check_path                        = "/api/v1/info"
   subnet_id                                = module.buyerbanks_function_snet.id
   runtime_version                          = "~4"
   always_on                                = true
