@@ -211,29 +211,27 @@
         "type": "object",
         "description": "Request body for updating an authorization for a transaction",
         "properties": {
-          "authorizationResult": {
-            "$ref": "#/components/schemas/AuthorizationResult"
+          "outcomeGateway": {
+            "type": "object",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OutcomeVposGateway"
+              },
+              {
+                "$ref": "#/components/schemas/OutcomeXpayGateway"
+              }
+            ]
           },
           "timestampOperation": {
             "type": "string",
             "format": "date-time",
             "description": "Payment timestamp"
-          },
-          "authorizationCode": {
-            "type": "string",
-            "description": "Payment gateway-specific authorization code related to the transaction"
           }
         },
         "required": [
-          "authorizationResult",
-          "timestampOperation",
-          "authorizationCode"
-        ],
-        "example": {
-          "authorizationResult": "OK",
-          "timestampOperation": "2022-02-11T12:00:00.000Z",
-          "authorizationCode": "auth-code"
-        }
+          "outcomeGateway",
+          "timestampOperation"
+        ]
       },
       "TransactionInfo": {
         "description": "Transaction data returned when querying for an existing transaction",
@@ -260,14 +258,6 @@
         "minimum": 0,
         "maximum": 99999999
       },
-      "AuthorizationResult": {
-        "description": "Authorization result",
-        "type": "string",
-        "enum": [
-          "OK",
-          "KO"
-        ]
-      },
       "TransactionStatus": {
         "type": "string",
         "description": "Possible statuses a transaction can be in",
@@ -280,7 +270,6 @@
           "NOTIFIED_OK",
           "NOTIFIED_KO",
           "NOTIFICATION_ERROR",
-          "NOTIFICATION_REQUESTED",
           "EXPIRED",
           "REFUNDED",
           "CANCELED",
@@ -330,6 +319,111 @@
         "maximum": 600,
         "exclusiveMaximum": true,
         "example": 200
+      },
+      "OutcomeVposGateway": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "rrn": {
+            "type": "string"
+          },
+          "authorizationCode": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "error code received from Vpos - https://github.com/pagopa/pagopa-wisp2.0-pp-server/blob/ff0e8e3354fc11d296fe5547b9b00941ead64e96/pp-server/pp-dto/src/main/java/com/pagopa/utils/VposResultCodeEnum.java",
+            "enum": [
+              "00",
+              "01",
+              "02",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "08",
+              "09",
+              "10",
+              "11",
+              "12",
+              "13",
+              "16",
+              "17",
+              "20",
+              "21",
+              "25",
+              "26",
+              "35",
+              "37",
+              "38",
+              "40",
+              "41",
+              "50",
+              "51",
+              "98",
+              "99"
+            ]
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "OutcomeXpayGateway": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "authorizationCode": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "number",
+            "description": "error code received from XPay - https://ecommerce.nexi.it/specifiche-tecniche/tabelleecodifiche/codicierroreapirestful.html",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8,
+              9,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              50,
+              96,
+              97,
+              98,
+              99,
+              100
+            ]
+          }
+        },
+        "required": [
+          "outcome"
+        ]
       }
     },
     "requestBodies": {
