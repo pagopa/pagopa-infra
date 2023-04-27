@@ -90,17 +90,24 @@
       "schemas": {
         "NotificationRequest": {
           "properties": {
+            "contractId": {
+              "type": "string",
+              "maxLength": 255,
+              "example": "C2834987"
+            },
             "status": {
               "type": "string",
               "description": "Status of the payment order",
               "enum": [
                 "OK",
                 "KO"
-              ]
+              ],
+              "example": "OK"
             },
             "securityToken": {
               "type": "string",
-              "description": "Payment gateway security token used to validate the request"
+              "description": "Payment gateway security token used to validate the request",
+              "example": "2f0ea5059b41414ca3744fe672327d85"
             }
           }
         },
