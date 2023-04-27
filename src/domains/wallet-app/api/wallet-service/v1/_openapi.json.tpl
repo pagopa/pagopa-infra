@@ -18,7 +18,7 @@
   ],
   "servers": [
     {
-      "url": "https://${host}"
+      "url": "https://${hostname}"
     }
   ],
   "paths": {
