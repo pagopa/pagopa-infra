@@ -155,9 +155,9 @@
         "type": "string",
         "format": "uuid"
       },
-      "PaymentInstrumentType": {
+      "WalletType": {
         "type": "string",
-        "description": "Payment instrument type enumeration",
+        "description": "Wallet type enumeration",
         "enum": [
           "CARDS"
         ]
@@ -182,7 +182,7 @@
         "type": "object",
         "description": "Card payment instrument details",
         "properties": {
-          "paymentInstrumentType": {
+          "walletType": {
             "type": "string",
             "description": "Payment instrument details discriminator field"
           },
@@ -203,21 +203,40 @@
             "description": "Credit card expiry date. The date format is `YYYYMM`",
             "pattern": "^\\d{6}$",
             "example": "203012"
+          },
+          "contractNumber": {
+            "description": "User contract identifier to be used with payment instrument to make a new payment",
+            "type": "string"
+          },
+          "holder": {
+            "description": "Holder of the card payment instrument",
+            "type": "string"
+          },
+          "brand": {
+            "description": "Payment instrument brand",
+            "type": "string",
+            "enum": [
+              "MASTERCARD",
+              "VISA"
+            ]
           }
         },
         "required": [
-          "paymentInstrumentType",
+          "walletType",
           "bin",
           "maskedPan",
-          "expiryDate"
+          "expiryDate",
+          "contractNumber",
+          "holder",
+          "brand"
         ]
       },
       "WalletCreateRequest": {
         "type": "object",
         "description": "Wallet creation request",
         "properties": {
-          "paymentInstrumentType": {
-            "$ref": "#/components/schemas/PaymentInstrumentType"
+          "walletType": {
+            "$ref": "#/components/schemas/WalletType"
           },
           "services": {
             "type": "array",
@@ -229,7 +248,7 @@
           }
         },
         "required": [
-          "paymentInstrumentType",
+          "walletType",
           "services"
         ]
       },
@@ -276,19 +295,11 @@
             "type": "string",
             "format": "date-time"
           },
-          "paymentInstrumentType": {
-            "$ref": "#/components/schemas/PaymentInstrumentType"
+          "walletType": {
+            "$ref": "#/components/schemas/WalletType"
           },
           "paymentInstrumentId": {
             "description": "Payment instrument identifier",
-            "type": "string"
-          },
-          "contractNumber": {
-            "description": "User contract identifier to be used with payment instrument to make a new payment",
-            "type": "string"
-          },
-          "gatewaySecurityToken": {
-            "description": "Security token used to perform security checks for further interactions with external parties",
             "type": "string"
           },
           "services": {
@@ -298,15 +309,15 @@
               "$ref": "#/components/schemas/Service"
             }
           },
-          "paymentInstrumentDetail": {
-            "description": "details for the specific payment instrument. This field is disciminated by the paymentInstrumentType field",
+          "details": {
+            "description": "details for the specific payment instrument. This field is disciminated by the walletType field",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/CardPaymentInstrumentDetails"
               }
             ],
             "discriminator": {
-              "propertyName": "paymentInstrumentType",
+              "propertyName": "walletType",
               "mapping": {
                 "CARDS": "#/components/schemas/CardPaymentInstrumentDetails"
               }
@@ -319,8 +330,7 @@
           "status",
           "creationDate",
           "updateDate",
-          "paymentInstrumentType",
-          "contractNumber",
+          "walletType",
           "services"
         ]
       },
