@@ -45,7 +45,7 @@
             }
           ],
           "requestBody": {
-            "description": "Notifiy wallet",
+            "description": "Notify wallet",
             "content": {
               "application/json": {
                 "schema": {
