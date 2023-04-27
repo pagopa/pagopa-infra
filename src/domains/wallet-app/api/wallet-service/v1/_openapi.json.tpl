@@ -155,7 +155,7 @@
         "type": "string",
         "format": "uuid"
       },
-      "WalletType": {
+      "Type": {
         "type": "string",
         "description": "Wallet type enumeration",
         "enum": [
@@ -182,7 +182,7 @@
         "type": "object",
         "description": "Card payment instrument details",
         "properties": {
-          "walletType": {
+          "type": {
             "type": "string",
             "description": "Wallet details discriminator field."
           },
@@ -222,7 +222,7 @@
           }
         },
         "required": [
-          "walletType",
+          "type",
           "bin",
           "maskedPan",
           "expiryDate",
@@ -235,8 +235,8 @@
         "type": "object",
         "description": "Wallet creation request",
         "properties": {
-          "walletType": {
-            "$ref": "#/components/schemas/WalletType"
+          "type": {
+            "$ref": "#/components/schemas/Type"
           },
           "services": {
             "type": "array",
@@ -248,7 +248,7 @@
           }
         },
         "required": [
-          "walletType",
+          "type",
           "services"
         ]
       },
@@ -307,14 +307,14 @@
             }
           },
           "details": {
-            "description": "details for the specific payment instrument. This field is disciminated by the walletType field",
+            "description": "details for the specific payment instrument. This field is disciminated by the type field",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/WalletCardDetails"
               }
             ],
             "discriminator": {
-              "propertyName": "walletType",
+              "propertyName": "type",
               "mapping": {
                 "CARDS": "#/components/schemas/WalletCardDetails"
               }
@@ -327,7 +327,7 @@
           "status",
           "creationDate",
           "updateDate",
-          "walletType",
+          "type",
           "services"
         ]
       },
