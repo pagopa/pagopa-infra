@@ -82,7 +82,7 @@ resource "azurerm_key_vault_secret" "poc_reporting_enrollment_subscription_key" 
 }
 
 resource "azurerm_key_vault_secret" "authorizer_cosmos_connection_string" {
-  name = format("auth-%s-cosmos-connection-string", var.env_short)
+  name         = format("auth-%s-cosmos-connection-string", var.env_short)
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
