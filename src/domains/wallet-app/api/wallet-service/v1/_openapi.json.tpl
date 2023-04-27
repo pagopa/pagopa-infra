@@ -178,13 +178,13 @@
           "ERROR"
         ]
       },
-      "CardPaymentInstrumentDetails": {
+      "WalletCardDetails": {
         "type": "object",
         "description": "Card payment instrument details",
         "properties": {
           "walletType": {
             "type": "string",
-            "description": "Payment instrument details discriminator field"
+            "description": "Wallet details discriminator field."
           },
           "bin": {
             "description": "Card BIN (first 6 PAN digits)",
@@ -295,9 +295,6 @@
             "type": "string",
             "format": "date-time"
           },
-          "walletType": {
-            "$ref": "#/components/schemas/WalletType"
-          },
           "paymentInstrumentId": {
             "description": "Payment instrument identifier",
             "type": "string"
@@ -313,13 +310,13 @@
             "description": "details for the specific payment instrument. This field is disciminated by the walletType field",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/CardPaymentInstrumentDetails"
+                "$ref": "#/components/schemas/WalletCardDetails"
               }
             ],
             "discriminator": {
               "propertyName": "walletType",
               "mapping": {
-                "CARDS": "#/components/schemas/CardPaymentInstrumentDetails"
+                "CARDS": "#/components/schemas/WalletCardDetails"
               }
             }
           }
