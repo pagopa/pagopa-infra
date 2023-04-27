@@ -123,34 +123,6 @@ resource "azurerm_key_vault_secret" "authorizer_cosmos_key" {
   }
 }
 
-resource "azurerm_key_vault_secret" "authorizer_cosmos_db" {
-  name         = format("auth-%s-cosmos-db", var.env_short)
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-resource "azurerm_key_vault_secret" "authorizer_cosmos_container" {
-  name         = format("auth-%s-cosmos-container", var.env_short)
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
 resource "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
   name         = format("auth-%s-refresh-configuration-url", var.env_short)
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
