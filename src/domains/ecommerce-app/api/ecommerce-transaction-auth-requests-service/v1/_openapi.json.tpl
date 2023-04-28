@@ -220,7 +220,14 @@
               {
                 "$ref": "#/components/schemas/OutcomeXpayGateway"
               }
-            ]
+            ],
+            "discriminator": {
+              "propertyName": "paymentGatewayType",
+              "mapping": {
+                "xpay": "#/components/schemas/OutcomeXpayGateway",
+                "vpos": "#/components/schemas/OutcomeVposGateway"
+              }
+            }
           },
           "timestampOperation": {
             "type": "string",
@@ -324,6 +331,10 @@
       "OutcomeVposGateway": {
         "type": "object",
         "properties": {
+          "paymentGatewayType": {
+            "type": "string",
+            "example": "vpos"
+          },
           "outcome": {
             "type": "string",
             "enum": [
@@ -374,12 +385,17 @@
           }
         },
         "required": [
-          "outcome"
+          "outcome",
+          "paymentGatewayType"
         ]
       },
       "OutcomeXpayGateway": {
         "type": "object",
         "properties": {
+          "paymentGatewayType": {
+            "type": "string",
+            "example": "xpay"
+          },
           "outcome": {
             "type": "string",
             "enum": [
@@ -423,7 +439,8 @@
           }
         },
         "required": [
-          "outcome"
+          "outcome",
+          "paymentGatewayType"
         ]
       }
     },
