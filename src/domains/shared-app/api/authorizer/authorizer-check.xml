@@ -1,9 +1,7 @@
 
 <!--
     WARNING!
-    When you use this fragment, remember always to set:
-    - "application_domain", "authorization_entity" as variables in caller policy
-    - "hostname", "cache-generator-function-key" as parameter for templatefile
+    When you use this fragment, remember always to set "application_domain", "authorization_entity" as variables in caller policy
 -->
 <fragment>
     <trace source="authorizer-check" severity="information">authorizer-check</trace>
