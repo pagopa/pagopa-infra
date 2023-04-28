@@ -224,8 +224,8 @@
             "discriminator": {
               "propertyName": "paymentGatewayType",
               "mapping": {
-                "xpay": "#/components/schemas/OutcomeXpayGateway",
-                "vpos": "#/components/schemas/OutcomeVposGateway"
+                "XPAY": "#/components/schemas/OutcomeXpayGateway",
+                "VPOS": "#/components/schemas/OutcomeVposGateway"
               }
             }
           },
@@ -333,7 +333,7 @@
         "properties": {
           "paymentGatewayType": {
             "type": "string",
-            "example": "vpos"
+            "example": "VPOS"
           },
           "outcome": {
             "type": "string",
@@ -386,7 +386,8 @@
         },
         "required": [
           "outcome",
-          "paymentGatewayType"
+          "paymentGatewayType",
+          "rrn"
         ]
       },
       "OutcomeXpayGateway": {
@@ -394,7 +395,7 @@
         "properties": {
           "paymentGatewayType": {
             "type": "string",
-            "example": "xpay"
+            "example": "XPAY"
           },
           "outcome": {
             "type": "string",
