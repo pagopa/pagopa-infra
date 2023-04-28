@@ -565,20 +565,6 @@ gpd_cron_job_enable          = true
 gpd_cron_schedule_valid_to   = "0 */10 * * * *"
 gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
-reporting_function_autoscale_minimum = 1
-reporting_function_autoscale_maximum = 3
-reporting_function_autoscale_default = 1
-
-reporting_batch_function_always_on    = true
-reporting_service_function_always_on  = true
-reporting_analysis_function_always_on = true
-
-# GPD Payments
-# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
-gpd_paa_id_intermediario = "15376371009"
-gpd_paa_stazione_int     = "15376371009_01"
-payments_logging_level   = "DEBUG"
-
 # canone unico
 canoneunico_plan_sku_tier = "Standard"
 canoneunico_plan_sku_size = "S1"

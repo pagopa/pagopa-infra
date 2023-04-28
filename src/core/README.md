@@ -774,7 +774,6 @@
 | <a name="input_cidr_subnet_pg_flex_dbms"></a> [cidr\_subnet\_pg\_flex\_dbms](#input\_cidr\_subnet\_pg\_flex\_dbms) | Postgres Flexible Server network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_postgresql"></a> [cidr\_subnet\_postgresql](#input\_cidr\_subnet\_postgresql) | Address prefixes subnet postgresql | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_redis"></a> [cidr\_subnet\_redis](#input\_cidr\_subnet\_redis) | Redis network address space. | `list(string)` | <pre>[<br>  "10.1.162.0/24"<br>]</pre> | no |
-| <a name="input_cidr_subnet_reporting_common"></a> [cidr\_subnet\_reporting\_common](#input\_cidr\_subnet\_reporting\_common) | Address prefixes subnet reporting\_common function | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_reporting_fdr"></a> [cidr\_subnet\_reporting\_fdr](#input\_cidr\_subnet\_reporting\_fdr) | Address prefixes subnet reporting\_fdr function | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_vpn"></a> [cidr\_subnet\_vpn](#input\_cidr\_subnet\_vpn) | VPN network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_vnet"></a> [cidr\_vnet](#input\_cidr\_vnet) | Virtual network address space. | `list(string)` | n/a | yes |
@@ -828,7 +827,6 @@
 | <a name="input_gpd_cron_schedule_valid_to"></a> [gpd\_cron\_schedule\_valid\_to](#input\_gpd\_cron\_schedule\_valid\_to) | GPD cron scheduling (NCRON example '*/35 * * * * *') | `string` | `null` | no |
 | <a name="input_gpd_db_name"></a> [gpd\_db\_name](#input\_gpd\_db\_name) | Name of the DB to connect to | `string` | `"apd"` | no |
 | <a name="input_gpd_dbms_port"></a> [gpd\_dbms\_port](#input\_gpd\_dbms\_port) | Port number of the DBMS | `number` | `5432` | no |
-| <a name="input_gpd_enable_versioning"></a> [gpd\_enable\_versioning](#input\_gpd\_enable\_versioning) | Enable sa versioning | `bool` | `false` | no |
 | <a name="input_gpd_max_retry_queuing"></a> [gpd\_max\_retry\_queuing](#input\_gpd\_max\_retry\_queuing) | Max retry queuing when the node calling fails. | `number` | `5` | no |
 | <a name="input_gpd_paa_id_intermediario"></a> [gpd\_paa\_id\_intermediario](#input\_gpd\_paa\_id\_intermediario) | PagoPA Broker ID | `string` | `false` | no |
 | <a name="input_gpd_paa_stazione_int"></a> [gpd\_paa\_stazione\_int](#input\_gpd\_paa\_stazione\_int) | PagoPA Station ID | `string` | `false` | no |
@@ -843,9 +841,6 @@
 | <a name="input_gpd_plan_sku_tier"></a> [gpd\_plan\_sku\_tier](#input\_gpd\_plan\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_gpd_queue_delay_sec"></a> [gpd\_queue\_delay\_sec](#input\_gpd\_queue\_delay\_sec) | The length of time during which the message will be invisible, starting when it is added to the queue. | `number` | `3600` | no |
 | <a name="input_gpd_queue_retention_sec"></a> [gpd\_queue\_retention\_sec](#input\_gpd\_queue\_retention\_sec) | The maximum time to allow the message to be in the queue. | `number` | `86400` | no |
-| <a name="input_gpd_reporting_advanced_threat_protection"></a> [gpd\_reporting\_advanced\_threat\_protection](#input\_gpd\_reporting\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
-| <a name="input_gpd_reporting_delete_retention_days"></a> [gpd\_reporting\_delete\_retention\_days](#input\_gpd\_reporting\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
-| <a name="input_gpd_reporting_schedule_batch"></a> [gpd\_reporting\_schedule\_batch](#input\_gpd\_reporting\_schedule\_batch) | Cron scheduling (NCRON example '*/45 * * * * *') | `string` | `"0 0 1 * * *"` | no |
 | <a name="input_gpd_schema_name"></a> [gpd\_schema\_name](#input\_gpd\_schema\_name) | Name of the schema of the DB | `string` | `"apd"` | no |
 | <a name="input_ingress_elk_load_balancer_ip"></a> [ingress\_elk\_load\_balancer\_ip](#input\_ingress\_elk\_load\_balancer\_ip) | n/a | `string` | `""` | no |
 | <a name="input_io_bpd_hostname"></a> [io\_bpd\_hostname](#input\_io\_bpd\_hostname) | IO BPD hostname | `string` | `""` | no |
@@ -920,8 +915,6 @@
 | <a name="input_redis_cache_enabled"></a> [redis\_cache\_enabled](#input\_redis\_cache\_enabled) | redis cache enabled | `bool` | `false` | no |
 | <a name="input_redis_cache_params"></a> [redis\_cache\_params](#input\_redis\_cache\_params) | # Redis cache | <pre>object({<br>    public_access = bool<br>    capacity      = number<br>    sku_name      = string<br>    family        = string<br>  })</pre> | <pre>{<br>  "capacity": 1,<br>  "family": "C",<br>  "public_access": false,<br>  "sku_name": "Basic"<br>}</pre> | no |
 | <a name="input_redis_private_endpoint_enabled"></a> [redis\_private\_endpoint\_enabled](#input\_redis\_private\_endpoint\_enabled) | Enable private endpoints for redis instances? | `bool` | `true` | no |
-| <a name="input_reporting_analysis_function_always_on"></a> [reporting\_analysis\_function\_always\_on](#input\_reporting\_analysis\_function\_always\_on) | Always on property | `bool` | `false` | no |
-| <a name="input_reporting_batch_function_always_on"></a> [reporting\_batch\_function\_always\_on](#input\_reporting\_batch\_function\_always\_on) | Always on property | `bool` | `false` | no |
 | <a name="input_reporting_fdr_blobs_retention_days"></a> [reporting\_fdr\_blobs\_retention\_days](#input\_reporting\_fdr\_blobs\_retention\_days) | The number of day for storage\_management\_policy | `number` | `30` | no |
 | <a name="input_reporting_fdr_function_always_on"></a> [reporting\_fdr\_function\_always\_on](#input\_reporting\_fdr\_function\_always\_on) | Always on property | `bool` | `false` | no |
 | <a name="input_reporting_fdr_function_autoscale_default"></a> [reporting\_fdr\_function\_autoscale\_default](#input\_reporting\_fdr\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
@@ -930,10 +923,6 @@
 | <a name="input_reporting_fdr_function_kind"></a> [reporting\_fdr\_function\_kind](#input\_reporting\_fdr\_function\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_reporting_fdr_function_sku_size"></a> [reporting\_fdr\_function\_sku\_size](#input\_reporting\_fdr\_function\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_reporting_fdr_function_sku_tier"></a> [reporting\_fdr\_function\_sku\_tier](#input\_reporting\_fdr\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
-| <a name="input_reporting_function_autoscale_default"></a> [reporting\_function\_autoscale\_default](#input\_reporting\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `5` | no |
-| <a name="input_reporting_function_autoscale_maximum"></a> [reporting\_function\_autoscale\_maximum](#input\_reporting\_function\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `10` | no |
-| <a name="input_reporting_function_autoscale_minimum"></a> [reporting\_function\_autoscale\_minimum](#input\_reporting\_function\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
-| <a name="input_reporting_service_function_always_on"></a> [reporting\_service\_function\_always\_on](#input\_reporting\_service\_function\_always\_on) | Always on property | `bool` | `false` | no |
 | <a name="input_satispay_hostname"></a> [satispay\_hostname](#input\_satispay\_hostname) | Satispay hostname | `string` | `""` | no |
 | <a name="input_storage_queue_private_endpoint_enabled"></a> [storage\_queue\_private\_endpoint\_enabled](#input\_storage\_queue\_private\_endpoint\_enabled) | Whether private endpoint for Azure Storage Queues is enabled | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
