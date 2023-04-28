@@ -17,7 +17,7 @@
         <set-variable name="application_domain" value="gpd" />
         <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
         <!-- <set-variable name="authorization_entity" value="@(context.Request.Url.Query.GetValueOrDefault("organizationfiscalcode", ""))" />  -->
-        <include-fragment fragment-id="authorizer" />
+        <!-- <include-fragment fragment-id="authorizer" /> chiedere ad Andrea -->
     </inbound>
     <outbound>
         <base />
