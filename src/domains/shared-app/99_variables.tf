@@ -153,3 +153,33 @@ variable "influxdb2_helm" {
   }
   description = "influxdb2 helm chart configuration"
 }
+
+
+variable "cidr_subnet_authorizer_functions" {
+  type        = string
+  description = "CIDR subnet for Authorizer functions"
+}
+
+variable "authorizer_function_always_on" {
+  type        = bool
+  description = "Should authorizer-functions app be always on?"
+}
+
+variable "authorizer_functions_app_sku" {
+  type = object({
+    kind     = string
+    sku_tier = string
+    sku_size = string
+  })
+  description = "Authorizer functions app plan SKU"
+}
+
+variable "authorizer_functions_autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+  description = "Authorizer functions autoscaling parameters"
+}
+

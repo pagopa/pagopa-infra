@@ -2,19 +2,19 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.92
+  version: 0.0.78
 servers:
   - url: 'https://${host}/${basePath}'
     description: Inferred Url
 tags:
   - name: channels
     description: Api config channels operations
-  - name: institution
-    description: Institution operations
   - name: stations
     description: Api config stations operations
+  - name: creditor-institutions
+    description: Api Config creditor institution's operations
 paths:
-  '/channels':
+  /channels:
     get:
       tags:
         - channels
@@ -125,7 +125,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/brokerspsp':
+  /channels/brokerspsp:
     post:
       tags:
         - channels
@@ -165,7 +165,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/configuration/paymenttypes':
+  /channels/configuration/paymenttypes:
     get:
       tags:
         - channels
@@ -206,7 +206,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/csv':
+  /channels/csv:
     get:
       tags:
         - channels
@@ -250,7 +250,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/details/{channelcode}':
+  /channels/details/{channelcode}:
     get:
       tags:
         - channels
@@ -298,7 +298,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/paymenttypes/{channelcode}':
+  /channels/paymenttypes/{channelcode}:
     get:
       tags:
         - channels
@@ -347,7 +347,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/psp':
+  /channels/psp:
     post:
       tags:
         - channels
@@ -387,7 +387,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/psp/{channelcode}/{pspcode}':
+  /channels/psp/{channelcode}/{pspcode}:
     put:
       tags:
         - channels
@@ -493,7 +493,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/psp/{pspcode}':
+  /channels/psp/{pspcode}:
     get:
       tags:
         - channels
@@ -582,7 +582,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{brokerpspcode}/paymentserviceproviders':
+  /channels/{brokerpspcode}/paymentserviceproviders:
     get:
       tags:
         - channels
@@ -647,7 +647,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{channelcode}':
+  /channels/{channelcode}:
     put:
       tags:
         - channels
@@ -739,7 +739,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{channelcode}/paymenttypes':
+  /channels/{channelcode}/paymenttypes:
     post:
       tags:
         - channels
@@ -787,7 +787,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{channelcode}/psp':
+  /channels/{channelcode}/psp:
     get:
       tags:
         - channels
@@ -852,7 +852,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{channelcode}/{paymenttypecode}':
+  /channels/{channelcode}/{paymenttypecode}:
     delete:
       tags:
         - channels
@@ -898,7 +898,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{pspcode}':
+  /channels/{pspcode}:
     get:
       tags:
         - channels
@@ -946,7 +946,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/channels/{pspcode}/generate':
+  /channels/{pspcode}/generate:
     get:
       tags:
         - channels
@@ -965,9 +965,9 @@ paths:
         '200':
           description: OK
           content:
-            text/plain:
+            application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/ChannelCodeResource'
         '400':
           description: Bad Request
           content:
@@ -995,7 +995,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/stations':
+  /stations:
     get:
       tags:
         - stations
@@ -1113,7 +1113,7 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/stations/details/{stationId}':
+  /stations/details/{stationId}:
     get:
       tags:
         - stations
@@ -1181,9 +1181,146 @@ paths:
         '200':
           description: OK
           content:
-            text/plain:
+            application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/StationCodeResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /stations/{ecCode}/station:
+    post:
+      tags:
+        - stations
+      summary: associateStationToCreditorInstitution
+      description: Creates the relationship between the created station and the creditorInstitution
+      operationId: associateStationToCreditorInstitutionUsingPOST
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditorInstitutionStationDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionStationEditResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /creditor-institutions:
+    post:
+      tags:
+        - creditor-institutions
+      summary: createCreditorInstitution
+      description: Service to add a Creditor Institution to Api Config
+      operationId: createCreditorInstitutionUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditorInstitutionDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /creditor-institutions/{ecCode}:
+    get:
+      tags:
+        - creditor-institutions
+      summary: getCreditorInstitutionDetails
+      description: Service to retrieve specific creditor institution details
+      operationId: getCreditorInstitutionDetailsUsingGET
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
         '400':
           description: Bad Request
           content:
@@ -1213,6 +1350,54 @@ paths:
             - global
 components:
   schemas:
+    ApiKeysResource:
+      title: ApiKeysResource
+      required:
+        - displayName
+        - id
+        - primaryKey
+        - secondaryKey
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Institution's name Api Key
+        id:
+          type: string
+          description: Institution's subscription id
+        primaryKey:
+          type: string
+          description: Institution's primary Api Key
+        secondaryKey:
+          type: string
+          description: Institution's secondary Api Key
+    AssistanceContactsResource:
+      title: AssistanceContactsResource
+      type: object
+      properties:
+        supportEmail:
+          type: string
+          description: Institution's support email contact
+        supportPhone:
+          type: string
+          description: Institution's support phone contact
+    AttributeResource:
+      title: AttributeResource
+      required:
+        - code
+        - description
+        - origin
+      type: object
+      properties:
+        code:
+          type: string
+          description: Institution's code
+        description:
+          type: string
+          description: Institution's name
+        origin:
+          type: string
+          description: Institution data origin
     BrokerPspDetailsDto:
       title: BrokerPspDetailsDto
       type: object
@@ -1237,6 +1422,13 @@ components:
           type: boolean
         extended_fault_bean:
           type: boolean
+    ChannelCodeResource:
+      title: ChannelCodeResource
+      type: object
+      properties:
+        channel_code:
+          type: string
+          description: Channel code
     ChannelDetailsDto:
       title: ChannelDetailsDto
       type: object
@@ -1601,9 +1793,205 @@ components:
         page_info:
           description: info pageable
           $ref: '#/components/schemas/PageInfo'
+    CompanyInformationsResource:
+      title: CompanyInformationsResource
+      type: object
+      properties:
+        businessRegisterPlace:
+          type: string
+          description: Institution's business register place
+        rea:
+          type: string
+          description: Institution's REA
+        shareCapital:
+          type: string
+          description: Institution's share capital value
+    CreditorInstitutionStationDto:
+      title: CreditorInstitutionStationDto
+      required:
+        - stationCode
+      type: object
+      properties:
+        stationCode:
+          type: string
+          description: Station's unique identifier
+    CreditorInstitutionStationEditResource:
+      title: CreditorInstitutionStationEditResource
+      required:
+        - stationCode
+      type: object
+      properties:
+        applicationCode:
+          type: integer
+          description: Station's application code
+          format: int64
+        auxDigit:
+          type: integer
+          description: Station's auxiliary digit
+          format: int64
+        broadcast:
+          type: boolean
+          description: Station's broadcast enabled
+          example: false
+        mod4:
+          type: boolean
+          description: Station's mod 4 enabled
+          example: false
+        segregationCode:
+          type: integer
+          description: Station's segregation code number
+          format: int64
+        stationCode:
+          type: string
+          description: Station's unique identifier
+    DpoDataResource:
+      title: DpoDataResource
+      required:
+        - address
+        - email
+        - pec
+      type: object
+      properties:
+        address:
+          type: string
+          description: DPO's address
+        email:
+          type: string
+          description: DPO's email
+        pec:
+          type: string
+          description: DPO's PEC
     InputStream:
       title: InputStream
       type: object
+    InstitutionDetailResource:
+      title: InstitutionDetailResource
+      required:
+        - address
+        - attributes
+        - description
+        - digitalAddress
+        - externalId
+        - id
+        - institutionType
+        - origin
+        - originId
+        - taxCode
+        - zipCode
+      type: object
+      properties:
+        address:
+          type: string
+          description: Institution's physical address
+        attributes:
+          type: array
+          description: Institution's attributes
+          items:
+            $ref: '#/components/schemas/AttributeResource'
+        description:
+          type: string
+          description: Institution's name
+        digitalAddress:
+          type: string
+          description: Institution's digitalAddress
+        externalId:
+          type: string
+          description: Institution's unique external identifier
+        id:
+          type: string
+          description: Institution's unique internal identifier
+        institutionType:
+          type: string
+          description: Institution's type
+          enum:
+            - GSP
+            - PA
+            - PSP
+            - PT
+            - SCP
+        origin:
+          type: string
+          description: Institution data origin
+        originId:
+          type: string
+          description: Institution's details origin Id
+        taxCode:
+          type: string
+          description: Institution's taxCode
+        zipCode:
+          type: string
+          description: Institution's zipCode
+    InstitutionResource:
+      title: InstitutionResource
+      required:
+        - address
+        - externalId
+        - fiscalCode
+        - id
+        - mailAddress
+        - name
+        - origin
+        - originId
+        - status
+        - userProductRoles
+      type: object
+      properties:
+        address:
+          type: string
+          description: Institution's physical address
+        assistanceContacts:
+          description: Institution's assistance contacts
+          $ref: '#/components/schemas/AssistanceContactsResource'
+        companyInformations:
+          description: GPS, SCP, PT optional data
+          $ref: '#/components/schemas/CompanyInformationsResource'
+        dpoData:
+          description: Data Protection Officer (DPO) specific data
+          $ref: '#/components/schemas/DpoDataResource'
+        externalId:
+          type: string
+          description: Institution's unique external identifier
+        fiscalCode:
+          type: string
+          description: Institution's taxCode
+        id:
+          type: string
+          description: Institution's unique internal identifier
+        institutionType:
+          type: string
+          description: Institution's type
+          enum:
+            - GSP
+            - PA
+            - PSP
+            - PT
+            - SCP
+        mailAddress:
+          type: string
+          description: Institution's digitalAddress
+        name:
+          type: string
+          description: Institution's name
+        origin:
+          type: string
+          description: Institution data origin
+        originId:
+          type: string
+          description: Institution's details origin Id
+        pspData:
+          description: Payment Service Provider (PSP) specific data
+          $ref: '#/components/schemas/PspDataResource'
+        recipientCode:
+          type: string
+          description: Billing recipient code
+        status:
+          type: string
+          description: Institution onboarding status
+        userProductRoles:
+          type: array
+          description: Logged user's roles on product
+          items:
+            type: string
     InvalidParam:
       title: InvalidParam
       required:
@@ -1779,6 +2167,30 @@ components:
           type: string
           description: A URL to a page with more details regarding the problem.
       description: A "problem detail" as a way to carry machine-readable details of errors (https://datatracker.ietf.org/doc/html/rfc7807)
+    ProductsResource:
+      title: ProductsResource
+      required:
+        - description
+        - id
+        - title
+        - urlBO
+      type: object
+      properties:
+        description:
+          type: string
+          description: Product's description
+        id:
+          type: string
+          description: Product's unique identifier
+        title:
+          type: string
+          description: Product's title
+        urlBO:
+          type: string
+          description: URL that redirects to the back-office section, where is possible to manage the product
+        urlPublic:
+          type: string
+          description: URL that redirects to the public information webpage of the product
     PspChannelPaymentTypes:
       title: PspChannelPaymentTypes
       type: object
@@ -1829,6 +2241,32 @@ components:
           description: Channel list
           items:
             $ref: '#/components/schemas/PspChannelResource'
+    PspDataResource:
+      title: PspDataResource
+      required:
+        - abiCode
+        - businessRegisterNumber
+        - legalRegisterName
+        - legalRegisterNumber
+        - vatNumberGroup
+      type: object
+      properties:
+        abiCode:
+          type: string
+          description: PSP's ABI code
+        businessRegisterNumber:
+          type: string
+          description: PSP's Business Register number
+        legalRegisterName:
+          type: string
+          description: PSP's legal register name
+        legalRegisterNumber:
+          type: string
+          description: PSP's legal register number
+        vatNumberGroup:
+          type: boolean
+          description: PSP's Vat Number group
+          example: false
     Resource:
       title: Resource
       type: object
@@ -1852,6 +2290,15 @@ components:
         url:
           type: string
           format: url
+    StationCodeResource:
+      title: StationCodeResource
+      required:
+        - stationCode
+      type: object
+      properties:
+        stationCode:
+          type: string
+          description: Station's unique identifier
     StationDetailResource:
       title: StationDetailResource
       required:
@@ -1888,7 +2335,7 @@ components:
           example: false
         flagOnline:
           type: boolean
-          description: 'Station''s online flag '
+          description: Station's online flag
           example: false
         ip:
           type: string
@@ -2022,66 +2469,6 @@ components:
           type: integer
           description: Station's version
           format: int64
-    StationResource:
-      title: StationResource
-      required:
-        - enabled
-        - stationCode
-        - stationStatus
-      type: object
-      properties:
-        activationDate:
-          type: string
-          description: Station's activation date
-          format: date-time
-        associatedCreditorInstitutions:
-          type: integer
-          description: Number of station's creditor institutions
-          format: int32
-        brokerDescription:
-          type: string
-          description: Station broker's description
-        createdAt:
-          type: string
-          description: Station created on
-          format: date-time
-        enabled:
-          type: boolean
-          description: Station's activation state
-          example: false
-        modifiedAt:
-          type: string
-          description: Station's last modified date
-          format: date-time
-        stationCode:
-          type: string
-          description: Station's unique identifier
-        stationStatus:
-          type: string
-          description: Station's status
-          enum:
-            - ACTIVE
-            - ON_REVISION
-            - TO_BE_CORRECTED
-        version:
-          type: integer
-          description: Station's version
-          format: int64
-    StationsResource:
-      title: StationsResource
-      required:
-        - pageInfo
-        - stationsList
-      type: object
-      properties:
-        pageInfo:
-          description: info pageable
-          $ref: '#/components/schemas/PageInfo'
-        stationsList:
-          type: array
-          description: List of ec stations
-          items:
-            $ref: '#/components/schemas/StationResource'
     StationDetailsDto:
       title: StationDetailsDto
       required:
@@ -2113,7 +2500,7 @@ components:
           example: false
         flagOnline:
           type: boolean
-          description: 'Station''s online flag '
+          description: Station's online flag
           example: false
         ip:
           type: string
@@ -2139,8 +2526,9 @@ components:
           description: Station's v4 port
           format: int64
         primitiveVersion:
-          type: string
+          type: integer
           description: Station's primitive version
+          format: int32
         protocol:
           type: string
           description: Station's http protocol
@@ -2228,6 +2616,190 @@ components:
           type: integer
           description: Station's timeoutC
           format: int64
+    StationResource:
+      title: StationResource
+      required:
+        - enabled
+        - stationCode
+        - stationStatus
+      type: object
+      properties:
+        activationDate:
+          type: string
+          description: Station's activation date
+          format: date-time
+        associatedCreditorInstitutions:
+          type: integer
+          description: Number of station's creditor institutions
+          format: int32
+        brokerDescription:
+          type: string
+          description: Station broker's description
+        createdAt:
+          type: string
+          description: Station created on
+          format: date-time
+        enabled:
+          type: boolean
+          description: Station's activation state
+          example: false
+        modifiedAt:
+          type: string
+          description: Station's last modified date
+          format: date-time
+        stationCode:
+          type: string
+          description: Station's unique identifier
+        stationStatus:
+          type: string
+          description: Station's status
+          enum:
+            - ACTIVE
+            - ON_REVISION
+            - TO_BE_CORRECTED
+        version:
+          type: integer
+          description: Station's version
+          format: int64
+    StationsResource:
+      title: StationsResource
+      required:
+        - pageInfo
+        - stationsList
+      type: object
+      properties:
+        pageInfo:
+          description: info pageable
+          $ref: '#/components/schemas/PageInfo'
+        stationsList:
+          type: array
+          description: List of ec stations
+          items:
+            $ref: '#/components/schemas/StationResource'
+    CreditorInstitutionDto:
+      title: CreditorInstitutionDto
+      required:
+        - address
+        - businessName
+        - creditorInstitutionCode
+        - enabled
+        - pspPayment
+        - reportingFtp
+        - reportingZip
+      type: object
+      properties:
+        address:
+          description: Creditor Institution's address object
+          $ref: '#/components/schemas/CreditorInstitutionAddressDto'
+        businessName:
+          type: string
+          description: Creditor Institution's business name
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        enabled:
+          type: boolean
+          description: Creditor Institution activation state on ApiConfig
+          example: false
+        pspPayment:
+          type: boolean
+          description: Creditor Institution's is a psp Payment broker
+          example: false
+        reportingFtp:
+          type: boolean
+          description: Enables flow towards Creditor Institution in fstp mode
+          example: false
+        reportingZip:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+    CreditorInstitutionAddressDto:
+      title: CreditorInstitutionAddressDto
+      required:
+        - city
+        - countryCode
+        - location
+        - taxDomicile
+        - zipCode
+      type: object
+      properties:
+        city:
+          type: string
+          description: Creditor Institution's city
+        countryCode:
+          type: string
+          description: Creditor Institution's country code
+        location:
+          type: string
+          description: Creditor Institution's physical address
+        taxDomicile:
+          type: string
+          description: Creditor Institution's tax domicile
+        zipCode:
+          type: string
+          description: Creditor Institution's zip code
+    CreditorInstitutionAddressResource:
+      title: CreditorInstitutionAddressResource
+      required:
+        - city
+        - countryCode
+        - location
+        - taxDomicile
+        - zipCode
+      type: object
+      properties:
+        city:
+          type: string
+          description: Creditor Institution's city
+        countryCode:
+          type: string
+          description: Creditor Institution's country code
+        location:
+          type: string
+          description: Creditor Institution's physical address
+        taxDomicile:
+          type: string
+          description: Creditor Institution's tax domicile
+        zipCode:
+          type: string
+          description: Creditor Institution's zip code
+    CreditorInstitutionDetailsResource:
+      title: CreditorInstitutionDetailsResource
+      required:
+        - address
+        - businessName
+        - creditorInstitutionCode
+        - enabled
+        - pspPayment
+        - reportingFtp
+        - reportingZip
+      type: object
+      properties:
+        address:
+          description: Creditor Institution's address object
+          $ref: '#/components/schemas/CreditorInstitutionAddressResource'
+        businessName:
+          type: string
+          description: Creditor Institution's business name
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        enabled:
+          type: boolean
+          description: Creditor Institution activation state on ApiConfig
+          example: false
+        pspPayment:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+        reportingFtp:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+        reportingZip:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
   securitySchemes:
     bearerAuth:
       type: http

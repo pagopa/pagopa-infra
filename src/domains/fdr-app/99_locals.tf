@@ -32,6 +32,8 @@ locals {
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
+  fdr_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
+
   fdr_locals = {
     hostname = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
 

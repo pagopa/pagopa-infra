@@ -1,0 +1,17 @@
+<policies>
+    <inbound>
+        <base />
+        <set-variable name="betocall" value="@(context.Request.Url.Query.GetValueOrDefault("frameworkType"))" />
+        <set-backend-service base-url="@($"https://weudev.shared.internal.dev.platform.pagopa.it/pagopa-poc-{(string)context.Variables["betocall"]}-service")" />
+        <!-- micronaut OR quarkus -->
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

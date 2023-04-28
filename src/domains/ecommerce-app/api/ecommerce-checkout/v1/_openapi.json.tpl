@@ -1169,6 +1169,11 @@
           },
           "email": {
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
@@ -1251,6 +1256,11 @@
           },
           "authToken": {
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
@@ -1488,6 +1498,7 @@
           "NOTIFIED_OK",
           "NOTIFIED_KO",
           "NOTIFICATION_ERROR",
+          "NOTIFICATION_REQUESTED",
           "EXPIRED",
           "REFUNDED",
           "CANCELED",
@@ -1650,6 +1661,14 @@
                 "example": "https://www.comune.di.prova.it/pagopa/error.html"
               }
             }
+          },
+          "idCart": {
+            "type": "string",
+            "example": "id_cart"
+          },
+          "allCCP": {
+            "type": "boolean",
+            "example": "false"
           }
         }
       },

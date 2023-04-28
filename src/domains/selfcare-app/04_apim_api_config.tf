@@ -44,7 +44,8 @@ module "apim_api_backoffice_apiConfig_api_v1" {
   })
 
   xml_content = templatefile("./api/pagopa-api-config/v1/_base_policy.xml", {
-    hostname = local.selfcare_hostname
-    origin   = local.selfcare_fe_hostname
+    hostname     = local.selfcare_hostname
+    origin       = local.selfcare_fe_hostname
+    local_origin = var.env_short == "d" ? "<origin>https://localhost:3000</origin>" : ""
   })
 }

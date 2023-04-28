@@ -93,6 +93,7 @@ module "api_config_app_service" {
     XSD_COUNTERPART            = var.xsd_counterpart
     XSD_CDI                    = var.xsd_cdi
     LOGGING_LEVEL              = var.apiconfig_logging_level
+    ENV                        = var.env_short == "p" ? "PROD" : "azure"
 
     COSMOS_URI = azurerm_key_vault_secret.apiconfig_cosmos_uri.value
     COSMOS_KEY = azurerm_key_vault_secret.apiconfig_cosmos_key.value
@@ -103,7 +104,7 @@ module "api_config_app_service" {
     AFM_UTILS_HOST             = var.env_short == "p" ? "https://api.platform.pagopa.it/afm/utils/v1" : format("https://api.%s.platform.pagopa.it/afm/utils/v1", lower(var.tags["Environment"]))
     AFM_UTILS_SUBSCRIPTION_KEY = azurerm_key_vault_secret.apiconfig_afm_utils_subscription_key.value
 
-    NODO_MONITORING_HOST = var.env_short == "p" ? "https://api.platform.pagopa.it/nodo/monitoring/v1" : format("https://api.%s.platform.pagopa.it/nodo/monitoring/v1", lower(var.tags["Environment"]))
+    NODO_MONITORING_HOST = var.env_short == "p" ? "https://api.platform.pagopa.it/nodo-monitoring/monitoring/v1" : format("https://api.%s.platform.pagopa.it/nodo/monitoring/v1", lower(var.tags["Environment"]))
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
