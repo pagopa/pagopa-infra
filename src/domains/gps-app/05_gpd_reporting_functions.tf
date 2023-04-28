@@ -44,7 +44,7 @@ locals {
     ORGANIZATIONS_QUEUE       = replace("${local.product}flowsaqueueorg", "-", "")
     FLOWS_QUEUE               = replace("${local.product}flowsaqueueflows", "-", "")
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.apim_dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    # GPD_HOST             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
     NODO_HOST            = format("https://api.%s.%s/nodo/nodo-per-pa/v1", var.apim_dns_zone_prefix, var.external_domain)
     PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
     PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
@@ -119,7 +119,7 @@ locals {
     FLOWS_CONTAINER           = replace("${local.product}flowsaflowscontainer", "-", "")
 
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.apim_dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    # GPD_HOST = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
@@ -287,7 +287,7 @@ module "reporting_analysis_function_slot_staging" {
   health_check_path = "info"
 
   # App settings
-  app_settings = local.function_service_app_settings
+  app_settings = local.function_analysis_app_settings
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
