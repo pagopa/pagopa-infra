@@ -3,7 +3,7 @@
   "info": {
     "title": "pagoPA Wallet API",
     "version": "0.0.1",
-    "description": "Wallet",
+    "description": "API to handle wallets PagoPA, where a wallet is triple between user identifier, payment instrument and services (i.e pagoPA, bpd).",
     "termsOfService": "https://pagopa.it/terms/"
   },
   "tags": [
@@ -96,6 +96,52 @@
             "description": "Timeout serving request"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Get wallet by user identifier",
+        "description": "Returns a of wallets related to user",
+        "operationId": "getWalletsByIdUser",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-user-id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Wallet retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallets"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Wallet not found"
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
       }
     },
     "/wallets/{walletId}": {
@@ -159,7 +205,8 @@
         "type": "string",
         "description": "Wallet type enumeration",
         "enum": [
-          "CARDS"
+          "CARDS",
+          "PAYPAL"
         ]
       },
       "Service": {
@@ -175,6 +222,7 @@
         "enum": [
           "INITIALIZED",
           "CREATED",
+          "DELETED",
           "ERROR"
         ]
       },
@@ -204,10 +252,6 @@
             "pattern": "^\\d{6}$",
             "example": "203012"
           },
-          "contractNumber": {
-            "description": "User contract identifier to be used with payment instrument to make a new payment",
-            "type": "string"
-          },
           "holder": {
             "description": "Holder of the card payment instrument",
             "type": "string"
@@ -226,9 +270,35 @@
           "bin",
           "maskedPan",
           "expiryDate",
-          "contractNumber",
           "holder",
           "brand"
+        ]
+      },
+      "WalletPaypalDetails": {
+        "type": "object",
+        "description": "Paypal instrument details",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Wallet details discriminator field."
+          },
+          "abi": {
+            "description": "bank idetifier",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5,
+            "example": "12345"
+          },
+          "maskedEmail": {
+            "description": "email masked pan",
+            "type": "string",
+            "example": "test***@***test.it"
+          }
+        },
+        "required": [
+          "type",
+          "abi",
+          "maskedEmail"
         ]
       },
       "WalletCreateRequest": {
@@ -282,6 +352,14 @@
             "type": "string",
             "description": "user identifier"
           },
+          "paymentInstrumentId": {
+            "description": "Payment instrument identifier",
+            "type": "string"
+          },
+          "contractNumber": {
+            "description": "User contract identifier to be used with payment instrument to make a new payment",
+            "type": "string"
+          },
           "status": {
             "$ref": "#/components/schemas/WalletStatus"
           },
@@ -295,10 +373,6 @@
             "type": "string",
             "format": "date-time"
           },
-          "paymentInstrumentId": {
-            "description": "Payment instrument identifier",
-            "type": "string"
-          },
           "services": {
             "description": "list of services for which this wallet is created for",
             "type": "array",
@@ -311,12 +385,16 @@
             "oneOf": [
               {
                 "$ref": "#/components/schemas/WalletCardDetails"
+              },
+              {
+                "$ref": "#/components/schemas/WalletPaypalDetails"
               }
             ],
             "discriminator": {
               "propertyName": "type",
               "mapping": {
-                "CARDS": "#/components/schemas/WalletCardDetails"
+                "CARDS": "#/components/schemas/WalletCardDetails",
+                "PAYPAL": "#/components/schemas/WalletPaypalDetails"
               }
             }
           }
@@ -326,10 +404,23 @@
           "userId",
           "status",
           "creationDate",
+          "contractNumber",
           "updateDate",
           "type",
           "services"
         ]
+      },
+      "Wallets": {
+        "type": "object",
+        "description": "Wallets information",
+        "properties": {
+          "wallets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WalletInfo"
+            }
+          }
+        }
       },
       "ProblemJson": {
         "description": "Body definition for error responses containing failure details",
