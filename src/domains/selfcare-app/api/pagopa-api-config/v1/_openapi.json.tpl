@@ -1348,6 +1348,59 @@ paths:
       security:
         - bearerAuth:
             - global
+    put:
+      tags:
+        - creditor-institutions
+      summary: updateCreditorInstitutionDetails
+      description: Service to update specific creditor institution details
+      operationId: updateCreditorInstitutionDetailsUsingPUT
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCreditorInstitutionDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
 components:
   schemas:
     ApiKeysResource:
@@ -2678,6 +2731,43 @@ components:
             $ref: '#/components/schemas/StationResource'
     CreditorInstitutionDto:
       title: CreditorInstitutionDto
+      required:
+        - address
+        - businessName
+        - creditorInstitutionCode
+        - enabled
+        - pspPayment
+        - reportingFtp
+        - reportingZip
+      type: object
+      properties:
+        address:
+          description: Creditor Institution's address object
+          $ref: '#/components/schemas/CreditorInstitutionAddressDto'
+        businessName:
+          type: string
+          description: Creditor Institution's business name
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        enabled:
+          type: boolean
+          description: Creditor Institution activation state on ApiConfig
+          example: false
+        pspPayment:
+          type: boolean
+          description: Creditor Institution's is a psp Payment broker
+          example: false
+        reportingFtp:
+          type: boolean
+          description: Enables flow towards Creditor Institution in fstp mode
+          example: false
+        reportingZip:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+    UpdateCreditorInstitutionDto:
+      title: UpdateCreditorInstitutionDto
       required:
         - address
         - businessName

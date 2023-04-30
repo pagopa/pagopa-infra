@@ -69,5 +69,6 @@ module "apim_api_selfcare_api_v1" {
   xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_base_policy.xml", {
     hostname = local.selfcare_hostname
     origin   = local.selfcare_fe_hostname
+    local_origin = var.env_short == "d" ? "<origin>http://localhost:3000</origin>" : ""
   })
 }
