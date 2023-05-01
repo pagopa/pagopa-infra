@@ -34,7 +34,32 @@ resource "helm_release" "cert_mounter" {
   force_update = true
 
   values = [
-    "${file("${path.root}/env/${var.location_short}-${var.env}/helm/cert-mounter.yaml")}"
+    "${
+      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
+        NAMESPACE = var.domain,
+        CERTIFICATE_NAME = replace(local.apiconfig_cache_locals.hostname, ".", "-"),
+        ENV_SHORT = var.env_short,
+      })
+    }"
   ]
 }
 
+resource "helm_release" "status_app" {
+  name       = "status-app"
+  repository = "https://pagopa.github.io/aks-microservice-chart-blueprint"
+  chart      = "microservice-chart"
+  version    = "2.8.0"
+  namespace = var.domain
+  timeout = 120
+  force_update = true
+
+  values = [
+    "${
+      templatefile("${path.root}/helm/status-app.yaml.tpl", {
+        NAMESPACE = var.domain,
+        INGRESS_URL = local.apiconfig_cache_locals.hostname,
+        ENV_SHORT = var.env_short,
+      })
+    }"
+  ]
+}
