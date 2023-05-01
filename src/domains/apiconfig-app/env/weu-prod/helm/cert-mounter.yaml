@@ -1,0 +1,13 @@
+namespace: "apiconfig"
+nameOverride: ""
+fullnameOverride: ""
+
+deployment:
+  create: true
+
+kvCertificatesName:
+  - weuprod-apiconfig-internal-prod-platform-pagopa-it
+
+keyvault:
+  name: "pagopa-p-apiconfig-kv"
+  tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"

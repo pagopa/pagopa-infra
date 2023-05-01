@@ -17,3 +17,24 @@ module "tls_checker" {
   keyvault_name                          = data.azurerm_key_vault.kv.name
   keyvault_tenantid                      = data.azurerm_client_config.current.tenant_id
 }
+
+
+output "pa" {
+value = "${path.root}/env/${var.location_short}-${var.env}/helm/cert-mounter.yaml"
+}
+
+
+resource "helm_release" "cert_mounter" {
+  name       = "cert-mounter-blueprint"
+  repository = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
+  chart      = "cert-mounter-blueprint"
+  version    = "1.0.4"
+  namespace = var.domain
+  timeout = 120
+  force_update = true
+
+  values = [
+    "${file("${path.root}/env/${var.location_short}-${var.env}/helm/cert-mounter.yaml")}"
+  ]
+}
+
