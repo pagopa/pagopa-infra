@@ -18,9 +18,9 @@ module "authorizer_cosmosdb_account" {
   name     = "${local.project}-auth-cosmos-account"
   location = var.location
 
-  resource_group_name = azurerm_resource_group.shared_rg.name
-  offer_type          = var.cosmos_authorizer_db_params.offer_type
-  kind                = var.cosmos_authorizer_db_params.kind
+  resource_group_name  = azurerm_resource_group.shared_rg.name
+  offer_type           = var.cosmos_authorizer_db_params.offer_type
+  kind                 = var.cosmos_authorizer_db_params.kind
   mongo_server_version = var.cosmos_authorizer_db_params.server_version
 
   public_network_access_enabled    = var.cosmos_authorizer_db_params.public_network_access_enabled
@@ -79,7 +79,7 @@ resource "azurerm_cosmosdb_mongo_collection" "skeydomains" {
   throughput          = var.cosmos_mongo_db_authorizer_params.enable_autoscaling || var.cosmos_mongo_db_authorizer_params.enable_serverless ? null : var.cosmos_mongo_db_authorizer_params.throughput
 
   index {
-    keys = ["_id"]
+    keys   = ["_id"]
     unique = true
   }
   index {
