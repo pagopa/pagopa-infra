@@ -130,8 +130,8 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml", {
-    base-url   = "https://${local.nodo_hostname}/nodo/webservices/input"
-    urlenvpath = var.env_short
+    base-url                  = "https://${local.nodo_hostname}/nodo/webservices/input"
+    urlenvpath                = var.env_short
     is-nodo-decoupler-enabled = false
   })
 }

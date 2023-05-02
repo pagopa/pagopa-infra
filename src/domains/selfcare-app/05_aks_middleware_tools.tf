@@ -30,7 +30,7 @@ resource "helm_release" "cert_mounter" {
     "${
       templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
         NAMESPACE        = var.domain,
-        DOMAIN = var.domain
+        DOMAIN           = var.domain
         CERTIFICATE_NAME = replace(local.selfcare_hostname, ".", "-"),
         ENV_SHORT        = var.env_short,
       })
