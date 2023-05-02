@@ -7,6 +7,6 @@
 
   <include file="./db.changelog-master-3.15.0.xml"/>
 
-  <include file="./${version}/db.changelog-20230320153200_rimozione_univocit_soggetto_servizio_stazione.xml"  labels="${version}"/>
+  <include file="./${version}/db.changelog-20230502104500_aggiunta_flag_psp_cp.xml"  labels="${version}"/>
 
 </databaseChangeLog>
