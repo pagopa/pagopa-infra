@@ -2,17 +2,19 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.78
+  version: 0.0.116
 servers:
   - url: 'https://${host}/${basePath}'
     description: Inferred Url
 tags:
   - name: channels
     description: Api config channels operations
-  - name: stations
-    description: Api config stations operations
   - name: creditor-institutions
     description: Api Config creditor institution's operations
+  - name: institution
+    description: Institution operations
+  - name: stations
+    description: Api config stations operations
 paths:
   /channels:
     get:
@@ -206,6 +208,46 @@ paths:
       security:
         - bearerAuth:
             - global
+  /channels/create-wrapperChannel:
+    post:
+      tags:
+        - channels
+      summary: createWrapperChannelDetails
+      description: Create a WrapperChannel on Cosmodb
+      operationId: createWrapperChannelDetailsUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WrapperChannelDetailsDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WrapperEntitiesOperations'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /channels/csv:
     get:
       tags:
@@ -271,6 +313,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChannelDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /channels/get-wrapperEntities/{code}:
+    get:
+      tags:
+        - channels
+      summary: getWrapperEntities
+      description: Get wrapperEntities
+      operationId: getWrapperEntitiesUsingGET
+      parameters:
+        - name: code
+          in: path
+          description: Channlecode or StationCode
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WrapperEntitiesOperations'
         '400':
           description: Bad Request
           content:
@@ -569,6 +660,98 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '401':
           description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /channels/update-wrapperChannel:
+    put:
+      tags:
+        - channels
+      summary: updateWrapperChannelDetails
+      description: Put a new WrapperChannel entity inside a list of the WrapperEntities object on Cosmodb
+      operationId: updateWrapperChannelDetailsUsingPUT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelDetailsDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WrapperEntitiesOperations'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /channels/update-wrapperChannelByOpt:
+    put:
+      tags:
+        - channels
+      summary: updateWrapperChannelDetailsByOpt
+      description: Update a WrapperChannel on Cosmodb
+      operationId: updateWrapperChannelDetailsByOptUsingPUT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelDetailsDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WrapperEntitiesOperations'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: Conflict
           content:
             application/problem+json:
               schema:
@@ -995,6 +1178,148 @@ paths:
       security:
         - bearerAuth:
             - global
+  /creditor-institutions:
+    post:
+      tags:
+        - creditor-institutions
+      summary: createCreditorInstitution
+      description: Service to add a Creditor Institution to Api Config
+      operationId: createCreditorInstitutionUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditorInstitutionDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /creditor-institutions/{ecCode}:
+    get:
+      tags:
+        - creditor-institutions
+      summary: getCreditorInstitutionDetails
+      description: Service to retrieve specific creditor institution details
+      operationId: getCreditorInstitutionDetailsUsingGET
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+    put:
+      tags:
+        - creditor-institutions
+      summary: updateCreditorInstitutionDetails
+      description: Service to update specific creditor institution details
+      operationId: updateCreditorInstitutionDetailsUsingPUT
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCreditorInstitutionDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /stations:
     get:
       tags:
@@ -1113,6 +1438,46 @@ paths:
       security:
         - bearerAuth:
             - global
+  /stations/create-wrapperStation:
+    post:
+      tags:
+        - stations
+      summary: createWrapperStationDetails
+      description: Create WrapperStationDetails
+      operationId: createWrapperStationDetailsUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationDetailsDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WrapperEntitiesOperations'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /stations/details/{stationId}:
     get:
       tags:
@@ -1149,6 +1514,98 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '404':
           description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /stations/update-wrapperStation:
+    put:
+      tags:
+        - stations
+      summary: updateWrapperStationDetails
+      description: 'Update WrapperStationDetails '
+      operationId: updateWrapperStationDetailsUsingPUT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationDetailsDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WrapperEntitiesOperations'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /stations/update-wrapperStationByOpt:
+    put:
+      tags:
+        - stations
+      summary: updateWrapperStationDetailsByOpt
+      description: Update a WrapperStation on Cosmodb
+      operationId: updateWrapperStationDetailsByOptUsingPUT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationDetailsDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WrapperEntitiesOperations'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: Conflict
           content:
             application/problem+json:
               schema:
@@ -1259,145 +1716,8 @@ paths:
       security:
         - bearerAuth:
             - global
-  /creditor-institutions:
-    post:
-      tags:
-        - creditor-institutions
-      summary: createCreditorInstitution
-      description: Service to add a Creditor Institution to Api Config
-      operationId: createCreditorInstitutionUsingPOST
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreditorInstitutionDto'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  /creditor-institutions/{ecCode}:
-    get:
-      tags:
-        - creditor-institutions
-      summary: getCreditorInstitutionDetails
-      description: Service to retrieve specific creditor institution details
-      operationId: getCreditorInstitutionDetailsUsingGET
-      parameters:
-        - name: ecCode
-          in: path
-          description: Creditor institution code
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreditorInstitutionDetailsResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '404':
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
 components:
   schemas:
-    ApiKeysResource:
-      title: ApiKeysResource
-      required:
-        - displayName
-        - id
-        - primaryKey
-        - secondaryKey
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: Institution's name Api Key
-        id:
-          type: string
-          description: Institution's subscription id
-        primaryKey:
-          type: string
-          description: Institution's primary Api Key
-        secondaryKey:
-          type: string
-          description: Institution's secondary Api Key
-    AssistanceContactsResource:
-      title: AssistanceContactsResource
-      type: object
-      properties:
-        supportEmail:
-          type: string
-          description: Institution's support email contact
-        supportPhone:
-          type: string
-          description: Institution's support phone contact
-    AttributeResource:
-      title: AttributeResource
-      required:
-        - code
-        - description
-        - origin
-      type: object
-      properties:
-        code:
-          type: string
-          description: Institution's code
-        description:
-          type: string
-          description: Institution's name
-        origin:
-          type: string
-          description: Institution data origin
     BrokerPspDetailsDto:
       title: BrokerPspDetailsDto
       type: object
@@ -1470,6 +1790,9 @@ components:
         new_password:
           type: string
           description: channel's new password
+        note:
+          type: string
+          description: channel note description by operation team
         npm_service:
           type: string
           description: npm service
@@ -1556,6 +1879,13 @@ components:
         service:
           type: string
           description: channel's service
+        status:
+          type: string
+          description: channel's validation status
+          enum:
+            - APPROVED
+            - TO_CHECK
+            - TO_FIX
         target_host:
           type: string
           description: target host
@@ -1793,19 +2123,130 @@ components:
         page_info:
           description: info pageable
           $ref: '#/components/schemas/PageInfo'
-    CompanyInformationsResource:
-      title: CompanyInformationsResource
+    CreditorInstitutionAddressDto:
+      title: CreditorInstitutionAddressDto
+      required:
+        - city
+        - countryCode
+        - location
+        - taxDomicile
+        - zipCode
       type: object
       properties:
-        businessRegisterPlace:
+        city:
           type: string
-          description: Institution's business register place
-        rea:
+          description: Creditor Institution's city
+        countryCode:
           type: string
-          description: Institution's REA
-        shareCapital:
+          description: Creditor Institution's country code
+        location:
           type: string
-          description: Institution's share capital value
+          description: Creditor Institution's physical address
+        taxDomicile:
+          type: string
+          description: Creditor Institution's tax domicile
+        zipCode:
+          type: string
+          description: Creditor Institution's zip code
+    CreditorInstitutionAddressResource:
+      title: CreditorInstitutionAddressResource
+      required:
+        - city
+        - countryCode
+        - location
+        - taxDomicile
+        - zipCode
+      type: object
+      properties:
+        city:
+          type: string
+          description: Creditor Institution's city
+        countryCode:
+          type: string
+          description: Creditor Institution's country code
+        location:
+          type: string
+          description: Creditor Institution's physical address
+        taxDomicile:
+          type: string
+          description: Creditor Institution's tax domicile
+        zipCode:
+          type: string
+          description: Creditor Institution's zip code
+    CreditorInstitutionDetailsResource:
+      title: CreditorInstitutionDetailsResource
+      required:
+        - address
+        - businessName
+        - creditorInstitutionCode
+        - enabled
+        - pspPayment
+        - reportingFtp
+        - reportingZip
+      type: object
+      properties:
+        address:
+          description: Creditor Institution's address object
+          $ref: '#/components/schemas/CreditorInstitutionAddressResource'
+        businessName:
+          type: string
+          description: Creditor Institution's business name
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        enabled:
+          type: boolean
+          description: Creditor Institution activation state on ApiConfig
+          example: false
+        pspPayment:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+        reportingFtp:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+        reportingZip:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
+    CreditorInstitutionDto:
+      title: CreditorInstitutionDto
+      required:
+        - address
+        - businessName
+        - creditorInstitutionCode
+        - enabled
+        - pspPayment
+        - reportingFtp
+        - reportingZip
+      type: object
+      properties:
+        address:
+          description: Creditor Institution's address object
+          $ref: '#/components/schemas/CreditorInstitutionAddressDto'
+        businessName:
+          type: string
+          description: Creditor Institution's business name
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        enabled:
+          type: boolean
+          description: Creditor Institution activation state on ApiConfig
+          example: false
+        pspPayment:
+          type: boolean
+          description: Creditor Institution's is a psp Payment broker
+          example: false
+        reportingFtp:
+          type: boolean
+          description: Enables flow towards Creditor Institution in fstp mode
+          example: false
+        reportingZip:
+          type: boolean
+          description: Enables the zipping of the content that goes through fstp
+          example: false
     CreditorInstitutionStationDto:
       title: CreditorInstitutionStationDto
       required:
@@ -1844,154 +2285,9 @@ components:
         stationCode:
           type: string
           description: Station's unique identifier
-    DpoDataResource:
-      title: DpoDataResource
-      required:
-        - address
-        - email
-        - pec
-      type: object
-      properties:
-        address:
-          type: string
-          description: DPO's address
-        email:
-          type: string
-          description: DPO's email
-        pec:
-          type: string
-          description: DPO's PEC
     InputStream:
       title: InputStream
       type: object
-    InstitutionDetailResource:
-      title: InstitutionDetailResource
-      required:
-        - address
-        - attributes
-        - description
-        - digitalAddress
-        - externalId
-        - id
-        - institutionType
-        - origin
-        - originId
-        - taxCode
-        - zipCode
-      type: object
-      properties:
-        address:
-          type: string
-          description: Institution's physical address
-        attributes:
-          type: array
-          description: Institution's attributes
-          items:
-            $ref: '#/components/schemas/AttributeResource'
-        description:
-          type: string
-          description: Institution's name
-        digitalAddress:
-          type: string
-          description: Institution's digitalAddress
-        externalId:
-          type: string
-          description: Institution's unique external identifier
-        id:
-          type: string
-          description: Institution's unique internal identifier
-        institutionType:
-          type: string
-          description: Institution's type
-          enum:
-            - GSP
-            - PA
-            - PSP
-            - PT
-            - SCP
-        origin:
-          type: string
-          description: Institution data origin
-        originId:
-          type: string
-          description: Institution's details origin Id
-        taxCode:
-          type: string
-          description: Institution's taxCode
-        zipCode:
-          type: string
-          description: Institution's zipCode
-    InstitutionResource:
-      title: InstitutionResource
-      required:
-        - address
-        - externalId
-        - fiscalCode
-        - id
-        - mailAddress
-        - name
-        - origin
-        - originId
-        - status
-        - userProductRoles
-      type: object
-      properties:
-        address:
-          type: string
-          description: Institution's physical address
-        assistanceContacts:
-          description: Institution's assistance contacts
-          $ref: '#/components/schemas/AssistanceContactsResource'
-        companyInformations:
-          description: GPS, SCP, PT optional data
-          $ref: '#/components/schemas/CompanyInformationsResource'
-        dpoData:
-          description: Data Protection Officer (DPO) specific data
-          $ref: '#/components/schemas/DpoDataResource'
-        externalId:
-          type: string
-          description: Institution's unique external identifier
-        fiscalCode:
-          type: string
-          description: Institution's taxCode
-        id:
-          type: string
-          description: Institution's unique internal identifier
-        institutionType:
-          type: string
-          description: Institution's type
-          enum:
-            - GSP
-            - PA
-            - PSP
-            - PT
-            - SCP
-        mailAddress:
-          type: string
-          description: Institution's digitalAddress
-        name:
-          type: string
-          description: Institution's name
-        origin:
-          type: string
-          description: Institution data origin
-        originId:
-          type: string
-          description: Institution's details origin Id
-        pspData:
-          description: Payment Service Provider (PSP) specific data
-          $ref: '#/components/schemas/PspDataResource'
-        recipientCode:
-          type: string
-          description: Billing recipient code
-        status:
-          type: string
-          description: Institution onboarding status
-        userProductRoles:
-          type: array
-          description: Logged user's roles on product
-          items:
-            type: string
     InvalidParam:
       title: InvalidParam
       required:
@@ -2167,30 +2463,6 @@ components:
           type: string
           description: A URL to a page with more details regarding the problem.
       description: A "problem detail" as a way to carry machine-readable details of errors (https://datatracker.ietf.org/doc/html/rfc7807)
-    ProductsResource:
-      title: ProductsResource
-      required:
-        - description
-        - id
-        - title
-        - urlBO
-      type: object
-      properties:
-        description:
-          type: string
-          description: Product's description
-        id:
-          type: string
-          description: Product's unique identifier
-        title:
-          type: string
-          description: Product's title
-        urlBO:
-          type: string
-          description: URL that redirects to the back-office section, where is possible to manage the product
-        urlPublic:
-          type: string
-          description: URL that redirects to the public information webpage of the product
     PspChannelPaymentTypes:
       title: PspChannelPaymentTypes
       type: object
@@ -2241,32 +2513,6 @@ components:
           description: Channel list
           items:
             $ref: '#/components/schemas/PspChannelResource'
-    PspDataResource:
-      title: PspDataResource
-      required:
-        - abiCode
-        - businessRegisterNumber
-        - legalRegisterName
-        - legalRegisterNumber
-        - vatNumberGroup
-      type: object
-      properties:
-        abiCode:
-          type: string
-          description: PSP's ABI code
-        businessRegisterNumber:
-          type: string
-          description: PSP's Business Register number
-        legalRegisterName:
-          type: string
-          description: PSP's legal register name
-        legalRegisterNumber:
-          type: string
-          description: PSP's legal register number
-        vatNumberGroup:
-          type: boolean
-          description: PSP's Vat Number group
-          example: false
     Resource:
       title: Resource
       type: object
@@ -2511,6 +2757,9 @@ components:
         newPassword:
           type: string
           description: Station's new password
+        note:
+          type: string
+          description: station note description by operation team
         password:
           type: string
           description: Station's password
@@ -2590,6 +2839,13 @@ components:
         stationCode:
           type: string
           description: Station's unique identifier
+        status:
+          type: string
+          description: Station's status
+          enum:
+            - APPROVED
+            - TO_CHECK
+            - TO_FIX
         targetHost:
           type: string
           description: Station's target host
@@ -2676,8 +2932,8 @@ components:
           description: List of ec stations
           items:
             $ref: '#/components/schemas/StationResource'
-    CreditorInstitutionDto:
-      title: CreditorInstitutionDto
+    UpdateCreditorInstitutionDto:
+      title: UpdateCreditorInstitutionDto
       required:
         - address
         - businessName
@@ -2713,93 +2969,131 @@ components:
           type: boolean
           description: Enables the zipping of the content that goes through fstp
           example: false
-    CreditorInstitutionAddressDto:
-      title: CreditorInstitutionAddressDto
-      required:
-        - city
-        - countryCode
-        - location
-        - taxDomicile
-        - zipCode
+    WrapperChannelDetailsDto:
+      title: WrapperChannelDetailsDto
       type: object
       properties:
-        city:
+        broker_description:
           type: string
-          description: Creditor Institution's city
-        countryCode:
+          description: Broker description. Read only field
+        broker_psp_code:
           type: string
-          description: Creditor Institution's country code
-        location:
+          description: 'psp code '
+        channel_code:
           type: string
-          description: Creditor Institution's physical address
-        taxDomicile:
+          description: Channel code
+        note:
           type: string
-          description: Creditor Institution's tax domicile
-        zipCode:
+          description: channel note description by operation team
+        payment_types:
+          type: array
+          description: List of payment types
+          items:
+            type: string
+        redirect_ip:
           type: string
-          description: Creditor Institution's zip code
-    CreditorInstitutionAddressResource:
-      title: CreditorInstitutionAddressResource
-      required:
-        - city
-        - countryCode
-        - location
-        - taxDomicile
-        - zipCode
+          description: redirect ip
+        redirect_path:
+          type: string
+          description: redirect path
+        redirect_port:
+          type: integer
+          description: redirect port
+          format: int64
+        redirect_protocol:
+          type: string
+          description: redirect protocol
+          enum:
+            - HTTP
+            - HTTPS
+        redirect_query_string:
+          type: string
+          description: redirect query string
+        status:
+          type: string
+          description: channel's validation status
+          enum:
+            - APPROVED
+            - TO_CHECK
+            - TO_FIX
+        target_host:
+          type: string
+          description: target host
+        target_path:
+          type: string
+          description: target path's
+        target_port:
+          type: integer
+          description: target port
+          format: int64
+    WrapperEntitiesOperations:
+      title: WrapperEntitiesOperations
       type: object
       properties:
-        city:
+        brokerCode:
           type: string
-          description: Creditor Institution's city
-        countryCode:
+        createdAt:
           type: string
-          description: Creditor Institution's country code
-        location:
+          format: date-time
+        createdBy:
           type: string
-          description: Creditor Institution's physical address
-        taxDomicile:
+        id:
           type: string
-          description: Creditor Institution's tax domicile
-        zipCode:
+        modifiedAt:
           type: string
-          description: Creditor Institution's zip code
-    CreditorInstitutionDetailsResource:
-      title: CreditorInstitutionDetailsResource
-      required:
-        - address
-        - businessName
-        - creditorInstitutionCode
-        - enabled
-        - pspPayment
-        - reportingFtp
-        - reportingZip
+          format: date-time
+        modifiedBy:
+          type: string
+        modifiedByOpt:
+          type: string
+        note:
+          type: string
+        status:
+          type: string
+          enum:
+            - APPROVED
+            - TO_CHECK
+            - TO_FIX
+        type:
+          type: string
+          enum:
+            - CHANNEL
+            - STATION
+        wrapperEntityOperationsSortedList:
+          type: array
+          items:
+            $ref: '#/components/schemas/WrapperEntityOperationsOfobject'
+    WrapperEntityOperationsOfobject:
+      title: WrapperEntityOperationsOfobject
       type: object
       properties:
-        address:
-          description: Creditor Institution's address object
-          $ref: '#/components/schemas/CreditorInstitutionAddressResource'
-        businessName:
+        createdAt:
           type: string
-          description: Creditor Institution's business name
-        creditorInstitutionCode:
+          format: date-time
+        entity:
+          type: object
+        id:
           type: string
-          description: Creditor Institution's code(Fiscal Code)
-        enabled:
-          type: boolean
-          description: Creditor Institution activation state on ApiConfig
-          example: false
-        pspPayment:
-          type: boolean
-          description: Enables the zipping of the content that goes through fstp
-          example: false
-        reportingFtp:
-          type: boolean
-          description: Enables the zipping of the content that goes through fstp
-          example: false
-        reportingZip:
-          type: boolean
-          description: Enables the zipping of the content that goes through fstp
-          example: false
+        modifiedAt:
+          type: string
+          format: date-time
+        modifiedBy:
+          type: string
+        modifiedByOpt:
+          type: string
+        note:
+          type: string
+        status:
+          type: string
+          enum:
+            - APPROVED
+            - TO_CHECK
+            - TO_FIX
+        type:
+          type: string
+          enum:
+            - CHANNEL
+            - STATION
   securitySchemes:
     bearerAuth:
       type: http
