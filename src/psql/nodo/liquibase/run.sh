@@ -68,7 +68,8 @@ fi
 echo "
 classpath: ./changelog/cfg/
 liquibase.headless: true
-url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?sslmode=require&prepareThreshold=0&currentSchema=${NODO_CFG_SCHEMA}
+#url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?sslmode=require&prepareThreshold=0&currentSchema=${NODO_CFG_SCHEMA}
+url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?prepareThreshold=0&currentSchema=${NODO_CFG_SCHEMA}
 contexts: ${LQB_CONTEXTS}
 username: ${NODO_CFG_USERNAME}
 password: ${NODO_CFG_PASSWORD}
@@ -80,6 +81,6 @@ log-level: INFO
 " > cfg.properties
 
 #liquibase --defaultsFile=cfg.properties drop-all
-liquibase --defaultsFile=cfg.properties update --changelogFile="db.changelog-master-3.14.0.xml"
+liquibase --defaultsFile=cfg.properties update --changelogFile="db.changelog-master-3.18.0.xml"
 
 rm cfg.properties

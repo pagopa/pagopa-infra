@@ -61,7 +61,7 @@
                                                                                             c.target_host_nmp,
                                                                                             c.target_port_nmp,
                                                                                             c.target_path_nmp,
-                                                                                            cn.flag_psp_cp,
+                                                                                            cn.flag_psp_cp
                                                                                      FROM (canali c
                                                                                        JOIN canali_nodo cn ON ((cn.obj_id = c.fk_canali_nodo)));</createView>
   </changeSet>
