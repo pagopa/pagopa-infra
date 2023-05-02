@@ -54,14 +54,14 @@
                                                                                             c.use_new_fault_code,
                                                                                             cn.marca_bollo_digitale,
                                                                                             cn.flag_io,
-                                                                                            cn.flag_psp_cp,
                                                                                             cn.versione_primitive,
                                                                                             c.target_host,
                                                                                             c.target_port,
                                                                                             c.target_path,
                                                                                             c.target_host_nmp,
                                                                                             c.target_port_nmp,
-                                                                                            c.target_path_nmp
+                                                                                            c.target_path_nmp,
+                                                                                            cn.flag_psp_cp,
                                                                                      FROM (canali c
                                                                                        JOIN canali_nodo cn ON ((cn.obj_id = c.fk_canali_nodo)));</createView>
   </changeSet>
