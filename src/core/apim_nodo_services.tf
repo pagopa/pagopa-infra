@@ -81,6 +81,26 @@ resource "azapi_resource" "decoupler_activate_outbound" {
   }
 }
 
+resource "azapi_resource" "on_erro_soap_handler" {
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "onerror-soap-req"
+  parent_id = module.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "On error SOAP request"
+      format      = "rawxml"
+      value       = file("./api_product/nodo_pagamenti_api/on_error_soap_req.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
+
 
 ##############
 ## Products ##

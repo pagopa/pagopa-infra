@@ -29,16 +29,17 @@ module "buyerbanks_function_snet" {
 }
 
 module "buyerbanks_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.2.5"
 
   resource_group_name                      = azurerm_resource_group.buyerbanks_rg.name
   name                                     = format("%s-fn-buyerbanks", local.project)
   location                                 = var.location
-  health_check_path                        = "info"
+  health_check_path                        = "/api/v1/info"
   subnet_id                                = module.buyerbanks_function_snet.id
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   always_on                                = true
   os_type                                  = "linux"
+  linux_fx_version                         = "NODE|14"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_name = format("%s-plan-fnbuyerbanks", local.project)
@@ -49,10 +50,17 @@ module "buyerbanks_function" {
     maximum_elastic_worker_count = 0
   }
 
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+
   storage_account_name = replace(format("%s-st-fnbuyerbanks", local.project), "-", "")
 
   app_settings = {
-    linux_fx_version                  = "NODE|14-lts"
     FUNCTIONS_WORKER_RUNTIME          = "node"
     WEBSITE_NODE_DEFAULT_VERSION      = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT    = 4

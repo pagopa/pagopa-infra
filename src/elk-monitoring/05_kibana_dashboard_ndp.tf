@@ -1,9 +1,8 @@
 #################################### [NDP] ####################################
 locals {
-  dashboard_path         = var.env_short == "d" || var.env_short == "u" ? "${path.module}/ndp/${local.ndp_nodo_key}/dashboard/*.ndjson" : "${path.module}/ndp/${local.ndp_nodo_key}/dashboard/*.ndjson_trick_for_not_upload"
-  replica_dashboard_path = var.env_short == "d" || var.env_short == "u" ? "${path.module}/ndp/${local.ndp_nodoreplica_key}/dashboard/*.ndjson" : "${path.module}/ndp/${local.ndp_nodoreplica_key}/dashboard/*.ndjson_trick_for_not_upload"
-  query_path             = var.env_short == "d" || var.env_short == "u" ? "${path.module}/ndp/${local.ndp_nodo_key}/query/*.ndjson" : "${path.module}/ndp/${local.ndp_nodo_key}/query/*.ndjson_trick_for_not_upload"
-  replica_query_path     = var.env_short == "d" || var.env_short == "u" ? "${path.module}/ndp/${local.ndp_nodoreplica_key}/query/*.ndjson" : "${path.module}/ndp/${local.ndp_nodoreplica_key}/query/*.ndjson_trick_for_not_upload"
+  dashboard_path         = "${path.module}/ndp/${local.ndp_nodo_key}/dashboard/*.ndjson"
+  replica_dashboard_path = var.env_short != "p" ? "${path.module}/ndp/${local.ndp_nodoreplica_key}/dashboard/*.ndjson" : "/FAKE-NO-REPLICA"
+  # replica_query_path     = var.env_short != "p" ? "${path.module}/ndp/${local.ndp_nodoreplica_key}/query/*.ndjson" : "/FAKE-NO-REPLICA"
 }
 
 resource "null_resource" "ndp_nodo_upload_dashboard" {

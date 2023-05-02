@@ -27,15 +27,15 @@ ddos_protection_plan = {
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway               = ["10.1.128.0/24"]
-cidr_subnet_postgresql               = ["10.1.129.0/24"]
-cidr_subnet_azdoa                    = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis       = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
-cidr_subnet_checkout_be              = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
-cidr_subnet_reporting_common         = ["10.1.136.0/24"]
+cidr_subnet_appgateway         = ["10.1.128.0/24"]
+cidr_subnet_postgresql         = ["10.1.129.0/24"]
+cidr_subnet_azdoa              = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
+cidr_subnet_checkout_be        = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
+# cidr_subnet_reporting_common         = ["10.1.136.0/24"]
 cidr_subnet_gpd                      = ["10.1.138.0/24"]
 cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
@@ -114,8 +114,7 @@ app_gateway_deny_paths = [
   "/payment-manager/internal*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd-payments/.*",  # internal use no sub-keys SOAP
-  "/gpd-reporting/.*", # internal use no sub-keys
+  "/gpd-payments/.*", # internal use no sub-keys SOAP
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
@@ -129,13 +128,11 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   "/pagopa-node-forwarder/.*",
-  "/gps/donation-service/.*",              # internal use no sub-keys
-  "/shared/iuv-generator-service/.*",      # internal use no sub-keys
-  "/gps/spontaneous-payments-service/.*",  # internal use no sub-keys
-  "/gps/gpd-payments/.*",                  # internal use no sub-keys
-  "/gps/gpd-payment-receipts/.*",          # internal use no sub-keys
-  "/gps/gpd-reporting-orgs-enrollment/.*", # internal use
-  "shared/authorizer/.*"
+  "/gps/donation-service/.*",             # internal use no sub-keys
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
+  "/gps/gpd-payments/.*",                 # internal use no sub-keys
+  "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -499,23 +496,6 @@ gpd_plan_sku_size            = "P1v3"
 gpd_cron_job_enable          = true
 gpd_cron_schedule_valid_to   = "0 */30 * * * *"
 gpd_cron_schedule_expired_to = "0 */40 * * * *"
-
-reporting_function_autoscale_minimum = 1
-reporting_function_autoscale_maximum = 3
-reporting_function_autoscale_default = 1
-
-reporting_batch_function_always_on    = true
-reporting_service_function_always_on  = true
-reporting_analysis_function_always_on = true
-
-reporting_analysis_function_autoscale_minimum = 1
-reporting_analysis_function_autoscale_maximum = 3
-reporting_analysis_function_autoscale_default = 1
-
-# GPD Payments
-# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
-gpd_paa_id_intermediario = "15376371009"
-gpd_paa_stazione_int     = "15376371009_01"
 
 # canone unico
 canoneunico_plan_sku_tier = "PremiumV3"
