@@ -84,58 +84,39 @@ resource "azurerm_key_vault_secret" "poc_reporting_enrollment_subscription_key" 
 
 resource "azurerm_key_vault_secret" "authorizer_cosmos_connection_string" {
   name         = format("auth-%s-cosmos-connection-string", var.env_short)
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  value        = module.authorizer_cosmosdb_account.connection_strings[0]
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 resource "azurerm_key_vault_secret" "authorizer_cosmos_uri" {
   name         = format("auth-%s-cosmos-uri", var.env_short)
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  value        = module.authorizer_cosmosdb_account.endpoint
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 resource "azurerm_key_vault_secret" "authorizer_cosmos_key" {
   name         = format("auth-%s-cosmos-key", var.env_short)
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  value        = module.authorizer_cosmosdb_account.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
+# https://api.dev.platform.pagopa.it/shared/authorizer/v1
 resource "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
   name         = format("auth-%s-refresh-configuration-url", var.env_short)
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  value        = var.env == "prod" ? "https://api.platform.pagopa.it/shared/authorizer/v1" : "https://api.${var.env}.platform.pagopa.it/shared/authorizer/v1"
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 resource "azurerm_key_vault_secret" "authorizer_integrationtest_external_subkey" {
