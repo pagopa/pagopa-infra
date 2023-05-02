@@ -16,6 +16,7 @@ module "tls_checker" {
   application_insights_action_group_slack_id = data.azurerm_monitor_action_group.slack.id
   application_insights_action_group_email_id = data.azurerm_monitor_action_group.email.id
 }
+
 module "letsencrypt_dev_elk" {
   source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
 
@@ -23,4 +24,25 @@ module "letsencrypt_dev_elk" {
   env               = var.env_short
   key_vault_name    = "${local.product}-${var.domain}-kv"
   subscription_name = var.subscription_name
+}
+
+resource "helm_release" "cert_mounter" {
+  name         = "cert-mounter-blueprint"
+  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
+  chart        = "cert-mounter-blueprint"
+  version      = "1.0.4"
+  namespace    = local.elk_namespace
+  timeout      = 120
+  force_update = true
+
+  values = [
+    "${
+      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
+        NAMESPACE        = local.elk_namespace,
+        DOMAIN = var.domain
+        CERTIFICATE_NAME = replace(local.kibana_hostname, ".", "-"),
+        ENV_SHORT        = var.env_short,
+      })
+    }"
+  ]
 }
