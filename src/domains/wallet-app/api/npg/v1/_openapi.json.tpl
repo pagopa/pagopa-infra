@@ -57,7 +57,7 @@
           },
           "responses": {
             "204": {
-              "description": "Payment reqeust sent successfully"
+              "description": "Notification handled successfully"
             },
             "400": {
               "description": "Invalid input",
