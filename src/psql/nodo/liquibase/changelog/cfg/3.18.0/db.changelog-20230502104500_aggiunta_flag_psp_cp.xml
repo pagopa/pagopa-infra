@@ -19,7 +19,7 @@
         </addColumn>
     </changeSet>
 
-  <changeSet author="liquibase" id="20230502104500">
+  <changeSet author="liquibase" id="20230502104600">
     <createView replaceIfExists="true" fullDefinition="false" viewName="canali_view">SELECT c.obj_id,
                                                                                             c.id_canale,
                                                                                             c.enabled,
