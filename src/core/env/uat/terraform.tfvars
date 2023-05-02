@@ -108,8 +108,6 @@ app_gateway_deny_paths = [
   "/gps/donation-service/.*",             # internal use no sub-keys
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
-  "/gps/gpd-payments/.*",                 # internal use no sub-keys
-  "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
@@ -119,6 +117,7 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   #"/pagopa-node-forwarder/.*"
+  "/shared/authorizer/.*", # internal use no sub-keys
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [

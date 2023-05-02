@@ -75,7 +75,6 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
   })
 
   xml_content = templatefile("./api/payments-service/v1/rest/external/_base_policy.xml", {
-    hostname                     = local.gps_hostname
-    cache-generator-function-key = "temp"
+    hostname = local.gps_hostname
   })
 }

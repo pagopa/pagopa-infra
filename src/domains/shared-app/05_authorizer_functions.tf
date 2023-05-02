@@ -20,23 +20,21 @@ module "authorizer_functions_snet" {
   }
 }
 
-resource "azurerm_resource_group" "shared_fn_rg" {
-  name     = "${local.project}-fn-rg"
-  location = var.location
-  tags     = var.tags
+data "azurerm_resource_group" "shared_rg" {
+  name = "${local.project}-rg"
 }
 
 module "authorizer_function_app" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v4.3.2"
 
-  resource_group_name = azurerm_resource_group.shared_fn_rg.name
+  resource_group_name = data.azurerm_resource_group.shared_rg.name
   name                = "${local.project}-authorizer-fn"
   location            = var.location
   health_check_path   = "info"
   subnet_id           = module.authorizer_functions_snet.id
   runtime_version     = "~4"
   os_type             = "linux"
-  linux_fx_version    = "DOCKER|${data.azurerm_container_registry.acr.login_server}/pagopaauthorizerfunctions:latest"
+  linux_fx_version    = "DOCKER|${data.azurerm_container_registry.acr.login_server}/pagopaplatformauthorizer:latest"
 
   system_identity_enabled = true
 
@@ -51,17 +49,21 @@ module "authorizer_function_app" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_name = replace(format("%s-auth-sa", local.project), "-", "")
+  storage_account_name = replace(format("%s-auth-st", local.project), "-", "")
 
   app_settings = {
-    linux_fx_version                    = "JAVA|17"
+    linux_fx_version                    = "JAVA|11"
     FUNCTIONS_WORKER_RUNTIME            = "java"
     FUNCTIONS_WORKER_PROCESS_COUNT      = 4
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
-    # DOCKER_REGISTRY_SERVER_URL          = data.azurerm_container_registry.acr.login_server
-    # DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.acr.admin_username
-    # DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.acr.admin_password
+
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+
+    COSMOS_CONN_STRING         = data.azurerm_key_vault_secret.authorizer_cosmos_connection_string.value
+    REFRESH_CONFIGURATION_PATH = data.azurerm_key_vault_secret.authorizer_refresh_configuration_url.value
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
@@ -75,7 +77,7 @@ resource "azurerm_monitor_autoscale_setting" "authorizer_function" {
   count = var.env_short != "d" ? 1 : 0
 
   name                = "${module.authorizer_function_app.name}-autoscale"
-  resource_group_name = azurerm_resource_group.shared_fn_rg.name
+  resource_group_name = data.azurerm_resource_group.shared_rg.name
   location            = var.location
   target_resource_id  = module.authorizer_function_app.app_service_plan_id
 
@@ -137,11 +139,4 @@ resource "azurerm_monitor_autoscale_setting" "authorizer_function" {
 data "azurerm_container_registry" "acr" {
   name                = local.acr_name
   resource_group_name = local.acr_resource_group_name
-}
-
-resource "azurerm_role_assignment" "authorizer_functions_to_acr" {
-  depends_on           = [module.authorizer_function_app]
-  scope                = data.azurerm_container_registry.acr.id
-  role_definition_name = "AcrPull"
-  principal_id         = module.authorizer_function_app.system_identity_principal
 }
