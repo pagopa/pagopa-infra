@@ -66,7 +66,6 @@ module "apim_api_gps_api_v1" {
   })
 
   xml_content = templatefile("./api/spontaneous-payments-service/v1/_base_policy.xml", {
-    hostname                 = local.gps_hostname
-    cache_generator_hostname = local.cache_generator_hostname
+    hostname = local.gps_hostname
   })
 }
