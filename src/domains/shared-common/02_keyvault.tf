@@ -59,6 +59,7 @@ resource "azurerm_key_vault_secret" "iuv_generator_cosmos_connection_string" {
 }
 
 resource "azurerm_key_vault_secret" "storage_connection_string" {
+  count        = var.env_short == "d" ? 1 : 0
   name         = format("poc-reporting-enrollment-%s-sa-connection-string", var.env_short)
   value        = module.poc_reporting_enrollment_sa[0].primary_connection_string
   content_type = "text/plain"

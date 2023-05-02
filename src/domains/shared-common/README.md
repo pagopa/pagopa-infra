@@ -13,7 +13,6 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_authorizer_cosmosdb_account"></a> [authorizer\_cosmosdb\_account](#module\_authorizer\_cosmosdb\_account) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.1.18 |
-| <a name="module_authorizer_cosmosdb_container"></a> [authorizer\_cosmosdb\_container](#module\_authorizer\_cosmosdb\_container) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v3.2.5 |
 | <a name="module_authorizer_cosmosdb_database"></a> [authorizer\_cosmosdb\_database](#module\_authorizer\_cosmosdb\_database) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database | v2.1.15 |
 | <a name="module_authorizer_cosmosdb_snet"></a> [authorizer\_cosmosdb\_snet](#module\_authorizer\_cosmosdb\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v3.5.0 |
@@ -27,6 +26,7 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_cosmosdb_sql_container.skeydomains_container](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/cosmosdb_sql_container) | resource |
 | [azurerm_cosmosdb_table.iuvgenerator_cosmosdb_tables](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/cosmosdb_table) | resource |
 | [azurerm_key_vault_access_policy.ad_admin_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_access_policy) | resource |
