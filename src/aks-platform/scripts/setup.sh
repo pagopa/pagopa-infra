@@ -73,6 +73,8 @@ az aks get-credentials -g "${aks_resource_group_name}" -n "${aks_name}" --subscr
 az aks get-credentials -g "${aks_resource_group_name}" -n "${aks_name}" --subscription "${subscription}" --overwrite-existing
 
 # with AAD auth enabled we need to authenticate the machine on the first setup
+kubelogin convert-kubeconfig -l azurecli
+kubelogin convert-kubeconfig -l azurecli --kubeconfig ${HOME_DIR}/.kube/config-${aks_name}
 echo "Follow Microsoft sign in steps. kubectl get pods command will fail but it's the expected behavior"
 kubectl --kubeconfig="${HOME_DIR}/.kube/config-${aks_name}" get pods
 kubectl config use-context "${aks_name}"

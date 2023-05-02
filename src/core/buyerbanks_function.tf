@@ -57,7 +57,7 @@ module "buyerbanks_function" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
-  
+
   storage_account_name = replace(format("%s-st-fnbuyerbanks", local.project), "-", "")
 
   app_settings = {
