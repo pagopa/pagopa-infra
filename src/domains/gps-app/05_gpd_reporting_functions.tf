@@ -1,19 +1,29 @@
-# Subnet to host reporting_batch function
-module "reporting_function_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
-  name                                           = format("%s-reporting-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_reporting_common
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+data "azurerm_container_registry" "acr" {
+  name                = local.acr_name
+  resource_group_name = local.acr_resource_group_name
+}
 
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
+resource "azurerm_resource_group" "gpd_rg" {
+  name     = format("%s-gpd-rg", local.project)
+  location = var.location
+
+  tags = var.tags
+}
+
+resource "azurerm_app_service_plan" "gpd_reporting_service_plan" {
+  name                = format("%s-plan-gpd-reporting", local.project)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+
+  kind     = var.reporting_functions_app_sku.kind
+  reserved = var.reporting_functions_app_sku.kind == "Linux" ? true : false
+
+  sku {
+    tier = var.reporting_functions_app_sku.sku_tier
+    size = var.reporting_functions_app_sku.sku_size
   }
+
+  tags = var.tags
 }
 
 locals {
@@ -28,14 +38,14 @@ locals {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
-    FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
-    FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
-    ORGANIZATIONS_QUEUE       = azurerm_storage_queue.reporting_organizations_queue.name
-    ORGANIZATIONS_TABLE       = azurerm_storage_table.reporting_organizations_table.name
-    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST             = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
-    NODO_HOST            = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, azurerm_api_management_api.apim_nodo_per_pa_api_v1.path, azurerm_api_management_api.apim_nodo_per_pa_api_v1.version)
+    FLOW_SA_CONNECTION_STRING = data.azurerm_key_vault_secret.flows_sa_connection_string.value
+    ORGANIZATIONS_TABLE       = replace("${local.product}flowsaorgstable", "-", "")
+    FLOWS_TABLE               = replace("${local.product}flowsatable", "-", "")
+    ORGANIZATIONS_QUEUE       = replace("${local.product}flowsaqueueorg", "-", "")
+    FLOWS_QUEUE               = replace("${local.product}flowsaqueueflows", "-", "")
+    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.apim_dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
+    # GPD_HOST             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    NODO_HOST            = format("https://api.%s.%s/nodo/nodo-per-pa/v1", var.apim_dns_zone_prefix, var.external_domain)
     PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
     PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
     PAA_PASSWORD         = data.azurerm_key_vault_secret.gpd_paa_pwd.value
@@ -48,9 +58,9 @@ locals {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
 
   function_service_app_settings = {
@@ -64,21 +74,23 @@ locals {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
-    FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
-    FLOWS_QUEUE               = azurerm_storage_queue.reporting_flows_queue.name
-    OPTIONS_QUEUE             = azurerm_storage_queue.reporting_options_queue.name
-    FLOWS_XML_BLOB            = azurerm_storage_container.reporting_flows_container.name
-    PAA_ID_INTERMEDIARIO      = var.gpd_paa_id_intermediario
-    PAA_STAZIONE_INT          = var.gpd_paa_stazione_int
-    PAA_PASSWORD              = data.azurerm_key_vault_secret.gpd_paa_pwd.value
-    MAX_RETRY_QUEUING         = var.gpd_max_retry_queuing
-    QUEUE_RETENTION_SEC       = var.gpd_queue_retention_sec
-    QUEUE_DELAY_SEC           = var.gpd_queue_delay_sec
+    FLOW_SA_CONNECTION_STRING = data.azurerm_key_vault_secret.flows_sa_connection_string.value
+    FLOWS_TABLE               = replace("${local.product}flowsatable", "-", "")
+    FLOWS_QUEUE               = replace("${local.product}flowsaqueueflows", "-", "")
+    OPTIONS_QUEUE             = replace("${local.product}flowsaqueueopt", "-", "")
+    FLOWS_XML_BLOB            = replace("${local.product}flowsaflowscontainer", "-", "")
 
-    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST      = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
-    NODO_HOST     = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, azurerm_api_management_api.apim_nodo_per_pa_api_v1.path, azurerm_api_management_api.apim_nodo_per_pa_api_v1.version)
+    PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
+    PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
+    PAA_PASSWORD         = data.azurerm_key_vault_secret.gpd_paa_pwd.value
+    MAX_RETRY_QUEUING    = var.gpd_max_retry_queuing
+    QUEUE_RETENTION_SEC  = var.gpd_queue_retention_sec
+    QUEUE_DELAY_SEC      = var.gpd_queue_delay_sec
+
+    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.apim_dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
+    GPD_HOST  = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    NODO_HOST = format("https://api.%s.%s/nodo/nodo-per-pa/v1", var.apim_dns_zone_prefix, var.external_domain)
+
     MAX_ATTEMPTS  = 3
     DELAY_ATTEMPS = 5 // 5 seconds
 
@@ -86,9 +98,9 @@ locals {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
 
   function_analysis_app_settings = {
@@ -102,20 +114,20 @@ locals {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    FLOW_SA_CONNECTION_STRING = module.flows.primary_connection_string
-    FLOWS_TABLE               = azurerm_storage_table.reporting_flows_table.name
-    FLOWS_CONTAINER           = azurerm_storage_container.reporting_flows_container.name
+    FLOW_SA_CONNECTION_STRING = data.azurerm_key_vault_secret.flows_sa_connection_string.value
+    FLOWS_TABLE               = replace("${local.product}flowsatable", "-", "")
+    FLOWS_CONTAINER           = replace("${local.product}flowsaflowscontainer", "-", "")
 
-    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
-    GPD_HOST = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.apim_dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
+    # GPD_HOST = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
 }
 
@@ -124,18 +136,18 @@ module "reporting_batch_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-batch", local.project)
+  name                                     = replace("${local.project}fn-gpd-batch", "gps", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet.id
   runtime_version                          = "~3"
   os_type                                  = "linux"
   always_on                                = var.reporting_batch_function_always_on
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings                             = local.function_batch_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
   tags = var.tags
@@ -159,38 +171,38 @@ module "reporting_batch_function_slot_staging" {
   name                                     = "staging"
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   location                                 = var.location
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.reporting_batch_function_always_on
   health_check_path                        = "info"
 
   # App settings
   app_settings = local.function_batch_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
   tags = var.tags
 }
 
-
 ## Function reporting_service
 module "reporting_service_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-service", local.project)
+  name                                     = format("%s-fn-gpd-service", local.product_location)
+  storage_account_name                     = replace("${local.product_location}gpdservicest", "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet.id
   runtime_version                          = "~3"
   os_type                                  = "linux"
   always_on                                = var.reporting_service_function_always_on
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings                             = local.function_service_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
   tags = var.tags
@@ -199,7 +211,6 @@ module "reporting_service_function" {
     azurerm_app_service_plan.gpd_reporting_service_plan
   ]
 }
-
 
 module "reporting_service_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
@@ -215,38 +226,38 @@ module "reporting_service_function_slot_staging" {
   name                                     = "staging"
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   location                                 = var.location
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.reporting_service_function_always_on
   health_check_path                        = "info"
 
   # App settings
   app_settings = local.function_service_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
   tags = var.tags
 }
 
-
 ## Function reporting_analysis
 module "reporting_analysis_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-analysis", local.project)
+  name                                     = format("%s-fn-gpd-analysis", local.product_location)
+  storage_account_name                     = replace("${local.product_location}gpdanalysisst", "-", "")
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.reporting_function_snet.id
   runtime_version                          = "~3"
   os_type                                  = "linux"
   always_on                                = var.reporting_analysis_function_always_on
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings                             = local.function_analysis_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
   tags = var.tags
@@ -270,21 +281,20 @@ module "reporting_analysis_function_slot_staging" {
   name                                     = "staging"
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   location                                 = var.location
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   always_on         = var.reporting_analysis_function_always_on
   health_check_path = "info"
 
   # App settings
-  app_settings = local.function_service_app_settings
+  app_settings = local.function_analysis_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
   tags = var.tags
 }
-
 
 # autoscaling - reporting_batch & reporting_service & reporting_analysis ( shared service plan )
 resource "azurerm_monitor_autoscale_setting" "reporting_function" {
@@ -302,100 +312,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
       maximum = var.reporting_function_autoscale_maximum
     }
 
-    # disable rules for batch and service
-
-    # # reporting_batch on queue size reporting_organizations_queue
-    # rule {
-    #   metric_trigger {
-    #     metric_name = "ApproximateMessageCount"
-
-    #     metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_organizations_queue.name}"])
-    #     time_grain         = "PT1M"
-    #     statistic          = "Average"
-    #     time_window        = "PT1M"
-    #     time_aggregation   = "Average"
-    #     operator           = "GreaterThanOrEqual"
-    #     threshold          = 10
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT1M"
-    #   }
-
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name        = "ApproximateMessageCount"
-    #     metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_organizations_queue.name}"])
-    #     time_grain         = "PT1M"
-    #     statistic          = "Average"
-    #     time_window        = "PT1M"
-    #     time_aggregation   = "Average"
-    #     operator           = "LessThan"
-    #     threshold          = 10
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT1M"
-    #   }
-
-
-    # }
-
-    # # reporting_service on queue size reporting_flows_queue
-    # rule {
-    #   metric_trigger {
-    #     metric_name = "ApproximateMessageCount"
-
-    #     metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_flows_queue.name}"])
-    #     time_grain         = "PT1M"
-    #     statistic          = "Average"
-    #     time_window        = "PT1M"
-    #     time_aggregation   = "Average"
-    #     operator           = "GreaterThanOrEqual"
-    #     threshold          = 10
-    #   }
-
-    #   scale_action {
-    #     direction = "Increase"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT1M"
-    #   }
-
-    # }
-
-    # rule {
-    #   metric_trigger {
-    #     metric_name        = "ApproximateMessageCount"
-    #     metric_resource_id = join("/", ["${module.flows.id}", "services/queue/queues", "${azurerm_storage_queue.reporting_flows_queue.name}"])
-    #     time_grain         = "PT1M"
-    #     statistic          = "Average"
-    #     time_window        = "PT1M"
-    #     time_aggregation   = "Average"
-    #     operator           = "LessThan"
-    #     threshold          = 10
-    #   }
-
-    #   scale_action {
-    #     direction = "Decrease"
-    #     type      = "ChangeCount"
-    #     value     = "1"
-    #     cooldown  = "PT1M"
-    #   }
-
-
-    # }
-
     # reporting_analysis on http requests
-
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -443,65 +360,6 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
   }
 }
 
-
-module "flows" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
-
-  name                       = replace(format("%s-flow-sa", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  account_replication_type   = "LRS"
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = var.gpd_enable_versioning
-  resource_group_name        = azurerm_resource_group.gpd_rg.name
-  location                   = var.location
-  advanced_threat_protection = var.gpd_reporting_advanced_threat_protection
-  allow_blob_public_access   = false
-
-  blob_properties_delete_retention_policy_days = var.gpd_reporting_delete_retention_days
-
-  tags = var.tags
-}
-
-## table#1 storage
-resource "azurerm_storage_table" "reporting_organizations_table" {
-  name                 = format("%sorgstable", module.flows.name)
-  storage_account_name = module.flows.name
-}
-
-## table#2 storage
-resource "azurerm_storage_table" "reporting_flows_table" {
-  name                 = format("%stable", module.flows.name)
-  storage_account_name = module.flows.name
-}
-
-
-## queue#1 storage flows
-resource "azurerm_storage_queue" "reporting_flows_queue" {
-  name                 = format("%squeueflows", module.flows.name)
-  storage_account_name = module.flows.name
-}
-
-## queue#2 storage organization
-resource "azurerm_storage_queue" "reporting_organizations_queue" {
-  name                 = format("%squeueorg", module.flows.name)
-  storage_account_name = module.flows.name
-}
-
-## queue#3 storage flows
-resource "azurerm_storage_queue" "reporting_options_queue" {
-  name                 = format("%squeueopt", module.flows.name)
-  storage_account_name = module.flows.name
-}
-
-## blob container flows
-resource "azurerm_storage_container" "reporting_flows_container" {
-  name                  = format("%sflowscontainer", module.flows.name)
-  storage_account_name  = module.flows.name
-  container_access_type = "private"
-}
-
 # monitoring alert messages
 resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_elenco_flussi_rendicontazione_error" {
   count = var.env_short == "p" ? 1 : 0
@@ -511,11 +369,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_el
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[GPD Reporting] Problem with nodoChiediElencoFlussiRendicontazione"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "An error occurred while call nodoChiediElencoFlussiRendicontazione"
   enabled        = true
   query = format(<<-QUERY
@@ -543,11 +401,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_nodo_chiedi_fl
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[GPD Reporting] Problem with nodoChiediFlussoRendicontazione"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "An error occurred while call nodoChiediFlussoRendicontazione"
   enabled        = true
   query = format(<<-QUERY
@@ -575,11 +433,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reporting_update_option_
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[GPD Reporting] Problem with Payment Option"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "An error occurred while updating the Payment Option To Reported on GPD"
   enabled        = true
   query = format(<<-QUERY
