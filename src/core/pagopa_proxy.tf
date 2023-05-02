@@ -1,6 +1,6 @@
 locals {
   pagopa_proxy_config = {
-    WEBSITE_NODE_DEFAULT_VERSION = "14.16.0"
+    WEBSITE_NODE_DEFAULT_VERSION = "18.16.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     WEBSITE_VNET_ROUTE_ALL       = "1"
     WEBSITE_DNS_SERVER           = "168.63.129.16"
@@ -126,7 +126,7 @@ module "pagopa_proxy_app_service" {
   plan_sku_tier = var.pagopa_proxy_tier
   plan_sku_size = var.pagopa_proxy_size
 
-  linux_fx_version = "NODE|14-lts"
+  linux_fx_version = "NODE|18-lts"
 
   # App service plan
   name                = format("%s-app-pagopa-proxy", local.project)
@@ -161,7 +161,7 @@ module "pagopa_proxy_app_service_slot_staging" {
   location            = azurerm_resource_group.pagopa_proxy_rg.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   health_check_path = "/ping"
 
   # App settings
