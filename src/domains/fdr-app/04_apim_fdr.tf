@@ -67,6 +67,6 @@ module "apim_api_fdr_api_v1" {
   })
 
   xml_content = templatefile("./api/fdr-service/v1/_base_policy.xml.tpl", {
-    hostname = local.fdr_hostname
+    hostname = local.hostname
   })
 }
