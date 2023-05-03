@@ -292,6 +292,12 @@ data "azurerm_key_vault_secret" "alert_error_notification_slack" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "monitor_pm_opsgenie_webhook_key" {
+  name         = "pm-opsgenie-webhook-token"
+  key_vault_id = module.key_vault.id
+}
+
+
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "apiconfig_cosmos_uri" {
   name         = "apiconfig-cosmos-uri"

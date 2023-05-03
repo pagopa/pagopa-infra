@@ -71,6 +71,20 @@ resource "azurerm_monitor_action_group" "mo_email" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_action_group" "pm_opsgenie" {
+  name                = "PaymentManagerOpsgenie"
+  resource_group_name = azurerm_resource_group.monitor_rg.name
+  short_name          = "PMOpsgenie"
+
+  webhook_receiver {
+    name                    = "PMOpsgenieWebhook"
+    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key.value}"
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
+}
+
 #
 # Alerts
 #
