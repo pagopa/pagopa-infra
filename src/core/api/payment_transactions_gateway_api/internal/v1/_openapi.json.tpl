@@ -1685,7 +1685,8 @@
               "UNKNOWN",
               "DINERS",
               "MAESTRO",
-              "AMEX"
+              "AMEX",
+              "PAYPAL"
             ]
           },
           "threeDsData": {
