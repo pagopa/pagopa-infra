@@ -57,19 +57,14 @@
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
 
-        <!-- <choose>
-            <when condition="@(${is-nodo-decoupler-enabled})">
+        <choose>
+            <when condition="@(${is-fdr-nodo-pagopa-enable})">
             </when>
             <otherwise>
                 <set-backend-service base-url="${base-url}" />
             </otherwise>
         </choose>   
-        
-        <choose>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
-            </when>
-        </choose> -->
+
     </inbound>
     <backend>
         <base />
