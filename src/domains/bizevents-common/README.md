@@ -20,6 +20,7 @@
 | <a name="module_bizevents_datastore_fn_sa"></a> [bizevents\_datastore\_fn\_sa](#module\_bizevents\_datastore\_fn\_sa) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.0.28 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
 | <a name="module_negative_bizevents_datastore_cosmosdb_account"></a> [negative\_bizevents\_datastore\_cosmosdb\_account](#module\_negative\_bizevents\_datastore\_cosmosdb\_account) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.1.18 |
+| <a name="module_negative_bizevents_datastore_cosmosdb_containers"></a> [negative\_bizevents\_datastore\_cosmosdb\_containers](#module\_negative\_bizevents\_datastore\_cosmosdb\_containers) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v3.2.5 |
 | <a name="module_negative_bizevents_datastore_cosmosdb_database"></a> [negative\_bizevents\_datastore\_cosmosdb\_database](#module\_negative\_bizevents\_datastore\_cosmosdb\_database) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database | v2.1.15 |
 
 ## Resources
@@ -34,8 +35,12 @@
 | [azurerm_key_vault_secret.biz_events_datastore_cosmos_pkey](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmos_biz_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmos_biz_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.cosmos_negative_biz_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.ehub_awakable_negative_biz_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.ehub_biz_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.ehub_biz_enrich_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.ehub_final_negative_biz_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.ehub_negative_biz_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.ehub_tx_biz_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.payment_manager_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
@@ -51,6 +56,9 @@
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
+| [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-tx](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
+| [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
+| [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-tx](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/monitor_action_group) | data source |
@@ -71,7 +79,6 @@
 | <a name="input_bizevents_datastore_fn_sa_delete_retention_days"></a> [bizevents\_datastore\_fn\_sa\_delete\_retention\_days](#input\_bizevents\_datastore\_fn\_sa\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_bizevents_datastore_fn_sa_enable_versioning"></a> [bizevents\_datastore\_fn\_sa\_enable\_versioning](#input\_bizevents\_datastore\_fn\_sa\_enable\_versioning) | Enable sa versioning | `bool` | `false` | no |
 | <a name="input_cidr_subnet_bizevents_datastore_cosmosdb"></a> [cidr\_subnet\_bizevents\_datastore\_cosmosdb](#input\_cidr\_subnet\_bizevents\_datastore\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
-| <a name="input_cidr_subnet_negative_bizevents_datastore_cosmosdb"></a> [cidr\_subnet\_negative\_bizevents\_datastore\_cosmosdb](#input\_cidr\_subnet\_negative\_bizevents\_datastore\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
