@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://${hostname}/pagopa-wallet-notification-service" />
+      <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
     </inbound>
     <outbound>
       <base />
