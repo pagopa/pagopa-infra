@@ -1,4 +1,5 @@
 module "loadtest_agent_snet" {
+  count                = var.env_short != "p" ? 1 : 0
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                 = format("%s-loadtest-agent-snet", local.project)
   address_prefixes     = var.cidr_subnet_loadtest_agent
@@ -19,7 +20,7 @@ module "azdoa_loadtest_li" {
   count               = var.env_short != "p" ? 1 : 0
   name                = format("%s-azdoa-vmss-loadtest-li", local.project)
   resource_group_name = local.vnet_resource_group_name
-  subnet_id           = module.loadtest_agent_snet.id
+  subnet_id           = module.loadtest_agent_snet[0].id
   subscription        = data.azurerm_subscription.current.display_name
   vm_sku              = "Standard_D8ds_v5"
 
