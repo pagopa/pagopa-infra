@@ -79,7 +79,7 @@ resource "azurerm_monitor_action_group" "pm_opsgenie" {
 
   webhook_receiver {
     name                    = "PMOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key.value}"
+    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 
