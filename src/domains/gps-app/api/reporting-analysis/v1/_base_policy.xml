@@ -13,6 +13,15 @@
 <policies>
     <inbound>
         <base />
+        <!-- Calling Authorizer's fragment -->
+        <set-variable name="application_domain" value="gpd" />
+        <choose>
+            <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
+            <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationId"))">
+              <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationId"])" />
+              <include-fragment fragment-id="authorizer" />
+            </when>
+        </choose>
     </inbound>
     <backend>
         <base />
