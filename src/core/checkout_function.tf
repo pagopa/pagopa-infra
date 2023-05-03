@@ -40,7 +40,7 @@ module "checkout_function" {
   subnet_id           = module.checkout_function_snet[0].id
   runtime_version     = "~4"
   os_type             = "linux"
-  linux_fx_version    = "NODE|14"
+  linux_fx_version    = "NODE|18"
 
   always_on                                = var.checkout_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -57,7 +57,7 @@ module "checkout_function" {
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
-    WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
+    WEBSITE_NODE_DEFAULT_VERSION   = "18.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
     NODE_ENV                       = "production"
 

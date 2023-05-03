@@ -59,6 +59,7 @@ resource "azurerm_key_vault_secret" "iuv_generator_cosmos_connection_string" {
 }
 
 resource "azurerm_key_vault_secret" "storage_connection_string" {
+  count        = var.env_short == "d" ? 1 : 0
   name         = format("poc-reporting-enrollment-%s-sa-connection-string", var.env_short)
   value        = module.poc_reporting_enrollment_sa[0].primary_connection_string
   content_type = "text/plain"
@@ -80,6 +81,86 @@ resource "azurerm_key_vault_secret" "poc_reporting_enrollment_subscription_key" 
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "authorizer_cosmos_connection_string" {
+  name         = format("auth-%s-cosmos-connection-string", var.env_short)
+  value        = module.authorizer_cosmosdb_account.connection_strings[0]
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+}
+
+resource "azurerm_key_vault_secret" "authorizer_cosmos_uri" {
+  name         = format("auth-%s-cosmos-uri", var.env_short)
+  value        = module.authorizer_cosmosdb_account.endpoint
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+}
+
+resource "azurerm_key_vault_secret" "authorizer_cosmos_key" {
+  name         = format("auth-%s-cosmos-key", var.env_short)
+  value        = module.authorizer_cosmosdb_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+}
+
+# https://api.dev.platform.pagopa.it/shared/authorizer/v1
+resource "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
+  name         = format("auth-%s-refresh-configuration-url", var.env_short)
+  value        = var.env == "prod" ? "https://api.platform.pagopa.it/shared/authorizer/v1" : "https://api.${var.env}.platform.pagopa.it/shared/authorizer/v1"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+}
+
+resource "azurerm_key_vault_secret" "authorizer_integrationtest_external_subkey" {
+  name         = format("auth-%s-integrationtest-external-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "authorizer_integrationtest_valid_subkey" {
+  name         = format("auth-%s-integrationtest-valid-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "authorizer_integrationtest_invalid_subkey" {
+  name         = format("auth-%s-integrationtest-invalid-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 
 #
 # IaC
