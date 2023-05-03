@@ -386,8 +386,7 @@
         },
         "required": [
           "outcome",
-          "paymentGatewayType",
-          "rrn"
+          "paymentGatewayType"
         ]
       },
       "OutcomeXpayGateway": {
