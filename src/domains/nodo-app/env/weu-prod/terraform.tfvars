@@ -49,3 +49,62 @@ nodo_user_node_pool = {
 }
 
 aks_cidr_subnet = ["10.1.0.0/17"]
+
+cidr_subnet_vmss               = ["10.230.10.144/28"]
+lb_frontend_private_ip_address = "10.230.10.150"
+
+route_aks = [
+  {
+    #  aks nodo to nexi proxy
+    name                   = "aks-outbound-to-nexy-sianet-prod-subnet"
+    address_prefix         = "10.102.1.85/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi proxy
+    name                   = "aks-outbound-to-nexy-sianet-dr-subnet"
+    address_prefix         = "10.101.1.85/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi sfg
+    name                   = "aks-outbound-to-nexi-sfg-subnet"
+    address_prefix         = "10.92.8.180/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi sftp
+    name                   = "aks-outbound-to-nexi-sftp-subnet"
+    address_prefix         = "10.103.3.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-oracle-cloud-subnet"
+    address_prefix         = "10.70.139.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-oracle-onprem-subnet"
+    address_prefix         = "10.102.35.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-aks-cloud-subnet"
+    address_prefix         = "10.70.135.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+
+]
+
+vmss_zones           = ["1", "2", "3"]
+vmss_instance_number = 1
