@@ -77,10 +77,8 @@ resource "azapi_resource" "authorizer_fragment" {
     properties = {
       description = "Component that permits to check the authorization on EC for the client"
       format      = "rawxml"
-      # value       = file("./api/authorizer/authorizer-check.xml")
       value = templatefile("./api/authorizer/authorizer-check.xml", {
-        hostname                     = local.shared_hostname
-        cache-generator-function-key = "temp"
+        cache_generator_hostname = local.cache_generator_hostname
       })
 
     }

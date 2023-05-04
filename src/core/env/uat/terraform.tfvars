@@ -108,8 +108,6 @@ app_gateway_deny_paths = [
   "/gps/donation-service/.*",             # internal use no sub-keys
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
-  "/gps/gpd-payments/.*",                 # internal use no sub-keys
-  "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
@@ -119,6 +117,7 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   #"/pagopa-node-forwarder/.*"
+  "/shared/authorizer/.*", # internal use no sub-keys
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -214,8 +213,8 @@ ecommerce_vpos_psps_list = "ATPIITM1,ABI36080,NIPSITR1,BIC36019,CHARITY_AMEX,CRG
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
-buyerbanks_function_sku_tier          = "Standard"
-buyerbanks_function_sku_size          = "S1"
+buyerbanks_function_sku_tier          = "Basic"
+buyerbanks_function_sku_size          = "B1"
 buyerbanks_function_autoscale_minimum = 1
 buyerbanks_function_autoscale_maximum = 3
 buyerbanks_function_autoscale_default = 1
@@ -225,6 +224,7 @@ ehns_sku_name = "Standard"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
+ehns_capacity = 5
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
@@ -494,6 +494,26 @@ eventhubs = [
         manage = false
       }
 
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-negative-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-negative-biz-evt-rx"]
+    keys = [
+      {
+        name   = "pagopa-negative-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
     ]
   },
 

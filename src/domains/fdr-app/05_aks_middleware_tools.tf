@@ -1,8 +1,8 @@
 module "tls_checker" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v6.2.1"
 
-  https_endpoint                         = local.fdr_locals.hostname
-  alert_name                             = local.fdr_locals.hostname
+  https_endpoint                         = local.hostname
+  alert_name                             = local.hostname
   alert_enabled                          = true
   helm_chart_present                     = true
   helm_chart_version                     = var.tls_cert_check_helm.chart_version
@@ -18,3 +18,23 @@ module "tls_checker" {
   keyvault_tenantid                      = data.azurerm_client_config.current.tenant_id
 }
 
+resource "helm_release" "cert_mounter" {
+  name         = "cert-mounter-blueprint"
+  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
+  chart        = "cert-mounter-blueprint"
+  version      = "1.0.4"
+  namespace    = var.domain
+  timeout      = 120
+  force_update = true
+
+  values = [
+    "${
+      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
+        NAMESPACE        = var.domain,
+        DOMAIN           = var.domain
+        CERTIFICATE_NAME = replace(local.fdr_locals.hostname, ".", "-"),
+        ENV_SHORT        = var.env_short,
+      })
+    }"
+  ]
+}
