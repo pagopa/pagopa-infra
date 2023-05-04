@@ -1678,7 +1678,16 @@
           },
           "circuit": {
             "type": "string",
-            "example": "AMEX"
+            "example": "AMEX",
+            "enum": [
+              "VISA",
+              "MASTERCARD",
+              "UNKNOWN",
+              "DINERS",
+              "MAESTRO",
+              "AMEX",
+              "PAYPAL"
+            ]
           },
           "threeDsData": {
             "type": "string",
