@@ -658,7 +658,15 @@
           },
           "brand": {
             "type": "string",
-            "description": "The card brand name"
+            "description": "The card brand name",
+            "enum": [
+              "VISA",
+              "MASTERCARD",
+              "UNKNOWN",
+              "DINERS",
+              "MAESTRO",
+              "AMEX"
+            ]
           },
           "threeDsData": {
             "type": "string",
