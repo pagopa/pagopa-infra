@@ -4,7 +4,6 @@ env            = "dev"
 domain         = "checkout"
 location       = "westeurope"
 location_short = "weu"
-instance       = "dev"
 
 tags = {
   CreatedBy   = "Terraform"

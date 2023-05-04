@@ -4,7 +4,6 @@ env            = "uat"
 domain         = "checkout"
 location       = "westeurope"
 location_short = "weu"
-instance       = "uat"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -19,5 +18,3 @@ tags = {
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
-
-enable_iac_pipeline = true
