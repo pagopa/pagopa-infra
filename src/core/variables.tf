@@ -1239,65 +1239,12 @@ variable "gpd_plan_sku_size" {
   default     = null
 }
 
-variable "cidr_subnet_reporting_common" {
-  type        = list(string)
-  description = "Address prefixes subnet reporting_common function"
-  default     = null
-}
+# variable "cidr_subnet_reporting_common" {
+#   type        = list(string)
+#   description = "Address prefixes subnet reporting_common function"
+#   default     = null
+# }
 
-variable "reporting_function_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "reporting_function_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 10
-}
-
-variable "reporting_function_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 5
-}
-
-variable "reporting_batch_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
-variable "reporting_service_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
-variable "reporting_analysis_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
-variable "gpd_reporting_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "gpd_reporting_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
-
-variable "gpd_enable_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
 
 variable "gpd_always_on" {
   type        = bool
@@ -1309,12 +1256,6 @@ variable "cidr_subnet_gpd" {
   type        = list(string)
   description = "Address prefixes subnet gpd service"
   default     = null
-}
-
-variable "gpd_reporting_schedule_batch" {
-  type        = string
-  description = "Cron scheduling (NCRON example '*/45 * * * * *')"
-  default     = "0 0 1 * * *"
 }
 
 variable "gpd_cron_job_enable" {
@@ -1790,4 +1731,10 @@ variable "node_decoupler_primitives" {
   type        = string
   description = "Node decoupler primitives"
   default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
+}
+
+variable "apim_fdr_nodo_pagopa_enable" {
+  type        = bool
+  default     = false
+  description = "Enable Fdr Service Nodo pagoPA side"
 }

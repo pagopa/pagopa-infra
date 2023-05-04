@@ -17,6 +17,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_apim_api_fdr_api_v1"></a> [apim\_api\_fdr\_api\_v1](#module\_apim\_api\_fdr\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
+| <a name="module_apim_fdr_nodo_dei_pagamenti_legacy_product"></a> [apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product](#module\_apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_fdr_product"></a> [apim\_fdr\_product](#module\_apim\_fdr\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.17 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.2.1 |
@@ -25,11 +26,16 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_api_management_api.apim_fdr_per_pa_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api) | resource |
+| [azurerm_api_management_api_policy.apim_fdr_per_pa_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_version_set.api_fdr_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.fdr_per_pa_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_product_api.apim_fdr_nodo_dei_pagamenti_product_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_product_api) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [helm_release.cert-mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
+| [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |

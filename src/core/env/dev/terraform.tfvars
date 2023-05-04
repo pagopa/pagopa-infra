@@ -22,15 +22,15 @@ law_daily_quota_gb    = 10
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway               = ["10.1.128.0/24"]
-cidr_subnet_postgresql               = ["10.1.129.0/24"]
-cidr_subnet_azdoa                    = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis       = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
-cidr_subnet_checkout_be              = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
-cidr_subnet_reporting_common         = ["10.1.136.0/24"]
+cidr_subnet_appgateway         = ["10.1.128.0/24"]
+cidr_subnet_postgresql         = ["10.1.129.0/24"]
+cidr_subnet_azdoa              = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
+cidr_subnet_checkout_be        = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
+# cidr_subnet_reporting_common         = ["10.1.136.0/24"]
 cidr_subnet_gpd                      = ["10.1.138.0/24"]
 cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
@@ -140,6 +140,7 @@ mock_payment_gateway_enabled       = true
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
+apim_fdr_nodo_pagopa_enable     = true
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725"
@@ -459,6 +460,26 @@ eventhubs = [
 
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-negative-biz-evt"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["pagopa-negative-biz-evt-rx"]
+    keys = [
+      {
+        name   = "pagopa-negative-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+    ]
+  },
 ]
 
 # acr
@@ -480,8 +501,8 @@ cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
-buyerbanks_function_sku_tier          = "Standard"
-buyerbanks_function_sku_size          = "S1"
+buyerbanks_function_sku_tier          = "Basic"
+buyerbanks_function_sku_size          = "B1"
 buyerbanks_function_autoscale_minimum = 1
 buyerbanks_function_autoscale_maximum = 3
 buyerbanks_function_autoscale_default = 1
@@ -533,10 +554,6 @@ gpd_cron_job_enable          = true
 gpd_cron_schedule_valid_to   = "0 */10 * * * *"
 gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
-reporting_function_autoscale_minimum = 1
-reporting_function_autoscale_maximum = 3
-reporting_function_autoscale_default = 1
-
 users = [
   {
     name = "APD_USER"
@@ -550,13 +567,6 @@ users = [
     ]
   }
 ]
-
-# GPD Payments
-# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
-payments_always_on       = false
-gpd_paa_id_intermediario = "15376371009"
-gpd_paa_stazione_int     = "15376371009_01"
-payments_logging_level   = "DEBUG"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"

@@ -13,7 +13,11 @@
 <policies>
   <inbound>
     <base/>
-    <set-variable name="renewrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
+    <choose>
+      <when condition="@(context.Request.Body != null)">
+          <set-variable name="renewrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
+      </when>
+    </choose>
     <!-- read decoupler configuration json -->
     <choose>
         <when condition="@(${is-nodo-auth-pwd-replace})">
