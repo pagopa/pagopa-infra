@@ -577,17 +577,15 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
 }
 
 # Fdr pagoPA legacy 
-
-
 # nodoChiediFlussoRendicontazione DEV 6218976195aa0303ccfcf902
-# nodoChiediFlussoRendicontazione UAT ???
-# nodoChiediFlussoRendicontazione PRD ???
+# nodoChiediFlussoRendicontazione UAT 61e96321e0f4ba04a49d1286
+# nodoChiediFlussoRendicontazione PRD 61e9633dea7c4a07cc7d480e
 resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChiediFlussoRendicontazione" { # 
 
   api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf902" : var.env_short == "u" ? "UAT???" : "PROD???"
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf902" : var.env_short == "u" ? "61e96321e0f4ba04a49d1286" : "61e9633dea7c4a07cc7d480e"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
@@ -597,14 +595,14 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChi
 }
 
 # nodoChiediElencoFlussiRendicontazione DEV 6218976195aa0303ccfcf901
-# nodoChiediElencoFlussiRendicontazione UAT ???
-# nodoChiediElencoFlussiRendicontazione PRD ???
+# nodoChiediElencoFlussiRendicontazione UAT 61e96321e0f4ba04a49d1285
+# nodoChiediElencoFlussiRendicontazione PRD 61e9633dea7c4a07cc7d480d
 resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChiediElencoFlussiRendicontazione" { # 
 
   api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf901" : var.env_short == "u" ? "UAT???" : "PROD???"
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf901" : var.env_short == "u" ? "61e96321e0f4ba04a49d1285" : "61e9633dea7c4a07cc7d480d"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
