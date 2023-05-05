@@ -211,3 +211,44 @@ resource "azurerm_key_vault_secret" "node_forwarder_subscription_key" {
     ]
   }
 }
+
+
+# pagopa-<ENV>-opex_pagopa-node-forwarder-responsetime @ _forward
+data "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forwarder-responsetime-get" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-responsetime @ _forward"
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forwarder-responsetime-upd" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-responsetime @ _forward"
+  location            = data.azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-responsetime-get[0].location
+  frequency           = data.azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-responsetime-get[0].frequency
+  query               = data.azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-responsetime-get[0].query
+  data_source_id      = data.azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-responsetime-get[0].data_source_id
+  time_window         = data.azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-responsetime-get[0].time_window
+
+
+  action {
+    action_group           = []
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+
+  }
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+  # action {
+  #   action_group  = data.azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-responsetime-get[0].action.action_group[0]
+  # }
+
+  # trigger   {
+  #   operator  = data.azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-responsetime-get[0].trigger.operator
+  #   threshold = data.azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-responsetime-get[0].trigger.threshold
+  # }
+}
+
