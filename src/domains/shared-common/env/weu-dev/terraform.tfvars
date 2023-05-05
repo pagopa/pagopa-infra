@@ -52,8 +52,8 @@ cosmos_iuvgenerator_db_params = {
 
 # CosmosDb Authorizer
 cosmos_authorizer_db_params = {
-  kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"
@@ -72,12 +72,6 @@ cosmos_authorizer_db_params = {
   backup_continuous_enabled = false
 }
 
-cosmos_mongo_db_authorizer_params = {
-  enable_serverless  = true
-  enable_autoscaling = true
-  max_throughput     = 5000
-  throughput         = 1000
-}
 
 cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
 cidr_subnet_authorizer_cosmosdb   = ["10.1.168.0/24"]
