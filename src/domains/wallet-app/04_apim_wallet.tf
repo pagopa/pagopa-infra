@@ -99,7 +99,7 @@ module "apim_wallet_service_notifications_api_v1" {
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_wallet_product.product_id]
-  subscription_required = local.apim_wallet_notifications_service_api.notifications_subscription_required
+  subscription_required = local.apim_wallet_notifications_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.wallet_notifications_service_api.id
   api_version           = "v1"
 
