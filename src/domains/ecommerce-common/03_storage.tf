@@ -118,19 +118,3 @@ resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
   name                 = "${local.project}-transactions-dead-letter-queue"
   storage_account_name = module.ecommerce_storage.name
 }
-
-#TODO to be deleted after all module have been switched off this queue
-resource "azurerm_storage_queue" "activated_events_queue" {
-  name                 = "${local.project}-activated-events-queue"
-  storage_account_name = module.ecommerce_storage.name
-}
-#TODO to be deleted after all module have been switched off this queue
-resource "azurerm_storage_queue" "closed_events_queue" {
-  name                 = "${local.project}-closed-events-queue"
-  storage_account_name = module.ecommerce_storage.name
-}
-#TODO to be deleted after all module have been switched off this queue
-resource "azurerm_storage_queue" "expired_events_queue" {
-  name                 = "${local.project}-expired-events-queue"
-  storage_account_name = module.ecommerce_storage.name
-}
