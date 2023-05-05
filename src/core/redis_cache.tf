@@ -9,7 +9,7 @@ module "redis_snet" {
   name                                           = format("%s-redis-snet", local.project)
   address_prefixes                               = var.cidr_subnet_redis
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
+  virtual_network_name                           = module.vnet.name # module.vnet_integration.name ???
   enforce_private_link_endpoint_network_policies = !var.redis_cache_params.public_access
 }
 
@@ -58,4 +58,21 @@ module "redis" {
   ]
 
   tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_network_link" {
+  name                  = format("%s-vnet-integration", local.project)
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_redis_azure_com.name
+  virtual_network_id    = module.vnet_integration.id
+}
+
+# Already apply forcing redis_connection_string on apim_module
+resource "azurerm_api_management_redis_cache" "apim_external_cache_redis" {
+  name              = "apim-external-cache-redis"
+  api_management_id = module.apim.id
+  connection_string = module.redis.primary_connection_string
+  description       = "APIM external cache Redis"
+  redis_cache_id    = module.redis.id
+  cache_location    = var.location
 }
