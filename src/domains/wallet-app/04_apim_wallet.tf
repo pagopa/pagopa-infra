@@ -28,7 +28,7 @@ locals {
     display_name          = "pagoPA - wallet API"
     description           = "API to support wallet service"
     path                  = "wallet-service"
-    notification_path     = "wallet-service-notifications"
+    notification_path     = "wallet-notifications-service"
     subscription_required = true
     service_url           = null
   }
