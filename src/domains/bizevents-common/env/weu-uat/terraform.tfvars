@@ -55,7 +55,7 @@ bizevents_datastore_cosmos_db_params = {
 }
 
 # CosmosDB Negative Biz Events Datastore
-bizevents_datastore_cosmos_db_params = {
+negative_bizevents_datastore_cosmos_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"
