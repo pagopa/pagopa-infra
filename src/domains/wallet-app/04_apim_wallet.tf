@@ -28,7 +28,6 @@ locals {
     display_name          = "pagoPA - wallet API"
     description           = "API to support wallet service"
     path                  = "wallet-service"
-    notification_path     = "wallet-notifications-service"
     subscription_required = true
     service_url           = null
   }
@@ -70,21 +69,45 @@ module "apim_wallet_service_api_v1" {
   })
 }
 
+
+#################################################
+## API wallet notifications service                          ##
+#################################################
+locals {
+  apim_wallet_notifications_service_api = {
+    display_name          = "pagoPA - wallet notifications API"
+    description           = "API to support wallet notifications service"
+    path                  = "wallet-notifications-service"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+# Wallet notifications service APIs
+resource "azurerm_api_management_api_version_set" "wallet_notifications_service_api" {
+  name                = "${local.project}-notifications-service-api"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_wallet_notifications_service_api.display_name
+  versioning_scheme   = "Segment"
+}
+
 module "apim_wallet_service_notifications_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
 
-  name                  = format("%s-notifications-service-api", local.project)
+  name                  = "${local.project}-notifications-service-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_wallet_product.product_id]
-  version_set_id        = azurerm_api_management_api_version_set.wallet_service_api.id
+  subscription_required = local.apim_wallet_notifications_service_api.notifications_subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.wallet_notifications_service_api.id
   api_version           = "v1"
 
-  description  = local.apim_wallet_service_api.description
-  display_name = local.apim_wallet_service_api.display_name
-  path         = local.apim_wallet_service_api.notification_path
+  description  = local.apim_wallet_notifications_service_api.description
+  display_name = local.apim_wallet_notifications_service_api.display_name
+  path         = local.apim_wallet_notifications_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_wallet_service_api.service_url
+  service_url  = local.apim_wallet_notifications_service_api.service_url
 
   content_format = "openapi"
   content_value = templatefile("./api/npg/v1/_openapi.json.tpl", {
