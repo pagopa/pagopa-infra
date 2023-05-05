@@ -76,6 +76,10 @@ apim_publisher_name = "pagoPA Platform UAT"
 apim_sku            = "Developer_1"
 apim_alerts_enabled = false
 
+# redis private endpoint
+redis_private_endpoint_enabled = true
+redis_cache_enabled            = true
+
 # app_gateway
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
 app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it"
@@ -224,7 +228,7 @@ ehns_sku_name = "Standard"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
-ehns_capacity = 5
+ehns_capacity                 = 5
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {

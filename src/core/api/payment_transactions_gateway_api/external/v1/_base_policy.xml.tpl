@@ -2,7 +2,7 @@
     <inbound>
       <cors>
         <allowed-origins>
-          <origin>${origin}</origin>
+          <origin>*</origin>
         </allowed-origins>
         <allowed-methods preflight-result-max-age="300">
           <method>*</method>
