@@ -28,6 +28,7 @@ locals {
     display_name          = "pagoPA - wallet API"
     description           = "API to support wallet service"
     path                  = "wallet-service"
+    notification_path     = "wallet-service-notifications"
     subscription_required = true
     service_url           = null
   }
@@ -69,7 +70,7 @@ module "apim_wallet_service_api_v1" {
   })
 }
 
-module "apim_wallet_service_notification_api_v1" {
+module "apim_wallet_service_notifications_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
 
   name                  = format("%s-notifications-service-api", local.project)
@@ -81,7 +82,7 @@ module "apim_wallet_service_notification_api_v1" {
 
   description  = local.apim_wallet_service_api.description
   display_name = local.apim_wallet_service_api.display_name
-  path         = local.apim_wallet_service_api.path
+  path         = local.apim_wallet_service_api.notification_path
   protocols    = ["https"]
   service_url  = local.apim_wallet_service_api.service_url
 
