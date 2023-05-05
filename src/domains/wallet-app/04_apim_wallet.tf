@@ -72,11 +72,10 @@ module "apim_wallet_service_api_v1" {
 module "apim_wallet_service_notification_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
 
-  name                  = format("%s-service-notifications-api", local.project)
+  name                  = format("%s-notifications-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_wallet_product.product_id]
-  subscription_required = local.apim_wallet_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.wallet_service_api.id
   api_version           = "v1"
 
