@@ -15,7 +15,7 @@ module "pod_identity" {
 
   identity_name = "${kubernetes_namespace.namespace.metadata[0].name}-pod-identity" // TODO add env in name
   namespace     = kubernetes_namespace.namespace.metadata[0].name
-  key_vault_id     = data.azurerm_key_vault.kv.id
+  key_vault_id  = data.azurerm_key_vault.kv.id
 
   secret_permissions = ["Get"]
 }

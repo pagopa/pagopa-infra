@@ -11,11 +11,11 @@ data "azurerm_virtual_network" "vnet_integration" {
 }
 
 module "vmss_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
-  name                                           = format("%s-vmss-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_vmss
-  resource_group_name                            = local.vnet_resource_group_name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_integration.name
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  name                                          = format("%s-vmss-snet", local.project)
+  address_prefixes                              = var.cidr_subnet_vmss
+  resource_group_name                           = local.vnet_resource_group_name
+  virtual_network_name                          = data.azurerm_virtual_network.vnet_integration.name
   private_link_service_network_policies_enabled = true
   private_endpoint_network_policies_enabled     = false
 }
@@ -109,13 +109,13 @@ module "load_balancer_nodo_egress" {
   lb_sku                                 = "Standard"
   pip_sku                                = "Standard"
   lb_port = {
-   lb_nodo = { 
+    lb_nodo = {
       frontend_port     = "0"
       protocol          = "All"
       backend_port      = "0"
       backend_pool_name = "default"
       probe_name        = "probe_nodo"
-   }
+    }
   }
 
   lb_probe = {
