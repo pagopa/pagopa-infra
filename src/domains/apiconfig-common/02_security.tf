@@ -174,6 +174,22 @@ resource "azurerm_key_vault_secret" "oracle_db_cfg_dev_nexi_password" {
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "oracle_db_cfg_prf_nexi_password" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "oracle-db-cfg-prf-password"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "postgresql_db_cfg_password" {
   name         = "postgresql-db-cfg-password"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
