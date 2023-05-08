@@ -39,6 +39,7 @@ gpd_paa_stazione_int     = "15376371009_01"
 
 cidr_subnet_reporting_functions = ["10.1.177.0/24"]
 
+reporting_function = true
 reporting_functions_app_sku = {
   kind     = "Linux"
   sku_tier = "PremiumV3"

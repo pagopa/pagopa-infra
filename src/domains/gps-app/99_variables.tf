@@ -39,6 +39,11 @@ variable "location" {
   description = "One of westeurope, northeurope"
 }
 
+variable "reporting_function" {
+  type        = bool
+  description = "Enable reporting_function"
+}
+
 variable "location_short" {
   type = string
   validation {

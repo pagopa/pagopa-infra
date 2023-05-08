@@ -302,7 +302,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
   target_resource_id  = azurerm_app_service_plan.gpd_reporting_service_plan.id
-  enabled = false
+  enabled             = var.reporting_function
 
   profile {
     name = "default"
