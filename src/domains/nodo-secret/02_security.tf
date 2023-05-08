@@ -88,7 +88,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
 data "azuread_service_principal" "pipe_principal" {
   count = var.enable_iac_pipeline ? 1 : 0
   #display_name = format("pagopaspa-pagoPA-projects-%s", data.azurerm_subscription.current.subscription_id)
-  application_id = local.pipe_service_principel_application_id
+  application_id = var.pipe_service_principel_application_id
 }
 
 resource "azurerm_key_vault_access_policy" "azdevops_pipe_policy" {

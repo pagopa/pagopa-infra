@@ -5,5 +5,4 @@ locals {
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
 
-  pipe_service_principel_application_id = "b7375314-3eff-4760-9952-84f96ee669cf"
 }
