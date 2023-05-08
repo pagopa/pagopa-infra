@@ -12,7 +12,7 @@ module "gps_cosmosdb_snet" {
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -25,6 +25,7 @@ module "gps_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.4.1"
   name     = "${local.project}-cosmos-account"
   location = var.location
+  domain   = ""
 
   resource_group_name = azurerm_resource_group.gps_rg.name
   offer_type          = var.cosmos_gps_db_params.offer_type
@@ -33,8 +34,9 @@ module "gps_cosmosdb_account" {
   public_network_access_enabled    = var.cosmos_gps_db_params.public_network_access_enabled
   main_geo_location_zone_redundant = var.cosmos_gps_db_params.main_geo_location_zone_redundant
 
-  enable_free_tier          = var.cosmos_gps_db_params.enable_free_tier
-  enable_automatic_failover = true
+  enable_free_tier                             = var.cosmos_gps_db_params.enable_free_tier
+  enable_automatic_failover                    = true
+  enable_provisioned_throughput_exceeded_alert = false
 
   capabilities       = var.cosmos_gps_db_params.capabilities
   consistency_policy = var.cosmos_gps_db_params.consistency_policy
@@ -74,12 +76,12 @@ locals {
     {
       name               = "creditor_institutions",
       partition_key_path = "/fiscalCode",
-      autoscale_settings = { max_throughput = 6000 }
+      autoscale_settings = { max_throughput = 1000 }
     },
     {
       name               = "services",
       partition_key_path = "/transferCategory",
-      autoscale_settings = { max_throughput = 6000 }
+      autoscale_settings = { max_throughput = 1000 }
     },
   ]
 }

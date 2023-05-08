@@ -9,19 +9,19 @@ resource "azurerm_resource_group" "gpd_rg" {
 module "flows" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.4.1"
 
-  name                       = replace(format("%s-flow-sa", local.product), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  account_replication_type   = "LRS"
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = var.gpd_enable_versioning
-  resource_group_name        = azurerm_resource_group.gpd_rg.name
-  location                   = var.location
-  advanced_threat_protection = var.gpd_reporting_advanced_threat_protection
-  allow_blob_public_access   = false
+  name                            = replace(format("%s-flow-sa", local.product), "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = var.gpd_enable_versioning
+  resource_group_name             = azurerm_resource_group.gpd_rg.name
+  location                        = var.location
+  advanced_threat_protection      = var.gpd_reporting_advanced_threat_protection
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = false
 
-  blob_properties_delete_retention_policy_days = var.gpd_reporting_delete_retention_days
+  blob_delete_retention_days = var.gpd_reporting_delete_retention_days
 
   tags = var.tags
 }
