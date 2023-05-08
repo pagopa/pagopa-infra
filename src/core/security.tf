@@ -364,3 +364,18 @@ resource "azurerm_key_vault_secret" "apiconfig_afm_utils_subscription_key" {
     ]
   }
 }
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "newconn_opsgenie_webhook_token" {
+  name         = "new-conn-srv-opsgenie-webhook-token"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
