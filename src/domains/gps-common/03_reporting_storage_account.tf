@@ -19,7 +19,8 @@ module "flows" {
   location                        = var.location
   advanced_threat_protection      = var.gpd_reporting_advanced_threat_protection
   allow_nested_items_to_be_public = false
-  public_network_access_enabled   = false
+  public_network_access_enabled   = true
+  enable_low_availability_alert   = false
 
   blob_delete_retention_days = var.gpd_reporting_delete_retention_days
 
