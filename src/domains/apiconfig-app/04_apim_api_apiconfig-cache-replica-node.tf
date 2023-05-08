@@ -23,7 +23,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
   name                  = format("%s-apiconfig-cache-replica-node-%s-api", local.project, "p")
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_apiconfig_cache_replica_product.product_id]
+  product_ids           = [module.apim_apiconfig_cache_product.product_id]
   subscription_required = local.apiconfig_cache_replica_locals.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.api_apiconfig_cache_replica_node_api_p[0].id
@@ -32,7 +32,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
   description  = local.apiconfig_cache_replica_locals.description
   display_name = "${local.apiconfig_cache_replica_locals.display_name} - Node p"
 
-  path        = "${local.apiconfig_cache_replica_locals.path}/p"
+  path        = format("%s/%s", local.apiconfig_cache_replica_locals.path_apim, "pr")
   protocols   = ["https"]
   service_url = local.apiconfig_cache_replica_locals.service_url
 
@@ -43,8 +43,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
   })
 
   xml_content = templatefile("./api/apiconfig-cache-replica/node/_base_policy.xml", {
-    hostname = local.apiconfig_cache_replica_locals.hostname
-    hostname = format("%s/%s", local.apiconfig_cache_replica_locals.hostname, "${local.apiconfig_cache_replica_locals.path}/p")
+    hostname = format("%s/%s/%s", local.apiconfig_cache_replica_locals.hostname, local.apiconfig_cache_replica_locals.path_apim, "pr")
   })
 }
 
@@ -55,7 +54,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
   name                  = format("%s-apiconfig-cache-replica-node-%s-api", local.project, "o")
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_apiconfig_cache_replica_product.product_id]
+  product_ids           = [module.apim_apiconfig_cache_product.product_id]
   subscription_required = local.apiconfig_cache_replica_locals.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.api_apiconfig_cache_replica_node_api_o[0].id
@@ -64,7 +63,7 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
   description  = local.apiconfig_cache_replica_locals.description
   display_name = "${local.apiconfig_cache_replica_locals.display_name} - Node o"
 
-  path        = "${local.apiconfig_cache_replica_locals.path}/o"
+  path        = format("%s/%s", local.apiconfig_cache_replica_locals.path_apim, "or")
   protocols   = ["https"]
   service_url = local.apiconfig_cache_replica_locals.service_url
 
@@ -75,7 +74,6 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
   })
 
   xml_content = templatefile("./api/apiconfig-cache-replica/node/_base_policy.xml", {
-    hostname = local.apiconfig_cache_replica_locals.hostname
-    hostname = format("%s/%s", local.apiconfig_cache_replica_locals.hostname, "${local.apiconfig_cache_replica_locals.path}/o")
+    hostname = format("%s/%s/%s", local.apiconfig_cache_replica_locals.hostname, local.apiconfig_cache_replica_locals.path_apim, "or")
   })
 }
