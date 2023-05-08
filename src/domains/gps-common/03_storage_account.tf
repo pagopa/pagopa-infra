@@ -4,7 +4,7 @@
 
 # storage
 module "payments_receipt_sa" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.18.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.4.1"
 
   name                       = replace(format("%s-payments-sa", local.project), "-", "")
   account_kind               = "StorageV2"

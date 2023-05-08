@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "gpd_rg" {
 }
 
 module "flows" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.4.1"
 
   name                       = replace(format("%s-flow-sa", local.product), "-", "")
   account_kind               = "StorageV2"

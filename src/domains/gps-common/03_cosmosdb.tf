@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "gps_rg" {
 }
 
 module "gps_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                 = "${local.project}-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_gps_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -22,7 +22,7 @@ module "gps_cosmosdb_snet" {
 }
 
 module "gps_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.4.1"
   name     = "${local.project}-cosmos-account"
   location = var.location
 
@@ -61,7 +61,7 @@ module "gps_cosmosdb_account" {
 
 # cosmosdb database
 module "gps_cosmosdb_database" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.4.1"
   name                = "db"
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gps_cosmosdb_account.name
@@ -86,7 +86,7 @@ locals {
 
 # cosmosdb container
 module "gps_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.4.1"
   for_each = { for c in local.gps_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
