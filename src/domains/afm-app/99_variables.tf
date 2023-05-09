@@ -117,4 +117,3 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
-
