@@ -135,12 +135,17 @@ locals {
 module "reporting_batch_function" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.4.1"
 
-  resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = replace("${local.project}fn-gpd-batch", "gps", "")
-  location                                 = var.location
-  health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet.id
-  runtime_version                          = "~3"
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  name                = replace("${local.project}fn-gpd-batch", "gps", "")
+  location            = var.location
+  health_check_path   = "info"
+  subnet_id           = module.reporting_function_snet.id
+  runtime_version     = "~3"
+  docker = {
+    registry_url = "pagopaucommonacr.azurecr.io"
+    image_name   = "pagopagpdreportingbatch"
+    image_tag    = "latest"
+  }
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
