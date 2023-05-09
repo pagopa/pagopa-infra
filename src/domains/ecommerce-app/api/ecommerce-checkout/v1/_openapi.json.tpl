@@ -162,7 +162,8 @@
                 "$ref": "#/components/schemas/NewTransactionRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "parameters": [
           {
