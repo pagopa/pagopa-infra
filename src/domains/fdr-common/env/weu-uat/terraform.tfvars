@@ -19,7 +19,6 @@ tags = {
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
-application_insights_name                   = "pagopa-u-appinsights"
 
 ### Aks
 
@@ -45,7 +44,7 @@ pgres_flex_params = {
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
-  pgres_flex_private_endpoint_enabled    = false
+  pgres_flex_private_endpoint_enabled    = true
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
