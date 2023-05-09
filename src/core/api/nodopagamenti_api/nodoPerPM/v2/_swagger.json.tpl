@@ -159,6 +159,23 @@
           "maximum": 1000000000,
           "example": "10.00"
         },
+        "primaryCiIncurredFee": {
+          "type": "number",
+          "description": "GEC bundle commission amount",
+          "minimum": 0,
+          "exclusiveMaximum": 1000000000,
+          "example": "10.00"
+        },
+        "idBundle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 70
+        },
+        "idCiBundle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 70
+        },
         "timestampOperation": {
           "type": "string",
           "format": "date-time",
@@ -172,6 +189,12 @@
             "maxLength": 140
           },
           "maxProperties": 9
+        },
+        "transactionDetails": {
+          "type": "object",
+          "properties": {
+            "": { "type": "null" }
+          }
         }
       }
     }
