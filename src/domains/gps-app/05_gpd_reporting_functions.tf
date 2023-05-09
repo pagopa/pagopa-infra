@@ -156,7 +156,6 @@ module "reporting_batch_function" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
-  # client_certificate_mode                  = var.reporting_analysis_function_client_certificate_mode
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
