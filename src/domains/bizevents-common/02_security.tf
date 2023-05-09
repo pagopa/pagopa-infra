@@ -162,6 +162,22 @@ resource "azurerm_key_vault_secret" "ehub_tx_biz_key" {
   key_vault_id = module.key_vault.id
 }
 
+## Negative BizEvents
+resource "azurerm_key_vault_secret" "cosmos_negative_biz_key" {
+  name         = format("cosmos-%s-negative-biz-key", var.env_short)
+  value        = module.negative_bizevents_datastore_cosmosdb_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
+  name         = format("ehub-tx-%s-negative-biz-key", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "payment_manager_subscription_key" {
   name         = "payment-manager-subscription-key"
