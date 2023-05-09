@@ -55,7 +55,7 @@ module "ecommerce_transactions_function_app" {
     kind                         = var.ecommerce_functions_app_sku.kind
     sku_tier                     = var.ecommerce_functions_app_sku.sku_tier
     sku_size                     = var.ecommerce_functions_app_sku.sku_size
-    maximum_elastic_worker_count = 0
+    maximum_elastic_worker_count = null
     worker_count                 = 1
     zone_balancing_enabled       = false
   }
