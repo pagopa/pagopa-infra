@@ -21,7 +21,7 @@ locals {
 ###################
 
 module "apim_gpd_payments_soap_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "gpd-payments-soap"
   display_name = "GPD Payments pagoPA - SOAP"
