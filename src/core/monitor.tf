@@ -71,7 +71,7 @@ resource "azurerm_monitor_action_group" "mo_email" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_action_group" "pm_opsgenie" {
+resource "azurerm_monitor_action_group" "pm_opsgenie" { # https://pagopa.atlassian.net/wiki/spaces/PPR/pages/647921690/PM
   count               = var.env_short == "p" ? 1 : 0
   name                = "PaymentManagerOpsgenie"
   resource_group_name = azurerm_resource_group.monitor_rg.name
@@ -80,6 +80,21 @@ resource "azurerm_monitor_action_group" "pm_opsgenie" {
   webhook_receiver {
     name                    = "PMOpsgenieWebhook"
     service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key[0].value}"
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_monitor_action_group" "new_conn_srv_opsgenie" { # https://pagopa.atlassian.net/wiki/spaces/PPR/pages/647921720/Nuova+Connettivit
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "NuovaConnettivitOpsgenie"
+  resource_group_name = azurerm_resource_group.monitor_rg.name
+  short_name          = "NewConn"
+
+  webhook_receiver {
+    name                    = "Nuova+ConnettivitOpsgenieWebhook"
+    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_new_conn_srv_webhook_key[0].value}"
     use_common_alert_schema = true
   }
 
