@@ -132,6 +132,7 @@ app_gateway_deny_paths_2 = [
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
   "/shared/authorizer/.*",                # internal use no sub-keys
+  "/gpd/api/.*",
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
