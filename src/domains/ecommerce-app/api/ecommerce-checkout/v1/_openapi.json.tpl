@@ -164,6 +164,17 @@
             }
           }
         },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "recaptchaResponse",
+            "description": "Recaptcha response",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "New transaction successfully created",
