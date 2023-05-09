@@ -202,6 +202,11 @@ module "reporting_service_function" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings                             = local.function_service_app_settings
+  docker = {
+    registry_url = "pagopaucommonacr.azurecr.io"
+    image_name   = "pagopagpdreportingservice"
+    image_tag    = "latest"
+  }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
