@@ -197,6 +197,30 @@ variable "reporting_analysis_function_always_on" {
   default     = false
 }
 
+variable "reporting_batch_image" {
+  type        = string
+  description = "reporting_batch_function docker image"
+  default     = ""
+}
+
+variable "reporting_service_image" {
+  type        = string
+  description = "reporting_service_function docker image"
+  default     = ""
+}
+
+variable "reporting_analysis_image" {
+  type        = string
+  description = "reporting_analysis_function docker image"
+  default     = ""
+}
+
+variable "reporting_analysis_function_client_certificate_mode" {
+  type        = string
+  description = "client_certificate_mode property"
+  default     = "Required"
+}
+
 variable "reporting_functions_app_sku" {
   type = object({
     kind     = string

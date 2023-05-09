@@ -95,12 +95,7 @@ while getopts ":hl-:" option; do
 done
 
 if [[ $3 ]]; then
-  exit 0
-  removeAndImport "module.function_lollipop[0].azurerm_function_app.this" "module.function_lollipop[0].azurerm_linux_function_app.this" weu-prod01
-
-  removeAndImport "module.function_lollipop[0].azurerm_app_service_plan.this[0]" "module.function_lollipop[0].azurerm_service_plan.this[0]" weu-prod01
-
-  removeAndImport "module.function_lollipop_staging_slot[0].azurerm_function_app_slot.this" "module.function_lollipop_staging_slot[0].azurerm_linux_function_app_slot.this" weu-prod01
+  removeAndImport $1 $2 $3
 else
   print_usage
 fi

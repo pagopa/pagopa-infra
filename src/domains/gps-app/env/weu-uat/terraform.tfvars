@@ -33,6 +33,11 @@ tls_cert_check_helm = {
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
+# function_app docker
+reporting_batch_image    = "pagopagpdreportingbatch"
+reporting_service_image  = "pagopagpdreportingservice"
+reporting_analysis_image = "pagopagpdreportinganalysis"
+
 # gpd-reporting-functions
 gpd_paa_id_intermediario = "15376371009"
 gpd_paa_stazione_int     = "15376371009_06"

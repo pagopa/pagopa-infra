@@ -16,7 +16,7 @@ module "reporting_function_snet" {
   address_prefixes                          = var.cidr_subnet_reporting_functions
   resource_group_name                       = local.vnet_resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet.name
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies_enabled = false
 
   delegation = {
     name = "default"
