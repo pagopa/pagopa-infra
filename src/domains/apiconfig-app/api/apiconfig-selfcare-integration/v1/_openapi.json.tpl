@@ -14,8 +14,8 @@
     "description" : "Everything about Creditor Institution",
     "name" : "Creditor Institutions"
   }, {
-    "description" : "Everything about creditor institution's broker",
-    "name" : "CI Brokers"
+    "description" : "Everything about brokers",
+    "name" : "Brokers"
   } ],
   "paths" : {
     "/brokers/{brokerId}/stations" : {
@@ -151,7 +151,7 @@
           "Authorization" : [ ]
         } ],
         "summary" : "Get broker's station list",
-        "tags" : [ "CI Brokers" ]
+        "tags" : [ "Brokers" ]
       },
       "parameters" : [ {
         "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
@@ -680,6 +680,12 @@
         "in" : "header",
         "name" : "Ocp-Apim-Subscription-Key",
         "type" : "apiKey"
+      },
+      "Authorization" : {
+        "bearerFormat" : "JWT",
+        "description" : "JWT token get after Azure Login",
+        "scheme" : "bearer",
+        "type" : "http"
       }
     }
   }
