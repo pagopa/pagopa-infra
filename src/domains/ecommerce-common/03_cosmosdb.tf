@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "cosmosdb_ecommerce_rg" {
 }
 
 module "cosmosdb_ecommerce_snet" {
-      source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
 
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_ecommerce
@@ -28,7 +28,7 @@ module "cosmosdb_account_mongodb" {
 
   name                = "${local.project}-cosmos-account"
   location            = var.location
-  domain         = var.domain
+  domain              = var.domain
   resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
 
   offer_type           = var.cosmos_mongo_db_params.offer_type
@@ -106,7 +106,7 @@ locals {
 
 module "cosmosdb_ecommerce_collections" {
 
-    source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
 
 
   for_each = {

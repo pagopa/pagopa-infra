@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "storage_ecommerce_rg" {
 
 
 module "ecommerce_storage_snet" {
-      source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
 
   name                 = "${local.project}-storage-snet"
   address_prefixes     = var.cidr_subnet_storage_ecommerce
@@ -47,16 +47,16 @@ module "ecommerce_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
 
 
-  name                       = replace("${local.project}-sa", "-", "")
-  account_kind               = var.ecommerce_storage_params.kind
-  account_tier               = var.ecommerce_storage_params.tier
-  account_replication_type   = var.ecommerce_storage_params.account_replication_type
-  access_tier                = "Hot"
-  blob_versioning_enabled          = true
-  resource_group_name        = azurerm_resource_group.storage_ecommerce_rg.name
-  location                   = var.location
-  advanced_threat_protection = var.ecommerce_storage_params.advanced_threat_protection
-  allow_nested_items_to_be_public   = false
+  name                            = replace("${local.project}-sa", "-", "")
+  account_kind                    = var.ecommerce_storage_params.kind
+  account_tier                    = var.ecommerce_storage_params.tier
+  account_replication_type        = var.ecommerce_storage_params.account_replication_type
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = true
+  resource_group_name             = azurerm_resource_group.storage_ecommerce_rg.name
+  location                        = var.location
+  advanced_threat_protection      = var.ecommerce_storage_params.advanced_threat_protection
+  allow_nested_items_to_be_public = false
   public_network_access_enabled   = var.ecommerce_storage_params.public_network_access_enabled
 
   blob_delete_retention_days = var.ecommerce_storage_params.retention_days
