@@ -28,6 +28,7 @@ module "cosmosdb_account_mongodb" {
 
   name                = "${local.project}-cosmos-account"
   location            = var.location
+  domain         = var.domain
   resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
 
   offer_type           = var.cosmos_mongo_db_params.offer_type
