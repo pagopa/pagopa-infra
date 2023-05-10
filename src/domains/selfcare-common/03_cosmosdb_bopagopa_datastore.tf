@@ -10,33 +10,36 @@ locals {
 }
 
 module "bopagopa_cosmosdb_mongodb_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.58"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
   name                 = "${local.project}-datastore-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_mongodb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = ["Microsoft.Web"]
 }
 
+
 module "bopagopa_cosmosdb_mongo_account" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb?ref=v2.0.19"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
   name     = "${local.project}-cosmos-account"
   location = var.location
+  domain   = var.domain
 
   resource_group_name  = azurerm_resource_group.bopagopa_rg.name
   offer_type           = var.bopagopa_datastore_cosmos_db_params.offer_type
   kind                 = var.bopagopa_datastore_cosmos_db_params.kind
+  capabilities         = var.bopagopa_datastore_cosmos_db_params.capabilities
   mongo_server_version = var.bopagopa_datastore_cosmos_db_params.server_version
-  enable_free_tier     = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
 
-
-  public_network_access_enabled    = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled
   main_geo_location_zone_redundant = var.bopagopa_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
-  capabilities       = var.bopagopa_datastore_cosmos_db_params.capabilities
+  enable_free_tier          = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
+
+  public_network_access_enabled    = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled
+
   consistency_policy = var.bopagopa_datastore_cosmos_db_params.consistency_policy
 
   main_geo_location_location = var.location
@@ -84,7 +87,7 @@ resource "azurerm_management_lock" "mongodb_pagopa_backoffice" {
 
 # Collections
 module "mongdb_collection_products" {
-  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection?ref=v3.3.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
 
   name                = "wrappers"
   resource_group_name = azurerm_resource_group.bopagopa_rg.name
