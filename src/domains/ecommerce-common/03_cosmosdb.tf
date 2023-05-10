@@ -1,18 +1,19 @@
 resource "azurerm_resource_group" "cosmosdb_ecommerce_rg" {
-  name     = format("%s-cosmosdb-rg", local.project)
+  name     = "${local.project}-cosmosdb-rg"
   location = var.location
 
   tags = var.tags
 }
 
 module "cosmosdb_ecommerce_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.15.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_ecommerce
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -22,10 +23,12 @@ module "cosmosdb_ecommerce_snet" {
 
 module "cosmosdb_account_mongodb" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+
 
   name                = "${local.project}-cosmos-account"
   location            = var.location
+  domain              = var.domain
   resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
 
   offer_type           = var.cosmos_mongo_db_params.offer_type
@@ -102,7 +105,9 @@ locals {
 }
 
 module "cosmosdb_ecommerce_collections" {
-  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection?ref=v4.13.1"
+
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+
 
   for_each = {
     for index, coll in local.collections :

@@ -7,12 +7,12 @@ resource "azurerm_resource_group" "ecommerce_functions_rg" {
 
 # Subnet to host ecommerce transactions function
 module "ecommerce_transactions_functions_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.3.2"
-  name                                           = "${local.project}-transactions-fn-snet"
-  address_prefixes                               = [var.cidr_subnet_ecommerce_functions]
-  resource_group_name                            = local.vnet_resource_group_name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.0"
+  name                                      = "${local.project}-transactions-fn-snet"
+  address_prefixes                          = [var.cidr_subnet_ecommerce_functions]
+  resource_group_name                       = local.vnet_resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -28,7 +28,7 @@ module "ecommerce_transactions_functions_snet" {
 }
 
 module "ecommerce_transactions_function_app" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v4.3.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.6.0"
 
   resource_group_name = azurerm_resource_group.ecommerce_functions_rg.name
   name                = "${local.project}-transactions-fn"
@@ -36,20 +36,28 @@ module "ecommerce_transactions_function_app" {
   health_check_path   = "info"
   subnet_id           = module.ecommerce_transactions_functions_snet.id
   runtime_version     = "~4"
-  os_type             = "linux"
-  linux_fx_version    = "DOCKER|${data.azurerm_container_registry.acr.login_server}/pagopaecommercetransactionsfunctions:latest"
 
   system_identity_enabled = true
 
   always_on                                = var.ecommerce_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
+  docker = {
+    image_name        = "pagopaecommercetransactionsfunctions"
+    image_tag         = "latest"
+    registry_password = data.azurerm_container_registry.acr.admin_password
+    registry_url      = data.azurerm_container_registry.acr.login_server
+    registry_username = data.azurerm_container_registry.acr.admin_username
+  }
+
   app_service_plan_name = "${local.project}-plan-transactions-fn"
   app_service_plan_info = {
     kind                         = var.ecommerce_functions_app_sku.kind
     sku_tier                     = var.ecommerce_functions_app_sku.sku_tier
     sku_size                     = var.ecommerce_functions_app_sku.sku_size
-    maximum_elastic_worker_count = 0
+    maximum_elastic_worker_count = null
+    worker_count                 = 1
+    zone_balancing_enabled       = false
   }
 
   storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecommtx-sa-fn", "-", "")
