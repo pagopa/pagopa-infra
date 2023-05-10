@@ -196,6 +196,7 @@
       }
     },
     "AdditionalPaymentInformations": {
+      "description": "required with outcomePaymentGateway not null",
       "type": "object",
       "required": [
         "outcomePaymentGateway",
