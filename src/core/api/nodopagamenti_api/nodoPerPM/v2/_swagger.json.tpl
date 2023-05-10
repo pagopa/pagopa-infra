@@ -103,7 +103,6 @@
         "paymentTokens",
         "outcome",
         "transactionId",
-        "additionalPaymentInformations",
         "transactionDetails"
       ],
       "properties": {
