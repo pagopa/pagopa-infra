@@ -163,7 +163,8 @@ variable "ecommerce_storage_params" {
     tier                       = string,
     account_replication_type   = string,
     advanced_threat_protection = bool,
-    retention_days             = number
+    retention_days             = number,
+    public_network_access_enabled = bool,
   })
 
   default = {
@@ -172,8 +173,10 @@ variable "ecommerce_storage_params" {
     tier                       = "Standard",
     account_replication_type   = "LRS",
     advanced_threat_protection = true,
-    retention_days             = 7
+    retention_days             = 7,
+    public_network_access_enabled = false,
   }
+  description = "Azure storage DB params for ecommerce."
 }
 
 variable "enable_iac_pipeline" {

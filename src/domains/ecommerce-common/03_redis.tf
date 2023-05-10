@@ -1,22 +1,24 @@
 resource "azurerm_resource_group" "redis_ecommerce_rg" {
-  name     = format("%s-redis-rg", local.project)
+  name     = "${local.project}-redis-rg"
   location = var.location
 
   tags = var.tags
 }
 
 module "pagopa_ecommerce_redis_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+
   name                                           = format("%s-redis-snet", local.project)
   address_prefixes                               = var.cidr_subnet_redis_ecommerce
   resource_group_name                            = local.vnet_resource_group_name
   virtual_network_name                           = local.vnet_name
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = true
 }
 
 module "pagopa_ecommerce_redis" {
-  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.18.3"
-  name                  = format("%s-redis", local.project)
+    source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.7.0"
+
+  name                  = "${local.project}-redis"
   resource_group_name   = azurerm_resource_group.redis_ecommerce_rg.name
   location              = azurerm_resource_group.redis_ecommerce_rg.location
   capacity              = var.redis_ecommerce_params.capacity
@@ -24,6 +26,7 @@ module "pagopa_ecommerce_redis" {
   family                = var.redis_ecommerce_params.family
   sku_name              = var.redis_ecommerce_params.sku_name
   enable_authentication = true
+  redis_version = 6
 
   private_endpoint = {
     enabled              = true
