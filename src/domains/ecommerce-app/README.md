@@ -27,7 +27,7 @@
 | <a name="module_ecommerce_transactions_function_app"></a> [ecommerce\_transactions\_function\_app](#module\_ecommerce\_transactions\_function\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.6.0 |
 | <a name="module_ecommerce_transactions_functions_snet"></a> [ecommerce\_transactions\_functions\_snet](#module\_ecommerce\_transactions\_functions\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.6.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.6.0 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | tls_cheker_improve_docs |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.7.0 |
 
 ## Resources
 
