@@ -1,4 +1,4 @@
-resource "azurerm_api_management_api_version_set" "api_config_api" {
+resource "azurerm_api_management_api_version_set" "apiconfig_selfcare_integration_api" {
 
   name                = format("%s-apiconfig-selfcare-integration-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -8,7 +8,7 @@ resource "azurerm_api_management_api_version_set" "api_config_api" {
 }
 
 module "apim_apiconfig_selfcare_integration_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.7.0"
 
   name                  = format("%s-apiconfig-selfcare-integration-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -16,7 +16,7 @@ module "apim_apiconfig_selfcare_integration_api_v1" {
   product_ids           = [module.apim_apiconfig_selfcare_integration_product.product_id]
   subscription_required = local.apiconfig_selfcare_integration_locals.subscription_required
 
-  version_set_id = azurerm_api_management_api_version_set.api_config_api.id
+  version_set_id = azurerm_api_management_api_version_set.apiconfig_selfcare_integration_api.id
   api_version    = "v1"
 
   description  = local.apiconfig_selfcare_integration_locals.description
@@ -31,7 +31,7 @@ module "apim_apiconfig_selfcare_integration_api_v1" {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/apiconfig-selfcare-integration/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/apiconfig-selfcare-integration/v1/_base_policy.xml", {
     hostname = local.apiconfig_selfcare_integration_locals.hostname
   })
 }
