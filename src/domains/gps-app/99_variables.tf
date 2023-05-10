@@ -247,3 +247,19 @@ variable "reporting_function_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 5
 }
+
+# Function app Framework choice
+variable "reporting_batch_dotnet_version" {
+  type    = string
+  default = null
+}
+
+variable "reporting_service_dotnet_version" {
+  type    = string
+  default = null
+}
+
+variable "reporting_analysis_dotnet_version" {
+  type    = string
+  default = null
+}
