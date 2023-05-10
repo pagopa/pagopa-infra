@@ -32,3 +32,13 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
+
+
+# API Config
+xsd_ica         = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
+api_config_tier = "PremiumV3"
+api_config_size = "P1v3"
+
+# API Config FE
+api_config_fe_enabled = true
+cname_record_name     = "config"

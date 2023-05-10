@@ -9,8 +9,8 @@ module "apim_api_config_product" {
   display_name = "ApiConfig"
   description  = "Product for API Configuration of the Node "
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = false
@@ -26,8 +26,8 @@ module "apim_api_config_product" {
 resource "azurerm_api_management_api_version_set" "api_config_api" {
 
   name                = format("%s-api-config-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
   display_name        = "ApiConfig for Node"
   versioning_scheme   = "Segment"
 }
@@ -42,8 +42,8 @@ module "apim_api_config_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.28"
 
   name                  = format("%s-api-config-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_api_config_product.product_id]
   subscription_required = false
   oauth2_authorization = {
@@ -62,7 +62,7 @@ module "apim_api_config_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
-    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = local.apim_hostname
     service = module.apim_api_config_product.product_id
   })
 
@@ -87,8 +87,8 @@ data "azuread_application" "apiconfig-be" {
 
 resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   name                         = "apiconfig-oauth2"
-  api_management_name          = module.apim.name
-  resource_group_name          = azurerm_resource_group.rg_api.name
+  api_management_name          = local.pagopa_apim_name
+  resource_group_name          = local.pagopa_apim_rg
   display_name                 = "apiconfig-oauth2"
   authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
   client_id                    = data.azuread_application.apiconfig-fe.application_id
@@ -121,8 +121,8 @@ module "apim_api_config_auth_product" {
   display_name = "ApiConfig for Auth"
   description  = "Product for API Configuration of the Node for Auth"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = true
@@ -139,8 +139,8 @@ module "apim_api_config_auth_product" {
 resource "azurerm_api_management_api_version_set" "api_config_auth_api" {
 
   name                = format("%s-api-config-auth-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "ApiConfig for Auth"
   versioning_scheme   = "Segment"
 }
@@ -149,8 +149,8 @@ module "apim_api_config_auth_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.28"
 
   name                = format("%s-api-config-auth-api", var.env_short)
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   product_ids         = [module.apim_api_config_auth_product.product_id]
 
   subscription_required = true
@@ -167,7 +167,7 @@ module "apim_api_config_auth_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
-    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = local.apim_hostname
     service = module.apim_api_config_auth_product.product_id
   })
 
@@ -197,8 +197,8 @@ module "apim_api_config_checkout_product" {
   display_name = "ApiConfig for Checkout"
   description  = "Product for API Configuration of the Node for Checkout"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = true
@@ -214,8 +214,8 @@ module "apim_api_config_checkout_product" {
 resource "azurerm_api_management_api_version_set" "api_config_checkout_api" {
 
   name                = format("%s-api-config-checkout-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "ApiConfig for Checkout"
   versioning_scheme   = "Segment"
 }
@@ -224,8 +224,8 @@ module "apim_api_config_checkout_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.28"
 
   name                = format("%s-api-config-checkout-api", var.env_short)
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   product_ids         = [module.apim_api_config_checkout_product.product_id]
 
   subscription_required = true
@@ -242,7 +242,7 @@ module "apim_api_config_checkout_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/checkout/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/apiconfig_api/checkout/v1/_base_policy.xml.tpl", {

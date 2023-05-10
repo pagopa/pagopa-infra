@@ -129,3 +129,11 @@ variable "cname_record_name" {
   type    = string
   default = "config"
 }
+
+
+# api_config_fe
+variable "api_config_fe_enabled" {
+  type        = bool
+  description = "Api Config FE enabled"
+  default     = false
+}

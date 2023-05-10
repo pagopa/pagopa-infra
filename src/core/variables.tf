@@ -208,17 +208,6 @@ variable "xsd_cdi" {
 }
 
 
-# api_config_fe
-variable "api_config_fe_enabled" {
-  type        = bool
-  description = "Api Config FE enabled"
-  default     = false
-}
-
-variable "cname_record_name" {
-  type = string
-}
-
 # nodo dei pagamenti
 
 variable "nodo_pagamenti_enabled" {

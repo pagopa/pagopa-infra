@@ -16,16 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_api_config_app_service"></a> [api\_config\_app\_service](#module\_api\_config\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service | v2.8.0 |
-| <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn | v2.0.28 |
-| <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/azurerm.git//api_management | v2.5.0 |
-| <a name="module_apim_api_config_api"></a> [apim\_api\_config\_api](#module\_apim\_api\_config\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.0.28 |
-| <a name="module_apim_api_config_auth_api"></a> [apim\_api\_config\_auth\_api](#module\_apim\_api\_config\_auth\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.0.28 |
-| <a name="module_apim_api_config_auth_product"></a> [apim\_api\_config\_auth\_product](#module\_apim\_api\_config\_auth\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_api_config_checkout_api"></a> [apim\_api\_config\_checkout\_api](#module\_apim\_api\_config\_checkout\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.0.28 |
-| <a name="module_apim_api_config_checkout_product"></a> [apim\_api\_config\_checkout\_product](#module\_apim\_api\_config\_checkout\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_api_debt_positions_api_v1"></a> [apim\_api\_debt\_positions\_api\_v1](#module\_apim\_api\_debt\_positions\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_api_donations_api"></a> [apim\_api\_donations\_api](#module\_apim\_api\_donations\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_api_gpd_api"></a> [apim\_api\_gpd\_api](#module\_apim\_api\_gpd\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
@@ -282,9 +273,6 @@
 | [azurerm_api_management_api_policy.apim_psp_for_node_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_psp_for_node_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_psp_for_node_policy_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
-| [azurerm_api_management_api_version_set.api_config_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_config_auth_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_config_checkout_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_debt_positions_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_donations_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_donazioni_ucraina_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -369,7 +357,6 @@
 | [azurerm_api_management_api_version_set.tkm_consent_manager_internal_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.tkm_mock_circuit_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.tkm_test_utility_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_authorization_server.apiconfig-oauth2](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_authorization_server) | resource |
 | [azurerm_api_management_custom_domain.api_custom_domain](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_custom_domain) | resource |
 | [azurerm_api_management_group.afm_calculator](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.apiconfig_grp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_group) | resource |
@@ -479,7 +466,6 @@
 | [azurerm_key_vault_secret.gpd_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.newconn_opsgenie_webhook_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.node_forwarder_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.storage_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_kusto_cluster.data_explorer_cluster](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/kusto_cluster) | resource |
 | [azurerm_kusto_database.re_db](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/kusto_database) | resource |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/log_analytics_workspace) | resource |
@@ -490,7 +476,6 @@
 | [azurerm_monitor_action_group.new_conn_srv_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.pm_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_action_group) | resource |
-| [azurerm_monitor_autoscale_setting.apiconfig_app_service_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.buyerbanks_function](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.canoneunico_function](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.checkout_function](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
@@ -500,7 +485,6 @@
 | [azurerm_monitor_autoscale_setting.reporting_fdr_function](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_diagnostic_setting.activity_log](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_monitor_metric_alert.checkout_fn_5xx](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.apiconfig_db_healthcheck](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.buyerbanks_update_alert](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.canoneunico_gpd_error](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.canoneunico_parsing_csv_error](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -520,6 +504,7 @@
 | [azurerm_private_dns_a_record.platform_dns_a_private_apim](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.platform_dns_a_private_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.private_dns_a_record_db_nodo](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_dns_a_record.private_dns_a_record_db_nodo_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_cname_record.config_platform_dns_private_cname](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_cname_record) | resource |
 | [azurerm_private_dns_zone.db_nodo_dns_zone](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone.internal_platform_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone) | resource |
@@ -551,8 +536,6 @@
 | [azurerm_private_dns_zone_virtual_network_link.vnet_link_privatelink_queue_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.vnet_privatelink_mongo_cosmos_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_public_ip.appgateway_public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/public_ip) | resource |
-| [azurerm_resource_group.api_config_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.api_config_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.assets_cdn_platform_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.azdo_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.buyerbanks_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
@@ -609,8 +592,6 @@
 | [null_resource.change_auth_donations_blob_container_logo9](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.change_auth_fdr_blob_container](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.decoupler_configuration_from_json_2_xml](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [azuread_application.apiconfig-be](https://registry.terraform.io/providers/hashicorp/azuread/2.6.0/docs/data-sources/application) | data source |
-| [azuread_application.apiconfig-fe](https://registry.terraform.io/providers/hashicorp/azuread/2.6.0/docs/data-sources/application) | data source |
 | [azuread_application.vpn_app](https://registry.terraform.io/providers/hashicorp/azuread/2.6.0/docs/data-sources/application) | data source |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.6.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.6.0/docs/data-sources/group) | data source |
@@ -687,7 +668,6 @@
 | <a name="input_afm_marketplace_cname_record_name"></a> [afm\_marketplace\_cname\_record\_name](#input\_afm\_marketplace\_cname\_record\_name) | DNS canonical name | `string` | `"marketplace"` | no |
 | <a name="input_allow_blob_public_access"></a> [allow\_blob\_public\_access](#input\_allow\_blob\_public\_access) | Allow or disallow public access to all blobs or containers in the storage account. | `bool` | `false` | no |
 | <a name="input_api_config_always_on"></a> [api\_config\_always\_on](#input\_api\_config\_always\_on) | Api Config always on property | `bool` | `true` | no |
-| <a name="input_api_config_fe_enabled"></a> [api\_config\_fe\_enabled](#input\_api\_config\_fe\_enabled) | Api Config FE enabled | `bool` | `false` | no |
 | <a name="input_api_config_size"></a> [api\_config\_size](#input\_api\_config\_size) | Api Config Plan size | `string` | `"S1"` | no |
 | <a name="input_api_config_tier"></a> [api\_config\_tier](#input\_api\_config\_tier) | Api config Plan tier | `string` | `"Standard"` | no |
 | <a name="input_apiconfig_logging_level"></a> [apiconfig\_logging\_level](#input\_apiconfig\_logging\_level) | Logging level of Api Config | `string` | `"INFO"` | no |
@@ -790,7 +770,6 @@
 | <a name="input_cidr_subnet_vpn"></a> [cidr\_subnet\_vpn](#input\_cidr\_subnet\_vpn) | VPN network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_vnet"></a> [cidr\_vnet](#input\_cidr\_vnet) | Virtual network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_vnet_integration"></a> [cidr\_vnet\_integration](#input\_cidr\_vnet\_integration) | Virtual network to peer with sia subscription. It should host apim | `list(string)` | n/a | yes |
-| <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | n/a | yes |
 | <a name="input_cobadge_hostname"></a> [cobadge\_hostname](#input\_cobadge\_hostname) | Cobadge hostname | `string` | `""` | no |
 | <a name="input_cosmos_document_db_params"></a> [cosmos\_document\_db\_params](#input\_cosmos\_document\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    main_geo_location_zone_redundant = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
 | <a name="input_cstar_outbound_ip_1"></a> [cstar\_outbound\_ip\_1](#input\_cstar\_outbound\_ip\_1) | CSTAR ip 1 | `string` | n/a | yes |
@@ -802,6 +781,7 @@
 | <a name="input_dexp_params"></a> [dexp\_params](#input\_dexp\_params) | n/a | <pre>object({<br>    enabled = bool<br>    sku = object({<br>      name     = string<br>      capacity = number<br>    })<br>    autoscale = object({<br>      enabled       = bool<br>      min_instances = number<br>      max_instances = number<br>    })<br>    public_network_access_enabled = bool<br>    double_encryption_enabled     = bool<br>    disk_encryption_enabled       = bool<br>    purge_enabled                 = bool<br>  })</pre> | n/a | yes |
 | <a name="input_dexp_re_db_linkes_service"></a> [dexp\_re\_db\_linkes\_service](#input\_dexp\_re\_db\_linkes\_service) | n/a | <pre>object({<br>    enable = bool<br>  })</pre> | n/a | yes |
 | <a name="input_dns_a_reconds_dbnodo_ips"></a> [dns\_a\_reconds\_dbnodo\_ips](#input\_dns\_a\_reconds\_dbnodo\_ips) | IPs address of DB Nodo | `list(string)` | `[]` | no |
+| <a name="input_dns_a_reconds_dbnodo_prf_ips"></a> [dns\_a\_reconds\_dbnodo\_prf\_ips](#input\_dns\_a\_reconds\_dbnodo\_prf\_ips) | IPs address of DB Nodo | `list(string)` | `[]` | no |
 | <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | value | `number` | `3600` | no |
 | <a name="input_dns_zone_checkout"></a> [dns\_zone\_checkout](#input\_dns\_zone\_checkout) | The checkout dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |

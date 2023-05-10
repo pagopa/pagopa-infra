@@ -32,3 +32,12 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.3.4"
 }
+
+
+# API Config
+api_config_always_on    = false
+apiconfig_logging_level = "DEBUG"
+
+# API Config FE
+api_config_fe_enabled = true
+cname_record_name     = "config"
