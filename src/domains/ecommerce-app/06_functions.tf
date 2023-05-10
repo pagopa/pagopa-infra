@@ -7,11 +7,11 @@ resource "azurerm_resource_group" "ecommerce_functions_rg" {
 
 # Subnet to host ecommerce transactions function
 module "ecommerce_transactions_functions_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.0"
-  name                                           = "${local.project}-transactions-fn-snet"
-  address_prefixes                               = [var.cidr_subnet_ecommerce_functions]
-  resource_group_name                            = local.vnet_resource_group_name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.0"
+  name                                      = "${local.project}-transactions-fn-snet"
+  address_prefixes                          = [var.cidr_subnet_ecommerce_functions]
+  resource_group_name                       = local.vnet_resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [

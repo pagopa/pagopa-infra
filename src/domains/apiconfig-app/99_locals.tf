@@ -72,7 +72,7 @@ locals {
     subscription_required = true
     subscription_limit    = 1000
 
-    path_apim        = "api-config-cache"
+    path_apim   = "api-config-cache"
     service_url = null
 
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
