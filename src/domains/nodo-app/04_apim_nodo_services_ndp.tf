@@ -3,7 +3,7 @@
 ##############
 
 module "apim_nodo_dei_pagamenti_product_ndp" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "nodo-ndp"
   display_name = "Nodo dei Pagamenti NDP"
@@ -480,7 +480,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_ndp" {
 
 module "apim_nodo_per_pm_api_v1_ndp" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                  = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
@@ -517,7 +517,7 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_ndp
 
 module "apim_nodo_per_pm_api_v2_ndp" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                  = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
@@ -568,7 +568,7 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_ndp" {
 }
 
 module "apim_nodo_monitoring_api_ndp" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                  = format("%s-nodo-monitoring-api-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg
