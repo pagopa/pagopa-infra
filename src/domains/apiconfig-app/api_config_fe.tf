@@ -29,12 +29,12 @@ module "api_config_fe_cdn" {
   index_document     = "index.html"
   error_404_document = "not_found.html"
 
-  dns_zone_name                = azurerm_dns_zone.public[0].name
-  dns_zone_resource_group_name = azurerm_dns_zone.public[0].resource_group_name
+  dns_zone_name                = data.azurerm_dns_zone.public.name
+  dns_zone_resource_group_name = data.azurerm_dns_zone.public.resource_group_name
 
-  keyvault_resource_group_name = module.key_vault.resource_group_name
+  keyvault_resource_group_name = data.azurerm_key_vault.kv.resource_group_name
   keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
-  keyvault_vault_name          = module.key_vault.name
+  keyvault_vault_name          = data.azurerm_key_vault.kv.name
 
   querystring_caching_behaviour = "BypassCaching"
 
@@ -88,5 +88,5 @@ resource "azurerm_key_vault_secret" "storage_account_key" {
   value        = module.api_config_fe_cdn[0].storage_primary_access_key
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 }

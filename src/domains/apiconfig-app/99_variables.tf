@@ -137,3 +137,78 @@ variable "api_config_fe_enabled" {
   description = "Api Config FE enabled"
   default     = false
 }
+
+
+# api_config
+
+variable "cidr_subnet_api_config" {
+  type        = list(string)
+  description = "Address prefixes subnet api config"
+  default     = null
+}
+
+variable "api_config_tier" {
+  type        = string
+  description = "Api config Plan tier"
+  default     = "Standard"
+}
+
+variable "api_config_size" {
+  type        = string
+  description = "Api Config Plan size"
+  default     = "S1"
+}
+
+variable "api_config_always_on" {
+  type        = bool
+  description = "Api Config always on property"
+  default     = true
+}
+
+variable "db_port" {
+  type        = number
+  description = "Port number of the DB"
+  default     = 1521
+}
+
+variable "db_service_name" {
+  type        = string
+  description = "Service Name of DB"
+  default     = null
+}
+
+variable "apiconfig_logging_level" {
+  type        = string
+  description = "Logging level of Api Config"
+  default     = "INFO"
+}
+
+variable "xsd_ica" {
+  type        = string
+  description = "XML Schema of Informatica Conto Accredito"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/InformativaContoAccredito_1_2_1.xsd"
+}
+
+variable "xsd_counterpart" {
+  type        = string
+  description = "XML Schema of Tabelle delle Controparti"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/TabellaDelleControparti_1_0_8.xsd"
+}
+
+variable "xsd_cdi" {
+  type        = string
+  description = "XML Schema of Catalogo Dati Informativi"
+  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/CatalogoDatiInformativiPSP.xsd"
+}
+
+# DNS
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
+}
+
+variable "private_dns_zone_db_nodo_pagamenti" {
+  type    = string
+  default = "dev.db-nodo-pagamenti.com"
+}

@@ -19,6 +19,15 @@ module "apim_api_config_product" {
   policy_xml = file("./api_product/apiconfig_api/_base_policy.xml")
 }
 
+
+resource "azurerm_api_management_group" "apiconfig_grp" {
+  name                = "api-config-be-writer"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ApiConfig Writer"
+}
+
+
 ##############
 ##    API   ##
 ##############
@@ -67,7 +76,7 @@ module "apim_api_config_api" {
   })
 
   xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
-    origin                 = format("https://%s.%s.%s", var.cname_record_name, var.dns_zone_prefix, var.external_domain)
+    origin                 = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
     pagopa_tenant_id       = local.pagopa_tenant_id
     apiconfig_be_client_id = local.apiconfig_be_client_id
     apiconfig_fe_client_id = local.apiconfig_fe_client_id
@@ -102,7 +111,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   default_scope = format("%s/%s",
     data.azuread_application.apiconfig-be.identifier_uris[0],
   "access-apiconfig-be")
-  client_secret = data.azurerm_key_vault_secret.apiconfig-client-secret.value
+  client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
 
   bearer_token_sending_methods = ["authorizationHeader"]
   client_authentication_method = ["Body"]
