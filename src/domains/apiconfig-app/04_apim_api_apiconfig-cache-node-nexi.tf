@@ -28,12 +28,12 @@ module "apim_api_apiconfig_cache_node_nexi_api_dev_v1" {
   service_url = local.apiconfig_cache_locals.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/apiconfig-cache/node/_openapi_nodev1.json.tpl", {
+  content_value = templatefile("./api/apiconfig-cache/node_fdr/_openapi.json.tpl", {
     host    = local.apim_hostname
     service = "node-nexi"
   })
 
-  xml_content = templatefile("./api/apiconfig-cache/node/_base_policy.xml", {
+  xml_content = templatefile("./api/apiconfig-cache/node_fdr/_base_policy.xml", {
     hostname = local.apiconfig_cache_locals.hostname
     hostname = format("%s/%s", local.apiconfig_cache_locals.hostname, "${local.apiconfig_cache_locals.path}dev/o")
   })
