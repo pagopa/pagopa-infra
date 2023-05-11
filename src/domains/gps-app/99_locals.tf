@@ -36,4 +36,6 @@ locals {
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   gps_hostname  = var.env == "prod" ? "weuprod.gps.internal.platform.pagopa.it" : "weu${var.env}.gps.internal.${var.env}.platform.pagopa.it"
 
+  gps_kv_rg = "${local.product}-${var.domain}-sec-rg"
+  gps_kv    = "${local.product}-${var.domain}-kv"
 }
