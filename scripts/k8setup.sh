@@ -179,7 +179,9 @@ while getopts ":hlk-:" option; do
       k) # kubelogin convert kubeconfig
         echo "converting kubeconfig to use azurecli login mode."
         installpkg "kubelogin"
-        kubelogin convert-kubeconfig -l azurecli         
+	for n in $(ls -1 /Users/$(whoami)/.kube/config*); do
+          kubelogin convert-kubeconfig -l azurecli --kubeconfig $n
+	done
          exit;;
       *) # Invalid option
         echo "Error: Invalid option"
