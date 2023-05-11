@@ -133,7 +133,7 @@ locals {
 
 ## Function reporting_batch
 module "reporting_batch_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
 
   resource_group_name = azurerm_resource_group.gpd_rg.name
   name                = replace("${local.project}fn-gpd-batch", "gps", "")
@@ -175,7 +175,7 @@ module "reporting_batch_function" {
 module "reporting_batch_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_id                          = module.reporting_batch_function.id
@@ -209,7 +209,7 @@ module "reporting_batch_function_slot_staging" {
 
 ## Function reporting_service
 module "reporting_service_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
 
   resource_group_name  = azurerm_resource_group.gpd_rg.name
   name                 = format("%s-fn-gpd-service", local.product_location)
@@ -256,7 +256,7 @@ module "reporting_service_function" {
 module "reporting_service_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_id                          = module.reporting_service_function.id
@@ -290,7 +290,7 @@ module "reporting_service_function_slot_staging" {
 
 ## Function reporting_analysis
 module "reporting_analysis_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
 
   resource_group_name  = azurerm_resource_group.gpd_rg.name
   name                 = format("%s-fn-gpd-analysis", local.product_location)
@@ -333,7 +333,7 @@ module "reporting_analysis_function" {
 module "reporting_analysis_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_id                          = module.reporting_analysis_function.id
