@@ -88,6 +88,10 @@ locals {
       indexes = [{
         keys   = ["_id"]
         unique = true
+        },
+        {
+          keys   = ["transactionId", "creationDate"]
+          unique = false
         }
       ]
       shard_key = "transactionId"
@@ -97,6 +101,10 @@ locals {
       indexes = [{
         keys   = ["_id"]
         unique = true
+        },
+        {
+          keys   = ["creationDate", "status", "clientId"]
+          unique = false
         }
       ]
       shard_key = null
