@@ -125,7 +125,7 @@ resource "azurerm_key_vault_secret" "ehub_negative_biz_connection_string" {
 
 resource "azurerm_key_vault_secret" "ehub_awakable_negative_biz_connection_string" {
   name         = format("ehub-%s-tx-awakable-negative-biz-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -133,7 +133,7 @@ resource "azurerm_key_vault_secret" "ehub_awakable_negative_biz_connection_strin
 
 resource "azurerm_key_vault_secret" "ehub_final_negative_biz_connection_string" {
   name         = format("ehub-%s-tx-final-negative-biz-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

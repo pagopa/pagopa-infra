@@ -364,32 +364,6 @@ eventhubs = [
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-negative-awakable-biz-evt"
-    partitions        = 32
-    message_retention = 7
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
-    keys = [
-      {
-        name   = "pagopa-biz-evt-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
     name              = "nodo-dei-pagamenti-negative-biz-evt"
     partitions        = 1
     message_retention = 1
@@ -403,32 +377,6 @@ eventhubs = [
       },
       {
         name   = "pagopa-negative-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-negative-final-biz-evt"
-    partitions        = 32
-    message_retention = 7
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
-    keys = [
-      {
-        name   = "pagopa-biz-evt-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pdnd"
         listen = true
         send   = false
         manage = false
@@ -532,24 +480,59 @@ eventhubs = [
 
     ]
   },
+]
+
+eventhubs_02 = [
   {
-    name              = "nodo-dei-pagamenti-negative-biz-evt"
-    partitions        = 1
-    message_retention = 1
-    consumers         = ["pagopa-negative-biz-evt-rx"]
+    name              = "nodo-dei-pagamenti-negative-awakable-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
     keys = [
       {
-        name   = "pagopa-negative-biz-evt-tx"
+        name   = "pagopa-biz-evt-tx"
         listen = false
         send   = true
         manage = false
       },
       {
-        name   = "pagopa-negative-biz-evt-rx"
+        name   = "pagopa-biz-evt-rx"
         listen = true
         send   = false
         manage = false
       },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-negative-final-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
     ]
   },
 ]
