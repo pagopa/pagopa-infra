@@ -1,0 +1,3 @@
+module.pagopa_proxy_redis_snet
+resource.azurerm_resource_group.pagopa_proxy_rg
+module.pagopa_proxy_redis

@@ -90,7 +90,6 @@ def main():
         output_import_file.write("#!/bin/bash\n")
 
         output_import_file.write("# Generated with `generate_imports.py`\n\n")
-        output_import_file.write("set -e\n\n")
 
         for address in data:
             resources_to_import = []
