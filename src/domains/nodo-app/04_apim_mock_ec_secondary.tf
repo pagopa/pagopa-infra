@@ -3,7 +3,7 @@
 ##############
 
 module "apim_mock_ec_secondary_product" {
-  source       = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source       = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
   count        = var.env_short == "d" ? 1 : 0
   product_id   = "mock_ec_secondary"
   display_name = "Mock EC (Secondary) for NDP"
@@ -47,7 +47,7 @@ resource "azurerm_api_management_api_version_set" "api_mock_ec_secondary_api" {
 module "apim_api_mock_ec_secondary_api_v1" {
   count = var.env_short == "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                  = format("%s-mock-ec-secondary-service-api", local.project)
   api_management_name   = local.pagopa_apim_name

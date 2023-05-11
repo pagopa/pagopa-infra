@@ -11,12 +11,13 @@ data "azurerm_virtual_network" "vnet_integration" {
 }
 
 module "vmss_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.1.13"
-  name                                           = format("%s-vmss-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_vmss
-  resource_group_name                            = local.vnet_resource_group_name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_integration.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  name                                          = format("%s-vmss-snet", local.project)
+  address_prefixes                              = var.cidr_subnet_vmss
+  resource_group_name                           = local.vnet_resource_group_name
+  virtual_network_name                          = data.azurerm_virtual_network.vnet_integration.name
+  private_link_service_network_policies_enabled = true
+  private_endpoint_network_policies_enabled     = false
 }
 
 data "azurerm_key_vault_secret" "vmss_admin_login" {
@@ -62,7 +63,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss-egress" {
       name                                   = "egress-in"
       primary                                = true
       subnet_id                              = module.vmss_snet.id
-      load_balancer_backend_address_pool_ids = [module.load_balancer_nodo_egress.azurerm_lb_backend_address_pool_id]
+      load_balancer_backend_address_pool_ids = [module.load_balancer_nodo_egress.azurerm_lb_backend_address_pool_id[0]]
     }
   }
   network_interface {
@@ -95,11 +96,10 @@ resource "azurerm_virtual_machine_scale_set_extension" "vmss-extension" {
 #
 # create load balancer (NVA) with tcp/0 ports
 #
-
 module "load_balancer_nodo_egress" {
-  source                                 = "Azure/loadbalancer/azurerm"
-  version                                = "3.4.0"
+  source                                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//load_balancer?ref=v6.5.0"
   resource_group_name                    = local.vnet_resource_group_name
+  location                               = var.location
   name                                   = format("%s-egress-lb", local.project)
   frontend_name                          = "frontend_private_ip"
   type                                   = "private"
@@ -108,13 +108,22 @@ module "load_balancer_nodo_egress" {
   frontend_private_ip_address            = var.lb_frontend_private_ip_address
   lb_sku                                 = "Standard"
   pip_sku                                = "Standard"
-
   lb_port = {
-    http = ["0", "All", "0"]
+    lb_nodo = {
+      frontend_port     = "0"
+      protocol          = "All"
+      backend_port      = "0"
+      backend_pool_name = "default"
+      probe_name        = "probe_nodo"
+    }
   }
 
   lb_probe = {
-    ssh = ["Tcp", "22", ""]
+    probe_nodo = {
+      protocol     = "Tcp"
+      port         = "22"
+      request_path = ""
+    }
   }
 
   tags = var.tags

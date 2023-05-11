@@ -132,3 +132,8 @@ variable "cacerts_path" {
   type        = string
   description = "Java cacerts"
 }
+
+variable "pipe_service_principel_application_id" {
+  type        = string
+  description = "SP for pipeline application_id - pagopaspa-pagoPA-projects-[subscriptionid]"
+}
