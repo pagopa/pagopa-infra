@@ -329,7 +329,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-test", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -339,6 +339,12 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-test" # this is used by Nexi for testing purposes
         listen = true
         send   = false
         manage = false
@@ -464,7 +470,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-negative-biz-evt"
     partitions        = 1
     message_retention = 1
-    consumers         = ["pagopa-negative-biz-evt-rx"]
+    consumers         = ["pagopa-negative-biz-evt-rx", "pagopa-negative-biz-evt-rx-test"]
     keys = [
       {
         name   = "pagopa-negative-biz-evt-tx"
@@ -478,6 +484,12 @@ eventhubs = [
         send   = false
         manage = false
       },
+      {
+        name   = "pagopa-negative-biz-evt-rx-test" # this is used by Nexi for testing purposes
+        listen = true
+        send   = false
+        manage = false
+      }
     ]
   },
 ]
