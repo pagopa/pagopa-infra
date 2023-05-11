@@ -98,3 +98,33 @@ variable "apim_dns_zone_prefix" {
   default     = null
   description = "The dns subdomain for apim."
 }
+
+
+# pagopa-proxy Redis
+
+variable "cidr_subnet_pagopa_proxy_redis" {
+  type        = list(string)
+  description = "Address prefixes subnet redis for pagopa proxy"
+  default     = null
+}
+
+variable "pagopa_proxy_redis_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "pagopa_proxy_redis_sku_name" {
+  type    = string
+  default = null
+}
+
+variable "pagopa_proxy_redis_family" {
+  type    = string
+  default = "C"
+}
+
+variable "redis_private_endpoint_enabled" {
+  type        = bool
+  description = "Enable private endpoints for redis instances?"
+  default     = true
+}
