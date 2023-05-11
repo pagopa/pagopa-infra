@@ -88,6 +88,10 @@ locals {
       indexes = [{
         keys   = ["_id"]
         unique = true
+        },
+        {
+          keys   = ["transactionId", "creationDate"]
+          unique = false
         }
       ]
       shard_key = "transactionId"
@@ -97,6 +101,18 @@ locals {
       indexes = [{
         keys   = ["_id"]
         unique = true
+        },
+        {
+          keys   = ["creationDate", "status", "clientId"]
+          unique = false
+        },
+        {
+          keys   = ["paymentNotices.rptId"]
+          unique = false
+        },
+        {
+          keys   = ["paymentNotices.paymentToken"]
+          unique = false
         }
       ]
       shard_key = null
@@ -122,5 +138,5 @@ module "cosmosdb_ecommerce_collections" {
 
   indexes     = each.value.indexes
   shard_key   = each.value.shard_key
-  lock_enable = var.env_short == "p" ? true : false
+  lock_enable = var.env_short == "d" ? false : true
 }
