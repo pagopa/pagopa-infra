@@ -176,6 +176,7 @@ mock_payment_gateway_enabled = true
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
+apim_fdr_nodo_pagopa_enable     = true
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -531,7 +532,8 @@ acr_enabled = true
 # db nodo dei pagamenti
 db_port                            = 1524
 db_service_name                    = "NDPSPCA_PP_NODO4_CFG"
-dns_a_reconds_dbnodo_ips           = ["10.70.73.10"] # db onCloud
+dns_a_reconds_dbnodo_ips           = ["10.70.73.10"] # db onCloud
+dns_a_reconds_dbnodo_prf_ips       = ["10.70.73.20"] # db onCloud prf
 private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
 # API Config
