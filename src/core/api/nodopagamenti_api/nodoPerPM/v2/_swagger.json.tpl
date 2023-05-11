@@ -254,7 +254,7 @@
           "$ref": "#/definitions/Info"
         },
         "user": {
-          "$ref": "#/definitions/Transaction"
+          "$ref": "#/definitions/User"
         }
       }
     },
