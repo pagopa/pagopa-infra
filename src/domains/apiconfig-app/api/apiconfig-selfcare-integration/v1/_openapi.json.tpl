@@ -33,7 +33,7 @@
           "description" : "The identifier of the station.",
           "in" : "query",
           "name" : "stationId",
-          "required" : true,
+          "required" : false,
           "schema" : {
             "type" : "string"
           }
@@ -43,17 +43,21 @@
           "name" : "limit",
           "required" : true,
           "schema" : {
+            "maximum" : 999,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "default" : 10
           }
         }, {
           "description" : "The index of the page, starting from 0.",
           "in" : "query",
-          "name" : "pageNumber",
+          "name" : "page",
           "required" : true,
           "schema" : {
+            "minimum" : 0,
             "type" : "integer",
-            "format" : "int32"
+            "format" : "int32",
+            "default" : 0
           }
         } ],
         "responses" : {
@@ -61,7 +65,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/BrokerStationDetailsList"
+                  "$ref" : "#/components/schemas/StationDetailsList"
                 }
               }
             },
@@ -179,7 +183,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/CreditorInstitutionStationDetailsList"
+                  "$ref" : "#/components/schemas/StationDetailsList"
                 }
               }
             },
@@ -436,32 +440,6 @@
         },
         "description" : "Details of the intermediate EC of the station"
       },
-      "BrokerStationDetailsList" : {
-        "required" : [ "stations" ],
-        "type" : "object",
-        "properties" : {
-          "stations" : {
-            "type" : "array",
-            "description" : "List of stations associated to the same broker",
-            "items" : {
-              "$ref" : "#/components/schemas/StationDetails"
-            }
-          }
-        }
-      },
-      "CreditorInstitutionStationDetailsList" : {
-        "required" : [ "stations" ],
-        "type" : "object",
-        "properties" : {
-          "stations" : {
-            "type" : "array",
-            "description" : "List of stations associated to the same EC",
-            "items" : {
-              "$ref" : "#/components/schemas/StationDetails"
-            }
-          }
-        }
-      },
       "ProblemJson" : {
         "type" : "object",
         "properties" : {
@@ -671,7 +649,20 @@
             "format" : "int64"
           }
         },
-        "description" : "List of stations associated to the same broker"
+        "description" : "List of stations associated to the same entity"
+      },
+      "StationDetailsList" : {
+        "required" : [ "stations" ],
+        "type" : "object",
+        "properties" : {
+          "stations" : {
+            "type" : "array",
+            "description" : "List of stations associated to the same entity",
+            "items" : {
+              "$ref" : "#/components/schemas/StationDetails"
+            }
+          }
+        }
       }
     },
     "securitySchemes" : {
