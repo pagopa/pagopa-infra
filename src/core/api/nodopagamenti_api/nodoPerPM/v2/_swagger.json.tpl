@@ -195,7 +195,7 @@
       }
     },
     "AdditionalPaymentInformations": {
-      "description": "required with outcomePaymentGateway not null",
+      "description": "required with outcomePaymentGateway OK",
       "type": "object",
       "required": [
         "outcomePaymentGateway",
@@ -240,6 +240,7 @@
     },
     "TransactionDetails": {
       "type": "object",
+      "description": "required only for outcomePaymentGateway not null",
       "required": [
         "transaction",
         "info",
@@ -294,6 +295,10 @@
         },
         "authorizationCode": {
           "description": "only for xpay authorizations",
+          "type": "string"
+        },
+        "errorCode": {
+          "description": "payment gateway error code",
           "type": "string"
         },
         "rrn": {
