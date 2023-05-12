@@ -123,25 +123,25 @@
           ]
         },
         "idPSP": {
-          "description": "required with outcomePaymentGateway not null",
+          "description": "required only for outcomePaymentGateway OK",
           "type": "string",
           "minLength": 1,
           "maxLength": 35
         },
         "idBrokerPSP": {
-          "description": "required with outcomePaymentGateway not null",
+          "description": "required only for outcomePaymentGateway OK",
           "type": "string",
           "minLength": 1,
           "maxLength": 35
         },
         "idChannel": {
-          "description": "required with outcomePaymentGateway not null",
+          "description": "required only for outcomePaymentGateway OK",
           "type": "string",
           "minLength": 1,
           "maxLength": 35
         },
         "paymentMethod": {
-          "description": "required with outcomePaymentGateway not null",
+          "description": "required only for outcomePaymentGateway OK",
           "type": "string",
           "minLength": 1
         },
@@ -151,7 +151,7 @@
           "maxLength": 255
         },
         "totalAmount": {
-          "description": "required with outcomePaymentGateway not null",
+          "description": "required only for outcomePaymentGateway OK",
           "type": "number",
           "minimum": 0,
           "maximum": 1000000000,
@@ -159,30 +159,32 @@
         },
         "fee": {
           "type": "number",
-          "description": "commission amount and  required with outcomePaymentGateway not null",
+          "description": "required only for outcomePaymentGateway OK",
           "minimum": 0,
           "maximum": 1000000000,
           "example": "10.00"
         },
         "primaryCiIncurredFee": {
           "type": "number",
-          "description": "GEC bundle commission amount",
+          "description": "required only for outcomePaymentGateway OK",
           "minimum": 0,
           "maximum": 1000000000,
           "example": "10.00"
         },
         "idBundle": {
           "type": "string",
+          "description": "required only for outcomePaymentGateway OK",
           "minLength": 1,
           "maxLength": 70
         },
         "idCiBundle": {
           "type": "string",
+          "description": "required only for outcomePaymentGateway OK",
           "minLength": 1,
           "maxLength": 70
         },
         "timestampOperation": {
-          "description": "required with outcomePaymentGateway not null",
+          "description": "required only for outcomePaymentGateway OK",
           "type": "string",
           "format": "date-time",
           "example": "2022-02-22T14:41:58.811+01:00"
