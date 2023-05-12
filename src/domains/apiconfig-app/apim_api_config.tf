@@ -3,7 +3,7 @@
 ##############
 
 module "apim_api_config_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "product-api-config"
   display_name = "ApiConfig"
@@ -48,7 +48,7 @@ locals {
 }
 
 module "apim_api_config_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                  = format("%s-api-config-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -87,36 +87,36 @@ module "apim_api_config_api" {
 ##    CONFIGURATION   ##
 ########################
 
-data "azuread_application" "apiconfig-fe" {
-  display_name = format("pagopa-%s-apiconfig-fe", var.env_short)
-}
-data "azuread_application" "apiconfig-be" {
-  display_name = format("pagopa-%s-apiconfig-be", var.env_short)
-}
+#data "azuread_application" "apiconfig-fe" {
+#  display_name = format("pagopa-%s-apiconfig-fe", var.env_short)
+#}
+#data "azuread_application" "apiconfig-be" {
+#  display_name = format("pagopa-%s-apiconfig-be", var.env_short)
+#}
 
-resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
-  name                         = "apiconfig-oauth2"
-  api_management_name          = local.pagopa_apim_name
-  resource_group_name          = local.pagopa_apim_rg
-  display_name                 = "apiconfig-oauth2"
-  authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
-  client_id                    = data.azuread_application.apiconfig-fe.application_id
-  client_registration_endpoint = "http://localhost"
-
-  grant_types           = ["authorizationCode"]
-  authorization_methods = ["GET", "POST"]
-
-  #tfsec:ignore:GEN003
-  token_endpoint = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
-  default_scope = format("%s/%s",
-    data.azuread_application.apiconfig-be.identifier_uris[0],
-  "access-apiconfig-be")
-  client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
-
-  bearer_token_sending_methods = ["authorizationHeader"]
-  client_authentication_method = ["Body"]
-
-}
+#resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
+#  name                         = "apiconfig-oauth2"
+#  api_management_name          = local.pagopa_apim_name
+#  resource_group_name          = local.pagopa_apim_rg
+#  display_name                 = "apiconfig-oauth2"
+#  authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
+#  client_id                    = data.azuread_application.apiconfig-fe.application_id
+#  client_registration_endpoint = "http://localhost"
+#
+#  grant_types           = ["authorizationCode"]
+#  authorization_methods = ["GET", "POST"]
+#
+#  #tfsec:ignore:GEN003
+#  token_endpoint = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
+#  default_scope = format("%s/%s",
+#    data.azuread_application.apiconfig-be.identifier_uris[0],
+#  "access-apiconfig-be")
+#  client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
+#
+#  bearer_token_sending_methods = ["authorizationHeader"]
+#  client_authentication_method = ["Body"]
+#
+#}
 
 
 ###########################
@@ -124,7 +124,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
 ###########################
 
 module "apim_api_config_auth_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "product-api-config-auth"
   display_name = "ApiConfig for Auth"
@@ -155,7 +155,7 @@ resource "azurerm_api_management_api_version_set" "api_config_auth_api" {
 }
 
 module "apim_api_config_auth_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                = format("%s-api-config-auth-api", var.env_short)
   api_management_name = local.pagopa_apim_name
@@ -200,7 +200,7 @@ module "apim_api_config_auth_api" {
 ###########################
 
 module "apim_api_config_checkout_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "product-api-config-checkout"
   display_name = "ApiConfig for Checkout"
@@ -230,7 +230,7 @@ resource "azurerm_api_management_api_version_set" "api_config_checkout_api" {
 }
 
 module "apim_api_config_checkout_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                = format("%s-api-config-checkout-api", var.env_short)
   api_management_name = local.pagopa_apim_name

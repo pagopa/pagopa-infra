@@ -15,7 +15,7 @@ locals {
 # Subnet to host the api config
 module "api_config_snet" {
   count                                          = var.cidr_subnet_api_config != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                                           = format("%s-api-config-snet", local.project)
   address_prefixes                               = var.cidr_subnet_api_config
   resource_group_name                            = data.azurerm_virtual_network.vnet.resource_group_name
@@ -38,7 +38,7 @@ module "api_config_snet" {
 }
 
 module "api_config_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.8.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.4.1"
 
   vnet_integration    = true
   resource_group_name = azurerm_resource_group.api_config_rg.name
