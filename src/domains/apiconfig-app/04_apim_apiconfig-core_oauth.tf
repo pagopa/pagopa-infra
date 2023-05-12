@@ -1,44 +1,48 @@
-resource "azurerm_api_management_api_version_set" "api_apiconfig_core_oauth_api" {
-  for_each = toset(["p", "o"])
+locals {
+  oracle: "o",
+  postgres: "p"
+}
 
-  name                = format("%s-apiconfig-core-oauth-%s-api", var.env_short, each.key)
+# Postgres
+
+resource "azurerm_api_management_api_version_set" "api_apiconfig_core_oauth_api_p" {
+  name                = format("%s-apiconfig-core-oauth-%s-api", var.env_short, local.postgres)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = "${local.apiconfig_core_locals.display_name} - Oauth ${each.key}"
+  display_name        = "${local.apiconfig_core_locals.display_name} - Oauth ${local.postgres}"
   versioning_scheme   = "Segment"
 }
 
 
-module "apim_api_apiconfig_core_oauth_api_v1" {
+module "apim_api_apiconfig_core_oauth_api_v1_o" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
-  for_each = toset(["p", "o"])
 
-  name                  = format("%s-apiconfig-core-%s-oauth-api", local.project, each.key)
+  name                  = format("%s-apiconfig-core-%s-oauth-api", local.project, local.postgres)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_apiconfig_core_oauth_product.product_id]
   subscription_required = local.apiconfig_core_locals.subscription_required
 
-  version_set_id = azurerm_api_management_api_version_set.api_apiconfig_core_oauth_api[each.key].id
+  version_set_id = azurerm_api_management_api_version_set.api_apiconfig_core_oauth_api_o.id
   api_version    = "v1"
 
   description  = local.apiconfig_core_locals.description
-  display_name = "${local.apiconfig_core_locals.display_name} - Oauth ${each.key}"
+  display_name = "${local.apiconfig_core_locals.display_name} - Oauth ${local.postgres}"
 
-  path        = "${local.apiconfig_core_locals.path}/oauth/${each.key}"
+  path        = "${local.apiconfig_core_locals.path}/oauth/${local.postgres}"
   protocols   = ["https"]
   service_url = local.apiconfig_core_locals.service_url
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig-core/oauth/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
-    service = "oauth-${each.key}"
+    service = "oauth-${local.postgres}"
   })
 
   xml_content = templatefile("./api/apiconfig-core/oauth/v1/_base_policy.xml.tpl", {
     hostname = local.apiconfig_core_locals.hostname
     origin   = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
-    database = each.key
+    database = local.postgres
 
     pagopa_tenant_id       = local.apiconfig_core_locals.pagopa_tenant_id
     apiconfig_be_client_id = local.apiconfig_core_locals.apiconfig_be_client_id
@@ -46,6 +50,54 @@ module "apim_api_apiconfig_core_oauth_api_v1" {
   })
 }
 
+# Oracle
+
+resource "azurerm_api_management_api_version_set" "api_apiconfig_core_oauth_api_o" {
+  name                = format("%s-apiconfig-core-oauth-%s-api", var.env_short, local.oracle)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "${local.apiconfig_core_locals.display_name} - Oauth ${local.oracle}"
+  versioning_scheme   = "Segment"
+}
+
+
+module "apim_api_apiconfig_core_oauth_api_v1_p" {
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
+
+  name                  = format("%s-apiconfig-core-%s-oauth-api", local.project, local.oracle)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_apiconfig_core_oauth_product.product_id]
+  subscription_required = local.apiconfig_core_locals.subscription_required
+
+  version_set_id = azurerm_api_management_api_version_set.api_apiconfig_core_oauth_api_p.id
+  api_version    = "v1"
+
+  description  = local.apiconfig_core_locals.description
+  display_name = "${local.apiconfig_core_locals.display_name} - Oauth ${local.oracle}"
+
+  path        = "${local.apiconfig_core_locals.path}/oauth/${local.oracle}"
+  protocols   = ["https"]
+  service_url = local.apiconfig_core_locals.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/apiconfig-core/oauth/v1/_openapi.json.tpl", {
+    host    = local.apim_hostname
+    service = "oauth-${local.oracle}"
+  })
+
+  xml_content = templatefile("./api/apiconfig-core/oauth/v1/_base_policy.xml.tpl", {
+    hostname = local.apiconfig_core_locals.hostname
+    origin   = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
+    database = local.oracle
+
+    pagopa_tenant_id       = local.apiconfig_core_locals.pagopa_tenant_id
+    apiconfig_be_client_id = local.apiconfig_core_locals.apiconfig_be_client_id
+    apiconfig_fe_client_id = local.apiconfig_core_locals.apiconfig_fe_client_id
+  })
+}
+
+# OAuth2 configuration
 
 resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   name                         = "apiconfig-core-oauth2"
