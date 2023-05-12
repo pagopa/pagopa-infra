@@ -102,8 +102,7 @@
       "required": [
         "paymentTokens",
         "outcome",
-        "transactionId",
-        "transactionDetails"
+        "transactionId"
       ],
       "properties": {
         "paymentTokens": {
