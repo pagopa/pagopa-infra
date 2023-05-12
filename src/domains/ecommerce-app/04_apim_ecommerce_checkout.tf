@@ -138,6 +138,6 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
   resource_group_name = local.pagopa_apim_rg
   operation_id        = "newTransaction"
 
-  xml_content = file("./api/ecommerce-checkout/v1/_rpt_ids_value.xml.tpl")
+  xml_content = file("./api/ecommerce-checkout/v1/_transaction_policy.xml.tpl")
 }
 
