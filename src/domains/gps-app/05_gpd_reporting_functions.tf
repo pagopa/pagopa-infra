@@ -141,7 +141,7 @@ module "reporting_batch_function" {
   health_check_path   = "info"
   enable_healthcheck  = false
   subnet_id           = module.reporting_function_snet.id
-  runtime_version     = "~3"
+  runtime_version     = "~4"
   docker = {
     registry_url      = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_URL
     image_name        = var.reporting_batch_image
@@ -187,7 +187,7 @@ module "reporting_batch_function_slot_staging" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.reporting_batch_function_always_on
   health_check_path                        = "info"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
 
   # App settings
   app_settings = local.function_batch_app_settings
@@ -218,7 +218,7 @@ module "reporting_service_function" {
   health_check_path    = "info"
   enable_healthcheck   = false
   subnet_id            = module.reporting_function_snet.id
-  runtime_version      = "~3"
+  runtime_version      = "~4"
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
@@ -268,7 +268,7 @@ module "reporting_service_function_slot_staging" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.reporting_service_function_always_on
   health_check_path                        = "info"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
 
   # App settings
   app_settings = local.function_service_app_settings
@@ -300,7 +300,7 @@ module "reporting_analysis_function" {
   # dotnet_version    = var.reporting_analysis_dotnet_version
   enable_healthcheck = false
   subnet_id          = module.reporting_function_snet.id
-  runtime_version    = "~3"
+  runtime_version    = "~4"
   docker = {
     registry_url      = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_URL
     image_name        = var.reporting_analysis_image
@@ -346,7 +346,7 @@ module "reporting_analysis_function_slot_staging" {
 
   always_on         = var.reporting_analysis_function_always_on
   health_check_path = "info"
-  runtime_version   = "~3"
+  runtime_version   = "~4"
 
   # App settings
   app_settings = local.function_analysis_app_settings
