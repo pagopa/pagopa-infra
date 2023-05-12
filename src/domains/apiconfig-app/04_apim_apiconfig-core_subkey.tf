@@ -1,7 +1,3 @@
-locals {
-  oracle: "o"
-  postgres: "p"
-}
 resource "azurerm_api_management_api_version_set" "api_apiconfig_core_subkey_api_p" {
   name                = format("%s-apiconfig-core-subkey-%s-api", var.env_short, local.postgres)
   resource_group_name = local.pagopa_apim_rg
@@ -12,7 +8,7 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_core_subkey_api
 
 
 module "apim_api_apiconfig_core_subkey_api_v1_p" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
   name                  = format("%s-apiconfig-core-%s-subkey-api", local.project, local.postgres)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
@@ -53,7 +49,7 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_core_subkey_api
 
 
 module "apim_api_apiconfig_core_subkey_api_v1_o" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
 
   name                  = format("%s-apiconfig-core-%s-subkey-api", local.project, local.oracle)
   api_management_name   = local.pagopa_apim_name

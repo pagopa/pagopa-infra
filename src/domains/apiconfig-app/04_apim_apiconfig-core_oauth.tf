@@ -1,7 +1,3 @@
-locals {
-  oracle: "o",
-  postgres: "p"
-}
 
 # Postgres
 
@@ -15,7 +11,7 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_core_oauth_api_
 
 
 module "apim_api_apiconfig_core_oauth_api_v1_o" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
 
   name                  = format("%s-apiconfig-core-%s-oauth-api", local.project, local.postgres)
   api_management_name   = local.pagopa_apim_name
@@ -62,7 +58,7 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_core_oauth_api_
 
 
 module "apim_api_apiconfig_core_oauth_api_v1_p" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
 
   name                  = format("%s-apiconfig-core-%s-oauth-api", local.project, local.oracle)
   api_management_name   = local.pagopa_apim_name
