@@ -267,7 +267,8 @@
         "grandTotal",
         "amount",
         "fee",
-        "transactionStatus"
+        "transactionStatus",
+        "creationDate"
       ],
       "properties": {
         "transactionId": {
