@@ -299,10 +299,6 @@
           "description": "only for xpay authorizations",
           "type": "string"
         },
-        "errorCode": {
-          "description": "payment gateway error code",
-          "type": "string"
-        },
         "rrn": {
           "description": "only for vpos authorizations",
           "type": "string"
