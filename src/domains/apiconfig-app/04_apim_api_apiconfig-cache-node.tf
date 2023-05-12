@@ -10,7 +10,7 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_cache_node_api"
 
 
 module "apim_api_apiconfig_cache_node_api_v1" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
   for_each = toset(["p", "o"])
 
   name                  = format("%s-apiconfig-cache-node-%s-api", local.project, each.key)

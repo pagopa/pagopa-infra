@@ -67,7 +67,8 @@ module "apim_api_config_api" {
   path         = "apiconfig/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+  #  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+  service_url = ""
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
@@ -172,7 +173,8 @@ module "apim_api_config_auth_api" {
   path         = "apiconfig/auth/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+  #  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+  service_url = ""
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
@@ -247,7 +249,8 @@ module "apim_api_config_checkout_api" {
   path         = "apiconfig/checkout/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+  #  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+  service_url = ""
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/checkout/v1/_openapi.json.tpl", {
