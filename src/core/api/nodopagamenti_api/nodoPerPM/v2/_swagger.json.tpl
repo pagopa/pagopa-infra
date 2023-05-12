@@ -264,9 +264,6 @@
       "type": "object",
       "required": [
         "transactionId",
-        "grandTotal",
-        "amount",
-        "fee",
         "transactionStatus",
         "creationDate"
       ],
