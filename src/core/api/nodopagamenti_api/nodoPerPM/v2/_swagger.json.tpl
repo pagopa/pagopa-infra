@@ -102,7 +102,8 @@
       "required": [
         "paymentTokens",
         "outcome",
-        "transactionId"
+        "transactionId",
+        "transactionDetails"
       ],
       "properties": {
         "paymentTokens": {
@@ -240,7 +241,6 @@
     },
     "TransactionDetails": {
       "type": "object",
-      "description": "required only for outcomePaymentGateway not null",
       "required": [
         "transaction",
         "info",
