@@ -72,7 +72,21 @@ variable "monitor_resource_group_name" {
   description = "Monitor resource group name"
 }
 
+# Network
+
+variable "cidr_subnet_checkout_be" {
+  type        = list(string)
+  description = "Address prefixes subnet checkout function"
+  default     = null
+}
+
 # DNS
+
+variable "dns_zone_checkout" {
+  type        = string
+  default     = null
+  description = "The checkout dns subdomain."
+}
 
 variable "external_domain" {
   type        = string
@@ -86,7 +100,14 @@ variable "dns_zone_prefix" {
   description = "The dns subdomain."
 }
 
+
 # pagopa-proxy
+
+variable "checkout_pagopaproxy_host" {
+  type        = string
+  description = "pagopaproxy host"
+  default     = null
+}
 
 variable "cidr_subnet_pagopa_proxy" {
   type        = list(string)
@@ -122,4 +143,48 @@ variable "pagopa_proxy_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 5
+}
+
+# Checkout functions
+
+variable "checkout_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "checkout_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "checkout_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "checkout_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "checkout_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "checkout_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+variable "checkout_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
 }

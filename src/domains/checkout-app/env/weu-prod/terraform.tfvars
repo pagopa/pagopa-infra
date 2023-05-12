@@ -27,3 +27,7 @@ cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
 
 pagopa_proxy_tier = "PremiumV3"
 pagopa_proxy_size = "P1v3"
+
+# Checkout
+
+checkout_enabled = true

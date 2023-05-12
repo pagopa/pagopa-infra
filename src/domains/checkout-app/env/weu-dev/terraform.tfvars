@@ -27,3 +27,7 @@ cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
 
 pagopa_proxy_tier = "Standard"
 pagopa_proxy_size = "S1"
+
+# Checkout
+
+checkout_enabled = true
