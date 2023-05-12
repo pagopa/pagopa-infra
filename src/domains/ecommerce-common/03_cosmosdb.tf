@@ -49,7 +49,8 @@ module "cosmosdb_account_mongodb" {
   main_geo_location_zone_redundant = var.cosmos_mongo_db_params.main_geo_location_zone_redundant
   additional_geo_locations         = var.cosmos_mongo_db_params.additional_geo_locations
 
-  backup_continuous_enabled = var.cosmos_mongo_db_params.backup_continuous_enabled
+  backup_continuous_enabled                    = var.cosmos_mongo_db_params.backup_continuous_enabled
+  enable_provisioned_throughput_exceeded_alert = var.cosmos_mongo_db_params.enable_provisioned_throughput_exceeded_alert
 
   tags = var.tags
 }

@@ -1,14 +1,14 @@
 prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
+env_short      = "p"
+env            = "prod"
 domain         = "ecommerce"
 location       = "westeurope"
 location_short = "weu"
-instance       = "dev"
+instance       = "prod"
 
 tags = {
   CreatedBy   = "Terraform"
-  Environment = "Dev"
+  Environment = "Prod"
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ecommerce-common"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
@@ -16,51 +16,54 @@ tags = {
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+monitor_resource_group_name                 = "pagopa-p-monitor-rg"
+log_analytics_workspace_name                = "pagopa-p-law"
+log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 ### Aks
 
-ingress_load_balancer_ip = "10.1.100.250"
+ingress_load_balancer_ip = "10.1.100.250" #TODO to check
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.platform"
+dns_zone_internal_prefix = "internal.prod.platform"
 
 ### Cosmos
 
 cosmos_mongo_db_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo", "DisableRateLimitingResponses"]
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 5
-    max_staleness_prefix    = 100000
+    consistency_level       = "Strong"
+    max_interval_in_seconds = null
+    max_staleness_prefix    = null
   }
   server_version                   = "4.0"
   main_geo_location_zone_redundant = false
-  enable_free_tier                 = true
-
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
-
-  backup_continuous_enabled                    = false
+  enable_free_tier                 = false
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+  private_endpoint_enabled                     = true
+  public_network_access_enabled                = false
+  is_virtual_network_filter_enabled            = true
+  backup_continuous_enabled                    = true
   enable_provisioned_throughput_exceeded_alert = false
 
 }
 
+#TODO to check subnet
 cidr_subnet_cosmosdb_ecommerce = ["10.1.153.0/24"]
 cidr_subnet_redis_ecommerce    = ["10.1.148.0/24"]
 cidr_subnet_storage_ecommerce  = ["10.1.154.0/24"]
 
 cosmos_mongo_db_ecommerce_params = {
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 4000
   throughput         = 1000
 }
 
