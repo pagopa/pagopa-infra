@@ -76,50 +76,86 @@ locals {
     {
       name               = "bundles",
       partition_key_path = "/idPsp",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "archivedbundles",
       partition_key_path = "/idPsp",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "cibundles",
       partition_key_path = "/ciFiscalCode",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "archivedcibundles",
       partition_key_path = "/ciFiscalCode",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "bundlerequests",
       partition_key_path = "/idPsp",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "archivedbundlerequests",
       partition_key_path = "/idPsp",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "bundleoffers",
       partition_key_path = "/ciFiscalCode",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "archivedbundleoffers",
       partition_key_path = "/ciFiscalCode",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "validbundles",
       partition_key_path = "/idPsp",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "touchpoints",
-      partition_key_path = "/name"
+      partition_key_path = "/name",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "paymenttypes",
-      partition_key_path = "/name"
+      partition_key_path = "/name",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     },
     {
       name               = "cdis",
-      partition_key_path = "/idPsp"
+      partition_key_path = "/idPsp",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
     }
   ]
 }
