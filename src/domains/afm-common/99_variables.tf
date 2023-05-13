@@ -128,22 +128,22 @@ variable "afm_marketplace_cosmos_db_params" {
 
 variable "afm_storage_params" {
   type = object({
-    enabled                    = bool,
-    kind                       = string,
-    tier                       = string,
-    account_replication_type   = string,
-    advanced_threat_protection = bool,
-    retention_days             = number,
+    enabled                       = bool,
+    kind                          = string,
+    tier                          = string,
+    account_replication_type      = string,
+    advanced_threat_protection    = bool,
+    retention_days                = number,
     public_network_access_enabled = bool,
   })
 
   default = {
-    enabled                    = false,
-    kind                       = "StorageV2"
-    tier                       = "Standard",
-    account_replication_type   = "LRS",
-    advanced_threat_protection = false,
-    retention_days             = 30,
+    enabled                       = false,
+    kind                          = "StorageV2"
+    tier                          = "Standard",
+    account_replication_type      = "LRS",
+    advanced_threat_protection    = false,
+    retention_days                = 30,
     public_network_access_enabled = false
   }
 }
