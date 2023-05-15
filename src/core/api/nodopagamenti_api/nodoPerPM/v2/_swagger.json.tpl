@@ -229,6 +229,13 @@
           "maximum": 1000000000,
           "example": "10.00"
         },
+        "totalAmount": {
+          "type": "number",
+          "description": "payment advices total amount",
+          "minimum": 0,
+          "maximum": 1000000000,
+          "example": "10.00"
+        },
         "timestampOperation": {
           "description": "timestampOperation of payment gateway",
           "type": "string",
