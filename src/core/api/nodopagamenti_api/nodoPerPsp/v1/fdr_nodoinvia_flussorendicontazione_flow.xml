@@ -2,6 +2,13 @@
 <policies>
     <inbound>
         <base />
+        <choose>
+            <when condition="@(${is-fdr-nodo-pagopa-enable})">
+            </when>
+            <otherwise>
+                <set-backend-service base-url="${base-url}" />
+            </otherwise>
+        </choose>   
         <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
         <set-variable name="identificativoPSP" value="@{
             var dom2parse = ((string) context.Variables["readrequest"]);
@@ -56,15 +63,6 @@
             var fdrFileName=(string) context.Variables["identificativoPSP"]+"--"+context.Variables["identificativoIntermediarioPSP"]+"--"+context.Variables["identificativoCanale"]+"--"+context.Variables["identificativoDominio"]+"--"+context.Variables["identificativoFlusso"]+"--"+context.Variables["dataOraFlusso"];
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
-
-        <choose>
-            <when condition="@(${is-fdr-nodo-pagopa-enable})">
-            </when>
-            <otherwise>
-                <set-backend-service base-url="${base-url}" />
-            </otherwise>
-        </choose>   
-
     </inbound>
     <backend>
         <base />
