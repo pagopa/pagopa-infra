@@ -231,7 +231,7 @@
         },
         "totalAmount": {
           "type": "number",
-          "description": "payment advices total amount",
+          "description": "payment advices total amount with fee",
           "minimum": 0,
           "maximum": 1000000000,
           "example": "10.00"
