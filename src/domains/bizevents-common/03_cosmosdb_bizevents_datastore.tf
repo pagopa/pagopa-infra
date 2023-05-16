@@ -60,7 +60,7 @@ module "bizevents_datastore_cosmosdb_account" {
   tags = var.tags
 }
 
-# cosmosdb database for marketplace
+# cosmosdb database for biz-events
 module "bizevents_datastore_cosmosdb_database" {
   source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
   name                = "db"

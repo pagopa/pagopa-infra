@@ -9,7 +9,7 @@ instance       = "dev"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
-  Owner       = "IO"
+  Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/bizevents"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
@@ -30,6 +30,30 @@ dns_zone_internal_prefix = "internal.dev.platform"
 
 # CosmosDB Biz Events Datastore
 bizevents_datastore_cosmos_db_params = {
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
+
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
+
+  backup_continuous_enabled = false
+
+  container_default_ttl = 2629800 # 1 month in second
+}
+
+# CosmosDB Negative Biz Events Datastore
+negative_bizevents_datastore_cosmos_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
   offer_type   = "Standard"
