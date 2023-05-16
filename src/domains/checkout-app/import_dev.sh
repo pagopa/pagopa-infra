@@ -26,4 +26,39 @@ echo 'Importing azurerm_monitor_autoscale_setting.pagopa_proxy_app_service_autos
 ./terraform.sh import weu-dev 'azurerm_monitor_autoscale_setting.pagopa_proxy_app_service_autoscale' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-pagopa-proxy-rg/providers/Microsoft.Insights/autoscaleSettings/pagopa-d-autoscale-pagopa-proxy'
 
 
+# resource.azurerm_resource_group.checkout_be_rg[0]
+echo 'Importing azurerm_resource_group.checkout_be_rg[0]'
+./terraform.sh import weu-dev 'azurerm_resource_group.checkout_be_rg[0]' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-checkout-be-rg'
+
+
+# module.checkout_function_snet[0]
+echo 'Importing module.checkout_function_snet[0].azurerm_subnet.this'
+./terraform.sh import weu-dev 'module.checkout_function_snet[0].azurerm_subnet.this' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-vnet-rg/providers/Microsoft.Network/virtualNetworks/pagopa-d-vnet/subnets/pagopa-d-checkout-be-snet'
+
+
+# module.checkout_function[0]
+echo 'Importing module.checkout_function[0].azurerm_app_service_plan.this[0]'
+./terraform.sh import weu-dev 'module.checkout_function[0].azurerm_app_service_plan.this[0]' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-checkout-be-rg/providers/Microsoft.Web/serverfarms/pagopa-d-plan-fncheckout'
+
+
+# module.checkout_function[0]
+echo 'Importing module.checkout_function[0].azurerm_app_service_virtual_network_swift_connection.this[0]'
+./terraform.sh import weu-dev 'module.checkout_function[0].azurerm_app_service_virtual_network_swift_connection.this[0]' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-checkout-be-rg/providers/Microsoft.Web/sites/pagopa-d-fn-checkout/config/virtualNetwork'
+
+
+# module.checkout_function[0]
+echo 'Importing module.checkout_function[0].azurerm_function_app.this'
+./terraform.sh import weu-dev 'module.checkout_function[0].azurerm_function_app.this' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-checkout-be-rg/providers/Microsoft.Web/sites/pagopa-d-fn-checkout'
+
+
+# module.checkout_function[0]
+echo 'Importing module.checkout_function[0].module.storage_account.azurerm_advanced_threat_protection.this'
+./terraform.sh import weu-dev 'module.checkout_function[0].module.storage_account.azurerm_advanced_threat_protection.this' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-checkout-be-rg/providers/Microsoft.Storage/storageAccounts/pagopadstfncheckout/providers/Microsoft.Security/advancedThreatProtectionSettings/current'
+
+
+# module.checkout_function[0]
+echo 'Importing module.checkout_function[0].module.storage_account.azurerm_storage_account.this'
+./terraform.sh import weu-dev 'module.checkout_function[0].module.storage_account.azurerm_storage_account.this' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-checkout-be-rg/providers/Microsoft.Storage/storageAccounts/pagopadstfncheckout'
+
+
 echo 'Import executed succesfully on dev environment! ⚡'
