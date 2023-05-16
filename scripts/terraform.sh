@@ -17,14 +17,7 @@ function help_usage() {
   echo "Available actions:"
   echo "  clean         Remove .terraform* folders and tfplan files"
   echo "  help          This help"
-  echo "  init          Initialize Terraform backend and modules"
   echo "  list          List every environment available"
-  echo "  plan          Generate Terraform plan"
-  echo "  apply         Apply Terraform plan"
-  echo "  output        Show Terraform output"
-  echo "  state         Show Terraform state"
-  echo "  taint         Taint Terraform resource"
-  echo "  destroy       Destroy Terraform-managed infrastructure"
   echo "  summ          Generate summary of Terraform plan"
 }
 
