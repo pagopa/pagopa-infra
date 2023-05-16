@@ -202,7 +202,6 @@
       "type": "object",
       "required": [
         "outcomePaymentGateway",
-        "tipoVersamento",
         "totalAmount",
         "fee",
         "timestampOperation"
