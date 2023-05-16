@@ -1,6 +1,6 @@
 module "loadtest_agent_snet" {
   count                = var.env_short != "p" ? 1 : 0
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                 = format("%s-loadtest-agent-snet", local.project)
   address_prefixes     = var.cidr_subnet_loadtest_agent
   resource_group_name  = local.vnet_resource_group_name
@@ -16,7 +16,7 @@ module "loadtest_agent_snet" {
 }
 
 module "azdoa_loadtest_li" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v6.6.1"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v6.4.1"
   count               = var.env_short != "p" ? 1 : 0
   name                = format("%s-azdoa-vmss-loadtest-li", local.project)
   resource_group_name = local.vnet_resource_group_name

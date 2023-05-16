@@ -12,16 +12,16 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_authorizer_cosmosdb_account"></a> [authorizer\_cosmosdb\_account](#module\_authorizer\_cosmosdb\_account) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.1.18 |
-| <a name="module_authorizer_cosmosdb_database"></a> [authorizer\_cosmosdb\_database](#module\_authorizer\_cosmosdb\_database) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database | v2.1.15 |
-| <a name="module_authorizer_cosmosdb_snet"></a> [authorizer\_cosmosdb\_snet](#module\_authorizer\_cosmosdb\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
-| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v3.5.0 |
-| <a name="module_github_runner_environment"></a> [github\_runner\_environment](#module\_github\_runner\_environment) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment | try-remove-outBoundType-managedEnvironments |
-| <a name="module_iuvgenerator_cosmosdb_account"></a> [iuvgenerator\_cosmosdb\_account](#module\_iuvgenerator\_cosmosdb\_account) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.1.18 |
-| <a name="module_iuvgenerator_cosmosdb_snet"></a> [iuvgenerator\_cosmosdb\_snet](#module\_iuvgenerator\_cosmosdb\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
-| <a name="module_loadtest_agent_snet"></a> [loadtest\_agent\_snet](#module\_loadtest\_agent\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
-| <a name="module_poc_reporting_enrollment_sa"></a> [poc\_reporting\_enrollment\_sa](#module\_poc\_reporting\_enrollment\_sa) | git::https://github.com/pagopa/azurerm.git//storage_account | v4.0.0 |
+| <a name="module_authorizer_cosmosdb_account"></a> [authorizer\_cosmosdb\_account](#module\_authorizer\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.4.1 |
+| <a name="module_authorizer_cosmosdb_database"></a> [authorizer\_cosmosdb\_database](#module\_authorizer\_cosmosdb\_database) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.4.1 |
+| <a name="module_authorizer_cosmosdb_snet"></a> [authorizer\_cosmosdb\_snet](#module\_authorizer\_cosmosdb\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
+| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v6.4.1 |
+| <a name="module_github_runner_environment"></a> [github\_runner\_environment](#module\_github\_runner\_environment) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment | v6.9.1 |
+| <a name="module_iuvgenerator_cosmosdb_account"></a> [iuvgenerator\_cosmosdb\_account](#module\_iuvgenerator\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.4.1 |
+| <a name="module_iuvgenerator_cosmosdb_snet"></a> [iuvgenerator\_cosmosdb\_snet](#module\_iuvgenerator\_cosmosdb\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.4.1 |
+| <a name="module_loadtest_agent_snet"></a> [loadtest\_agent\_snet](#module\_loadtest\_agent\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
+| <a name="module_poc_reporting_enrollment_sa"></a> [poc\_reporting\_enrollment\_sa](#module\_poc\_reporting\_enrollment\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.4.1 |
 
 ## Resources
 
