@@ -16,10 +16,14 @@ tags = {
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
+monitor_resource_group_name = "pagopa-p-monitor-rg"
 
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.platform"
-apim_dns_zone_prefix     = "platform"
+external_domain = "pagopa.it"
+dns_zone_prefix = "platform"
+
+### pagopa-proxy app service
+
+cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
+
+pagopa_proxy_tier = "PremiumV3"
+pagopa_proxy_size = "P1v3"
