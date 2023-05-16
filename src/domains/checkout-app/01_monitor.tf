@@ -16,3 +16,14 @@ data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
 }
+
+resource "azurerm_api_management_logger" "apim_logger" {
+  name                = "${local.parent_project}-apim-logger"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  resource_id         = data.azurerm_application_insights.application_insights.id
+
+  application_insights {
+    instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  }
+}

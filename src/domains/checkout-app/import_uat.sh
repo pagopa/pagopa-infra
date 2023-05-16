@@ -156,4 +156,164 @@ echo 'Importing module.checkout_cdn[0].module.cdn_storage_account.azurerm_templa
 ./terraform.sh import weu-uat 'module.checkout_cdn[0].module.cdn_storage_account.azurerm_template_deployment.versioning[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-checkout-fe-rg/providers/Microsoft.Resources/deployments/pagopa-u-checkout-sa-versioning'
 
 
+# module.apim_checkout_product[0]
+echo 'Importing module.apim_checkout_product[0].azurerm_api_management_product.this'
+./terraform.sh import weu-uat 'module.apim_checkout_product[0].azurerm_api_management_product.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout'
+
+
+# module.apim_checkout_product[0]
+echo 'Importing module.apim_checkout_product[0].azurerm_api_management_product_policy.this[0]'
+./terraform.sh import weu-uat 'module.apim_checkout_product[0].azurerm_api_management_product_policy.this[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout/policies/policy'
+
+
+# resource.azurerm_api_management_api_version_set.checkout_payment_activations_api
+echo 'Importing azurerm_api_management_api_version_set.checkout_payment_activations_api'
+./terraform.sh import weu-uat 'azurerm_api_management_api_version_set.checkout_payment_activations_api' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apiVersionSets/pagopa-u-checkout-payment-activations-api'
+
+
+# module.apim_checkout_payment_activations_api_v1
+echo 'Importing module.apim_checkout_payment_activations_api_v1.azurerm_api_management_api.this'
+./terraform.sh import weu-uat 'module.apim_checkout_payment_activations_api_v1.azurerm_api_management_api.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-api-v1'
+
+
+# module.apim_checkout_payment_activations_api_v1
+echo 'Importing module.apim_checkout_payment_activations_api_v1.azurerm_api_management_api_policy.this[0]'
+./terraform.sh import weu-uat 'module.apim_checkout_payment_activations_api_v1.azurerm_api_management_api_policy.this[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-api-v1/policies/xml'
+
+
+# module.apim_checkout_payment_activations_api_v1
+echo 'Importing module.apim_checkout_payment_activations_api_v1.azurerm_api_management_product_api.this["checkout"]'
+./terraform.sh import weu-uat 'module.apim_checkout_payment_activations_api_v1.azurerm_api_management_product_api.this["checkout"]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout/apis/pagopa-u-checkout-payment-activations-api-v1'
+
+
+# resource.azurerm_api_management_api_operation_policy.get_payment_info_api
+echo 'Importing azurerm_api_management_api_operation_policy.get_payment_info_api'
+./terraform.sh import weu-uat 'azurerm_api_management_api_operation_policy.get_payment_info_api' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-api-v1/operations/getPaymentInfo/policies/xml'
+
+
+# resource.azurerm_api_management_api_operation_policy.activate_payment_api
+echo 'Importing azurerm_api_management_api_operation_policy.activate_payment_api'
+./terraform.sh import weu-uat 'azurerm_api_management_api_operation_policy.activate_payment_api' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-api-v1/operations/activatePayment/policies/xml'
+
+
+# resource.azurerm_api_management_api_version_set.checkout_payment_activations_auth_api
+echo 'Importing azurerm_api_management_api_version_set.checkout_payment_activations_auth_api'
+./terraform.sh import weu-uat 'azurerm_api_management_api_version_set.checkout_payment_activations_auth_api' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apiVersionSets/pagopa-u-checkout-payment-activations-auth-api'
+
+
+# module.apim_checkout_payment_activations_api_auth_v1
+echo 'Importing module.apim_checkout_payment_activations_api_auth_v1.azurerm_api_management_api.this'
+./terraform.sh import weu-uat 'module.apim_checkout_payment_activations_api_auth_v1.azurerm_api_management_api.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-auth-api-v1'
+
+
+# module.apim_checkout_payment_activations_api_auth_v1
+echo 'Importing module.apim_checkout_payment_activations_api_auth_v1.azurerm_api_management_api_policy.this[0]'
+./terraform.sh import weu-uat 'module.apim_checkout_payment_activations_api_auth_v1.azurerm_api_management_api_policy.this[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-auth-api-v1/policies/xml'
+
+
+# module.apim_checkout_payment_activations_api_auth_v1
+echo 'Importing module.apim_checkout_payment_activations_api_auth_v1.azurerm_api_management_product_api.this["checkout"]'
+./terraform.sh import weu-uat 'module.apim_checkout_payment_activations_api_auth_v1.azurerm_api_management_product_api.this["checkout"]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout/apis/pagopa-u-checkout-payment-activations-auth-api-v1'
+
+
+# module.apim_checkout_payment_activations_api_auth_v2
+echo 'Importing module.apim_checkout_payment_activations_api_auth_v2.azurerm_api_management_api.this'
+./terraform.sh import weu-uat 'module.apim_checkout_payment_activations_api_auth_v2.azurerm_api_management_api.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-auth-api-v2'
+
+
+# module.apim_checkout_payment_activations_api_auth_v2
+echo 'Importing module.apim_checkout_payment_activations_api_auth_v2.azurerm_api_management_api_policy.this[0]'
+./terraform.sh import weu-uat 'module.apim_checkout_payment_activations_api_auth_v2.azurerm_api_management_api_policy.this[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-auth-api-v2/policies/xml'
+
+
+# module.apim_checkout_payment_activations_api_auth_v2
+echo 'Importing module.apim_checkout_payment_activations_api_auth_v2.azurerm_api_management_product_api.this["checkout"]'
+./terraform.sh import weu-uat 'module.apim_checkout_payment_activations_api_auth_v2.azurerm_api_management_product_api.this["checkout"]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout/apis/pagopa-u-checkout-payment-activations-auth-api-v2'
+
+
+# resource.azurerm_api_management_api_version_set.cd_info_wisp
+echo 'Importing azurerm_api_management_api_version_set.cd_info_wisp'
+./terraform.sh import weu-uat 'azurerm_api_management_api_version_set.cd_info_wisp' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apiVersionSets/pagopa-u-cd-info-wisp'
+
+
+# resource.azurerm_api_management_api.apim_cd_info_wisp_v1
+echo 'Importing azurerm_api_management_api.apim_cd_info_wisp_v1'
+./terraform.sh import weu-uat 'azurerm_api_management_api.apim_cd_info_wisp_v1' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-cd-info-wisp'
+
+
+# resource.azurerm_api_management_api_policy.apim_cd_info_wisp_policy_v1
+echo 'Importing azurerm_api_management_api_policy.apim_cd_info_wisp_policy_v1'
+./terraform.sh import weu-uat 'azurerm_api_management_api_policy.apim_cd_info_wisp_policy_v1' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-cd-info-wisp/policies/xml'
+
+
+# resource.azurerm_api_management_product_api.apim_cd_info_wisp_product_v1
+echo 'Importing azurerm_api_management_product_api.apim_cd_info_wisp_product_v1'
+./terraform.sh import weu-uat 'azurerm_api_management_product_api.apim_cd_info_wisp_product_v1' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout/apis/pagopa-u-cd-info-wisp'
+
+
+# resource.azurerm_api_management_api_version_set.checkout_transactions_api[0]
+echo 'Importing azurerm_api_management_api_version_set.checkout_transactions_api[0]'
+./terraform.sh import weu-uat 'azurerm_api_management_api_version_set.checkout_transactions_api[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apiVersionSets/u-checkout-transactions-api'
+
+
+# module.apim_checkout_transactions_api_v1[0]
+echo 'Importing module.apim_checkout_transactions_api_v1[0].azurerm_api_management_api.this'
+./terraform.sh import weu-uat 'module.apim_checkout_transactions_api_v1[0].azurerm_api_management_api.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/u-checkout-transactions-api-v1'
+
+
+# module.apim_checkout_transactions_api_v1[0]
+echo 'Importing module.apim_checkout_transactions_api_v1[0].azurerm_api_management_api_policy.this[0]'
+./terraform.sh import weu-uat 'module.apim_checkout_transactions_api_v1[0].azurerm_api_management_api_policy.this[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/u-checkout-transactions-api-v1/policies/policy'
+
+
+# module.apim_checkout_transactions_api_v1[0]
+echo 'Importing module.apim_checkout_transactions_api_v1[0].azurerm_api_management_product_api.this["checkout"]'
+./terraform.sh import weu-uat 'module.apim_checkout_transactions_api_v1[0].azurerm_api_management_product_api.this["checkout"]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout/apis/u-checkout-transactions-api-v1'
+
+
+# resource.azurerm_api_management_api_version_set.checkout_ecommerce_api_v1
+echo 'Importing azurerm_api_management_api_version_set.checkout_ecommerce_api_v1'
+./terraform.sh import weu-uat 'azurerm_api_management_api_version_set.checkout_ecommerce_api_v1' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apiVersionSets/pagopa-u-checkout-ecommerce-api'
+
+
+# module.apim_checkout_ecommerce_api_v1
+echo 'Importing module.apim_checkout_ecommerce_api_v1.azurerm_api_management_api.this'
+./terraform.sh import weu-uat 'module.apim_checkout_ecommerce_api_v1.azurerm_api_management_api.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-ecommerce-api-v1'
+
+
+# module.apim_checkout_ecommerce_api_v1
+echo 'Importing module.apim_checkout_ecommerce_api_v1.azurerm_api_management_api_policy.this[0]'
+./terraform.sh import weu-uat 'module.apim_checkout_ecommerce_api_v1.azurerm_api_management_api_policy.this[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-ecommerce-api-v1/policies/xml'
+
+
+# module.apim_checkout_ecommerce_api_v1
+echo 'Importing module.apim_checkout_ecommerce_api_v1.azurerm_api_management_product_api.this["checkout"]'
+./terraform.sh import weu-uat 'module.apim_checkout_ecommerce_api_v1.azurerm_api_management_product_api.this["checkout"]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout/apis/pagopa-u-checkout-ecommerce-api-v1'
+
+
+# resource.azurerm_api_management_api_operation_policy.get_payment_request_info_api
+echo 'Importing azurerm_api_management_api_operation_policy.get_payment_request_info_api'
+./terraform.sh import weu-uat 'azurerm_api_management_api_operation_policy.get_payment_request_info_api' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-ecommerce-api-v1/operations/getPaymentRequestInfo/policies/xml'
+
+
+# resource.azurerm_api_management_api_operation_policy.transaction_authorization_request
+echo 'Importing azurerm_api_management_api_operation_policy.transaction_authorization_request'
+./terraform.sh import weu-uat 'azurerm_api_management_api_operation_policy.transaction_authorization_request' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-ecommerce-api-v1/operations/requestTransactionAuthorization/policies/xml'
+
+
+# module.apim_checkout_ec_product
+echo 'Importing module.apim_checkout_ec_product.azurerm_api_management_product.this'
+./terraform.sh import weu-uat 'module.apim_checkout_ec_product.azurerm_api_management_product.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout-ec'
+
+
+# module.apim_checkout_ec_product
+echo 'Importing module.apim_checkout_ec_product.azurerm_api_management_product_policy.this[0]'
+./terraform.sh import weu-uat 'module.apim_checkout_ec_product.azurerm_api_management_product_policy.this[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout-ec/policies/xml'
+
+
+# resource.azurerm_api_management_api_version_set.checkout_ec_api_v1
+echo 'Importing azurerm_api_management_api_version_set.checkout_ec_api_v1'
+./terraform.sh import weu-uat 'azurerm_api_management_api_version_set.checkout_ec_api_v1' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apiVersionSets/pagopa-u-checkout-ec-api'
+
+
 echo 'Import executed succesfully on uat environment! ⚡'

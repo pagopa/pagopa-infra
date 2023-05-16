@@ -18,9 +18,10 @@ tags = {
 
 monitor_resource_group_name = "pagopa-d-monitor-rg"
 
-external_domain   = "pagopa.it"
-dns_zone_prefix   = "dev.platform"
-dns_zone_checkout = "dev.checkout"
+external_domain      = "pagopa.it"
+dns_zone_prefix      = "dev.platform"
+apim_dns_zone_prefix = "dev.platform"
+dns_zone_checkout    = "dev.checkout"
 
 # Networking
 
@@ -45,3 +46,6 @@ checkout_function_sku_size          = "S1"
 checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
+
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
