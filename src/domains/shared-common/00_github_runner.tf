@@ -1,5 +1,3 @@
-#  DISABLED TMP
-
 resource "azurerm_resource_group" "github_runner_rg" {
   name     = "${var.prefix}-${var.env_short}-${var.location_short}-github-runner-rg"
   location = var.location
@@ -14,7 +12,7 @@ resource "azurerm_subnet" "github_runner_snet" {
   address_prefixes     = var.github_runner.subnet_address_prefixes
 }
 
-module "github_runner" {
+module "github_runner_environment" {
   # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v4.1.18"
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=try-remove-outBoundType-managedEnvironments"
 
