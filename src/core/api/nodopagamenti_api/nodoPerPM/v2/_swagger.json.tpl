@@ -235,7 +235,7 @@
           "description": "timestampOperation of payment gateway converted in string with this format 'yyyy-MM-ddThh:mm:ss'",
           "type": "string",
           "format": "yyyy-MM-ddThh:mm:ss",
-          "example": "2022-02-22T14:41:58.811+01:00"
+          "example": "2022-02-22T14:41:58"
         },
         "authorizationCode": {
           "description": "only for xpay authorizations",
