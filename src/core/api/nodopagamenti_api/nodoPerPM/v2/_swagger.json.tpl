@@ -215,31 +215,26 @@
             "KO"
           ]
         },
-        "tipoVersamento": {
-          "type": "string"
-        },
         "rrn": {
           "description": "only for vpos authorizations",
           "type": "string"
         },
         "fee": {
-          "type": "number",
-          "description": "commission amount",
-          "minimum": 0,
-          "maximum": 1000000000,
+          "type": "string",
+          "description": "commision amount, converted in string",
+          "format": "###.##",
           "example": "10.00"
         },
         "totalAmount": {
-          "type": "number",
-          "description": "payment advices total amount with fee",
-          "minimum": 0,
-          "maximum": 1000000000,
+          "type": "string",
+          "description": "sum of payment advices amount and fee, converted in string",
+          "format": "###.##",
           "example": "10.00"
         },
         "timestampOperation": {
-          "description": "timestampOperation of payment gateway",
+          "description": "timestampOperation of payment gateway converted in string with this format 'yyyy-MM-ddThh:mm:ss'",
           "type": "string",
-          "format": "date-time",
+          "format": "yyyy-MM-ddThh:mm:ss",
           "example": "2022-02-22T14:41:58.811+01:00"
         },
         "authorizationCode": {
