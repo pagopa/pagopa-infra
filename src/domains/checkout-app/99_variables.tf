@@ -67,24 +67,12 @@ variable "checkout_enabled" {
   default = false
 }
 
-### External resources
-
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
 }
 
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
-
-# DNS
+# DNS
 
 variable "external_domain" {
   type        = string
@@ -92,14 +80,46 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
-variable "dns_zone_internal_prefix" {
+variable "dns_zone_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
 }
 
-variable "apim_dns_zone_prefix" {
-  type        = string
+# pagopa-proxy
+
+variable "cidr_subnet_pagopa_proxy" {
+  type        = list(string)
+  description = "Address prefixes subnet proxy"
   default     = null
-  description = "The dns subdomain for apim."
+}
+
+variable "pagopa_proxy_tier" {
+  type        = string
+  description = "pagopa-proxy Plan tier"
+  default     = null
+}
+
+variable "pagopa_proxy_size" {
+  type        = string
+  description = "pagopa-proxy Plan size"
+  default     = null
+}
+
+variable "pagopa_proxy_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "pagopa_proxy_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 10
+}
+
+variable "pagopa_proxy_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 5
 }
