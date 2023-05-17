@@ -154,7 +154,6 @@
                 "creditorReferenceId",
                 "fiscalCode",
                 "companyName",
-                "officeName",
                 "debtor"
               ]
             },
