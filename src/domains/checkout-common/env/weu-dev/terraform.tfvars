@@ -18,3 +18,15 @@ tags = {
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+
+# Networking
+
+cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+
+# pagopa-proxy Redis
+
+pagopa_proxy_redis_capacity = 0
+pagopa_proxy_redis_sku_name = "Basic"
+pagopa_proxy_redis_family   = "C"
+
+redis_private_endpoint_enabled = true
