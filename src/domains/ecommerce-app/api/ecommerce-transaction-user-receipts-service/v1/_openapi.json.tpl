@@ -153,7 +153,6 @@
                 "description",
                 "creditorReferenceId",
                 "fiscalCode",
-                "companyName",
                 "debtor"
               ]
             },
