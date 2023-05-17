@@ -18,7 +18,7 @@ module "bopagopa_cosmosdb_mongodb_snet" {
 
   private_endpoint_network_policies_enabled = false
 
-  service_endpoints = ["Microsoft.Web"]
+  service_endpoints = ["Microsoft.Web", "Microsoft.AzureCosmosDB"]
 }
 
 
@@ -36,9 +36,9 @@ module "bopagopa_cosmosdb_mongo_account" {
 
   main_geo_location_zone_redundant = var.bopagopa_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
-  enable_free_tier          = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
+  enable_free_tier = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
 
-  public_network_access_enabled    = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled
+  public_network_access_enabled = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled
 
   consistency_policy = var.bopagopa_datastore_cosmos_db_params.consistency_policy
 
