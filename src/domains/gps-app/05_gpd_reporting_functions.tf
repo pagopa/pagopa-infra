@@ -139,7 +139,6 @@ module "reporting_batch_function" {
   name                = replace("${local.project}fn-gpd-batch", "gps", "")
   location            = var.location
   health_check_path   = "info"
-  enable_healthcheck  = false
   subnet_id           = module.reporting_function_snet.id
   runtime_version     = "~4"
   docker = {
@@ -216,7 +215,6 @@ module "reporting_service_function" {
   storage_account_name = replace("${local.product_location}gpdservicest", "-", "")
   location             = var.location
   health_check_path    = "info"
-  enable_healthcheck   = false
   subnet_id            = module.reporting_function_snet.id
   runtime_version      = "~4"
   storage_account_info = {
@@ -298,7 +296,6 @@ module "reporting_analysis_function" {
   location             = var.location
   health_check_path    = "info"
   # dotnet_version    = var.reporting_analysis_dotnet_version
-  enable_healthcheck = false
   subnet_id          = module.reporting_function_snet.id
   runtime_version    = "~4"
   docker = {
