@@ -315,7 +315,7 @@ module "reporting_analysis_function" {
   name                 = format("%s-fn-gpd-analysis", local.product_location)
   storage_account_name = replace("${local.product_location}gpdanalysisst", "-", "")
   location             = var.location
-  health_check_path    = "/api/info"
+  health_check_path    = "/info"
   # dotnet_version    = var.reporting_analysis_dotnet_version
   subnet_id          = module.reporting_function_snet.id
   runtime_version    = "~4"
