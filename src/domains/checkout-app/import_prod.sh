@@ -83,5 +83,43 @@ echo 'Importing azurerm_monitor_metric_alert.checkout_fn_5xx[0]'
 echo 'Importing azurerm_resource_group.checkout_be_rg[0]'
 ./terraform.sh import weu-prod 'azurerm_resource_group.checkout_be_rg[0]' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-checkout-be-rg'
 
+# resource.azurerm_resource_group.checkout_fe_rg[0]
+echo 'Importing azurerm_resource_group.checkout_fe_rg[0]'
+./terraform.sh import weu-prod 'azurerm_resource_group.checkout_fe_rg[0]' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-checkout-fe-rg'
+
+
+# module.checkout_cdn[0]
+echo 'Importing module.checkout_cdn[0].azurerm_cdn_endpoint.this'
+./terraform.sh import weu-prod 'module.checkout_cdn[0].azurerm_cdn_endpoint.this' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-checkout-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-checkout-cdn-profile/endpoints/pagopa-p-checkout-cdn-endpoint'
+
+
+# module.checkout_cdn[0]
+echo 'Importing module.checkout_cdn[0].azurerm_cdn_profile.this'
+./terraform.sh import weu-prod 'module.checkout_cdn[0].azurerm_cdn_profile.this' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-checkout-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-p-checkout-cdn-profile'
+
+
+# module.checkout_cdn[0]
+echo 'Importing module.checkout_cdn[0].azurerm_dns_a_record.hostname[0]'
+./terraform.sh import weu-prod 'module.checkout_cdn[0].azurerm_dns_a_record.hostname[0]' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/dnszones/checkout.pagopa.it/A/@'
+
+
+# module.checkout_cdn[0]
+echo 'Importing module.checkout_cdn[0].azurerm_dns_cname_record.cdnverify[0]'
+./terraform.sh import weu-prod 'module.checkout_cdn[0].azurerm_dns_cname_record.cdnverify[0]' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-vnet-rg/providers/Microsoft.Network/dnszones/checkout.pagopa.it/CNAME/cdnverify'
+
+
+# module.checkout_cdn[0]
+echo 'Importing module.checkout_cdn[0].null_resource.custom_domain'
+./terraform.sh import weu-prod 'module.checkout_cdn[0].null_resource.custom_domain' '4997386310546923159'
+
+
+# module.checkout_cdn[0]
+echo 'Importing module.checkout_cdn[0].module.cdn_storage_account.azurerm_advanced_threat_protection.this'
+./terraform.sh import weu-prod 'module.checkout_cdn[0].module.cdn_storage_account.azurerm_advanced_threat_protection.this' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-checkout-fe-rg/providers/Microsoft.Storage/storageAccounts/pagopapcheckoutsa/providers/Microsoft.Security/advancedThreatProtectionSettings/current'
+
+
+# module.checkout_cdn[0]
+echo 'Importing module.checkout_cdn[0].module.cdn_storage_account.azurerm_storage_account.this'
+./terraform.sh import weu-prod 'module.checkout_cdn[0].module.cdn_storage_account.azurerm_storage_account.this' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-checkout-fe-rg/providers/Microsoft.Storage/storageAccounts/pagopapcheckoutsa'
 
 echo 'Import executed succesfully on prod environment! ⚡'

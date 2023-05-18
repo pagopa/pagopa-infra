@@ -99,6 +99,18 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
+variable "dns_zone_checkout" {
+  type        = string
+  default     = null
+  description = "The checkout dns subdomain."
+}
+
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
+}
+
 
 # pagopa-proxy Redis
 

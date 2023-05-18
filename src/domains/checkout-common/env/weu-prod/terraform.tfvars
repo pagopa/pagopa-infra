@@ -19,6 +19,12 @@ monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
+# DNS
+
+external_domain   = "pagopa.it"
+dns_zone_prefix   = "platform"
+dns_zone_checkout = "checkout"
+
 # Networking
 
 cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
