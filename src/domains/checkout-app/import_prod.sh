@@ -79,5 +79,9 @@ echo 'Importing azurerm_monitor_scheduled_query_rules_alert.checkout_availabilit
 echo 'Importing azurerm_monitor_metric_alert.checkout_fn_5xx[0]'
 ./terraform.sh import weu-prod 'azurerm_monitor_metric_alert.checkout_fn_5xx[0]' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/metricAlerts/pagopa-p-fn-checkout-5xx'
 
+# resource.azurerm_resource_group.checkout_be_rg[0]
+echo 'Importing azurerm_resource_group.checkout_be_rg[0]'
+./terraform.sh import weu-prod 'azurerm_resource_group.checkout_be_rg[0]' '/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-checkout-be-rg'
+
 
 echo 'Import executed succesfully on prod environment! ⚡'
