@@ -115,6 +115,12 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+variable "reporting_storage_public_access_enabled" {
+  type        = bool
+  description = "(Optional) Whether the public network access is enabled?"
+  default     = true
+}
+
 variable "cosmos_iuvgenerator_db_params" {
   type = object({
     kind           = string
