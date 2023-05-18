@@ -4,53 +4,44 @@ import sys
 import subprocess
 from pathlib import Path
 import logging
+import traceback
 
-"""
-Returns an array of child resource addresses declared inside the module corresponding to `module_address` to be imported
-"""
-def import_module(module_address, state_file):
-    search_query = f"jq '[.values.root_module.child_modules[]]' {state_file} | jq 'map(select(.address == \"{module_address}\"))' | jq \".[0].resources | map(.address)\""
-
-    logging.debug("Executing command %s", search_query)
-
-    p = subprocess.run(search_query, shell=True, check=True, capture_output=True)
-    process_output = str(p.stdout, "utf-8")
-
-    logging.debug("Command output: %s", process_output)
-
-    module_resources = json.loads(process_output)
-
-    return module_resources
+def import_resource(address, resource_object):
+    return [(address, address, resource_object["values"]["id"])]
 
 
-"""
-Searches for resource data inside a JSON Terraform state file.
-If `exact_search` is True don't try to guess the resource name from the address but use the provided address for searching.
+def import_any(address, state_file_object):
+    if address.startswith("resource."):
+        address = address[len("resource."):]
 
-Returns a triple (search_address, core_address, id) where:
- * `search_address` is the resource name used when searching for the resource to be imported
- * `core_address` is the proper address of the resource to be imported
- * `id` is the id of the resource assigned by the resource provider
-"""
-def import_resource(resource_address, state_file, exact_search=False):
+    resources = []
+    parent_address = state_file_object.get('address', 'root')
 
-    if exact_search:
-        search_address = resource_address
+    logging.debug(f"state_file_object: {parent_address}")
+
+    if address.startswith("module"):
+        # Module
+
+        if "child_modules" in state_file_object.keys():
+            root_search_resource = list(filter(lambda r: r["address"] == address, state_file_object["child_modules"]))[0]
+        else:
+            root_search_resource = state_file_object
+        
+        for resource in root_search_resource["resources"]:
+            logging.info(f"Importing {resource['address']} at {address}")
+            resources += import_resource(resource["address"], resource)
+        
+        for child_module in root_search_resource.get("child_modules", []):
+            resources += import_any(child_module["address"], child_module)
     else:
-        search_address = resource_address.split(".")[-1]
+        # Plain resource
+        logging.debug(f"Looking for resource {address} in {parent_address}")
+        logging.debug(f"Keys: {state_file_object.keys()}")
+        root_search_resource = list(filter(lambda r: r["address"] == address, state_file_object["resources"]))[0]
 
-    search_query = f"jq '[.values.root_module.child_modules[].resources[], .values.root_module.resources[]] | map({{address, id: .values.id}})' {state_file} | jq 'map(select(.address | contains(\"{search_address}\")))'"
+        resources = import_resource(address, root_search_resource)
 
-    logging.debug(f"Executing {search_query}")
-
-    p = subprocess.run(search_query, shell=True, check=True, capture_output=True)
-    process_output = str(p.stdout, "utf-8")
-
-    search_results = json.loads(process_output)
-    core_address = search_results[0]["address"]
-    id = search_results[0]["id"]
-
-    return (search_address, core_address, id)
+    return resources
 
 
 def generate_import_command(address, core_address, id, env):
@@ -87,36 +78,30 @@ def main():
     logging.info(f"Writing import script at {output_file_path}")
 
     with open(output_file_path, "w") as output_import_file:
-        output_import_file.write("#!/bin/bash\n")
+        with open(state_file, 'r') as state_file:
+            state_file_object = json.load(state_file)
 
-        output_import_file.write("# Generated with `generate_imports.py`\n\n")
+            output_import_file.write("#!/bin/bash\n")
 
-        for address in data:
-            resources_to_import = []
+            output_import_file.write("# Generated with `generate_imports.py`\n\n")
 
-            try:
-                # Check whether we are importing a module and transitively import resources
-                if address.startswith("module"):
-                    child_resources = import_module(address, state_file)
+            for address in data:
+                resources_to_import = []
 
-                    for child_resource_address in child_resources:
-                        logging.info(f"Importing child resource {child_resource_address}")
-                        (search_address, core_address, id) = import_resource(child_resource_address, state_file, exact_search=True)
-                        resources_to_import.append((search_address, core_address, id))
-                else:
-                    (search_address, core_address, id) = import_resource(address, state_file)
-                    resources_to_import.append((search_address, core_address, id))
-                    
-            except Exception as e:
-                logging.info(f"Error while getting resource search results for resource {search_address}\n{e}")
-                continue
-
-            logging.info(f"Writing import for resource {address} with id {id}")
-
-            for (search_address, core_address, id) in resources_to_import:
-                output_import_file.write(f"{generate_import_command(address, core_address, id, env)}\n")
+                try:
+                    import_data = import_any(address, state_file_object["values"]["root_module"])
+                    resources_to_import += import_data
+                except Exception as e:
+                    logging.error(f"Error while getting resource search results for resource {address}\n{e}")
+                    logging.debug(traceback.format_exc())
+                    continue
         
-        output_import_file.write(f"echo 'Import executed succesfully on {env} environment! ⚡'\n")
+                logging.info(f"resources: {list(map(lambda s: s[0], resources_to_import))}")
+
+                for (search_address, core_address, id) in resources_to_import:
+                    output_import_file.write(f"{generate_import_command(address, core_address, id, env)}\n")
+            
+            output_import_file.write(f"echo 'Import executed succesfully on {env} environment! ⚡'\n")
     
 
 if __name__ == '__main__':
