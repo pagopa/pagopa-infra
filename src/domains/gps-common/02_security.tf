@@ -75,14 +75,6 @@ resource "azurerm_key_vault_secret" "cosmos_gps_pkey" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "cosmos_gpd_payments_pkey" {
-  name         = format("cosmos-gpd-payments-%s-%s-pkey", var.location_short, var.env_short) # cosmos-gps-<REGION>-<ENV>-pkey
-  value        = module.gpd_payments_cosmosdb_account.primary_key
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
 resource "azurerm_key_vault_secret" "ai_connection_string" {
   name         = format("ai-%s-connection-string", var.env_short)
   value        = data.azurerm_application_insights.application_insights.connection_string
