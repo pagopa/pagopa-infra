@@ -28,7 +28,8 @@ module "apim_apiconfig_selfcare_integration_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig-selfcare-integration/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = "SelfCare integration"
   })
 
   xml_content = templatefile("./api/apiconfig-selfcare-integration/v1/_base_policy.xml", {

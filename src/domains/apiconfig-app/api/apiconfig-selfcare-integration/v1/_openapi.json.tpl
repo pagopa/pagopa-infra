@@ -3,11 +3,11 @@
   "info" : {
     "description" : "Spring application exposes APIs for SelfCare",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "title" : "API-Config - SelfCare Integration",
+    "title" : "API-Config - ${service}",
     "version" : "0.0.1"
   },
   "servers" : [ {
-    "url" : "http://127.0.0.1:8080",
+    "url": "${host}",
     "description" : "Generated server url"
   } ],
   "tags" : [ {
