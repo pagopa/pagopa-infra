@@ -10,10 +10,10 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_core_oauth_api_
 }
 
 
-module "apim_api_apiconfig_core_oauth_api_v1_o" {
+module "apim_api_apiconfig_core_oauth_api_v1_p" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
 
-  name                  = format("%s-apiconfig-core-%s-oauth-api", local.project, local.oracle)
+  name                  = format("%s-apiconfig-core-%s-oauth-api", local.project, local.postgres)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_apiconfig_core_oauth_product.product_id]
@@ -23,9 +23,9 @@ module "apim_api_apiconfig_core_oauth_api_v1_o" {
   api_version    = "v1"
 
   description  = local.apiconfig_core_locals.description
-  display_name = "${local.apiconfig_core_locals.display_name} - Oauth ${local.oracle}"
+  display_name = "${local.apiconfig_core_locals.display_name} - Oauth ${local.postgres}"
 
-  path        = "${local.apiconfig_core_locals.path}/oauth/${local.oracle}"
+  path        = "${local.apiconfig_core_locals.path}/oauth/${local.postgres}"
   protocols   = ["https"]
   service_url = local.apiconfig_core_locals.service_url
 
@@ -57,7 +57,7 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_core_oauth_api_
 }
 
 
-module "apim_api_apiconfig_core_oauth_api_v1_p" {
+module "apim_api_apiconfig_core_oauth_api_v1_o" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
 
   name                  = format("%s-apiconfig-core-%s-oauth-api", local.project, local.oracle)
