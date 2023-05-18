@@ -35,4 +35,13 @@ locals {
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   nodo_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
+  apim_for_node = {
+    product_id            = "apim_for_node"
+    display_name          = "APIM for Nodo"
+    description           = "Management of APIs called by Nodo"
+    subscription_required = true
+    approval_required     = true
+    subscription_limit    = 1000
+  }
+
 }
