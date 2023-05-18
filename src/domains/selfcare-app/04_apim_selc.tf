@@ -3,7 +3,7 @@
 ##############
 
 module "apim_selfcare_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.7.0"
 
   product_id   = "selfcare-be"
   display_name = local.apim_selfcare_pagopa_api.display_name
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "api_selfcare_api" {
 
 
 module "apim_api_selfcare_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.7.0"
 
   name                  = "${local.product}-api"
   api_management_name   = local.pagopa_apim_name
