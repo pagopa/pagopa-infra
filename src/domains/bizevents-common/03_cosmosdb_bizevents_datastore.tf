@@ -22,10 +22,10 @@ module "bizevents_datastore_cosmosdb_snet" {
 }
 
 module "bizevents_datastore_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
-  name     = "${local.project}-ds-cosmos-account"
-  location = var.location
-  domain   = var.domain
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  name                = "${local.project}-ds-cosmos-account"
+  location            = var.location
+  domain              = var.domain
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   offer_type          = var.bizevents_datastore_cosmos_db_params.offer_type
   kind                = var.bizevents_datastore_cosmos_db_params.kind
