@@ -30,7 +30,7 @@ module "authorizer_function_app" {
   resource_group_name = data.azurerm_resource_group.shared_rg.name
   name                = "${local.project}-authorizer-fn"
   location            = var.location
-  health_check_path   = "info"
+  health_check_path   = "/info"
   subnet_id           = module.authorizer_functions_snet.id
   runtime_version     = "~4"
 
