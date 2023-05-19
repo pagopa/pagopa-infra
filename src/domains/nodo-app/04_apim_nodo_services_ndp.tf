@@ -97,7 +97,7 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_ndp" {
-  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_ndp.name
+  api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_ndp.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
@@ -109,10 +109,11 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_ndp" {
 
 resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_policy_ndp" {
 
-  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_ndp.name
+  api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_ndp.name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  operation_id        = var.env_short == "d" ? "61d70973b78e982064458676" : var.env_short == "u" ? "61dedb1872975e13800fd7ff" : "61dedafc2a92e81a0c7a58fc"
+  operation_id        = local.activate_identifier[var.env]
+#  operation_id        = var.env_short == "d" ? local.activate_identifier.dev : var.env_short == "u" ? local.activate_identifier.uat : local.activate_identifier.prod
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
@@ -121,12 +122,13 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy_ndp" { # activatePaymentNoticeV2 verificatore
+resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy_ndp" { # activatePaymentNoticeV2 verificatore
 
-  api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_ndp.name
+  api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_ndp.name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "TODO"
+  operation_id        = local.activate_v2_identifier[var.env]
+#  operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "TODO"
 
   #tfsec:ignore:GEN005
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml", {
@@ -186,7 +188,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_ndp" {
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_ndp.name
+  api_name            = azurerm_api_management_api.apim_nodo_per_psp_api_v1_ndp.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
@@ -257,7 +259,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi_policy_ndp" {
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_ndp.name
+  api_name            = azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_ndp.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
@@ -318,7 +320,7 @@ resource "azurerm_api_management_api" "apim_node_for_io_api_v1_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_ndp" {
-  api_name            = resource.azurerm_api_management_api.apim_node_for_io_api_v1_ndp.name
+  api_name            = azurerm_api_management_api.apim_node_for_io_api_v1_ndp.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
@@ -389,7 +391,7 @@ resource "azurerm_api_management_api" "apim_psp_for_node_api_v1_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_psp_for_node_policy_ndp" {
-  api_name            = resource.azurerm_api_management_api.apim_psp_for_node_api_v1_ndp.name
+  api_name            = azurerm_api_management_api.apim_psp_for_node_api_v1_ndp.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
@@ -447,7 +449,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_ndp" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_ndp" {
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1_ndp.name
+  api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_ndp.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
