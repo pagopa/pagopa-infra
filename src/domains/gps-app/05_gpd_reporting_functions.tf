@@ -373,7 +373,7 @@ module "reporting_analysis_function_slot_staging" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   always_on         = var.reporting_analysis_function_always_on
-  health_check_path = "/api/info"
+  health_check_path = "/info"
   runtime_version   = "~4"
 
   # App settings
