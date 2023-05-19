@@ -6,13 +6,13 @@ resource "azurerm_resource_group" "shared_rg" {
 }
 
 module "iuvgenerator_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.1"
   name                 = "${local.project}-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_iuvgenerator_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -22,9 +22,10 @@ module "iuvgenerator_cosmosdb_snet" {
 }
 
 module "iuvgenerator_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.6.1"
   name     = "${local.project}-iuv-gen-cosmos-account"
   location = var.location
+  domain   = var.domain
 
   resource_group_name = azurerm_resource_group.shared_rg.name
   offer_type          = var.cosmos_iuvgenerator_db_params.offer_type
