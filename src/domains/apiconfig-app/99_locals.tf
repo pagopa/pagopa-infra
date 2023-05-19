@@ -95,5 +95,7 @@ locals {
 
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
+  apim_x_node_product_id = "apim_for_node"
+
 }
 

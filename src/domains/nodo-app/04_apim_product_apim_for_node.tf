@@ -17,10 +17,3 @@ module "apim_apim_for_node_product" {
   policy_xml = file("./api_product/nodo_pagamenti_api/_base_policy.xml")
 }
 
-
-resource "azurerm_api_management_product_group" "access_control_developers_for_cache" {
-  product_id          = module.apim_apim_for_node_product.product_id
-  group_name          = data.azurerm_api_management_group.group_developers.name
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-}
