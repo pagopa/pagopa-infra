@@ -246,3 +246,15 @@ resource "azurerm_key_vault_secret" "apiconfig_selfcare_integration_api_subscrip
     ]
   }
 }
+
+# create json letsencrypt inside kv
+# requierd: Docker
+module "letsencrypt_apiconfig" {
+  source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
+
+  prefix            = var.prefix
+  env               = var.env_short
+  key_vault_name    = "${local.product}-${var.domain}-kv"
+  subscription_name = local.subscription_name
+
+}

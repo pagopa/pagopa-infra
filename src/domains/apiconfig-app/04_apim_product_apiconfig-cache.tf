@@ -10,7 +10,7 @@ module "apim_apiconfig_cache_product" {
 
   published             = true
   subscription_required = local.apiconfig_cache_locals.subscription_required
-  approval_required     = false
+  approval_required     = true
   subscriptions_limit   = local.apiconfig_cache_locals.subscription_limit
 
   policy_xml = file("./api_product/apiconfig-cache/_base_policy.xml")

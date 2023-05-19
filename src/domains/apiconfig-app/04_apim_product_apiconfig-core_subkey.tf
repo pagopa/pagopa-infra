@@ -8,9 +8,9 @@ module "apim_apiconfig_core_subkey_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = true
+  published             = false
   subscription_required = local.apiconfig_core_locals.subscription_required
-  approval_required     = false
+  approval_required     = true
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")

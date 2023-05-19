@@ -15,6 +15,7 @@
 |------|--------|---------|
 | <a name="module_github_runner"></a> [github\_runner](#module\_github\_runner) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment | try-remove-outBoundType-managedEnvironments |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.17 |
+| <a name="module_letsencrypt_apiconfig"></a> [letsencrypt\_apiconfig](#module\_letsencrypt\_apiconfig) | git::https://github.com/pagopa/azurerm.git//letsencrypt_credential | v3.8.1 |
 
 ## Resources
 

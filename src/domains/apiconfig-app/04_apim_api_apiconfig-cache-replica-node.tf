@@ -37,12 +37,12 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
   service_url = local.apiconfig_cache_replica_locals.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/apiconfig-cache-replica/node/_openapi_nodev1.json.tpl", {
+  content_value = templatefile("./api/apiconfig-cache/node_fdr/_openapi.json.tpl", {
     host    = local.apim_hostname
     service = "node-p-replica"
   })
 
-  xml_content = templatefile("./api/apiconfig-cache-replica/node/_base_policy.xml", {
+  xml_content = templatefile("./api/apiconfig-cache/node_fdr/_base_policy.xml", {
     hostname = format("%s/%s/%s", local.apiconfig_cache_replica_locals.hostname, local.apiconfig_cache_replica_locals.path_apim, "pr")
   })
 }
@@ -68,12 +68,12 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
   service_url = local.apiconfig_cache_replica_locals.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/apiconfig-cache-replica/node/_openapi_nodev1.json.tpl", {
+  content_value = templatefile("./api/apiconfig-cache/node_fdr/_openapi.json.tpl", {
     host    = local.apim_hostname
     service = "node-o-replica"
   })
 
-  xml_content = templatefile("./api/apiconfig-cache-replica/node/_base_policy.xml", {
+  xml_content = templatefile("./api/apiconfig-cache/node_fdr/_base_policy.xml", {
     hostname = format("%s/%s/%s", local.apiconfig_cache_replica_locals.hostname, local.apiconfig_cache_replica_locals.path_apim, "or")
   })
 }
