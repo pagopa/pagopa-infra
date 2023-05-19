@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "gps_rg" {
 }
 
 module "gps_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.1"
   name                 = "${local.project}-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_gps_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -25,7 +25,7 @@ module "gps_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.4.1"
   name     = "${local.project}-cosmos-account"
   location = var.location
-  domain   = ""
+  domain   = var.domain
 
   resource_group_name = azurerm_resource_group.gps_rg.name
   offer_type          = var.cosmos_gps_db_params.offer_type
@@ -102,9 +102,11 @@ module "gps_cosmosdb_containers" {
 }
 
 module "gpd_payments_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.0"
   name     = "${local.project}-payments-cosmos-account"
   location = var.location
+  domain   = var.domain
+
 
   resource_group_name = azurerm_resource_group.gps_rg.name
   offer_type          = var.cosmos_gpd_payments_db_params.offer_type
@@ -141,7 +143,7 @@ module "gpd_payments_cosmosdb_account" {
 
 # cosmosdb gpd payments table
 resource "azurerm_cosmosdb_table" "payments_receipts_table" {
-  name                = "pagopa${local.project}weugpdpaymentsreceiptstable"
+  name                = "gpdpaymentsreceiptstable"
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gpd_payments_cosmosdb_account.name
   throughput          = 400
