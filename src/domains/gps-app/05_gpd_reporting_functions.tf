@@ -19,8 +19,9 @@ resource "azurerm_app_service_plan" "gpd_reporting_service_plan" {
   reserved = var.reporting_functions_app_sku.kind == "Linux" ? true : false
 
   sku {
-    tier = var.reporting_functions_app_sku.sku_tier
-    size = var.reporting_functions_app_sku.sku_size
+    tier     = var.reporting_functions_app_sku.sku_tier
+    size     = var.reporting_functions_app_sku.sku_size
+    capacity = 1
   }
 
   tags = var.tags
@@ -138,10 +139,19 @@ module "reporting_batch_function" {
   resource_group_name = azurerm_resource_group.gpd_rg.name
   name                = replace("${local.project}fn-gpd-batch", "gps", "")
   location            = var.location
-  health_check_path   = "info"
-  enable_healthcheck  = false
+  health_check_path   = "/api/info"
   subnet_id           = module.reporting_function_snet.id
-  runtime_version     = "~3"
+  runtime_version     = "~4"
+  ## DEDICATED SERVICE PLAN
+  #  app_service_plan_name = "${local.project}-plan-batch-fn"
+  #  app_service_plan_info = {
+  #    kind = var.reporting_functions_app_sku.kind
+  #    sku_tier = var.reporting_functions_app_sku.sku_tier
+  #    sku_size = var.reporting_functions_app_sku.sku_size
+  #    maximum_elastic_worker_count = null
+  #    worker_count                 = 1
+  #    zone_balancing_enabled       = false
+  #  }
   docker = {
     registry_url      = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_URL
     image_name        = var.reporting_batch_image
@@ -186,8 +196,8 @@ module "reporting_batch_function_slot_staging" {
   location                                 = var.location
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.reporting_batch_function_always_on
-  health_check_path                        = "info"
-  runtime_version                          = "~3"
+  health_check_path                        = "/api/info"
+  runtime_version                          = "~4"
 
   # App settings
   app_settings = local.function_batch_app_settings
@@ -215,10 +225,19 @@ module "reporting_service_function" {
   name                 = format("%s-fn-gpd-service", local.product_location)
   storage_account_name = replace("${local.product_location}gpdservicest", "-", "")
   location             = var.location
-  health_check_path    = "info"
-  enable_healthcheck   = false
+  health_check_path    = "/api/info"
   subnet_id            = module.reporting_function_snet.id
-  runtime_version      = "~3"
+  runtime_version      = "~4"
+  ## DEDICATED SERVICE PLAN
+  #  app_service_plan_name = "${local.project}-plan-service-fn"
+  #  app_service_plan_info = {
+  #    kind = var.reporting_functions_app_sku.kind
+  #    sku_tier = var.reporting_functions_app_sku.sku_tier
+  #    sku_size = var.reporting_functions_app_sku.sku_size
+  #    maximum_elastic_worker_count = null
+  #    worker_count                 = 1
+  #    zone_balancing_enabled       = false
+  #  }
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
@@ -267,8 +286,8 @@ module "reporting_service_function_slot_staging" {
   location                                 = var.location
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.reporting_service_function_always_on
-  health_check_path                        = "info"
-  runtime_version                          = "~3"
+  health_check_path                        = "/api/info"
+  runtime_version                          = "~4"
 
   # App settings
   app_settings = local.function_service_app_settings
@@ -296,11 +315,10 @@ module "reporting_analysis_function" {
   name                 = format("%s-fn-gpd-analysis", local.product_location)
   storage_account_name = replace("${local.product_location}gpdanalysisst", "-", "")
   location             = var.location
-  health_check_path    = "info"
+  health_check_path    = "/info"
   # dotnet_version    = var.reporting_analysis_dotnet_version
-  enable_healthcheck = false
-  subnet_id          = module.reporting_function_snet.id
-  runtime_version    = "~3"
+  subnet_id       = module.reporting_function_snet.id
+  runtime_version = "~4"
   docker = {
     registry_url      = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_URL
     image_name        = var.reporting_analysis_image
@@ -315,6 +333,16 @@ module "reporting_analysis_function" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
+  ## DEDICATED SERVICE PLAN
+  #  app_service_plan_name = "${local.project}-plan-analysis-fn"
+  #  app_service_plan_info = {
+  #    kind = var.reporting_functions_app_sku.kind
+  #    sku_tier = var.reporting_functions_app_sku.sku_tier
+  #    sku_size = var.reporting_functions_app_sku.sku_size
+  #    maximum_elastic_worker_count = null
+  #    worker_count                 = 1
+  #    zone_balancing_enabled       = false
+  #  }
   always_on                                = var.reporting_analysis_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
@@ -345,8 +373,8 @@ module "reporting_analysis_function_slot_staging" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   always_on         = var.reporting_analysis_function_always_on
-  health_check_path = "info"
-  runtime_version   = "~3"
+  health_check_path = "/info"
+  runtime_version   = "~4"
 
   # App settings
   app_settings = local.function_analysis_app_settings

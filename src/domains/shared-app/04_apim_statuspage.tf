@@ -3,7 +3,7 @@
 ##############
 
 module "apim_statuspage_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "statuspage"
   display_name = "Status Page"
@@ -43,18 +43,18 @@ resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
   versioning_scheme   = "Segment"
 }
 
-data "azurerm_app_service" "api_config" {
+data "azurerm_linux_function_app" "api_config" {
   name                = format("%s-%s-app-api-config", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-api-config-rg", var.prefix, var.env_short)
 }
 
-data "azurerm_app_service" "gpd" {
+data "azurerm_linux_function_app" "gpd" {
   name                = format("%s-%s-app-gpd", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-gpd-rg", var.prefix, var.env_short)
 }
 
 module "apim_api_statuspage_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                  = format("%s-statuspage-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -81,9 +81,9 @@ module "apim_api_statuspage_api_v1" {
       "afmcalculator"  = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
       "afmmarketplace" = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
       "afmutils"       = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
-      "apiconfig"      = format("%s/apiconfig/api/v1", data.azurerm_app_service.api_config.default_site_hostname)
+      "apiconfig"      = format("%s/apiconfig/api/v1", data.azurerm_linux_function_app.api_config.default_hostname)
       "bizevents"      = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
-      "gpd"            = format("%s/", data.azurerm_app_service.gpd.default_site_hostname)
+      "gpd"            = format("%s/", data.azurerm_linux_function_app.gpd.default_hostname)
       "gpdpayments"    = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
       "gpdenrollment"  = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
       "gps"            = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))

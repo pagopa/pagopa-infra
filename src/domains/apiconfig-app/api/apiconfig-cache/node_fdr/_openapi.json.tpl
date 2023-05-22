@@ -1,34 +1,50 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "API-Config Cacher ${service}",
-    "description" : "Generate cache for regarding dei Pagamenti configuration ${service}",
+    "title": "API-Config Cacher ${service}",
+    "description": "Generate cache for ${service} configuration",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.0.1"
+    "version" : "0.3.2"
   },
   "servers" : [ {
-    "url": "${host}",
+    "url" : "${host}",
     "description" : "Generated server url"
   } ],
   "paths" : {
-    "/stakeholders/node/cache/schemas/v1" : {
+    "/info" : {
       "get" : {
-        "tags" : [ "NodeCache" ],
-        "summary" : "Get full node v1 config",
-        "operationId" : "cache",
+        "tags" : [ "Home" ],
+        "summary" : "Return OK if application is started",
+        "operationId" : "healthCheck",
         "responses" : {
-          "400" : {
-            "description" : "Bad Request",
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
+                  "$ref" : "#/components/schemas/AppInfo"
                 }
               }
             }
           },
-          "500" : {
-            "description" : "Service unavailable",
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -38,10 +54,98 @@
             }
           },
           "401" : {
-            "description" : "Unauthorized"
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
           },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/stakeholders/fdr/cache/schemas/v1" : {
+      "get" : {
+        "tags" : [ "FdrCache" ],
+        "summary" : "Get selected key of fdr v1 config",
+        "operationId" : "cache_2",
+        "parameters" : [ {
+          "name" : "keys",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "creditorInstitutions", "creditorInstitutionBrokers", "stations", "creditorInstitutionStations", "encodings", "creditorInstitutionEncodings", "ibans", "creditorInstitutionInformations", "psps", "pspBrokers", "paymentTypes", "pspChannelPaymentTypes", "plugins", "pspInformationTemplates", "pspInformations", "channels", "cdsServices", "cdsSubjects", "cdsSubjectServices", "cdsCategories", "configurations", "ftpServers", "languages", "gdeConfigurations", "metadataDict" ]
+            }
+          }
+        } ],
+        "responses" : {
           "200" : {
             "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -50,36 +154,16 @@
               }
             }
           },
-          "403" : {
-            "description" : "Forbidden"
-          },
-          "429" : {
-            "description" : "Too many requests"
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ]
-      }
-    },
-    "/stakeholders/node/cache/schemas/v1/id" : {
-      "get" : {
-        "tags" : [ "NodeCache" ],
-        "summary" : "Get last node v1 cache version",
-        "operationId" : "idV1",
-        "responses" : {
           "400" : {
             "description" : "Bad Request",
-            "content" : {
-              "application/json" : {
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
                 "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
+                  "type" : "string"
                 }
               }
-            }
-          },
-          "500" : {
-            "description" : "Service unavailable",
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -89,10 +173,86 @@
             }
           },
           "401" : {
-            "description" : "Unauthorized"
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
           },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/stakeholders/fdr/cache/schemas/v1/id" : {
+      "get" : {
+        "tags" : [ "FdrCache" ],
+        "summary" : "Get last fdr v1 cache version",
+        "operationId" : "idV1_1",
+        "responses" : {
           "200" : {
             "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -101,20 +261,431 @@
               }
             }
           },
-          "404" : {
-            "description" : "Not Found"
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
           },
           "403" : {
-            "description" : "Forbidden"
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
           },
           "429" : {
-            "description" : "Too many requests"
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         },
         "security" : [ {
           "ApiKey" : [ ]
         } ]
-      }
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/stakeholders/node/cache/schemas/v1" : {
+      "get" : {
+        "tags" : [ "NodeCache" ],
+        "summary" : "Get full node v1 config",
+        "operationId" : "cache_1",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ConfigDataV1"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/stakeholders/node/cache/schemas/v1/id" : {
+      "get" : {
+        "tags" : [ "NodeCache" ],
+        "summary" : "Get last node v1 cache version",
+        "operationId" : "idV1",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CacheVersion"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/stakeholders/verifier/cache/schemas/v1" : {
+      "get" : {
+        "tags" : [ "VerifierCache" ],
+        "summary" : "Get Creditor Institution list with Station v2",
+        "operationId" : "cache",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
     }
   },
   "components" : {
@@ -243,11 +814,17 @@
           },
           "fee" : {
             "type" : "boolean"
+          },
+          "station_code" : {
+            "type" : "string"
+          },
+          "service_description" : {
+            "type" : "string"
           }
         }
       },
       "Channel" : {
-        "required" : [ "agid", "broker_psp_code", "channel_code", "digital_stamp", "enabled", "flag_io", "ip", "new_fault_code", "password", "payment_model", "port", "primitive_version", "protocol", "proxy_enabled", "recovery", "rt_push", "thread_number", "timeout_a", "timeout_b", "timeout_c" ],
+        "required" : [ "agid", "broker_psp_code", "channel_code", "connection", "digital_stamp", "enabled", "flag_io", "flag_psp_cp", "new_fault_code", "password", "payment_model", "primitive_version", "recovery", "redirect", "rt_push", "thread_number", "timeouts" ],
         "type" : "object",
         "properties" : {
           "channel_code" : {
@@ -262,91 +839,36 @@
           "password" : {
             "type" : "string"
           },
-          "protocol" : {
-            "type" : "string",
-            "enum" : [ "HTTPS", "HTTP" ]
-          },
-          "ip" : {
-            "type" : "string"
-          },
-          "port" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "service" : {
-            "type" : "string"
+          "connection" : {
+            "$ref" : "#/components/schemas/Connection"
           },
           "broker_psp_code" : {
             "type" : "string"
           },
-          "proxy_enabled" : {
-            "type" : "boolean"
+          "proxy" : {
+            "$ref" : "#/components/schemas/Proxy"
           },
-          "proxy_host" : {
-            "type" : "string"
+          "service" : {
+            "$ref" : "#/components/schemas/Service"
           },
-          "proxy_port" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "proxy_username" : {
-            "type" : "string"
-          },
-          "proxy_password" : {
-            "type" : "string"
-          },
-          "target_host" : {
-            "type" : "string"
-          },
-          "target_port" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "target_path" : {
-            "type" : "string"
+          "service_nmp" : {
+            "$ref" : "#/components/schemas/Service"
           },
           "thread_number" : {
             "type" : "integer",
             "format" : "int64"
           },
-          "timeout_a" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "timeout_b" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "timeout_c" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "nmp_service" : {
-            "type" : "string"
+          "timeouts" : {
+            "$ref" : "#/components/schemas/Timeouts"
           },
           "new_fault_code" : {
             "type" : "boolean"
           },
-          "redirect_ip" : {
-            "type" : "string"
-          },
-          "redirect_path" : {
-            "type" : "string"
-          },
-          "redirect_port" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "redirect_query_string" : {
-            "type" : "string"
-          },
-          "redirect_protocol" : {
-            "type" : "string",
-            "enum" : [ "HTTPS", "HTTP" ]
+          "redirect" : {
+            "$ref" : "#/components/schemas/Redirect"
           },
           "payment_model" : {
-            "type" : "string",
-            "enum" : [ "IMMEDIATE", "IMMEDIATE_MULTIBENEFICIARY", "DEFERRED", "ACTIVATED_AT_PSP" ]
+            "type" : "string"
           },
           "serv_plugin" : {
             "type" : "string"
@@ -369,6 +891,9 @@
           "primitive_version" : {
             "type" : "integer",
             "format" : "int32"
+          },
+          "flag_psp_cp" : {
+            "type" : "boolean"
           }
         }
       },
@@ -546,6 +1071,23 @@
           },
           "description" : {
             "type" : "string"
+          }
+        }
+      },
+      "Connection" : {
+        "required" : [ "ip", "port", "protocol" ],
+        "type" : "object",
+        "properties" : {
+          "protocol" : {
+            "type" : "string",
+            "enum" : [ "HTTPS", "HTTP" ]
+          },
+          "ip" : {
+            "type" : "string"
+          },
+          "port" : {
+            "type" : "integer",
+            "format" : "int64"
           }
         }
       },
@@ -821,6 +1363,24 @@
           }
         }
       },
+      "Proxy" : {
+        "type" : "object",
+        "properties" : {
+          "proxy_host" : {
+            "type" : "string"
+          },
+          "proxy_port" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "proxy_username" : {
+            "type" : "string"
+          },
+          "proxy_password" : {
+            "type" : "string"
+          }
+        }
+      },
       "PspChannelPaymentType" : {
         "required" : [ "channel_code", "payment_type", "psp_code" ],
         "type" : "object",
@@ -845,8 +1405,48 @@
           }
         }
       },
+      "Redirect" : {
+        "type" : "object",
+        "properties" : {
+          "protocol" : {
+            "type" : "string",
+            "enum" : [ "HTTPS", "HTTP" ]
+          },
+          "ip" : {
+            "type" : "string"
+          },
+          "path" : {
+            "type" : "string"
+          },
+          "port" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "query_string" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Service" : {
+        "type" : "object",
+        "properties" : {
+          "path" : {
+            "type" : "string"
+          },
+          "target_host" : {
+            "type" : "string"
+          },
+          "target_port" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "target_path" : {
+            "type" : "string"
+          }
+        }
+      },
       "Station" : {
-        "required" : [ "broker_code", "enabled", "invio_rt_istantaneo", "ip", "password", "port", "primitive_version", "protocol", "proxy_enabled", "station_code", "thread_number", "timeout_a", "timeout_b", "timeout_c", "version" ],
+        "required" : [ "broker_code", "connection", "enabled", "invio_rt_istantaneo", "password", "primitive_version", "redirect", "station_code", "thread_number", "timeouts", "version" ],
         "type" : "object",
         "properties" : {
           "station_code" : {
@@ -859,107 +1459,42 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "ip" : {
-            "type" : "string"
+          "connection" : {
+            "$ref" : "#/components/schemas/Connection"
+          },
+          "connection_mod4" : {
+            "$ref" : "#/components/schemas/Connection"
           },
           "password" : {
             "type" : "string"
           },
-          "port" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "protocol" : {
-            "type" : "string",
-            "enum" : [ "HTTPS", "HTTP" ]
-          },
-          "redirect_ip" : {
-            "type" : "string"
-          },
-          "redirect_path" : {
-            "type" : "string"
-          },
-          "redirect_port" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "redirect_query_string" : {
-            "type" : "string"
-          },
-          "redirect_protocol" : {
-            "type" : "string",
-            "enum" : [ "HTTPS", "HTTP" ]
+          "redirect" : {
+            "$ref" : "#/components/schemas/Redirect"
           },
           "service" : {
-            "type" : "string"
+            "$ref" : "#/components/schemas/Service"
           },
-          "pof_service" : {
-            "type" : "string"
+          "service_pof" : {
+            "$ref" : "#/components/schemas/Service"
           },
-          "nmp_service" : {
-            "type" : "string"
+          "service_mod4" : {
+            "$ref" : "#/components/schemas/Service"
           },
           "broker_code" : {
             "type" : "string"
           },
-          "protocol_4mod" : {
-            "type" : "string",
-            "enum" : [ "HTTPS", "HTTP" ]
-          },
-          "ip_4mod" : {
-            "type" : "string"
-          },
-          "port_4mod" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "service_4mod" : {
-            "type" : "string"
-          },
-          "proxy_enabled" : {
-            "type" : "boolean"
-          },
-          "proxy_host" : {
-            "type" : "string"
-          },
-          "proxy_port" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "proxy_username" : {
-            "type" : "string"
-          },
-          "proxy_password" : {
-            "type" : "string"
+          "proxy" : {
+            "$ref" : "#/components/schemas/Proxy"
           },
           "thread_number" : {
             "type" : "integer",
             "format" : "int64"
           },
-          "timeout_a" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "timeout_b" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "timeout_c" : {
-            "type" : "integer",
-            "format" : "int64"
+          "timeouts" : {
+            "$ref" : "#/components/schemas/Timeouts"
           },
           "invio_rt_istantaneo" : {
             "type" : "boolean"
-          },
-          "target_host" : {
-            "type" : "string"
-          },
-          "target_port" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "target_path" : {
-            "type" : "string"
           },
           "primitive_version" : {
             "type" : "integer",
@@ -1004,11 +1539,47 @@
           }
         }
       },
+      "Timeouts" : {
+        "required" : [ "timeout_a", "timeout_b", "timeout_c" ],
+        "type" : "object",
+        "properties" : {
+          "timeout_a" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "timeout_b" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "timeout_c" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
       "CacheVersion" : {
         "required" : [ "version" ],
         "type" : "object",
         "properties" : {
           "version" : {
+            "type" : "string"
+          }
+        }
+      },
+      "AppInfo" : {
+        "required" : [ "environment", "name", "version" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "environment" : {
+            "type" : "string"
+          },
+          "dbConnection" : {
             "type" : "string"
           }
         }
