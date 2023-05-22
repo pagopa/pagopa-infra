@@ -47,6 +47,7 @@ reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
 cidr_subnet_reporting_functions = ["10.1.177.0/24"]
+cidr_subnet_gpd                 = ["10.1.138.0/24"]
 
 reporting_function = false
 reporting_functions_app_sku = {
@@ -56,3 +57,15 @@ reporting_functions_app_sku = {
 }
 
 cname_record_name = "config"
+
+# gpd
+gpd_plan_kind                = "Linux"
+gpd_plan_sku_tier            = "Standard"
+gpd_plan_sku_size            = "S1"
+gpd_always_on                = true
+gpd_cron_job_enable          = true
+gpd_cron_schedule_valid_to   = "0 */10 * * * *"
+gpd_cron_schedule_expired_to = "0 */20 * * * *"
+gpd_autoscale_minimum        = 1
+gpd_autoscale_maximum        = 3
+gpd_autoscale_default        = 1
