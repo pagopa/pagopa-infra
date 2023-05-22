@@ -18,8 +18,13 @@ tags = {
 
 monitor_resource_group_name = "pagopa-u-monitor-rg"
 
-external_domain = "pagopa.it"
-dns_zone_prefix = "uat.platform"
+external_domain   = "pagopa.it"
+dns_zone_prefix   = "uat.platform"
+dns_zone_checkout = "uat.checkout"
+
+# Networking
+
+cidr_subnet_checkout_be = ["10.1.133.0/24"]
 
 #### pagopa-proxy
 
@@ -27,3 +32,16 @@ cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
 
 pagopa_proxy_tier = "Standard"
 pagopa_proxy_size = "S1"
+
+# Checkout
+
+checkout_enabled = true
+
+# Checkout functions
+
+checkout_function_kind              = "Linux"
+checkout_function_sku_tier          = "Standard"
+checkout_function_sku_size          = "S1"
+checkout_function_autoscale_minimum = 1
+checkout_function_autoscale_maximum = 3
+checkout_function_autoscale_default = 1

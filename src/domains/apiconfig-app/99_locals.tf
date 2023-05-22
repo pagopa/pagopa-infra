@@ -77,5 +77,9 @@ locals {
 
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
+
+  oracle   = "o"
+  postgres = "p"
+
 }
 

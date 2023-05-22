@@ -168,10 +168,15 @@ variable "authorizer_function_always_on" {
 variable "authorizer_functions_app_sku" {
   type = object({
     kind     = string
-    sku_tier = string
     sku_size = string
   })
   description = "Authorizer functions app plan SKU"
+}
+
+variable "authorizer_functions_app_image_tag" {
+  type        = string
+  default     = "latest"
+  description = "Authorizer functions app docker image tag. Defaults to 'latest'"
 }
 
 variable "authorizer_functions_autoscale" {
