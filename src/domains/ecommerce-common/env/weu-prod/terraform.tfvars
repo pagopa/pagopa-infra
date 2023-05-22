@@ -25,7 +25,7 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 ingress_load_balancer_ip = "10.1.100.250" #TODO to check
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.prod.platform"
+dns_zone_internal_prefix = "internal.platform"
 
 ### Cosmos
 
