@@ -100,6 +100,11 @@ variable "dns_zone_prefix" {
   description = "The dns subdomain."
 }
 
+variable "apim_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for apim."
+}
 
 # pagopa-proxy
 
@@ -187,4 +192,24 @@ variable "checkout_function_always_on" {
   type        = bool
   description = "Always on property"
   default     = false
+}
+
+# Checkout APIM
+
+variable "ecommerce_ingress_hostname" {
+  type        = string
+  description = "ecommerce ingress hostname"
+  default     = null
+}
+
+variable "ecommerce_xpay_psps_list" {
+  type        = string
+  description = "psps list using xpay as comma separated value"
+  default     = ""
+}
+
+variable "ecommerce_vpos_psps_list" {
+  type        = string
+  description = "psps list using vpos as comma separated value"
+  default     = ""
 }
