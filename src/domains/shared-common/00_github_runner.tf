@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "github_runner_rg" {
-  name     = "${local.project}-github-runner-rg"
+  name     = "${var.prefix}-${var.env_short}-${var.location_short}-github-runner-rg"
   location = var.location
 
   tags = var.tags
@@ -12,11 +12,10 @@ resource "azurerm_subnet" "github_runner_snet" {
   address_prefixes     = var.github_runner.subnet_address_prefixes
 }
 
-module "github_runner" {
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v4.1.18"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=try-remove-outBoundType-managedEnvironments"
+module "github_runner_environment" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v6.9.1"
 
-  name                      = "${local.project}-github-runner-cae"
+  name                      = "${var.prefix}-${var.env_short}-${var.location_short}-github-runner-cae"
   resource_group_name       = azurerm_resource_group.github_runner_rg.name
   location                  = var.location
   vnet_internal             = true

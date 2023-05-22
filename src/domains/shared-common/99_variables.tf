@@ -197,3 +197,14 @@ variable "cosmos_authorizer_db_params" {
     backup_continuous_enabled         = bool
   })
 }
+
+
+variable "github_runner" {
+  type = object({
+    subnet_address_prefixes = list(string)
+  })
+  description = "GitHub runner variables"
+  default = {
+    subnet_address_prefixes = ["10.1.164.0/23"]
+  }
+}
