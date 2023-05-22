@@ -136,6 +136,36 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+variable "cidr_subnet_pg_flex_dbms" {
+  type        = list(string)
+  description = "Postgres Flexible Server network address space."
+}
+
+# Postgres Flexible
+variable "pgres_flex_params" {
+  type = object({
+    private_endpoint_enabled     = bool
+    sku_name                     = string
+    db_version                   = string
+    storage_mb                   = string
+    zone                         = number
+    backup_retention_days        = number
+    geo_redundant_backup_enabled = bool
+    high_availability_enabled    = bool
+    standby_availability_zone    = number
+    pgbouncer_enabled            = bool
+  })
+
+  default = null
+}
+
+// gpd Database
+variable "gpd_db_name" {
+  type        = string
+  description = "Name of the DB to connect to"
+  default     = "apd"
+}
+
 variable "cosmos_gps_db_params" {
   type = object({
     kind           = string
