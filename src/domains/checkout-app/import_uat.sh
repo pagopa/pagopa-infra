@@ -111,51 +111,6 @@ echo 'Importing module.checkout_cdn[0].module.cdn_storage_account.azurerm_templa
 ./terraform.sh import weu-uat 'module.checkout_cdn[0].module.cdn_storage_account.azurerm_template_deployment.versioning[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-checkout-fe-rg/providers/Microsoft.Resources/deployments/pagopa-u-checkout-sa-versioning'
 
 
-# resource.azurerm_resource_group.checkout_fe_rg[0]
-echo 'Importing azurerm_resource_group.checkout_fe_rg[0]'
-./terraform.sh import weu-uat 'azurerm_resource_group.checkout_fe_rg[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-checkout-fe-rg'
-
-
-# module.checkout_cdn[0]
-echo 'Importing module.checkout_cdn[0].azurerm_cdn_endpoint.this'
-./terraform.sh import weu-uat 'module.checkout_cdn[0].azurerm_cdn_endpoint.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-checkout-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-u-checkout-cdn-profile/endpoints/pagopa-u-checkout-cdn-endpoint'
-
-
-# module.checkout_cdn[0]
-echo 'Importing module.checkout_cdn[0].azurerm_cdn_profile.this'
-./terraform.sh import weu-uat 'module.checkout_cdn[0].azurerm_cdn_profile.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-checkout-fe-rg/providers/Microsoft.Cdn/profiles/pagopa-u-checkout-cdn-profile'
-
-
-# module.checkout_cdn[0]
-echo 'Importing module.checkout_cdn[0].azurerm_dns_a_record.hostname[0]'
-./terraform.sh import weu-uat 'module.checkout_cdn[0].azurerm_dns_a_record.hostname[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-vnet-rg/providers/Microsoft.Network/dnszones/uat.checkout.pagopa.it/A/@'
-
-
-# module.checkout_cdn[0]
-echo 'Importing module.checkout_cdn[0].azurerm_dns_cname_record.cdnverify[0]'
-./terraform.sh import weu-uat 'module.checkout_cdn[0].azurerm_dns_cname_record.cdnverify[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-vnet-rg/providers/Microsoft.Network/dnszones/uat.checkout.pagopa.it/CNAME/cdnverify'
-
-
-# module.checkout_cdn[0]
-echo 'Importing module.checkout_cdn[0].null_resource.custom_domain'
-./terraform.sh import weu-uat 'module.checkout_cdn[0].null_resource.custom_domain' '5776404664123634236'
-
-
-# module.checkout_cdn[0]
-echo 'Importing module.checkout_cdn[0].module.cdn_storage_account.azurerm_advanced_threat_protection.this'
-./terraform.sh import weu-uat 'module.checkout_cdn[0].module.cdn_storage_account.azurerm_advanced_threat_protection.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-checkout-fe-rg/providers/Microsoft.Storage/storageAccounts/pagopaucheckoutsa/providers/Microsoft.Security/advancedThreatProtectionSettings/current'
-
-
-# module.checkout_cdn[0]
-echo 'Importing module.checkout_cdn[0].module.cdn_storage_account.azurerm_storage_account.this'
-./terraform.sh import weu-uat 'module.checkout_cdn[0].module.cdn_storage_account.azurerm_storage_account.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-checkout-fe-rg/providers/Microsoft.Storage/storageAccounts/pagopaucheckoutsa'
-
-
-# module.checkout_cdn[0]
-echo 'Importing module.checkout_cdn[0].module.cdn_storage_account.azurerm_template_deployment.versioning[0]'
-./terraform.sh import weu-uat 'module.checkout_cdn[0].module.cdn_storage_account.azurerm_template_deployment.versioning[0]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-checkout-fe-rg/providers/Microsoft.Resources/deployments/pagopa-u-checkout-sa-versioning'
-
-
 # module.apim_checkout_product[0]
 echo 'Importing module.apim_checkout_product[0].azurerm_api_management_product.this'
 ./terraform.sh import weu-uat 'module.apim_checkout_product[0].azurerm_api_management_product.this' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/products/checkout'
