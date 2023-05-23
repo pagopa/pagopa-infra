@@ -558,7 +558,8 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS"
+            "pattern": "XPAY|VPOS",
+            "description": "Pgs identifier"
           }
         },
         "required": [
