@@ -106,6 +106,14 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
+# APIM
+
+variable "apim_logger_resource_id" {
+  type        = string
+  description = "Resource id for the APIM logger"
+  default     = null
+}
+
 # pagopa-proxy
 
 variable "checkout_pagopaproxy_host" {

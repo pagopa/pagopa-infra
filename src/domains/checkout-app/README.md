@@ -15,6 +15,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_checkout_ec_api_v1"></a> [apim\_checkout\_ec\_api\_v1](#module\_apim\_checkout\_ec\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_checkout_ec_product"></a> [apim\_checkout\_ec\_product](#module\_apim\_checkout\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_checkout_ecommerce_api_v1"></a> [apim\_checkout\_ecommerce\_api\_v1](#module\_apim\_checkout\_ecommerce\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_checkout_payment_activations_api_auth_v1"></a> [apim\_checkout\_payment\_activations\_api\_auth\_v1](#module\_apim\_checkout\_payment\_activations\_api\_auth\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
@@ -34,6 +35,7 @@
 | Name | Type |
 |------|------|
 | [azurerm_api_management_api.apim_cd_info_wisp_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
+| [azurerm_api_management_api_diagnostic.apim_logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_diagnostic) | resource |
 | [azurerm_api_management_api_operation_policy.activate_payment_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_payment_info_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_payment_request_info_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -82,6 +84,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
+| <a name="input_apim_logger_resource_id"></a> [apim\_logger\_resource\_id](#input\_apim\_logger\_resource\_id) | Resource id for the APIM logger | `string` | `null` | no |
 | <a name="input_checkout_enabled"></a> [checkout\_enabled](#input\_checkout\_enabled) | n/a | `bool` | `false` | no |
 | <a name="input_checkout_function_always_on"></a> [checkout\_function\_always\_on](#input\_checkout\_function\_always\_on) | Always on property | `bool` | `false` | no |
 | <a name="input_checkout_function_autoscale_default"></a> [checkout\_function\_autoscale\_default](#input\_checkout\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
