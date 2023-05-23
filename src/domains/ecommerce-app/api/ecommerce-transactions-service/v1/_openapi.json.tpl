@@ -539,6 +539,26 @@
             "description": "Cart identifier provided by creditor institution",
             "type": "string",
             "example": "idCartFromCreditorInstitution"
+          },
+          "authorizationResult": {
+            "description": "Authorization result",
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          },
+          "gateway": {
+            "type": "string",
+            "pattern": "XPAY|VPOS"
           }
         },
         "required": [
