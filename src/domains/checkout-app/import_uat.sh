@@ -271,4 +271,19 @@ echo 'Importing azurerm_api_management_api_version_set.checkout_ec_api_v1'
 ./terraform.sh import weu-uat 'azurerm_api_management_api_version_set.checkout_ec_api_v1' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apiVersionSets/pagopa-u-checkout-ec-api'
 
 
+# resource.azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-api-v1"]
+echo 'Importing azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-api-v1"]'
+./terraform.sh import weu-uat 'azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-api-v1"]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-api-v1/diagnostics/applicationinsights'
+
+
+# resource.azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-auth-api-v1"]
+echo 'Importing azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-auth-api-v1"]'
+./terraform.sh import weu-uat 'azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-auth-api-v1"]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-auth-api-v1/diagnostics/applicationinsights'
+
+
+# resource.azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-auth-api-v2"]
+echo 'Importing azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-auth-api-v2"]'
+./terraform.sh import weu-uat 'azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-auth-api-v2"]' '/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/apis/pagopa-u-checkout-payment-activations-auth-api-v2/diagnostics/applicationinsights'
+
+
 echo 'Import executed succesfully on uat environment! ⚡'
