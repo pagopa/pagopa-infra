@@ -21,7 +21,7 @@
       <choose>
         <when condition="@( System.Boolean.Parse( context.Request.Url.Query.GetValueOrDefault("refresh", "false")) )">
         <!-- execute cache refresh -->
-        <cache-lookup-value key="@((string)context.Variables["cache_key_in_progress"])" default-value="false" variable-name="eval_in_progress" caching-type="internal" />
+        <cache-lookup-value key="@((string)context.Variables["cache_key_in_progress"])" default-value="false" variable-name="eval_in_progress" caching-type="external" />
         <choose>
           <!-- if cache generation is in progress then return 503 -->
           <when condition="@( System.Boolean.Parse( context.Variables.GetValueOrDefault("eval_in_progress", "false")) )">
