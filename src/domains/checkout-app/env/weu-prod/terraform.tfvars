@@ -34,6 +34,10 @@ pagopa_proxy_size = "P1v3"
 
 cidr_subnet_checkout_be = ["10.1.133.0/24"]
 
+# APIM
+
+apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"
+
 # Checkout
 
 checkout_enabled = true

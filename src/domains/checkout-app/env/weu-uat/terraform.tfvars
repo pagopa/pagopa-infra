@@ -27,6 +27,10 @@ dns_zone_checkout    = "uat.checkout"
 
 cidr_subnet_checkout_be = ["10.1.133.0/24"]
 
+# APIM
+
+apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
+
 #### pagopa-proxy
 
 cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
