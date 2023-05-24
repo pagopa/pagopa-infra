@@ -32,3 +32,7 @@ resource.azurerm_api_management_api_operation_policy.get_payment_request_info_ap
 resource.azurerm_api_management_api_operation_policy.transaction_authorization_request
 module.apim_checkout_ec_product
 resource.azurerm_api_management_api_version_set.checkout_ec_api_v1
+resource.azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-api-v1"]
+resource.azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-auth-api-v1"]
+resource.azurerm_api_management_api_diagnostic.apim_logs["pagopa-u-checkout-payment-activations-auth-api-v2"]
+module.apim_checkout_ec_api_v1
