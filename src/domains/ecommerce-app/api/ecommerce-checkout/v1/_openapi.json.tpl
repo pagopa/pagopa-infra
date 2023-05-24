@@ -1274,8 +1274,8 @@
             "type": "string",
             "example": "idCartFromCreditorInstitution"
           },
-          "authorizationResult": {
-            "description": "Authorization result",
+          "sendPaymentResultOutcome": {
+            "description": "The outcome of sendPaymentResult api",
             "type": "string",
             "enum": [
               "OK",
