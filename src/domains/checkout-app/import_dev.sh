@@ -266,4 +266,34 @@ echo 'Importing azurerm_api_management_api_version_set.checkout_ec_api_v1'
 ./terraform.sh import weu-dev 'azurerm_api_management_api_version_set.checkout_ec_api_v1' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/apiVersionSets/pagopa-d-checkout-ec-api'
 
 
+# resource.azurerm_api_management_api_diagnostic.apim_logs["pagopa-d-checkout-payment-activations-api-v1"]
+echo 'Importing azurerm_api_management_api_diagnostic.apim_logs["pagopa-d-checkout-payment-activations-api-v1"]'
+./terraform.sh import weu-dev 'azurerm_api_management_api_diagnostic.apim_logs["pagopa-d-checkout-payment-activations-api-v1"]' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/apis/pagopa-d-checkout-payment-activations-api-v1/diagnostics/applicationinsights'
+
+
+# resource.azurerm_api_management_api_diagnostic.apim_logs["pagopa-d-checkout-payment-activations-auth-api-v1"]
+echo 'Importing azurerm_api_management_api_diagnostic.apim_logs["pagopa-d-checkout-payment-activations-auth-api-v1"]'
+./terraform.sh import weu-dev 'azurerm_api_management_api_diagnostic.apim_logs["pagopa-d-checkout-payment-activations-auth-api-v1"]' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/apis/pagopa-d-checkout-payment-activations-auth-api-v1/diagnostics/applicationinsights'
+
+
+# resource.azurerm_api_management_api_diagnostic.apim_logs["pagopa-d-checkout-payment-activations-auth-api-v2"]
+echo 'Importing azurerm_api_management_api_diagnostic.apim_logs["pagopa-d-checkout-payment-activations-auth-api-v2"]'
+./terraform.sh import weu-dev 'azurerm_api_management_api_diagnostic.apim_logs["pagopa-d-checkout-payment-activations-auth-api-v2"]' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/apis/pagopa-d-checkout-payment-activations-auth-api-v2/diagnostics/applicationinsights'
+
+
+# module.apim_checkout_ec_api_v1
+echo 'Importing module.apim_checkout_ec_api_v1.azurerm_api_management_api.this'
+./terraform.sh import weu-dev 'module.apim_checkout_ec_api_v1.azurerm_api_management_api.this' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/apis/pagopa-d-checkout-ec-api-v1'
+
+
+# module.apim_checkout_ec_api_v1
+echo 'Importing module.apim_checkout_ec_api_v1.azurerm_api_management_api_policy.this[0]'
+./terraform.sh import weu-dev 'module.apim_checkout_ec_api_v1.azurerm_api_management_api_policy.this[0]' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/apis/pagopa-d-checkout-ec-api-v1/policies/xml'
+
+
+# module.apim_checkout_ec_api_v1
+echo 'Importing module.apim_checkout_ec_api_v1.azurerm_api_management_product_api.this["checkout-ec"]'
+./terraform.sh import weu-dev 'module.apim_checkout_ec_api_v1.azurerm_api_management_product_api.this["checkout-ec"]' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/products/checkout-ec/apis/pagopa-d-checkout-ec-api-v1'
+
+
 echo 'Import executed succesfully on dev environment! ⚡'
