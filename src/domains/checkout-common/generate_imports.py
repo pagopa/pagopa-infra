@@ -7,7 +7,7 @@ import logging
 import traceback
 
 def import_resource(address, resource_object):
-    return [(address, address, resource_object["values"]["id"])]
+    return [(address, resource_object["values"]["id"])]
 
 
 def import_any(address, state_file_object):
@@ -44,10 +44,10 @@ def import_any(address, state_file_object):
     return resources
 
 
-def generate_import_command(address, core_address, id, env):
-    result = f"# {address}\n"
-    result += f"echo 'Importing {core_address}'\n"
-    result += f"./terraform.sh import weu-{env} '{core_address}' '{id}'\n\n"
+def generate_import_command(parent_resource_address, resource_address, id, env):
+    result = f"# {parent_resource_address}\n"
+    result += f"echo 'Importing {resource_address}'\n"
+    result += f"./terraform.sh import weu-{env} '{resource_address}' '{id}'\n\n"
 
     return result
 
@@ -98,8 +98,8 @@ def main():
         
                 logging.info(f"resources: {list(map(lambda s: s[0], resources_to_import))}")
 
-                for (search_address, core_address, id) in resources_to_import:
-                    output_import_file.write(f"{generate_import_command(address, core_address, id, env)}\n")
+                for (child_resource_address, id) in resources_to_import:
+                    output_import_file.write(f"{generate_import_command(address, child_resource_address, id, env)}\n")
             
             output_import_file.write(f"echo 'Import executed succesfully on {env} environment! ⚡'\n")
     
