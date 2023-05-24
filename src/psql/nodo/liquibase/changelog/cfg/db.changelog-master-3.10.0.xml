@@ -6,6 +6,7 @@
   <property name="version" value="3.10.0" global="false"/>
 
   <include file="./${version}/db.changelog-0.xml"                                                labels="${version}"/>
+  <include file="./${version}/db.changelog-0-colums-to-delete.xml"                               labels="${version}"/>
 
   <include file="./0/common/db.changelog-configs.xml"               context="dev,it,uat,prod"    labels="init,${version}"/>
 

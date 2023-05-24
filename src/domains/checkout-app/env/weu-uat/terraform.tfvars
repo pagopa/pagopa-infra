@@ -18,13 +18,18 @@ tags = {
 
 monitor_resource_group_name = "pagopa-u-monitor-rg"
 
-external_domain   = "pagopa.it"
-dns_zone_prefix   = "uat.platform"
-dns_zone_checkout = "uat.checkout"
+external_domain      = "pagopa.it"
+dns_zone_prefix      = "uat.platform"
+apim_dns_zone_prefix = "uat.platform"
+dns_zone_checkout    = "uat.checkout"
 
 # Networking
 
 cidr_subnet_checkout_be = ["10.1.133.0/24"]
+
+# APIM
+
+apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
 
 #### pagopa-proxy
 
@@ -45,3 +50,6 @@ checkout_function_sku_size          = "S1"
 checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
+
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"

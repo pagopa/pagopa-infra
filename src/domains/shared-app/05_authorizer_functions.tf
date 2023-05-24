@@ -30,7 +30,7 @@ module "authorizer_function_app" {
   resource_group_name = data.azurerm_resource_group.shared_rg.name
   name                = "${local.project}-authorizer-fn"
   location            = var.location
-  health_check_path   = "info"
+  health_check_path   = "/info"
   subnet_id           = module.authorizer_functions_snet.id
   runtime_version     = "~4"
 
@@ -78,6 +78,8 @@ module "authorizer_function_app" {
 
     COSMOS_CONN_STRING         = data.azurerm_key_vault_secret.authorizer_cosmos_connection_string.value
     REFRESH_CONFIGURATION_PATH = data.azurerm_key_vault_secret.authorizer_refresh_configuration_url.value
+
+    EC_SQL_QUERY = "SELECT VALUE i FROM c JOIN i IN c.authorization WHERE c.domain = {domain}"
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
