@@ -1661,41 +1661,6 @@ variable "platform_private_dns_zone_records" {
   description = "List of records to add into the platform.pagopa.it dns private"
 }
 
-# Data Explorer
-
-variable "dexp_params" {
-  type = object({
-    enabled = bool
-    sku = object({
-      name     = string
-      capacity = number
-    })
-    autoscale = object({
-      enabled       = bool
-      min_instances = number
-      max_instances = number
-    })
-    public_network_access_enabled = bool
-    double_encryption_enabled     = bool
-    disk_encryption_enabled       = bool
-    purge_enabled                 = bool
-  })
-}
-
-variable "dexp_db" {
-  type = object({
-    enable             = bool
-    hot_cache_period   = string
-    soft_delete_period = string
-  })
-}
-
-variable "dexp_re_db_linkes_service" {
-  type = object({
-    enable = bool
-  })
-}
-
 # node forwarder
 # api_config
 

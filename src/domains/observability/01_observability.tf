@@ -5,9 +5,12 @@
 resource "azurerm_kusto_cluster" "data_explorer_cluster" {
   count = var.dexp_params.enabled ? 1 : 0
 
-  name                = replace(format("%sdataexplorer", local.project), "-", "")
-  location            = azurerm_resource_group.monitor_rg.location
-  resource_group_name = azurerm_resource_group.monitor_rg.name
+  name                = replace(format("%sdataexplorer", local.project_legacy), "-", "")
+  location            = data.azurerm_resource_group.monitor_rg.location
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+
+  auto_stop_enabled           = false
+  streaming_ingestion_enabled = true
 
   sku {
     name     = var.dexp_params.sku.name
@@ -34,20 +37,13 @@ resource "azurerm_kusto_cluster" "data_explorer_cluster" {
   tags = var.tags
 }
 
-data "azurerm_kusto_cluster" "dexp_cluster" {
-  count = var.dexp_db.enable ? 1 : 0
-
-  name                = replace(format("%sdataexplorer", local.project), "-", "")
-  resource_group_name = azurerm_resource_group.monitor_rg.name
-}
-
 resource "azurerm_kusto_database" "re_db" {
   count = var.dexp_db.enable ? 1 : 0
 
   name                = "re"
-  resource_group_name = azurerm_resource_group.monitor_rg.name
-  location            = data.azurerm_kusto_cluster.dexp_cluster[count.index].location
-  cluster_name        = data.azurerm_kusto_cluster.dexp_cluster[count.index].name
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  location            = azurerm_kusto_cluster.data_explorer_cluster[count.index].location
+  cluster_name        = azurerm_kusto_cluster.data_explorer_cluster[count.index].name
 
   hot_cache_period   = var.dexp_db.hot_cache_period
   soft_delete_period = var.dexp_db.soft_delete_period
