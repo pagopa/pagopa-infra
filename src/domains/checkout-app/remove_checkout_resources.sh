@@ -10,6 +10,8 @@ resources=(
     'module.apim_checkout_ec_api_v1'
 )
 
+cd ../../core
+
 for resource in "${resources[@]}"
 do
   echo "Removing $resource on $env"
