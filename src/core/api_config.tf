@@ -101,10 +101,11 @@ module "api_config_app_service" {
     AFM_MARKETPLACE_HOST             = var.env_short == "p" ? "https://api.platform.pagopa.it/afm/marketplace-service/v1" : format("https://api.%s.platform.pagopa.it/afm/marketplace-service/v1", lower(var.tags["Environment"]))
     AFM_MARKETPLACE_SUBSCRIPTION_KEY = azurerm_key_vault_secret.apiconfig_afm_marketplace_subscription_key.value
 
-    AFM_UTILS_HOST             = var.env_short == "p" ? "https://api.platform.pagopa.it/afm/utils/v1" : format("https://api.%s.platform.pagopa.it/afm/utils/v1", lower(var.tags["Environment"]))
-    AFM_UTILS_SUBSCRIPTION_KEY = azurerm_key_vault_secret.apiconfig_afm_utils_subscription_key.value
-
-    NODO_MONITORING_HOST = var.env_short == "p" ? "https://api.platform.pagopa.it/nodo-monitoring/monitoring/v1" : format("https://api.%s.platform.pagopa.it/nodo/monitoring/v1", lower(var.tags["Environment"]))
+    AFM_UTILS_HOST               = var.env_short == "p" ? "https://api.platform.pagopa.it/afm/utils/v1" : format("https://api.%s.platform.pagopa.it/afm/utils/v1", lower(var.tags["Environment"]))
+    AFM_UTILS_SUBSCRIPTION_KEY   = azurerm_key_vault_secret.apiconfig_afm_utils_subscription_key.value
+    AFM_UTILS_RETRY_MAX_ATTEMPTS = 1
+    AFM_UTILS_RETRY_MAX_DELAY    = 2000
+    NODO_MONITORING_HOST         = var.env_short == "p" ? "https://api.platform.pagopa.it/nodo-monitoring/monitoring/v1" : format("https://api.%s.platform.pagopa.it/nodo/monitoring/v1", lower(var.tags["Environment"]))
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
