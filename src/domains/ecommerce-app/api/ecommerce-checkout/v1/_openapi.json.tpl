@@ -583,6 +583,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "transactionId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ecommerce transaction id"
           }
         ],
         "requestBody": {
