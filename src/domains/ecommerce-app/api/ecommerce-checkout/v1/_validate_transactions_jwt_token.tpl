@@ -3,12 +3,12 @@
         <base />
         <set-header name="x-transaction-id" exists-action="delete" />
         <set-variable name="requestTransactionId" value="@{
-            return context.Request.MatchedParameters["transactionId"];
-        }" />
+                    return context.Request.Headers.GetValueOrDefault("transactionId","");
+            }" />
         <choose>
             <when condition="@((string)context.Variables["requestTransactionId"] == "")">
                 <set-variable name="requestTransactionId" value="@{
-                    return context.Request.Headers.GetValueOrDefault("transactionId","");
+                    return context.Request.MatchedParameters["transactionId"];
                 }" />
             </when>
         </choose>

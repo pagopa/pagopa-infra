@@ -594,6 +594,11 @@
             "description": "The ecommerce transaction id"
           }
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
