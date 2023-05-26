@@ -25,5 +25,13 @@ locals {
 
 
   vnet_integration_resource_group_name = "${local.product}-vnet-rg"
-  vnet_integration_name                = "${local.product}-integration-vnet"
+  vnet_integration_name                = "${local.product}-vnet-integration"
+
+  # VNET
+  vnet_core_resource_group_name = "${local.product}-vnet-rg"
+  vnet_core_name                = "${local.product}-vnet"
+
+  vnet_pair_resource_group_name = "${local.product}-${var.location_pair_short}-vnet-rg"
+  vnet_pair_name                = "${local.product}-${var.location_pair_short}-vnet"
+
 }

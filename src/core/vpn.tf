@@ -62,14 +62,63 @@ module "dns_forwarder_snet" {
   }
 }
 
+resource "random_id" "dns_forwarder_hash" {
+  byte_length = 3
+}
+
 module "dns_forwarder" {
   count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.28"
 
-  name                = format("%s-dns-forwarder", local.project)
+  name                = "${local.project}-${random_id.dns_forwarder_hash.hex}-dns-forwarder"
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
   subnet_id           = module.dns_forwarder_snet[0].id
 
   tags = var.tags
+}
+
+
+
+# DNS FORWARDER FOR DISASTER RECOVERY
+
+#
+# DNS Forwarder
+#
+module "dns_forwarder_pair_subnet" {
+  count = var.dns_forwarder_pair_enabled ? 1 : 0
+  source                                    = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
+
+
+
+name                                           = format("%s-dns-forwarder-snet", local.project_pair)
+address_prefixes                               = var.cidr_subnet_pair_dnsforwarder
+resource_group_name                            = azurerm_resource_group.rg_pair_vnet[count.index].name
+virtual_network_name                           = module.vnet_pair[count.index].name
+enforce_private_link_endpoint_network_policies = false
+
+delegation = {
+  name = "delegation"
+  service_delegation = {
+    name    = "Microsoft.ContainerInstance/containerGroups"
+    actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+  }
+}
+
+}
+
+
+resource "random_id" "pair_dns_forwarder_hash" {
+  byte_length = 3
+}
+
+module "vpn_pair_dns_forwarder" {
+  count = var.dns_forwarder_pair_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.28"
+
+  name                = "${local.project}-${random_id.pair_dns_forwarder_hash.hex}-dns-forwarder"
+  location            = var.location_pair
+  resource_group_name = azurerm_resource_group.rg_pair_vnet[count.index].name
+  subnet_id           = module.dns_forwarder_pair_subnet[count.index].id
+  tags                = var.tags
 }

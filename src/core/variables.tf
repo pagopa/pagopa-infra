@@ -4,6 +4,18 @@ variable "location" {
   default     = "westeurope"
 }
 
+variable "location_pair" {
+  type        = string
+  description = "One of westeurope, northeurope"
+  default     = "northeurope"
+}
+
+variable "location_pair_short" {
+  type        = string
+  description = "One of weu, neu"
+  default     = "neu"
+}
+
 variable "prefix" {
   type    = string
   default = "pagopa"
@@ -389,6 +401,11 @@ variable "cidr_subnet_appgateway" {
   description = "Application gateway address space."
 }
 
+variable "cidr_pair_vnet" {
+  type        = list(string)
+  description = "Virtual network address space."
+}
+
 # nat gateway
 variable "nat_gateway_enabled" {
   type        = bool
@@ -465,6 +482,11 @@ variable "vpn_pip_sku" {
 }
 
 variable "cidr_subnet_dns_forwarder" {
+  type        = list(string)
+  description = "DNS Forwarder network address space."
+}
+
+variable "cidr_subnet_pair_dnsforwarder" {
   type        = list(string)
   description = "DNS Forwarder network address space."
 }
@@ -1726,4 +1748,11 @@ variable "apim_fdr_nodo_pagopa_enable" {
   type        = bool
   default     = false
   description = "Enable Fdr Service Nodo pagoPA side"
+}
+
+
+variable "dns_forwarder_pair_enabled" {
+  type = bool
+  default = true
+  description = "Whether to enable the creation of a dns forwarder instance, and all related resource in the paired region"
 }

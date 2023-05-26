@@ -6,6 +6,8 @@ domain          = "uat"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
+location_pair_short = "neu"
+location_pair       = "northeurope"
 
 tags = {
   CreatedBy   = "Terraform"
