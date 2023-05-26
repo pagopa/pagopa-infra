@@ -135,7 +135,7 @@ variable "cname_record_name" {
 variable "api_config_fe_enabled" {
   type        = bool
   description = "Api Config FE enabled"
-  default     = false
+  default     = true
 }
 
 
@@ -145,18 +145,6 @@ variable "cidr_subnet_api_config" {
   type        = list(string)
   description = "Address prefixes subnet api config"
   default     = null
-}
-
-variable "api_config_tier" {
-  type        = string
-  description = "Api config Plan tier"
-  default     = "Standard"
-}
-
-variable "api_config_size" {
-  type        = string
-  description = "Api Config Plan size"
-  default     = "S1"
 }
 
 variable "api_config_always_on" {
@@ -209,6 +197,5 @@ variable "dns_default_ttl_sec" {
 }
 
 variable "private_dns_zone_db_nodo_pagamenti" {
-  type    = string
-  default = "dev.db-nodo-pagamenti.com"
+  type = string
 }

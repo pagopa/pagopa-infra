@@ -40,12 +40,13 @@ data "azurerm_subnet" "apim_snet" {
 }
 
 
-#data "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
-#  name                = "db-nodo-pagamenti"
-#  resource_group_name = format("%s-data-rg", local.global_project)
-#  zone_name           = var.private_dns_zone_db_nodo_pagamenti
-#}
-#
-#data "azurerm_private_dns_zone" "db_nodo_dns_zone" {
-#  name = var.private_dns_zone_db_nodo_pagamenti
-#}
+data "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
+  name                = "db-nodo-pagamenti"
+  zone_name           = var.private_dns_zone_db_nodo_pagamenti
+  resource_group_name = "pagopa-d-data-rg"
+}
+
+data "azurerm_private_dns_zone" "db_nodo_dns_zone" {
+  name                = var.private_dns_zone_db_nodo_pagamenti
+  resource_group_name = "pagopa-d-data-rg"
+}

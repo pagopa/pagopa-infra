@@ -21,9 +21,11 @@ monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.platform"
-apim_dns_zone_prefix     = "platform"
+external_domain                    = "pagopa.it"
+dns_zone_internal_prefix           = "internal.platform"
+apim_dns_zone_prefix               = "platform"
+private_dns_zone_db_nodo_pagamenti = "p.db-nodo-pagamenti.com"
+cidr_subnet_api_config             = ["10.230.10.128/29"]
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -33,6 +35,8 @@ tls_cert_check_helm = {
   image_tag     = "v1.3.4"
 }
 
+db_service_name = "NDPSPCP_PP_NODO4_CFG"
+db_port         = 1521
 
 # API Config
 xsd_ica         = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"

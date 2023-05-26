@@ -86,6 +86,9 @@ def main():
       output_import_file.write("# Generated with `generate_imports.py`\n\n")
 
       for address in data:
+        if address.startswith("#"):
+          continue
+
         resources_to_import = []
 
         try:
