@@ -1,15 +1,12 @@
-resource "azurerm_resource_group" "gpd_rgroup" {
-  name     = format("%s-gpd-rg", local.project)
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "gpd_rgroup" {
+  name = format("%s-gpd-rg", local.product)
 }
 
 # gpd service plan
 resource "azurerm_app_service_plan" "gpd_service_plan" {
-  name                = format("%s-plan-gpd", local.project)
+  name                = format("%s-plan-gpd", local.product)
   location            = var.location
-  resource_group_name = azurerm_resource_group.gpd_rgroup.name
+  resource_group_name = data.azurerm_resource_group.gpd_rgroup.name
 
   kind     = var.gpd_plan_kind
   reserved = var.gpd_plan_kind == "Linux" ? true : false
@@ -26,7 +23,7 @@ resource "azurerm_app_service_plan" "gpd_service_plan" {
 module "gpd_snet" {
   count                                     = var.cidr_subnet_gpd != null ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v6.11.2"
-  name                                      = format("%s-gpd-snet", local.project)
+  name                                      = format("%s-gpd-snet", local.product)
   address_prefixes                          = var.cidr_subnet_gpd
   resource_group_name                       = local.vnet_resource_group_name
   virtual_network_name                      = local.vnet_name
@@ -45,16 +42,16 @@ module "gpd_app_service" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//app_service?ref=v6.11.2"
 
   vnet_integration    = true
-  resource_group_name = azurerm_resource_group.gpd_rgroup.name
+  resource_group_name = data.azurerm_resource_group.gpd_rgroup.name
   plan_type           = "external"
   plan_id             = azurerm_app_service_plan.gpd_service_plan.id
 
   # App service
-  name                       = format("%s-app-gpd", local.project)
-  client_certificate_enabled = false
-  always_on                  = var.gpd_always_on
-  #linux_fx_version    = format("DOCKER|%s/api-gpd-backend:%s", data.azurerm_container_registry.acr.login_server, "latest")
-  health_check_path = "/info"
+  name                = format("%s-app-gpd", local.product)
+  client_cert_enabled = false
+  always_on           = var.gpd_always_on
+  java_version        = 11
+  health_check_path   = "/info"
 
   app_settings    = local.gpd_app_settings
   allowed_subnets = local.gpd_allowed_subnets
@@ -69,14 +66,13 @@ module "gpd_app_service_slot_staging" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v6.11.2"
 
   # App service plan
-  app_service_plan_id = module.gpd_app_service.plan_id
-  app_service_id      = module.gpd_app_service.id
-  app_service_name    = module.gpd_app_service.name
+  app_service_id   = module.gpd_app_service.id
+  app_service_name = module.gpd_app_service.name
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.gpd_rgroup.name
-  location            = azurerm_resource_group.gpd_rgroup.location
+  resource_group_name = data.azurerm_resource_group.gpd_rgroup.name
+  location            = var.location
 
   always_on = true
   #linux_fx_version  = format("DOCKER|%s/api-gpd-backend:%s", data.azurerm_container_registry.acr.login_server, "latest")
@@ -91,9 +87,9 @@ module "gpd_app_service_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "gpd_app_service_autoscale" {
-  name                = format("%s-autoscale-gpd", local.project)
-  resource_group_name = azurerm_resource_group.gpd_rgroup.name
-  location            = azurerm_resource_group.gpd_rgroup.location
+  name                = format("%s-autoscale-gpd", local.product)
+  resource_group_name = data.azurerm_resource_group.gpd_rgroup.name
+  location            = var.location
   target_resource_id  = module.gpd_app_service.plan_id
 
   profile {
