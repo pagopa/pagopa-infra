@@ -10,7 +10,7 @@ module "apim_apiconfig_core_oauth_product" {
 
   published             = false
   subscription_required = local.apiconfig_core_locals.subscription_required
-  approval_required     = false
+  approval_required     = true
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")

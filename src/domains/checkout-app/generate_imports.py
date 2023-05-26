@@ -1,0 +1,1 @@
+../checkout-common/generate_imports.py

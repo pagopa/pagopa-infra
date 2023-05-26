@@ -3,7 +3,7 @@
 ##############
 
 module "apim_gps_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "spontaneouspayments"
   display_name = "GPS pagoPA"
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "api_gps_api" {
 
 
 module "apim_api_gps_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                  = format("%s-spontaneous-payments-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
