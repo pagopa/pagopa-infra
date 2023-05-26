@@ -21,6 +21,7 @@ locals {
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
     WEBSITE_VNET_ROUTE_ALL                          = "1"
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE                 = true
     # Spring Environment
     DEFAULT_LOGGING_LEVEL = var.node_forwarder_logging_level
     APP_LOGGING_LEVEL     = var.node_forwarder_logging_level
@@ -39,8 +40,9 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
 
     # Connection Pool
-    MAX_CONNECTIONS           = 40
-    MAX_CONNECTIONS_PER_ROUTE = 20
+    MAX_CONNECTIONS           = 80
+    MAX_CONNECTIONS_PER_ROUTE = 40
+    CONN_TIMEOUT              = 8
 
   }
 
@@ -104,7 +106,7 @@ module "node_forwarder_app_service" {
 }
 
 module "node_forwarder_slot_staging" {
-  count = var.env_short == "p" ? 1 : 0
+  count = var.env_short != "d" ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.4.0"
 
