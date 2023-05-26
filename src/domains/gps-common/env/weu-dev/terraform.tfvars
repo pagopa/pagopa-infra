@@ -53,7 +53,7 @@ cosmos_gps_db_params = {
 # Postgres Flexible
 pgres_flex_params = {
 
-  private_endpoint_enabled = true
+  private_endpoint_enabled = false
   sku_name                 = "GP_Standard_D2s_v3"
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,

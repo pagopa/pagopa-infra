@@ -3,8 +3,6 @@
 # avaibility zones, backup redundancy
 
 resource "azurerm_resource_group" "flex_data" {
-  count = var.env_short != "d" ? 1 : 0
-
   name     = format("%s-pgres-flex-rg", local.project)
   location = var.location
 
@@ -46,10 +44,10 @@ module "postgres_flexible_server_private" {
   count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v6.11.2"
 
-  name = format("%s-gpd-pgflex-changed_name", local.project)
+  name = format("%s-gpd-pgflex", local.project)
 
-  location            = azurerm_resource_group.flex_data[0].location
-  resource_group_name = azurerm_resource_group.flex_data[0].name
+  location            = azurerm_resource_group.flex_data.location
+  resource_group_name = azurerm_resource_group.flex_data.name
 
   ### Network
   private_endpoint_enabled = var.pgres_flex_params.private_endpoint_enabled
@@ -71,13 +69,14 @@ module "postgres_flexible_server_private" {
   standby_availability_zone = var.pgres_flex_params.standby_availability_zone
   pgbouncer_enabled         = var.pgres_flex_params.pgbouncer_enabled
 
+  diagnostic_settings_enabled = false
+
   tags = var.tags
 }
 
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
-  count     = var.env_short != "d" ? 1 : 0
   name      = var.gpd_db_name
-  server_id = module.postgres_flexible_server_private[0].id
+  server_id = var.env_short != "d" ? module.postgres_flexible_server_private[0].id : module.postgres_flexible_server_public[0].id
   collation = "en_US.utf8"
   charset   = "utf8"
 }
@@ -95,4 +94,36 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_poo
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_flexible_server_private[0].id
   value     = 10
+}
+
+# https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
+module "postgres_flexible_server_public" {
+
+  count = var.env_short == "d" ? 1 : 0
+
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v6.11.2"
+
+  name                = format("%s-gpd-pgflex", local.project)
+  location            = azurerm_resource_group.flex_data.location
+  resource_group_name = azurerm_resource_group.flex_data.name
+
+  ### admin credentials
+  administrator_login    = azurerm_key_vault_secret.pgres_flex_admin_login.value
+  administrator_password = azurerm_key_vault_secret.pgres_flex_admin_pwd.value
+
+  sku_name   = "B_Standard_B1ms"
+  db_version = "13"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                   = 32768
+  zone                         = 1
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
+
+  high_availability_enabled   = false
+  private_endpoint_enabled    = false
+  pgbouncer_enabled           = false
+  tags                        = var.tags
+  alerts_enabled              = false
+  diagnostic_settings_enabled = false
 }
