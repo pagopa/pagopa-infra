@@ -47,7 +47,7 @@ module "apim_api_apiconfig_core_oauth_api_v1" {
 }
 
 
-resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
+resource "azurerm_api_management_authorization_server" "apiconfig-core-oauth2" {
   name                         = "apiconfig-core-oauth2"
   api_management_name          = local.pagopa_apim_name
   resource_group_name          = local.pagopa_apim_rg

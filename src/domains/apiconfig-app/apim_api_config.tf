@@ -88,36 +88,29 @@ module "apim_api_config_api" {
 ##    CONFIGURATION   ##
 ########################
 
-#data "azuread_application" "apiconfig-fe" {
-#  display_name = format("pagopa-%s-apiconfig-fe", var.env_short)
-#}
-#data "azuread_application" "apiconfig-be" {
-#  display_name = format("pagopa-%s-apiconfig-be", var.env_short)
-#}
+resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
+  name                         = "apiconfig-oauth2"
+  api_management_name          = local.pagopa_apim_name
+  resource_group_name          = local.pagopa_apim_rg
+  display_name                 = "apiconfig-oauth2"
+  authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
+  client_id                    = data.azuread_application.apiconfig-fe.application_id
+  client_registration_endpoint = "http://localhost"
 
-#resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
-#  name                         = "apiconfig-oauth2"
-#  api_management_name          = local.pagopa_apim_name
-#  resource_group_name          = local.pagopa_apim_rg
-#  display_name                 = "apiconfig-oauth2"
-#  authorization_endpoint       = "https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize"
-#  client_id                    = data.azuread_application.apiconfig-fe.application_id
-#  client_registration_endpoint = "http://localhost"
-#
-#  grant_types           = ["authorizationCode"]
-#  authorization_methods = ["GET", "POST"]
-#
-#  #tfsec:ignore:GEN003
-#  token_endpoint = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
-#  default_scope = format("%s/%s",
-#    data.azuread_application.apiconfig-be.identifier_uris[0],
-#  "access-apiconfig-be")
-#  client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
-#
-#  bearer_token_sending_methods = ["authorizationHeader"]
-#  client_authentication_method = ["Body"]
-#
-#}
+  grant_types           = ["authorizationCode"]
+  authorization_methods = ["GET", "POST"]
+
+  #tfsec:ignore:GEN003
+  token_endpoint = "https://login.microsoftonline.com/organizations/oauth2/v2.0/token"
+  default_scope = format("%s/%s",
+    data.azuread_application.apiconfig-be.identifier_uris[0],
+  "access-apiconfig-be")
+  client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
+
+  bearer_token_sending_methods = ["authorizationHeader"]
+  client_authentication_method = ["Body"]
+
+}
 
 
 ###########################
@@ -189,77 +182,77 @@ module "apim_api_config_auth_api" {
   })
 }
 
-##################################################################################
-#                                   DEPRECATED                                   #
-# API apim_api_config_checkout_product (which contains only a subset of actions) #
-# will be removed in favor of API apim_api_config_auth_product which             #
-# is the same of apim_api_config_product but requires authentication             #
-##################################################################################
-
-
-###########################
-## Products for Checkout ##
-###########################
-
-module "apim_api_config_checkout_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
-
-  product_id   = "product-api-config-checkout"
-  display_name = "ApiConfig for Checkout"
-  description  = "Product for API Configuration of the Node for Checkout"
-
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-
-  published             = true
-  subscription_required = true
-  approval_required     = false
-
-  policy_xml = file("./api_product/apiconfig_api/_base_policy_checkout.xml")
-}
-
-########################
-##  API for Checkout  ##
-########################
-
-resource "azurerm_api_management_api_version_set" "api_config_checkout_api" {
-
-  name                = format("%s-api-config-checkout-api", var.env_short)
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "ApiConfig for Checkout"
-  versioning_scheme   = "Segment"
-}
-
-module "apim_api_config_checkout_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
-
-  name                = format("%s-api-config-checkout-api", var.env_short)
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  product_ids         = [module.apim_api_config_checkout_product.product_id]
-
-  subscription_required = true
-
-  version_set_id = azurerm_api_management_api_version_set.api_config_checkout_api.id
-  api_version    = "v1"
-
-  description  = "Api configuration for Checkout"
-  display_name = "ApiConfig for Checkout"
-  path         = "apiconfig/checkout/api"
-  protocols    = ["https"]
-
-  #  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
-  service_url = ""
-
-  content_format = "openapi"
-  content_value = templatefile("./api/apiconfig_api/checkout/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
-  })
-
-  xml_content = templatefile("./api/apiconfig_api/checkout/v1/_base_policy.xml.tpl", {
-    origin                 = "*"
-    pagopa_tenant_id       = local.pagopa_tenant_id
-    apiconfig_be_client_id = local.apiconfig_be_client_id
-  })
-}
+###################################################################################
+##                                   DEPRECATED                                   #
+## API apim_api_config_checkout_product (which contains only a subset of actions) #
+## will be removed in favor of API apim_api_config_auth_product which             #
+## is the same of apim_api_config_product but requires authentication             #
+###################################################################################
+#
+#
+############################
+### Products for Checkout ##
+############################
+#
+#module "apim_api_config_checkout_product" {
+#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+#
+#  product_id   = "product-api-config-checkout"
+#  display_name = "ApiConfig for Checkout"
+#  description  = "Product for API Configuration of the Node for Checkout"
+#
+#  api_management_name = local.pagopa_apim_name
+#  resource_group_name = local.pagopa_apim_rg
+#
+#  published             = true
+#  subscription_required = true
+#  approval_required     = false
+#
+#  policy_xml = file("./api_product/apiconfig_api/_base_policy_checkout.xml")
+#}
+#
+#########################
+###  API for Checkout  ##
+#########################
+#
+#resource "azurerm_api_management_api_version_set" "api_config_checkout_api" {
+#
+#  name                = format("%s-api-config-checkout-api", var.env_short)
+#  api_management_name = local.pagopa_apim_name
+#  resource_group_name = local.pagopa_apim_rg
+#  display_name        = "ApiConfig for Checkout"
+#  versioning_scheme   = "Segment"
+#}
+#
+#module "apim_api_config_checkout_api" {
+#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+#
+#  name                = format("%s-api-config-checkout-api", var.env_short)
+#  api_management_name = local.pagopa_apim_name
+#  resource_group_name = local.pagopa_apim_rg
+#  product_ids         = [module.apim_api_config_checkout_product.product_id]
+#
+#  subscription_required = true
+#
+#  version_set_id = azurerm_api_management_api_version_set.api_config_checkout_api.id
+#  api_version    = "v1"
+#
+#  description  = "Api configuration for Checkout"
+#  display_name = "ApiConfig for Checkout"
+#  path         = "apiconfig/checkout/api"
+#  protocols    = ["https"]
+#
+#  #  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+#  service_url = ""
+#
+#  content_format = "openapi"
+#  content_value = templatefile("./api/apiconfig_api/checkout/v1/_openapi.json.tpl", {
+#    host = local.apim_hostname
+#  })
+#
+#  xml_content = templatefile("./api/apiconfig_api/checkout/v1/_base_policy.xml.tpl", {
+#    origin                 = "*"
+#    pagopa_tenant_id       = local.pagopa_tenant_id
+#    apiconfig_be_client_id = local.apiconfig_be_client_id
+#  })
+#}

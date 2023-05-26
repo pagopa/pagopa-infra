@@ -71,13 +71,13 @@ resource "azurerm_key_vault_secret" "apiconfig_afm_utils_subscription_key" {
     ]
   }
 }
-#
-#data "azurerm_key_vault_secret" "db_nodo_usr" {
-#  name         = "db-nodo-usr"
-#  key_vault_id = data.azurerm_key_vault.kv.id
-#}
-#
-#data "azurerm_key_vault_secret" "db_nodo_pwd" {
-#  name         = "db-nodo-pwd"
-#  key_vault_id = data.azurerm_key_vault.kv.id
-#}
+
+data "azurerm_key_vault_secret" "db_nodo_usr" {
+  name         = "db-nodo-usr"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "db_nodo_pwd" {
+  name         = "db-nodo-pwd"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
