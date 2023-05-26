@@ -343,3 +343,17 @@ variable "gpd_dbms_port" {
   description = "Port number of the DBMS"
   default     = 5432
 }
+
+variable "pgbouncer_enabled" {
+  type        = bool
+  description = "Built-in connection pooling solution"
+  default     = false
+}
+
+#APIM
+
+variable "apim_logger_resource_id" {
+  type        = string
+  description = "Resource id for the APIM logger"
+  default     = null
+}

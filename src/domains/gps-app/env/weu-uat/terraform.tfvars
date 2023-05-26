@@ -58,6 +58,9 @@ reporting_functions_app_sku = {
 
 cname_record_name = "config"
 
+# APIM
+apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
+
 # gpd
 gpd_plan_kind                = "Linux"
 gpd_plan_sku_tier            = "Standard"
@@ -69,3 +72,5 @@ gpd_cron_schedule_expired_to = "0 */20 * * * *"
 gpd_autoscale_minimum        = 1
 gpd_autoscale_maximum        = 3
 gpd_autoscale_default        = 1
+# gpd database config for gpd-app-service
+pgbouncer_enabled = true
