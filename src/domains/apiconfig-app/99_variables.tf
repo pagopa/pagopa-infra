@@ -199,3 +199,8 @@ variable "dns_default_ttl_sec" {
 variable "private_dns_zone_db_nodo_pagamenti" {
   type = string
 }
+
+variable "sku_name" {
+  type    = string
+  default = "S1"
+}

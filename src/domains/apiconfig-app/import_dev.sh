@@ -1,6 +1,16 @@
 #!/bin/bash
 # Generated with `generate_imports.py`
 
+# module.apim_api_config_product
+echo 'Importing module.apim_api_config_product.azurerm_api_management_product.this'
+./terraform.sh import weu-dev 'module.apim_api_config_product.azurerm_api_management_product.this' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/products/product-api-config'
+
+
+# module.apim_api_config_product
+echo 'Importing module.apim_api_config_product.azurerm_api_management_product_policy.this[0]'
+./terraform.sh import weu-dev 'module.apim_api_config_product.azurerm_api_management_product_policy.this[0]' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/products/product-api-config/policies/xml'
+
+
 # resource.azurerm_api_management_group.apiconfig_grp
 echo 'Importing azurerm_api_management_group.apiconfig_grp'
 ./terraform.sh import weu-dev 'azurerm_api_management_group.apiconfig_grp' '/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/groups/api-config-be-writer'

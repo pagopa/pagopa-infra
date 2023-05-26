@@ -16,7 +16,7 @@ module "api_config_fe_cdn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.4.1"
 
   count               = var.api_config_fe_enabled ? 1 : 0
-  name                = "api-config-fe"
+  name                = "fe"
   prefix              = local.project
   resource_group_name = azurerm_resource_group.api_config_fe_rg[0].name
   location            = var.location

@@ -47,6 +47,7 @@ module "api_config_app_service" {
   # App service plan vars
   plan_name = format("%s-plan-api-config", local.project)
   plan_kind = "Linux"
+  sku_name  = var.sku_name
 
   # App service plan
   name                = format("%s-app-api-config", local.project)
