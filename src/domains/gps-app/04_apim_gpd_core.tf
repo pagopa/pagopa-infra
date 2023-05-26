@@ -101,7 +101,7 @@ resource "azurerm_api_management_api_version_set" "api_debt_positions_api" {
 module "apim_api_debt_positions_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
 
-  name                  = format("%s-debt-positions-service-api", local.project)
+  name                  = format("%s-debt-positions-service-api", local.product)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_debt_positions_product.product_id]

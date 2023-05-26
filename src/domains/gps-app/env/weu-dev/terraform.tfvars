@@ -15,15 +15,16 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-### External resources
+## APIM
+apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"
 
+### External resources
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
-
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.platform"
-apim_dns_zone_prefix     = "dev.platform"
+external_domain                             = "pagopa.it"
+dns_zone_internal_prefix                    = "internal.dev.platform"
+apim_dns_zone_prefix                        = "dev.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -70,4 +71,6 @@ gpd_cron_schedule_expired_to = "0 */20 * * * *"
 gpd_autoscale_minimum        = 1
 gpd_autoscale_maximum        = 3
 gpd_autoscale_default        = 1
+# gpd database config for gpd-app-service
+pgbouncer_enabled = false
 
