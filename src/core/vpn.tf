@@ -45,7 +45,7 @@ module "vpn" {
 ## DNS Forwarder
 module "dns_forwarder_snet" {
   count  = var.env_short != "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.15.0"
 
   name                                           = format("%s-dns-forwarder-snet", local.project)
   address_prefixes                               = var.cidr_subnet_dns_forwarder
@@ -68,7 +68,7 @@ resource "random_id" "dns_forwarder_hash" {
 
 module "dns_forwarder" {
   count  = var.env_short != "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v4.15.0"
 
   name                = "${local.project}-${random_id.dns_forwarder_hash.hex}-dns-forwarder"
   location            = azurerm_resource_group.rg_vnet.location
