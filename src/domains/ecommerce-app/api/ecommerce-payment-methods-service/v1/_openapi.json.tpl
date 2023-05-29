@@ -259,7 +259,7 @@
             }
           },
           {
-            "name": "transactionId",
+            "name": "x-transaction-id",
             "in": "header",
             "schema": {
               "type": "string"
