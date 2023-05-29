@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "api_config_rg" {
-  name     = format("%s-api-config-rg", local.project)
+  name     = format("%s-api-config-rg", local.product)
   location = var.location
 
   tags = var.tags
@@ -16,10 +16,10 @@ locals {
 module "api_config_snet" {
   count                                     = var.cidr_subnet_api_config != null ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
-  name                                      = format("%s-api-config-snet", local.project)
+  name                                      = format("%s-api-config-snet", local.product)
   address_prefixes                          = var.cidr_subnet_api_config
   resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
-  virtual_network_name                      = format("%s-vnet-integration", local.project)
+  virtual_network_name                      = format("%s-vnet-integration", local.product)
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -45,16 +45,16 @@ module "api_config_app_service" {
   location            = var.location
 
   # App service plan vars
-  plan_name = format("%s-plan-api-config", local.project)
+  plan_name = format("%s-plan-api-config", local.product)
   plan_kind = "Linux"
   sku_name  = var.sku_name
 
   # App service plan
-  name                = format("%s-app-api-config", local.project)
+  name                = format("%s-app-api-config", local.product)
   client_cert_enabled = false
   always_on           = var.api_config_always_on
-  # linux_fx_version    = "JAVA|11-java11"
-  health_check_path = "/apiconfig/api/v1/info"
+  java_version        = 11
+  health_check_path   = "/apiconfig/api/v1/info"
 
   app_settings = {
     # Monitoring
@@ -156,7 +156,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
 }
 
 resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
-  name                = format("%s-autoscale-apiconfig", local.project)
+  name                = format("%s-autoscale-apiconfig", local.product)
   resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = azurerm_resource_group.api_config_rg.location
   target_resource_id  = module.api_config_app_service.plan_id
