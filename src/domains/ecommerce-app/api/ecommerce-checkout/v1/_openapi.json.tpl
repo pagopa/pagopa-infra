@@ -1287,6 +1287,27 @@
             "description": "Cart identifier provided by creditor institution",
             "type": "string",
             "example": "idCartFromCreditorInstitution"
+          },
+          "sendPaymentResultOutcome": {
+            "description": "The outcome of sendPaymentResult api",
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Payment gateway-specific error code from the gateway"
+          },
+          "gateway": {
+            "type": "string",
+            "pattern": "XPAY|VPOS",
+            "description": "Pgs identifier"
           }
         },
         "required": [
