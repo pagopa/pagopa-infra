@@ -109,6 +109,7 @@ delegation = {
 
 
 resource "random_id" "pair_dns_forwarder_hash" {
+  count = var.dns_forwarder_pair_enabled ? 1 : 0
   byte_length = 3
 }
 
@@ -116,7 +117,7 @@ module "vpn_pair_dns_forwarder" {
   count = var.dns_forwarder_pair_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.28"
 
-  name                = "${local.project}-${random_id.pair_dns_forwarder_hash.hex}-dns-forwarder"
+  name                = "${local.project}-${random_id.pair_dns_forwarder_hash[count.index].hex}-dns-forwarder"
   location            = var.location_pair
   resource_group_name = azurerm_resource_group.rg_pair_vnet[count.index].name
   subnet_id           = module.dns_forwarder_pair_subnet[count.index].id
