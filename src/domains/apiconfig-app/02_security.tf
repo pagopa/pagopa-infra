@@ -72,13 +72,19 @@ resource "azurerm_key_vault_secret" "apiconfig_afm_utils_subscription_key" {
   }
 }
 
-
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "db_nodo_usr" {
   name         = "db-nodo-usr"
-  value        = "NODO4_CFG"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
