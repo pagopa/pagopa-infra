@@ -75,7 +75,7 @@ resource "azurerm_key_vault_secret" "apiconfig_afm_utils_subscription_key" {
 
 resource "azurerm_key_vault_secret" "db_nodo_usr" {
   name         = "db-nodo-usr"
-  value        = "cfg"
+  value        = "NODO4_CFG"
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id

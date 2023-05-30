@@ -25,8 +25,6 @@ external_domain                    = "pagopa.it"
 dns_zone_internal_prefix           = "internal.dev.platform"
 apim_dns_zone_prefix               = "dev.platform"
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
-
-
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 tls_cert_check_helm = {
@@ -43,6 +41,7 @@ apiconfig_logging_level = "DEBUG"
 # Configuration
 cidr_subnet_api_config = ["10.230.8.128/29"]
 db_service_name        = "NDPSPCT_PP_NODO4_CFG"
+db_port                = 1522
 
 # API Config FE
 api_config_fe_enabled = true
