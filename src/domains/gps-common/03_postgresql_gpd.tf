@@ -28,7 +28,7 @@ module "postgres_flexible_snet" {
   count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v6.11.2"
 
-  name                                      = format("%s-pgres-flexible-snet", local.project)
+  name                                      = format("%s-pgres-flexible-snet", local.product)
   address_prefixes                          = var.cidr_subnet_pg_flex_dbms
   resource_group_name                       = local.vnet_resource_group_name
   virtual_network_name                      = local.vnet_name
@@ -58,7 +58,7 @@ module "postgres_flexible_server_private" {
   count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v6.11.2"
 
-  name = format("%s-gpd-pgflex", local.project)
+  name = format("%s-gpd-pgflex", local.product)
 
   location            = data.azurerm_resource_group.flex_data[0].location
   resource_group_name = data.azurerm_resource_group.flex_data[0].name
