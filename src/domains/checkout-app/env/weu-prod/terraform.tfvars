@@ -18,8 +18,10 @@ tags = {
 
 monitor_resource_group_name = "pagopa-p-monitor-rg"
 
-external_domain = "pagopa.it"
-dns_zone_prefix = "platform"
+external_domain      = "pagopa.it"
+dns_zone_prefix      = "platform"
+apim_dns_zone_prefix = "platform"
+dns_zone_checkout    = "checkout"
 
 ### pagopa-proxy app service
 
@@ -27,3 +29,28 @@ cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
 
 pagopa_proxy_tier = "PremiumV3"
 pagopa_proxy_size = "P1v3"
+
+# Networking
+
+cidr_subnet_checkout_be = ["10.1.133.0/24"]
+
+# APIM
+
+apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"
+
+# Checkout
+
+checkout_enabled = true
+
+# Checkout functions
+
+checkout_function_kind              = "Linux"
+checkout_function_sku_tier          = "PremiumV3"
+checkout_function_sku_size          = "P1v3"
+checkout_function_always_on         = true
+checkout_function_autoscale_minimum = 1
+checkout_function_autoscale_maximum = 3
+checkout_function_autoscale_default = 1
+
+# ecommerce ingress hostname
+ecommerce_ingress_hostname = "disabled"

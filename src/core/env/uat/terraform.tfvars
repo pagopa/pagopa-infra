@@ -723,36 +723,11 @@ platform_private_dns_zone_records = ["api", "portal", "management"]
 
 storage_queue_private_endpoint_enabled = true
 
-# Data Explorer
-dexp_params = {
-  enabled = true
-  sku = {
-    name     = "Dev(No SLA)_Standard_E2a_v4"
-    capacity = 1
-  }
-  autoscale = {
-    enabled       = false
-    min_instances = 2
-    max_instances = 3
-  }
-  public_network_access_enabled = true
-  double_encryption_enabled     = false
-  disk_encryption_enabled       = true
-  purge_enabled                 = false
-}
-
-dexp_db = {
-  enable             = true
-  hot_cache_period   = "P5D"
-  soft_delete_period = "P90D"
-}
-
-dexp_re_db_linkes_service = {
-  enable = true
-}
-
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.9.5"
+node_forwarder_tier            = "PremiumV3"
+node_forwarder_size            = "P1v3"
+node_forwarder_logging_level   = "DEBUG"
 
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
