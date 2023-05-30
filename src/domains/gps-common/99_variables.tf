@@ -159,6 +159,18 @@ variable "pgres_flex_params" {
   default = null
 }
 
+variable "postgresql_network_rules" {
+  description = "Network rules restricting access to the postgresql server."
+  type = object({
+    ip_rules                       = list(string)
+    allow_access_to_azure_services = bool
+  })
+  default = {
+    ip_rules                       = []
+    allow_access_to_azure_services = false
+  }
+}
+
 // gpd Database
 variable "gpd_db_name" {
   type        = string
