@@ -2,11 +2,25 @@
 # naming and resource group
 # avaibility zones, backup redundancy
 
-resource "azurerm_resource_group" "flex_data" {
-  name     = format("%s-pgres-flex-rg", local.project)
-  location = var.location
+# KV secrets flex server
+data "azurerm_key_vault_secret" "pgres_admin_login" {
+  name         = "pgres-admin-login"
+  key_vault_id = module.key_vault.id
+}
 
-  tags = var.tags
+data "azurerm_key_vault_secret" "pgres_admin_pwd" {
+  name         = "pgres-admin-pwd"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_resource_group" "flex_data" {
+  count = var.env_short != "d" ? 1 : 0
+  name  = format("%s-pgres-flex-rg", local.product)
+}
+
+data "azurerm_resource_group" "data" {
+  count = var.env_short == "d" ? 1 : 0
+  name  = format("%s-data-rg", local.product)
 }
 
 # Postgres Flexible Server subnet
@@ -46,8 +60,8 @@ module "postgres_flexible_server_private" {
 
   name = format("%s-gpd-pgflex", local.project)
 
-  location            = azurerm_resource_group.flex_data.location
-  resource_group_name = azurerm_resource_group.flex_data.name
+  location            = data.azurerm_resource_group.flex_data[0].location
+  resource_group_name = data.azurerm_resource_group.flex_data[0].name
 
   ### Network
   private_endpoint_enabled = var.pgres_flex_params.private_endpoint_enabled
@@ -55,8 +69,8 @@ module "postgres_flexible_server_private" {
   delegated_subnet_id      = module.postgres_flexible_snet[0].id
 
   ### admin credentials
-  administrator_login    = azurerm_key_vault_secret.pgres_flex_admin_login.value
-  administrator_password = azurerm_key_vault_secret.pgres_flex_admin_pwd.value
+  administrator_login    = data.azurerm_key_vault_secret.pgres_admin_login.value
+  administrator_password = data.azurerm_key_vault_secret.pgres_admin_pwd.value
 
   sku_name                     = var.pgres_flex_params.sku_name
   db_version                   = var.pgres_flex_params.db_version
@@ -75,8 +89,9 @@ module "postgres_flexible_server_private" {
 }
 
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
+  count     = var.env_short != "d" ? 1 : 0
   name      = var.gpd_db_name
-  server_id = var.env_short != "d" ? module.postgres_flexible_server_private[0].id : module.postgres_flexible_server_public[0].id
+  server_id = module.postgres_flexible_server_private[0].id
   collation = "en_US.utf8"
   charset   = "utf8"
 }
@@ -96,34 +111,68 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_poo
   value     = 10
 }
 
-# https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
-module "postgres_flexible_server_public" {
+########################################################################################################################
+########################################### POSTGRES DEV ###############################################################
+########################################################################################################################
 
-  count = var.env_short == "d" ? 1 : 0
+module "postgresql_snet" {
+  count  = var.env_short == "d" ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v6.11.2"
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v6.11.2"
+  name                                      = format("%s-gpd-postgresql-snet", local.product)
+  address_prefixes                          = var.cidr_subnet_pg_flex_dbms
+  resource_group_name                       = local.vnet_resource_group_name
+  virtual_network_name                      = local.vnet_name
+  service_endpoints                         = ["Microsoft.Sql"]
+  private_endpoint_network_policies_enabled = false
 
-  name                = format("%s-gpd-pgflex", local.project)
-  location            = azurerm_resource_group.flex_data.location
-  resource_group_name = azurerm_resource_group.flex_data.name
+  delegation = {
+    name = "delegation"
+    service_delegation = {
+      name    = "Microsoft.ContainerInstance/containerGroups"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
 
-  ### admin credentials
-  administrator_login    = azurerm_key_vault_secret.pgres_flex_admin_login.value
-  administrator_password = azurerm_key_vault_secret.pgres_flex_admin_pwd.value
+#tfsec:ignore:azure-database-no-public-access
+module "postgresql" {
+  count  = var.env_short == "d" ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgresql_server?ref=v6.11.2"
 
-  sku_name   = "B_Standard_B1ms"
-  db_version = "13"
-  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
-  # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                   = 32768
-  zone                         = 1
-  backup_retention_days        = 7
+  name                = format("%s-gpd-postgresql", local.product)
+  location            = azurerm_resource_group.gpd_rg.location
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+
+  administrator_login          = data.azurerm_key_vault_secret.pgres_admin_login.value
+  administrator_login_password = data.azurerm_key_vault_secret.pgres_admin_pwd.value
+
+  sku_name                     = "B_Gen5_1"
+  db_version                   = 11
   geo_redundant_backup_enabled = false
 
-  high_availability_enabled   = false
-  private_endpoint_enabled    = false
-  pgbouncer_enabled           = false
-  tags                        = var.tags
-  alerts_enabled              = false
-  diagnostic_settings_enabled = false
+  public_network_access_enabled = false
+  network_rules                 = var.postgresql_network_rules
+
+  private_endpoint = {
+    enabled              = false
+    virtual_network_id   = data.azurerm_virtual_network.vnet.id
+    subnet_id            = module.postgresql_snet[0].id
+    private_dns_zone_ids = []
+  }
+
+  enable_replica = false
+  alerts_enabled = false
+  lock_enable    = false
+
+  tags = var.tags
+}
+
+resource "azurerm_postgresql_database" "apd_db" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = var.gpd_db_name
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  server_name         = module.postgresql[0].name
+  charset             = "UTF8"
+  collation           = "Italian_Italy.1252"
 }

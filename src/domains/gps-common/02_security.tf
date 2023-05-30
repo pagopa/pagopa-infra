@@ -346,8 +346,8 @@ resource "azurerm_key_vault_secret" "gpd_db_pwd" {
 ## KV secrets flex server ##
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "pgres_flex_admin_login" {
-  name         = "pgres-flex-admin-login"
+resource "azurerm_key_vault_secret" "pgres_admin_login" {
+  name         = "pgres-admin-login"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
@@ -361,8 +361,8 @@ resource "azurerm_key_vault_secret" "pgres_flex_admin_login" {
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
-  name         = "pgres-flex-admin-pwd"
+resource "azurerm_key_vault_secret" "pgres_admin_pwd" {
+  name         = "pgres-admin-pwd"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
