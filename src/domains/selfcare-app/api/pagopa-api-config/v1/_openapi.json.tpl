@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.121
+  version: 0.0.127
 servers:
   - url: 'https://${host}/${basePath}'
     description: Inferred Url
@@ -340,6 +340,54 @@ paths:
       security:
         - bearerAuth:
             - global
+  /channels/get-details/{channelcode}:
+    get:
+      tags:
+        - channels
+      summary: getChannelDetail
+      operationId: getChannelDetailUsingGET
+      parameters:
+        - name: channelcode
+          in: path
+          description: Code of the payment channel
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /channels/get-wrapper/{wrapperType}/{wrapperStatus}:
     get:
       tags:
@@ -384,6 +432,7 @@ paths:
             enum:
               - APPROVED
               - TO_CHECK
+              - TO_CHECK_UPDATE
               - TO_FIX
         - name: brokerCode
           in: query
@@ -462,6 +511,78 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WrapperEntitiesOperations'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /channels/getAllChannels:
+    get:
+      tags:
+        - channels
+      summary: getAllChannelsMerged
+      description: Get All Channels from cosmos db merged whit apiConfig
+      operationId: getAllChannelsMergedUsingGET
+      parameters:
+        - name: limit
+          in: query
+          description: Number of elements on one page. Default = 50
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: channelcode
+          in: query
+          description: Channel code
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number. Page value starts from 0
+          required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: sorting
+          in: query
+          description: Method of sorting
+          required: false
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WrapperChannelsResource'
         '400':
           description: Bad Request
           content:
@@ -1579,6 +1700,46 @@ paths:
       security:
         - bearerAuth:
             - global
+  /stations/create-broker:
+    post:
+      tags:
+        - stations
+      summary: createBroker
+      description: Create a Broker
+      operationId: createBrokerUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BrokerDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrokerResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /stations/create-wrapperStation:
     post:
       tags:
@@ -1626,6 +1787,55 @@ paths:
       summary: getStation
       description: Get station's details
       operationId: getStationUsingGET
+      parameters:
+        - name: stationId
+          in: path
+          description: Station's unique identifier
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationDetailResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /stations/get-details/{stationId}:
+    get:
+      tags:
+        - stations
+      summary: getStationDetail
+      description: Get station's details
+      operationId: getStationDetailUsingGET
       parameters:
         - name: stationId
           in: path
@@ -1722,7 +1932,7 @@ paths:
       tags:
         - stations
       summary: getAllStationsMerged
-      description: Get All Station from cosmos db merged whit apiConfig
+      description: Get All Stations from cosmos db merged whit apiConfig
       operationId: getAllStationsMergedUsingGET
       parameters:
         - name: limit
@@ -1737,6 +1947,13 @@ paths:
           in: query
           description: Station's unique identifier
           required: false
+          style: form
+          schema:
+            type: string
+        - name: brokerCode
+          in: query
+          description: Broker code filter for search
+          required: true
           style: form
           schema:
             type: string
@@ -1761,7 +1978,72 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StationsResource'
+                $ref: '#/components/schemas/WrapperStationsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /stations/getCreditorInstitutions/{stationcode}:
+    get:
+      tags:
+        - stations
+      summary: getCreditorInstitutionsByStationCode
+      description: Get wrapper station from mongo DB
+      operationId: getCreditorInstitutionsByStationCodeUsingGET
+      parameters:
+        - name: stationcode
+          in: path
+          description: Channlecode or StationCode
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: page
+          required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionsResource'
         '400':
           description: Bad Request
           content:
@@ -1794,7 +2076,7 @@ paths:
       tags:
         - stations
       summary: updateWrapperStationDetails
-      description: 'Update WrapperStationDetails '
+      description: Update WrapperStationDetails
       operationId: updateWrapperStationDetailsUsingPUT
       requestBody:
         content:
@@ -1868,6 +2150,78 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '409':
           description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /stations/{brokerId}:
+    get:
+      tags:
+        - stations
+      summary: getStationsDetailsListByBroker
+      description: Get paginated list of stations given brokerid code
+      operationId: getStationsDetailsListByBrokerUsingGET
+      parameters:
+        - name: brokerId
+          in: path
+          description: brokerId
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: stationId
+          in: query
+          description: stationId
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: page
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationDetailsResourceList'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
           content:
             application/problem+json:
               schema:
@@ -1978,6 +2332,52 @@ paths:
       security:
         - bearerAuth:
             - global
+  /stations/{ecCode}/station/{stationcode}:
+    delete:
+      tags:
+        - stations
+      summary: deleteCreditorInstitutionStationRelationship
+      description: delete the relationship between the created station and the creditorInstitution
+      operationId: deleteCreditorInstitutionStationRelationshipUsingDELETE
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+        - name: stationcode
+          in: path
+          description: Channlecode or StationCode
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /stations/{stationcode}:
     put:
       tags:
@@ -2034,6 +2434,40 @@ paths:
             - global
 components:
   schemas:
+    BrokerDetails:
+      title: BrokerDetails
+      type: object
+      properties:
+        broker_code:
+          type: string
+        broker_details:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        extended_fault_bean:
+          type: boolean
+    BrokerDetailsResource:
+      title: BrokerDetailsResource
+      type: object
+      properties:
+        broker_code:
+          type: string
+        broker_details:
+          type: string
+        enabled:
+          type: boolean
+        extended_fault_bean:
+          type: boolean
+    BrokerDto:
+      title: BrokerDto
+      type: object
+      properties:
+        broker_code:
+          type: string
+        description:
+          type: string
     BrokerPspDetailsDto:
       title: BrokerPspDetailsDto
       type: object
@@ -2051,6 +2485,18 @@ components:
       type: object
       properties:
         broker_psp_code:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        extended_fault_bean:
+          type: boolean
+    BrokerResource:
+      title: BrokerResource
+      type: object
+      properties:
+        broker_code:
           type: string
         description:
           type: string
@@ -2201,6 +2647,7 @@ components:
           enum:
             - APPROVED
             - TO_CHECK
+            - TO_CHECK_UPDATE
             - TO_FIX
         target_host:
           type: string
@@ -2572,6 +3019,24 @@ components:
           type: boolean
           description: Enables the zipping of the content that goes through fstp
           example: false
+    CreditorInstitutionResource:
+      title: CreditorInstitutionResource
+      required:
+        - businessName
+        - creditorInstitutionCode
+        - enabled
+      type: object
+      properties:
+        businessName:
+          type: string
+          description: Creditor Institution's business name
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        enabled:
+          type: boolean
+          description: Creditor Institution activation state on ApiConfig
+          example: false
     CreditorInstitutionStationDto:
       title: CreditorInstitutionStationDto
       required:
@@ -2610,6 +3075,21 @@ components:
         stationCode:
           type: string
           description: Station's unique identifier
+    CreditorInstitutionsResource:
+      title: CreditorInstitutionsResource
+      required:
+        - creditor_institutions
+        - page_info
+      type: object
+      properties:
+        creditor_institutions:
+          type: array
+          description: A list of Creditor Institution's
+          items:
+            $ref: '#/components/schemas/CreditorInstitutionResource'
+        page_info:
+          description: info pageable
+          $ref: '#/components/schemas/PageInfo'
     InputStream:
       title: InputStream
       type: object
@@ -2892,6 +3372,9 @@ components:
         brokerDescription:
           type: string
           description: Station broker's description
+        brokerDetails:
+          description: broker's details
+          $ref: '#/components/schemas/BrokerDetailsResource'
         brokerObjId:
           type: integer
           description: Station's broker object id
@@ -3055,6 +3538,8 @@ components:
           type: string
         broker_description:
           type: string
+        broker_details:
+          $ref: '#/components/schemas/BrokerDetails'
         enabled:
           type: boolean
         flag_online:
@@ -3281,6 +3766,7 @@ components:
           enum:
             - APPROVED
             - TO_CHECK
+            - TO_CHECK_UPDATE
             - TO_FIX
         targetHost:
           type: string
@@ -3308,6 +3794,19 @@ components:
           type: integer
           description: Station's timeoutC
           format: int64
+    StationDetailsResourceList:
+      title: StationDetailsResourceList
+      required:
+        - stations
+      type: object
+      properties:
+        page_info:
+          $ref: '#/components/schemas/PageInfo'
+        stations:
+          type: array
+          description: Object that contains List of ec stations
+          items:
+            $ref: '#/components/schemas/StationDetailResource'
     StationResource:
       title: StationResource
       required:
@@ -3473,6 +3972,7 @@ components:
           enum:
             - APPROVED
             - TO_CHECK
+            - TO_CHECK_UPDATE
             - TO_FIX
         target_host:
           type: string
@@ -3672,6 +4172,51 @@ components:
           enum:
             - CHANNEL
             - STATION
+    WrapperChannelResource:
+      title: WrapperChannelResource
+      required:
+        - wrapperStatus
+      type: object
+      properties:
+        broker_description:
+          type: string
+          description: Broker description. Read only field
+        channel_code:
+          type: string
+          description: Channel code
+        createdAt:
+          type: string
+          description: creation date
+          format: date-time
+        enabled:
+          type: boolean
+        modifiedAt:
+          type: string
+          description: modification date
+          format: date-time
+        wrapperStatus:
+          type: string
+          description: channel's validation status
+          enum:
+            - APPROVED
+            - TO_CHECK
+            - TO_CHECK_UPDATE
+            - TO_FIX
+    WrapperChannelsResource:
+      title: WrapperChannelsResource
+      required:
+        - channels
+        - page_info
+      type: object
+      properties:
+        channels:
+          type: array
+          description: list of psp and ec channels
+          items:
+            $ref: '#/components/schemas/WrapperChannelResource'
+        page_info:
+          description: info pageable
+          $ref: '#/components/schemas/PageInfo'
     WrapperEntitiesList:
       title: WrapperEntitiesList
       type: object
@@ -3709,6 +4254,7 @@ components:
           enum:
             - APPROVED
             - TO_CHECK
+            - TO_CHECK_UPDATE
             - TO_FIX
         type:
           type: string
@@ -3746,6 +4292,7 @@ components:
           enum:
             - APPROVED
             - TO_CHECK
+            - TO_CHECK_UPDATE
             - TO_FIX
         type:
           type: string
@@ -3783,6 +4330,7 @@ components:
           enum:
             - APPROVED
             - TO_CHECK
+            - TO_CHECK_UPDATE
             - TO_FIX
         type:
           type: string
@@ -3818,6 +4366,7 @@ components:
           enum:
             - APPROVED
             - TO_CHECK
+            - TO_CHECK_UPDATE
             - TO_FIX
         type:
           type: string
@@ -3849,6 +4398,7 @@ components:
           enum:
             - APPROVED
             - TO_CHECK
+            - TO_CHECK_UPDATE
             - TO_FIX
         type:
           type: string
@@ -3908,6 +4458,7 @@ components:
           enum:
             - APPROVED
             - TO_CHECK
+            - TO_CHECK_UPDATE
             - TO_FIX
         targetHost:
           type: string
@@ -3919,6 +4470,75 @@ components:
           type: integer
           description: Station target's port
           format: int64
+    WrapperStationResource:
+      title: WrapperStationResource
+      required:
+        - enabled
+        - stationCode
+        - stationStatus
+        - wrapperStatus
+      type: object
+      properties:
+        activationDate:
+          type: string
+          description: Station's activation date
+          format: date-time
+        associatedCreditorInstitutions:
+          type: integer
+          description: Number of station's creditor institutions
+          format: int32
+        brokerDescription:
+          type: string
+          description: Station broker's description
+        createdAt:
+          type: string
+          description: Station created on
+          format: date-time
+        enabled:
+          type: boolean
+          description: Station's activation state
+          example: false
+        modifiedAt:
+          type: string
+          description: Station's last modified date
+          format: date-time
+        stationCode:
+          type: string
+          description: Station's unique identifier
+        stationStatus:
+          type: string
+          description: Station's status
+          enum:
+            - ACTIVE
+            - ON_REVISION
+            - TO_BE_CORRECTED
+        version:
+          type: integer
+          description: Station's version
+          format: int64
+        wrapperStatus:
+          type: string
+          description: Station's status
+          enum:
+            - APPROVED
+            - TO_CHECK
+            - TO_CHECK_UPDATE
+            - TO_FIX
+    WrapperStationsResource:
+      title: WrapperStationsResource
+      required:
+        - pageInfo
+        - stationsList
+      type: object
+      properties:
+        pageInfo:
+          description: info pageable
+          $ref: '#/components/schemas/PageInfo'
+        stationsList:
+          type: array
+          description: List of ec stations
+          items:
+            $ref: '#/components/schemas/WrapperStationResource'
   securitySchemes:
     bearerAuth:
       type: http
