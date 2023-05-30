@@ -554,7 +554,7 @@
           },
           "errorCode": {
             "type": "string",
-            "description": "Payment gateway-specific authorization code related to the transaction"
+            "description": "Payment gateway-specific error code from the gateway"
           },
           "gateway": {
             "type": "string",
