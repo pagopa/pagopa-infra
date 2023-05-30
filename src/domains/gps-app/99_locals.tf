@@ -51,6 +51,7 @@ locals {
     APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
     APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
     APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
+    APPINSIGHTS_SAMPLING_PERCENTAGE                 = "100"
     ApplicationInsightsAgent_EXTENSION_VERSION      = "~3"
     DiagnosticServices_EXTENSION_VERSION            = "~3"
     InstrumentationEngine_EXTENSION_VERSION         = "disabled"
