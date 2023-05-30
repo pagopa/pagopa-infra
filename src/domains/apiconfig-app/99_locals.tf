@@ -78,6 +78,46 @@ locals {
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
 
+  apiconfig_cache_alert_locals = {
+    action_group    = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    data_source_id  = data.azurerm_application_insights.application_insights.id
+    no_memory       = {
+      severity    = 1
+      frequency   = 5
+      time_window = 5
+      operator    = "GreaterThanOrEqual"
+      threshold   = 1
+      query       = format(<<-QUERY
+        traces
+    | where cloud_RoleName == "%s"
+    | where message contains "java.lang.OutOfMemoryError: Java heap space"
+    | order by timestamp desc
+    | summarize Total=count() by length=bin(timestamp, 1m)
+  QUERY
+        , format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, "DATABASE")
+      )
+    }
+    jdbc_connection       = {
+      severity    = 1
+      frequency   = 5
+      time_window = 5
+      operator    = "GreaterThanOrEqual"
+      threshold   = 1
+      query       = format(<<-QUERY
+        let threshold = 0.05;
+traces
+| where cloud_RoleName == "%s"
+| where message contains "Invoking API operation" or message contains "Unable to acquire JDBC Connection"
+| order by timestamp desc
+| summarize Total=countif(message contains "Invoking API operation"), Error=countif(message contains "Unable to acquire JDBC Connection") by length=bin(timestamp, 5m)
+| extend Problem=toreal(Error) / Total
+| where Problem > threshold
+  QUERY
+        , format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, "DATABASE")
+      )
+    }
+  }
+
   oracle   = "o"
   postgres = "p"
 
