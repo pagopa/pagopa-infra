@@ -797,7 +797,6 @@
 | <a name="input_dns_a_reconds_dbnodo_ips"></a> [dns\_a\_reconds\_dbnodo\_ips](#input\_dns\_a\_reconds\_dbnodo\_ips) | IPs address of DB Nodo | `list(string)` | `[]` | no |
 | <a name="input_dns_a_reconds_dbnodo_prf_ips"></a> [dns\_a\_reconds\_dbnodo\_prf\_ips](#input\_dns\_a\_reconds\_dbnodo\_prf\_ips) | IPs address of DB Nodo | `list(string)` | `[]` | no |
 | <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | value | `number` | `3600` | no |
-| <a name="input_dns_forwarder_pair_enabled"></a> [dns\_forwarder\_pair\_enabled](#input\_dns\_forwarder\_pair\_enabled) | Whether to enable the creation of a dns forwarder instance, and all related resource in the paired region | `bool` | `true` | no |
 | <a name="input_dns_zone_checkout"></a> [dns\_zone\_checkout](#input\_dns\_zone\_checkout) | The checkout dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix_prf"></a> [dns\_zone\_prefix\_prf](#input\_dns\_zone\_prefix\_prf) | The dns subdomain. | `string` | `""` | no |
@@ -901,6 +900,7 @@
 | <a name="input_pagopa_proxy_redis_sku_name"></a> [pagopa\_proxy\_redis\_sku\_name](#input\_pagopa\_proxy\_redis\_sku\_name) | n/a | `string` | `null` | no |
 | <a name="input_pagopa_proxy_size"></a> [pagopa\_proxy\_size](#input\_pagopa\_proxy\_size) | pagopa-proxy Plan size | `string` | `null` | no |
 | <a name="input_pagopa_proxy_tier"></a> [pagopa\_proxy\_tier](#input\_pagopa\_proxy\_tier) | pagopa-proxy Plan tier | `string` | `null` | no |
+| <a name="input_pair_vpn_enabled"></a> [pair\_vpn\_enabled](#input\_pair\_vpn\_enabled) | Whether to enable the creation of a vpn and dns forwarder instance | `bool` | `true` | no |
 | <a name="input_payments_always_on"></a> [payments\_always\_on](#input\_payments\_always\_on) | Always on property | `bool` | `true` | no |
 | <a name="input_payments_logging_level"></a> [payments\_logging\_level](#input\_payments\_logging\_level) | Log level of Payments | `string` | `"INFO"` | no |
 | <a name="input_paytipper_hostname"></a> [paytipper\_hostname](#input\_paytipper\_hostname) | Paytipper hostname | `string` | `""` | no |
@@ -937,6 +937,7 @@
 | <a name="input_storage_queue_private_endpoint_enabled"></a> [storage\_queue\_private\_endpoint\_enabled](#input\_storage\_queue\_private\_endpoint\_enabled) | Whether private endpoint for Azure Storage Queues is enabled | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_users"></a> [users](#input\_users) | List of psql users with grants. | <pre>list(object({<br>    name = string<br>    grants = list(object({<br>      object_type = string<br>      database    = string<br>      schema      = string<br>      privileges  = list(string)<br>    }))<br>  }))</pre> | `[]` | no |
+| <a name="input_vnet_pair_linking_enabled"></a> [vnet\_pair\_linking\_enabled](#input\_vnet\_pair\_linking\_enabled) | Whether to enable the linking of pair vnet to main vnet resources | `bool` | `true` | no |
 | <a name="input_vpn_pip_sku"></a> [vpn\_pip\_sku](#input\_vpn\_pip\_sku) | VPN GW PIP SKU | `string` | `"Basic"` | no |
 | <a name="input_vpn_sku"></a> [vpn\_sku](#input\_vpn\_sku) | VPN Gateway SKU | `string` | `"VpnGw1"` | no |
 | <a name="input_xpay_hostname"></a> [xpay\_hostname](#input\_xpay\_hostname) | Nexi xpay hostname | `string` | `""` | no |

@@ -1,9 +1,10 @@
 # general
-env_short                  = "p"
-env                        = "prod"
-dns_forwarder_pair_enabled = true
-location_pair              = "northeurope"
-location_pair_short        = "neu"
+env_short                 = "p"
+env                       = "prod"
+vnet_pair_linking_enabled = true
+pair_vpn_enabled          = true
+location_pair             = "northeurope"
+location_pair_short       = "neu"
 
 tags = {
   CreatedBy   = "Terraform"

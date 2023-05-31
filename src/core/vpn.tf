@@ -63,6 +63,7 @@ module "dns_forwarder_snet" {
 }
 
 resource "random_id" "dns_forwarder_hash" {
+  count  = var.env_short != "d" ? 1 : 0
   byte_length = 3
 }
 
@@ -70,7 +71,7 @@ module "dns_forwarder" {
   count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v4.15.0"
 
-  name                = "${local.project}-${random_id.dns_forwarder_hash.hex}-dns-forwarder"
+  name                = "${local.project}-${random_id.dns_forwarder_hash[count.index].hex}-dns-forwarder"
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
   subnet_id           = module.dns_forwarder_snet[0].id
@@ -86,7 +87,7 @@ module "dns_forwarder" {
 # DNS Forwarder
 #
 module "dns_forwarder_pair_subnet" {
-  count  = var.dns_forwarder_pair_enabled ? 1 : 0
+  count  = var.vnet_pair_linking_enabled && var.pair_vpn_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
 
 
@@ -109,12 +110,12 @@ module "dns_forwarder_pair_subnet" {
 
 
 resource "random_id" "pair_dns_forwarder_hash" {
-  count       = var.dns_forwarder_pair_enabled ? 1 : 0
+  count       = var.vnet_pair_linking_enabled && var.pair_vpn_enabled ? 1 : 0
   byte_length = 3
 }
 
 module "vpn_pair_dns_forwarder" {
-  count  = var.dns_forwarder_pair_enabled ? 1 : 0
+  count  = var.vnet_pair_linking_enabled && var.pair_vpn_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.28"
 
   name                = "${local.project}-${random_id.pair_dns_forwarder_hash[count.index].hex}-dns-forwarder"

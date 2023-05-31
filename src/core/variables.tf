@@ -1751,8 +1751,14 @@ variable "apim_fdr_nodo_pagopa_enable" {
 }
 
 
-variable "dns_forwarder_pair_enabled" {
+variable "pair_vpn_enabled" {
   type        = bool
   default     = true
-  description = "Whether to enable the creation of a dns forwarder instance, and all related resource in the paired region"
+  description = "Whether to enable the creation of a vpn and dns forwarder instance"
+}
+
+variable "vnet_pair_linking_enabled" {
+  type        = bool
+  default     = true
+  description = "Whether to enable the linking of pair vnet to main vnet resources"
 }
