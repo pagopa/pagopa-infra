@@ -251,7 +251,7 @@ module "app_gw" {
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 10
+      request_timeout             = 30 # workaround for FDR - set to 10s after new Fdr service deployed
       pick_host_name_from_backend = false
     }
 
@@ -282,10 +282,10 @@ module "app_gw" {
 
     kibana = {
       protocol                    = "Https"
-      host                        = "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
+      host                        = var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
       port                        = 443
       ip_addresses                = [var.ingress_elk_load_balancer_ip]
-      fqdns                       = ["weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
+      fqdns                       = [var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
       probe                       = "/kibana"
       probe_name                  = "probe-kibana"
       request_timeout             = 10

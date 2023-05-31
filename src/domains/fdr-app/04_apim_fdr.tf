@@ -3,7 +3,7 @@
 ##############
 
 module "apim_fdr_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
   product_id   = "fdr"
   display_name = "FDR - Flussi di rendicontazione"
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "api_fdr_api" {
 
 
 module "apim_api_fdr_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
 
   name                  = format("%s-fdr-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -62,11 +62,11 @@ module "apim_api_fdr_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/fdr-service/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
     service = module.apim_fdr_product.product_id
   })
 
-  xml_content = templatefile("./api/fdr-service/v1/_base_policy.xml", {
-    hostname = local.fdr_hostname
+  xml_content = templatefile("./api/fdr-service/v1/_base_policy.xml.tpl", {
+    hostname = local.hostname
   })
 }

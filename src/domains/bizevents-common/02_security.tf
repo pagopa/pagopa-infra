@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.13.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.4.1"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -91,6 +91,14 @@ resource "azurerm_key_vault_secret" "cosmos_biz_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "cosmos_negative_biz_connection_string" {
+  name         = format("cosmos-%s-negative-biz-connection-string", var.env_short)
+  value        = module.negative_bizevents_datastore_cosmosdb_account.connection_strings[0]
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
   name         = format("ehub-%s-biz-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string
@@ -102,6 +110,30 @@ resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
 resource "azurerm_key_vault_secret" "ehub_biz_enrich_connection_string" {
   name         = format("ehub-%s-biz-enrich-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_negative_biz_connection_string" {
+  name         = format("ehub-%s-rx-negative-biz-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_awakable_negative_biz_connection_string" {
+  name         = format("ehub-%s-tx-awakable-negative-biz-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_final_negative_biz_connection_string" {
+  name         = format("ehub-%s-tx-final-negative-biz-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -125,6 +157,22 @@ resource "azurerm_key_vault_secret" "cosmos_biz_key" {
 resource "azurerm_key_vault_secret" "ehub_tx_biz_key" {
   name         = format("ehub-tx-%s-biz-key", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+## Negative BizEvents
+resource "azurerm_key_vault_secret" "cosmos_negative_biz_key" {
+  name         = format("cosmos-%s-negative-biz-key", var.env_short)
+  value        = module.negative_bizevents_datastore_cosmosdb_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
+  name         = format("ehub-tx-%s-negative-biz-key", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

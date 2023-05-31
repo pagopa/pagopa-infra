@@ -47,7 +47,7 @@ variable "location_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
+  description = "One of weu, neu"
 }
 
 variable "location_string" {
@@ -131,4 +131,9 @@ variable "upload_firmatore" {
 variable "cacerts_path" {
   type        = string
   description = "Java cacerts"
+}
+
+variable "pipe_service_principel_application_id" {
+  type        = string
+  description = "SP for pipeline application_id - pagopaspa-pagoPA-projects-[subscriptionid]"
 }

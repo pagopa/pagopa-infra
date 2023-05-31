@@ -3,7 +3,7 @@
 ##############
 
 module "apim_mock_ec_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
   count  = var.env_short == "d" ? 1 : 0
 
   product_id   = "mock_ec"
@@ -16,7 +16,7 @@ module "apim_mock_ec_product" {
   published             = true
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1000
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/mock-ec-service/_base_policy.xml")
 }
@@ -46,7 +46,7 @@ resource "azurerm_api_management_api_version_set" "api_mock_ec_api" {
 
 
 module "apim_api_mock_ec_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
   count  = var.env_short == "d" ? 1 : 0
 
   name                  = format("%s-mock-ec-service-api", local.project)

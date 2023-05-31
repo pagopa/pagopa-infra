@@ -22,15 +22,15 @@ law_daily_quota_gb    = 10
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway               = ["10.1.128.0/24"]
-cidr_subnet_postgresql               = ["10.1.129.0/24"]
-cidr_subnet_azdoa                    = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis       = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
-cidr_subnet_checkout_be              = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
-cidr_subnet_reporting_common         = ["10.1.136.0/24"]
+cidr_subnet_appgateway         = ["10.1.128.0/24"]
+cidr_subnet_postgresql         = ["10.1.129.0/24"]
+cidr_subnet_azdoa              = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
+cidr_subnet_checkout_be        = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
+# cidr_subnet_reporting_common         = ["10.1.136.0/24"]
 cidr_subnet_gpd                      = ["10.1.138.0/24"]
 cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
@@ -140,6 +140,7 @@ mock_payment_gateway_enabled       = true
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
+apim_fdr_nodo_pagopa_enable     = true
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725"
@@ -328,7 +329,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-test", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -338,6 +339,12 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-test"
         listen = true
         send   = false
         manage = false
@@ -356,6 +363,32 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx-pn"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-negative-biz-evt"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["pagopa-negative-biz-evt-rx", "pagopa-negative-biz-evt-rx-test"]
+    keys = [
+      {
+        name   = "pagopa-negative-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-rx-test"
         listen = true
         send   = false
         manage = false
@@ -461,6 +494,61 @@ eventhubs = [
   },
 ]
 
+eventhubs_02 = [
+  {
+    name              = "nodo-dei-pagamenti-negative-awakable-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-negative-final-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+]
+
 # acr
 acr_enabled = true
 
@@ -480,8 +568,8 @@ cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
-buyerbanks_function_sku_tier          = "Standard"
-buyerbanks_function_sku_size          = "S1"
+buyerbanks_function_sku_tier          = "Basic"
+buyerbanks_function_sku_size          = "B1"
 buyerbanks_function_autoscale_minimum = 1
 buyerbanks_function_autoscale_maximum = 3
 buyerbanks_function_autoscale_default = 1
@@ -533,10 +621,6 @@ gpd_cron_job_enable          = true
 gpd_cron_schedule_valid_to   = "0 */10 * * * *"
 gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
-reporting_function_autoscale_minimum = 1
-reporting_function_autoscale_maximum = 3
-reporting_function_autoscale_default = 1
-
 users = [
   {
     name = "APD_USER"
@@ -550,13 +634,6 @@ users = [
     ]
   }
 ]
-
-# GPD Payments
-# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
-payments_always_on       = false
-gpd_paa_id_intermediario = "15376371009"
-gpd_paa_stazione_int     = "15376371009_01"
-payments_logging_level   = "DEBUG"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"
@@ -638,33 +715,6 @@ storage_queue_private_endpoint_enabled = true
 
 platform_private_dns_zone_records = ["api", "portal", "management"]
 
-# Data Explorer
-dexp_params = {
-  enabled = true
-  sku = {
-    name     = "Dev(No SLA)_Standard_E2a_v4"
-    capacity = 1
-  }
-  autoscale = {
-    enabled       = false
-    min_instances = 2
-    max_instances = 3
-  }
-  public_network_access_enabled = true
-  double_encryption_enabled     = false
-  disk_encryption_enabled       = true
-  purge_enabled                 = false
-}
-
-dexp_db = {
-  enable             = true
-  hot_cache_period   = "P5D"
-  soft_delete_period = "P1M"
-}
-
-dexp_re_db_linkes_service = {
-  enable = true
-}
 
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.8.5"

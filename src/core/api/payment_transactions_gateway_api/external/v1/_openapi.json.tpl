@@ -10,87 +10,13 @@
     }
   ],
   "paths": {
-    "/request-payments/postepay/{requestId}": {
-      "get": {
-        "summary": "PGS webview polling call",
-        "tags": [
-          "Postepay-external"
-        ],
-        "operationId": "webviewPolling",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "requestId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true,
-            "description": "PGS-generated GUID of the request to get",
-            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - missing mandatory parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "transactionId already processed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PollingResponseEntity"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/request-payments/xpay/{requestId}/resume": {
+    "/xpay/authorizations/{requestId}/resume": {
       "get": {
         "summary": "payment request to xPay",
         "tags": [
           "XPay-external"
         ],
-        "operationId": "resumeXPayPayment",
+        "operationId": "resumeXPayPaymentAuth",
         "parameters": [
           {
             "name": "requestId",
@@ -189,174 +115,7 @@
         }
       }
     },
-    "/request-payments/xpay/{requestId}": {
-      "get": {
-        "summary": "retrieve XPay payment request",
-        "tags": [
-          "XPay-external"
-        ],
-        "operationId": "auth-response-xpay",
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "requestId",
-            "description": "Id of the request",
-            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/XPayPollingResponseEntity"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/XPayPollingResponseEntity404"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/request-payments/vpos/{requestId}": {
-      "get": {
-        "summary": "retrieve vpos payment request",
-        "tags": [
-          "Vpos-external"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "requestId",
-            "description": "Id of the request",
-            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentRequestVposResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentRequestVposErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentRequestVposErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/request-payments/vpos/{requestId}/resume/method": {
-      "post": {
-        "summary": "resume vpos payment request",
-        "tags": [
-          "Vpos-external"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "requestId",
-            "description": "Id of the request",
-            "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VposResumeRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VposResumeResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/request-payments/vpos/{requestId}/resume/challenge": {
+    "/vpos/authorizations/{requestId}/resume/challenge": {
       "post": {
         "summary": "resume Vpos payment request",
         "tags": [
@@ -391,7 +150,7 @@
         }
       }
     },
-    "/request-payments/vpos/{requestId}/method/notifications": {
+    "/vpos/authorizations/{requestId}/method/notifications": {
       "post": {
         "summary": "API used to notify the end of the method step (invoked inside the iframe)",
         "tags": [

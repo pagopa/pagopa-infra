@@ -22,15 +22,15 @@ law_daily_quota_gb    = 10
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway               = ["10.1.128.0/24"]
-cidr_subnet_postgresql               = ["10.1.129.0/24"]
-cidr_subnet_azdoa                    = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis       = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
-cidr_subnet_checkout_be              = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
-cidr_subnet_reporting_common         = ["10.1.136.0/24"]
+cidr_subnet_appgateway         = ["10.1.128.0/24"]
+cidr_subnet_postgresql         = ["10.1.129.0/24"]
+cidr_subnet_azdoa              = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
+cidr_subnet_checkout_be        = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
+# cidr_subnet_reporting_common         = ["10.1.136.0/24"]
 cidr_subnet_gpd                      = ["10.1.138.0/24"]
 cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
@@ -76,6 +76,10 @@ apim_publisher_name = "pagoPA Platform UAT"
 apim_sku            = "Developer_1"
 apim_alerts_enabled = false
 
+# redis private endpoint
+redis_private_endpoint_enabled = true
+redis_cache_enabled            = true
+
 # app_gateway
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
 app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it"
@@ -102,15 +106,12 @@ app_gateway_deny_paths = [
   "/payment-manager/internal/.*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd-payments/.*",  # internal use no sub-keys SOAP
-  "/gpd-reporting/.*", # internal use no sub-keys
+  "/gpd-payments/.*", # internal use no sub-keys SOAP
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
-  "/gps/gpd-payments/.*",                 # internal use no sub-keys
-  "/gps/gpd-payment-receipts/.*",         # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
@@ -120,7 +121,7 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   #"/pagopa-node-forwarder/.*"
-  "/gps/gpd-reporting-orgs-enrollment/.*" # internal use
+  "/shared/authorizer/.*", # internal use no sub-keys
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -175,6 +176,7 @@ mock_payment_gateway_enabled = true
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
+apim_fdr_nodo_pagopa_enable     = true
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -216,8 +218,8 @@ ecommerce_vpos_psps_list = "ATPIITM1,ABI36080,NIPSITR1,BIC36019,CHARITY_AMEX,CRG
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
-buyerbanks_function_sku_tier          = "Standard"
-buyerbanks_function_sku_size          = "S1"
+buyerbanks_function_sku_tier          = "Basic"
+buyerbanks_function_sku_size          = "B1"
 buyerbanks_function_autoscale_minimum = 1
 buyerbanks_function_autoscale_maximum = 3
 buyerbanks_function_autoscale_default = 1
@@ -227,6 +229,7 @@ ehns_sku_name = "Standard"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
+ehns_capacity                 = 5
 
 ehns_alerts_enabled = false
 ehns_metric_alerts = {
@@ -498,9 +501,81 @@ eventhubs = [
 
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-negative-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-negative-biz-evt-rx"]
+    keys = [
+      {
+        name   = "pagopa-negative-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+    ]
+  },
+]
 
-
-
+eventhubs_02 = [
+  {
+    name              = "nodo-dei-pagamenti-negative-awakable-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-negative-final-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
 
 # acr
@@ -509,7 +584,8 @@ acr_enabled = true
 # db nodo dei pagamenti
 db_port                            = 1524
 db_service_name                    = "NDPSPCA_PP_NODO4_CFG"
-dns_a_reconds_dbnodo_ips           = ["10.70.73.10"] # db onCloud
+dns_a_reconds_dbnodo_ips           = ["10.70.73.10"] # db onCloud
+dns_a_reconds_dbnodo_prf_ips       = ["10.70.73.20"] # db onCloud prf
 private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
 # API Config
@@ -529,7 +605,7 @@ pagopa_proxy_size           = "S1"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
-# redis apim 
+# redis apim
 redis_cache_params = {
   public_access = false
   capacity      = 0
@@ -566,20 +642,6 @@ gpd_plan_sku_size            = "S1"
 gpd_cron_job_enable          = true
 gpd_cron_schedule_valid_to   = "0 */10 * * * *"
 gpd_cron_schedule_expired_to = "0 */20 * * * *"
-
-reporting_function_autoscale_minimum = 1
-reporting_function_autoscale_maximum = 3
-reporting_function_autoscale_default = 1
-
-reporting_batch_function_always_on    = true
-reporting_service_function_always_on  = true
-reporting_analysis_function_always_on = true
-
-# GPD Payments
-# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
-gpd_paa_id_intermediario = "15376371009"
-gpd_paa_stazione_int     = "15376371009_01"
-payments_logging_level   = "DEBUG"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"
@@ -661,36 +723,11 @@ platform_private_dns_zone_records = ["api", "portal", "management"]
 
 storage_queue_private_endpoint_enabled = true
 
-# Data Explorer
-dexp_params = {
-  enabled = true
-  sku = {
-    name     = "Dev(No SLA)_Standard_E2a_v4"
-    capacity = 1
-  }
-  autoscale = {
-    enabled       = false
-    min_instances = 2
-    max_instances = 3
-  }
-  public_network_access_enabled = true
-  double_encryption_enabled     = false
-  disk_encryption_enabled       = true
-  purge_enabled                 = false
-}
-
-dexp_db = {
-  enable             = true
-  hot_cache_period   = "P5D"
-  soft_delete_period = "P90D"
-}
-
-dexp_re_db_linkes_service = {
-  enable = true
-}
-
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.9.5"
+node_forwarder_tier            = "PremiumV3"
+node_forwarder_size            = "P1v3"
+node_forwarder_logging_level   = "DEBUG"
 
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"

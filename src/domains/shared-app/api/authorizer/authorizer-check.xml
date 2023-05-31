@@ -1,0 +1,60 @@
+
+<!--
+    WARNING!
+    When you use this fragment, remember always to set "application_domain", "authorization_entity" as variables in caller policy
+-->
+<fragment>
+    <trace source="authorizer-check" severity="information">authorizer-check</trace>
+    <!-- Saving information from request -->
+    <set-variable name="domain" value="@((string)context.Variables["application_domain"])" /> <!-- ex. gpd -->
+    <set-variable name="auth_entity" value="@((string)context.Variables["authorization_entity"])" /> <!-- ex. ec 77777777777  -->
+    <set-variable name="subkey" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", ""))" />
+    <set-variable name="authorization_cache_key" value="@("authorizer_"+(string)context.Variables["domain"] + "_" + (string)context.Variables["subkey"])" />
+
+    <trace source="authorizer-check-domain" severity="information">@((string)context.Variables["domain"])</trace>
+    <cache-lookup-value variable-name="apim_cache_domain" key="@("authorizer_" + context.Variables["domain"])" caching-type="external" default-value="value-not-set-apim_cache_domain"/> <!-- already present on external cache -->
+    <cache-lookup-value variable-name="authorizer_domain_in_progress" key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
+    <trace source="authorizer-check-apim_cache_domain" severity="information">@((string)context.Variables["apim_cache_domain"])</trace>
+
+    <choose>
+        <!-- RI-GENERATE cache -->
+        <when condition="@(!"store".Equals(context.Variables["apim_cache_domain"]) && !context.Variables.ContainsKey("authorizer_domain_in_progress"))">
+
+            <!-- Save state variable for locking purpose -->
+            <cache-store-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" value="True" duration="86400" caching-type="internal" />
+
+            <!-- Call cache-generator function with retrieved function key -->
+            <send-request mode="new" response-variable-name="response_state" timeout="10" ignore-error="true">
+                <set-url>@(String.Format("https://${cache_generator_hostname}/cache-generator/domains/{0}", (string) context.Variables["domain"]))</set-url>
+                <set-method>GET</set-method>
+            </send-request>
+
+            <!-- Save storage status -->
+            <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="86400" caching-type="external" />
+
+            <!-- Removing locking state variable -->
+            <cache-remove-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
+
+        </when>
+    </choose>
+
+    <!-- Removing locking state variable -->
+    <cache-remove-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
+
+
+    <!-- Look up for cached authorized entity list stringified -->
+    <cache-lookup-value variable-name="cached_authorized_entities" key="@((string)context.Variables["authorization_cache_key"])" caching-type="external" default-value="value-not-set-cached_authorized_entities" />
+
+    <trace source="authorizer-check-authorizer_domain_in_progress_ck" severity="information">@(context.Variables.ContainsKey("authorizer_domain_in_progress").ToString())</trace>
+    <trace source="authorizer-check-cached_authorized_entities_ck" severity="information">@(context.Variables.ContainsKey("cached_authorized_entities").ToString())</trace>
+    <trace source="authorizer-check-cached_contains_ck" severity="information">@(((string)context.Variables["cached_authorized_entities"]).Contains((string)context.Variables["auth_entity"]).ToString())</trace>
+    <!-- Auth phase : Invalidating the client request if not authorized -->
+    <choose>
+        <when condition="@(context.Variables.ContainsKey("authorizer_domain_in_progress") || !context.Variables.ContainsKey("cached_authorized_entities") || (context.Variables.ContainsKey("cached_authorized_entities") && !((string)context.Variables["cached_authorized_entities"]).Contains((string)context.Variables["auth_entity"])) )">
+            <return-response>
+                <set-status code="401" reason="Unauthorized" />
+            </return-response>
+        </when>
+    </choose>
+
+</fragment>

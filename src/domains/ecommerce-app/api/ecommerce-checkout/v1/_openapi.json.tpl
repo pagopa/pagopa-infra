@@ -162,8 +162,20 @@
                 "$ref": "#/components/schemas/NewTransactionRequest"
               }
             }
-          }
+          },
+          "required": true
         },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "recaptchaResponse",
+            "description": "Recaptcha response",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "New transaction successfully created",
@@ -1169,6 +1181,11 @@
           },
           "email": {
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
@@ -1251,6 +1268,32 @@
           },
           "authToken": {
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
+          },
+          "sendPaymentResultOutcome": {
+            "description": "The outcome of sendPaymentResult api",
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Payment gateway-specific error code from the gateway"
+          },
+          "gateway": {
+            "type": "string",
+            "pattern": "XPAY|VPOS",
+            "description": "Pgs identifier"
           }
         },
         "required": [
@@ -1488,6 +1531,7 @@
           "NOTIFIED_OK",
           "NOTIFIED_KO",
           "NOTIFICATION_ERROR",
+          "NOTIFICATION_REQUESTED",
           "EXPIRED",
           "REFUNDED",
           "CANCELED",
@@ -1650,6 +1694,14 @@
                 "example": "https://www.comune.di.prova.it/pagopa/error.html"
               }
             }
+          },
+          "idCart": {
+            "type": "string",
+            "example": "id_cart"
+          },
+          "allCCP": {
+            "type": "boolean",
+            "example": "false"
           }
         }
       },

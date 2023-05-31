@@ -1,6 +1,7 @@
 variable "location" {
-  type    = string
-  default = "westeurope"
+  type        = string
+  description = "One of westeurope, northeurope"
+  default     = "westeurope"
 }
 
 variable "prefix" {
@@ -911,6 +912,23 @@ variable "eventhubs" {
   default = []
 }
 
+variable "eventhubs_02" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
+
 variable "ehns_alerts_enabled" {
   type        = bool
   default     = true
@@ -957,6 +975,12 @@ variable "acr_enabled" {
 
 # DNS private
 variable "dns_a_reconds_dbnodo_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodo_prf_ips" {
   type        = list(string)
   description = "IPs address of DB Nodo"
   default     = []
@@ -1239,65 +1263,12 @@ variable "gpd_plan_sku_size" {
   default     = null
 }
 
-variable "cidr_subnet_reporting_common" {
-  type        = list(string)
-  description = "Address prefixes subnet reporting_common function"
-  default     = null
-}
+# variable "cidr_subnet_reporting_common" {
+#   type        = list(string)
+#   description = "Address prefixes subnet reporting_common function"
+#   default     = null
+# }
 
-variable "reporting_function_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "reporting_function_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 10
-}
-
-variable "reporting_function_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 5
-}
-
-variable "reporting_batch_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
-variable "reporting_service_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
-variable "reporting_analysis_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
-variable "gpd_reporting_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "gpd_reporting_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
-
-variable "gpd_enable_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
 
 variable "gpd_always_on" {
   type        = bool
@@ -1309,12 +1280,6 @@ variable "cidr_subnet_gpd" {
   type        = list(string)
   description = "Address prefixes subnet gpd service"
   default     = null
-}
-
-variable "gpd_reporting_schedule_batch" {
-  type        = string
-  description = "Cron scheduling (NCRON example '*/45 * * * * *')"
-  default     = "0 0 1 * * *"
 }
 
 variable "gpd_cron_job_enable" {
@@ -1696,41 +1661,6 @@ variable "platform_private_dns_zone_records" {
   description = "List of records to add into the platform.pagopa.it dns private"
 }
 
-# Data Explorer
-
-variable "dexp_params" {
-  type = object({
-    enabled = bool
-    sku = object({
-      name     = string
-      capacity = number
-    })
-    autoscale = object({
-      enabled       = bool
-      min_instances = number
-      max_instances = number
-    })
-    public_network_access_enabled = bool
-    double_encryption_enabled     = bool
-    disk_encryption_enabled       = bool
-    purge_enabled                 = bool
-  })
-}
-
-variable "dexp_db" {
-  type = object({
-    enable             = bool
-    hot_cache_period   = string
-    soft_delete_period = string
-  })
-}
-
-variable "dexp_re_db_linkes_service" {
-  type = object({
-    enable = bool
-  })
-}
-
 # node forwarder
 # api_config
 
@@ -1790,4 +1720,10 @@ variable "node_decoupler_primitives" {
   type        = string
   description = "Node decoupler primitives"
   default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
+}
+
+variable "apim_fdr_nodo_pagopa_enable" {
+  type        = bool
+  default     = false
+  description = "Enable Fdr Service Nodo pagoPA side"
 }

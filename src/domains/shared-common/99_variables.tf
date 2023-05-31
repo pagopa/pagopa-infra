@@ -62,6 +62,26 @@ variable "tags" {
   }
 }
 
+### POC reporting enrollment variables
+
+variable "poc_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "poc_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "poc_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -93,6 +113,12 @@ variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
+}
+
+variable "reporting_storage_public_access_enabled" {
+  type        = bool
+  description = "(Optional) Whether the public network access is enabled?"
+  default     = true
 }
 
 variable "cosmos_iuvgenerator_db_params" {
@@ -140,3 +166,45 @@ variable "cidr_subnet_loadtest_agent" {
   default     = null
 }
 
+variable "cidr_subnet_authorizer_cosmosdb" {
+  type        = list(string)
+  description = "Cosmos DB address space"
+  default     = null
+}
+
+variable "cosmos_authorizer_db_params" {
+  type = object({
+    kind           = string
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+  })
+}
+
+
+variable "github_runner" {
+  type = object({
+    subnet_address_prefixes = list(string)
+  })
+  description = "GitHub runner variables"
+  default = {
+    subnet_address_prefixes = ["10.1.164.0/23"]
+  }
+}

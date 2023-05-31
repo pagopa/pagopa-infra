@@ -9,7 +9,7 @@ instance       = "prod"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
-  Owner       = "IO"
+  Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/shared"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
@@ -30,7 +30,7 @@ dns_zone_internal_prefix = "internal.platform"
 # CosmosDb IUV Generator
 cosmos_iuvgenerator_db_params = {
   kind         = "GlobalDocumentDB"
-  capabilities = ["EnableTable"]
+  capabilities = []
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -43,13 +43,38 @@ cosmos_iuvgenerator_db_params = {
 
   additional_geo_locations          = []
   private_endpoint_enabled          = true
-  public_network_access_enabled     = true
+  public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
 }
 
-cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
+# CosmosDb Authorizer
+cosmos_authorizer_db_params = {
+  kind         = "GlobalDocumentDB"
+  capabilities = []
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
 
-storage_private_endpoint_enabled = true
+  private_endpoint_enabled      = true
+  public_network_access_enabled = false
+
+  additional_geo_locations = []
+
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = false
+}
+
+
+cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
+cidr_subnet_authorizer_cosmosdb   = ["10.1.168.0/24"]
+storage_private_endpoint_enabled  = true
