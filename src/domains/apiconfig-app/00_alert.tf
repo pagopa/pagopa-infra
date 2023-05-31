@@ -25,15 +25,16 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_no_memor
   }
 }
 
+// TODO modify for Core
 # JDBC Connection
-resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_jdbc_connection_oracle" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_core_jdbc_connection_oracle" {
   name                = format("%s-%s", module.apim_apiconfig_cache_product.product_id, "jdbc-connection-oracle")
   resource_group_name = local.pagopa_apim_rg
   location            = var.location
 
   action {
     action_group           = local.apiconfig_cache_alert_locals.action_group
-    email_subject          = "[APICFG-CACHE][ORACLE] JDBC connection Error"
+    email_subject          = "[APICFG-CORE][ORACLE] JDBC connection Error"
     custom_webhook_payload = "{}"
   }
   data_source_id = local.apiconfig_cache_alert_locals.data_source_id
@@ -75,15 +76,16 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_no_memor
   }
 }
 
+// TODO modify for Core
 # JDBC Connection
-resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_jdbc_connection_postgresql" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_core_jdbc_connection_postgresql" {
   name                = format("%s-%s", module.apim_apiconfig_cache_product.product_id, "jdbc-connection-postgresql")
   resource_group_name = local.pagopa_apim_rg
   location            = var.location
 
   action {
     action_group           = local.apiconfig_cache_alert_locals.action_group
-    email_subject          = "[APICFG-CACHE][POSTGRESQL] JDBC connection Error"
+    email_subject          = "[APICFG-CORE][POSTGRESQL] JDBC connection Error"
     custom_webhook_payload = "{}"
   }
   data_source_id = local.apiconfig_cache_alert_locals.data_source_id
