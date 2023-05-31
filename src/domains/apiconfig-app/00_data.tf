@@ -50,3 +50,13 @@ data "azurerm_private_dns_zone" "db_nodo_dns_zone" {
   name                = var.private_dns_zone_db_nodo_pagamenti
   resource_group_name = "pagopa-${var.env_short}-data-rg"
 }
+
+data "azurerm_key_vault_secret" "apiconfig_afm_marketplace_subscription_key_data" {
+  name         = "afm-marketplace-subscription-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "apiconfig_afm_utils_subscription_key_data" {
+  name         = "afm-utils-subscription-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
