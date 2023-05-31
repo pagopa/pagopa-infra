@@ -45,15 +45,15 @@ locals {
   }
 
   activate_identifier = {
-    dev   = "63bff3b4c257811280ef762c"
-    uat   = "63d1611e451c1c1948ef3e84"
-    prod  = "63d93fefc733b51860039d50"
+    dev  = "63bff3b4c257811280ef762c"
+    uat  = "63d1611e451c1c1948ef3e84"
+    prod = "63d93fefc733b51860039d50"
   }
 
   activate_v2_identifier = {
-    dev   = "63bff3b4c257811280ef7631"
-    uat   = "63d1611e451c1c1948ef3e89"
-    prod  = "63d93fefc733b51860039d55"
+    dev  = "63bff3b4c257811280ef7631"
+    uat  = "63d1611e451c1c1948ef3e89"
+    prod = "63d93fefc733b51860039d55"
   }
 
 }
