@@ -77,6 +77,7 @@ module "postgres_flexible_server_private" {
   storage_mb                   = var.pgres_flex_params.storage_mb
   zone                         = var.pgres_flex_params.zone
   backup_retention_days        = var.pgres_flex_params.backup_retention_days
+  create_mode                  = null // the update of this argument triggers a replace
   geo_redundant_backup_enabled = var.pgres_flex_params.geo_redundant_backup_enabled
 
   high_availability_enabled = var.pgres_flex_params.high_availability_enabled
