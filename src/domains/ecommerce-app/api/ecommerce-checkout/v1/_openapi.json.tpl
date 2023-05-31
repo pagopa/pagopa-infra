@@ -585,7 +585,7 @@
             }
           },
           {
-            "name": "x-transaction-id",
+            "name": "x-transaction-id-from-client",
             "in": "header",
             "schema": {
               "type": "string"

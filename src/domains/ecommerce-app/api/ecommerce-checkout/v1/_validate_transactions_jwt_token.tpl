@@ -4,7 +4,7 @@
         <set-variable name="requestTransactionId" value="@{
                     var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
                     if(transactionId == ""){
-                        transactionId = context.Request.Headers.GetValueOrDefault("x-transaction-id","");
+                        transactionId = context.Request.Headers.GetValueOrDefault("x-transaction-id-from-client","");
                     }
                     return transactionId;
             }" />
