@@ -24,6 +24,7 @@ resources=(
   'azurerm_resource_group.api_config_fe_rg[0]'
   'module.api_config_fe_cdn[0]'
   'azurerm_key_vault_secret.storage_account_key'
+  'azurerm_private_dns_cname_record.config_platform_dns_private_cname'
 )
 
 cd ../../core

@@ -553,8 +553,6 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1522
-db_service_name                    = "NDPSPCT_PP_NODO4_CFG"
 dns_a_reconds_dbnodo_ips           = ["10.70.67.18"] # db onCloud
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
 

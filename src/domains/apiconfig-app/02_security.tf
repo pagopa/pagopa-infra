@@ -13,37 +13,6 @@ resource "azurerm_key_vault_secret" "apiconfig_client_secret" {
 
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "apiconfig_cosmos_uri" {
-  name         = "apiconfig-cosmos-uri"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.kv.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "apiconfig_cosmos_key" {
-  name         = "apiconfig-cosmos-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.kv.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "db_nodo_usr" {
   name         = "db-nodo-usr"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
