@@ -68,6 +68,7 @@ redis_ecommerce_params = {
   capacity = 0
   sku_name = "Basic"
   family   = "C"
+  version  = 6
 }
 
 ecommerce_storage_params = {

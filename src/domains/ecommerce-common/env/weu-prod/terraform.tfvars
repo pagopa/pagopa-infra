@@ -69,8 +69,9 @@ cosmos_mongo_db_ecommerce_params = {
 
 redis_ecommerce_params = {
   capacity = 0
-  sku_name = "Basic"
+  sku_name = "Standard"
   family   = "C"
+  version  = 6
 }
 
 ecommerce_storage_params = {
@@ -79,7 +80,7 @@ ecommerce_storage_params = {
   kind                          = "StorageV2"
   account_replication_type      = "GZRS",
   advanced_threat_protection    = true,
-  retention_days                = 7,
+  retention_days                = 30,
   public_network_access_enabled = true,
 }
 
