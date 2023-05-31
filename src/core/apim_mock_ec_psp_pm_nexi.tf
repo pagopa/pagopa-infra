@@ -12,7 +12,7 @@
 ############################
 
 module "apim_mock_ec_nexi_product" {
-  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment 
+  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-mock-ec-nexi"
@@ -30,7 +30,7 @@ module "apim_mock_ec_nexi_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "mock_ec_nexi_api" {
-  count = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment 
+  count = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
 
   name                = format("%s-mock-ec-nexi-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -40,7 +40,7 @@ resource "azurerm_api_management_api_version_set" "mock_ec_nexi_api" {
 }
 
 module "apim_mock_ec_nexi_api" {
-  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment 
+  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-mock-ec-nexi-api", var.env_short)
@@ -76,7 +76,7 @@ module "apim_mock_ec_nexi_api" {
 ############################
 
 module "apim_mock_psp_nexi_product" {
-  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment 
+  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "product-mock-psp-nexi"
@@ -94,7 +94,7 @@ module "apim_mock_psp_nexi_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "mock_psp_nexi_api" {
-  count = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment 
+  count = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
 
   name                = format("%s-mock-psp-nexi-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
@@ -104,7 +104,7 @@ resource "azurerm_api_management_api_version_set" "mock_psp_nexi_api" {
 }
 
 module "apim_mock_psp_nexi_api" {
-  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment 
+  count  = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-mock-psp-nexi-api", var.env_short)
@@ -173,7 +173,7 @@ module "apim_mock_pm_nexi_api" {
   name                  = format("%s-mock-pm-nexi-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_mock_pm_nexi_product[0].product_id]
+  product_ids           = [module.apim_mock_pm_nexi_product[0].product_id, local.apim_x_node_product_id]
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.mock_pm_nexi_api[0].id
