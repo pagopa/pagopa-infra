@@ -16,7 +16,7 @@ module "apim_mock_ec_product" {
   published             = true
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1000
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/mock-ec-service/_base_policy.xml")
 }

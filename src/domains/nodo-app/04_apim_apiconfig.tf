@@ -47,7 +47,7 @@ module "apim_api_config_oauth_product" {
   published             = true
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1000
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/apiconfig-service/_base_policy_oauth.xml")
 }
