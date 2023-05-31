@@ -536,7 +536,8 @@ module "apim_nodo_per_pm_api_v1_dev" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    service = module.apim_nodo_dei_pagamenti_product_dev[0].product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {

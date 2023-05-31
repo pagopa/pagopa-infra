@@ -3,7 +3,7 @@
   "info": {
     "description": "Specifiche di interfaccia Nodo - Payment Manager",
     "version": "1.0.0",
-    "title": "Nodo-PaymentManager",
+    "title": "Nodo-PaymentManager ${service}",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -619,7 +619,7 @@
               "$ref": "#/definitions/CheckPosition"
             }
           }
-        ],        
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -653,7 +653,52 @@
           }
         }
       }
-    },    
+    },"/parkedList": {
+      "get": {
+        "tags": [
+          "Nodo"
+        ],
+        "summary": "parkedList",
+        "description": "La primitiva si prefigge lo scopo di consentire al Payment Manager di recuperare dal Nodo dei Pagamenti i dati relativi alle RPT pargheggiate",
+        "operationId": "parkedList",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ListaRPT"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Unprocessable entry",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
   },
   "definitions": {
     "CheckPosition" : {
@@ -663,7 +708,7 @@
           "positionslist": {
             "type": "array",
             "items": { "$ref": "#/definitions/listelement" },
-            "minItems": 1, 
+            "minItems": 1,
             "maxItems": 5
           }
         },
@@ -805,6 +850,31 @@
         "data": {
           "type": "array",
           "description": "Array di identificativi univoci di selezione",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "example": "[15,39,41]"
+        }
+      }
+    },
+    "ListaRPT": {
+      "type": "object",
+      "required": [
+        "totalRows",
+        "idPaymentList"
+      ],
+      "properties": {
+        "totalNumber": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Numero di RPT totali",
+          "minimum": 0,
+          "example": "3"
+        },
+        "idPaymentList": {
+          "type": "array",
+          "description": "Array di identificativi univoci di rpt",
           "items": {
             "type": "integer",
             "format": "int32"
@@ -1240,6 +1310,6 @@
           ]
         }
       }
-    }    
+    }
   }
 }
