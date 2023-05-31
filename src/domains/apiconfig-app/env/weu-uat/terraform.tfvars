@@ -34,7 +34,7 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.3.4"
 }
-db_service_name = "NDPSPCA_PP_NODO4_CFG"
+db_service_name = "NDPSPCA_NODO4_CFG"
 db_port         = 1524
 
 
