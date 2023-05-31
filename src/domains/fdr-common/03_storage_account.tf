@@ -29,10 +29,10 @@ module "fdr_conversion_sa" {
 
 
 ## share xml file
-resource "azurerm_storage_share" "xml_share_file" {
+resource "azurerm_storage_container" "xml_share_file" {
   name                 = format("%sxmlsharefile", module.fdr_conversion_sa.name)
   storage_account_name = module.fdr_conversion_sa.name
-  quota                = 50
+  container_access_type = "private"
 }
 
 # send id of fdr mongo collection
