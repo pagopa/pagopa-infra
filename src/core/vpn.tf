@@ -86,35 +86,35 @@ module "dns_forwarder" {
 # DNS Forwarder
 #
 module "dns_forwarder_pair_subnet" {
-  count = var.dns_forwarder_pair_enabled ? 1 : 0
-  source                                    = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
+  count  = var.dns_forwarder_pair_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
 
 
 
-name                                           = format("%s-dns-forwarder-snet", local.project_pair)
-address_prefixes                               = var.cidr_subnet_pair_dnsforwarder
-resource_group_name                            = azurerm_resource_group.rg_pair_vnet[count.index].name
-virtual_network_name                           = module.vnet_pair[count.index].name
-enforce_private_link_endpoint_network_policies = false
+  name                                           = format("%s-dns-forwarder-snet", local.project_pair)
+  address_prefixes                               = var.cidr_subnet_pair_dnsforwarder
+  resource_group_name                            = azurerm_resource_group.rg_pair_vnet[count.index].name
+  virtual_network_name                           = module.vnet_pair[count.index].name
+  enforce_private_link_endpoint_network_policies = false
 
-delegation = {
-  name = "delegation"
-  service_delegation = {
-    name    = "Microsoft.ContainerInstance/containerGroups"
-    actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+  delegation = {
+    name = "delegation"
+    service_delegation = {
+      name    = "Microsoft.ContainerInstance/containerGroups"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
   }
-}
 
 }
 
 
 resource "random_id" "pair_dns_forwarder_hash" {
-  count = var.dns_forwarder_pair_enabled ? 1 : 0
+  count       = var.dns_forwarder_pair_enabled ? 1 : 0
   byte_length = 3
 }
 
 module "vpn_pair_dns_forwarder" {
-  count = var.dns_forwarder_pair_enabled ? 1 : 0
+  count  = var.dns_forwarder_pair_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.0.28"
 
   name                = "${local.project}-${random_id.pair_dns_forwarder_hash[count.index].hex}-dns-forwarder"

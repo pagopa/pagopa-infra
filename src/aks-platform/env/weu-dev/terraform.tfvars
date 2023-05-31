@@ -1,11 +1,11 @@
 # general
-prefix          = "pagopa"
-env_short       = "d"
-env             = "dev"
-domain          = "dev"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
+prefix              = "pagopa"
+env_short           = "d"
+env                 = "dev"
+domain              = "dev"
+location            = "westeurope"
+location_short      = "weu"
+location_string     = "West Europe"
 location_pair_short = "neu"
 location_pair       = "northeurope"
 

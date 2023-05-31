@@ -1,9 +1,9 @@
 # general
-env_short = "u"
-env       = "uat"
+env_short                  = "u"
+env                        = "uat"
 dns_forwarder_pair_enabled = false
-location_pair = "northeurope"
-location_pair_short = "neu"
+location_pair              = "northeurope"
+location_pair_short        = "neu"
 
 tags = {
   CreatedBy   = "Terraform"

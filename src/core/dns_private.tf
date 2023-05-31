@@ -150,7 +150,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet_pair" {
-  count = var.dns_forwarder_pair_enabled ? 1 : 0
+  count                 = var.dns_forwarder_pair_enabled ? 1 : 0
   name                  = module.vnet_pair[count.index].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.platform_private_dns_zone.name
@@ -233,7 +233,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "postgres_vnet" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "postgres_vnet_pair" {
-  count = var.dns_forwarder_pair_enabled &&  var.env_short != "d" ? 1 : 0
+  count = var.dns_forwarder_pair_enabled && var.env_short != "d" ? 1 : 0
 
   name                  = module.vnet_pair[count.index].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
