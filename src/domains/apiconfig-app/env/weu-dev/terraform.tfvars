@@ -35,7 +35,6 @@ tls_cert_check_helm = {
 
 
 # API Config BE
-api_config_always_on    = false
 apiconfig_logging_level = "DEBUG"
 
 # Configuration
