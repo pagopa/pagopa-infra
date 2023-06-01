@@ -4,9 +4,8 @@
 
 locals {
   apim_pn_integration_rest_api = {
-    display_name          = "GPD Payments pagoPA - REST for Auth"
+    display_name          = "Integrazione PN"
     description           = "REST API del servizio Payments per Gestione Posizione Debitorie - for Auth"
-    path                  = "gpd/payments-receipts-service"
     published             = true
     subscription_required = true
     approval_required     = true
@@ -15,7 +14,7 @@ locals {
     gpd_service           = {
       display_name          = "Integrazione PN GPD"
       description           = "REST API GPD per piattaforma notifiche"
-      path                  = "gpd/api"
+      path                  = "pn-integration/gpd/api"
     }
   }
 }
@@ -75,9 +74,10 @@ module "apim_api_pn_integration_gpd_api_v1" {
   content_format = "openapi"
   content_value = templatefile("./api/pn-integration/_openapi.json.tpl", {
     host    = local.apim_hostname
+    service = module.apim_pn_integration_product.product_id
   })
 
   xml_content = templatefile("./api/pn-integration/_base_policy.xml", {
-    hostname = local.gps_hostname
+    hostname = "pagopa-${var.env_short}-app-gpd.azurewebsites.net"
   })
 }

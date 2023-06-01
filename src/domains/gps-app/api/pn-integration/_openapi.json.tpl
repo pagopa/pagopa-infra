@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "PagoPA API Debt Position for PN",
+    "title" : "PagoPA API Debt Position for PN ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie per PN",
     "termsOfService" : "https://www.pagopa.gov.it/",
     "version" : "0.4.7"

@@ -1,7 +1,7 @@
 <policies>
 <inbound>
   <base />
-  <set-backend-service base-url="https://${hostname}/gpd"/>
+  <set-backend-service base-url="https://${hostname}"/>
   <!-- Calling Authorizer's fragment -->
   <set-variable name="application_domain" value="gpd" />
   <choose>
