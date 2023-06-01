@@ -1,3 +1,10 @@
+resource "azurerm_resource_group" "gpd_rgroup" {
+  name     = format("%s-gpd-rg", local.product)
+  location = var.location
+
+  tags = var.tags
+}
+
 data "azurerm_resource_group" "gpd_rgroup" {
   name = format("%s-gpd-rg", local.product)
 }
