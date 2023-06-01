@@ -44,7 +44,7 @@ module "apim_api_enrolled_orgs_api_v1" {
   name                  = format("%s-enrolled-orgs-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_enrolled_orgs_product.product_id]
+  product_ids           = [module.apim_enrolled_orgs_product.product_id, module.apim_pn_integration_product.product_id]
   subscription_required = local.apim_enrolled_orgs_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_enrolled_orgs_api.id
   api_version           = "v1"
