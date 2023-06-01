@@ -48,9 +48,34 @@ cosmos_gps_db_params = {
   is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
+}
 
+# Postgres Flexible
+pgres_flex_params = {
+  private_endpoint_enabled = false
+  sku_name                 = "B_Standard_B1ms"
+  db_version               = "13"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                   = 32768
+  zone                         = 1
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
+  create_mode                  = "Default"
+  high_availability_enabled    = false
+  standby_availability_zone    = 2
+  pgbouncer_enabled            = true
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
+cidr_subnet_pg_flex_dbms = ["10.1.141.0/24"]
+
+postgresql_network_rules = {
+  ip_rules = [
+    "0.0.0.0/0"
+  ]
+  # dblink
+  allow_access_to_azure_services = false
+}
 
 enable_iac_pipeline = true
