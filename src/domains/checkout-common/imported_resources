@@ -1,7 +1,0 @@
-module.pagopa_proxy_redis_snet
-resource.azurerm_resource_group.pagopa_proxy_rg
-module.pagopa_proxy_redis
-resource.azurerm_dns_zone.checkout_public[0]
-resource.azurerm_dns_ns_record.dev_checkout[0]
-resource.azurerm_dns_ns_record.uat_checkout[0]
-resource.azurerm_dns_caa_record.checkout_pagopa_it
