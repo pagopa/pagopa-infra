@@ -22,16 +22,14 @@ law_daily_quota_gb    = 10
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway         = ["10.1.128.0/24"]
-cidr_subnet_postgresql         = ["10.1.129.0/24"]
-cidr_subnet_azdoa              = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
-cidr_subnet_checkout_be        = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
-# cidr_subnet_reporting_common         = ["10.1.136.0/24"]
-cidr_subnet_gpd                      = ["10.1.138.0/24"]
+cidr_subnet_appgateway               = ["10.1.128.0/24"]
+cidr_subnet_postgresql               = ["10.1.129.0/24"]
+cidr_subnet_azdoa                    = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis       = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
+cidr_subnet_checkout_be              = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
 cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
 cidr_subnet_pg_flex_dbms             = ["10.1.141.0/24"]
@@ -582,19 +580,10 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1524
-db_service_name                    = "NDPSPCA_PP_NODO4_CFG"
 dns_a_reconds_dbnodo_ips           = ["10.70.73.10"] # db onCloud
 dns_a_reconds_dbnodo_prf_ips       = ["10.70.73.20"] # db onCloud prf
 private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
-# API Config
-xsd_ica                 = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
-apiconfig_logging_level = "DEBUG"
-
-# API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
 
 # pagopa-proxy app service
 pagopa_proxy_redis_capacity = 0
@@ -634,14 +623,6 @@ reporting_fdr_function_kind      = "Linux"
 reporting_fdr_function_sku_tier  = "Standard"
 reporting_fdr_function_sku_size  = "S1"
 reporting_fdr_function_always_on = true
-
-# gpd
-gpd_plan_kind                = "Linux"
-gpd_plan_sku_tier            = "Standard"
-gpd_plan_sku_size            = "S1"
-gpd_cron_job_enable          = true
-gpd_cron_schedule_valid_to   = "0 */10 * * * *"
-gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"
