@@ -553,18 +553,8 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1522
-db_service_name                    = "NDPSPCT_PP_NODO4_CFG"
 dns_a_reconds_dbnodo_ips           = ["10.70.67.18"] # db onCloud
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
-
-# API Config
-api_config_always_on    = false
-apiconfig_logging_level = "DEBUG"
-
-# API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
