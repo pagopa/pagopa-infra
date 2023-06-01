@@ -18,6 +18,6 @@ tags = {
 
 monitor_resource_group_name = "pagopa-d-monitor-rg"
 
-cidr_subnet_mock_ec              = ["10.1.137.0/29"]
-mock_ec_enabled                  = true
-mock_ec_secondary_enabled        = true
+cidr_subnet_mock_ec       = ["10.1.137.0/29"]
+mock_ec_enabled           = true
+mock_ec_secondary_enabled = true

@@ -8,12 +8,12 @@ resource "azurerm_resource_group" "mock_ec_rg" {
 
 # Subnet to host the mock ec
 module "mock_ec_snet" {
-  count                                          = var.mock_ec_enabled && var.cidr_subnet_mock_ec != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
-  name                                           = format("%s-mock-ec-snet", local.project_legacy)
-  address_prefixes                               = var.cidr_subnet_mock_ec
-  resource_group_name                            = local.vnet_resource_group_name
-  virtual_network_name                           = local.vnet_name
+  count                                         = var.mock_ec_enabled && var.cidr_subnet_mock_ec != null ? 1 : 0
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  name                                          = format("%s-mock-ec-snet", local.project_legacy)
+  address_prefixes                              = var.cidr_subnet_mock_ec
+  resource_group_name                           = local.vnet_resource_group_name
+  virtual_network_name                          = local.vnet_name
   private_link_service_network_policies_enabled = true
 
   delegation = {
@@ -33,10 +33,10 @@ module "mock_ec" {
   location            = var.location
 
   # App service plan vars
-  plan_name     = format("%s-plan-mock-ec", local.project_legacy)
-  plan_kind     = "Linux"
-  sku_name      = var.mock_ec_size
-  
+  plan_name = format("%s-plan-mock-ec", local.project_legacy)
+  plan_kind = "Linux"
+  sku_name  = var.mock_ec_size
+
 
   # App service plan
   name                = format("%s-app-mock-ec", local.project_legacy)
@@ -81,7 +81,7 @@ module "mock_ec" {
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
-  subnet_id   = module.mock_ec_snet[0].id
+  subnet_id = module.mock_ec_snet[0].id
 
   tags = var.tags
 }
