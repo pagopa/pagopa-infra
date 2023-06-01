@@ -1,8 +1,8 @@
 module "negative_bizevents_datastore_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
-  name     = "${local.project}-neg-ds-cosmos-account"
-  location = var.location
-
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  name                = "${local.project}-neg-ds-cosmos-account"
+  location            = var.location
+  domain              = var.domain
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   offer_type          = var.negative_bizevents_datastore_cosmos_db_params.offer_type
   kind                = var.negative_bizevents_datastore_cosmos_db_params.kind
@@ -39,7 +39,7 @@ module "negative_bizevents_datastore_cosmosdb_account" {
 
 # cosmosdb database for negative biz-events
 module "negative_bizevents_datastore_cosmosdb_database" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
   name                = "db"
   resource_group_name = azurerm_resource_group.bizevents_rg.name
   account_name        = module.negative_bizevents_datastore_cosmosdb_account.name
@@ -52,14 +52,14 @@ locals {
       name               = "negative-biz-events",
       partition_key_path = "/id",
       default_ttl        = var.negative_bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = 6000 }
+      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
     },
   ]
 }
 
 # cosmosdb container for negative biz events datastore
 module "negative_bizevents_datastore_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
   for_each = { for c in local.negative_bizevents_datastore_cosmosdb_containers : c.name => c }
 
   name                = each.value.name

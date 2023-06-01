@@ -503,19 +503,8 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1521
-db_service_name                    = "NDPSPCP_PP_NODO4_CFG"           # TODO chiedere a SIA
 dns_a_reconds_dbnodo_ips           = ["10.102.35.58", "10.102.35.57"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 private_dns_zone_db_nodo_pagamenti = "p.db-nodo-pagamenti.com"
-
-# API Config
-xsd_ica         = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
-api_config_tier = "PremiumV3"
-api_config_size = "P1v3"
-
-# API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
@@ -634,34 +623,6 @@ cosmos_document_db_params = {
 storage_queue_private_endpoint_enabled = true
 
 platform_private_dns_zone_records = ["api", "portal", "management"]
-
-# Data Explorer
-dexp_params = {
-  enabled = true
-  sku = {
-    name     = "Standard_D11_v2"
-    capacity = 2
-  }
-  autoscale = {
-    enabled       = true
-    min_instances = 2
-    max_instances = 5
-  }
-  public_network_access_enabled = true
-  double_encryption_enabled     = true
-  disk_encryption_enabled       = true
-  purge_enabled                 = false
-}
-
-dexp_db = {
-  enable             = true
-  hot_cache_period   = "P5D"
-  soft_delete_period = "P1Y"
-}
-
-dexp_re_db_linkes_service = {
-  enable = true
-}
 
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"

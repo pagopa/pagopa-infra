@@ -15,7 +15,7 @@ module "apim_wfesp_product_replica" {
   published             = true
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1000
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/wfesp-service-replica/_base_policy.xml")
 }

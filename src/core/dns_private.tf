@@ -96,16 +96,6 @@ resource "azurerm_private_dns_a_record" "platform_dns_a_private_apim" {
   tags                = var.tags
 }
 
-resource "azurerm_private_dns_cname_record" "config_platform_dns_private_cname" {
-
-  name                = "config"
-  zone_name           = azurerm_private_dns_zone.platform_private_dns_zone.name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  record              = module.api_config_fe_cdn[0].hostname
-  tags                = var.tags
-}
-
 resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet" {
   name                  = module.vnet.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name

@@ -22,7 +22,7 @@ resource "azurerm_api_management_api_version_set" "api_backoffice_apiConfig_api"
 
 
 module "apim_api_backoffice_apiConfig_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.7.0"
 
   name                  = "${local.product}-cfg-api"
   api_management_name   = local.pagopa_apim_name

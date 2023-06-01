@@ -553,18 +553,8 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1522
-db_service_name                    = "NDPSPCT_PP_NODO4_CFG"
 dns_a_reconds_dbnodo_ips           = ["10.70.67.18"] # db onCloud
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
-
-# API Config
-api_config_always_on    = false
-apiconfig_logging_level = "DEBUG"
-
-# API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
@@ -715,33 +705,6 @@ storage_queue_private_endpoint_enabled = true
 
 platform_private_dns_zone_records = ["api", "portal", "management"]
 
-# Data Explorer
-dexp_params = {
-  enabled = true
-  sku = {
-    name     = "Dev(No SLA)_Standard_E2a_v4"
-    capacity = 1
-  }
-  autoscale = {
-    enabled       = false
-    min_instances = 2
-    max_instances = 3
-  }
-  public_network_access_enabled = true
-  double_encryption_enabled     = false
-  disk_encryption_enabled       = true
-  purge_enabled                 = false
-}
-
-dexp_db = {
-  enable             = true
-  hot_cache_period   = "P5D"
-  soft_delete_period = "P1M"
-}
-
-dexp_re_db_linkes_service = {
-  enable = true
-}
 
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.8.5"

@@ -91,3 +91,15 @@ resource "azurerm_key_vault_secret" "elastic-apm-secret-token" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "notifications_sender" {
+  name         = "notifications-sender"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
