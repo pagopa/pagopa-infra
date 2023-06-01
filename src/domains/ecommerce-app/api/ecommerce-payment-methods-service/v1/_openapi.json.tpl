@@ -257,6 +257,15 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "x-transaction-id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ecommerce transaction id"
           }
         ],
         "requestBody": {

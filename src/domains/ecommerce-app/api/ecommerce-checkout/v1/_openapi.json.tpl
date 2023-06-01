@@ -583,6 +583,20 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "x-transaction-id-from-client",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ecommerce transaction id"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "requestBody": {
