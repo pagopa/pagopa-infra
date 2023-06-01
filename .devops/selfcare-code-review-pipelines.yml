@@ -79,6 +79,7 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
+          - task: KubectlInstaller@0
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan selfcare-common
@@ -123,6 +124,7 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
+          - task: KubectlInstaller@0
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan selfcare-common
@@ -167,6 +169,7 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
+          - task: KubectlInstaller@0
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan selfcare-common

@@ -32,4 +32,6 @@ locals {
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   afm_hostname  = var.env == "prod" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it"
+
+  apim_x_node_product_id = "apim_for_node"
 }

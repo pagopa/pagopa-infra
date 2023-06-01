@@ -81,6 +81,6 @@ log-level: INFO
 " > cfg.properties
 
 #liquibase --defaultsFile=cfg.properties drop-all
-liquibase --defaultsFile=cfg.properties update --changelogFile="db.changelog-master-3.18.0.xml"
+liquibase --defaultsFile=cfg.properties update --changelogFile="db.changelog-master-3.19.0.xml"
 
 rm cfg.properties
