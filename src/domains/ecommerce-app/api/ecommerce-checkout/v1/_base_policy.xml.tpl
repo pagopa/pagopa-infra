@@ -14,6 +14,7 @@
         <allowed-headers>
           <header>Content-Type</header>
           <header>Authorization</header>
+          <header>x-transaction-id-from-client</header>
         </allowed-headers>
       </cors>
       <base />

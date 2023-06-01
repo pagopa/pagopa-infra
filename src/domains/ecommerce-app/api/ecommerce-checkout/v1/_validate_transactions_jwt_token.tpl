@@ -1,10 +1,14 @@
 <policies>
     <inbound>
         <base />
-        <set-header name="x-transaction-id" exists-action="delete" />
         <set-variable name="requestTransactionId" value="@{
-            return context.Request.MatchedParameters["transactionId"];
-        }" />
+                    var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
+                    if(transactionId == ""){
+                        transactionId = context.Request.Headers.GetValueOrDefault("x-transaction-id-from-client","");
+                    }
+                    return transactionId;
+            }" />
+        <set-header name="x-transaction-id" exists-action="delete" />
         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
             <issuer-signing-keys>
                 <key>{{ecommerce-checkout-transaction-jwt-signing-key}}</key>
