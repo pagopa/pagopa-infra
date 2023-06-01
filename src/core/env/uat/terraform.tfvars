@@ -582,19 +582,10 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1524
-db_service_name                    = "NDPSPCA_PP_NODO4_CFG"
 dns_a_reconds_dbnodo_ips           = ["10.70.73.10"] # db onCloud
 dns_a_reconds_dbnodo_prf_ips       = ["10.70.73.20"] # db onCloud prf
 private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
-# API Config
-xsd_ica                 = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
-apiconfig_logging_level = "DEBUG"
-
-# API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
 
 # pagopa-proxy app service
 pagopa_proxy_redis_capacity = 0

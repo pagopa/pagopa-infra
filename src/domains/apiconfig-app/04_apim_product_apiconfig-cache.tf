@@ -1,5 +1,5 @@
 module "apim_apiconfig_cache_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v5.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = local.apiconfig_cache_locals.product_id
   display_name = local.apiconfig_cache_locals.display_name

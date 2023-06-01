@@ -243,21 +243,6 @@ data "azurerm_key_vault_secret" "monitor_mo_notification_email" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "db_nodo_usr" {
-  name         = "db-nodo-usr"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "db_nodo_pwd" {
-  name         = "db-nodo-pwd"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "apiconfig-client-secret" {
-  name         = "apiconfig-client-secret"
-  key_vault_id = module.key_vault.id
-}
-
 data "azurerm_key_vault_secret" "gpd_db_usr" {
   name         = "db-apd-user-name"
   key_vault_id = module.key_vault.id
@@ -302,67 +287,6 @@ data "azurerm_key_vault_secret" "monitor_new_conn_srv_webhook_key" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "new-conn-srv-opsgenie-webhook-token"
   key_vault_id = module.key_vault.id
-}
-
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "apiconfig_cosmos_uri" {
-  name         = "apiconfig-cosmos-uri"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "apiconfig_cosmos_key" {
-  name         = "apiconfig-cosmos-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "apiconfig_afm_marketplace_subscription_key" {
-  name         = "apiconfig-afm-marketplace-subscription-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "apiconfig_afm_utils_subscription_key" {
-  name         = "apiconfig-afm-utils-subscription-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
