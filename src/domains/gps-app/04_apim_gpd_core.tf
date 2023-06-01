@@ -59,9 +59,8 @@ module "apim_api_gpd_api" {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/gpd_api/v1/_base_policy.xml", {
-    origin = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
-  })
+
+  xml_content = file("./api/gpd_api/v1/_base_policy.xml")
 }
 
 ########################
