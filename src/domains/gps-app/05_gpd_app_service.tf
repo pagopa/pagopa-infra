@@ -74,7 +74,8 @@ module "gpd_app_service_slot_staging" {
   resource_group_name = data.azurerm_resource_group.gpd_rgroup.name
   location            = var.location
 
-  always_on = true
+  always_on    = true
+  java_version = 11
   #linux_fx_version  = format("DOCKER|%s/api-gpd-backend:%s", data.azurerm_container_registry.acr.login_server, "latest")
   health_check_path = "/info"
 
