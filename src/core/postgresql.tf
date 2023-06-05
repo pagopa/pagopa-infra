@@ -89,12 +89,3 @@ resource "azurerm_postgresql_database" "this" {
   charset             = "UTF8"
   collation           = "English_United States.1252"
 }
-
-resource "azurerm_postgresql_database" "apd_db" {
-  count               = var.env_short == "d" ? 1 : 0
-  name                = var.gpd_db_name
-  resource_group_name = azurerm_resource_group.data.name
-  server_name         = module.postgresql[0].name
-  charset             = "UTF8"
-  collation           = "Italian_Italy.1252"
-}

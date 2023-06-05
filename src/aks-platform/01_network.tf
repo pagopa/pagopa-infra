@@ -13,7 +13,9 @@ module "aks_snet" {
 
   service_endpoints = [
     "Microsoft.AzureCosmosDB",
+    "Microsoft.EventHub",
   ]
+
 }
 
 resource "azurerm_public_ip" "aks_outbound" {

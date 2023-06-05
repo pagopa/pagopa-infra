@@ -22,3 +22,20 @@ data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
   name         = "monitor-notification-slack-email"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+# KV placeholder for subkey
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_subscription_key" {
+  count        = var.env_short != "p" ? 1 : 0 # only in DEV and UAT
+  name         = "gpd-api-subscription-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

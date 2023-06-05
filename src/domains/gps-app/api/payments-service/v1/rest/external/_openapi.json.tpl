@@ -153,29 +153,6 @@
                         }
                     },
                     {
-                        "name": "limit",
-                        "in": "query",
-                        "description": "Number of elements on one page",
-                        "required": false,
-                        "schema": {
-                            "maximum": 999,
-                            "type": "integer",
-                            "format": "int32"
-                        }
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number. Page value starts from 0",
-                        "required": false,
-                        "schema": {
-                            "minimum": 0,
-                            "type": "integer",
-                            "format": "int32",
-                            "default": 0
-                        }
-                    },
-                    {
                         "name": "debtor",
                         "in": "query",
                         "description": "Filter by debtor",
@@ -192,11 +169,29 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Filter by date, from this date",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "Filter by date, to this date",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "500": {
-                        "description": "Service unavailable.",
+                    "200": {
+                        "description": "Obtained all organization payment positions.",
                         "headers": {
                             "X-Request-Id": {
                                 "description": "This header identifies the call",
@@ -208,7 +203,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
+                                    "$ref": "#/components/schemas/ReceiptsInfo"
                                 }
                             }
                         }
@@ -242,8 +237,8 @@
                             }
                         }
                     },
-                    "200": {
-                        "description": "Obtained all organization payment positions.",
+                    "500": {
+                        "description": "Service unavailable.",
                         "headers": {
                             "X-Request-Id": {
                                 "description": "This header identifies the call",
@@ -255,7 +250,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ReceiptsInfo"
+                                    "$ref": "#/components/schemas/ProblemJson"
                                 }
                             }
                         }

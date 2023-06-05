@@ -10,8 +10,6 @@ locals {
     azurerm_api_management_api.apim_nodo_per_pa_api_v1.name,
     azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1.name,
     module.apim_nodo_per_pm_api_v1.name,
-    module.apim_api_gpd_api.name,
-    # azurerm_api_management_api.apim_api_gpd_payments_api.name,
   ]
 
   api_info_log = [

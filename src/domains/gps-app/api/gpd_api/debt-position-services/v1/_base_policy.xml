@@ -21,7 +21,7 @@
             <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
             <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
                 <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
-                <include-fragment fragment-id="authorizer" />
+                <!-- <include-fragment fragment-id="authorizer" /> TODO da RIABILITARE appena fatto apply in PROD del'attach della redis cache su APIM--> 
             </when>
         </choose>
     </inbound>
