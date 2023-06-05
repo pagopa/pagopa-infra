@@ -63,7 +63,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'bizevents_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
         ENVIRONMENT: "dev"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
         WORKINGDIR: 'src/domains/bizevents-common'
@@ -77,7 +77,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'bizevents_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
         ENVIRONMENT: "dev"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
         WORKINGDIR: 'src/domains/bizevents-app'
@@ -87,7 +87,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-    
+
   #
   # UAT
   #
@@ -120,7 +120,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-    
+
   #
   # PROD
   #
@@ -138,7 +138,7 @@ stages:
         AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-        
+
     # PROD bizevents APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:

@@ -49,7 +49,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'checkout_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
         ENVIRONMENT: "dev"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
         WORKINGDIR: 'src/domains/checkout-common'
@@ -59,11 +59,11 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'checkout_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
         ENVIRONMENT: "dev"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
         WORKINGDIR: 'src/domains/checkout-app'
-        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}   
+        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
 
   #
   # UAT
