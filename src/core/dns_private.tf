@@ -24,6 +24,15 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
   records             = var.dns_a_reconds_dbnodo_ips
 }
 
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_prf" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "db-nodo-pagamenti-prf"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodo_prf_ips
+}
+
 # Private dns zone: redis
 
 resource "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
@@ -84,16 +93,6 @@ resource "azurerm_private_dns_a_record" "platform_dns_a_private_apim" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = module.apim.private_ip_addresses
-  tags                = var.tags
-}
-
-resource "azurerm_private_dns_cname_record" "config_platform_dns_private_cname" {
-
-  name                = "config"
-  zone_name           = azurerm_private_dns_zone.platform_private_dns_zone.name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  record              = module.api_config_fe_cdn[0].hostname
   tags                = var.tags
 }
 

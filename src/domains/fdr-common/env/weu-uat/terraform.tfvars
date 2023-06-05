@@ -19,7 +19,6 @@ tags = {
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
-application_insights_name                   = "pagopa-u-appinsights"
 
 ### Aks
 
@@ -45,7 +44,7 @@ pgres_flex_params = {
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
-  pgres_flex_private_endpoint_enabled    = false
+  pgres_flex_private_endpoint_enabled    = true
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
@@ -104,4 +103,39 @@ custom_metric_alerts = {
     threshold        = 50
     severity         = 2
   }
+}
+
+### Cosmos
+
+cosmos_mongo_db_params = {
+  enabled      = true
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo", "EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 5
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
+
+  additional_geo_locations          = []
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = false
+
+  container_default_ttl = 2629800 # 1 month in second
+}
+
+cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
+
+cosmos_mongo_db_fdr_params = {
+  enable_serverless  = true
+  enable_autoscaling = true
+  max_throughput     = 5000
+  throughput         = 1000
 }

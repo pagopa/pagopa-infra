@@ -120,7 +120,7 @@ stages:
               --url="$(JDBC_URL)" \
               --username="$(FDR_USERNAME)" \
               --password="$(db-fdr-password)" \
-              --classpath=src/psql/nodo/liquibase/changelog/fdr \
+              --classpath=src/psql/fdr/liquibase/changelog/fdr \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName="$(FDR_SCHEMA)" \
               --defaultSchemaName="$(FDR_SCHEMA)" \
@@ -147,7 +147,7 @@ stages:
         pool: $(poolImage)
         dependsOn: [liquibase_status_job,prd_approval]
         condition: or(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'it'),eq('${{ parameters.k8sEnv }}', 'prf'),eq('${{ parameters.k8sEnv }}', 'uat'),and(eq('${{ parameters.k8sEnv }}', 'prd'),not(failed('prd_approval'))))
-        displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
+        displayName: "Update fdr DB ${{ parameters.k8sEnv }}"
         steps:
           - checkout: self
             clean: true
@@ -182,7 +182,7 @@ stages:
               --url="$(JDBC_URL)" \
               --username="$(FDR_USERNAME)" \
               --password="$(db-fdr-password)" \
-              --classpath=src/psql/nodo/liquibase/changelog/fdr \
+              --classpath=src/psql/fdr/liquibase/changelog/fdr \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName="$(FDR_SCHEMA)" \
               --defaultSchemaName="$(FDR_SCHEMA)" \
@@ -195,7 +195,7 @@ stages:
               --url="$(JDBC_URL)" \
               --username="$(FDR_USERNAME)" \
               --password="$(db-fdr-password)" \
-              --classpath=src/psql/nodo/liquibase/changelog/fdr \
+              --classpath=src/psql/fdr/liquibase/changelog/fdr \
               --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
               --liquibaseSchemaName="$(FDR_SCHEMA)" \
               --defaultSchemaName="$(FDR_SCHEMA)" \

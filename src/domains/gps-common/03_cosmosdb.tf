@@ -6,13 +6,13 @@ resource "azurerm_resource_group" "gps_rg" {
 }
 
 module "gps_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.1"
   name                 = "${local.project}-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_gps_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -22,9 +22,10 @@ module "gps_cosmosdb_snet" {
 }
 
 module "gps_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.4.1"
   name     = "${local.project}-cosmos-account"
   location = var.location
+  domain   = var.domain
 
   resource_group_name = azurerm_resource_group.gps_rg.name
   offer_type          = var.cosmos_gps_db_params.offer_type
@@ -33,8 +34,9 @@ module "gps_cosmosdb_account" {
   public_network_access_enabled    = var.cosmos_gps_db_params.public_network_access_enabled
   main_geo_location_zone_redundant = var.cosmos_gps_db_params.main_geo_location_zone_redundant
 
-  enable_free_tier          = var.cosmos_gps_db_params.enable_free_tier
-  enable_automatic_failover = true
+  enable_free_tier                             = var.cosmos_gps_db_params.enable_free_tier
+  enable_automatic_failover                    = true
+  enable_provisioned_throughput_exceeded_alert = false
 
   capabilities       = var.cosmos_gps_db_params.capabilities
   consistency_policy = var.cosmos_gps_db_params.consistency_policy
@@ -61,7 +63,7 @@ module "gps_cosmosdb_account" {
 
 # cosmosdb database
 module "gps_cosmosdb_database" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.4.1"
   name                = "db"
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gps_cosmosdb_account.name
@@ -74,19 +76,19 @@ locals {
     {
       name               = "creditor_institutions",
       partition_key_path = "/fiscalCode",
-      autoscale_settings = { max_throughput = 6000 }
+      autoscale_settings = { max_throughput = 1000 }
     },
     {
       name               = "services",
       partition_key_path = "/transferCategory",
-      autoscale_settings = { max_throughput = 6000 }
+      autoscale_settings = { max_throughput = 1000 }
     },
   ]
 }
 
 # cosmosdb container
 module "gps_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.4.1"
   for_each = { for c in local.gps_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
@@ -97,4 +99,52 @@ module "gps_cosmosdb_containers" {
   throughput          = lookup(each.value, "throughput", null)
 
   autoscale_settings = contains(var.cosmos_gps_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+}
+
+module "gpd_payments_cosmosdb_account" {
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.0"
+  name     = "${local.project}-payments-cosmos-account"
+  location = var.location
+  domain   = var.domain
+
+
+  resource_group_name = azurerm_resource_group.gps_rg.name
+  offer_type          = var.cosmos_gpd_payments_db_params.offer_type
+  kind                = var.cosmos_gpd_payments_db_params.kind
+
+  public_network_access_enabled    = var.cosmos_gpd_payments_db_params.public_network_access_enabled
+  main_geo_location_zone_redundant = var.cosmos_gpd_payments_db_params.main_geo_location_zone_redundant
+
+  enable_free_tier          = var.cosmos_gpd_payments_db_params.enable_free_tier
+  enable_automatic_failover = true
+
+  capabilities       = var.cosmos_gpd_payments_db_params.capabilities
+  consistency_policy = var.cosmos_gpd_payments_db_params.consistency_policy
+
+  main_geo_location_location = var.location
+  additional_geo_locations   = var.cosmos_gpd_payments_db_params.additional_geo_locations
+  backup_continuous_enabled  = var.cosmos_gpd_payments_db_params.backup_continuous_enabled
+
+  is_virtual_network_filter_enabled = var.cosmos_gpd_payments_db_params.is_virtual_network_filter_enabled
+
+  ip_range = ""
+
+  # add data.azurerm_subnet.<my_service>.id
+  allowed_virtual_network_subnet_ids = var.cosmos_gpd_payments_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
+
+  # private endpoint
+  private_endpoint_name    = "${local.project}-cosmos-sql-endpoint"
+  private_endpoint_enabled = var.cosmos_gpd_payments_db_params.private_endpoint_enabled
+  subnet_id                = module.gps_cosmosdb_snet.id
+  private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+
+  tags = var.tags
+}
+
+# cosmosdb gpd payments table
+resource "azurerm_cosmosdb_table" "payments_receipts_table" {
+  name                = "gpdpaymentsreceiptstable"
+  resource_group_name = azurerm_resource_group.gps_rg.name
+  account_name        = module.gpd_payments_cosmosdb_account.name
+  throughput          = 400
 }

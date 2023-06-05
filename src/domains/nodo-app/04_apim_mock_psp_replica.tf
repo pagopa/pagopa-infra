@@ -3,7 +3,7 @@
 ######################
 
 module "apim_mock_psp_product_replica" {
-  source       = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source       = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
   count        = var.env_short == "p" ? 0 : 1
   product_id   = "mock_psp_replica"
   display_name = "Mock PSP for REPLICA NDP"
@@ -15,7 +15,7 @@ module "apim_mock_psp_product_replica" {
   published             = true
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1000
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/mock-psp-service-replica/_base_policy.xml")
 }
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "api_mock_psp_api_replica" {
 
 
 module "apim_api_mock_psp_api_replica_v1" {
-  source                = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
   count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-mock-psp-service-api-replica", local.project)
   api_management_name   = local.pagopa_apim_name

@@ -35,7 +35,7 @@ module "apim_node_forwarder_api" {
   name                  = "${var.env_short}-node-forwarder-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_node_forwarder_product.product_id]
+  product_ids           = [module.apim_node_forwarder_product.product_id, local.apim_x_node_product_id]
   subscription_required = true
 
   version_set_id = azurerm_api_management_api_version_set.node_forwarder_api.id

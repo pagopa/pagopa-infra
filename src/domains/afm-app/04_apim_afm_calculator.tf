@@ -160,7 +160,7 @@ module "apim_api_afm_calculator_api_node_v1" {
   name                  = format("%s-afm-calculator-service-node-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_afm_calculator_node_product.product_id]
+  product_ids           = [module.apim_afm_calculator_node_product.product_id, local.apim_x_node_product_id]
   subscription_required = local.apim_afm_calculator_service_node_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_node_api.id
   api_version           = "v1"

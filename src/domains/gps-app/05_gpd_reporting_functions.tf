@@ -19,8 +19,9 @@ resource "azurerm_app_service_plan" "gpd_reporting_service_plan" {
   reserved = var.reporting_functions_app_sku.kind == "Linux" ? true : false
 
   sku {
-    tier = var.reporting_functions_app_sku.sku_tier
-    size = var.reporting_functions_app_sku.sku_size
+    tier     = var.reporting_functions_app_sku.sku_tier
+    size     = var.reporting_functions_app_sku.sku_size
+    capacity = 1
   }
 
   tags = var.tags
@@ -133,15 +134,38 @@ locals {
 
 ## Function reporting_batch
 module "reporting_batch_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
 
-  resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = replace("${local.project}fn-gpd-batch", "gps", "")
-  location                                 = var.location
-  health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet.id
-  runtime_version                          = "~3"
-  os_type                                  = "linux"
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  name                = replace("${local.project}fn-gpd-batch", "gps", "")
+  location            = var.location
+  health_check_path   = "/api/info"
+  subnet_id           = module.reporting_function_snet.id
+  runtime_version     = "~4"
+  ## DEDICATED SERVICE PLAN
+  #  app_service_plan_name = "${local.project}-plan-batch-fn"
+  #  app_service_plan_info = {
+  #    kind = var.reporting_functions_app_sku.kind
+  #    sku_tier = var.reporting_functions_app_sku.sku_tier
+  #    sku_size = var.reporting_functions_app_sku.sku_size
+  #    maximum_elastic_worker_count = null
+  #    worker_count                 = 1
+  #    zone_balancing_enabled       = false
+  #  }
+  docker = {
+    registry_url      = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_URL
+    image_name        = var.reporting_batch_image
+    image_tag         = "latest"
+    registry_username = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+  }
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
@@ -149,6 +173,7 @@ module "reporting_batch_function" {
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
+
 
   tags = var.tags
 
@@ -160,23 +185,30 @@ module "reporting_batch_function" {
 module "reporting_batch_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
-  function_app_name                        = module.reporting_batch_function.name
   function_app_id                          = module.reporting_batch_function.id
   storage_account_name                     = module.reporting_batch_function.storage_account_name
   storage_account_access_key               = module.reporting_batch_function.storage_account.primary_access_key
-  os_type                                  = "linux"
   name                                     = "staging"
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   location                                 = var.location
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.reporting_batch_function_always_on
-  health_check_path                        = "info"
+  health_check_path                        = "/api/info"
+  runtime_version                          = "~4"
 
   # App settings
   app_settings = local.function_batch_app_settings
+
+  docker = {
+    registry_url      = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_URL
+    image_name        = var.reporting_batch_image
+    image_tag         = "latest"
+    registry_username = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+  }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
@@ -187,20 +219,48 @@ module "reporting_batch_function_slot_staging" {
 
 ## Function reporting_service
 module "reporting_service_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
 
-  resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-service", local.product_location)
-  storage_account_name                     = replace("${local.product_location}gpdservicest", "-", "")
-  location                                 = var.location
-  health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet.id
-  runtime_version                          = "~3"
-  os_type                                  = "linux"
+  resource_group_name  = azurerm_resource_group.gpd_rg.name
+  name                 = format("%s-fn-gpd-service", local.product_location)
+  storage_account_name = replace("${local.product_location}gpdservicest", "-", "")
+  location             = var.location
+  health_check_path    = "/api/info"
+  subnet_id            = module.reporting_function_snet.id
+  runtime_version      = "~4"
+  ## DEDICATED SERVICE PLAN
+  #  app_service_plan_name = "${local.project}-plan-service-fn"
+  #  app_service_plan_info = {
+  #    kind = var.reporting_functions_app_sku.kind
+  #    sku_tier = var.reporting_functions_app_sku.sku_tier
+  #    sku_size = var.reporting_functions_app_sku.sku_size
+  #    maximum_elastic_worker_count = null
+  #    worker_count                 = 1
+  #    zone_balancing_enabled       = false
+  #  }
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
   always_on                                = var.reporting_service_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings                             = local.function_service_app_settings
+  sticky_app_setting_names = [
+    "DOCKER_REGISTRY_SERVER_PASSWORD",
+    "DOCKER_REGISTRY_SERVER_URL",
+    "DOCKER_REGISTRY_SERVER_USERNAME"
+  ]
+  docker = {
+    registry_url      = local.function_service_app_settings.DOCKER_REGISTRY_SERVER_URL
+    image_name        = var.reporting_service_image
+    image_tag         = "latest"
+    registry_username = local.function_service_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.function_service_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+  }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
@@ -215,23 +275,30 @@ module "reporting_service_function" {
 module "reporting_service_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
-  function_app_name                        = module.reporting_service_function.name
   function_app_id                          = module.reporting_service_function.id
   storage_account_name                     = module.reporting_service_function.storage_account_name
   storage_account_access_key               = module.reporting_service_function.storage_account.primary_access_key
-  os_type                                  = "linux"
   name                                     = "staging"
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   location                                 = var.location
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.reporting_service_function_always_on
-  health_check_path                        = "info"
+  health_check_path                        = "/api/info"
+  runtime_version                          = "~4"
 
   # App settings
   app_settings = local.function_service_app_settings
+
+  docker = {
+    registry_url      = local.function_service_app_settings.DOCKER_REGISTRY_SERVER_URL
+    image_name        = var.reporting_service_image
+    image_tag         = "latest"
+    registry_username = local.function_service_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.function_service_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+  }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
@@ -242,16 +309,40 @@ module "reporting_service_function_slot_staging" {
 
 ## Function reporting_analysis
 module "reporting_analysis_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
 
-  resource_group_name                      = azurerm_resource_group.gpd_rg.name
-  name                                     = format("%s-fn-gpd-analysis", local.product_location)
-  storage_account_name                     = replace("${local.product_location}gpdanalysisst", "-", "")
-  location                                 = var.location
-  health_check_path                        = "info"
-  subnet_id                                = module.reporting_function_snet.id
-  runtime_version                          = "~3"
-  os_type                                  = "linux"
+  resource_group_name  = azurerm_resource_group.gpd_rg.name
+  name                 = format("%s-fn-gpd-analysis", local.product_location)
+  storage_account_name = replace("${local.product_location}gpdanalysisst", "-", "")
+  location             = var.location
+  health_check_path    = "/info"
+  # dotnet_version    = var.reporting_analysis_dotnet_version
+  subnet_id       = module.reporting_function_snet.id
+  runtime_version = "~4"
+  docker = {
+    registry_url      = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_URL
+    image_name        = var.reporting_analysis_image
+    image_tag         = "latest"
+    registry_username = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+  }
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+  ## DEDICATED SERVICE PLAN
+  #  app_service_plan_name = "${local.project}-plan-analysis-fn"
+  #  app_service_plan_info = {
+  #    kind = var.reporting_functions_app_sku.kind
+  #    sku_tier = var.reporting_functions_app_sku.sku_tier
+  #    sku_size = var.reporting_functions_app_sku.sku_size
+  #    maximum_elastic_worker_count = null
+  #    worker_count                 = 1
+  #    zone_balancing_enabled       = false
+  #  }
   always_on                                = var.reporting_analysis_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
@@ -270,24 +361,31 @@ module "reporting_analysis_function" {
 module "reporting_analysis_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
-  function_app_name                        = module.reporting_analysis_function.name
   function_app_id                          = module.reporting_analysis_function.id
   storage_account_name                     = module.reporting_analysis_function.storage_account_name
   storage_account_access_key               = module.reporting_analysis_function.storage_account.primary_access_key
-  os_type                                  = "linux"
   name                                     = "staging"
   resource_group_name                      = azurerm_resource_group.gpd_rg.name
   location                                 = var.location
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   always_on         = var.reporting_analysis_function_always_on
-  health_check_path = "info"
+  health_check_path = "/info"
+  runtime_version   = "~4"
 
   # App settings
   app_settings = local.function_analysis_app_settings
+
+  docker = {
+    registry_url      = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_URL
+    image_name        = var.reporting_analysis_image
+    image_tag         = "latest"
+    registry_username = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+  }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
@@ -302,6 +400,7 @@ resource "azurerm_monitor_autoscale_setting" "reporting_function" {
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = var.location
   target_resource_id  = azurerm_app_service_plan.gpd_reporting_service_plan.id
+  enabled             = var.reporting_function
 
   profile {
     name = "default"

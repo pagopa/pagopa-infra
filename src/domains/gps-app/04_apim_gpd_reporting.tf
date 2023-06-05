@@ -16,7 +16,7 @@ locals {
 ##############
 
 module "apim_gpd_reporting_analysis_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "product-gpd-reporting"
   display_name = "GPD Reporting Analysis pagoPA"
@@ -48,7 +48,7 @@ resource "azurerm_api_management_api_version_set" "api_gpd_reporting_analysis_ap
 
 
 module "apim_api_gpd_reporting_analysis_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                  = format("%s-api-gpd-reporting-analysis-api", var.env_short)
   api_management_name   = local.pagopa_apim_name

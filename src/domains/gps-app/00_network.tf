@@ -9,14 +9,20 @@ data "azurerm_subnet" "apim_snet" {
   virtual_network_name = local.pagopa_vnet_integration
 }
 
+data "azurerm_subnet" "canoneunico_function_snet" {
+  name                 = format("%s-canoneunico-snet", local.product)
+  resource_group_name  = local.vnet_resource_group_name
+  virtual_network_name = local.vnet_name
+}
+
 # Subnet to host ecommerce transactions function
 module "reporting_function_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.3.2"
-  name                                           = "${local.project}-reporting-fn-snet"
-  address_prefixes                               = var.cidr_subnet_reporting_functions
-  resource_group_name                            = local.vnet_resource_group_name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  name                                      = "${local.project}-reporting-fn-snet"
+  address_prefixes                          = var.cidr_subnet_reporting_functions
+  resource_group_name                       = local.vnet_resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
+  private_endpoint_network_policies_enabled = false
 
   delegation = {
     name = "default"
