@@ -61,7 +61,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v3.0.0
+      ref: refs/tags/v3.10.0
       endpoint: 'io-azure-devops-github-ro'
 
 lockBehavior: sequential
