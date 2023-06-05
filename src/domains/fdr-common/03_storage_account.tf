@@ -30,8 +30,8 @@ module "fdr_conversion_sa" {
 
 ## share xml file
 resource "azurerm_storage_container" "xml_blob_file" {
-  name                 = format("%sxmlsharefile", module.fdr_conversion_sa.name)
-  storage_account_name = module.fdr_conversion_sa.name
+  name                  = format("%sxmlsharefile", module.fdr_conversion_sa.name)
+  storage_account_name  = module.fdr_conversion_sa.name
   container_access_type = "private"
 }
 
