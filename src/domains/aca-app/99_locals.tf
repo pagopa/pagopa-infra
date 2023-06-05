@@ -34,7 +34,7 @@ locals {
   pagopa_vnet_integration = "pagopa-${var.env_short}-vnet-integration"
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 
-  apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  aca_hostname = "${var.location_short}${var.env}.aca.internal.${var.env}.platform.pagopa.it"
+  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  aca_hostname  = "${var.location_short}${var.env}.aca.internal.${var.env}.platform.pagopa.it"
 
 }
