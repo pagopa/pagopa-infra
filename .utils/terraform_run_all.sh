@@ -23,6 +23,8 @@ array=(
     'src/domains/apiconfig-common::weu-dev'
     'src/domains/bizevents-app::weu-dev'
     'src/domains/bizevents-common::weu-dev'
+    'src/domains/checkout-app::weu-dev'
+    'src/domains/checkout-common::weu-dev'
     'src/domains/ecommerce-app::weu-dev'
     'src/domains/ecommerce-common::weu-dev'
     'src/domains/fdr-app::weu-dev'
