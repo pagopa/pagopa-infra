@@ -60,7 +60,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'core'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
         ENVIRONMENT: "uat"
         TF_ENVIRONMENT_FOLDER: "uat"
         WORKINGDIR: 'src/core'
@@ -74,7 +74,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'core'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
         ENVIRONMENT: "prod"
         TF_ENVIRONMENT_FOLDER: "prod"
         WORKINGDIR: 'src/core'
