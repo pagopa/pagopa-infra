@@ -56,7 +56,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
-      name: "pagopa-dev-linux"
+      name: "pagopa-dev-linux-infra"
     jobs:
       - job: plan_checkout_common
         displayName: 🔦 plan_checkout_common
