@@ -52,7 +52,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
-      name: pagopa-dev-linux
+      name: pagopa-dev-linux-infra
     jobs:
       - job: tf_plan_core
         timeoutInMinutes: $[variables.TIME_OUT]

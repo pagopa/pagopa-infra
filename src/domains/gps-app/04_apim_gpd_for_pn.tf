@@ -4,7 +4,7 @@
 
 locals {
   apim_pn_integration_rest_api = {
-    display_name          = "Integrazione PN"
+    display_name          = "Integrazione PN GPD"
     description           = "REST API del servizio Payments per Gestione Posizione Debitorie - for Auth"
     published             = true
     subscription_required = true
