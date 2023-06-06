@@ -62,6 +62,7 @@
 | <a name="module_nodo_re_to_datastore_function"></a> [nodo\_re\_to\_datastore\_function](#module\_nodo\_re\_to\_datastore\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.20.0 |
 | <a name="module_nodo_re_to_datastore_function_snet"></a> [nodo\_re\_to\_datastore\_function\_snet](#module\_nodo\_re\_to\_datastore\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.4.1 |
+| <a name="module_reporting_function_snet"></a> [reporting\_function\_snet](#module\_reporting\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
 | <a name="module_route_table_peering_nexi"></a> [route\_table\_peering\_nexi](#module\_route\_table\_peering\_nexi) | git::https://github.com/pagopa/azurerm.git//route_table | v1.0.90 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v5.5.2 |
 | <a name="module_vmss_snet"></a> [vmss\_snet](#module\_vmss\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
@@ -130,6 +131,7 @@
 | [azurerm_api_management_api_version_set.psp_for_node_api_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_product_api.apim_nodo_dei_pagamenti_product_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_product_api.apim_nodo_dei_pagamenti_product_api_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
+| [azurerm_app_service_plan.gpd_reporting_service_plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_service_plan) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -141,6 +143,7 @@
 | [azurerm_monitor_scheduled_query_rules_alert.nodoapi-general-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.nodoapi-general-responsetime](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_resource_group.nodo_re_to_datastore_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.gpd_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.vmss_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_subnet_route_table_association.snet_vmss_to_sia](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association) | resource |
 | [azurerm_virtual_machine_scale_set_extension.vmss-extension](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_scale_set_extension) | resource |
@@ -167,6 +170,7 @@
 | [azurerm_cosmosdb_account.mongo_ndp_re_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_account) | data source |
 | [azurerm_cosmosdb_mongo_database.nodo_re](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_mongo_database) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
+| [azurerm_container_registry.acr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/container_registry) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.client_id_swclient](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.client_secret_swclient](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
@@ -216,6 +220,8 @@
 | <a name="input_nodo_re_to_datastore_function_app_image_tag"></a> [nodo\_re\_to\_datastore\_function\_app\_image\_tag](#input\_nodo\_re\_to\_datastore\_function\_app\_image\_tag) | Nodo RE to Datastore function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
 | <a name="input_nodo_re_to_datastore_function_subnet"></a> [nodo\_re\_to\_datastore\_function\_subnet](#input\_nodo\_re\_to\_datastore\_function\_subnet) | Address prefixes subnet | `list(string)` | `null` | no |
 | <a name="input_nodo_re_to_datastore_network_policies_enabled"></a> [nodo\_re\_to\_datastore\_network\_policies\_enabled](#input\_nodo\_re\_to\_datastore\_network\_policies\_enabled) | Network policies enabled | `bool` | `false` | no |
+| <a name="input_nodo_re_to_datastore_function"></a> [nodo\_re\_to\_datastore\_function](#input\_nodo\_re\_to\_datastore\_function) | Nodo re to datastore function | <pre>object({<br>    kind     = string<br>    sku_tier = string<br>    sku_size = string<br>  })</pre> | n/a | yes |
+| <a name="input_nodo_re_to_datastore_function_always_on"></a> [nodo\_re\_to\_datastore\_function\_always\_on](#input\_nodo\_re\_to\_datastore\_function\_always\_on) | Always on property | `bool` | `false` | no |
 | <a name="input_nodo_user_node_pool"></a> [nodo\_user\_node\_pool](#input\_nodo\_user\_node\_pool) | AKS node pool user configuration | <pre>object({<br>    enabled            = bool,<br>    name               = string,<br>    vm_size            = string,<br>    os_disk_type       = string,<br>    os_disk_size_gb    = string,<br>    node_count_min     = number,<br>    node_count_max     = number,<br>    node_labels        = map(any),<br>    node_taints        = list(string),<br>    node_tags          = map(any),<br>    nodo_pool_max_pods = number,<br>  })</pre> | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_route_aks"></a> [route\_aks](#input\_route\_aks) | AKS routing table | <pre>list(object({<br>    name                   = string<br>    address_prefix         = string<br>    next_hop_type          = string<br>    next_hop_in_ip_address = string<br>  }))</pre> | n/a | yes |
