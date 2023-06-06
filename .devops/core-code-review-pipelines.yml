@@ -90,7 +90,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
-      name: pagopa-prod-linux
+      name: pagopa-prod-linux-infra
     jobs:
       - job: tf_plan_core
         timeoutInMinutes: $[variables.TIME_OUT]
