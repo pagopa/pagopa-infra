@@ -3,7 +3,7 @@ locals {
     display_name          = "Enrolled EC on services - API"
     description           = "Enrolled EC on services - API"
     path                  = "enrolled"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
