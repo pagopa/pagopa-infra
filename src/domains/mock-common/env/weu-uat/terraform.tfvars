@@ -19,6 +19,12 @@ tags = {
 monitor_resource_group_name = "pagopa-u-monitor-rg"
 
 
-cidr_subnet_mock_ec       = ["10.1.137.0/29"]
-mock_ec_enabled           = true
-mock_ec_secondary_enabled = true
+cidr_subnet_mock_ec              = ["10.1.137.0/29"]
+cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
+
+mock_ec_enabled              = true
+mock_ec_secondary_enabled    = true
+mock_payment_gateway_enabled = true
+
+external_domain = "pagopa.it"
+dns_zone_prefix = "dev.platform"

@@ -105,3 +105,45 @@ variable "mock_ec_size" {
   description = "Mock EC Plan size"
   default     = "S1"
 }
+
+variable "mock_payment_gateway_enabled" {
+  type        = bool
+  description = "Mock payment gateway enabled"
+  default     = false
+}
+
+variable "mock_payment_gateway_always_on" {
+  type        = bool
+  description = "Mock payment gateway always on property"
+  default     = false
+}
+
+variable "mock_payment_gateway_tier" {
+  type        = string
+  description = "Mock payment gateway Plan tier"
+  default     = "Standard"
+}
+
+variable "mock_payment_gateway_size" {
+  type        = string
+  description = "Mock payment gateway Plan size"
+  default     = "S1"
+}
+
+variable "cidr_subnet_mock_payment_gateway" {
+  type        = list(string)
+  description = "Address prefixes subnet mock payment_gateway"
+  default     = null
+}
+
+variable "external_domain" {
+  type        = string
+  default     = null
+  description = "Domain for delegation"
+}
+
+variable "dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
