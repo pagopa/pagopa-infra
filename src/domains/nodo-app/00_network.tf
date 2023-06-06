@@ -8,6 +8,7 @@ data "azurerm_subnet" "aks_snet" {
   resource_group_name  = local.vnet_resource_group_name
 }
 
+
 module "nodo_re_to_datastore_function_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                                      = "${local.project}-nodo-re-to-datastore-fn-snet"

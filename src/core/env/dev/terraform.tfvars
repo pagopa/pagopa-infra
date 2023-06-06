@@ -300,7 +300,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-fdr"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "fdr-re-to-datastore-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-tx"
@@ -316,6 +316,12 @@ eventhubs = [
       },
       {
         name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "fdr-re-to-datastore-rx"
         listen = true
         send   = false
         manage = false
