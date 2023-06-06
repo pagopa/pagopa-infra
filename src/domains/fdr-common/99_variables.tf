@@ -271,3 +271,18 @@ variable "cosmos_mongo_db_fdr_params" {
     max_throughput     = number
   })
 }
+variable "fdr_conversion_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+variable "fdr_convertion_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+variable "fdr_convertion_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}

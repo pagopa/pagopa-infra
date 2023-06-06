@@ -11,10 +11,10 @@ locals {
     approval_required     = true
     subscriptions_limit   = 1000
     service_url           = null
-    gpd_service           = {
-      display_name          = "Integrazione PN GPD"
-      description           = "REST API GPD per piattaforma notifiche"
-      path                  = "pn-integration/gpd/api"
+    gpd_service = {
+      display_name = "Integrazione PN GPD"
+      description  = "REST API GPD per piattaforma notifiche"
+      path         = "pn-integration/gpd/api"
     }
   }
 }
