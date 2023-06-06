@@ -181,3 +181,17 @@ variable "vmss_instance_number" {
   description = "availability zones for vmss "
 }
 
+variable "nodo_re_to_datastore_function" {
+  type = object({
+    kind     = string
+    sku_tier = string
+    sku_size = string
+  })
+  description = "Nodo re to datastore function"
+}
+variable "nodo_re_to_datastore_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+

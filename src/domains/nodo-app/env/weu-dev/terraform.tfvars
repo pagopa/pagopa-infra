@@ -87,3 +87,5 @@ route_aks = [
 
 vmss_zones           = ["1"]
 vmss_instance_number = 1
+
+nodo_re_to_datastore_function_always_on = true
