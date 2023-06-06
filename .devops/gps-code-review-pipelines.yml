@@ -114,7 +114,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
-      name: "pagopa-uat-linux"
+      name: "pagopa-uat-linux-infra"
     jobs:
       - job: plan_gps_common
         displayName: 🔦 plan_gps_common
@@ -158,7 +158,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
-      name: "pagopa-prod-linux"
+      name: "pagopa-prod-linux-infra"
     jobs:
       - job: plan_gps_common
         displayName: 🔦 plan_gps_common

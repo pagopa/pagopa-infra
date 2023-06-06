@@ -130,7 +130,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
-      name: "pagopa-uat-linux"
+      name: "pagopa-uat-linux-infra"
     jobs:
       - job: plan_nodo_secret
         displayName: 🔦 plan_nodo_secret
@@ -189,7 +189,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
-      name: "pagopa-prod-linux"
+      name: "pagopa-prod-linux-infra"
     jobs:
       - job: plan_nodo_secret
         displayName: 🔦 plan_nodo_secret
