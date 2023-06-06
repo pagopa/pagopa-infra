@@ -52,12 +52,12 @@ variables:
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     JDBC_URL: jdbc:postgresql://pagopa-u-weu-fdr-flexible-postgresql.postgres.database.azure.com:6432/fdr-replica?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-u-fdr-kv
-    poolImage: 'pagopa-uat-linux'
+    poolImage: 'pagopa-uat-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     JDBC_URL: jdbc:postgresql://pagopa-u-weu-fdr-flexible-postgresql.postgres.database.azure.com:6432/fdr?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-u-fdr-kv
-    poolImage: 'pagopa-uat-linux'
+    poolImage: 'pagopa-uat-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
     JDBC_URL: jdbc:postgresql://pagopa-p-weu-fdr-flexible-postgresql.postgres.database.azure.com:6432/fdr?sslmode=require&prepareThreshold=0

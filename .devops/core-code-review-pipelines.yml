@@ -71,7 +71,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
-      name: pagopa-uat-linux
+      name: pagopa-uat-linux-infra
     jobs:
       - job: tf_plan_core
         timeoutInMinutes: $[variables.TIME_OUT]

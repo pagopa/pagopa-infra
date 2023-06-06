@@ -36,13 +36,13 @@ variables:
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
     DATABASE_NAME: nodo
-    poolImage: 'pagopa-uat-linux'
+    poolImage: 'pagopa-uat-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
     DATABASE_NAME: 'nodo-replica'
-    poolImage: 'pagopa-uat-linux'
+    poolImage: 'pagopa-uat-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
