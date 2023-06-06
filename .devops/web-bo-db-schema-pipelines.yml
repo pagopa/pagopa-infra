@@ -48,7 +48,7 @@ variables:
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
     KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
     DATABASE_NAME: nodo
-    poolImage: 'pagopa-prod-linux'
+    poolImage: 'pagopa-prod-linux-infra'
   ADMIN_USERNAME: azureuser
   WEB_BO_USERNAME: web-bo
   WEB_BO_SCHEMA: web-bo
