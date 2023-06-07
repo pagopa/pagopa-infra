@@ -112,7 +112,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'nodo_secret'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
         ENVIRONMENT: "uat"
         TF_ENVIRONMENT_FOLDER: "weu-uat"
         WORKINGDIR: 'src/domains/nodo-secret'
@@ -126,7 +126,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'nodo_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
         ENVIRONMENT: "uat"
         TF_ENVIRONMENT_FOLDER: "weu-uat"
         WORKINGDIR: 'src/domains/nodo-common'
@@ -140,7 +140,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'nodo_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
         ENVIRONMENT: "uat"
         TF_ENVIRONMENT_FOLDER: "weu-uat"
         WORKINGDIR: 'src/domains/nodo-app'
@@ -161,7 +161,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'nodo_secret'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
         ENVIRONMENT: "prod"
         TF_ENVIRONMENT_FOLDER: "weu-prod"
         WORKINGDIR: 'src/domains/nodo-secret'
@@ -175,7 +175,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'nodo_common'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
         ENVIRONMENT: "prod"
         TF_ENVIRONMENT_FOLDER: "weu-prod"
         WORKINGDIR: 'src/domains/nodo-common'
@@ -189,7 +189,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         DOMAIN_NAME: 'nodo_app'
-        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
         ENVIRONMENT: "prod"
         TF_ENVIRONMENT_FOLDER: "weu-prod"
         WORKINGDIR: 'src/domains/nodo-app'
