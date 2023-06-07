@@ -8,7 +8,7 @@ resource "azapi_resource" "generate_cache_fragment" {
     properties = {
       description = "Logic about cache generation"
       format      = "rawxml"
-      value       = file("./api/apiconfig-cache/node/generate_cache_fragment.xml")
+      value       = file("./api/apiconfig-cache/node_fdr/generate_cache_fragment.xml")
     }
   })
 

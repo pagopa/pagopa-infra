@@ -20,7 +20,7 @@ locals {
 ###################
 
 module "apim_gpd_payments_rest_external_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "gpd-payments-rest-aks"
   display_name = "GPD Payments pagoPA - REST for Auth"
@@ -51,7 +51,7 @@ resource "azurerm_api_management_api_version_set" "api_gpd_payments_rest_externa
 
 
 module "apim_api_gpd_payments_rest_external_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
 
   name                  = format("%s-gpd-payments-rest-api-aks", var.env_short)
@@ -75,7 +75,6 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
   })
 
   xml_content = templatefile("./api/payments-service/v1/rest/external/_base_policy.xml", {
-    hostname                     = local.gps_hostname
-    cache-generator-function-key = "temp"
+    hostname = local.gps_hostname
   })
 }

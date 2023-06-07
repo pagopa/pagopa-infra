@@ -1,5 +1,5 @@
 module "apim_apiconfig_core_oauth_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v5.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "${local.apiconfig_core_locals.product_id}-oauth"
   display_name = "${local.apiconfig_core_locals.display_name} - Oauth"
@@ -10,7 +10,7 @@ module "apim_apiconfig_core_oauth_product" {
 
   published             = false
   subscription_required = local.apiconfig_core_locals.subscription_required
-  approval_required     = false
+  approval_required     = true
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")

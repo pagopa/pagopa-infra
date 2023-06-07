@@ -81,6 +81,26 @@ resource "azapi_resource" "decoupler_activate_outbound" {
   }
 }
 
+resource "azapi_resource" "on_erro_soap_handler" {
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "onerror-soap-req"
+  parent_id = module.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "On error SOAP request"
+      format      = "rawxml"
+      value       = file("./api_product/nodo_pagamenti_api/on_error_soap_req.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
+
 
 ##############
 ## Products ##
@@ -296,8 +316,9 @@ resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
-    base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
+
   })
 }
 
@@ -503,6 +524,8 @@ locals {
     path                  = "nodo/nodo-per-pa"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
+    fdr_hostname          = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
+
   }
 }
 
@@ -553,6 +576,43 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
   })
 }
 
+# Fdr pagoPA legacy 
+# nodoChiediFlussoRendicontazione DEV 6218976195aa0303ccfcf902
+# nodoChiediFlussoRendicontazione UAT 61e96321e0f4ba04a49d1286
+# nodoChiediFlussoRendicontazione PRD 61e9633dea7c4a07cc7d480e
+resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChiediFlussoRendicontazione" { # 
+
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf902" : var.env_short == "u" ? "61e96321e0f4ba04a49d1286" : "61e9633dea7c4a07cc7d480e"
+
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
+  })
+}
+
+# nodoChiediElencoFlussiRendicontazione DEV 6218976195aa0303ccfcf901
+# nodoChiediElencoFlussiRendicontazione UAT 61e96321e0f4ba04a49d1285
+# nodoChiediElencoFlussiRendicontazione PRD 61e9633dea7c4a07cc7d480d
+resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChiediElencoFlussiRendicontazione" { # 
+
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf901" : var.env_short == "u" ? "61e96321e0f4ba04a49d1285" : "61e9633dea7c4a07cc7d480d"
+
+  #tfsec:ignore:GEN005
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
+  })
+}
+
+
+
 ######################
 ## Nodo per PM API  ##
 ######################
@@ -594,7 +654,8 @@ module "apim_nodo_per_pm_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    service = module.apim_nodo_dei_pagamenti_product.product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {

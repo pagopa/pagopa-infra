@@ -35,8 +35,6 @@ cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
 cidr_subnet_checkout_be              = ["10.1.133.0/24"]
 cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
 cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
-cidr_subnet_reporting_common         = ["10.1.136.0/24"]
-cidr_subnet_gpd                      = ["10.1.138.0/24"]
 cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
 cidr_subnet_pg_flex_dbms             = ["10.1.141.0/24"]
@@ -114,8 +112,7 @@ app_gateway_deny_paths = [
   "/payment-manager/internal*",
   "/payment-manager/pm-per-nodo/.*",
   "/checkout/io-for-node/.*",
-  "/gpd-payments/.*",  # internal use no sub-keys SOAP
-  "/gpd-reporting/.*", # internal use no sub-keys
+  "/gpd-payments/.*", # internal use no sub-keys SOAP
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
@@ -129,13 +126,11 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   "/pagopa-node-forwarder/.*",
-  "/gps/donation-service/.*",              # internal use no sub-keys
-  "/shared/iuv-generator-service/.*",      # internal use no sub-keys
-  "/gps/spontaneous-payments-service/.*",  # internal use no sub-keys
-  "/gps/gpd-payments/.*",                  # internal use no sub-keys
-  "/gps/gpd-payment-receipts/.*",          # internal use no sub-keys
-  "/gps/gpd-reporting-orgs-enrollment/.*", # internal use
-  "shared/authorizer/.*"
+  "/gps/donation-service/.*",             # internal use no sub-keys
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
+  "/shared/authorizer/.*",                # internal use no sub-keys
+  "/gpd/api/.*",
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -426,30 +421,93 @@ eventhubs = [
       }
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-negative-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-negative-biz-evt-rx"]
+    keys = [
+      {
+        name   = "pagopa-negative-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+    ]
+  },
 ]
 
+eventhubs_02 = [
+  {
+    name              = "nodo-dei-pagamenti-negative-awakable-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-negative-final-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+]
 # acr
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1521
-db_service_name                    = "NDPSPCP_PP_NODO4_CFG"           # TODO chiedere a SIA
 dns_a_reconds_dbnodo_ips           = ["10.102.35.58", "10.102.35.57"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 private_dns_zone_db_nodo_pagamenti = "p.db-nodo-pagamenti.com"
 
-# API Config
-xsd_ica         = "https://raw.githubusercontent.com/pagopa/pagopa-api/master/general/InformativaContoAccredito_1_2_1.xsd"
-api_config_tier = "PremiumV3"
-api_config_size = "P1v3"
-
-# API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
-
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
-buyerbanks_function_sku_tier          = "PremiumV3"
-buyerbanks_function_sku_size          = "P1v3"
+buyerbanks_function_sku_tier          = "Standard"
+buyerbanks_function_sku_size          = "S1"
 buyerbanks_function_autoscale_minimum = 1
 buyerbanks_function_autoscale_maximum = 3
 buyerbanks_function_autoscale_default = 1
@@ -490,32 +548,6 @@ reporting_fdr_function_kind      = "Linux"
 reporting_fdr_function_sku_tier  = "PremiumV3"
 reporting_fdr_function_sku_size  = "P1v3"
 reporting_fdr_function_always_on = true
-
-
-# gpd
-gpd_plan_kind                = "Linux"
-gpd_plan_sku_tier            = "PremiumV3"
-gpd_plan_sku_size            = "P1v3"
-gpd_cron_job_enable          = true
-gpd_cron_schedule_valid_to   = "0 */30 * * * *"
-gpd_cron_schedule_expired_to = "0 */40 * * * *"
-
-reporting_function_autoscale_minimum = 1
-reporting_function_autoscale_maximum = 3
-reporting_function_autoscale_default = 1
-
-reporting_batch_function_always_on    = true
-reporting_service_function_always_on  = true
-reporting_analysis_function_always_on = true
-
-reporting_analysis_function_autoscale_minimum = 1
-reporting_analysis_function_autoscale_maximum = 3
-reporting_analysis_function_autoscale_default = 1
-
-# GPD Payments
-# https://pagopa.atlassian.net/wiki/spaces/~345445188/pages/484278477/Stazioni+particolari#Canone-Unico
-gpd_paa_id_intermediario = "15376371009"
-gpd_paa_stazione_int     = "15376371009_01"
 
 # canone unico
 canoneunico_plan_sku_tier = "PremiumV3"
@@ -580,34 +612,6 @@ cosmos_document_db_params = {
 storage_queue_private_endpoint_enabled = true
 
 platform_private_dns_zone_records = ["api", "portal", "management"]
-
-# Data Explorer
-dexp_params = {
-  enabled = true
-  sku = {
-    name     = "Standard_D11_v2"
-    capacity = 2
-  }
-  autoscale = {
-    enabled       = true
-    min_instances = 2
-    max_instances = 5
-  }
-  public_network_access_enabled = true
-  double_encryption_enabled     = true
-  disk_encryption_enabled       = true
-  purge_enabled                 = false
-}
-
-dexp_db = {
-  enable             = true
-  hot_cache_period   = "P5D"
-  soft_delete_period = "P1Y"
-}
-
-dexp_re_db_linkes_service = {
-  enable = true
-}
 
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"

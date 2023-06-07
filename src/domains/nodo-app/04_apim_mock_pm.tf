@@ -3,7 +3,7 @@
 ##############
 
 module "apim_mock_pm_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
   count  = var.env_short == "d" ? 1 : 0
 
   product_id   = "mock_pm"
@@ -16,7 +16,7 @@ module "apim_mock_pm_product" {
   published             = true
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1000
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/mock-pm-service/_base_policy.xml")
 }
@@ -46,13 +46,13 @@ resource "azurerm_api_management_api_version_set" "api_mock_pm_api" {
 
 
 module "apim_api_mock_pm_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
   count  = var.env_short == "d" ? 1 : 0
 
   name                  = format("%s-mock-pm-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_pm_product[0].product_id]
+  product_ids           = [module.apim_mock_pm_product[0].product_id, module.apim_apim_for_node_product.product_id]
   subscription_required = local.apim_mock_pm_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_mock_pm_api[0].id
   api_version           = "v1"

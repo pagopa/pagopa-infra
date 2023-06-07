@@ -9,7 +9,7 @@ instance       = "prod"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
-  Owner       = "PagoPA"
+  Owner       = "pagoPa"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/apiconfig"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
