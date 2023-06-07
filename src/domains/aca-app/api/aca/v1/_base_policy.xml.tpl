@@ -1,7 +1,9 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://${hostname}/pagopa-aca-service" />
+      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+      <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
+      <set-backend-service base-url="https://${hostname}" + context.Variables["blueDeploymentPrefix"] + "/pagopa-aca-service" />
     </inbound>
     <outbound>
       <base />
