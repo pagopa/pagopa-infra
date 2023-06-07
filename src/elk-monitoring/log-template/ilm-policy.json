@@ -34,7 +34,8 @@
       }
     },
     "_meta": {
-      "description": "Policy ${name}"
+      "description": "${name}",
+      "managed": ${managed}
     }
   }
 }

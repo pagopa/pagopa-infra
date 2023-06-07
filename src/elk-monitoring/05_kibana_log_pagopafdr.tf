@@ -11,7 +11,8 @@ locals {
 
   pagopafdrnodo_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/fdr/${local.pagopafdrnodo_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdrnodo_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.pagopafdrnodo_key
+    name = local.pagopafdrnodo_key,
+    managed = false
   }), "\""), "\""), "'", "'\\''")
   pagopafdrnodo_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.pagopafdrnodo_key
@@ -35,7 +36,8 @@ locals {
 
   pagopafdrnodocron_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/fdr/${local.pagopafdrnodocron_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdrnodocron_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.pagopafdrnodocron_key
+    name = local.pagopafdrnodocron_key,
+    managed = false
   }), "\""), "\""), "'", "'\\''")
   pagopafdrnodocron_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.pagopafdrnodocron_key
@@ -59,7 +61,8 @@ locals {
 
   pagopafdr_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/log-template/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdr_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.pagopafdr_key
+    name = local.pagopafdr_key,
+    managed = false
   }), "\""), "\""), "'", "'\\''")
   pagopafdr_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.pagopafdr_key
