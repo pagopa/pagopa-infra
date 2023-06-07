@@ -1,19 +1,19 @@
 resource "azurerm_resource_group" "mock_payment_gateway_rg" {
   count    = var.mock_payment_gateway_enabled ? 1 : 0
-  name     = format("%s-mock-payment-gateway-rg", local.project)
+  name     = format("%s-mock-payment-gateway-rg", local.project_legacy)
   location = var.location
   tags     = var.tags
 }
 
 # Subnet to host the mock mock-payment-gateway
 module "mock_payment_gateway_snet" {
-  count                                          = var.mock_payment_gateway_enabled && var.cidr_subnet_mock_payment_gateway != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
-  name                                           = format("%s-mock-payment-gateway-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_mock_payment_gateway
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  count                                         = var.mock_payment_gateway_enabled && var.cidr_subnet_mock_payment_gateway != null ? 1 : 0
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  name                                          = format("%s-mock-payment-gateway-snet", local.project_legacy)
+  address_prefixes                              = var.cidr_subnet_mock_payment_gateway
+  resource_group_name                           = local.vnet_resource_group_name
+  virtual_network_name                          = local.vnet_name
+  private_link_service_network_policies_enabled = true
 
   delegation = {
     name = "default"
@@ -26,23 +26,21 @@ module "mock_payment_gateway_snet" {
 
 module "mock_payment_gateway" {
   count  = var.mock_payment_gateway_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.14.1"
 
   resource_group_name = azurerm_resource_group.mock_payment_gateway_rg[0].name
   location            = var.location
 
   # App service plan vars
-  plan_name     = format("%s-plan-mock-payment-gateway", local.project)
-  plan_kind     = "Linux"
-  plan_sku_tier = var.mock_payment_gateway_tier
-  plan_sku_size = var.mock_payment_gateway_size
-  plan_reserved = true # Mandatory for Linux plan
+  plan_name = format("%s-plan-mock-payment-gateway", local.project_legacy)
+  plan_kind = "Linux"
+  sku_name  = var.mock_payment_gateway_size
 
   # App service plan
-  name                = format("%s-app-mock-payment-gateway", local.project)
+  name                = format("%s-app-mock-payment-gateway", local.project_legacy)
   client_cert_enabled = false
   always_on           = var.mock_payment_gateway_always_on
-  linux_fx_version    = "JAVA|8-jre8"
+  java_version        = "8"
   health_check_path   = "/actuator/health"
 
   app_settings = {
@@ -52,11 +50,10 @@ module "mock_payment_gateway" {
     XPAY_SECRET_KEY   = data.azurerm_key_vault_secret.mock_pgs_xpay_secret_key[0].value
   }
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
-  subnet_name = module.mock_payment_gateway_snet[0].name
-  subnet_id   = module.mock_payment_gateway_snet[0].id
+  subnet_id = module.mock_payment_gateway_snet[0].id
 
   tags = var.tags
 }
@@ -64,11 +61,11 @@ module "mock_payment_gateway" {
 data "azurerm_key_vault_secret" "mock_pgs_xpay_apikey_alias" {
   count        = var.mock_payment_gateway_enabled ? 1 : 0
   name         = "mock-pgs-xpay-apikey-alias"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 data "azurerm_key_vault_secret" "mock_pgs_xpay_secret_key" {
   count        = var.mock_payment_gateway_enabled ? 1 : 0
   name         = "mock-pgs-xpay-secret-key"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 }

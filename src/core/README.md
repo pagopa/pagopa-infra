@@ -153,8 +153,6 @@
 | <a name="module_logic_app_biz_evt_sa"></a> [logic\_app\_biz\_evt\_sa](#module\_logic\_app\_biz\_evt\_sa) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.0.28 |
 | <a name="module_logic_app_biz_evt_snet"></a> [logic\_app\_biz\_evt\_snet](#module\_logic\_app\_biz\_evt\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_logos_donation_flows_sa"></a> [logos\_donation\_flows\_sa](#module\_logos\_donation\_flows\_sa) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.0.28 |
-| <a name="module_mock_ec"></a> [mock\_ec](#module\_mock\_ec) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.90 |
-| <a name="module_mock_ec_snet"></a> [mock\_ec\_snet](#module\_mock\_ec\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_mock_payment_gateway"></a> [mock\_payment\_gateway](#module\_mock\_payment\_gateway) | git::https://github.com/pagopa/azurerm.git//app_service | v1.0.90 |
 | <a name="module_mock_payment_gateway_snet"></a> [mock\_payment\_gateway\_snet](#module\_mock\_payment\_gateway\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_monitor"></a> [monitor](#module\_monitor) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
@@ -481,7 +479,6 @@
 | [azurerm_resource_group.cosmosdb_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.default_roleassignment_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.mock_ec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.mock_payment_gateway_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.msg_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
