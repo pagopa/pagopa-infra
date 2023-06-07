@@ -18,7 +18,11 @@ module "bopagopa_cosmosdb_mongodb_snet" {
 
   private_endpoint_network_policies_enabled = false
 
-  service_endpoints = ["Microsoft.Web", "Microsoft.AzureCosmosDB"]
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
 }
 
 
@@ -48,7 +52,12 @@ module "bopagopa_cosmosdb_mongo_account" {
 
   is_virtual_network_filter_enabled = var.bopagopa_datastore_cosmos_db_params.is_virtual_network_filter_enabled
 
-  ip_range                 = ""
+  ip_range = ""
+
+  # add data.azurerm_subnet.<my_service>.id
+  allowed_virtual_network_subnet_ids = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+
+
   private_endpoint_enabled = var.bopagopa_datastore_cosmos_db_params.private_endpoint_enabled
   subnet_id                = module.bopagopa_cosmosdb_mongodb_snet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
