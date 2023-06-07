@@ -229,3 +229,60 @@ variable "custom_metric_alerts" {
     }
   }
 }
+
+# CosmosDb
+variable "cidr_subnet_cosmosdb_fdr" {
+  type        = list(string)
+  description = "Cosmos DB address space for fdr."
+}
+
+variable "cosmos_mongo_db_params" {
+  type = object({
+    enabled        = bool
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+  })
+}
+
+variable "cosmos_mongo_db_fdr_params" {
+  type = object({
+    enable_serverless  = bool
+    enable_autoscaling = bool
+    throughput         = number
+    max_throughput     = number
+  })
+}
+variable "fdr_conversion_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+variable "fdr_convertion_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+variable "fdr_convertion_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}

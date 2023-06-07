@@ -42,12 +42,6 @@ locals {
   }
 }
 
-
-data "azurerm_key_vault_secret" "io_backend_subscription_key" {
-  name         = "io-backend-subscription-key"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
 # Payment activation APIs (new)
 resource "azurerm_api_management_api_version_set" "checkout_payment_activations_api" {
   name                = format("%s-checkout-payment-activations-api", local.parent_project)
@@ -390,4 +384,12 @@ resource "azurerm_api_management_api_diagnostic" "apim_logs" {
   backend_response {
     body_bytes = 8192
   }
+}
+
+resource "azurerm_api_management_named_value" "pagopa_appservice_proxy_url_value" {
+  name                = "pagopa-appservice-proxy-url"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  display_name        = "pagopa-appservice-proxy-url"
+  value               = format("https://%s", module.pagopa_proxy_app_service.default_site_hostname)
 }

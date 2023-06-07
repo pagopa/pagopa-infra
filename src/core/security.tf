@@ -243,21 +243,20 @@ data "azurerm_key_vault_secret" "monitor_mo_notification_email" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "gpd_db_usr" {
-  name         = "db-apd-user-name"
+data "azurerm_key_vault_secret" "db_nodo_usr" {
+  name         = "db-nodo-usr"
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "gpd_db_pwd" {
-  name         = "db-apd-user-password"
+data "azurerm_key_vault_secret" "db_nodo_pwd" {
+  name         = "db-nodo-pwd"
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "gpd_paa_pwd" {
-  name         = "gpd-paa-password"
+data "azurerm_key_vault_secret" "apiconfig-client-secret" {
+  name         = "apiconfig-client-secret"
   key_vault_id = module.key_vault.id
 }
-
 
 data "azurerm_key_vault_secret" "gpd_payments_apiconfig_subkey" {
   name         = "gpd-payments-apiconfig-subkey"
