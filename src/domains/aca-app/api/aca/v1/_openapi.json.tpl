@@ -8,6 +8,15 @@
       "name": "pagoPA - Touchpoints team"
     }
   },
+  "externalDocs": {
+    "url": "https://pagopa.atlassian.net/wiki/spaces/PPR/pages/649265163/ACA+-+Dati+in+input+API",
+    "description": "Technical specifications"
+  },
+  "servers": [
+    {
+      "url": "https://${hostname}/pagopa-aca-service"
+    }
+  ],
   "tags": [
     {
       "name": "ACA",
