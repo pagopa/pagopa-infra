@@ -10,6 +10,12 @@ module "aks_snet" {
   resource_group_name                            = data.azurerm_virtual_network.vnet.resource_group_name
   virtual_network_name                           = data.azurerm_virtual_network.vnet.name
   enforce_private_link_endpoint_network_policies = true
+
+  service_endpoints = [
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.EventHub",
+  ]
+
 }
 
 resource "azurerm_public_ip" "aks_outbound" {

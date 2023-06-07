@@ -15,15 +15,16 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-### External resources
+## APIM
+apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"
 
+### External resources
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
-
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.platform"
-apim_dns_zone_prefix     = "dev.platform"
+external_domain                             = "pagopa.it"
+dns_zone_internal_prefix                    = "internal.dev.platform"
+apim_dns_zone_prefix                        = "dev.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -33,12 +34,24 @@ tls_cert_check_helm = {
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
+# function_app docker
+reporting_batch_image    = "pagopagpdreportingbatch"
+reporting_service_image  = "pagopagpdreportingservice"
+reporting_analysis_image = "pagopagpdreportinganalysis"
+
 # gpd-reporting-functions
 gpd_paa_id_intermediario = "15376371009"
 gpd_paa_stazione_int     = "15376371009_01"
 
-cidr_subnet_reporting_functions = ["10.1.177.0/24"]
+reporting_batch_function_always_on    = true
+reporting_service_function_always_on  = true
+reporting_analysis_function_always_on = true
 
+cidr_subnet_reporting_functions = ["10.1.177.0/24"]
+cidr_subnet_gpd                 = ["10.1.138.0/24"]
+
+
+reporting_function = false
 reporting_functions_app_sku = {
   kind     = "Linux"
   sku_tier = "Basic"
@@ -46,3 +59,18 @@ reporting_functions_app_sku = {
 }
 
 cname_record_name = "config"
+
+# gpd
+gpd_plan_kind                = "Linux"
+gpd_plan_sku_tier            = "Standard"
+gpd_plan_sku_size            = "S1"
+gpd_always_on                = false
+gpd_cron_job_enable          = true
+gpd_cron_schedule_valid_to   = "0 */10 * * * *"
+gpd_cron_schedule_expired_to = "0 */20 * * * *"
+gpd_autoscale_minimum        = 1
+gpd_autoscale_maximum        = 3
+gpd_autoscale_default        = 1
+# gpd database config for gpd-app-service
+pgbouncer_enabled = false
+

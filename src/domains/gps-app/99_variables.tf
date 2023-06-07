@@ -39,6 +39,11 @@ variable "location" {
   description = "One of westeurope, northeurope"
 }
 
+variable "reporting_function" {
+  type        = bool
+  description = "Enable reporting_function"
+}
+
 variable "location_short" {
   type = string
   validation {
@@ -192,6 +197,30 @@ variable "reporting_analysis_function_always_on" {
   default     = false
 }
 
+variable "reporting_batch_image" {
+  type        = string
+  description = "reporting_batch_function docker image"
+  default     = ""
+}
+
+variable "reporting_service_image" {
+  type        = string
+  description = "reporting_service_function docker image"
+  default     = ""
+}
+
+variable "reporting_analysis_image" {
+  type        = string
+  description = "reporting_analysis_function docker image"
+  default     = ""
+}
+
+variable "reporting_analysis_function_client_certificate_mode" {
+  type        = string
+  description = "client_certificate_mode property"
+  default     = "Required"
+}
+
 variable "reporting_functions_app_sku" {
   type = object({
     kind     = string
@@ -217,4 +246,114 @@ variable "reporting_function_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 5
+}
+
+# Function app Framework choice
+variable "reporting_batch_dotnet_version" {
+  type    = string
+  default = null
+}
+
+variable "reporting_service_dotnet_version" {
+  type    = string
+  default = null
+}
+
+variable "reporting_analysis_dotnet_version" {
+  type    = string
+  default = null
+}
+
+## GPD-core variables ##
+variable "gpd_plan_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "gpd_plan_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "gpd_plan_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "gpd_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = true
+}
+
+variable "cidr_subnet_gpd" {
+  type        = list(string)
+  description = "Address prefixes subnet gpd service"
+  default     = null
+}
+
+variable "gpd_cron_job_enable" {
+  type        = bool
+  description = "GPD cron job enable"
+  default     = false
+}
+
+variable "gpd_cron_schedule_valid_to" {
+  type        = string
+  description = "GPD cron scheduling (NCRON example '*/35 * * * * *')"
+  default     = null
+}
+
+variable "gpd_cron_schedule_expired_to" {
+  type        = string
+  description = "GDP cron scheduling (NCRON example '*/55 * * * * *')"
+  default     = null
+}
+
+variable "gpd_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "gpd_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "gpd_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+// gpd Database
+variable "gpd_db_name" {
+  type        = string
+  description = "Name of the DB to connect to"
+  default     = "apd"
+}
+
+variable "gpd_dbms_port" {
+  type        = number
+  description = "Port number of the DBMS"
+  default     = 5432
+}
+
+variable "pgbouncer_enabled" {
+  type        = bool
+  description = "Built-in connection pooling solution"
+  default     = false
+}
+
+#APIM
+
+variable "apim_logger_resource_id" {
+  type        = string
+  description = "Resource id for the APIM logger"
+  default     = null
 }

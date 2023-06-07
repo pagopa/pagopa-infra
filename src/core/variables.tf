@@ -1,6 +1,7 @@
 variable "location" {
-  type    = string
-  default = "westeurope"
+  type        = string
+  description = "One of westeurope, northeurope"
+  default     = "westeurope"
 }
 
 variable "prefix" {
@@ -142,80 +143,6 @@ variable "cidr_subnet_mock_payment_gateway" {
   type        = list(string)
   description = "Address prefixes subnet mock payment_gateway"
   default     = null
-}
-
-# api_config
-
-variable "cidr_subnet_api_config" {
-  type        = list(string)
-  description = "Address prefixes subnet api config"
-  default     = null
-}
-
-variable "api_config_tier" {
-  type        = string
-  description = "Api config Plan tier"
-  default     = "Standard"
-}
-
-variable "api_config_size" {
-  type        = string
-  description = "Api Config Plan size"
-  default     = "S1"
-}
-
-variable "api_config_always_on" {
-  type        = bool
-  description = "Api Config always on property"
-  default     = true
-}
-
-variable "db_port" {
-  type        = number
-  description = "Port number of the DB"
-  default     = 1521
-}
-
-variable "db_service_name" {
-  type        = string
-  description = "Service Name of DB"
-  default     = null
-}
-
-variable "apiconfig_logging_level" {
-  type        = string
-  description = "Logging level of Api Config"
-  default     = "INFO"
-}
-
-variable "xsd_ica" {
-  type        = string
-  description = "XML Schema of Informatica Conto Accredito"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/InformativaContoAccredito_1_2_1.xsd"
-}
-
-variable "xsd_counterpart" {
-  type        = string
-  description = "XML Schema of Tabelle delle Controparti"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/TabellaDelleControparti_1_0_8.xsd"
-}
-
-variable "xsd_cdi" {
-  type        = string
-  description = "XML Schema of Catalogo Dati Informativi"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/CatalogoDatiInformativiPSP.xsd"
-}
-
-
-# api_config_fe
-variable "api_config_fe_enabled" {
-  type        = bool
-  description = "Api Config FE enabled"
-  default     = false
-}
-
-variable "cname_record_name" {
-  type = string
 }
 
 # nodo dei pagamenti
@@ -911,6 +838,23 @@ variable "eventhubs" {
   default = []
 }
 
+variable "eventhubs_02" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
+
 variable "ehns_alerts_enabled" {
   type        = bool
   default     = true
@@ -957,6 +901,12 @@ variable "acr_enabled" {
 
 # DNS private
 variable "dns_a_reconds_dbnodo_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodo_prf_ips" {
   type        = list(string)
   description = "IPs address of DB Nodo"
   default     = []
@@ -1637,43 +1587,7 @@ variable "platform_private_dns_zone_records" {
   description = "List of records to add into the platform.pagopa.it dns private"
 }
 
-# Data Explorer
-
-variable "dexp_params" {
-  type = object({
-    enabled = bool
-    sku = object({
-      name     = string
-      capacity = number
-    })
-    autoscale = object({
-      enabled       = bool
-      min_instances = number
-      max_instances = number
-    })
-    public_network_access_enabled = bool
-    double_encryption_enabled     = bool
-    disk_encryption_enabled       = bool
-    purge_enabled                 = bool
-  })
-}
-
-variable "dexp_db" {
-  type = object({
-    enable             = bool
-    hot_cache_period   = string
-    soft_delete_period = string
-  })
-}
-
-variable "dexp_re_db_linkes_service" {
-  type = object({
-    enable = bool
-  })
-}
-
 # node forwarder
-# api_config
 
 variable "cidr_subnet_node_forwarder" {
   type        = list(string)

@@ -8,8 +8,7 @@ module "elastic_stack" {
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
 
-  dedicated_log_instance_name = ["nodo", "nodoreplica", "nodocron", "nodocronreplica", "pagopawebbo", "pagopawfespwfesp", "pagopafdr"]
-
+  dedicated_log_instance_name = ["nodo", "nodoreplica", "nodocron", "nodocronreplica", "pagopawebbo", "pagopawfespwfesp", "pagopafdr", "pagopafdrnodo"]
 
   eck_license = file("${path.module}/env/eck_license/pagopa-spa-4a1285e5-9c2c-4f9f-948a-9600095edc2f-orchestration.json")
 
