@@ -1,11 +1,11 @@
 # Subnet to host authorizer function
 module "authorizer_functions_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.3.2"
-  name                                           = "${local.project}-authorizer-fn-snet"
-  address_prefixes                               = [var.cidr_subnet_authorizer_functions]
-  resource_group_name                            = local.vnet_resource_group_name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.0"
+  name                                      = "${local.project}-authorizer-fn-snet"
+  address_prefixes                          = [var.cidr_subnet_authorizer_functions]
+  resource_group_name                       = local.vnet_resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -20,48 +20,66 @@ module "authorizer_functions_snet" {
   }
 }
 
-resource "azurerm_resource_group" "shared_fn_rg" {
-  name     = "${local.project}-fn-rg"
-  location = var.location
-  tags     = var.tags
+data "azurerm_resource_group" "shared_rg" {
+  name = "${local.project}-rg"
 }
 
 module "authorizer_function_app" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v4.3.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.6.0"
 
-  resource_group_name = azurerm_resource_group.shared_fn_rg.name
+  resource_group_name = data.azurerm_resource_group.shared_rg.name
   name                = "${local.project}-authorizer-fn"
   location            = var.location
-  health_check_path   = "info"
+  health_check_path   = "/info"
   subnet_id           = module.authorizer_functions_snet.id
   runtime_version     = "~4"
-  os_type             = "linux"
-  linux_fx_version    = "DOCKER|${data.azurerm_container_registry.acr.login_server}/pagopaauthorizerfunctions:latest"
 
   system_identity_enabled = true
 
   always_on                                = var.authorizer_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  docker = {
+    image_name        = "pagopa${var.env_short}commonacr.azurecr.io/pagopaplatformauthorizer"
+    image_tag         = var.authorizer_functions_app_image_tag
+    registry_password = data.azurerm_container_registry.acr.admin_password
+    registry_url      = "https://${data.azurerm_container_registry.acr.login_server}"
+    registry_username = data.azurerm_container_registry.acr.admin_username
+  }
+
+  sticky_connection_string_names = ["COSMOS_CONN_STRING", "COSMOS_CONNection_STRING"]
+  client_certificate_mode        = "Optional"
+
+
+  cors = {
+    allowed_origins = []
+  }
 
   app_service_plan_name = "${local.project}-plan-authorizer-fn"
   app_service_plan_info = {
     kind                         = var.authorizer_functions_app_sku.kind
-    sku_tier                     = var.authorizer_functions_app_sku.sku_tier
     sku_size                     = var.authorizer_functions_app_sku.sku_size
-    maximum_elastic_worker_count = 0
+    maximum_elastic_worker_count = 1
+    worker_count                 = 1
+    zone_balancing_enabled       = false
   }
 
-  storage_account_name = replace(format("%s-auth-sa", local.project), "-", "")
+  storage_account_name = replace(format("%s-auth-st", local.project), "-", "")
 
   app_settings = {
-    linux_fx_version                    = "JAVA|17"
+    linux_fx_version                    = "JAVA|11"
     FUNCTIONS_WORKER_RUNTIME            = "java"
     FUNCTIONS_WORKER_PROCESS_COUNT      = 4
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
-    # DOCKER_REGISTRY_SERVER_URL          = data.azurerm_container_registry.acr.login_server
-    # DOCKER_REGISTRY_SERVER_USERNAME     = data.azurerm_container_registry.acr.admin_username
-    # DOCKER_REGISTRY_SERVER_PASSWORD     = data.azurerm_container_registry.acr.admin_password
+
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+
+    COSMOS_CONN_STRING         = data.azurerm_key_vault_secret.authorizer_cosmos_connection_string.value
+    REFRESH_CONFIGURATION_PATH = data.azurerm_key_vault_secret.authorizer_refresh_configuration_url.value
+
+    EC_SQL_QUERY = "SELECT VALUE i FROM c JOIN i IN c.authorization WHERE c.domain = {domain}"
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
@@ -75,7 +93,7 @@ resource "azurerm_monitor_autoscale_setting" "authorizer_function" {
   count = var.env_short != "d" ? 1 : 0
 
   name                = "${module.authorizer_function_app.name}-autoscale"
-  resource_group_name = azurerm_resource_group.shared_fn_rg.name
+  resource_group_name = data.azurerm_resource_group.shared_rg.name
   location            = var.location
   target_resource_id  = module.authorizer_function_app.app_service_plan_id
 
@@ -139,9 +157,6 @@ data "azurerm_container_registry" "acr" {
   resource_group_name = local.acr_resource_group_name
 }
 
-resource "azurerm_role_assignment" "authorizer_functions_to_acr" {
-  depends_on           = [module.authorizer_function_app]
-  scope                = data.azurerm_container_registry.acr.id
-  role_definition_name = "AcrPull"
-  principal_id         = module.authorizer_function_app.system_identity_principal
-}
+
+
+

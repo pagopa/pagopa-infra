@@ -35,7 +35,7 @@ locals {
 ##################
 
 module "apim_api_config_oauth_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = format(local.apim_api_config_service_api.product_id, "oauth")
   display_name = format(local.apim_api_config_service_api.display_name, "OAuth")
@@ -47,7 +47,7 @@ module "apim_api_config_oauth_product" {
   published             = true
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1000
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/apiconfig-service/_base_policy_oauth.xml")
 }
@@ -57,7 +57,7 @@ module "apim_api_config_oauth_product" {
 ##################
 
 module "apim_api_config_subkey_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = format(local.apim_api_config_service_api.product_id, "subkey")
   display_name = format(local.apim_api_config_service_api.display_name, "SubKey")
@@ -91,7 +91,7 @@ resource "azurerm_api_management_api_version_set" "api_config_oauth_api" {
 }
 
 module "apim_api_config_oauth_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                  = format("%s-%s", var.env_short, format(local.apim_api_config_service_api.name, "oauth"))
   api_management_name   = local.pagopa_apim_name
@@ -138,7 +138,7 @@ resource "azurerm_api_management_api_version_set" "api_config_subkey_api" {
 }
 
 module "apim_api_config_subkey_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                = format("%s-%s", var.env_short, format(local.apim_api_config_service_api.name, "subkey"))
   api_management_name = local.pagopa_apim_name

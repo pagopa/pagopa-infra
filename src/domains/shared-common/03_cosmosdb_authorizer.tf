@@ -1,27 +1,28 @@
 module "authorizer_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                 = "${local.project}-auth-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_authorizer_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
   ]
 }
 
 module "authorizer_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.4.1"
   name     = "${local.project}-auth-cosmos-account"
   location = var.location
+  domain   = "shared"
 
   resource_group_name = azurerm_resource_group.shared_rg.name
   offer_type          = var.cosmos_authorizer_db_params.offer_type
   kind                = var.cosmos_authorizer_db_params.kind
-  mongo_server_version = var.cosmos_authorizer_db_params.server_version
 
   public_network_access_enabled    = var.cosmos_authorizer_db_params.public_network_access_enabled
   main_geo_location_zone_redundant = var.cosmos_authorizer_db_params.main_geo_location_zone_redundant
@@ -41,7 +42,9 @@ module "authorizer_cosmosdb_account" {
   ip_range = ""
 
   # add data.azurerm_subnet.<my_service>.id
-  allowed_virtual_network_subnet_ids = var.cosmos_authorizer_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
+  # allowed_virtual_network_subnet_ids = var.cosmos_authorizer_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
+  # allowed_virtual_network_subnet_ids = var.cosmos_authorizer_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = []
 
   # private endpoint
   private_endpoint_name    = "${local.project}-auth-cosmos-endpoint"
@@ -52,38 +55,22 @@ module "authorizer_cosmosdb_account" {
   tags = var.tags
 }
 
+module "authorizer_cosmosdb_database" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.4.1"
 
-# cosmosdb table storage
-resource "azurerm_cosmosdb_mongo_database" "authorizer_cosmosdb_document" {
   name                = "authorizer"
   resource_group_name = azurerm_resource_group.shared_rg.name
   account_name        = module.authorizer_cosmosdb_account.name
-  throughput          = var.cosmos_mongo_db_authorizer_params.enable_autoscaling || var.cosmos_mongo_db_authorizer_params.enable_serverless ? null : var.cosmos_mongo_db_authorizer_params.throughput
-
-  dynamic "autoscale_settings" {
-    for_each = var.cosmos_mongo_db_authorizer_params.enable_autoscaling && !var.cosmos_mongo_db_authorizer_params.enable_serverless ? [""] : []
-    content {
-      max_throughput = var.cosmos_mongo_db_authorizer_params.max_throughput
-    }
-  }
 }
 
-resource "azurerm_cosmosdb_mongo_collection" "skeydomains" {
+resource "azurerm_cosmosdb_sql_container" "skeydomains_container" {
+
   name                = "skeydomains"
+  database_name       = module.authorizer_cosmosdb_database.name
+  partition_key_path  = "/domain"
   resource_group_name = azurerm_resource_group.shared_rg.name
   account_name        = module.authorizer_cosmosdb_account.name
-  database_name       = azurerm_cosmosdb_mongo_database.authorizer_cosmosdb_document.name
-
-  default_ttl_seconds = "777"
-  shard_key           = "domain"
-  throughput          = var.cosmos_mongo_db_authorizer_params.enable_autoscaling || var.cosmos_mongo_db_authorizer_params.enable_serverless ? null : var.cosmos_mongo_db_authorizer_params.throughput
-
-  index {
-    keys = ["_id"]
-    unique = true
-  }
-  index {
-    keys   = ["domain", "subkey"]
-    unique = true
+  unique_key {
+    paths = ["/domain", "/subkey"]
   }
 }

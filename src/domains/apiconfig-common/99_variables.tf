@@ -131,13 +131,3 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-
-variable "github_runner" {
-  type = object({
-    subnet_address_prefixes = list(string)
-  })
-  description = "GitHub runner variables"
-  default = {
-    subnet_address_prefixes = ["10.1.164.0/23"]
-  }
-}

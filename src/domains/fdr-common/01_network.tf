@@ -22,7 +22,17 @@ data "azurerm_subnet" "aks_subnet" {
   resource_group_name  = local.vnet_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "postgres" {
+  count               = var.env_short != "d" ? 1 : 0
+  name                = "private.postgres.database.azure.com"
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+}
 
 data "azurerm_resource_group" "rg_vnet" {
   name = local.vnet_resource_group_name
+}
+
+data "azurerm_private_dns_zone" "cosmos" {
+  name                = local.cosmos_dns_zone_name
+  resource_group_name = local.cosmos_dns_zone_resource_group_name
 }

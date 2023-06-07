@@ -24,3 +24,5 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 input_file = "./secret/weu-prod/configs.json"
 
 enable_iac_pipeline = true
+
+cacerts_path = "./env/weu-prod/resources/cacerts"

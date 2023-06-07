@@ -162,8 +162,20 @@
                 "$ref": "#/components/schemas/NewTransactionRequest"
               }
             }
-          }
+          },
+          "required": true
         },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "recaptchaResponse",
+            "description": "Recaptcha response",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "New transaction successfully created",
@@ -571,6 +583,20 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "x-transaction-id-from-client",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ecommerce transaction id"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "requestBody": {
@@ -1169,6 +1195,11 @@
           },
           "email": {
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
@@ -1251,6 +1282,32 @@
           },
           "authToken": {
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
+          },
+          "sendPaymentResultOutcome": {
+            "description": "The outcome of sendPaymentResult api",
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Payment gateway-specific error code from the gateway"
+          },
+          "gateway": {
+            "type": "string",
+            "pattern": "XPAY|VPOS",
+            "description": "Pgs identifier"
           }
         },
         "required": [

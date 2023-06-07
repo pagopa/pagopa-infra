@@ -450,6 +450,11 @@
             "type": "string",
             "pattern": "(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])",
             "example": "mario.rossi@gmail.it"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
@@ -529,6 +534,32 @@
           "authToken": {
             "description": "authorization token",
             "type": "string"
+          },
+          "idCart": {
+            "description": "Cart identifier provided by creditor institution",
+            "type": "string",
+            "example": "idCartFromCreditorInstitution"
+          },
+          "sendPaymentResultOutcome": {
+            "description": "The outcome of sendPaymentResult api",
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Payment gateway-specific error code from the gateway"
+          },
+          "gateway": {
+            "type": "string",
+            "pattern": "XPAY|VPOS",
+            "description": "Pgs identifier"
           }
         },
         "required": [
@@ -648,7 +679,15 @@
           },
           "brand": {
             "type": "string",
-            "description": "The card brand name"
+            "description": "The card brand name",
+            "enum": [
+              "VISA",
+              "MASTERCARD",
+              "UNKNOWN",
+              "DINERS",
+              "MAESTRO",
+              "AMEX"
+            ]
           },
           "threeDsData": {
             "type": "string",

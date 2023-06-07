@@ -34,19 +34,17 @@ locals {
 
   fdr_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
-  fdr_locals = {
-    hostname = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
+  hostname = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
 
-    product_id            = "fdr"
-    display_name          = "Flussi di rendicontazione"
-    description           = "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
-    subscription_required = true
+  product_id            = "fdr"
+  display_name          = "Flussi di rendicontazione"
+  description           = "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
+  subscription_required = true
 
-    path        = "fdr"
-    service_url = null
+  path        = "fdr"
+  service_url = null
 
-    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
+  pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
 
-  }
 }
 

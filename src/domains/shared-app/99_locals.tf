@@ -37,6 +37,9 @@ locals {
   apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   shared_hostname = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
 
+  cache_generator_hostname   = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net/api"
+  cache_generator_hostname_2 = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net"
+
   # DOMAINS
   system_domain_namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
   domain_namespace        = kubernetes_namespace.namespace.metadata[0].name
