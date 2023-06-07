@@ -24,8 +24,12 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
 ingress_load_balancer_ip = "10.1.100.250"
 
+## DNS
+
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
+dns_zone_wallet          = "dev.wallet"
+dns_zone_platform        = "dev.platform"
 
 ### Cosmos
 

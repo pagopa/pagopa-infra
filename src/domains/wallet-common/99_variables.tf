@@ -83,16 +83,36 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
+# DNS
+
+variable "dns_zone_wallet" {
+  type        = string
+  default     = null
+  description = "The wallet dns subdomain."
+}
+
 variable "external_domain" {
   type        = string
   default     = null
   description = "Domain for delegation"
 }
 
+variable "dns_zone_platform" {
+  type        = string
+  default     = null
+  description = "The platform dns subdomain."
+}
+
 variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
+}
+
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
 }
 
 # CosmosDb
