@@ -10,7 +10,7 @@ module "canoneunico_function" {
   runtime_version                          = "~3"
   os_type                                  = "linux"
   always_on                                = var.canoneunico_function_always_on
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.canoneunico_service_plan.id
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "java"
@@ -48,12 +48,12 @@ module "canoneunico_function" {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.login_server.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.login_server.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.login_server.admin_password
   }
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
 
   allowed_ips = []
 
@@ -135,11 +135,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[CU] GPD Error"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "CU Problem with GPD"
   enabled        = true
   query = format(<<-QUERY
@@ -169,11 +169,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_parsing_csv_
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[CU] CSV Parsing Error"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "CU CSV parsing problem"
   enabled        = true
   query = format(<<-QUERY
