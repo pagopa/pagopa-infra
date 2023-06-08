@@ -27,10 +27,10 @@ locals {
   cosmos_dns_zone_name                = "privatelink.documents.azure.com"
   cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
-  storage_queue_dns_zone_name          = "privatelink.queue.core.windows.net"
-  storage_dns_zone_resource_group_name = "${local.product}-vnet-rg"
-  storage_dns_zone_namestorage_dns_zone_name                = "privatelink.blob.core.windows.net"
-  storage_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+  storage_queue_dns_zone_name       = "privatelink.queue.core.windows.net"
+  storage_queue_resource_group_name = "${local.product}-vnet-rg"
+  storage_blob_dns_zone_name        = "privatelink.blob.core.windows.net"
+  storage_blob_resource_group_name  = "${local.product}-vnet-rg"
 
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 }

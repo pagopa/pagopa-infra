@@ -158,6 +158,18 @@ variable "receipts_datastore_fn_sa_delete_retention_days" {
   default     = 30
 }
 
+variable "receipts_datastore_fn_sa_tier_to_cool_after_last_access" {
+  type        = number
+  description = "Number of days since last access to blob before moving to cool tier"
+  default     = 120
+}
+
+variable "receipts_datastore_fn_sa_tier_to_cool_after_modification" {
+  type        = number
+  description = "Number of days since modification to blob before moving to cool tier"
+  default     = 120
+}
+
 variable "receipts_datastore_queue_fn_sa_advanced_threat_protection" {
   type        = bool
   description = "Enable contract threat advanced protection"
