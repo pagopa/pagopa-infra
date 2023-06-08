@@ -41,7 +41,7 @@ ecommerce_xpay_psps_list = "CIPBITMM"
 # - BCITITMM (INTESA)
 # - UNCRITMM (UNICREDIT)
 # - BPPIITRRXXX (POSTE)
-# - CPERRATO (POSTEPAY)
-ecommerce_vpos_psps_list = "BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,CPERRATO"
+# - PPAYITR1XXX (POSTEPAY)
+ecommerce_vpos_psps_list = "BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX"
 
 dns_zone_checkout = "checkout"
