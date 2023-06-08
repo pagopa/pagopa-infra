@@ -47,8 +47,8 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "New debt position successfully created"
+          "200": {
+            "description": "New debt position successfully created/updated or cancelled"
           },
           "400": {
             "description": "Formally invalid input",
