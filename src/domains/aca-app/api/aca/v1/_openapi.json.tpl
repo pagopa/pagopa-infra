@@ -143,9 +143,11 @@
         "description": "Request body for creating a new transaction",
         "properties": {
           "paFiscalCode": {
+            "description": "EC fiscal code that issued the payment.",
             "type": "string"
           },
           "entityType": {
+            "description": "Payment entity type (physical or legal)",
             "type": "string",
             "enum": [
               "F",
@@ -153,21 +155,26 @@
             ]
           },
           "entityFiscalCode": {
+            "description": "Fiscal code of the entity in charge of the payment",
             "type": "string"
           },
           "entityFullName": {
+            "description": "Name of the entity responsible for the payment",
             "type": "string"
           },
           "iuv": {
+            "description": "Unique payment code",
             "type": "string"
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
           "description": {
+            "description": "Reason for the payment",
             "type": "string"
           },
           "expirationDate": {
+            "description": "Payment due date",
             "type": "string",
             "format": "date-time"
           }
