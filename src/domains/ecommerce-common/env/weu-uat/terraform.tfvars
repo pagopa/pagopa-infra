@@ -78,7 +78,7 @@ ecommerce_storage_params = {
   account_replication_type      = "LRS",
   advanced_threat_protection    = true,
   retention_days                = 7,
-  public_network_access_enabled = true,
+  public_network_access_enabled = false,
 }
 
 enable_iac_pipeline = true
