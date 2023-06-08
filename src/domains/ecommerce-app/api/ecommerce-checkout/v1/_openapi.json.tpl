@@ -1793,13 +1793,18 @@
             "items": {
               "$ref": "#/components/schemas/TransferListItem"
             }
+          },
+          "allCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
           }
         },
         "required": [
           "paymentAmount",
           "primaryCreditorInstitution",
           "transferList",
-          "touchpoint"
+          "touchpoint",
+          "allCCP"
         ]
       },
       "CalculateFeeResponse": {
