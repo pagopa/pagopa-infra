@@ -201,6 +201,11 @@ locals {
       host = "wfesp.pagopa.gov.it",
       path = "",
     },
+    # wfesp.dr.pagopa.gov.it
+    {
+      host = "wfesp.dr.pagopa.gov.it",
+      path = "",
+    },
   ]
 }
 
