@@ -115,11 +115,11 @@
     </changeSet>
 
     <!-- create index section -->
-    <changeSet author="liquibase" id="20230609113615">
-        <createIndex indexName="RENDICONTAZIONE_IDX1" tableName="RENDICONTAZIONE">
-            <column name="STATO"/>
-            <column name="ID_FLUSSO"/>
+    <!-- <changeSet author="liquibase" id="20230609113615">
+        <createIndex indexName="<NAME>_IDX1" tableName="<TABLE_NAME>">
+            <column name="<COL_NAME_1>"/>
+            <column name="<COL_NAME_1>"/>
         </createIndex>
-    </changeSet>
+    </changeSet> -->
 
 </databaseChangeLog>
