@@ -88,4 +88,9 @@ route_aks = [
 vmss_zones           = ["1"]
 vmss_instance_number = 1
 
+nodo_re_to_datastore_function = {
+  os_type  = "Linux"
+  sku_name = "B1"
+}
 nodo_re_to_datastore_function_always_on = true
+nodo_re_to_datastore_function_subnet    = ["10.1.178.0/24"]

@@ -133,7 +133,7 @@ cosmos_mongo_db_params = {
 
 }
 
-cidr_subnet_cosmosdb_nodo_re = ["10.1.136.0/24"]
+cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
 
 cosmos_mongo_db_nodo_re_params = {
   enable_serverless  = true
