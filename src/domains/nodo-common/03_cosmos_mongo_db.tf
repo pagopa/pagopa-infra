@@ -76,21 +76,21 @@ locals {
   ]
 }
 
-#module "cosmosdb_nodo_re_collections" {
-#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.3.1"
-#
-#  for_each = {
-#    for index, coll in local.collections :
-#    coll.name => coll
-#  }
-#
-#  name                = each.value.name
-#  resource_group_name = azurerm_resource_group.db_rg.name
-#
-#  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
-#  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.nodo_re.name
-#
-#  indexes     = each.value.indexes
-#  shard_key   = each.value.shard_key
-#  lock_enable = var.env_short == "p" ? true : false
-#}
+module "cosmosdb_nodo_re_collections" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.3.1"
+
+  for_each = {
+    for index, coll in local.collections :
+    coll.name => coll
+  }
+
+  name                = each.value.name
+  resource_group_name = azurerm_resource_group.db_rg.name
+
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.nodo_re.name
+
+  indexes     = each.value.indexes
+  shard_key   = each.value.shard_key
+  lock_enable = var.env_short == "p" ? true : false
+}

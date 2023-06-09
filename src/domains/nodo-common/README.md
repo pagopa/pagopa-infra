@@ -14,6 +14,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.3.1 |
+| <a name="module_cosmosdb_nodo_re_collections"></a> [cosmosdb\_nodo\_re\_collections](#module\_cosmosdb\_nodo\_re\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.3.1 |
 | <a name="module_cosmosdb_nodo_re_snet"></a> [cosmosdb\_nodo\_re\_snet](#module\_cosmosdb\_nodo\_re\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
 | <a name="module_postgres_flexible_server"></a> [postgres\_flexible\_server](#module\_postgres\_flexible\_server) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server | v6.2.1 |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.2.1 |
