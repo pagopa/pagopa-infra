@@ -1,28 +1,31 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-<!-- create sequence section --> 
+    <!-- create sequence section -->
 
-    <changeSet author="liquibase" id="1674746921542-22">
+    <changeSet author="liquibase" id="20230609113600">
         <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="iban_seq" startValue="2000000"/>
     </changeSet>
-    <changeSet author="liquibase" id="1674746921542-27">
+    <changeSet author="liquibase" id="20230609113601">
         <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="iban_attributes_master_seq" startValue="2000000"/>
     </changeSet>
-    <changeSet author="liquibase" id="1674746921542-29">
+    <changeSet author="liquibase" id="20230609113602">
         <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="iban_attributes_seq" startValue="2000000"/>
     </changeSet>
-    <changeSet author="liquibase" id="1674746921542-4">
+    <changeSet author="liquibase" id="20230609113603">
         <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="ica_binary_file_seq" startValue="2000000"/>
     </changeSet>
-    <changeSet author="liquibase" id="1674746921542-23">
+    <changeSet author="liquibase" id="20230609113604">
         <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="iban_master_seq" startValue="2000000"/>
     </changeSet>
-    
- 
-<!-- create table section -->    
-    
-    <changeSet author="liquibase" id="1674746921542-66">
+
+
+    <!-- create table section -->
+
+    <changeSet author="liquibase" id="20230609113605">
         <createTable tableName="iban">
             <column defaultValueComputed="nextval('iban_seq'::regclass)" name="obj_id" type="numeric">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_iban"/>
@@ -36,8 +39,8 @@
             <column name="description" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    
-    <changeSet author="liquibase" id="1674746921542-67">
+
+    <changeSet author="liquibase" id="20230609113606">
         <createTable tableName="iban_attributes_master">
             <column defaultValueComputed="nextval('iban_attributes_master_seq'::regclass)" name="obj_id" type="numeric">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_iban_attributes_master"/>
@@ -46,8 +49,8 @@
             <column name="fk_iban_attribute" type="numeric"/>
         </createTable>
     </changeSet>
-    
-    <changeSet author="liquibase" id="1674746921542-69">
+
+    <changeSet author="liquibase" id="20230609113607">
         <createTable tableName="iban_attributes">
             <column defaultValueComputed="nextval('iban_attributes_seq'::regclass)" name="obj_id" type="numeric">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_iban_attributes"/>
@@ -58,8 +61,8 @@
             <column name="attribute_description" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    
-    <changeSet author="liquibase" id="1674746921542-44">
+
+    <changeSet author="liquibase" id="20230609113608">
         <createTable tableName="ica_binary_file">
             <column defaultValueComputed="nextval('ica_binary_file_seq'::regclass)" name="obj_id" type="numeric">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_ica_binary_file"/>
@@ -75,8 +78,8 @@
             </column>
         </createTable>
     </changeSet>
-    
-    <changeSet author="liquibase" id="1674746921542-67">
+
+    <changeSet author="liquibase" id="20230609113609">
         <createTable tableName="iban_master">
             <column defaultValueComputed="nextval('iban_master_seq'::regclass)" name="obj_id" type="numeric">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_iban_master"/>
@@ -93,25 +96,30 @@
             <column name="fk_ica_binary_file" type="numeric"/>
         </createTable>
     </changeSet>
-   
-<!-- create index section --> 
-    
-    
 
-<!-- create fk section --> 
-    <changeSet author="liquibase" id="1674746921542-123">
+    <!-- create fk section -->
+    <changeSet author="liquibase" id="20230609113610">
         <addForeignKeyConstraint baseColumnNames="fk_iban_master" baseTableName="iban_attributes_master" constraintName="fk_iban_attributes_master_to_iban_master" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="obj_id" referencedTableName="iban_attributes_master" validate="true"/>
     </changeSet>
-    <changeSet author="liquibase" id="1674746921542-121">
+    <changeSet author="liquibase" id="20230609113611">
         <addForeignKeyConstraint baseColumnNames="fk_iban_attribute" baseTableName="iban_attributes_master" constraintName="fk_iban_attributes_master_to_iban_attributes" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="obj_id" referencedTableName="iban_attributes" validate="true"/>
     </changeSet>
-    <changeSet author="liquibase" id="1674746921542-97">
+    <changeSet author="liquibase" id="20230609113612">
         <addForeignKeyConstraint baseColumnNames="fk_pa" baseTableName="iban_master" constraintName="fk_iban_master_to_pa" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="obj_id" referencedTableName="pa" validate="true"/>
     </changeSet>
-    <changeSet author="liquibase" id="1674746921542-99">
+    <changeSet author="liquibase" id="20230609113613">
         <addForeignKeyConstraint baseColumnNames="fk_ica_binary_file" baseTableName="iban_master" constraintName="fk_iban_master_to_ica_binary_file" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="obj_id" referencedTableName="ica_binary_file" validate="true"/>
     </changeSet>
-    <changeSet author="liquibase" id="1674746921542-117">
+    <changeSet author="liquibase" id="20230609113614">
         <addForeignKeyConstraint baseColumnNames="fk_iban" baseTableName="iban_master" constraintName="fk_iban_master_to_iban" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="obj_id" referencedTableName="iban" validate="true"/>
     </changeSet>
+
+    <!-- create index section -->
+    <changeSet author="liquibase" id="20230609113615">
+        <createIndex indexName="RENDICONTAZIONE_IDX1" tableName="RENDICONTAZIONE">
+            <column name="STATO"/>
+            <column name="ID_FLUSSO"/>
+        </createIndex>
+    </changeSet>
+
 </databaseChangeLog>
