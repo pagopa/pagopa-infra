@@ -10,7 +10,7 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-# network
+# dns/network
 external_domain                           = "pagopa.it"
 dns_zone_prefix                           = "dev.platform"
 cidr_subnet_canoneunico_common            = ["10.1.140.0/24"]
@@ -23,7 +23,7 @@ acr_enabled = true
 
 # docker image
 image_name = "canone-unico"
-image_tag  = "0.0.16"
+image_tag  = "0.0.14"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"

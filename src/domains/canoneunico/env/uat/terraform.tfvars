@@ -10,7 +10,7 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-# network
+# dns/network
 external_domain                           = "pagopa.it"
 dns_zone_prefix                           = "uat.platform"
 cidr_subnet_canoneunico_common            = ["10.1.140.0/24"]
