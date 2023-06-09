@@ -12,6 +12,9 @@ module "canoneunico_function" {
   always_on                                = var.canoneunico_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.canoneunico_service_plan.id
+
+  storage_account_info = var.storage_account_info
+
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "java"
 

@@ -1,4 +1,4 @@
 resource_group_name  = "io-infra-rg"
 storage_account_name = "pagopainfraterraformprod"
-container_name       = "azureadstate"
-key                  = "prod.terraform.tfstate"
+container_name       = "azurermstate"
+key                  = "canoneunico-prod.terraform.tfstate"

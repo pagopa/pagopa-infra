@@ -702,3 +702,11 @@ nodo_pagamenti_x_forwarded_for = "10.230.8.5"
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
 node_forwarder_autoscale_enabled = false
+
+storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "LRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = false
+}

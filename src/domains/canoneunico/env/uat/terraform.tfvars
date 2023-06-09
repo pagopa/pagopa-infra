@@ -713,3 +713,10 @@ node_forwarder_logging_level   = "DEBUG"
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
+storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "LRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
+}
