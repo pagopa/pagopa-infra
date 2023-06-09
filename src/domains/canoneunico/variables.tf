@@ -32,6 +32,24 @@ variable "dns_zone_prefix" {
   description = "The dns subdomain."
 }
 
+variable "image_name" {
+  type        = string
+  default     = null
+  description = "The image name to use with a function app"
+}
+
+variable "image_tag" {
+  type        = string
+  default     = null
+  description = "The image tag to use with a function app"
+}
+
+variable "private_endpoint_network_policies_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable the private endpoint network policies"
+}
+
 variable "external_domain" {
   type        = string
   default     = null
@@ -130,6 +148,7 @@ variable "canoneunico_queue_message_delay" {
 
 variable "storage_account_info" {
   type = object({
+    account_kind                      = string
     account_tier                      = string
     account_replication_type          = string
     access_tier                       = string
@@ -137,6 +156,7 @@ variable "storage_account_info" {
   })
 
   default = {
+    account_kind                      = "StorageV2"
     account_tier                      = "Standard"
     account_replication_type          = "LRS"
     access_tier                       = "Hot"

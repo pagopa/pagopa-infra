@@ -1,19 +1,19 @@
 module "cu_sa" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.15.2"
 
-  name                       = replace(format("%s-canoneunico-sa", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  account_replication_type   = "LRS"
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = var.canoneunico_enable_versioning
-  resource_group_name        = azurerm_resource_group.canoneunico_rg.name
-  location                   = var.location
-  advanced_threat_protection = var.canoneunico_advanced_threat_protection
-  allow_blob_public_access   = false
+  name                            = replace(format("%s-canoneunico-sa", local.project), "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = var.canoneunico_enable_versioning
+  resource_group_name             = azurerm_resource_group.canoneunico_rg.name
+  location                        = var.location
+  advanced_threat_protection      = var.canoneunico_advanced_threat_protection
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = false
 
-  blob_properties_delete_retention_policy_days = var.canoneunico_delete_retention_days
+  blob_delete_retention_days = var.canoneunico_delete_retention_days
 
   tags = var.tags
 }

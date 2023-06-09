@@ -1,6 +1,6 @@
 ## Function canone unico
 module "canoneunico_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.15.2"
 
   resource_group_name                      = azurerm_resource_group.canoneunico_rg.name
   name                                     = format("%s-fn-canoneunico", local.project)
@@ -8,10 +8,17 @@ module "canoneunico_function" {
   health_check_path                        = "info"
   subnet_id                                = module.canoneunico_function_snet.id
   runtime_version                          = "~3"
-  os_type                                  = "linux"
   always_on                                = var.canoneunico_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.canoneunico_service_plan.id
+
+  docker = {
+    image_name        = var.image_name
+    image_tag         = var.image_tag
+    registry_password = data.azurerm_container_registry.login_server.admin_password
+    registry_url      = "https://${data.azurerm_container_registry.login_server.login_server}"
+    registry_username = data.azurerm_container_registry.login_server.admin_username
+  }
 
   storage_account_info = var.storage_account_info
 
@@ -49,11 +56,6 @@ module "canoneunico_function" {
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
-
-    # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.login_server.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.login_server.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.login_server.admin_password
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
