@@ -83,6 +83,7 @@ module "receipts_datastore_fn_sa" {
 
   blob_delete_retention_days = var.receipts_datastore_fn_sa_delete_retention_days
   tags                       = var.tags
+
 }
 
 resource "azurerm_storage_queue" "queue-receipt-waiting-4-gen" {
@@ -112,7 +113,7 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
     actions {
       # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy#delete_after_days_since_modification_greater_than
       base_blob {
-        tier_to_cool_after_days_since_last_access_time_greater_than = var.receipts_datastore_fn_sa_tier_to_cool_after_last_access
+        tier_to_archive_after_days_since_modification_greater_than = var.receipts_datastore_fn_sa_tier_to_cool_after_last_access
       }
     }
   }
