@@ -1,3 +1,8 @@
+
+<!-- markdownlint-disable -->
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+| <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name) | n/a |<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
 ## Requirements
 
 | Name | Version |
