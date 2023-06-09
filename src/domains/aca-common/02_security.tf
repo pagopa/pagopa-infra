@@ -98,3 +98,15 @@ resource "azurerm_key_vault_secret" "api-config-api-key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "aca-api-key" {
+  name         = "aca-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
