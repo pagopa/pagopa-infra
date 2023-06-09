@@ -34,7 +34,7 @@ module "canoneunico_function" {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    CU_SA_CONNECTION_STRING    = module.cu_sa.primary_connection_string
+    canoneunico_sa_CONNECTION_STRING    = module.canoneunico_sa.primary_connection_string
     DEBT_POSITIONS_TABLE       = azurerm_storage_table.cu_debtposition_table.name
     ORGANIZATIONS_CONFIG_TABLE = azurerm_storage_table.cu_ecconfig_table.name
     IUVS_TABLE                 = azurerm_storage_table.cu_iuvs_table.name
@@ -71,7 +71,7 @@ module "canoneunico_function" {
 
 # autoscaling
 resource "azurerm_monitor_autoscale_setting" "canoneunico_function" {
-  name                = format("%s-autoscale", module.canoneunico_function.name)
+  name                = "${module.canoneunico_function.name}-autoscale"
   resource_group_name = azurerm_resource_group.canoneunico_rg.name
   location            = var.location
   target_resource_id  = azurerm_app_service_plan.canoneunico_service_plan.id
@@ -88,7 +88,7 @@ resource "azurerm_monitor_autoscale_setting" "canoneunico_function" {
     rule {
       metric_trigger {
         metric_name        = "ApproximateMessageCount"
-        metric_resource_id = join("/", ["${module.cu_sa.id}", "services/queue/queues", "${azurerm_storage_queue.cu_debtposition_queue.name}"])
+        metric_resource_id = join("/", ["${module.canoneunico_sa.id}", "services/queue/queues", "${azurerm_storage_queue.cu_debtposition_queue.name}"])
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT1M"
@@ -109,7 +109,7 @@ resource "azurerm_monitor_autoscale_setting" "canoneunico_function" {
     rule {
       metric_trigger {
         metric_name        = "ApproximateMessageCount"
-        metric_resource_id = join("/", ["${module.cu_sa.id}", "services/queue/queues", "${azurerm_storage_queue.cu_debtposition_queue.name}"])
+        metric_resource_id = join("/", ["${module.canoneunico_sa.id}", "services/queue/queues", "${azurerm_storage_queue.cu_debtposition_queue.name}"])
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT1M"
@@ -135,7 +135,7 @@ resource "azurerm_monitor_autoscale_setting" "canoneunico_function" {
 resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = format("%s-gpd-problem-alert", module.canoneunico_function.name)
+  name                = "${module.canoneunico_function.name}-gpd-problem-alert"
   resource_group_name = azurerm_resource_group.canoneunico_rg.name
   location            = var.location
 
@@ -169,7 +169,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_gpd_error" {
 resource "azurerm_monitor_scheduled_query_rules_alert" "canoneunico_parsing_csv_error" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = format("%s-cu-csv-parsing-alert", module.canoneunico_function.name)
+  name                = "${module.canoneunico_function.name}-cu-csv-parsing-alert"
   resource_group_name = azurerm_resource_group.canoneunico_rg.name
   location            = var.location
 

@@ -15,7 +15,7 @@ external_domain                           = "pagopa.it"
 dns_zone_prefix                           = "dev.platform"
 cidr_subnet_canoneunico_common            = ["10.1.140.0/24"]
 private_endpoint_network_policies_enabled = false
-public_network_access_enabled             = false
+public_network_access_enabled             = true
 lock_enable                               = false
 
 # acr

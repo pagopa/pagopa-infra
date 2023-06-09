@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "canoneunico_rg" {
-  name     = format("%s-canoneunico-rg", local.project)
+  name     = "${local.project}-canoneunico-rg"
   location = var.location
 
   tags = var.tags
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "canoneunico_rg" {
 # canone unico service plan
 
 resource "azurerm_app_service_plan" "canoneunico_service_plan" {
-  name                = format("%s-plan-canoneunico", local.project)
+  name                = "${local.project}-plan-canoneunico"
   location            = var.location
   resource_group_name = azurerm_resource_group.canoneunico_rg.name
 
