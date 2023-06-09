@@ -3,6 +3,13 @@ data "azurerm_cosmosdb_account" "mongo_ndp_re_account" {
   resource_group_name = "${local.project}-db-rg"
 }
 
+# data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx" {
+#   name                = "${var.prefix}-negative-biz-evt-tx"
+#   namespace_name      = "${local.product}-evh-ns01"
+#   eventhub_name       = "nodo-dei-pagamenti-negative-biz-evt"
+#   resource_group_name = "${local.product}-msg-rg"
+# }
+
 #resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
 #  name     = format("%s-re-to-datastore-rg", local.project)
 #  location = var.location
@@ -39,7 +46,8 @@ data "azurerm_cosmosdb_account" "mongo_ndp_re_account" {
 #}
 
 output "COSMOS_CONN_STRING" {
-  value = data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key
+  value     = data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key
+  sensitive = false
 }
 #
 ### Function reporting_batch
