@@ -1,20 +1,16 @@
 
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-| <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name) | n/a |<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | = 1.3.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.6.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.30.0, <= 3.53.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.2.3 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.45.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.0 |
 
 ## Modules
 
@@ -22,7 +18,7 @@
 |------|--------|---------|
 | <a name="module_canoneunico_function"></a> [canoneunico\_function](#module\_canoneunico\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.15.2 |
 | <a name="module_canoneunico_function_snet"></a> [canoneunico\_function\_snet](#module\_canoneunico\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.15.0 |
-| <a name="module_cu_sa"></a> [cu\_sa](#module\_cu\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.15.2 |
+| <a name="module_canoneunico_sa"></a> [canoneunico\_sa](#module\_canoneunico\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.15.2 |
 
 ## Resources
 
@@ -85,13 +81,17 @@
 ## Outputs
 
 No outputs.
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
 ## Requirements
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | = 1.3.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.6.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.30.0, <= 3.53.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.2.3 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.0 |
 
 ## Modules
 
@@ -99,7 +99,7 @@ No outputs.
 |------|--------|---------|
 | <a name="module_canoneunico_function"></a> [canoneunico\_function](#module\_canoneunico\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.15.2 |
 | <a name="module_canoneunico_function_snet"></a> [canoneunico\_function\_snet](#module\_canoneunico\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.15.0 |
-| <a name="module_cu_sa"></a> [cu\_sa](#module\_cu\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.15.2 |
+| <a name="module_canoneunico_sa"></a> [canoneunico\_sa](#module\_canoneunico\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.15.2 |
 
 ## Resources
 
