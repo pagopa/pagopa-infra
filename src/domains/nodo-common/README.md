@@ -13,6 +13,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.3.1 |
+| <a name="module_cosmosdb_nodo_re_snet"></a> [cosmosdb\_nodo\_re\_snet](#module\_cosmosdb\_nodo\_re\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
 | <a name="module_postgres_flexible_server"></a> [postgres\_flexible\_server](#module\_postgres\_flexible\_server) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server | v6.2.1 |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.2.1 |
 | <a name="module_sftp"></a> [sftp](#module\_sftp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | add-SFTP-to-sa |
@@ -23,6 +25,7 @@
 | Name | Type |
 |------|------|
 | [azapi_resource.azure_postgresql_ls](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
+| [azurerm_cosmosdb_mongo_database.nodo_re](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/cosmosdb_mongo_database) | resource |
 | [azurerm_data_factory.data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory) | resource |
 | [azurerm_data_factory_custom_dataset.datasets](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_data_flow.dataflow_online](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/data_factory_data_flow) | resource |

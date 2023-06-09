@@ -183,9 +183,8 @@ variable "vmss_instance_number" {
 
 variable "nodo_re_to_datastore_function" {
   type = object({
-    kind     = string
-    sku_tier = string
-    sku_size = string
+    sku_name = string
+    os_type  = string
   })
   description = "Nodo re to datastore function"
 }
@@ -194,4 +193,8 @@ variable "nodo_re_to_datastore_function_always_on" {
   description = "Always on property"
   default     = false
 }
-
+variable "nodo_re_to_datastore_function_subnet" {
+  type        = list(string)
+  description = "Address prefixes subnet"
+  default     = null
+}
