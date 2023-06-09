@@ -118,7 +118,6 @@ app_gateway_deny_paths_2 = [
   "/wfesp/.*",
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
-  #"/pagopa-node-forwarder/.*"
   "/shared/authorizer/.*", # internal use no sub-keys
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
