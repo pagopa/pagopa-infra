@@ -11,7 +11,7 @@ module "cu_sa" {
   location                        = var.location
   advanced_threat_protection      = var.canoneunico_advanced_threat_protection
   allow_nested_items_to_be_public = false
-  public_network_access_enabled   = false
+  public_network_access_enabled   = var.public_network_access_enabled
 
   blob_delete_retention_days = var.canoneunico_delete_retention_days
 

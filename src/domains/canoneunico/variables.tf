@@ -50,6 +50,12 @@ variable "private_endpoint_network_policies_enabled" {
   description = "Enable the private endpoint network policies"
 }
 
+variable "public_network_access_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable the public network access"
+}
+
 variable "external_domain" {
   type        = string
   default     = null
