@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "st_receipts_rg" {
 module "receipts_st_snet" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
 
-  name                 = "${var.prefix}${var.env_short}${var.location_short}rcptstsnet"
+  name                 = "${local.project}-receipt-st-net"
   address_prefixes     = var.cidr_subnet_receipts_datastore_storage
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
