@@ -5,83 +5,92 @@
 # Doc sendPaymentResultV2
 # https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/654541075/RFC+Gestione+clientId+per+integrazione+Software+Client#Diagramma-dettaglio-flusso
 
-
-# openapi di rif https://raw.githubusercontent.com/pagopa/pagopa-infra/main/src/core/api/payment_manager_api/pm-per-nodo/v2/_openapi.json.tpl
-
-
-# il nodo sta chiamando cosi 
-# https://api.dev.platform.pagopa.it/                 payment-manager/pm-per-nodo/v2/transactions/{transactionId}/user-receipts
-# ma di fatto il PM non fa nulla da 404 e c'è un plicy che al momento lo rigiraad ecommerce qui
-# https://api.dev.platform.pagopa.it/                 ecommerce/transaction-user-receipts-service/v1/transactions/{transactionId}/user-receipts
-
-
-module "apim_mock_pm_product" {
+module "apim_receipt_for_ndp_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
-  count  = var.env_short == "d" ? 1 : 0
 
-  product_id   = "mock_pm"
-  display_name = "Mock PM for NDP"
-  description  = "Mock PM for NDP"
+  product_id   = "receipt_for_ndp"
+  display_name = "Receipt sendPaymentResult for NDP"
+  description  = "Receipt sendPaymentResult for NDP"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = true
-  subscription_required = false
-  approval_required     = false
-  subscriptions_limit   = 0
+  published             = false
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 10
 
-  policy_xml = file("./api_product/mock-pm-service/_base_policy.xml")
+  policy_xml = file("./api_product/receipt_for_ndp/_base_policy.xml")
 }
 
-########################
-##    Mock EC  NDP    ##
-########################
 locals {
-  apim_mock_pm_service_api = {
-    display_name          = "Mock PM for NDP"
-    description           = "API Mock PM for NDP"
-    path                  = "mock-pm-ndp/service"
-    subscription_required = false
+  apim_receipt_for_ndp_service_api = {
+    display_name          = "Receipt sendPaymentResult for NDP"
+    description           = "Receipt sendPaymentResult for NDP"
+    path                  = "receipt-ndp"
+    subscription_required = true
     service_url           = null
   }
 }
 
-resource "azurerm_api_management_api_version_set" "api_mock_pm_api" {
-  count = var.env_short == "d" ? 1 : 0
-
-  name                = format("%s-mock-pm-service-api", var.env_short)
+resource "azurerm_api_management_api_version_set" "api_receipt_for_ndp_api" {
+  name                = format("%s-receipt-npd-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_mock_pm_service_api.display_name
+  display_name        = local.apim_receipt_for_ndp_service_api.display_name
   versioning_scheme   = "Segment"
 }
 
 
-module "apim_api_mock_pm_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
-  count  = var.env_short == "d" ? 1 : 0
+# get secrets
+data "azurerm_key_vault_secret" "client_id_swclient" {
+  name         = "clientIdSwClient"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+# get secrets
+data "azurerm_key_vault_secret" "client_secret_swclient" {
+  name         = "clientSecret"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+# get secrets
+data "azurerm_key_vault_secret" "subscriptionkey_ecomm" {
+  name         = "subscriptionKeyEcomm"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
 
-  name                  = format("%s-mock-pm-service-api", local.project)
+module "apim_api_receipt_for_ndp_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+
+  name                  = format("%s-receipt-npd-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_pm_product[0].product_id, module.apim_apim_for_node_product.product_id]
-  subscription_required = local.apim_mock_pm_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_mock_pm_api[0].id
+  product_ids           = [module.apim_receipt_for_ndp_product.product_id]
+  subscription_required = local.apim_receipt_for_ndp_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_receipt_for_ndp_api.id
   api_version           = "v1"
 
-  description  = local.apim_mock_pm_service_api.description
-  display_name = local.apim_mock_pm_service_api.display_name
-  path         = local.apim_mock_pm_service_api.path
+  description  = local.apim_receipt_for_ndp_service_api.description
+  display_name = local.apim_receipt_for_ndp_service_api.display_name
+  path         = local.apim_receipt_for_ndp_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_mock_pm_service_api.service_url
+  service_url  = local.apim_receipt_for_ndp_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/mock-pm-service/v1/_mock-pm.openapi.json.tpl", {
-    host = local.apim_hostname
+  content_value = templatefile("./api/receipt_for_ndp/v1/_openapi.json.tpl", {
+    host    = local.apim_hostname
+    service = module.apim_receipt_for_ndp_product.product_id
   })
 
-  xml_content = templatefile("./api/mock-pm-service/v1/_base_policy.xml", {
-    hostname = local.nodo_hostname
+  # xml_content = templatefile("./api/receipt_for_ndp/v1/_base_policy.xml", {
+  #   hostname = local.nodo_hostname
+  # })
+  xml_content = templatefile("./api/receipt_for_ndp/v1/_base_policy.xml.tpl", {
+    endpoint1           = local.endpoint1
+    endpoint2           = local.endpoint2
+    authorizationServer = local.authorizationServer
+    clientId            = data.azurerm_key_vault_secret.client_id_swclient.value
+    clientSecret        = data.azurerm_key_vault_secret.client_secret_swclient.value
+    subscriptionKey     = data.azurerm_key_vault_secret.subscriptionkey_ecomm.value
+    environ             = var.env
   })
 }
