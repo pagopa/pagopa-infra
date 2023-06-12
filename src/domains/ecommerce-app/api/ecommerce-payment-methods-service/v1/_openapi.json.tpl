@@ -480,7 +480,7 @@
               "$ref": "#/components/schemas/TransferListItem"
             }
           },
-          "allCCP": {
+          "isAllCCP": {
             "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
             "type": "boolean"
           }
@@ -490,7 +490,7 @@
           "primaryCreditorInstitution",
           "transferList",
           "touchpoint",
-          "allCCP"
+          "isAllCCP"
         ]
       },
       "CalculateFeeResponse": {

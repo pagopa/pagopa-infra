@@ -1133,6 +1133,10 @@
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
+          "isAllCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
+          },
           "transferList": {
             "type": "array",
             "items": {
@@ -1145,7 +1149,8 @@
         "required": [
           "rptId",
           "amount",
-          "transferList"
+          "transferList",
+          "isAllCCP"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
@@ -1153,6 +1158,7 @@
           "reason": "reason1",
           "amount": 600,
           "authToken": "authToken1",
+          "isAllCCP": false,
           "transferList": [
             {
               "paFiscalCode": "77777777777",
@@ -1794,7 +1800,7 @@
               "$ref": "#/components/schemas/TransferListItem"
             }
           },
-          "allCCP": {
+          "isAllCCP": {
             "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
             "type": "boolean"
           }
@@ -1804,7 +1810,7 @@
           "primaryCreditorInstitution",
           "transferList",
           "touchpoint",
-          "allCCP"
+          "isAllCCP"
         ]
       },
       "CalculateFeeResponse": {
