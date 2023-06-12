@@ -17,13 +17,13 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_cache_replica_n
 
 
 module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
   count  = var.env_short == "p" ? 0 : 1
 
   name                  = format("%s-apiconfig-cache-replica-node-%s-api", local.project, "p")
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_apiconfig_cache_product.product_id]
+  product_ids           = [module.apim_apiconfig_cache_product.product_id, local.apim_x_node_product_id]
   subscription_required = local.apiconfig_cache_replica_locals.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.api_apiconfig_cache_replica_node_api_p[0].id
@@ -48,13 +48,13 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
 }
 
 module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v5.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
   count  = var.env_short == "p" ? 0 : 1
 
   name                  = format("%s-apiconfig-cache-replica-node-%s-api", local.project, "o")
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_apiconfig_cache_product.product_id]
+  product_ids           = [module.apim_apiconfig_cache_product.product_id, local.apim_x_node_product_id]
   subscription_required = local.apiconfig_cache_replica_locals.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.api_apiconfig_cache_replica_node_api_o[0].id

@@ -196,6 +196,11 @@ locals {
       host = "assets.cdn.platform.pagopa.it",
       path = "",
     },
+    # wfesp.pagopa.gov.it
+    {
+      host = "wfesp.pagopa.gov.it",
+      path = "",
+    },
   ]
 }
 

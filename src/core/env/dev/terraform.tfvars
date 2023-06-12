@@ -22,16 +22,14 @@ law_daily_quota_gb    = 10
 cidr_vnet = ["10.1.0.0/16"]
 
 # common
-cidr_subnet_appgateway         = ["10.1.128.0/24"]
-cidr_subnet_postgresql         = ["10.1.129.0/24"]
-cidr_subnet_azdoa              = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
-cidr_subnet_checkout_be        = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
-# cidr_subnet_reporting_common         = ["10.1.136.0/24"]
-cidr_subnet_gpd                      = ["10.1.138.0/24"]
+cidr_subnet_appgateway               = ["10.1.128.0/24"]
+cidr_subnet_postgresql               = ["10.1.129.0/24"]
+cidr_subnet_azdoa                    = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis       = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
+cidr_subnet_checkout_be              = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
 cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
 cidr_subnet_pg_flex_dbms             = ["10.1.141.0/24"]
@@ -553,18 +551,8 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1522
-db_service_name                    = "NDPSPCT_PP_NODO4_CFG"
 dns_a_reconds_dbnodo_ips           = ["10.70.67.18"] # db onCloud
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
-
-# API Config
-api_config_always_on    = false
-apiconfig_logging_level = "DEBUG"
-
-# API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
@@ -611,15 +599,6 @@ fdr_delete_retention_days       = 30
 reporting_fdr_function_kind     = "Linux"
 reporting_fdr_function_sku_tier = "Standard"
 reporting_fdr_function_sku_size = "S1"
-
-# gpd
-gpd_plan_kind                = "Linux"
-gpd_plan_sku_tier            = "Standard"
-gpd_plan_sku_size            = "S1"
-gpd_always_on                = false
-gpd_cron_job_enable          = true
-gpd_cron_schedule_valid_to   = "0 */10 * * * *"
-gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
 users = [
   {
