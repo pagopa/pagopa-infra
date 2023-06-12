@@ -35,7 +35,7 @@
 
         <!-- related to https://developers.google.com/search/docs/advanced/crawling/block-indexing?hl=it -->
         <set-header name="X-Robots-Tag" exists-action="override">
-          <value>noindex</value>
+          <value>unavailable_after: 2023-06-11</value>
         </set-header>
 
     </outbound>
