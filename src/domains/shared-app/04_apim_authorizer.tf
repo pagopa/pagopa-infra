@@ -12,7 +12,7 @@ locals {
 ## Products ##
 ##############
 module "apim_authorizer_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
 
   product_id   = "authorizer"
   display_name = "Authorizer Domain Caching"
@@ -39,7 +39,7 @@ resource "azurerm_api_management_api_version_set" "api_authorizer_api" {
 }
 
 module "apim_api_authorizer_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = format("%s-authorizer-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -77,10 +77,8 @@ resource "azapi_resource" "authorizer_fragment" {
     properties = {
       description = "Component that permits to check the authorization on EC for the client"
       format      = "rawxml"
-      # value       = file("./api/authorizer/authorizer-check.xml")
       value = templatefile("./api/authorizer/authorizer-check.xml", {
-        hostname                     = local.shared_hostname
-        cache-generator-function-key = "temp"
+        cache_generator_hostname = local.cache_generator_hostname
       })
 
     }

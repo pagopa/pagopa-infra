@@ -39,6 +39,11 @@ variable "location" {
   description = "One of westeurope, northeurope"
 }
 
+variable "reporting_function" {
+  type        = bool
+  description = "Enable reporting_function"
+}
+
 variable "location_short" {
   type = string
   validation {
@@ -116,4 +121,239 @@ variable "tls_cert_check_helm" {
     image_tag     = string
   })
   description = "tls cert helm chart configuration"
+}
+
+variable "cidr_subnet_reporting_functions" {
+  type        = list(string)
+  description = "Address prefixes subnet reporting_common function"
+  default     = null
+}
+# Network
+variable "ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
+}
+
+# Reporting
+
+variable "gpd_reporting_schedule_batch" {
+  type        = string
+  description = "Cron scheduling (NCRON example '*/45 * * * * *')"
+  default     = "0 0 1 * * *"
+}
+
+variable "gpd_max_retry_queuing" {
+  type        = number
+  description = "Max retry queuing when the node calling fails."
+  default     = 5
+}
+
+variable "gpd_queue_retention_sec" {
+  type        = number
+  description = "The maximum time to allow the message to be in the queue."
+  default     = 86400
+}
+
+variable "gpd_queue_delay_sec" {
+  type        = number
+  description = "The length of time during which the message will be invisible, starting when it is added to the queue."
+  default     = 3600
+}
+
+variable "gpd_paa_id_intermediario" {
+  type        = string
+  description = "PagoPA Broker ID"
+  default     = false
+}
+
+variable "gpd_paa_stazione_int" {
+  type        = string
+  description = "PagoPA Station ID"
+  default     = false
+}
+
+variable "cname_record_name" {
+  type = string
+}
+
+variable "reporting_batch_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "reporting_service_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "reporting_analysis_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "reporting_batch_image" {
+  type        = string
+  description = "reporting_batch_function docker image"
+  default     = ""
+}
+
+variable "reporting_service_image" {
+  type        = string
+  description = "reporting_service_function docker image"
+  default     = ""
+}
+
+variable "reporting_analysis_image" {
+  type        = string
+  description = "reporting_analysis_function docker image"
+  default     = ""
+}
+
+variable "reporting_analysis_function_client_certificate_mode" {
+  type        = string
+  description = "client_certificate_mode property"
+  default     = "Required"
+}
+
+variable "reporting_functions_app_sku" {
+  type = object({
+    kind     = string
+    sku_tier = string
+    sku_size = string
+  })
+  description = "Reporting functions app plan SKU"
+}
+
+variable "reporting_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "reporting_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 10
+}
+
+variable "reporting_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 5
+}
+
+# Function app Framework choice
+variable "reporting_batch_dotnet_version" {
+  type    = string
+  default = null
+}
+
+variable "reporting_service_dotnet_version" {
+  type    = string
+  default = null
+}
+
+variable "reporting_analysis_dotnet_version" {
+  type    = string
+  default = null
+}
+
+## GPD-core variables ##
+variable "gpd_plan_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "gpd_plan_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "gpd_plan_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "gpd_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = true
+}
+
+variable "cidr_subnet_gpd" {
+  type        = list(string)
+  description = "Address prefixes subnet gpd service"
+  default     = null
+}
+
+variable "gpd_cron_job_enable" {
+  type        = bool
+  description = "GPD cron job enable"
+  default     = false
+}
+
+variable "gpd_cron_schedule_valid_to" {
+  type        = string
+  description = "GPD cron scheduling (NCRON example '*/35 * * * * *')"
+  default     = null
+}
+
+variable "gpd_cron_schedule_expired_to" {
+  type        = string
+  description = "GDP cron scheduling (NCRON example '*/55 * * * * *')"
+  default     = null
+}
+
+variable "gpd_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "gpd_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "gpd_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+// gpd Database
+variable "gpd_db_name" {
+  type        = string
+  description = "Name of the DB to connect to"
+  default     = "apd"
+}
+
+variable "gpd_dbms_port" {
+  type        = number
+  description = "Port number of the DBMS"
+  default     = 5432
+}
+
+variable "pgbouncer_enabled" {
+  type        = bool
+  description = "Built-in connection pooling solution"
+  default     = false
+}
+
+#APIM
+
+variable "apim_logger_resource_id" {
+  type        = string
+  description = "Resource id for the APIM logger"
+  default     = null
 }

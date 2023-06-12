@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.13.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.4.1"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -83,6 +83,14 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "flows_sa_connection_string" {
+  name         = format("flows-sa-%s-connection-string", var.env_short)
+  value        = module.flows.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "storage_reporting_connection_string" {
   # refers to pagopa<env>flowsa primary key
@@ -115,9 +123,20 @@ resource "azurerm_key_vault_secret" "gpd_reporting_enrollment_subscription_key" 
   }
 }
 
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "storage_connection_string" {
   name         = format("gpd-payments-%s-sa-connection-string", var.env_short)
   value        = module.payments_receipt_sa.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "payments_cosmos_connection_string" {
+  name         = format("gpd-payments-%s-cosmos-connection-string", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -247,6 +266,114 @@ resource "azurerm_key_vault_secret" "gpd_reporting_batch_connection_string" {
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "gpd_reporting_subscription_key" {
   name         = format("gpd-%s-reporting-subscription-key", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+# Reporting Batch
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd-paa-password" {
+  name         = format("gpd-%s-paa-password", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "monitor_notification_slack_email" {
+  name         = "monitor-notification-slack-email"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "monitor_notification_email" {
+  name         = "monitor-notification-email"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_db_usr" {
+  name         = "db-apd-user-name"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_db_pwd" {
+  name         = "db-apd-user-password"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+## KV secrets flex server ##
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "pgres_admin_login" {
+  name         = "pgres-admin-login"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "pgres_admin_pwd" {
+  name         = "pgres-admin-pwd"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 

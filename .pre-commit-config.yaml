@@ -16,3 +16,9 @@ repos:
           - --init-args=-lockfile=readonly
           - --args=-json
           - --args=-no-color
+      # - id: terraform_providers_lock
+      #   args:
+      #     - --args=-platform=windows_amd64
+      #     - --args=-platform=darwin_amd64
+      #     - --args=-platform=darwin_arm64
+      #     - --args=-platform=linux_amd64

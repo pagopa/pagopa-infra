@@ -1569,17 +1569,22 @@
             "type": "string",
             "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
           },
-          "refundOutcome": {
+          "status": {
             "type": "string",
-            "example": "OK"
+            "enum": [
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED",
+              "CANCELLED"
+            ]
           },
           "error": {
             "type": "string"
           }
         },
         "required": [
-          "transactionId",
-          "refundOutcome"
+          "requestId",
+          "status"
         ]
       },
       "XPayRefundResponse404": {
@@ -1678,7 +1683,16 @@
           },
           "circuit": {
             "type": "string",
-            "example": "AMEX"
+            "example": "AMEX",
+            "enum": [
+              "VISA",
+              "MASTERCARD",
+              "UNKNOWN",
+              "DINERS",
+              "MAESTRO",
+              "AMEX",
+              "PAYPAL"
+            ]
           },
           "threeDsData": {
             "type": "string",
@@ -1771,22 +1785,20 @@
         "type": "object",
         "required": [
           "requestId",
-          "refundOutcome",
           "status"
         ],
         "properties": {
           "requestId": {
             "type": "string"
           },
-          "refundOutcome": {
+          "status": {
             "type": "string",
             "enum": [
-              "OK",
-              "KO"
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED",
+              "CANCELLED"
             ]
-          },
-          "status": {
-            "type": "string"
           },
           "error": {
             "type": "string",

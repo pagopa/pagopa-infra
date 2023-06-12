@@ -13,7 +13,7 @@ module "cosmosdb_wallet_snet" {
   virtual_network_name = local.vnet_name
 
   private_endpoint_network_policies_enabled = true
-  
+
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.AzureCosmosDB",

@@ -32,6 +32,12 @@
                 </set-header>
             </when>
         </choose>
+
+        <!-- related to https://developers.google.com/search/docs/advanced/crawling/block-indexing?hl=it -->
+        <set-header name="X-Robots-Tag" exists-action="override">
+          <value>noindex</value>
+        </set-header>
+
     </outbound>
     <backend>
       <base />

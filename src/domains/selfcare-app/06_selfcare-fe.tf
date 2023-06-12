@@ -49,7 +49,7 @@ locals {
 // public storage used to serve FE
 #tfsec:ignore:azure-storage-default-action-deny
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.7.0"
   count  = var.selfcare_fe_enabled ? 1 : 0
 
   name                = "selfcare"

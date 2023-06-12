@@ -6,13 +6,14 @@ resource "azurerm_resource_group" "storage_ecommerce_rg" {
 
 
 module "ecommerce_storage_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.18.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+
   name                 = "${local.project}-storage-snet"
   address_prefixes     = var.cidr_subnet_storage_ecommerce
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Storage",
@@ -43,21 +44,22 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
 }
 
 module "ecommerce_storage" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.18.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
 
-  name                       = replace("${local.project}-sa", "-", "")
-  account_kind               = var.ecommerce_storage_params.kind
-  account_tier               = var.ecommerce_storage_params.tier
-  account_replication_type   = var.ecommerce_storage_params.account_replication_type
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = true
-  resource_group_name        = azurerm_resource_group.storage_ecommerce_rg.name
-  location                   = var.location
-  advanced_threat_protection = var.ecommerce_storage_params.advanced_threat_protection
-  allow_blob_public_access   = false
 
-  blob_properties_delete_retention_policy_days = var.ecommerce_storage_params.retention_days
+  name                            = replace("${local.project}-sa", "-", "")
+  account_kind                    = var.ecommerce_storage_params.kind
+  account_tier                    = var.ecommerce_storage_params.tier
+  account_replication_type        = var.ecommerce_storage_params.account_replication_type
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = true
+  resource_group_name             = azurerm_resource_group.storage_ecommerce_rg.name
+  location                        = var.location
+  advanced_threat_protection      = var.ecommerce_storage_params.advanced_threat_protection
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = var.ecommerce_storage_params.public_network_access_enabled
+
+  blob_delete_retention_days = var.ecommerce_storage_params.retention_days
 
   network_rules = var.env_short != "d" ? {
     default_action             = "Deny"
@@ -116,21 +118,5 @@ resource "azurerm_storage_queue" "transactions_notifications_queue" {
 
 resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
   name                 = "${local.project}-transactions-dead-letter-queue"
-  storage_account_name = module.ecommerce_storage.name
-}
-
-#TODO to be deleted after all module have been switched off this queue
-resource "azurerm_storage_queue" "activated_events_queue" {
-  name                 = "${local.project}-activated-events-queue"
-  storage_account_name = module.ecommerce_storage.name
-}
-#TODO to be deleted after all module have been switched off this queue
-resource "azurerm_storage_queue" "closed_events_queue" {
-  name                 = "${local.project}-closed-events-queue"
-  storage_account_name = module.ecommerce_storage.name
-}
-#TODO to be deleted after all module have been switched off this queue
-resource "azurerm_storage_queue" "expired_events_queue" {
-  name                 = "${local.project}-expired-events-queue"
   storage_account_name = module.ecommerce_storage.name
 }

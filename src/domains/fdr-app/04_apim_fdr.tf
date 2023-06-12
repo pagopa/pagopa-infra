@@ -26,7 +26,7 @@ module "apim_fdr_product" {
 locals {
   apim_fdr_service_api = {
     display_name          = "FDR - Flussi di rendicontazione"
-    description           = "API to handle fdr"
+    description           = "FDR - Flussi di rendicontazione"
     path                  = "fdr/service"
     subscription_required = true
     service_url           = null
@@ -67,6 +67,6 @@ module "apim_api_fdr_api_v1" {
   })
 
   xml_content = templatefile("./api/fdr-service/v1/_base_policy.xml.tpl", {
-    hostname = local.fdr_hostname
+    hostname = local.hostname
   })
 }

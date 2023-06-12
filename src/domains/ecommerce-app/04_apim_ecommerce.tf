@@ -3,7 +3,7 @@
 ##############
 
 module "apim_ecommerce_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
 
   product_id   = "ecommerce"
   display_name = "ecommerce pagoPA"
@@ -43,7 +43,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_transactions_servic
 }
 
 module "apim_ecommerce_transactions_service_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = format("%s-transactions-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -92,7 +92,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_transaction_auth_re
 }
 
 module "apim_ecommerce_transaction_auth_requests_service_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = format("%s-transaction-auth-requests-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -141,7 +141,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_transaction_user_re
 }
 
 module "apim_ecommerce_transaction_user_receipts_service_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = format("%s-transaction-user-receipts-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -190,7 +190,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_payment_requests_se
 }
 
 module "apim_ecommerce_payment_requests_service_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = format("%s-payment-requests-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -239,7 +239,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_payment_methods_ser
 }
 
 module "apim_ecommerce_payment_methods_service_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = format("%s-payment-methods-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -288,7 +288,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_sessions_service_ap
 }
 
 module "apim_ecommerce_sessions_service_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = format("%s-sessions-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -337,7 +337,7 @@ resource "azurerm_api_management_api_version_set" "pagopa_notifications_service_
 }
 
 module "apim_pagopa_notifications_service_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.18.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = format("%s-notifications-service-api", local.project)
   api_management_name   = local.pagopa_apim_name

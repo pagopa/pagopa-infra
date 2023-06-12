@@ -115,6 +115,12 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+variable "reporting_storage_public_access_enabled" {
+  type        = bool
+  description = "(Optional) Whether the public network access is enabled?"
+  default     = true
+}
+
 variable "cosmos_iuvgenerator_db_params" {
   type = object({
     kind           = string
@@ -192,11 +198,13 @@ variable "cosmos_authorizer_db_params" {
   })
 }
 
-variable "cosmos_mongo_db_authorizer_params" {
+
+variable "github_runner" {
   type = object({
-    enable_serverless  = bool
-    enable_autoscaling = bool
-    throughput         = number
-    max_throughput     = number
+    subnet_address_prefixes = list(string)
   })
+  description = "GitHub runner variables"
+  default = {
+    subnet_address_prefixes = ["10.1.164.0/23"]
+  }
 }

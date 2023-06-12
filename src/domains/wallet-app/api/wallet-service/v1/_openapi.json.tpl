@@ -290,6 +290,33 @@
       },
       "WalletCreateRequest": {
         "type": "object",
+        "description": "Paypal instrument details",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Wallet details discriminator field."
+          },
+          "abi": {
+            "description": "bank idetifier",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5,
+            "example": "12345"
+          },
+          "maskedEmail": {
+            "description": "email masked pan",
+            "type": "string",
+            "example": "test***@***test.it"
+          }
+        },
+        "required": [
+          "type",
+          "abi",
+          "maskedEmail"
+        ]
+      },
+      "WalletCreateRequest": {
+        "type": "object",
         "description": "Wallet creation request",
         "properties": {
           "services": {
