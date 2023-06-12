@@ -34,22 +34,22 @@ module "canoneunico_function" {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    canoneunico_sa_CONNECTION_STRING = module.canoneunico_sa.primary_connection_string
-    DEBT_POSITIONS_TABLE             = azurerm_storage_table.cu_debtposition_table.name
-    ORGANIZATIONS_CONFIG_TABLE       = azurerm_storage_table.cu_ecconfig_table.name
-    IUVS_TABLE                       = azurerm_storage_table.cu_iuvs_table.name
-    DEBT_POSITIONS_QUEUE             = azurerm_storage_queue.cu_debtposition_queue.name
-    INPUT_CSV_BLOB                   = azurerm_storage_container.in_csv_blob_container.name
-    OUTPUT_CSV_BLOB                  = azurerm_storage_container.out_csv_blob_container.name
-    ERROR_CSV_BLOB                   = azurerm_storage_container.err_csv_blob_container.name
-    GPD_HOST                         = "https://api.${var.dns_zone_prefix}.${var.external_domain}/gpd/api/v1"
-    NCRON_SCHEDULE_BATCH             = var.canoneunico_schedule_batch
-    IUV_GENERATION_TYPE              = "seq"
-    CU_SEGREGATION_CODE              = "47"
-    CU_AUX_DIGIT                     = "3"
-    MAX_ATTEMPTS                     = 3
-    QUEUE_TIME_TO_LIVE               = 7200                                // 2h
-    QUEUE_DELAY                      = var.canoneunico_queue_message_delay // 2m
+    CU_SA_CONNECTION_STRING    = module.canoneunico_sa.primary_connection_string
+    DEBT_POSITIONS_TABLE       = azurerm_storage_table.cu_debtposition_table.name
+    ORGANIZATIONS_CONFIG_TABLE = azurerm_storage_table.cu_ecconfig_table.name
+    IUVS_TABLE                 = azurerm_storage_table.cu_iuvs_table.name
+    DEBT_POSITIONS_QUEUE       = azurerm_storage_queue.cu_debtposition_queue.name
+    INPUT_CSV_BLOB             = azurerm_storage_container.in_csv_blob_container.name
+    OUTPUT_CSV_BLOB            = azurerm_storage_container.out_csv_blob_container.name
+    ERROR_CSV_BLOB             = azurerm_storage_container.err_csv_blob_container.name
+    GPD_HOST                   = "https://api.${var.dns_zone_prefix}.${var.external_domain}/gpd/api/v1"
+    NCRON_SCHEDULE_BATCH       = var.canoneunico_schedule_batch
+    IUV_GENERATION_TYPE        = "seq"
+    CU_SEGREGATION_CODE        = "47"
+    CU_AUX_DIGIT               = "3"
+    MAX_ATTEMPTS               = 3
+    QUEUE_TIME_TO_LIVE         = 7200                                // 2h
+    QUEUE_DELAY                = var.canoneunico_queue_message_delay // 2m
 
     BATCH_SIZE_DEBT_POS_QUEUE = var.canoneunico_batch_size_debt_pos_queue
     BATCH_SIZE_DEBT_POS_TABLE = var.canoneunico_batch_size_debt_pos_table
