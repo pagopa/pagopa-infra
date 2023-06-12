@@ -3,7 +3,7 @@ module "canoneunico_function" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.15.2"
 
   resource_group_name                      = azurerm_resource_group.canoneunico_rg.name
-  name                                     = format("%s-fn-canoneunico", local.project)
+  name                                     = "${local.project}-fn-canoneunico"
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.canoneunico_function_snet.id
@@ -42,7 +42,7 @@ module "canoneunico_function" {
     INPUT_CSV_BLOB                   = azurerm_storage_container.in_csv_blob_container.name
     OUTPUT_CSV_BLOB                  = azurerm_storage_container.out_csv_blob_container.name
     ERROR_CSV_BLOB                   = azurerm_storage_container.err_csv_blob_container.name
-    GPD_HOST                         = format("https://api.%s.%s/%s/%s", var.dns_zone_prefix, var.external_domain, "gpd/api", "v1")
+    GPD_HOST                         = "https://api.${var.dns_zone_prefix}.${var.external_domain}/gpd/api/v1"
     NCRON_SCHEDULE_BATCH             = var.canoneunico_schedule_batch
     IUV_GENERATION_TYPE              = "seq"
     CU_SEGREGATION_CODE              = "47"
