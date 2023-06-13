@@ -9,11 +9,11 @@ resource "azurerm_resource_group" "reporting_fdr_rg" {
 # Subnet to host reporting-fdr function
 module "reporting_fdr_function_snet" {
   count                                          = var.cidr_subnet_reporting_fdr != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
-  name                                           = format("%s-reporting-fdr-snet", local.project)
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.17.0"
+  name                                           = "${local.project}-reporting-fdr-snet"
   address_prefixes                               = var.cidr_subnet_reporting_fdr
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
+  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
   enforce_private_link_endpoint_network_policies = true
 
   delegation = {
@@ -26,7 +26,7 @@ module "reporting_fdr_function_snet" {
 }
 
 module "reporting_fdr_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.17.0"
 
   resource_group_name                      = azurerm_resource_group.reporting_fdr_rg.name
   name                                     = format("%s-fn-reportingfdr", local.project)
@@ -34,9 +34,8 @@ module "reporting_fdr_function" {
   health_check_path                        = "info"
   subnet_id                                = module.reporting_fdr_function_snet[0].id
   runtime_version                          = "~3"
-  os_type                                  = "linux"
   always_on                                = var.reporting_fdr_function_always_on
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
 
   app_service_plan_info = {
@@ -58,11 +57,11 @@ module "reporting_fdr_function" {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     # custom configuration
-    FLOW_SA_CONNECTION_STRING  = module.fdr_flows_sa.primary_connection_string
-    FLOWS_XML_BLOB             = azurerm_storage_container.fdr_rend_flow.name
+    FLOW_SA_CONNECTION_STRING  = data.azurerm_storage_account.fdr_flows_sa.primary_connection_string
+    FLOWS_XML_BLOB             = data.azurerm_storage_container.fdr_rend_flow.name
     EHUB_FDR_CONNECTION_STRING = module.event_hub01.keys["nodo-dei-pagamenti-fdr.nodo-dei-pagamenti-tx"].primary_connection_string
     EHUB_FDR_NAME              = "nodo-dei-pagamenti-fdr"
-    OUTPUT_BLOB                = azurerm_storage_container.fdr_rend_flow_out.name
+    OUTPUT_BLOB                = data.azurerm_storage_container.fdr_rend_flow_out.name
 
     # acr
     DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
@@ -74,7 +73,7 @@ module "reporting_fdr_function" {
 
   }
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
 
   allowed_ips = []
 

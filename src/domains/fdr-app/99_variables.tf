@@ -129,3 +129,34 @@ variable "cname_record_name" {
   type    = string
   default = "config"
 }
+
+# reporting
+variable "cidr_subnet_reporting_fdr" {
+  type        = list(string)
+  description = "Address prefixes subnet reporting_fdr function"
+  default     = null
+}
+
+variable "reporting_fdr_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "reporting_fdr_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "reporting_fdr_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "reporting_fdr_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
