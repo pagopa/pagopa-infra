@@ -157,7 +157,7 @@ locals {
 
 }
 
-// PORD AzureDiagnostics url_s operationId_s
+// PROD AzureDiagnostics url_s operationId_s
 // UAT ApiManagementGatewayLogs Url OperationId
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodoapi-responsetime" {
   for_each            = { for c in local.api_2_alerts : c.operationId_s => c }
@@ -166,8 +166,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodoapi-responsetime" {
   location            = var.location
 
   action {
-    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -176,7 +175,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodoapi-responsetime" {
   description    = "Availability ${each.value.primitiva} nodoapi-responsetime "
   enabled        = true
   query = (<<-QUERY
-let threshold = 1500;
+let threshold = 8000;
 AzureDiagnostics
 | where url_s matches regex "/nodo/${each.value.sub_service}/" 
 | where operationId_s == "${each.value.operationId_s}"
