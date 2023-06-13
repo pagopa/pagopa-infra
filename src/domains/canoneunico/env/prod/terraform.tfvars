@@ -23,7 +23,7 @@ acr_enabled = true
 
 # docker image
 image_name = "canone-unico"
-image_tag  = "0.0.16"
+image_tag  = "0.0.14"
 
 # canone unico
 canoneunico_plan_sku_tier = "PremiumV3"
