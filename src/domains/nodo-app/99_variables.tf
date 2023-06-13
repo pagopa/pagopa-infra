@@ -198,3 +198,18 @@ variable "nodo_re_to_datastore_function_subnet" {
   description = "Address prefixes subnet"
   default     = null
 }
+variable "nodo_re_to_datastore_network_policies_enabled" {
+  type        = bool
+  description = "Network policies enabled"
+  default     = false
+}
+
+variable "nodo_re_to_datastore_storage_account_info" {
+  type = object({
+    account_kind                      = string
+    account_tier                      = string
+    account_replication_type          = string
+    access_tier                       = string
+    advanced_threat_protection_enable = bool
+  })
+}

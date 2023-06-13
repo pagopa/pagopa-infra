@@ -14,7 +14,7 @@ module "nodo_re_to_datastore_function_snet" {
   address_prefixes                          = var.nodo_re_to_datastore_function_subnet
   resource_group_name                       = local.vnet_resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet.name
-  private_endpoint_network_policies_enabled = false
+  private_endpoint_network_policies_enabled = var.nodo_re_to_datastore_network_policies_enabled
 
   delegation = {
     name = "default"
