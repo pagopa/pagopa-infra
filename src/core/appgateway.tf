@@ -172,7 +172,7 @@ locals {
     kibana = {
       listener              = "kibana"
       backend               = "kibana"
-      rewrite_rule_set_name = null
+      rewrite_rule_set_name = "rewrite-rule-set-kibana"
     }
   }
   routes_apiprf = {
@@ -409,6 +409,27 @@ module "app_gw" {
           ]
           response_header_configurations = []
           url                            = null
+        },
+      ]
+    },
+    {
+      name = "rewrite-rule-set-kibana"
+      rewrite_rules = [
+        {
+          name          = "http-kibana-deny-path"
+          rule_sequence = 1
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = join("|", var.app_gateway_kibana_deny_paths)
+            ignore_case = true
+            negate      = false
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
         },
       ]
     }
