@@ -13,8 +13,8 @@ module "apim_pdf_engine_product" {
   resource_group_name = local.pagopa_apim_rg
 
   published             = false
-  subscription_required = false
-  approval_required     = false
+  subscription_required = true
+  approval_required     = true
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")
