@@ -56,4 +56,16 @@ locals {
     prod = "63d93fefc733b51860039d55"
   }
 
+
+  # config vars to mng sendPaymentResultV2
+  # https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/654541075/RFC+Gestione+clientId+per+integrazione+Software+Client#Backend
+  # endpoint1           = "https://mil-${var.env_short}-apim.azure-api.net/mil-payment-notice/payments/{transactionId}"
+  # endpoint2           = "https://api.${var.env}.platform.pagopa.it/ecommerce/transaction-user-receipts-service/v1/transactions/{transactionId}/user-receipts"
+  endpoint1           = "mil-${var.env_short}-apim.azure-api.net"
+  endpoint2           = "api.${var.env}.platform.pagopa.it"
+  authorizationServer = "https://mil-${var.env_short}-apim.azure-api.net/mil-auth/token"
+  # scope               = "scope"
+  # clientId            by KV
+  # clientSecret        by KV
+  # subscriptionKey     by KV # ecommerce pagoPA - transaction user receipts service API
 }
