@@ -1,9 +1,58 @@
+locals {
+  snapshot_secret_name = "snapshot-secret"
+  deafult_snapshot_container_name = "snapshotblob"
+}
+
+resource "azurerm_resource_group" "elk_rg" {
+  name     = "${local.project}-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
+resource "azurerm_storage_account" "elk_snapshot_sa" {
+  name                     = replace(format("%s-sa", local.project), "-", "")
+  resource_group_name      = azurerm_resource_group.elk_rg.name
+  location                 = azurerm_resource_group.elk_rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_container" "snapshot_container" {
+  name                  = local.deafult_snapshot_container_name
+  storage_account_name  = azurerm_storage_account.elk_snapshot_sa.name
+  container_access_type = "private"
+}
+
+data "azurerm_storage_account" "snapshot_account" {
+  depends_on = [
+    azurerm_storage_container.snapshot_container
+  ]
+  name                = azurerm_storage_account.elk_snapshot_sa.name
+  resource_group_name = azurerm_resource_group.elk_rg.name
+}
+
+
+
+resource "kubernetes_secret" "snapshot_secret" {
+  metadata {
+    name = local.snapshot_secret_name
+    namespace = local.elk_namespace
+  }
+  data = {
+    "azure.client.default.account" = replace(format("%s-sa", local.project), "-", "") 
+    "azure.client.default.key" = data.azurerm_storage_account.snapshot_account.primary_access_key
+  }
+
+}
+
 module "elastic_stack" {
   depends_on = [
-    azurerm_kubernetes_cluster_node_pool.elastic
+    azurerm_kubernetes_cluster_node_pool.elastic,
+    kubernetes_secret.snapshot_secret
   ]
 
-  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.14.0"
+  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.17.0"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
@@ -21,6 +70,8 @@ module "elastic_stack" {
   keyvault_name = module.key_vault.name
 
   kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.it" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
+
+  snapshot_secret_name = local.snapshot_secret_name
 }
 
 data "kubernetes_secret" "get_elastic_credential" {
@@ -42,8 +93,9 @@ data "kubernetes_secret" "get_elastic_credential" {
 
 # workaround
 locals {
-  kibana_url  = var.env_short == "p" ? "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@weuprod.kibana.internal.platform.pagopa.it/kibana" : "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@kibana.${var.env}.platform.pagopa.it/kibana"
-  elastic_url = var.env_short == "p" ? "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@weuprod.kibana.internal.platform.pagopa.it/elastic" : "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@kibana.${var.env}.platform.pagopa.it/elastic"
+  kibana_url  = var.env_short == "d" ? "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@kibana.${var.env}.platform.pagopa.it/kibana" : "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@${local.kibana_hostname}/kibana"
+  elastic_url = var.env_short == "d" ? "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@kibana.${var.env}.platform.pagopa.it/elastic" : "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@${local.kibana_hostname}/elastic"
+  
 }
 
 ## opentelemetry

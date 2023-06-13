@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "mock_ec_rg" {
   count    = var.mock_ec_enabled ? 1 : 0
-  name     = format("%s-mock-ec-rg", local.project)
+  name     = format("%s-mock-ec-rg", local.project_legacy)
   location = var.location
 
   tags = var.tags
@@ -8,13 +8,13 @@ resource "azurerm_resource_group" "mock_ec_rg" {
 
 # Subnet to host the mock ec
 module "mock_ec_snet" {
-  count                                          = var.mock_ec_enabled && var.cidr_subnet_mock_ec != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
-  name                                           = format("%s-mock-ec-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_mock_ec
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  count                                         = var.mock_ec_enabled && var.cidr_subnet_mock_ec != null ? 1 : 0
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  name                                          = format("%s-mock-ec-snet", local.project_legacy)
+  address_prefixes                              = var.cidr_subnet_mock_ec
+  resource_group_name                           = local.vnet_resource_group_name
+  virtual_network_name                          = local.vnet_name
+  private_link_service_network_policies_enabled = true
 
   delegation = {
     name = "default"
@@ -27,25 +27,24 @@ module "mock_ec_snet" {
 
 module "mock_ec" {
   count  = var.mock_ec_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.14.1"
 
   resource_group_name = azurerm_resource_group.mock_ec_rg[0].name
   location            = var.location
 
   # App service plan vars
-  plan_name     = format("%s-plan-mock-ec", local.project)
-  plan_kind     = "Linux"
-  plan_sku_tier = var.mock_ec_tier
-  plan_sku_size = var.mock_ec_size
-  plan_reserved = true # Mandatory for Linux plan
+  plan_name = format("%s-plan-mock-ec", local.project_legacy)
+  plan_kind = "Linux"
+  sku_name  = var.mock_ec_size
+
 
   # App service plan
-  name                = format("%s-app-mock-ec", local.project)
+  name                = format("%s-app-mock-ec", local.project_legacy)
   client_cert_enabled = false
   always_on           = var.mock_ec_always_on
-  linux_fx_version    = "NODE|12-lts"
   app_command_line    = "node /home/site/wwwroot/dist/index.js"
   health_check_path   = "/mock-ec/info"
+  node_version        = "12-lts"
 
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE     = "1"
@@ -55,8 +54,8 @@ module "mock_ec" {
     PPT_NODO                     = "/mock-ec"
 
     # Monitoring
-    APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", data.azurerm_application_insights.application_insights.instrumentation_key)
     APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
     APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
     APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
@@ -79,11 +78,10 @@ module "mock_ec" {
 
   }
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
-  subnet_name = module.mock_ec_snet[0].name
-  subnet_id   = module.mock_ec_snet[0].id
+  subnet_id = module.mock_ec_snet[0].id
 
   tags = var.tags
 }

@@ -17,6 +17,8 @@ ACTION="$1"
 array=(
     'src/aks-platform::weu-dev'
     'src/core::dev'
+    'src/domains/aca-app::weu-dev'
+    'src/domains/aca-common::weu-dev'
     'src/domains/afm-app::weu-dev'
     'src/domains/afm-common::weu-dev'
     'src/domains/apiconfig-app::weu-dev'
