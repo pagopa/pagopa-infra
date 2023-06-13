@@ -183,16 +183,20 @@ variable "vmss_instance_number" {
 
 variable "nodo_re_to_datastore_function" {
   type = object({
-    sku_name = string
-    os_type  = string
+    always_on = bool
+    kind      = string
+    sku_size  = string
+    sku_tier  = string
   })
-  description = "Nodo re to datastore function"
+  description = "Nodo RE to datastore function"
+  default = {
+    always_on = true
+    kind      = "Linux"
+    sku_size  = "B1"
+    sku_tier  = "Basic"
+  }
 }
-variable "nodo_re_to_datastore_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
+
 variable "nodo_re_to_datastore_function_subnet" {
   type        = list(string)
   description = "Address prefixes subnet"
@@ -212,4 +216,10 @@ variable "nodo_re_to_datastore_storage_account_info" {
     access_tier                       = string
     advanced_threat_protection_enable = bool
   })
+}
+
+variable "nodo_re_to_datastore_function_app_image_tag" {
+  type        = string
+  default     = "latest"
+  description = "Nodo RE to Datastore function app docker image tag. Defaults to 'latest'"
 }
