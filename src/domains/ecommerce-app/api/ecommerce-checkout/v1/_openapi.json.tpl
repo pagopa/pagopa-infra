@@ -1351,6 +1351,10 @@
             ],
             "description": "Requested language"
           },
+          "isAllCCP": {
+            "type": "boolean",
+            "description": "Check flag for psp validation"
+          },
           "details": {
             "$ref": "#/components/schemas/PaymentInstrumentDetail"
           }
@@ -1361,6 +1365,7 @@
           "paymentInstrumentId",
           "pspId",
           "language",
+          "isAllCCP",
           "details"
         ]
       },
