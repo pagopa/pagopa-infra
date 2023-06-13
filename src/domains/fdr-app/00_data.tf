@@ -11,16 +11,16 @@ data "azurerm_api_management_group" "group_developers" {
 }
 
 data "azurerm_resource_group" "rg_vnet" {
-  name = "${local.project}-vnet-rg"
+  name = "${local.product}-vnet-rg"
 }
 
 data "azurerm_storage_account" "fdr_flows_sa" {
-  name                = replace("${local.project}-fdr-flows-sa", "-", "")
+  name                = replace("${local.product}-fdr-flows-sa", "-", "")
   resource_group_name = data.azurerm_resource_group.data.name
 }
 
 data "azurerm_resource_group" "data" {
-  name = "${local.project}-data-rg"
+  name = "${local.product}-data-rg"
 }
 
 data "azurerm_storage_container" "fdr_rend_flow" {
@@ -29,12 +29,12 @@ data "azurerm_storage_container" "fdr_rend_flow" {
 }
 
 data "azurerm_container_registry" "common-acr" {
-  name                = replace("${local.project}-common-acr", "-", "")
+  name                = replace("${local.product}-common-acr", "-", "")
   resource_group_name = data.azurerm_resource_group.container_registry_rg.name
 }
 
 data "azurerm_resource_group" "container_registry_rg" {
-  name = "${local.project}-container-registry-rg"
+  name = "${local.product}-container-registry-rg"
 }
 
 data "azurerm_storage_container" "fdr_rend_flow_out" {
@@ -43,27 +43,41 @@ data "azurerm_storage_container" "fdr_rend_flow_out" {
 }
 
 data "azurerm_subnet" "apim_snet" {
-  name                 = "${local.project}-apim-snet"
+  name                 = "${local.product}-apim-snet"
   virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 }
 
 data "azurerm_virtual_network" "vnet_integration" {
-  name                = "${local.project}-vnet-integration"
+  name                = "${local.product}-vnet-integration"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
 
-data "azurerm_eventhub" "event_hub01" {
-  name                = "${local.project}-evh-ns01"
+data "azurerm_eventhub_namespace" "event_hub01_namespace" {
+  name                = "${local.product}-evh-ns01"
   resource_group_name = data.azurerm_resource_group.msg_rg.name
-  namespace_name      = "search-eventhubns"
 }
 
-data "azurerm_eventhub_namespace" "event_hub01_namespace" {
-  name                = "${local.project}-evh-ns01"
+data "azurerm_eventhub" "event_hub01" {
+  name                = var.eventhub_name
+  resource_group_name = data.azurerm_resource_group.msg_rg.name
+  namespace_name      = "${local.product}-evh-ns01"
+}
+
+data "azurerm_eventhub_authorization_rule" "events" {
+  name                = var.event_name
+  namespace_name      = data.azurerm_eventhub_namespace.event_hub01_namespace.name
+  eventhub_name       = var.eventhub_name
   resource_group_name = data.azurerm_resource_group.msg_rg.name
 }
 
 data "azurerm_resource_group" "msg_rg" {
-  name = "${local.project}--msg-rg"
+  name = "${local.product}-msg-rg"
 }
+
+# container registry
+data "azurerm_container_registry" "login_server" {
+  name                = replace("${local.product}-common-acr", "-", "")
+  resource_group_name = data.azurerm_resource_group.container_registry_rg.name
+}
+
