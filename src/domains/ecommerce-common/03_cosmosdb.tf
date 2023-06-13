@@ -118,6 +118,27 @@ locals {
       ]
       shard_key = null
     },
+    {
+      name = "transactions-view"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["creationDate", "status", "clientId"]
+          unique = false
+        },
+        {
+          keys   = ["paymentNotices.rptId"]
+          unique = false
+        },
+        {
+          keys   = ["paymentNotices.paymentToken"]
+          unique = false
+        }
+      ]
+      shard_key = "_id"
+    },
   ]
 }
 
