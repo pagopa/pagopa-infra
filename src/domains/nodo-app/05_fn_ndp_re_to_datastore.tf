@@ -40,7 +40,7 @@ data "azurerm_storage_account" "nodo_re_storage" {
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-re-ndp_nodo-dei-pagamenti-re-to-datastore-rx" {
   name                = "${var.prefix}-re-to-datastore-rx"
   namespace_name      = "${local.product}-evh-ns01"
-  eventhub_name       = "nodo-dei-pagamenti-re-ndp"
+  eventhub_name       = "nodo-dei-pagamenti-re"
   resource_group_name = "${local.product}-msg-rg"
 }
 
@@ -177,17 +177,17 @@ module "nodo_re_to_datastore_function" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
 
   resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
-  name                = replace("${local.project}nodo-re-to-datastore", "gps", "")
+  name                = "${local.project}_nodo-re-to-datastore"
   location            = var.location
-  health_check_path   = "/api/info"
+  health_check_path   = "/info"
   subnet_id           = module.nodo_re_to_datastore_function_snet.id
   runtime_version     = "~4"
   storage_account_info = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = "LRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
+    account_kind                      = var.nodo_re_to_datastore_storage_account_info.account_kind
+    account_tier                      = var.nodo_re_to_datastore_storage_account_info.access_tier
+    account_replication_type          = var.nodo_re_to_datastore_storage_account_info.account_replication_type
+    access_tier                       = var.nodo_re_to_datastore_storage_account_info.access_tier
+    advanced_threat_protection_enable = var.nodo_re_to_datastore_storage_account_info.advanced_threat_protection_enable
   }
   always_on                                = var.nodo_re_to_datastore_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
