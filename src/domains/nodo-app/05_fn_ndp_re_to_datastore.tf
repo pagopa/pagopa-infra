@@ -89,7 +89,7 @@ module "nodo_re_to_datastore_function" {
     allowed_origins = []
   }
 
-  app_service_plan_nane = "${local.project}-re-to-datastore-plan"
+  app_service_plan_name = "${local.project}-re-to-datastore-plan"
   app_service_plan_info = {
     kind                          = var.nodo_re_to_datastore_function.kind
     sku_size                      = var.nodo_re_to_datastore_function.sku_size
