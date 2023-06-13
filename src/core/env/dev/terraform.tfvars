@@ -261,11 +261,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-<<<<<<< HEAD
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx", "nodo-dei-pagamenti-re-to-datastore-rx"]
-=======
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
->>>>>>> e141b9d3 (NOD-241)
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -290,15 +286,12 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
-<<<<<<< HEAD
       },
       {
         name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
         listen = true
         send   = false
         manage = false
-=======
->>>>>>> e141b9d3 (NOD-241)
       }
 
     ]
@@ -462,9 +455,6 @@ eventhubs = [
         manage = false
       }
     ]
-<<<<<<< HEAD
-  }
-=======
   },
   {
     name              = "nodo-dei-pagamenti-re-ndp"
@@ -505,7 +495,6 @@ eventhubs = [
 
     ]
   },
->>>>>>> e141b9d3 (NOD-241)
 ]
 
 eventhubs_02 = [
