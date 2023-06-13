@@ -309,7 +309,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -325,6 +325,12 @@ eventhubs = [
       },
       {
         name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
         listen = true
         send   = false
         manage = false

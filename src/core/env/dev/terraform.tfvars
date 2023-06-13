@@ -488,7 +488,7 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # oper
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
         listen = true
         send   = false
         manage = false
