@@ -16,7 +16,8 @@ locals {
   ndp_nodo_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_nodo_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_nodo_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name = local.ndp_nodo_key,
-    managed = false
+    managed = false,
+    policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   ndp_nodo_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.ndp_nodo_key
@@ -40,7 +41,8 @@ locals {
   ndp_nodoreplica_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_nodoreplica_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_nodoreplica_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name = local.ndp_nodoreplica_key,
-    managed = false
+    managed = false,
+    policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   ndp_nodoreplica_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.ndp_nodoreplica_key
@@ -65,7 +67,8 @@ locals {
   ndp_nodocron_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_nodocron_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_nodocron_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name = local.ndp_nodocron_key,
-    managed = false
+    managed = false,
+    policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   ndp_nodocron_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.ndp_nodocron_key
@@ -90,7 +93,8 @@ locals {
   ndp_nodocronreplica_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_nodocronreplica_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_nodocronreplica_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name = local.ndp_nodocronreplica_key,
-    managed = false
+    managed = false,
+    policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   ndp_nodocronreplica_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.ndp_nodocronreplica_key
@@ -115,7 +119,8 @@ locals {
   ndp_pagopawebbo_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_pagopawebbo_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_pagopawebbo_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name = local.ndp_pagopawebbo_key,
-    managed = false
+    managed = false,
+    policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   ndp_pagopawebbo_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.ndp_pagopawebbo_key
@@ -140,7 +145,8 @@ locals {
   ndp_pagopawfespwfesp_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_pagopawfespwfesp_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_pagopawfespwfesp_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name = local.ndp_pagopawfespwfesp_key,
-    managed = false
+    managed = false,
+    policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   ndp_pagopawfespwfesp_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.ndp_pagopawfespwfesp_key
@@ -199,7 +205,7 @@ resource "null_resource" "ndp_nodo_ingest_pipeline" {
 }
 
 resource "null_resource" "ndp_nodo_ilm_policy" {
-  depends_on = [null_resource.ndp_nodo_ingest_pipeline]
+  depends_on = [null_resource.ndp_nodo_ingest_pipeline,null_resource.snapshot_policy]
 
   triggers = {
     always_run = "${timestamp()}"
@@ -326,7 +332,7 @@ resource "null_resource" "ndp_nodoreplica_ingest_pipeline" {
 }
 
 resource "null_resource" "ndp_nodoreplica_ilm_policy" {
-  depends_on = [null_resource.ndp_nodoreplica_ingest_pipeline]
+  depends_on = [null_resource.ndp_nodoreplica_ingest_pipeline,null_resource.snapshot_policy]
 
   triggers = {
     always_run = "${timestamp()}"
@@ -453,7 +459,7 @@ resource "null_resource" "ndp_nodocron_ingest_pipeline" {
 }
 
 resource "null_resource" "ndp_nodocron_ilm_policy" {
-  depends_on = [null_resource.ndp_nodocron_ingest_pipeline]
+  depends_on = [null_resource.ndp_nodocron_ingest_pipeline,null_resource.snapshot_policy]
 
   triggers = {
     always_run = "${timestamp()}"
@@ -580,7 +586,7 @@ resource "null_resource" "ndp_nodocronreplica_ingest_pipeline" {
 }
 
 resource "null_resource" "ndp_nodocronreplica_ilm_policy" {
-  depends_on = [null_resource.ndp_nodocronreplica_ingest_pipeline]
+  depends_on = [null_resource.ndp_nodocronreplica_ingest_pipeline,null_resource.snapshot_policy]
 
   triggers = {
     always_run = "${timestamp()}"
@@ -728,7 +734,7 @@ resource "null_resource" "ndp_pagopawebbo_ingest_pipeline" {
 }
 
 resource "null_resource" "ndp_pagopawebbo_ilm_policy" {
-  depends_on = [null_resource.ndp_pagopawebbo_ingest_pipeline]
+  depends_on = [null_resource.ndp_pagopawebbo_ingest_pipeline,null_resource.snapshot_policy]
 
   triggers = {
     always_run = "${timestamp()}"
@@ -855,7 +861,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_ingest_pipeline" {
 }
 
 resource "null_resource" "ndp_pagopawfespwfesp_ilm_policy" {
-  depends_on = [null_resource.ndp_pagopawfespwfesp_ingest_pipeline]
+  depends_on = [null_resource.ndp_pagopawfespwfesp_ingest_pipeline,null_resource.snapshot_policy]
 
   triggers = {
     always_run = "${timestamp()}"
