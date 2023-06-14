@@ -126,7 +126,7 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 }
 
 resource "azurerm_key_vault_secret" "sessions_jwt_token" {
-  name         = "sessions-jwt-token"
+  name         = "sessions-jwt-secret"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
