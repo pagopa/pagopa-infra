@@ -90,6 +90,9 @@ app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
   "/notfound/*",
 ]
+app_gateway_kibana_deny_paths = [
+  "/notfound/*",
+]
 app_gateway_deny_paths_2 = [
   "/notfound2/*",
 ]

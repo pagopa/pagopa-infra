@@ -5,6 +5,6 @@
 
   <property name="version" value="3.19.0" global="false"/>
 
-  <include file="./db.changelog-master-3.15.0.xml"/>
+  <include file="./db.changelog-master-3.18.0.xml"/>
 
 </databaseChangeLog>

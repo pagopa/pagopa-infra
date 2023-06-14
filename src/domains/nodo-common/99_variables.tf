@@ -291,5 +291,6 @@ variable "cosmos_mongo_db_nodo_re_params" {
     enable_autoscaling = bool
     throughput         = number
     max_throughput     = number
+    events_ttl         = number
   })
 }

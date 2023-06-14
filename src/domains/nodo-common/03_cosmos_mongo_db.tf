@@ -71,7 +71,8 @@ locals {
         unique = true
         }
       ]
-      shard_key = null
+      shard_key           = null
+      default_ttl_seconds = var.cosmos_mongo_db_nodo_re_params.events_ttl
     }
   ]
 }
