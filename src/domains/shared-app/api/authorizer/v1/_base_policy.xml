@@ -68,5 +68,7 @@
   </outbound>
   <on-error>
     <base />
+    <!-- Removing locking state variable -->
+    <cache-remove-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
   </on-error>
 </policies>
