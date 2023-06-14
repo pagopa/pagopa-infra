@@ -31,7 +31,7 @@ module "apim_poc_product" {
   subscription_required = local.apim_poc_service_api.subscription_required
   approval_required     = false
 
-  policy_xml = file("./api_product/_base_policy_poc.xml")
+  policy_xml = file("./api_product/_base_policy.xml")
 }
 
 #########

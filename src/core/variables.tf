@@ -576,6 +576,12 @@ variable "app_gateway_deny_paths" {
   default     = []
 }
 
+variable "app_gateway_kibana_deny_paths" {
+  type        = list(string)
+  description = "Deny paths on app gateway kibana"
+  default     = []
+}
+
 # needs to be less than 512 characters. For more details refer to the documentation here: https://aka.ms/appgwheadercrud."
 variable "app_gateway_deny_paths_2" {
   type        = list(string)

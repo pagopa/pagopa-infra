@@ -17,7 +17,7 @@ module "apim_iuvgenerator_product" {
   approval_required     = false
   # subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/_base_policy.xml")
+  policy_xml = file("./api_product/_base_policy_forbid.xml")
 }
 
 #########################
