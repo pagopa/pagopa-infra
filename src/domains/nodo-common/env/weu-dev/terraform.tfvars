@@ -140,6 +140,7 @@ cosmos_mongo_db_nodo_re_params = {
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
+  events_ttl         = 1800
 }
 
 
