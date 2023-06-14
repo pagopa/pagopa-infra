@@ -10923,7 +10923,7 @@
             "Authorization": []
           }
         ],
-        "summary": "Get creditor institution ibans",
+        "summary": "Get creditor institution ibans enhanced",
         "tags": [
           "Ibans"
         ]
