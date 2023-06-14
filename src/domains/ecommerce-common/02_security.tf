@@ -116,3 +116,15 @@ resource "azurerm_key_vault_secret" "touchpoint_mail" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "sessions_jwt_secret" {
+  name         = "sessions-jwt-secret"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
