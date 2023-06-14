@@ -89,8 +89,11 @@ vmss_zones           = ["1"]
 vmss_instance_number = 1
 
 nodo_re_to_datastore_function = {
-  os_type  = "Linux"
-  sku_name = "F1"
+  always_on                     = true
+  kind                          = "Linux"
+  sku_size                      = "B1"
+  sku_tier                      = "Basic"
+  maximum_elastic_worker_count  = 0
 }
 nodo_re_to_datastore_function_always_on       = true
 nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]

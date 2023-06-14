@@ -4,7 +4,7 @@ data "azurerm_cosmosdb_account" "mongo_ndp_re_account" {
 }
 
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx" {
-  name                = "${var.prefix}-re-to-datastore-rx"
+  name                = "nodo-dei-pagamenti-re-to-datastore-rx"
   namespace_name      = "${local.product}-evh-ns01"
   eventhub_name       = "nodo-dei-pagamenti-re"
   resource_group_name = "${local.product}-msg-rg"
@@ -53,7 +53,7 @@ locals {
 
 output "COSMOS_CONN_STRING" {
   value     = data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key
-  sensitive = false
+  sensitive = true
 }
 
 ## Function nodo_re_to_datastore
@@ -93,12 +93,12 @@ module "nodo_re_to_datastore_function" {
   app_service_plan_info = {
     kind                          = var.nodo_re_to_datastore_function.kind
     sku_size                      = var.nodo_re_to_datastore_function.sku_size
-    maximum_elastic_worker_count  = 1
+    maximum_elastic_worker_count  = var.nodo_re_to_datastore_function.maximum_elastic_worker_count
     worker_count                  = 1
     zone_balancing_enabled        = false
   }
 
-  storage_account_name = replace(format("%s-re-to-datastore-st", local.project), "-", "")
+  storage_account_name = replace(format("%s-re-2-data-st", local.project), "-", "")
 
   app_settings = {
     linux_fx_version                    = "JAVA|11"
