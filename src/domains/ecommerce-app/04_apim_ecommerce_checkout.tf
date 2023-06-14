@@ -67,21 +67,6 @@ module "apim_ecommerce_checkout_api_v1" {
   })
 }
 
-data "azurerm_key_vault_secret" "ecommerce_checkout_sessions_jwt_secret" {
-  name         = "sessions-jwt-secret"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-resource "azurerm_api_management_named_value" "ecommerce_checkout_transaction_jwt_signing_key" {
-  name                = "ecommerce-checkout-transaction-jwt-signing-key"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "ecommerce-checkout-transaction-jwt-signing-key"
-  value               = data.azurerm_key_vault_secret.ecommerce_checkout_sessions_jwt_secret.value
-  secret              = true
-}
-
-
 resource "azurerm_api_management_api_operation_policy" "get_transaction_info" {
   api_name            = "${local.project}-ecommerce-checkout-api-v1"
   resource_group_name = local.pagopa_apim_rg
