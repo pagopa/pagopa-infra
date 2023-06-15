@@ -81,6 +81,7 @@ module "apim_api_config_api" {
     pagopa_tenant_id       = local.pagopa_tenant_id
     apiconfig_be_client_id = local.apiconfig_be_client_id
     apiconfig_fe_client_id = local.apiconfig_fe_client_id
+    addMockResp            = var.env_short != "p" ? "true" : "false"
   })
 }
 
