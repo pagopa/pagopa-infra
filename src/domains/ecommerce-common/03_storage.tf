@@ -120,3 +120,27 @@ resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
   name                 = "${local.project}-transactions-dead-letter-queue"
   storage_account_name = module.ecommerce_storage.name
 }
+
+resource "azurerm_monitor_diagnostic_setting" "ecommerce_queue_diagnostics" {
+  name                       = "${module.ecommerce_storage.name}-diagnostics"
+  target_resource_id         = "${module.ecommerce_storage.id}/queueServices/default/"
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  enabled_log {
+    category = "StorageWrite"
+
+    retention_policy {
+      enabled = true
+      days    = 7
+    }
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+
+    retention_policy {
+      enabled = true
+      days    = 7
+    }
+  }
+}
