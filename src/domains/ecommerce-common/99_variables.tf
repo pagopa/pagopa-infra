@@ -121,10 +121,11 @@ variable "cosmos_mongo_db_params" {
       failover_priority = number
       zone_redundant    = bool
     }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
+    private_endpoint_enabled                     = bool
+    public_network_access_enabled                = bool
+    is_virtual_network_filter_enabled            = bool
+    backup_continuous_enabled                    = bool
+    enable_provisioned_throughput_exceeded_alert = bool
   })
 }
 
@@ -148,6 +149,7 @@ variable "redis_ecommerce_params" {
     capacity = number
     sku_name = string
     family   = string
+    version  = string
   })
 }
 
