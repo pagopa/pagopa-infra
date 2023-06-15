@@ -44,8 +44,8 @@ printf "Resource Group Name: %s\n" "${resource_group_name}"
 
 if [ $SUBSCRIPTION == "DEV-pagoPA" ]; then
     # single-server
-    psql_server_name=$(az postgres server list -o tsv --query "[?contains(name,'postgresql')].{Name:name}" | head -1)
-    psql_server_private_fqdn=$(az postgres server list -o tsv --query "[?contains(name,'postgresql')].{Name:fullyQualifiedDomainName}" | head -1)
+    psql_server_name=$(az postgres server list -o tsv --query "[?contains(name,'gpd-postgresql')].{Name:name}" | head -1)
+    psql_server_private_fqdn=$(az postgres server list -o tsv --query "[?contains(name,'gpd-postgresql')].{Name:fullyQualifiedDomainName}" | head -1)
 else
     # flexible-server
     psql_server_name=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:name}" | head -1)
@@ -53,18 +53,20 @@ else
 fi
 
 # kv
-keyvault_name=$(az keyvault list -o tsv --query "[?contains(name,'kv')].{Name:name}" | sed -n 2p)
+keyvault_name=$(az keyvault list -o tsv --query "[?contains(name,'gps')].{Name:name}")
 
 
 if [ $SUBSCRIPTION == "DEV-pagoPA" ]; then
     # single-server
-    administrator_login=$(az keyvault secret show --name db-administrator-login --vault-name "${keyvault_name}" -o tsv --query value)
-    administrator_login_password=$(az keyvault secret show --name db-administrator-login-password --vault-name "${keyvault_name}" -o tsv --query value)
+    administrator_login="$(az keyvault secret show --name pgres-admin-login --vault-name "${keyvault_name}" -o tsv --query value)@pagopa-d-gpd-postgresql"
+    administrator_login_password=$(az keyvault secret show --name pgres-admin-pwd --vault-name "${keyvault_name}" -o tsv --query value)
 else
     # flexible-server
-    administrator_login=$(az keyvault secret show --name pgres-flex-admin-login --vault-name "${keyvault_name}" -o tsv --query value)
-    administrator_login_password=$(az keyvault secret show --name pgres-flex-admin-pwd --vault-name "${keyvault_name}" -o tsv --query value)
+    administrator_login=$(az keyvault secret show --name pgres-admin-login --vault-name "${keyvault_name}" -o tsv --query value)
+    administrator_login_password=$(az keyvault secret show --name pgres-admin-pwd --vault-name "${keyvault_name}" -o tsv --query value)
 fi
+
+echo ${administrator_login}
 
 apd_user_password=$(az keyvault secret show --name db-apd-user-password --vault-name "${keyvault_name}" -o tsv --query value)
 apd_user=$(az keyvault secret show --name db-apd-user-name --vault-name "${keyvault_name}" -o tsv --query value)

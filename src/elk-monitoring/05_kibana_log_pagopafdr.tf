@@ -11,7 +11,9 @@ locals {
 
   pagopafdrnodo_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/fdr/${local.pagopafdrnodo_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdrnodo_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.pagopafdrnodo_key
+    name = local.pagopafdrnodo_key,
+    managed = false,
+    policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   pagopafdrnodo_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.pagopafdrnodo_key
@@ -35,7 +37,9 @@ locals {
 
   pagopafdrnodocron_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/fdr/${local.pagopafdrnodocron_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdrnodocron_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.pagopafdrnodocron_key
+    name = local.pagopafdrnodocron_key,
+    managed = false,
+    policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   pagopafdrnodocron_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.pagopafdrnodocron_key
@@ -59,7 +63,9 @@ locals {
 
   pagopafdr_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/log-template/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopafdr_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
-    name = local.pagopafdr_key
+    name = local.pagopafdr_key,
+    managed = false,
+    policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   pagopafdr_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
     name = local.pagopafdr_key
@@ -118,7 +124,7 @@ resource "null_resource" "pagopafdrnodo_ingest_pipeline" {
 }
 
 resource "null_resource" "pagopafdrnodo_ilm_policy" {
-  depends_on = [null_resource.pagopafdrnodo_ingest_pipeline]
+  depends_on = [null_resource.pagopafdrnodo_ingest_pipeline,null_resource.snapshot_policy]
 
   triggers = {
     always_run = "${timestamp()}"
@@ -247,7 +253,7 @@ resource "null_resource" "pagopafdrnodo_kibana_data_view" {
 # }
 
 # resource "null_resource" "pagopafdrnodocron_ilm_policy" {
-#   depends_on = [null_resource.pagopafdrnodocron_ingest_pipeline]
+#   depends_on = [null_resource.pagopafdrnodocron_ingest_pipeline,null_resource.snapshot_policy]
 
 #   triggers = {
 #     always_run = "${timestamp()}"
@@ -376,7 +382,7 @@ resource "null_resource" "pagopafdrnodo_kibana_data_view" {
 # }
 
 # resource "null_resource" "pagopafdr_ilm_policy" {
-#   depends_on = [null_resource.pagopafdr_ingest_pipeline]
+#   depends_on = [null_resource.pagopafdr_ingest_pipeline,null_resource.snapshot_policy]
 
 #   triggers = {
 #     always_run = "${timestamp()}"

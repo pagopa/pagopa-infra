@@ -4,7 +4,7 @@
     "description" : "Spring application exposes APIs for SelfCare",
     "termsOfService" : "https://www.pagopa.gov.it/",
     "title": "API-Config - ${service}",
-    "version" : "1.3.0"
+    "version" : "1.4.0"
   },
   "servers" : [ {
     "url": "${host}",
@@ -433,6 +433,141 @@
           "Authorization" : [ ]
         } ],
         "summary" : "Get application code associations with creditor institution",
+        "tags" : [ "Creditor Institutions" ]
+      },
+      "parameters" : [ {
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "in" : "header",
+        "name" : "X-Request-Id",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/creditorinstitutions/{creditorInstitutionCode}/segregationcodes" : {
+      "get" : {
+        "operationId" : "getSegregationCodesFromCreditorInstitution",
+        "parameters" : [ {
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "in" : "path",
+          "name" : "creditorInstitutionCode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "The flag that permits to show the codes already used. Default: true",
+          "in" : "query",
+          "name" : "showUsedCodes",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "default" : true
+          }
+        }, {
+          "description" : "The service endpoint, to be used as a search filter to obtain only the segregation codes used by the CI for stations using same endpoint service. Default: null",
+          "in" : "query",
+          "name" : "service",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CIAssociatedCodeList"
+                }
+              }
+            },
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ],
+        "summary" : "Get segregation code associations with creditor institution",
         "tags" : [ "Creditor Institutions" ]
       },
       "parameters" : [ {
