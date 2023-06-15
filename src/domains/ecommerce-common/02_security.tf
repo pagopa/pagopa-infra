@@ -136,3 +136,39 @@ resource "azurerm_key_vault_secret" "sessions_jwt_secret" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "aws_ses_accesskey_id" {
+  name         = "aws-ses-accesskey-id"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "aws_ses_accesskey_key" {
+  name         = "aws-ses-secretaccess-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_storage_connection_string" {
+  name         = "ecommerce-storage-connection-string"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
