@@ -26,6 +26,13 @@
         "operationId": "closePaymentV2",
         "parameters": [
           {
+            "in": "query",
+            "name": "clientId",
+            "description": "The client who made the request",
+            "required": false,
+            "type": "string"
+          },
+          {
             "in": "body",
             "name": "body",
             "required": true,
