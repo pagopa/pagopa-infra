@@ -4,7 +4,7 @@ info:
   description: PagoPa backoffice API documentation
   version: 0.0.149
 servers:
-  - url: http://localhost:80
+  - url: 'https://${host}/${basePath}'
     description: Inferred Url
 tags:
   - name: channels
