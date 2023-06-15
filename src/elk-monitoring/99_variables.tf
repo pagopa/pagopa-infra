@@ -226,3 +226,19 @@ variable "opentelemetry_operator_helm" {
   })
   description = "open-telemetry/opentelemetry-operator helm chart configuration"
 }
+variable "elk_snapshot_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "elk_snapshot_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+variable "elk_snapshot_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}

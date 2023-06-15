@@ -35,7 +35,10 @@ tls_cert_check_helm = {
   image_tag     = "v1.3.4"
 }
 
-db_service_name = "NDPSPCP_PP_NODO4_CFG"
+
+# https://pagopa.atlassian.net/wiki/spaces/ACN/pages/525764770/API+Config+Ambienti+DB#On-Premise
+# db_service_name = "NDPSPCP_PP_NODO4_CFG"
+db_service_name = "NDPSPCP_NODO4_CFG"
 db_port         = 1521
 
 # API Config

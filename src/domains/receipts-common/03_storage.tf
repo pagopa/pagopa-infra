@@ -34,9 +34,9 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-storage-private-service-connection"
-    private_connection_resource_id = module.receipts_st_snet.id
+    private_connection_resource_id = module.receipts_datastore_fn_sa.id
     is_manual_connection           = false
-    subresource_names              = ["blob-receipt-st-attach"]
+    subresource_names              = ["blob"]
   }
 
   tags = var.tags
@@ -57,9 +57,9 @@ resource "azurerm_private_endpoint" "queue_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-queue-private-service-connection"
-    private_connection_resource_id = module.receipts_st_snet.id
+    private_connection_resource_id = module.receipts_datastore_fn_sa.id
     is_manual_connection           = false
-    subresource_names              = ["queue-receipt-waiting-4-gen"]
+    subresource_names              = ["queue"]
   }
 
   tags = var.tags
