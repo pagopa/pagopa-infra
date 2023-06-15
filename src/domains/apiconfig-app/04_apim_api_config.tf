@@ -77,10 +77,9 @@ module "apim_api_config_api" {
   })
 
   xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
-    origin                 = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
+    origin                 = "*"
     pagopa_tenant_id       = local.pagopa_tenant_id
     apiconfig_be_client_id = local.apiconfig_be_client_id
-    apiconfig_fe_client_id = local.apiconfig_fe_client_id
     addMockResp            = var.env_short != "p" ? "true" : "false"
   })
 }
@@ -177,8 +176,9 @@ module "apim_api_config_auth_api" {
   })
 
   xml_content = templatefile("./api/apiconfig_api/auth/v1/_base_policy.xml.tpl", {
-    origin                 = "*"
+    origin                 = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
     pagopa_tenant_id       = local.pagopa_tenant_id
     apiconfig_be_client_id = local.apiconfig_be_client_id
+    apiconfig_fe_client_id = local.apiconfig_fe_client_id
   })
 }
