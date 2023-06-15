@@ -50,6 +50,31 @@
             return aud;
         }" />
         <choose>
+            <!-- Mock response for ibans/enhanced -->
+            <when condition="@(context.Request.Method == "GET" && context.Request.Url.Path.Contains("ibans/enhanced"))">
+                <return-response>
+                    <set-status code="200" reason="OK" />
+                    <set-body template="liquid">
+                    {
+                        "ibans_enhanced": [{
+                            "ci_owner": "00168480242",
+                            "company_name": "Comune di Bassano del Grappa",
+                            "description": "Riscossione tributi",
+                            "iban": "IT99C0222211111000000000000",
+                            "is_active": true,
+                            "labels": [
+                                {
+                                "description": "The iban to use for ACA/Standin payments",
+                                "name": "STANDIN"
+                                }
+                            ],
+                            "publication_date": "2023-05-23T10:38:07.165Z",
+                            "validity_date": "2023-06-07T13:48:15.166Z"
+                            }]
+                    }
+                    </set-body>
+                </return-response>
+            </when>
             <!-- Postman Token-->
             <when condition="@(context.Variables.GetValueOrDefault<string>("aud").Contains("${apiconfig_be_client_id}"))">
                 <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
