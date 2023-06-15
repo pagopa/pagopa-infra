@@ -103,3 +103,72 @@ resource "azurerm_key_vault_secret" "notifications_sender" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "touchpoint_mail" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "touchpoint-mail"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ai_connection_string" {
+  name         = "applicationinsights-connection-string"
+  value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "sessions_jwt_secret" {
+  name         = "sessions-jwt-secret"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "aws_ses_accesskey_id" {
+  name         = "aws-ses-accesskey-id"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "aws_ses_accesskey_key" {
+  name         = "aws-ses-secretaccess-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_storage_connection_string" {
+  name         = "ecommerce-storage-connection-string"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
