@@ -37,7 +37,7 @@ resource "azurerm_api_management_api_version_set" "api_config_api" {
   name                = format("%s-api-config-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = "ApiConfig for Node"
+  display_name        = "ApiConfig SubKey"
   versioning_scheme   = "Segment"
 }
 
@@ -63,7 +63,7 @@ module "apim_api_config_api" {
   api_version    = "v1"
 
   description  = "Api configuration for Nodo dei Pagamenti"
-  display_name = "ApiConfig for Node"
+  display_name = "ApiConfig SubKey"
   path         = "apiconfig/api"
   protocols    = ["https"]
 
@@ -121,8 +121,8 @@ module "apim_api_config_auth_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "product-api-config-auth"
-  display_name = "ApiConfig for Auth"
-  description  = "Product for API Configuration of the Node for Auth"
+  display_name = "ApiConfig JWT"
+  description  = "Product for API Configuration of the Node for Auth JWT"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -144,7 +144,7 @@ resource "azurerm_api_management_api_version_set" "api_config_auth_api" {
   name                = format("%s-api-config-auth-api", var.env_short)
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "ApiConfig for Auth"
+  display_name        = "ApiConfig JWT"
   versioning_scheme   = "Segment"
 }
 
@@ -161,8 +161,8 @@ module "apim_api_config_auth_api" {
   version_set_id = azurerm_api_management_api_version_set.api_config_auth_api.id
   api_version    = "v1"
 
-  description  = "Api configuration for Auth"
-  display_name = "ApiConfig for Auth"
+  description  = "Api configuration JWT"
+  display_name = "ApiConfig JWT"
   path         = "apiconfig/auth/api"
   protocols    = ["https"]
 
