@@ -210,16 +210,6 @@ variable "nodo_re_to_datastore_network_policies_enabled" {
   default     = false
 }
 
-variable "nodo_re_to_datastore_storage_account_info" {
-  type = object({
-    account_kind                      = string
-    account_tier                      = string
-    account_replication_type          = string
-    access_tier                       = string
-    advanced_threat_protection_enable = bool
-  })
-}
-
 variable "nodo_re_to_datastore_function_app_image_tag" {
   type        = string
   default     = "latest"

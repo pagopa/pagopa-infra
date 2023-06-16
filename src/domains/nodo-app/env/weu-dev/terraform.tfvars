@@ -99,10 +99,3 @@ nodo_re_to_datastore_function_always_on       = true
 nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]
 nodo_re_to_datastore_network_policies_enabled = false
 
-nodo_re_to_datastore_storage_account_info = {
-  account_kind                      = "StorageV2"
-  account_tier                      = "Standard"
-  account_replication_type          = "ZRS"
-  access_tier                       = "Hot"
-  advanced_threat_protection_enable = true
-}
