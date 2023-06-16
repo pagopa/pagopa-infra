@@ -11,7 +11,7 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
   Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -41,11 +41,11 @@ monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.platform"
-apim_dns_zone_prefix     = "platform"
-eventhub_name            = "nodo-dei-pagamenti-fdr"
-event_name               = "nodo-dei-pagamenti-tx"
+external_domain                           = "pagopa.it"
+dns_zone_internal_prefix                  = "internal.platform"
+apim_dns_zone_prefix                      = "platform"
+eventhub_name                             = "nodo-dei-pagamenti-fdr"
+event_name                                = "nodo-dei-pagamenti-tx"
 private_endpoint_network_policies_enabled = false
 
 # common

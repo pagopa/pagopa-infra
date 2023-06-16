@@ -81,3 +81,26 @@ data "azurerm_container_registry" "login_server" {
   resource_group_name = data.azurerm_resource_group.container_registry_rg.name
 }
 
+# apim
+data "azurerm_api_management" "apim" {
+  name                = "${local.product}-apim"
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+
+data "azurerm_api_management_api" "apim_nodo_per_pa_api_v1" {
+  name                = "${var.env_short}-nodo-per-pa-api"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  revision            = "1"
+}
+
+data "azurerm_api_management_api" "apim_nodo_per_psp_api_v1" {
+  name                = "${var.env_short}-nodo-per-psp-api"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  revision            = "1"
+}
+
+data "azurerm_resource_group" "rg_api" {
+  name = "${local.product}-api-rg"
+}

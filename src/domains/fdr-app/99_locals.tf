@@ -30,7 +30,17 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
 
+# apim
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+    apim_nodo_per_pa_api = {
+    display_name          = "Nodo per PA WS"
+    description           = "Web services to support PA in payment activations, defined in nodoPerPa.wsdl"
+    path                  = "nodo/nodo-per-pa"
+    subscription_required = var.nodo_pagamenti_subkey_required
+    service_url           = null
+    fdr_hostname          = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
+
+  }
 
   fdr_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 

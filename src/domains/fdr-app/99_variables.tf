@@ -247,3 +247,16 @@ variable "app_service_plan_info" {
     zone_balancing_enabled       = false
   }
 }
+
+# apim
+variable "apim_fdr_nodo_pagopa_enable" {
+  type        = bool
+  default     = false
+  description = "Enable Fdr Service Nodo pagoPA side"
+}
+
+variable "nodo_pagamenti_subkey_required" {
+  type        = bool
+  description = "Enabled subkeys for nodo dei pagamenti api"
+  default     = false
+}

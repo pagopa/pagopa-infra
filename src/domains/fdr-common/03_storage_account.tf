@@ -1,3 +1,7 @@
+data "azurerm_resource_group" "reporting_fdr_rg" {
+  name = "${local.product}-reporting-fdr-rg"
+}
+
 resource "azurerm_resource_group" "fdr_rg" {
   name     = "${local.project}-rg"
   location = var.location
@@ -5,11 +9,10 @@ resource "azurerm_resource_group" "fdr_rg" {
   tags = var.tags
 }
 
-# storage
 module "fdr_conversion_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.4.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
 
-  name                            = replace(format("%s-sa", local.project), "-", "")
+  name                            = replace("${local.project}-sa", "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
   account_replication_type        = "LRS"
@@ -30,14 +33,14 @@ module "fdr_conversion_sa" {
 
 ## share xml file
 resource "azurerm_storage_container" "xml_blob_file" {
-  name                  = format("%sxmlsharefile", module.fdr_conversion_sa.name)
+  name                  = "${module.fdr_conversion_sa.name}xmlsharefile"
   storage_account_name  = module.fdr_conversion_sa.name
   container_access_type = "private"
 }
 
 # send id of fdr mongo collection
 resource "azurerm_storage_queue" "flow_id_send_queue" {
-  name                 = format("%sflowidsendqueue", module.fdr_conversion_sa.name)
+  name                 = "${module.fdr_conversion_sa.name}flowidsendqueue"
   storage_account_name = module.fdr_conversion_sa.name
 }
 
@@ -45,28 +48,28 @@ resource "azurerm_storage_queue" "flow_id_send_queue" {
 
 ## Flows Storage Account
 module "fdr_flows_sa" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
 
-  name                       = replace(format("%s-fdr-flows-sa", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  account_replication_type   = "LRS"
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = var.fdr_enable_versioning
-  resource_group_name        = azurerm_resource_group.data.name
-  location                   = var.location
-  advanced_threat_protection = var.fdr_advanced_threat_protection
-  allow_blob_public_access   = false
+  name                            = replace("${local.product}-fdr-flows-sa", "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = var.fdr_enable_versioning
+  resource_group_name             = azurerm_resource_group.data.name
+  location                        = var.location
+  advanced_threat_protection      = var.fdr_advanced_threat_protection
+  allow_nested_items_to_be_public = false
 
-  blob_properties_delete_retention_policy_days = var.fdr_delete_retention_days
+  blob_delete_retention_days    = var.fdr_delete_retention_days
+  public_network_access_enabled = true
 
   tags = var.tags
 }
 
 ## blob container flows
 resource "azurerm_storage_container" "fdr_rend_flow" {
-  name                  = format("%sxmlfdrflow", module.fdr_flows_sa.name)
+  name                  = "${module.fdr_flows_sa.name}xmlfdrflow"
   storage_account_name  = module.fdr_flows_sa.name
   container_access_type = "private"
 }
@@ -74,7 +77,7 @@ resource "azurerm_storage_container" "fdr_rend_flow" {
 
 ## blob container flows OUTPUT
 resource "azurerm_storage_container" "fdr_rend_flow_out" {
-  name                  = format("%sxmlfdrflowout", module.fdr_flows_sa.name)
+  name                  = "${module.fdr_flows_sa.name}xmlfdrflowout"
   storage_account_name  = module.fdr_flows_sa.name
   container_access_type = "private"
 }
@@ -90,7 +93,7 @@ resource "azurerm_storage_management_policy" "storage_account_fdr_management_pol
     name    = "deleteafterdays"
     enabled = true
     filters {
-      prefix_match = [format("%s/", azurerm_storage_container.fdr_rend_flow_out.name)]
+      prefix_match = ["${azurerm_storage_container.fdr_rend_flow_out.name}/"]
       blob_types   = ["blockBlob"]
     }
 
@@ -118,7 +121,7 @@ resource "azurerm_storage_management_policy" "storage_account_fdr_management_pol
 resource "azurerm_role_assignment" "data_contributor_role" {
   scope                = module.fdr_flows_sa.id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.apim.principal_id
+  principal_id         = data.azurerm_api_management.apim.identity[0].principal_id
 
   depends_on = [
     module.fdr_flows_sa
@@ -129,7 +132,7 @@ resource "azurerm_role_assignment" "data_contributor_role" {
 resource "null_resource" "change_auth_fdr_blob_container" {
 
   triggers = {
-    apim_principal_id = module.apim.principal_id
+    apim_principal_id = data.azurerm_api_management.apim.identity[0].principal_id
   }
 
   provisioner "local-exec" {
@@ -151,16 +154,16 @@ resource "null_resource" "change_auth_fdr_blob_container" {
 resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_parsing_0_flows_alert" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = format("%s-fdr-parsing-0-flows-alertx", module.reporting_fdr_function.name)
-  resource_group_name = azurerm_resource_group.reporting_fdr_rg.name
+  name                = "${local.function_app_name}-fdr-parsing-0-flows-alertx"
+  resource_group_name = data.azurerm_resource_group.reporting_fdr_rg.name
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Fdr] FdR Flow Parsing Error"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "FdR Flow Parsing Error"
   enabled        = true
   query = format(<<-QUERY
@@ -170,7 +173,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_parsing_0_flows_aler
     | extend flussi = extract("END opt2ehub.*with(.*)flows", 1, message)
     | where toint(flussi) == 0  
   QUERY
-    , module.reporting_fdr_function.name
+    , local.function_app_name
   )
   severity    = 1
   frequency   = 15
@@ -179,4 +182,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_parsing_0_flows_aler
     operator  = "GreaterThanOrEqual"
     threshold = 1
   }
+}
+
+resource "azurerm_resource_group" "data" {
+  name     = "${local.product}-data-rg"
+  location = var.location
+
+  tags = var.tags
 }

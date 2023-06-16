@@ -305,3 +305,9 @@ variable "fdr_delete_retention_days" {
   description = "Number of days to retain deleted."
   default     = 30
 }
+
+variable "reporting_fdr_blobs_retention_days" {
+  type        = number
+  description = "The number of day for storage_management_policy"
+  default     = 30
+}
