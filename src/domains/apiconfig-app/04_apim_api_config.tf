@@ -6,8 +6,8 @@ module "apim_api_config_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "product-api-config"
-  display_name = "ApiConfig"
-  description  = "Product for API Configuration of the Node "
+  display_name = "ApiConfig JWT"
+  description  = "Product for API Configuration with JWT "
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -37,7 +37,7 @@ resource "azurerm_api_management_api_version_set" "api_config_api" {
   name                = format("%s-api-config-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = "ApiConfig SubKey"
+  display_name        = "ApiConfig JWT"
   versioning_scheme   = "Segment"
 }
 
@@ -62,8 +62,8 @@ module "apim_api_config_api" {
   version_set_id = azurerm_api_management_api_version_set.api_config_api.id
   api_version    = "v1"
 
-  description  = "Api configuration for Nodo dei Pagamenti"
-  display_name = "ApiConfig SubKey"
+  description  = "Api configuration with JWT"
+  display_name = "ApiConfig JWT"
   path         = "apiconfig/api"
   protocols    = ["https"]
 
@@ -76,7 +76,7 @@ module "apim_api_config_api" {
     service = module.apim_api_config_product.product_id
   })
 
-  xml_content = templatefile("./api/apiconfig_api/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/apiconfig_api/jwt/v1/_base_policy.xml.tpl", {
     origin                 = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
     pagopa_tenant_id       = local.pagopa_tenant_id
     apiconfig_be_client_id = local.apiconfig_be_client_id
@@ -121,8 +121,8 @@ module "apim_api_config_auth_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "product-api-config-auth"
-  display_name = "ApiConfig JWT"
-  description  = "Product for API Configuration of the Node for Auth JWT"
+  display_name = "ApiConfig SubKey"
+  description  = "Product for API Configuration SubKey for B2B"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -144,25 +144,24 @@ resource "azurerm_api_management_api_version_set" "api_config_auth_api" {
   name                = format("%s-api-config-auth-api", var.env_short)
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "ApiConfig JWT"
+  display_name        = "ApiConfig SubKey"
   versioning_scheme   = "Segment"
 }
 
 module "apim_api_config_auth_api" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
-  name                = format("%s-api-config-auth-api", var.env_short)
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  product_ids         = [module.apim_api_config_auth_product.product_id]
-
+  name                  = format("%s-api-config-auth-api", var.env_short)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_api_config_auth_product.product_id]
   subscription_required = true
 
   version_set_id = azurerm_api_management_api_version_set.api_config_auth_api.id
   api_version    = "v1"
 
-  description  = "Api configuration JWT"
-  display_name = "ApiConfig JWT"
+  description  = "Api configuration for B2B"
+  display_name = "ApiConfig SubKey"
   path         = "apiconfig/auth/api"
   protocols    = ["https"]
 
@@ -175,9 +174,8 @@ module "apim_api_config_auth_api" {
     service = module.apim_api_config_auth_product.product_id
   })
 
-  xml_content = templatefile("./api/apiconfig_api/auth/v1/_base_policy.xml.tpl", {
-    origin                 = "*"
-    pagopa_tenant_id       = local.pagopa_tenant_id
-    apiconfig_be_client_id = local.apiconfig_be_client_id
+  xml_content = templatefile("./api/apiconfig_api/subkey/v1/_base_policy.xml.tpl", {
+    origin      = "*"
+    addMockResp = var.env_short != "p" ? "true" : "false"
   })
 }
