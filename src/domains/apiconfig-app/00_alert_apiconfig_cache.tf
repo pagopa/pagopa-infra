@@ -22,7 +22,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_out_of_memory_
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = format("Problem to generate cache - %s", local.oracle_version)
   enabled        = true
-  query          = replace(local.apiconfig_cache_alert.outOfMemory, "DATABASE", local.oracle_version)
+  query          = format(local.apiconfig_cache_alert.outOfMemory.query, format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, local.oracle_version))
 
   severity    = local.apiconfig_cache_alert.outOfMemory.severity
   frequency   = local.apiconfig_cache_alert.outOfMemory.frequency
@@ -47,7 +47,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_out_of_memory_
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = format("Problem to generate cache - %s", local.postgresql_version)
   enabled        = true
-  query          = replace(local.apiconfig_cache_alert.outOfMemory, "DATABASE", local.postgresql_version)
+  query          = format(local.apiconfig_cache_alert.outOfMemory.query, format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, local.postgresql_version))
 
   severity    = local.apiconfig_cache_alert.outOfMemory.severity
   frequency   = local.apiconfig_cache_alert.outOfMemory.frequency

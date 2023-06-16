@@ -100,7 +100,17 @@ locals {
   apiconfig_cache_alert = {
     pagopa_api_config_cache_name   = format("%s-%s", var.prefix, local.apiconfig_cache_locals.path)
     outOfMemory = {
-      query = format(<<-QUERY
+#      query = format(<<-QUERY
+#            traces
+#            | where cloud_RoleName == "%s"
+#            | where message contains "java.lang.OutOfMemoryError: Java heap space"
+#            | order by timestamp desc
+#            | summarize Total=count() by length=bin(timestamp,1m)
+#            | order by length desc
+#            QUERY
+#        , format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, "DATABASE")
+#      )
+      query = <<-QUERY
             traces
             | where cloud_RoleName == "%s"
             | where message contains "java.lang.OutOfMemoryError: Java heap space"
@@ -108,8 +118,6 @@ locals {
             | summarize Total=count() by length=bin(timestamp,1m)
             | order by length desc
             QUERY
-        , format("%s-%s", local.apiconfig_cache_alert.pagopa_api_config_cache_name, "DATABASE")
-      )
       severity    = 0
       frequency   = 5
       time_window = 5
