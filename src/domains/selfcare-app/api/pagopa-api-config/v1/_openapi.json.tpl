@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.149
+  version: 0.0.151
 servers:
   - url: 'https://${host}/${basePath}'
     description: Inferred Url
