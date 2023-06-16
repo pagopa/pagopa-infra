@@ -1295,11 +1295,12 @@
             "example": "idCartFromCreditorInstitution"
           },
           "sendPaymentResultOutcome": {
-            "description": "The outcome of sendPaymentResult api",
+            "description": "The outcome of sendPaymentResult api (OK, KO, NOT AVAILABLE)",
             "type": "string",
             "enum": [
               "OK",
-              "KO"
+              "KO",
+              "NA"
             ]
           },
           "authorizationCode": {
