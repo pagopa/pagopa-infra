@@ -23,3 +23,14 @@ data "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
   name         = format("auth-%s-refresh-configuration-url", var.env_short)
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+data "azurerm_key_vault_secret" "apiconfig_selfcare_integration_url" {
+  name         = format("auth-%s-apiconfig-selfcare-integration-url", var.env_short)
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "apiconfig_selfcare_integration_subkey" {
+  name         = format("auth-%s-apiconfig-selfcare-integration-subkey", var.env_short)
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
