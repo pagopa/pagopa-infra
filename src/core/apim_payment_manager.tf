@@ -809,7 +809,7 @@ locals {
     display_name             = "Payment Manager - PM per Nodo API"
     description              = "API PM for Nodo"
     path                     = "payment-manager/pm-per-nodo"
-    subscription_required_v1 = false
+    subscription_required_v1 = true
     subscription_required_v2 = true
     service_url              = null
   }
