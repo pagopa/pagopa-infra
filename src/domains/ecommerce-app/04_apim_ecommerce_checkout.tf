@@ -81,7 +81,6 @@ resource "azurerm_api_management_named_value" "ecommerce_checkout_transaction_jw
   secret              = true
 }
 
-
 resource "azurerm_api_management_api_operation_policy" "get_transaction_info" {
   api_name            = "${local.project}-ecommerce-checkout-api-v1"
   resource_group_name = local.pagopa_apim_rg

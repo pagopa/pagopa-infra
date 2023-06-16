@@ -388,6 +388,10 @@
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
+          "isAllCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
+          },
           "transferList": {
             "type": "array",
             "items": {
@@ -400,13 +404,15 @@
         "required": [
           "rptId",
           "amount",
-          "transferList"
+          "transferList",
+          "isAllCCP"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
           "paymentToken": "paymentToken1",
           "reason": "reason1",
           "amount": 100,
+          "isAllCCP": false,
           "transferList": [
             {
               "paFiscalCode": "77777777777",
@@ -541,11 +547,12 @@
             "example": "idCartFromCreditorInstitution"
           },
           "sendPaymentResultOutcome": {
-            "description": "The outcome of sendPaymentResult api",
+            "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
             "type": "string",
             "enum": [
               "OK",
-              "KO"
+              "KO",
+              "NOT_RECEIVED"
             ]
           },
           "authorizationCode": {
@@ -599,6 +606,10 @@
             ],
             "description": "Requested language"
           },
+          "isAllCCP": {
+            "type": "boolean",
+            "description": "Check flag for psp validation"
+          },
           "details": {
             "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
             "oneOf": [
@@ -624,6 +635,7 @@
           "paymentInstrumentId",
           "pspId",
           "language",
+          "isAllCCP",
           "details"
         ]
       },
