@@ -1,5 +1,5 @@
 resource "azurerm_dns_zone" "wallet_public" {
-  name                = "${var.dns_zone_wallet}.${var.external_domain}"
+  name                = "${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 
   tags = var.tags

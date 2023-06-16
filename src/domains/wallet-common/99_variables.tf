@@ -85,7 +85,7 @@ variable "ingress_load_balancer_ip" {
 
 # DNS
 
-variable "dns_zone_wallet" {
+variable "dns_zone_prefix" {
   type        = string
   default     = null
   description = "The wallet dns subdomain."
