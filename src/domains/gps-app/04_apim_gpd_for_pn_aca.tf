@@ -5,23 +5,23 @@
 locals {
   apim_pn_integration_rest_api = {
     display_name          = "Integrazione PN GPD"
-    description           = "REST API del servizio Payments per Gestione Posizione Debitorie - for Auth"
+    description           = "REST API del servizio Payments per Gestione Posizione Debitorie"
     published             = true
     subscription_required = true
     approval_required     = true
     subscriptions_limit   = 1000
     service_url           = null
     gpd_service = {
-      display_name = "Integrazione PN GPD"
+      display_name = "Integrazione PN"
       description  = "REST API GPD per piattaforma notifiche"
       path         = "pn-integration/gpd/api"
     }
   }
 }
 
-###################
-## REST Product ##
-###################
+############################
+## Product pn-integration ##
+############################
 
 module "apim_pn_integration_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
@@ -33,13 +33,35 @@ module "apim_pn_integration_product" {
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
-  published             = local.apim_pn_integration_rest_api.published
-  subscription_required = local.apim_pn_integration_rest_api.subscription_required
-  approval_required     = local.apim_pn_integration_rest_api.approval_required
-  subscriptions_limit   = local.apim_pn_integration_rest_api.subscriptions_limit
+  published             = false
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/pn-integration/_base_policy.xml")
 }
+
+#############################
+## Product aca-integration ##
+#############################
+module "apim_aca_integration_product" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+
+  product_id   = "aca-integration"
+  display_name = "ACA Integration"
+  description  = "Integrazione archivio centralizzato avvisi"
+
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+
+  published             = false
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/aca-integration/_base_policy.xml")
+}
+
 
 ##############
 ## REST API ##
