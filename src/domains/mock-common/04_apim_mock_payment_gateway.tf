@@ -10,8 +10,8 @@ module "apim_mock_payment_gateway_product" {
   display_name = "product-mock-payment-gateway"
   description  = "product-mock-payment-gateway"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = true
@@ -29,8 +29,8 @@ module "apim_mock_payment_gateway_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-mock-payment-gateway-api", local.project)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_mock_payment_gateway_product[0].product_id]
   subscription_required = false
 
@@ -63,8 +63,8 @@ module "apim_mock_payment_gateway_mng_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = local.apim_mock_payment_gateway_mng_api_name
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_mock_payment_gateway_product[0].product_id]
   subscription_required = true
 
@@ -86,8 +86,8 @@ module "apim_mock_payment_gateway_mng_api" {
 resource "azurerm_api_management_api_operation_policy" "this" {
   count               = var.mock_payment_gateway_enabled ? 1 : 0
   api_name            = local.apim_mock_payment_gateway_mng_api_name
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   operation_id        = "getappinfo"
 
   xml_content = file("./api/mock_payment_gateway_mng_api/v1/_getappinfo_policy.xml")

@@ -29,3 +29,5 @@ mock_ec_always_on            = true
 
 external_domain = "pagopa.it"
 dns_zone_prefix = "dev.platform"
+
+lb_aks = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
