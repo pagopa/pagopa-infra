@@ -157,33 +157,3 @@ variable "mock_psp_secondary_service_enabled" {
   description = "Mock Secondary PSP service Nexi"
   default     = false
 }
-
-variable "mock_payment_gateway_enabled" {
-  type        = bool
-  description = "Mock payment gateway enabled"
-  default     = false
-}
-
-variable "mock_payment_gateway_always_on" {
-  type        = bool
-  description = "Mock payment gateway always on property"
-  default     = false
-}
-
-variable "mock_payment_gateway_tier" {
-  type        = string
-  description = "Mock payment gateway Plan tier"
-  default     = "Standard"
-}
-
-variable "mock_payment_gateway_size" {
-  type        = string
-  description = "Mock payment gateway Plan size"
-  default     = "S1"
-}
-
-variable "cidr_subnet_mock_payment_gateway" {
-  type        = list(string)
-  description = "Address prefixes subnet mock payment_gateway"
-  default     = null
-}

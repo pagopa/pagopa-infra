@@ -10,8 +10,8 @@ module "apim_mock_ec_product" {
   display_name = "product-mock-ec"
   description  = "product-mock-ec"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = false
@@ -24,8 +24,8 @@ resource "azurerm_api_management_api_version_set" "mock_ec_api" {
   count = var.mock_ec_enabled ? 1 : 0
 
   name                = format("%s-mock-ec-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "Mock EC API"
   versioning_scheme   = "Segment"
 }
@@ -35,8 +35,8 @@ module "apim_mock_ec_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-mock-ec-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_mock_ec_product[0].product_id]
   subscription_required = false
 
@@ -72,8 +72,8 @@ module "apim_secondary_mock_ec_product" {
   display_name = "product-secondary-mock-ec"
   description  = "product-secondary-mock-ec"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = false
@@ -86,8 +86,8 @@ resource "azurerm_api_management_api_version_set" "secondary_mock_ec_api" {
   count = var.mock_ec_secondary_enabled ? 1 : 0
 
   name                = format("%s-secondary-mock-ec-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "Secondary Mock EC API"
   versioning_scheme   = "Segment"
 }
@@ -97,8 +97,8 @@ module "apim_secondary_mock_ec_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-secondary-mock-ec-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_secondary_mock_ec_product[0].product_id]
   subscription_required = false
 
@@ -132,8 +132,8 @@ resource "azurerm_api_management_api_version_set" "secondary_mock_ec_forwarder_a
   count = var.env_short != "p" ? 1 : 0
 
   name                = format("%s-mock-ec-forwarder-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "Mock EC Forwarder API"
   versioning_scheme   = "Segment"
 }
@@ -143,8 +143,8 @@ module "apim_mock_ec_forwarder_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = format("%s-mock-ec-forwarder-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.secondary_mock_ec_forwarder_api[0].id
