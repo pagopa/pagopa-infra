@@ -25,6 +25,7 @@ cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
 mock_ec_enabled              = true
 mock_ec_secondary_enabled    = true
 mock_payment_gateway_enabled = true
+mock_ec_always_on            = true
 
 external_domain = "pagopa.it"
 dns_zone_prefix = "dev.platform"
