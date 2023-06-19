@@ -2,7 +2,7 @@ locals {
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product = "${var.prefix}-${var.env_short}"
 
-  function_app_name= "${local.product}-fn-reportingfdr-fdr"
+  function_app_name = "${local.product}-fn-reportingfdr-fdr"
 
   subscription_name = "${var.env}-${var.prefix}"
 

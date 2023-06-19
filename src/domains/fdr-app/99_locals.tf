@@ -30,9 +30,9 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
 
-# apim
+  # apim
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-    apim_nodo_per_pa_api = {
+  apim_nodo_per_pa_api = {
     display_name          = "Nodo per PA WS"
     description           = "Web services to support PA in payment activations, defined in nodoPerPa.wsdl"
     path                  = "nodo/nodo-per-pa"

@@ -37,7 +37,7 @@ module "reporting_fdr_function" {
   always_on                                = var.reporting_fdr_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   cors = ({
-    allowed_origins = []
+    allowed_origins     = []
     support_credentials = false
   })
 
@@ -70,7 +70,6 @@ module "reporting_fdr_function" {
     FLOW_SA_CONNECTION_STRING = data.azurerm_storage_account.fdr_flows_sa.primary_connection_string
     FLOWS_XML_BLOB            = data.azurerm_storage_container.fdr_rend_flow.name
 
-    # TO BE FIXED
     EHUB_FDR_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.events.primary_connection_string
     EHUB_FDR_NAME              = "nodo-dei-pagamenti-fdr"
     OUTPUT_BLOB                = data.azurerm_storage_container.fdr_rend_flow_out.name

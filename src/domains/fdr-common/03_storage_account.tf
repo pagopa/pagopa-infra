@@ -104,7 +104,7 @@ resource "azurerm_storage_management_policy" "storage_account_fdr_management_pol
         # to be fixed
         # tier_to_cool_after_days_since_modification_greater_than     = 0
         # tier_to_archive_after_days_since_modification_greater_than  = 0
-        delete_after_days_since_modification_greater_than           = var.reporting_fdr_blobs_retention_days
+        delete_after_days_since_modification_greater_than = var.reporting_fdr_blobs_retention_days
         # tier_to_cool_after_days_since_last_access_time_greater_than = 0
       }
       snapshot {
