@@ -20,7 +20,7 @@ module "ecommerce_storage_snet" {
   ]
 }
 
-resource "azurerm_private_endpoint" "storage_private_endpoint" {
+resource "azurerm_private_endpoint" "storage_transient_private_endpoint" {
   count = var.env_short != "d" ? 1 : 0
 
   name                = "${local.project}-storage-private-endpoint"
@@ -35,7 +35,7 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-storage-private-service-connection"
-    private_connection_resource_id = module.ecommerce_storage.id
+    private_connection_resource_id = module.ecommerce_storage_transient.id
     is_manual_connection           = false
     subresource_names              = ["queue"]
   }
@@ -111,6 +111,28 @@ resource "azurerm_storage_queue" "transactions_notifications_queue" {
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
+resource "azurerm_private_endpoint" "storage_permanent_private_endpoint" {
+  count = var.env_short != "d" ? 1 : 0
+
+  name                = "${local.project}-storage-private-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
+  subnet_id           = module.ecommerce_storage_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-storage-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-storage-private-service-connection"
+    private_connection_resource_id = module.ecommerce_storage_permanent.id
+    is_manual_connection           = false
+    subresource_names              = ["queue"]
+  }
+
+  tags = var.tags
+}
 
 module "ecommerce_storage_permanent" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
