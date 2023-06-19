@@ -73,42 +73,42 @@ module "ecommerce_storage_transient" {
 
 resource "azurerm_storage_queue" "notifications_service_retry_queue" {
   name                 = "${local.project}-notifications-service-retry-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_expiration_queue" {
   name                 = "${local.project}-transactions-expiration-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_close_payment_queue" {
   name                 = "${local.project}-transactions-close-payment-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_close_payment_retry_queue" {
   name                 = "${local.project}-transactions-close-payment-retry-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_refund_retry_queue" {
   name                 = "${local.project}-transactions-refund-retry-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_refund_queue" {
   name                 = "${local.project}-transactions-refund-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_notifications_retry_queue" {
   name                 = "${local.project}-transaction-notifications-retry-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_notifications_queue" {
   name                 = "${local.project}-transaction-notifications-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_transient.name
 }
 
 
@@ -142,10 +142,10 @@ module "ecommerce_storage_permanent" {
 
 resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
   name                 = "${local.project}-transactions-dead-letter-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_permanent.name
 }
 
 resource "azurerm_storage_queue" "notifications_service_errors_queue" {
   name                 = "${local.project}-notifications-service-errors-queue"
-  storage_account_name = module.ecommerce_storage.name
+  storage_account_name = module.ecommerce_storage_permanent.name
 }
