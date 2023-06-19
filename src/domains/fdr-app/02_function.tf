@@ -36,6 +36,10 @@ module "reporting_fdr_function" {
   runtime_version                          = "~3"
   always_on                                = var.reporting_fdr_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  cors = ({
+    allowed_origins = []
+    support_credentials = false
+  })
 
   app_service_plan_info = var.app_service_plan_info
 
