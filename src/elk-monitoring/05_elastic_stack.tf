@@ -1,5 +1,5 @@
 locals {
-  snapshot_secret_name = "snapshot-secret"
+  snapshot_secret_name            = "snapshot-secret"
   deafult_snapshot_container_name = "snapshotblob"
 }
 
@@ -36,12 +36,12 @@ data "azurerm_storage_account" "snapshot_account" {
 
 resource "kubernetes_secret" "snapshot_secret" {
   metadata {
-    name = local.snapshot_secret_name
+    name      = local.snapshot_secret_name
     namespace = local.elk_namespace
   }
   data = {
-    "azure.client.default.account" = replace(format("%s-sa", local.project), "-", "") 
-    "azure.client.default.key" = data.azurerm_storage_account.snapshot_account.primary_access_key
+    "azure.client.default.account" = replace(format("%s-sa", local.project), "-", "")
+    "azure.client.default.key"     = data.azurerm_storage_account.snapshot_account.primary_access_key
   }
 
 }
@@ -95,7 +95,7 @@ data "kubernetes_secret" "get_elastic_credential" {
 locals {
   kibana_url  = var.env_short == "d" ? "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@kibana.${var.env}.platform.pagopa.it/kibana" : "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@${local.kibana_hostname}/kibana"
   elastic_url = var.env_short == "d" ? "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@kibana.${var.env}.platform.pagopa.it/elastic" : "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@${local.kibana_hostname}/elastic"
-  
+
 }
 
 ## opentelemetry
