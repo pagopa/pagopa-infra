@@ -29,3 +29,5 @@ mock_psp_secondary_service_enabled = true
 
 external_domain = "pagopa.it"
 dns_zone_prefix = "dev.platform"
+
+lb_aks = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )

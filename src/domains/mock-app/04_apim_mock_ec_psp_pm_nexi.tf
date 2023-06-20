@@ -61,7 +61,7 @@ module "apim_mock_ec_nexi_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_nexi/ec/v1/mock.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/mock_nexi/ec/v1/_base_policy.xml", {
@@ -125,7 +125,7 @@ module "apim_mock_psp_nexi_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_nexi/psp/v1/mock.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {
@@ -170,10 +170,11 @@ module "apim_mock_pm_nexi_api" {
   count  = var.env_short != "p" ? 1 : 0 # only UAT pointing out to NEXI PRF environment + Esposizione apim SIT mock PM
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-mock-pm-nexi-api", var.env_short)
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_pm_nexi_product[0].product_id, local.apim_x_node_product_id]
+  name                = format("%s-mock-pm-nexi-api", var.env_short)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  # product_ids           = [module.apim_mock_pm_nexi_product[0].product_id, local.apim_x_node_product_id]
+  product_ids           = [module.apim_mock_pm_nexi_product[0].product_id]
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.mock_pm_nexi_api[0].id
@@ -188,7 +189,7 @@ module "apim_mock_pm_nexi_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_nexi/psp/v1/mock.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {

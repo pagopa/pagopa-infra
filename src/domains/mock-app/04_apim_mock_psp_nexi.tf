@@ -51,7 +51,7 @@ module "apim_mock_psp_service_api" {
   service_url = null
 
   content_value = templatefile("./api/mockpspservice_api/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/mockpspservice_api/v1/_base_policy.xml", {
@@ -112,7 +112,7 @@ module "apim_mock_psp_service_api_secondary" {
   service_url = null
 
   content_value = templatefile("./api/mockpspservice_api/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/mockpspservice_api/v1/_base_policy.xml", {

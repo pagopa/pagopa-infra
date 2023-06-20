@@ -39,11 +39,11 @@ module "apim_mock_payment_gateway_api" {
   path         = "mock-payment-gateway/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s", module.mock_payment_gateway[0].default_site_hostname)
+  service_url = format("https://%s", local.mock_payment_gateway_default_site_hostname)
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_payment_gateway_api/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = file("./api/mock_payment_gateway_api/v1/_base_policy.xml")
@@ -73,11 +73,11 @@ module "apim_mock_payment_gateway_mng_api" {
   path         = "mock-payment-gateway/mng-api"
   protocols    = ["https"]
 
-  service_url = format("https://%s", module.mock_payment_gateway[0].default_site_hostname)
+  service_url = format("https://%s", local.mock_payment_gateway_default_site_hostname)
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_payment_gateway_mng_api/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = file("./api/mock_payment_gateway_mng_api/v1/_base_policy.xml")
