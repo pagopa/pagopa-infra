@@ -3,6 +3,11 @@ data "azurerm_key_vault_secret" "pm_onprem_hostname" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "payment_gateway_service_jwt_key" {
+  name         = "payment-gateway-service-jwt-key"
+  key_vault_id = module.key_vault.id
+}
+
 ##############
 ## Products ##
 ##############
@@ -223,4 +228,14 @@ module "apim_payment_transactions_gateway_pgsfe_api_v1" {
     origin = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}/"
   })
 }
+
+resource "azurerm_api_management_named_value" "payment-gateway-service-jwt-key" {
+  name                = "payment-gateway-service-jwt-key"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "payment-gateway-service-jwt-key"
+  value               = data.azurerm_key_vault_secret.payment-gateway-service-jwt-key.value
+  secret              = true
+}
+
 

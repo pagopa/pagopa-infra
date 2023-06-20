@@ -209,6 +209,18 @@ data "azurerm_key_vault_secret" "google_recaptcha_secret" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "payment-gateway-service-jwt-key" {
+  name         = "payment-gateway-service-jwt-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 ## azure cdn frontdoor ##
 ## remember to do this: https://docs.microsoft.com/it-it/azure/frontdoor/standard-premium/how-to-configure-https-custom-domain#register-azure-front-door
 # data "azuread_service_principal" "azure_cdn_frontdoor" {
