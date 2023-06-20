@@ -71,7 +71,7 @@ redis_ecommerce_params = {
   version  = 6
 }
 
-ecommerce_storage_working_params = {
+ecommerce_storage_transient_params = {
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"
@@ -81,7 +81,7 @@ ecommerce_storage_working_params = {
   public_network_access_enabled = false,
 }
 
-ecommerce_storage_recovery_params = {
+ecommerce_storage_deadletter_params = {
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"

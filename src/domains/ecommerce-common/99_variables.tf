@@ -158,7 +158,7 @@ variable "cidr_subnet_storage_ecommerce" {
   description = "Azure storage DB address space for ecommerce."
 }
 
-variable "ecommerce_storage_recovery_params" {
+variable "ecommerce_storage_deadletter_params" {
   type = object({
     enabled                       = bool,
     kind                          = string,
@@ -181,7 +181,7 @@ variable "ecommerce_storage_recovery_params" {
   description = "Azure storage DB params for ecommerce."
 }
 
-variable "ecommerce_storage_working_params" {
+variable "ecommerce_storage_transient_params" {
   type = object({
     enabled                       = bool,
     kind                          = string,
