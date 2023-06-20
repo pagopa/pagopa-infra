@@ -14,7 +14,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_azdoa_custom_image"></a> [azdoa\_custom\_image](#module\_azdoa\_custom\_image) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent_custom_image | v6.14.1 |
+| <a name="module_azdoa_custom_image"></a> [azdoa\_custom\_image](#module\_azdoa\_custom\_image) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent_custom_image | v6.20.0 |
 
 ## Resources
 
