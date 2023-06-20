@@ -9,7 +9,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie.id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "DB Nodo Healthcheck"
     custom_webhook_payload = "{}"
   }
@@ -42,7 +42,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_jdbc_connectio
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie.id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "JDBC Connection"
     custom_webhook_payload = "{}"
   }
