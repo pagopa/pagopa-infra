@@ -49,14 +49,14 @@ module "apim_mock_ec_api" {
   protocols    = ["https"]
 
   # UAT pagoPA - DEV nexi
-  service_url = var.env_short == "u" ? format("https://%s/mock-ec", module.mock_ec[0].default_site_hostname) : var.env_short == "d" ? "http://${var.lb_aks}/mock-ec-sit/servizi/PagamentiTelematiciRPT" : null
+  service_url = var.env_short == "u" ? format("https://%s/mock-ec", local.mock_ec_default_site_hostname) : var.env_short == "d" ? "http://${var.lb_aks}/mock-ec-sit/servizi/PagamentiTelematiciRPT" : null
 
   content_value = templatefile("./api/mockec_api/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/mockec_api/v1/_base_policy.xml", {
-    mock_ec_host_path = var.env_short == "u" ? format("https://%s/mock-ec", module.mock_ec[0].default_site_hostname) : var.env_short == "d" ? "http://${var.lb_aks}/mock-ec-sit/servizi/PagamentiTelematiciRPT" : ""
+    mock_ec_host_path = var.env_short == "u" ? format("https://%s/mock-ec", local.mock_ec_default_site_hostname) : var.env_short == "d" ? "http://${var.lb_aks}/mock-ec-sit/servizi/PagamentiTelematiciRPT" : ""
   })
 
 }
@@ -110,11 +110,11 @@ module "apim_secondary_mock_ec_api" {
   path         = "secondary-mock-ec/api"
   protocols    = ["https"]
 
-  # service_url = format("https://%s", module.mock_ec[0].default_site_hostname)
+  # service_url = format("https://%s", local.mock_ec_default_site_hostname)
   service_url = "http://${var.lb_aks}/secondary-mock-ec-sit/secondary-mock-ec"
 
   content_value = templatefile("./api/mockec_api/secondary_v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   # xml_content = file("./api/mockec_api/v1/_base_policy.xml")
@@ -158,7 +158,7 @@ module "apim_mock_ec_forwarder_api" {
   service_url = ""
 
   content_value = templatefile("./api/mockec_api/forwarder/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = file("./api/mockec_api/forwarder/_base_policy.xml")
