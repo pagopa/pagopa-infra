@@ -1,18 +1,21 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title": "PagoPA API configuration ${service}",
-    "description" : "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
+    "title" : "PagoPA API configuration ${service}",
+    "description" : "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.33.1-1"
+    "version" : "0.45.0"
   },
   "servers" : [ {
-    "url" : "${host}/apiconfig/api/v1",
+    "url": "${host}/apiconfig/api/v1",
     "description" : "Generated server url"
   } ],
   "tags" : [ {
     "description" : "Everything about Payment Service Providers",
     "name" : "Payment Service Providers"
+  }, {
+    "description" : "Everything about Iban",
+    "name" : "Ibans"
   }, {
     "description" : "Everything about Batch Operation",
     "name" : "Batch Operation"
@@ -74,12 +77,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -98,12 +95,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -115,12 +106,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -129,12 +114,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -156,12 +135,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -170,12 +143,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -194,12 +161,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -257,12 +218,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -281,12 +236,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -298,12 +247,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -312,12 +255,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -339,12 +276,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -353,12 +284,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -377,12 +302,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -445,8 +364,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "CODE", "NAME" ],
-            "default" : "CODE"
+            "default" : "CODE",
+            "enum" : [ "CODE", "NAME" ]
           }
         }, {
           "description" : "Direction of ordering",
@@ -455,8 +374,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "ASC", "DESC" ],
-            "default" : "DESC"
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
           }
         } ],
         "responses" : {
@@ -472,12 +391,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -499,12 +412,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -513,12 +420,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -533,12 +434,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -547,12 +442,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -571,12 +460,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -628,12 +511,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -652,12 +529,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -669,12 +540,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -683,12 +548,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -710,12 +569,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -724,12 +577,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -748,12 +595,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -793,12 +634,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -817,12 +652,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -834,12 +663,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -848,12 +671,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -875,12 +692,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -889,12 +700,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -913,12 +718,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -963,12 +762,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -987,12 +780,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1004,12 +791,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1018,12 +799,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1045,12 +820,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1059,12 +828,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1083,12 +846,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1152,12 +909,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1176,12 +927,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1193,12 +938,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1207,12 +946,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1234,12 +967,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1248,12 +975,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1272,12 +993,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1340,8 +1055,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "CODE", "NAME" ],
-            "default" : "CODE"
+            "default" : "CODE",
+            "enum" : [ "CODE", "NAME" ]
           }
         }, {
           "description" : "Direction of ordering",
@@ -1350,8 +1065,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "ASC", "DESC" ],
-            "default" : "DESC"
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
           }
         } ],
         "responses" : {
@@ -1367,12 +1082,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1394,12 +1103,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1408,12 +1111,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1428,12 +1125,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1442,12 +1133,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1466,12 +1151,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1523,12 +1202,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1547,12 +1220,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1564,12 +1231,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1578,12 +1239,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1605,12 +1260,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1619,12 +1268,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1643,12 +1286,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1688,12 +1325,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1712,12 +1343,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1729,12 +1354,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1743,12 +1362,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1770,12 +1383,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1784,12 +1391,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1808,12 +1409,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1858,12 +1453,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1882,12 +1471,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1899,12 +1482,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1913,12 +1490,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1940,12 +1511,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -1954,12 +1519,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -1978,12 +1537,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2047,12 +1600,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2071,12 +1618,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2088,12 +1629,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2102,12 +1637,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2129,12 +1658,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2143,12 +1666,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2167,12 +1684,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2239,12 +1750,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2263,12 +1768,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2280,12 +1779,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2294,12 +1787,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2321,12 +1808,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2335,12 +1816,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2359,12 +1834,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2430,12 +1899,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2454,12 +1917,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2471,12 +1928,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2485,12 +1936,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2512,12 +1957,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2526,12 +1965,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2550,12 +1983,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2609,12 +2036,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2633,12 +2054,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2650,12 +2065,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2664,12 +2073,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2696,12 +2099,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2710,12 +2107,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2734,12 +2125,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2792,12 +2177,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2816,12 +2195,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2833,12 +2206,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2847,12 +2214,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2874,12 +2235,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -2888,12 +2243,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2912,12 +2261,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -2999,12 +2342,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3023,12 +2360,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3037,12 +2368,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3057,12 +2382,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3071,12 +2390,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3095,12 +2408,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3156,12 +2463,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3180,12 +2481,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3197,12 +2492,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3211,12 +2500,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3238,12 +2521,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3252,12 +2529,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3276,12 +2547,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3346,12 +2611,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3370,12 +2629,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3387,12 +2640,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3401,12 +2648,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3428,12 +2669,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3442,12 +2677,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3469,12 +2698,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           }
@@ -3488,11 +2711,14 @@
         "tags" : [ "Payment Service Providers" ]
       }
     },
-    "/cdis/uploadhistory" : {
+    "/cdis/history" : {
       "get" : {
         "operationId" : "uploadHistory_1",
         "responses" : {
           "200" : {
+            "content" : {
+              "application/json" : { }
+            },
             "description" : "OK",
             "headers" : {
               "X-Request-Id" : {
@@ -3500,9 +2726,43 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3510,6 +2770,12 @@
             }
           }
         },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ],
+        "summary" : "Sync CDI history",
         "tags" : [ "Payment Service Providers" ]
       },
       "parameters" : [ {
@@ -3556,12 +2822,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3580,12 +2840,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3597,12 +2851,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3611,12 +2859,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3638,12 +2880,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3662,12 +2898,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3676,12 +2906,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3700,12 +2924,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3760,12 +2978,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3784,12 +2996,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3801,12 +3007,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3815,12 +3015,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3847,12 +3041,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -3861,12 +3049,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3885,12 +3067,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3953,8 +3129,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "ASC", "DESC" ],
-            "default" : "DESC"
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
           }
         } ],
         "responses" : {
@@ -3970,12 +3146,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -3997,12 +3167,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4011,12 +3175,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4031,12 +3189,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4045,12 +3197,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4069,12 +3215,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4126,12 +3266,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4150,12 +3284,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4167,12 +3295,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4181,12 +3303,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4208,12 +3324,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4222,12 +3332,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4246,12 +3350,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4288,12 +3386,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4302,12 +3394,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4322,12 +3408,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4336,12 +3416,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4360,12 +3434,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4413,12 +3481,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4437,12 +3499,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4454,12 +3510,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4468,12 +3518,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4495,12 +3539,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4509,12 +3547,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4533,12 +3565,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4583,12 +3609,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4607,12 +3627,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4624,12 +3638,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4638,12 +3646,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4665,12 +3667,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4679,12 +3675,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4703,12 +3693,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4771,12 +3755,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4795,12 +3773,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4812,12 +3784,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4826,12 +3792,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4853,12 +3813,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -4867,12 +3821,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4891,12 +3839,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4946,6 +3888,30 @@
             "minLength" : 0,
             "type" : "string"
           }
+        }, {
+          "description" : "Filter by psp code",
+          "in" : "query",
+          "name" : "pspCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by psp name",
+          "in" : "query",
+          "name" : "pspName",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by psp enabled",
+          "in" : "query",
+          "name" : "pspEnabled",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
         } ],
         "responses" : {
           "200" : {
@@ -4960,12 +3926,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -4987,12 +3947,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5004,12 +3958,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5018,12 +3966,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5045,12 +3987,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5059,12 +3995,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5083,12 +4013,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5144,12 +4068,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5168,12 +4086,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5185,12 +4097,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5199,12 +4105,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5231,12 +4131,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5245,12 +4139,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5269,12 +4157,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5329,12 +4211,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5353,12 +4229,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5370,12 +4240,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5384,12 +4248,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5411,12 +4269,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5425,12 +4277,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5449,12 +4295,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5517,12 +4357,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5541,12 +4375,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5558,12 +4386,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5572,12 +4394,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5599,12 +4415,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5623,12 +4433,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5637,12 +4441,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5661,12 +4459,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5713,12 +4505,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5737,12 +4523,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5754,12 +4534,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5768,12 +4542,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5795,12 +4563,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5809,12 +4571,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5833,12 +4589,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5882,12 +4632,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5906,12 +4650,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5920,12 +4658,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5940,12 +4672,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -5954,12 +4680,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -5978,12 +4698,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6035,12 +4749,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6059,12 +4767,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6076,12 +4778,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6090,12 +4786,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6117,12 +4807,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6131,12 +4815,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6155,12 +4833,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6218,12 +4890,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6242,12 +4908,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6259,12 +4919,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6273,12 +4927,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6300,12 +4948,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6314,12 +4956,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6338,12 +4974,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6403,12 +5033,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6427,12 +5051,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6444,12 +5062,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6458,12 +5070,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6485,12 +5091,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6499,12 +5099,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6523,12 +5117,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6606,12 +5194,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6630,12 +5212,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6647,12 +5223,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6661,12 +5231,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6688,12 +5252,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6702,12 +5260,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6726,12 +5278,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6767,12 +5313,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6791,12 +5331,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6805,12 +5339,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6825,12 +5353,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6839,12 +5361,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6863,12 +5379,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -6920,12 +5430,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6944,12 +5448,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6961,12 +5459,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -6975,12 +5467,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7002,12 +5488,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7016,12 +5496,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7040,12 +5514,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7094,12 +5562,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7118,12 +5580,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7135,12 +5591,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7149,12 +5599,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7176,12 +5620,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7190,12 +5628,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7214,12 +5646,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7270,12 +5696,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7294,12 +5714,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7311,12 +5725,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7325,12 +5733,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7352,12 +5754,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7366,12 +5762,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7390,12 +5780,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7464,12 +5848,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7488,12 +5866,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7505,12 +5877,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7519,12 +5885,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7546,12 +5906,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7560,12 +5914,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7584,12 +5932,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7625,12 +5967,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7649,12 +5985,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7663,12 +5993,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7683,12 +6007,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7697,12 +6015,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7721,12 +6033,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7778,12 +6084,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7802,12 +6102,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7819,12 +6113,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7833,12 +6121,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7860,12 +6142,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7874,12 +6150,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7898,12 +6168,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -7935,12 +6199,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7959,12 +6217,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7976,12 +6228,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -7990,12 +6236,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8017,12 +6257,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8031,12 +6265,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8055,12 +6283,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8109,12 +6331,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8133,12 +6349,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8150,12 +6360,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8164,12 +6368,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8191,12 +6389,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8205,12 +6397,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8229,12 +6415,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8277,12 +6457,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8301,12 +6475,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8318,12 +6486,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8332,12 +6494,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8359,12 +6515,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8373,12 +6523,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8397,12 +6541,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8464,12 +6602,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8488,12 +6620,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8505,12 +6631,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8519,12 +6639,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8546,12 +6660,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8560,12 +6668,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8584,12 +6686,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8625,12 +6721,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8649,12 +6739,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8663,12 +6747,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8683,12 +6761,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8697,12 +6769,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8721,12 +6787,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8778,12 +6838,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8802,12 +6856,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8819,12 +6867,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8833,12 +6875,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8860,12 +6896,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8874,12 +6904,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8898,12 +6922,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -8944,12 +6962,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8968,12 +6980,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8985,12 +6991,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -8999,12 +6999,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9026,12 +7020,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9040,12 +7028,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9064,12 +7046,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9112,12 +7088,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9136,12 +7106,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9153,12 +7117,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9167,12 +7125,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9194,12 +7146,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9208,12 +7154,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9232,12 +7172,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9298,12 +7232,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9322,12 +7250,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9339,12 +7261,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9353,12 +7269,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9380,12 +7290,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9394,12 +7298,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9418,12 +7316,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9459,12 +7351,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9483,12 +7369,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9497,12 +7377,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9517,12 +7391,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9531,12 +7399,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9555,12 +7417,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9612,12 +7468,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9636,12 +7486,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9653,12 +7497,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9667,12 +7505,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9694,12 +7526,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9708,12 +7534,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9732,12 +7552,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9778,12 +7592,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9802,12 +7610,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9819,12 +7621,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9833,12 +7629,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9860,12 +7650,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9874,12 +7658,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9898,12 +7676,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -9946,12 +7718,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9970,12 +7736,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -9984,12 +7744,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10004,12 +7758,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10018,12 +7766,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10042,12 +7784,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10108,12 +7844,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10132,12 +7862,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10149,12 +7873,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10163,12 +7881,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10190,12 +7902,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10204,12 +7910,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10228,12 +7928,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10306,12 +8000,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10330,12 +8018,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10344,12 +8026,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10364,12 +8040,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10378,12 +8048,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10402,12 +8066,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10463,12 +8121,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10487,12 +8139,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10504,12 +8150,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10518,12 +8158,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10545,12 +8179,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10559,12 +8187,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10583,12 +8205,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10639,12 +8255,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10663,12 +8273,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10680,12 +8284,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10694,12 +8292,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10721,12 +8313,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10745,12 +8331,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10759,12 +8339,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10783,12 +8357,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10846,12 +8414,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10870,12 +8432,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10887,12 +8443,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10901,12 +8451,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10928,12 +8472,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -10942,12 +8480,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -10966,12 +8498,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11042,8 +8568,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "CODE", "NAME" ],
-            "default" : "CODE"
+            "default" : "CODE",
+            "enum" : [ "CODE", "NAME" ]
           }
         }, {
           "description" : "Direction of ordering",
@@ -11052,8 +8578,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "ASC", "DESC" ],
-            "default" : "DESC"
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
           }
         } ],
         "responses" : {
@@ -11069,12 +8595,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11096,12 +8616,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11110,12 +8624,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11130,12 +8638,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11144,12 +8646,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11168,12 +8664,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11225,12 +8715,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11249,12 +8733,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11266,12 +8744,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11280,12 +8752,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11307,12 +8773,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11321,12 +8781,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11348,12 +8802,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           }
@@ -11366,6 +8814,195 @@
         "summary" : "Create creditor institution",
         "tags" : [ "Creditor Institutions" ]
       }
+    },
+    "/creditorinstitutions/view" : {
+      "get" : {
+        "operationId" : "getCreditorInstitutionsView",
+        "parameters" : [ {
+          "description" : "Number of elements on one page. Default = 50",
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 50
+          }
+        }, {
+          "description" : "Page number. Page value starts from 0",
+          "in" : "query",
+          "name" : "page",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "description" : "Filter by creditor institution code",
+          "in" : "query",
+          "name" : "creditorInstitutionCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by pa broker code",
+          "in" : "query",
+          "name" : "paBrokerCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by station code",
+          "in" : "query",
+          "name" : "stationCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by aux digit",
+          "in" : "query",
+          "name" : "auxDigit",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "description" : "Filter by application code",
+          "in" : "query",
+          "name" : "applicationCode",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "description" : "Filter by segregation code",
+          "in" : "query",
+          "name" : "segregationCode",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "description" : "Filter by mod4",
+          "in" : "query",
+          "name" : "mod4",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CreditorInstitutionsView"
+                }
+              }
+            },
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ],
+        "summary" : "Get view creditor institutions broker station",
+        "tags" : [ "Creditor Institutions" ]
+      },
+      "parameters" : [ {
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "in" : "header",
+        "name" : "X-Request-Id",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
     },
     "/creditorinstitutions/{creditorinstitutioncode}" : {
       "delete" : {
@@ -11393,12 +9030,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11417,12 +9048,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11434,12 +9059,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11448,12 +9067,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11475,12 +9088,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11489,12 +9096,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11513,12 +9114,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11563,12 +9158,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11587,12 +9176,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11604,12 +9187,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11618,12 +9195,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11645,12 +9216,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11659,12 +9224,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11683,12 +9242,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11752,12 +9305,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11776,12 +9323,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11793,12 +9334,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11807,12 +9342,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11834,12 +9363,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11848,12 +9371,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11872,12 +9389,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -11924,12 +9435,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11948,12 +9453,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11965,12 +9464,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -11979,12 +9472,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12006,12 +9493,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12020,12 +9501,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12044,12 +9519,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12112,12 +9581,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12136,12 +9599,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12153,12 +9610,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12167,12 +9618,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12194,12 +9639,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12208,12 +9647,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12232,12 +9665,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12285,12 +9712,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12309,12 +9730,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12326,12 +9741,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12340,12 +9749,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12367,12 +9770,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12381,12 +9778,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12405,12 +9796,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12465,12 +9850,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12489,12 +9868,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12506,12 +9879,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12520,12 +9887,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12547,12 +9908,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12561,12 +9916,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12588,9 +9937,185 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ],
+        "summary" : "Get creditor institution ibans",
+        "tags" : [ "Ibans" ]
+      },
+      "parameters" : [ {
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "in" : "header",
+        "name" : "X-Request-Id",
+        "schema" : {
+          "type" : "string"
+        }
+      } ],
+      "post" : {
+        "operationId" : "createCreditorInstitutionsIbans",
+        "parameters" : [ {
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "in" : "path",
+          "name" : "creditorinstitutioncode",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/IbanEnhanced"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IbanEnhanced"
+                }
+              }
+            },
+            "description" : "Created",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "409" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Conflict",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Unprocessable Entity",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12603,8 +10128,488 @@
         }, {
           "Authorization" : [ ]
         } ],
-        "summary" : "Get creditor institution ibans",
-        "tags" : [ "Creditor Institutions" ]
+        "summary" : "Create creditor institution ibans",
+        "tags" : [ "Ibans" ]
+      }
+    },
+    "/creditorinstitutions/{creditorinstitutioncode}/ibans/enhanced" : {
+      "get" : {
+        "operationId" : "getCreditorInstitutionsIbansEnhanced",
+        "parameters" : [ {
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "in" : "path",
+          "name" : "creditorinstitutioncode",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by label",
+          "in" : "query",
+          "name" : "label",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IbansEnhanced"
+                }
+              }
+            },
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ],
+        "summary" : "Get creditor institution ibans enhanced",
+        "tags" : [ "Ibans" ]
+      },
+      "parameters" : [ {
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "in" : "header",
+        "name" : "X-Request-Id",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/creditorinstitutions/{creditorinstitutioncode}/ibans/{ibanId}" : {
+      "parameters" : [ {
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "in" : "header",
+        "name" : "X-Request-Id",
+        "schema" : {
+          "type" : "string"
+        }
+      } ],
+      "put" : {
+        "operationId" : "updateCreditorInstitutionsIbans",
+        "parameters" : [ {
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "in" : "path",
+          "name" : "creditorinstitutioncode",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        }, {
+          "description" : "The IBAN identifier code, used to reference the object.",
+          "in" : "path",
+          "name" : "ibanId",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 35,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/IbanEnhanced"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IbanEnhanced"
+                }
+              }
+            },
+            "description" : "Created",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "409" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Conflict",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Unprocessable Entity",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ],
+        "summary" : "Update creditor institution ibans",
+        "tags" : [ "Ibans" ]
+      }
+    },
+    "/creditorinstitutions/{creditorinstitutioncode}/ibans/{ibanValue}" : {
+      "delete" : {
+        "operationId" : "deleteCreditorInstitutionsIban",
+        "parameters" : [ {
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "in" : "path",
+          "name" : "creditorinstitutioncode",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        }, {
+          "description" : "Value of the Iban to be deleted",
+          "in" : "path",
+          "name" : "ibanValue",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "text/plain" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "Ok",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ],
+        "summary" : "Delete a creditor institution iban",
+        "tags" : [ "Ibans" ]
       },
       "parameters" : [ {
         "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
@@ -12645,12 +10650,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12669,12 +10668,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12686,12 +10679,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12700,12 +10687,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12727,12 +10708,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12741,12 +10716,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12765,12 +10734,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12833,12 +10796,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12857,12 +10814,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12874,12 +10825,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12888,12 +10833,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12915,12 +10854,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -12929,12 +10862,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -12953,12 +10880,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13011,12 +10932,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13035,12 +10950,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13052,12 +10961,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13066,12 +10969,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13093,12 +10990,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13107,12 +10998,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13131,12 +11016,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13209,12 +11088,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13233,12 +11106,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13250,12 +11117,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13264,12 +11125,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13291,12 +11146,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13305,12 +11154,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13329,12 +11172,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13379,12 +11216,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13403,12 +11234,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13420,12 +11245,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13434,12 +11253,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13461,12 +11274,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13475,12 +11282,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13499,12 +11300,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13557,12 +11352,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13581,12 +11370,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13595,12 +11378,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13615,12 +11392,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13629,12 +11400,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13653,12 +11418,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13739,12 +11498,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13763,12 +11516,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13777,12 +11524,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13797,12 +11538,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13811,12 +11546,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13835,12 +11564,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13906,12 +11629,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13930,12 +11647,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13947,12 +11658,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -13961,12 +11666,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -13988,12 +11687,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14002,12 +11695,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14026,12 +11713,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14096,12 +11777,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14120,12 +11795,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14134,12 +11803,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14154,12 +11817,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14168,12 +11825,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14192,12 +11843,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14262,12 +11907,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14286,12 +11925,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14300,12 +11933,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14320,12 +11947,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14334,12 +11955,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14358,12 +11973,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14421,12 +12030,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14445,12 +12048,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14462,12 +12059,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14476,12 +12067,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14503,12 +12088,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14517,12 +12096,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14541,12 +12114,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14608,12 +12175,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14632,12 +12193,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14646,12 +12201,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14666,12 +12215,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14680,12 +12223,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14704,12 +12241,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14758,12 +12289,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14782,12 +12307,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14799,12 +12318,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14813,12 +12326,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14840,12 +12347,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14864,12 +12365,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14878,12 +12373,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14902,12 +12391,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -14959,12 +12442,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -14983,12 +12460,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15000,12 +12471,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15014,12 +12479,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15041,12 +12500,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15055,12 +12508,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15079,12 +12526,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15128,12 +12569,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15152,12 +12587,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15166,12 +12595,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15186,12 +12609,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15200,12 +12617,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15224,12 +12635,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15300,8 +12705,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "CODE", "NAME" ],
-            "default" : "CODE"
+            "default" : "CODE",
+            "enum" : [ "CODE", "NAME" ]
           }
         }, {
           "description" : "Direction of ordering",
@@ -15310,8 +12715,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "ASC", "DESC" ],
-            "default" : "DESC"
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
           }
         } ],
         "responses" : {
@@ -15327,12 +12732,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15354,12 +12753,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15368,12 +12761,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15388,12 +12775,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15402,12 +12783,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15426,12 +12801,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15483,12 +12852,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15507,12 +12870,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15524,12 +12881,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15538,12 +12889,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15565,12 +12910,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15579,12 +12918,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15606,12 +12939,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           }
@@ -15624,6 +12951,176 @@
         "summary" : "Create a payment service provider",
         "tags" : [ "Payment Service Providers" ]
       }
+    },
+    "/paymentserviceproviders/view" : {
+      "get" : {
+        "operationId" : "getPaymentServiceProvidersView",
+        "parameters" : [ {
+          "description" : "Number of elements on one page. Default = 50",
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 50
+          }
+        }, {
+          "description" : "Page number. Page value starts from 0",
+          "in" : "query",
+          "name" : "page",
+          "required" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "description" : "Filter by psp code",
+          "in" : "query",
+          "name" : "pspCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by psp broker code",
+          "in" : "query",
+          "name" : "pspBrokerCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by channel code",
+          "in" : "query",
+          "name" : "channelCode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by payment type",
+          "in" : "query",
+          "name" : "paymentType",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "Filter by payment model",
+          "in" : "query",
+          "name" : "paymentModel",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentServiceProvidersView"
+                }
+              }
+            },
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ],
+        "summary" : "Get view Payment Service Providers channel broker",
+        "tags" : [ "Payment Service Providers" ]
+      },
+      "parameters" : [ {
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "in" : "header",
+        "name" : "X-Request-Id",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
     },
     "/paymentserviceproviders/{pspcode}" : {
       "delete" : {
@@ -15647,12 +13144,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15671,12 +13162,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15688,12 +13173,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15702,12 +13181,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15729,12 +13202,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15743,12 +13210,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15767,12 +13228,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15816,12 +13271,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15840,12 +13289,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15857,12 +13300,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15871,12 +13308,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15898,12 +13329,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -15912,12 +13337,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -15936,12 +13355,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16003,12 +13416,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16027,12 +13434,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16044,12 +13445,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16058,12 +13453,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16085,12 +13474,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16099,12 +13482,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16123,12 +13500,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16174,12 +13545,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16198,12 +13563,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16215,12 +13574,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16229,12 +13582,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16256,12 +13603,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16270,12 +13611,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16294,12 +13629,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16361,12 +13690,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16385,12 +13708,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16402,12 +13719,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16416,12 +13727,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16443,12 +13748,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16467,12 +13766,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16481,12 +13774,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16505,12 +13792,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16562,12 +13843,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16586,12 +13861,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16603,12 +13872,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16617,12 +13880,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16644,12 +13901,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16668,12 +13919,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16682,12 +13927,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16706,12 +13945,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16783,12 +14016,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16807,12 +14034,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16824,12 +14045,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16838,12 +14053,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16865,12 +14074,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16879,12 +14082,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16903,12 +14100,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -16944,12 +14135,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16968,12 +14153,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -16982,12 +14161,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17002,12 +14175,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17016,12 +14183,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17040,12 +14201,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17099,12 +14254,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17123,12 +14272,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17137,12 +14280,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17157,12 +14294,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17171,12 +14302,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17195,12 +14320,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17254,12 +14373,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17278,12 +14391,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17292,12 +14399,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17312,12 +14413,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17326,12 +14421,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17350,12 +14439,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17497,8 +14580,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "IT", "EN", "FR", "DE", "SL" ],
-            "default" : "IT"
+            "default" : "IT",
+            "enum" : [ "IT", "EN", "FR", "DE", "SL" ]
           }
         }, {
           "in" : "query",
@@ -17524,12 +14607,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17548,12 +14625,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17562,12 +14633,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17582,12 +14647,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17596,12 +14655,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17620,12 +14673,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17704,8 +14751,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "enum" : [ "ASC", "DESC" ],
-            "default" : "DESC"
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
           }
         } ],
         "responses" : {
@@ -17721,12 +14768,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17748,12 +14789,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17762,12 +14797,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17782,12 +14811,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17796,12 +14819,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17820,12 +14837,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17877,12 +14888,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17901,12 +14906,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17918,12 +14917,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17932,12 +14925,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17959,12 +14946,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -17973,12 +14954,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -17997,12 +14972,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18039,12 +15008,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18053,12 +15016,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18073,12 +15030,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18087,12 +15038,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18111,12 +15056,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18164,12 +15103,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18188,12 +15121,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18205,12 +15132,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18219,12 +15140,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18246,12 +15161,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18260,12 +15169,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18284,12 +15187,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18334,12 +15231,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18358,12 +15249,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18375,12 +15260,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18389,12 +15268,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18416,12 +15289,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18430,12 +15297,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18454,12 +15315,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18523,12 +15378,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18547,12 +15396,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18564,12 +15407,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18578,12 +15415,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18605,12 +15436,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18619,12 +15444,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18643,12 +15462,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18715,12 +15528,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18739,12 +15546,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18756,12 +15557,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18770,12 +15565,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18797,12 +15586,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18811,12 +15594,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18835,12 +15612,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18896,12 +15667,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18920,12 +15685,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18937,12 +15696,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18951,12 +15704,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -18983,12 +15730,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -18997,12 +15738,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -19021,12 +15756,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -19091,12 +15820,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -19115,12 +15838,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -19132,12 +15849,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -19146,12 +15857,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -19173,12 +15878,6 @@
                 "schema" : {
                   "type" : "string"
                 }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
-                "schema" : {
-                  "type" : "string"
-                }
               }
             }
           },
@@ -19187,12 +15886,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -19211,12 +15904,6 @@
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              },
-              "X-Warning" : {
-                "description" : "This header identifies response validation error",
                 "schema" : {
                   "type" : "string"
                 }
@@ -19466,7 +16153,7 @@
         }
       },
       "ChannelDetails" : {
-        "required" : [ "agid", "broker_psp_code", "card_chart", "channel_code", "digital_stamp_brand", "enabled", "on_us", "payment_model", "port", "primitive_version", "protocol", "recovery", "rt_push", "thread_number", "timeout_a", "timeout_b", "timeout_c" ],
+        "required" : [ "agid", "broker_psp_code", "card_chart", "channel_code", "digital_stamp_brand", "enabled", "flag_psp_cp", "on_us", "payment_model", "port", "primitive_version", "protocol", "recovery", "rt_push", "thread_number", "timeout_a", "timeout_b", "timeout_c" ],
         "type" : "object",
         "properties" : {
           "agid" : {
@@ -19496,6 +16183,10 @@
           "flag_io" : {
             "type" : "boolean"
           },
+          "flag_psp_cp" : {
+            "type" : "boolean",
+            "description" : "Represents the authorization to carry out the transfer of the information present in additional payment information in the tags relating to payment by card for the PA in V1"
+          },
           "ip" : {
             "type" : "string"
           },
@@ -19505,7 +16196,7 @@
           "new_password" : {
             "type" : "string"
           },
-          "npm_service" : {
+          "nmp_service" : {
             "type" : "string"
           },
           "on_us" : {
@@ -19587,10 +16278,20 @@
           "target_host" : {
             "type" : "string"
           },
+          "target_host_nmp" : {
+            "type" : "string"
+          },
           "target_path" : {
             "type" : "string"
           },
+          "target_path_nmp" : {
+            "type" : "string"
+          },
           "target_port" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "target_port_nmp" : {
             "type" : "integer",
             "format" : "int64"
           },
@@ -19985,6 +16686,46 @@
           }
         }
       },
+      "CreditorInstitutionView" : {
+        "required" : [ "broker_code", "creditor_institution_code", "station_code" ],
+        "type" : "object",
+        "properties" : {
+          "application_code" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "aux_digit" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "broker_code" : {
+            "maxLength" : 35,
+            "minLength" : 0,
+            "type" : "string",
+            "example" : "223344556677889900"
+          },
+          "creditor_institution_code" : {
+            "maxLength" : 35,
+            "minLength" : 0,
+            "type" : "string",
+            "example" : "1234567890100"
+          },
+          "mod4" : {
+            "type" : "boolean"
+          },
+          "segregation_code" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "station_code" : {
+            "maxLength" : 35,
+            "minLength" : 0,
+            "type" : "string",
+            "example" : "1234567890100"
+          }
+        }
+      },
       "CreditorInstitutions" : {
         "required" : [ "creditor_institutions", "page_info" ],
         "type" : "object",
@@ -19993,6 +16734,21 @@
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/CreditorInstitution"
+            }
+          },
+          "page_info" : {
+            "$ref" : "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "CreditorInstitutionsView" : {
+        "required" : [ "creditor_institutions", "page_info" ],
+        "type" : "object",
+        "properties" : {
+          "creditor_institutions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CreditorInstitutionView"
             }
           },
           "page_info" : {
@@ -20098,6 +16854,82 @@
           }
         }
       },
+      "IbanEnhanced" : {
+        "required" : [ "ci_owner", "iban", "is_active", "publication_date", "validity_date" ],
+        "type" : "object",
+        "properties" : {
+          "ci_owner" : {
+            "maxLength" : 11,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "Fiscal code of the Creditor Institution who owns the iban",
+            "readOnly" : true,
+            "example" : "77777777777"
+          },
+          "company_name" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "The Creditor Institution company name",
+            "readOnly" : true,
+            "example" : "Comune di Firenze"
+          },
+          "description" : {
+            "maxLength" : 300,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "The description the Creditor Institution gives to the iban about its usage",
+            "example" : "Riscossione Tributi"
+          },
+          "iban" : {
+            "maxLength" : 35,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "The iban code",
+            "example" : "IT99C0222211111000000000000"
+          },
+          "is_active" : {
+            "type" : "boolean",
+            "description" : "True if the iban is active",
+            "example" : true
+          },
+          "labels" : {
+            "type" : "array",
+            "description" : "The labels array associated with the iban",
+            "items" : {
+              "$ref" : "#/components/schemas/IbanLabel"
+            }
+          },
+          "publication_date" : {
+            "type" : "string",
+            "description" : "The date on which the iban has been inserted in the system",
+            "format" : "date-time",
+            "readOnly" : true,
+            "example" : "2023-06-01T23:59:59.999Z"
+          },
+          "validity_date" : {
+            "type" : "string",
+            "description" : "The date the Creditor Institution wants the iban to be used for its payments",
+            "format" : "date-time",
+            "example" : "2023-04-01T13:49:19.897Z"
+          }
+        }
+      },
+      "IbanLabel" : {
+        "required" : [ "description", "name" ],
+        "type" : "object",
+        "properties" : {
+          "description" : {
+            "type" : "string",
+            "example" : "The IBAN to use for CUP payments"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "CUP"
+          }
+        },
+        "description" : "The labels array associated with the iban"
+      },
       "Ibans" : {
         "required" : [ "ibans" ],
         "type" : "object",
@@ -20106,6 +16938,18 @@
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/Iban"
+            }
+          }
+        }
+      },
+      "IbansEnhanced" : {
+        "required" : [ "ibans_enhanced" ],
+        "type" : "object",
+        "properties" : {
+          "ibans_enhanced" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/IbanEnhanced"
             }
           }
         }
@@ -20249,6 +17093,32 @@
           }
         }
       },
+      "PaymentServiceProviderView" : {
+        "required" : [ "broker_psp_code", "channel_code", "payment_method", "payment_type", "psp_code" ],
+        "type" : "object",
+        "properties" : {
+          "broker_psp_code" : {
+            "maxLength" : 35,
+            "minLength" : 0,
+            "type" : "string",
+            "example" : "223344556677889900"
+          },
+          "channel_code" : {
+            "type" : "string",
+            "example" : "223344556677889900"
+          },
+          "payment_method" : {
+            "type" : "string"
+          },
+          "payment_type" : {
+            "type" : "string"
+          },
+          "psp_code" : {
+            "pattern" : "[A-Z0-9_]{6,14}",
+            "type" : "string"
+          }
+        }
+      },
       "PaymentServiceProviders" : {
         "required" : [ "page_info", "payment_service_providers" ],
         "type" : "object",
@@ -20260,6 +17130,21 @@
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/PaymentServiceProvider"
+            }
+          }
+        }
+      },
+      "PaymentServiceProvidersView" : {
+        "required" : [ "page_info", "payment_service_providers" ],
+        "type" : "object",
+        "properties" : {
+          "page_info" : {
+            "$ref" : "#/components/schemas/PageInfo"
+          },
+          "payment_service_providers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PaymentServiceProviderView"
             }
           }
         }
@@ -20788,10 +17673,20 @@
           "target_host" : {
             "type" : "string"
           },
+          "target_host_pof" : {
+            "type" : "string"
+          },
           "target_path" : {
             "type" : "string"
           },
+          "target_path_pof" : {
+            "type" : "string"
+          },
           "target_port" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "target_port_pof" : {
             "type" : "integer",
             "format" : "int64"
           },

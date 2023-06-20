@@ -29,12 +29,18 @@
       "delete": {
         "min_age": "7d",
         "actions": {
-          "delete": {}
+          "delete": {
+            "delete_searchable_snapshot": true
+          },
+          "wait_for_snapshot": {
+            "policy": "${policy_name}"
+          }
         }
       }
     },
     "_meta": {
-      "description": "Policy ${name}"
+      "description": "${name}",
+      "managed": ${managed}
     }
   }
 }

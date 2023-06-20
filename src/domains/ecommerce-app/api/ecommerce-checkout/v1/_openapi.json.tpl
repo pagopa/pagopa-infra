@@ -1133,6 +1133,10 @@
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
+          "isAllCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
+          },
           "transferList": {
             "type": "array",
             "items": {
@@ -1145,7 +1149,8 @@
         "required": [
           "rptId",
           "amount",
-          "transferList"
+          "transferList",
+          "isAllCCP"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
@@ -1153,6 +1158,7 @@
           "reason": "reason1",
           "amount": 600,
           "authToken": "authToken1",
+          "isAllCCP": false,
           "transferList": [
             {
               "paFiscalCode": "77777777777",
@@ -1289,11 +1295,12 @@
             "example": "idCartFromCreditorInstitution"
           },
           "sendPaymentResultOutcome": {
-            "description": "The outcome of sendPaymentResult api",
+            "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
             "type": "string",
             "enum": [
               "OK",
-              "KO"
+              "KO",
+              "NOT_RECEIVED"
             ]
           },
           "authorizationCode": {
@@ -1345,6 +1352,10 @@
             ],
             "description": "Requested language"
           },
+          "isAllCCP": {
+            "type": "boolean",
+            "description": "Check flag for psp validation"
+          },
           "details": {
             "$ref": "#/components/schemas/PaymentInstrumentDetail"
           }
@@ -1355,6 +1366,7 @@
           "paymentInstrumentId",
           "pspId",
           "language",
+          "isAllCCP",
           "details"
         ]
       },
@@ -1793,13 +1805,18 @@
             "items": {
               "$ref": "#/components/schemas/TransferListItem"
             }
+          },
+          "isAllCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
           }
         },
         "required": [
           "paymentAmount",
           "primaryCreditorInstitution",
           "transferList",
-          "touchpoint"
+          "touchpoint",
+          "isAllCCP"
         ]
       },
       "CalculateFeeResponse": {

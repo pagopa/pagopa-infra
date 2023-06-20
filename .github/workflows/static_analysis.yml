@@ -19,6 +19,8 @@ jobs:
           FOLDERS: >
             src/aks-platform
             src/core
+            src/domains/aca-app
+            src/domains/aca-common
             src/domains/afm-app
             src/domains/afm-common
             src/domains/bizevents-app
@@ -35,6 +37,8 @@ jobs:
             src/domains/selfcare-common
             src/domains/shared-app
             src/domains/shared-common
+            src/domains/wallet-app
+            src/domains/wallet-common
         run: |
           pids=()
 

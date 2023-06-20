@@ -105,5 +105,36 @@ custom_metric_alerts = {
   }
 }
 
+### Cosmos
 
+cosmos_mongo_db_params = {
+  enabled      = true
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo", "EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 5
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
 
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
+
+  backup_continuous_enabled = false
+
+}
+
+cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
+
+cosmos_mongo_db_fdr_params = {
+  enable_serverless  = true
+  enable_autoscaling = true
+  max_throughput     = 5000
+  throughput         = 1000
+}
