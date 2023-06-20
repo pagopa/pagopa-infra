@@ -21,3 +21,22 @@ data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
 }
+
+data "azurerm_key_vault_secret" "opsgenie_webhook_key" {
+  name         = "opsgenie-webhook-token"
+  key_vault_id = data.azurerm_key_vault.core_kv.id
+}
+
+resource "azurerm_monitor_action_group" "opsgenie" {
+  name                = "Opsgenie"
+  resource_group_name = var.monitor_resource_group_name
+  short_name          = "opsgenie"
+
+  webhook_receiver {
+    name                    = "Opsgenie-WebHook"
+    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.opsgenie_webhook_key.value}"
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
+}
