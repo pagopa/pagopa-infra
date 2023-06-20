@@ -11,11 +11,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_out_of_m
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie.id]
-    email_subject          = format("Out-of-memory %s", each.key)
+    email_subject          = format("[%s] Out-of-memory %s", var.env, each.key)
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = format("Problem to generate cache - %s", each.key)
+  description    = format("[%s] Problem to generate cache - %s", var.env each.key)
   enabled        = true
   query          = format(local.apiconfig_cache_alert.outOfMemory.query, format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, each.key))
 
