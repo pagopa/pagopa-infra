@@ -23,7 +23,7 @@ module "ecommerce_storage_snet" {
 resource "azurerm_private_endpoint" "storage_transient_private_endpoint" {
   count = var.env_short != "d" ? 1 : 0
 
-  name                = "${local.project}-transient-storage-private-endpoint"
+  name                = "${local.project}-tr-storage-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   subnet_id           = module.ecommerce_storage_snet.id
@@ -47,7 +47,7 @@ module "ecommerce_storage_transient" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
 
 
-  name                            = replace("${local.project}-transient-sa", "-", "")
+  name                            = replace("${local.project}-tr-sa", "-", "")
   account_kind                    = var.ecommerce_storage_transient_params.kind
   account_tier                    = var.ecommerce_storage_transient_params.tier
   account_replication_type        = var.ecommerce_storage_transient_params.account_replication_type
@@ -114,7 +114,7 @@ resource "azurerm_storage_queue" "transactions_notifications_queue" {
 resource "azurerm_private_endpoint" "storage_deadletter_private_endpoint" {
   count = var.env_short != "d" ? 1 : 0
 
-  name                = "${local.project}-deadletter-storage-private-endpoint"
+  name                = "${local.project}-dl-storage-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   subnet_id           = module.ecommerce_storage_snet.id
@@ -138,7 +138,7 @@ module "ecommerce_storage_deadletter" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
 
 
-  name                            = replace("${local.project}-deadletter-sa", "-", "")
+  name                            = replace("${local.project}-dl-sa", "-", "")
   account_kind                    = var.ecommerce_storage_deadletter_params.kind
   account_tier                    = var.ecommerce_storage_deadletter_params.tier
   account_replication_type        = var.ecommerce_storage_deadletter_params.account_replication_type
