@@ -20,7 +20,7 @@ module "ecommerce_storage_snet" {
   ]
 }
 
-resource "azurerm_private_endpoint" "storage_working_private_endpoint" {
+resource "azurerm_private_endpoint" "storage_transient_private_endpoint" {
   count = var.env_short != "d" ? 1 : 0
 
   name                = "${local.project}-storage-private-endpoint"
@@ -111,7 +111,7 @@ resource "azurerm_storage_queue" "transactions_notifications_queue" {
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
-resource "azurerm_private_endpoint" "storage_recovery_private_endpoint" {
+resource "azurerm_private_endpoint" "storage_deadletter_private_endpoint" {
   count = var.env_short != "d" ? 1 : 0
 
   name                = "${local.project}-storage-private-endpoint"
