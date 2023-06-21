@@ -116,7 +116,20 @@ locals {
       query = <<-QUERY
             traces
             | where cloud_RoleName == "%s"
-            | where message contains "could not save on db"
+            | where message contains "[ALERT] could not save on db"
+            | order by timestamp desc
+            | summarize Total=count() by length=bin(timestamp,1m)
+            | order by length desc
+            QUERY
+      severity    = 0
+      frequency   = 5
+      time_window = 5
+    }
+    cacheGeneration = {
+      query = <<-QUERY
+            traces
+            | where cloud_RoleName == "%s"
+            | where message contains "[ALERT] problem to generate cache"
             | order by timestamp desc
             | summarize Total=count() by length=bin(timestamp,1m)
             | order by length desc
@@ -126,6 +139,5 @@ locals {
       time_window = 5
     }
   }
-
 }
 
