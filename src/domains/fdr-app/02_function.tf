@@ -31,7 +31,7 @@ module "reporting_fdr_function" {
   resource_group_name                      = azurerm_resource_group.reporting_fdr_rg.name
   name                                     = "${local.product}-fn-reportingfdr"
   location                                 = var.location
-  health_check_path                        = "info"
+  health_check_path                        = "/api/info"
   subnet_id                                = module.reporting_fdr_function_snet[0].id
   runtime_version                          = "~3"
   always_on                                = var.reporting_fdr_function_always_on
