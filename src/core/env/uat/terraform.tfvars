@@ -120,6 +120,9 @@ app_gateway_deny_paths_2 = [
   "/payment-manager/pp-restapi-server/.*",
   "/shared/authorizer/.*", # internal use no sub-keys
 ]
+app_gateway_kibana_deny_paths = [
+  "/kibana/*",
+]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
     "/web-bo/.*",

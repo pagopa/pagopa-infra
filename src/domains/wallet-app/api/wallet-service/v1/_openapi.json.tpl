@@ -30,14 +30,9 @@
         "summary": "Create a new wallet",
         "description": "Creates a new wallet",
         "operationId": "createWallet",
-        "parameters": [
+        "security": [
           {
-            "in": "header",
-            "name": "x-user-id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
+            "bearerAuth": []
           }
         ],
         "requestBody": {
@@ -104,14 +99,9 @@
         "summary": "Get wallet by user identifier",
         "description": "Returns a of wallets related to user",
         "operationId": "getWalletsByIdUser",
-        "parameters": [
+        "security": [
           {
-            "in": "header",
-            "name": "x-user-id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
+            "bearerAuth": []
           }
         ],
         "responses": {
@@ -152,6 +142,11 @@
         "summary": "Get wallet by id",
         "description": "Returns a single wallet",
         "operationId": "getWalletById",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "walletId",
@@ -200,14 +195,6 @@
         "description": "Wallet identifier",
         "type": "string",
         "format": "uuid"
-      },
-      "Type": {
-        "type": "string",
-        "description": "Wallet type enumeration",
-        "enum": [
-          "CARDS",
-          "PAYPAL"
-        ]
       },
       "Service": {
         "type": "string",
@@ -305,9 +292,6 @@
         "type": "object",
         "description": "Wallet creation request",
         "properties": {
-          "type": {
-            "$ref": "#/components/schemas/Type"
-          },
           "services": {
             "type": "array",
             "description": "List of services for which wallet is enabled",
@@ -461,6 +445,18 @@
         "exclusiveMaximum": true,
         "example": 502
       }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "wallet token"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }

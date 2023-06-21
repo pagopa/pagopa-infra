@@ -27,6 +27,11 @@
       "url": "https://${hostname}"
     }
   ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "paths": {
     "/payment-requests/{rpt_id}": {
       "get": {
@@ -578,6 +583,13 @@
             "maxLength": 140
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
       }
     }
   }

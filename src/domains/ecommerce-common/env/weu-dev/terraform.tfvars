@@ -48,7 +48,8 @@ cosmos_mongo_db_params = {
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = false
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled                    = false
+  enable_provisioned_throughput_exceeded_alert = false
 
 }
 
@@ -67,6 +68,7 @@ redis_ecommerce_params = {
   capacity = 0
   sku_name = "Basic"
   family   = "C"
+  version  = 6
 }
 
 ecommerce_storage_params = {
