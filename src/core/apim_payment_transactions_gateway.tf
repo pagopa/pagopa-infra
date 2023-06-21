@@ -3,8 +3,8 @@ data "azurerm_key_vault_secret" "pm_onprem_hostname" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "payment_gateway_service_jwt_key_secret" {
-  name         = "payment-gateway-service-jwt-key-secret"
+data "azurerm_key_vault_secret" "pgs_jwt_key" {
+  name         = "pgs-jwt-key"
   key_vault_id = module.key_vault.id
 }
 
@@ -234,7 +234,7 @@ resource "azurerm_api_management_named_value" "payment_gateway_service_jwt_key" 
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "payment-gateway-service-jwt-key"
-  value               = data.azurerm_key_vault_secret.payment_gateway_service_jwt_key_secret.value
+  value               = data.azurerm_key_vault_secret.pgs_jwt_key.value
   secret              = true
 }
 

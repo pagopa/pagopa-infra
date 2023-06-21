@@ -81,6 +81,7 @@
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_linux_function_app.api_config](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/linux_function_app) | data source |
 | [azurerm_linux_function_app.gpd](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/linux_function_app) | data source |
+| [azurerm_linux_function_app.mockec](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/linux_function_app) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/monitor_action_group) | data source |

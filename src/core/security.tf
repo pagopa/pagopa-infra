@@ -209,8 +209,8 @@ data "azurerm_key_vault_secret" "google_recaptcha_secret" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "payment_gateway_service_jwt_key_secret" {
-  name         = "payment-gateway-service-jwt-key-secret"
+resource "azurerm_key_vault_secret" "pgs_jwt_key" {
+  name         = "pgs-jwt-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
