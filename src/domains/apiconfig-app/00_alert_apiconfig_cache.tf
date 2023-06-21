@@ -10,7 +10,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_out_of_m
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = format("[%s] Out-of-memory %s", var.env, each.key)
     custom_webhook_payload = "{}"
   }
