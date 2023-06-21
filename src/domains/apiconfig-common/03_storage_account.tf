@@ -1,5 +1,5 @@
-resource "azurerm_resource_group" "api_config_rg" {
-  name     = format("%s-api-config-rg", local.product)
+resource "azurerm_resource_group" "api_config_common_rg" {
+  name     = format("%s-api-config-common-rg", local.product)
   location = var.location
 
   tags = var.tags
@@ -14,7 +14,7 @@ module "api_config_ica_sa" {
   account_replication_type        = "LRS"
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.api_config_enable_versioning
-  resource_group_name             = azurerm_resource_group.api_config_rg.name
+  resource_group_name             = azurerm_resource_group.api_config_common_rg.name
   location                        = var.location
   advanced_threat_protection      = var.api_config_reporting_advanced_threat_protection
   allow_nested_items_to_be_public = false
@@ -27,6 +27,6 @@ module "api_config_ica_sa" {
 
 
 resource "azurerm_storage_table" "ica_table" {
-  name                 = format("%sica_table", module.api_config_ica_sa.name)
+  name                 = format("%sicatable", module.api_config_ica_sa.name)
   storage_account_name = module.api_config_ica_sa.name
 }

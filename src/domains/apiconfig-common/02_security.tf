@@ -259,13 +259,9 @@ module "letsencrypt_apiconfig" {
 
 }
 
-data "azurerm_resource_group" "api_config_rg" {
-  name = format("%s-api-config-rg", local.product)
-}
-
 data "azurerm_storage_account" "api_config_ica_sa" {
   name                = replace(format("%s-sa", local.project), "-", "")
-  resource_group_name = data.azurerm_resource_group.api_config_rg.name
+  resource_group_name = azurerm_resource_group.api_config_common_rg.name
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
