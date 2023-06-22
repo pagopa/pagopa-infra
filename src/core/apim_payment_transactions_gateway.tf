@@ -3,6 +3,18 @@ data "azurerm_key_vault_secret" "pm_onprem_hostname" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "pgs_jwt_key" {
+  name         = "pgs-jwt-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 data "azurerm_key_vault_secret" "pgs_jwt_key" {
   name         = "pgs-jwt-key"
   key_vault_id = module.key_vault.id
