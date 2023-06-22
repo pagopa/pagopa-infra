@@ -1,10 +1,9 @@
-resource "azurerm_resource_group" "api_config_common_rg" {
-  name     = format("%s-api-config-common-rg", local.product)
-  location = var.location
+# resource "azurerm_resource_group" "api_config_common_rg" {
+#   name     = format("%s-api-config-common-rg", local.product)
+#   location = var.location
 
-  tags = var.tags
-}
-
+#   tags = var.tags
+# }
 module "api_config_ica_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.6.1"
 
@@ -14,7 +13,7 @@ module "api_config_ica_sa" {
   account_replication_type        = "LRS"
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.api_config_enable_versioning
-  resource_group_name             = azurerm_resource_group.api_config_common_rg.name
+  resource_group_name             = data.azurerm_resource_group.api_config_rg.name
   location                        = var.location
   advanced_threat_protection      = var.api_config_reporting_advanced_threat_protection
   allow_nested_items_to_be_public = false
