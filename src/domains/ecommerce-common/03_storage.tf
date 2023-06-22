@@ -162,12 +162,12 @@ module "ecommerce_storage_deadletter" {
 }
 
 
-resource "azurerm_storage_queue" "notifications_service_errors_queue" {
-  name                 = "${local.project}-notifications-service-errors-queue"
+resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
+  name                 = "${local.project}-transactions-dead-letter-queue"
   storage_account_name = module.ecommerce_storage_deadletter.name
 }
 
-resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
-  name                 = "${local.project}-transactions-dead-letter-queue"
+resource "azurerm_storage_queue" "notifications_service_errors_queue" {
+  name                 = "${local.project}-notifications-service-errors-queue"
   storage_account_name = module.ecommerce_storage_deadletter.name
 }

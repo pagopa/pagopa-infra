@@ -68,7 +68,7 @@ locals {
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
     # Spring Environment
-    SPRING_DATASOURCE_USERNAME = var.env_short == "d" ? format("%s@pagopa-%s-postgresql", data.azurerm_key_vault_secret.gpd_db_usr.value, var.env_short) : data.azurerm_key_vault_secret.gpd_db_usr.value
+    SPRING_DATASOURCE_USERNAME = data.azurerm_key_vault_secret.gpd_db_usr.value
     SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.gpd_db_pwd.value
     # Deactivation prepareThreshold=0 https://jdbc.postgresql.org/documentation/head/server-prepare.html
     SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name, (var.env_short != "d" ? "&prepareThreshold=0" : "")) : "")
