@@ -4,7 +4,7 @@
         "title": "PagoPA API Payments ${service}",
         "description": "Payments",
         "termsOfService": "https://www.pagopa.gov.it/",
-        "version": "0.0.16-4"
+        "version": "0.3.4"
     },
     "servers": [
         {
@@ -27,46 +27,6 @@
                 "description": "Return OK if application is started",
                 "operationId": "healthCheck",
                 "responses": {
-                    "429": {
-                        "description": "Too many requests",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Service unavailable",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
                     "200": {
                         "description": "OK",
                         "headers": {
@@ -103,6 +63,17 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Unauthorized",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
                     "403": {
                         "description": "Forbidden",
                         "headers": {
@@ -110,6 +81,35 @@
                                 "description": "This header identifies the call",
                                 "schema": {
                                     "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Too many requests",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Service unavailable",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemJson"
                                 }
                             }
                         }
@@ -150,6 +150,27 @@
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pageNum",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "minimum": 0,
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "Number of elements per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
                         }
                     },
                     {
@@ -291,7 +312,8 @@
                         "required": true,
                         "schema": {
                             "type": "string"
-                        }
+                        },
+                        "example": 12345
                     },
                     {
                         "name": "iuv",
@@ -300,7 +322,8 @@
                         "required": true,
                         "schema": {
                             "type": "string"
-                        }
+                        },
+                        "example": "ABC123"
                     }
                 ],
                 "responses": {
@@ -316,6 +339,17 @@
                         },
                         "content": {
                             "application/xml": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong or missing function key.",
+                        "headers": {
+                            "X-Request-Id": {
+                                "description": "This header identifies the call",
                                 "schema": {
                                     "type": "string"
                                 }
@@ -385,17 +419,6 @@
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "description": "Wrong or missing function key.",
-                        "headers": {
-                            "X-Request-Id": {
-                                "description": "This header identifies the call",
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
                     }
                 },
                 "security": [
@@ -443,35 +466,6 @@
                     }
                 }
             },
-            "PageInfo": {
-                "required": [
-                    "items_found",
-                    "more_pages",
-                    "page"
-                ],
-                "type": "object",
-                "properties": {
-                    "page": {
-                        "type": "integer",
-                        "description": "Page number",
-                        "format": "int32"
-                    },
-                    "limit": {
-                        "type": "integer",
-                        "description": "Number of items per page",
-                        "format": "int32"
-                    },
-                    "items_found": {
-                        "type": "integer",
-                        "description": "Number of items found",
-                        "format": "int32"
-                    },
-                    "more_pages": {
-                        "type": "boolean",
-                        "description": "More elements on the following pages"
-                    }
-                }
-            },
             "ReceiptModelResponse": {
                 "type": "object",
                 "properties": {
@@ -481,14 +475,19 @@
                     "iuv": {
                         "type": "string"
                     },
-                    "debtorFiscalCode": {
+                    "debtor": {
+                        "type": "string"
+                    },
+                    "paymentDateTime": {
+                        "type": "string"
+                    },
+                    "status": {
                         "type": "string"
                     }
                 }
             },
             "ReceiptsInfo": {
                 "required": [
-                    "page_info",
                     "receipts_list"
                 ],
                 "type": "object",
@@ -498,9 +497,6 @@
                         "items": {
                             "$ref": "#/components/schemas/ReceiptModelResponse"
                         }
-                    },
-                    "page_info": {
-                        "$ref": "#/components/schemas/PageInfo"
                     }
                 }
             },

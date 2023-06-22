@@ -129,7 +129,6 @@ resource "azurerm_key_vault_secret" "gpd_reporting_batch_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-
 ## ########################### ##
 ## TODO put it into gps-secret
 ## ########################### ##
@@ -178,6 +177,7 @@ resource "azurerm_key_vault_secret" "gpd_reporting_enrollment_subscription_key" 
     ]
   }
 }
+
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "gpd_apiconfig_subscription_key" {
