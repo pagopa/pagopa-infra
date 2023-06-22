@@ -33,7 +33,7 @@ module "apim_mocker_core_api_v1" {
   })
 
   xml_content = templatefile("./api/mocker-core/v1/_base_policy.xml", {
-    hostname = local.mocker_hostname
+    hostname = local.mock_hostname
   })
 }
 

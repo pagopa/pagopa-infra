@@ -34,10 +34,10 @@ locals {
   pagopa_apim_snet = "${local.product}-apim-snet"
 
   apim_hostname    = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  mocker_hostname  = "weu${var.env}.mocker.internal.${var.env}.platform.pagopa.it"
+  mock_hostname  = "weu${var.env}.mock.internal.${var.env}.platform.pagopa.it"
 
-  mocker_kv_rg = "${local.product}-${var.domain}-sec-rg"
-  mocker_kv    = "${local.product}-${var.domain}-kv"
+  mock_kv_rg = "${local.product}-${var.domain}-sec-rg"
+  mock_kv    = "${local.product}-${var.domain}-kv"
 
   mocker_db_hostname     = data.azurerm_postgresql_server.postgresql.fqdn
   mocker_dbms_port    = "5432" # replace data fetch of module.postgres_flexible_server_private[0].connection_port present in gpd-common

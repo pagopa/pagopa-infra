@@ -65,7 +65,6 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
-/*
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "psql_admin_user" {
   name         = "psql-mocker-admin-user"
@@ -97,11 +96,9 @@ resource "azurerm_key_vault_secret" "psql_admin_pwd" {
 }
 
 resource "azurerm_key_vault_secret" "ai_connection_string" {
-  name         = format("ai-connection-string", var.env_short)
+  name         = "ai-connection-string"
   value        = data.azurerm_application_insights.application_insights.connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
-
-*/

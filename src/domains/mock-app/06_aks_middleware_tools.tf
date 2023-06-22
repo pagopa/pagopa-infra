@@ -2,8 +2,8 @@
 module "tls_checker" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v6.7.0"
 
-  https_endpoint                                            = local.mocker_hostname
-  alert_name                                                = local.mocker_hostname
+  https_endpoint                                            = local.mock_hostname
+  alert_name                                                = local.mock_hostname
   alert_enabled                                             = true
   helm_chart_present                                        = true
   helm_chart_version                                        = var.tls_cert_check_helm.chart_version
@@ -14,8 +14,8 @@ module "tls_checker" {
   application_insights_resource_group                       = data.azurerm_resource_group.monitor_rg.name
   application_insights_id                                   = data.azurerm_application_insights.application_insights.id
   application_insights_action_group_ids                     = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
-  keyvault_name                                             = data.azurerm_key_vault.mocker_kv.name
-  keyvault_tenant_id                                        = data.azurerm_key_vault.mocker_kv.tenant_id
+  keyvault_name                                             = data.azurerm_key_vault.mock_kv.name
+  keyvault_tenant_id                                        = data.azurerm_key_vault.mock_kv.tenant_id
   kv_secret_name_for_application_insights_connection_string = "ai-connection-string"
 }
 
@@ -33,7 +33,7 @@ resource "helm_release" "cert_mounter" {
       templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
         NAMESPACE        = var.domain,
         DOMAIN           = var.domain
-        CERTIFICATE_NAME = replace(local.mocker_hostname, ".", "-"),
+        CERTIFICATE_NAME = replace(local.mock_hostname, ".", "-"),
         ENV_SHORT        = var.env_short,
       })
     }"
