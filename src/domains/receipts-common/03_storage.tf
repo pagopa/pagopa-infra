@@ -91,6 +91,11 @@ resource "azurerm_storage_queue" "queue-receipt-waiting-4-gen" {
   storage_account_name = module.receipts_datastore_fn_sa.name
 }
 
+resource "azurerm_storage_queue" "queue-receipt-io-notifier-error" {
+  name                 = "${local.project}-queue-receipt-io-notifier-error"
+  storage_account_name = module.receipts_datastore_fn_sa.name
+}
+
 ## blob container attachments
 resource "azurerm_storage_container" "blob-receipt-st-attach" {
   name                  = "${local.project}-azure-blob-receipt-st-attach"
