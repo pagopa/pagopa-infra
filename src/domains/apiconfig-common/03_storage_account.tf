@@ -4,6 +4,16 @@
 
 #   tags = var.tags
 # }
+
+data "azurerm_resource_group" "api_config_rg" {
+  name = "${local.product}-api-config-rg"
+}
+
+data "azurerm_storage_account" "api_config_ica_sa" {
+  name                = replace(format("%s-sa", local.project), "-", "")
+  resource_group_name = data.azurerm_resource_group.api_config_rg.name
+}
+
 module "api_config_ica_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.6.1"
 
@@ -21,7 +31,7 @@ module "api_config_ica_sa" {
   enable_low_availability_alert   = false
 
   blob_delete_retention_days = var.api_config_reporting_delete_retention_days
-  tags = var.tags
+  tags                       = var.tags
 }
 
 
