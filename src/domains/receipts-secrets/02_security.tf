@@ -118,3 +118,16 @@ module "letsencrypt_receipt" {
   subscription_name = local.subscription_name
 }
 
+
+# data "azurerm_cosmosdb_account" "pdf_receipts_cosmos_account" {
+#   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-ds-cosmos-account"
+#   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
+# }
+
+# #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+# resource "azurerm_key_vault_secret" "cosmos_receipt_connection_string" {
+#   name         = "cosmos-receipt-${var.env_short}-connection-string"
+#   value        = "AccountEndpoint=https://pagopa-${var.env_short}-${var.location_short}-${var.domain}-ds-cosmos-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.pdf_receipts_cosmos_account.primary_key};"
+#   content_type = "text/plain"
+#   key_vault_id = module.key_vault.id
+# }
