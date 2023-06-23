@@ -61,3 +61,5 @@ tls_cert_check_helm = {
 # docker image
 image_name = "pagopadacr.azurecr.io/reporting-fdr"
 image_tag  = "1.0.10"
+
+apim_fdr_nodo_pagopa_enable = true
