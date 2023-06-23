@@ -27,6 +27,11 @@
       "url": "https://${hostname}"
     }
   ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "paths": {
     "/transactions": {
       "post": {
@@ -1040,6 +1045,13 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
       }
     }
   }

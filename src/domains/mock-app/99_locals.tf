@@ -2,6 +2,7 @@ locals {
   project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product          = "${var.prefix}-${var.env_short}"
   product_location = "${var.prefix}-${var.env_short}-${var.location_short}"
+  project_legacy   = "${var.prefix}-${var.env_short}"
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
@@ -16,9 +17,10 @@ locals {
   monitor_action_group_email_name = "PagoPA"
   monitor_appinsights_name        = "${local.product}-appinsights"
 
-  vnet_name                = "${local.product}-vnet"
-  vnet_resource_group_name = "${local.product}-vnet-rg"
-  pagopa_vnet_integration  = "pagopa-${var.env_short}-vnet-integration"
+  vnet_name                = "${var.prefix}-${var.env_short}-vnet"
+  vnet_resource_group_name = "${var.prefix}-${var.env_short}-vnet-rg"
+  vnet_integration_name    = "${var.prefix}-${var.env_short}-vnet-integration"
+
 
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
@@ -33,11 +35,16 @@ locals {
   pagopa_apim_rg   = "${local.product}-api-rg"
   pagopa_apim_snet = "${local.product}-apim-snet"
 
-  apim_hostname    = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  apim_hostname    = "api.${var.dns_zone_prefix}.${var.external_domain}"
+  apim_subnet_name = "${var.prefix}-${var.env_short}-apim-snet"
+
   mock_hostname  = "weu${var.env}.mock.internal.${var.env}.platform.pagopa.it"
 
   mock_kv_rg = "${local.product}-${var.domain}-sec-rg"
   mock_kv    = "${local.product}-${var.domain}-kv"
+
+  mock_ec_default_site_hostname              = "pagopa-${var.env_short}-app-mock-ec.azurewebsites.net"
+  mock_payment_gateway_default_site_hostname = "pagopa-${var.env_short}-app-mock-payment-gateway.azurewebsites.net"
 
   mocker_db_hostname     = data.azurerm_postgresql_server.postgresql.fqdn
   mocker_dbms_port    = "5432" # replace data fetch of module.postgres_flexible_server_private[0].connection_port present in gpd-common
@@ -54,5 +61,4 @@ locals {
 
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
-
 }

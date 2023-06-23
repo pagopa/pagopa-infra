@@ -25,6 +25,18 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 external_domain                             = "pagopa.it"
 dns_zone_internal_prefix                    = "internal.dev.platform"
 apim_dns_zone_prefix                        = "dev.platform"
+dns_zone_prefix                             = "dev.platform"
+
+cidr_subnet_mock_ec              = ["10.1.137.0/29"]
+cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
+
+lb_aks = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
+
+mock_ec_enabled                    = true
+mock_ec_secondary_enabled          = true
+mock_payment_gateway_enabled       = true
+mock_psp_service_enabled           = true
+mock_psp_secondary_service_enabled = true
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases

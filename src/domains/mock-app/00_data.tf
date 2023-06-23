@@ -7,19 +7,14 @@ data "azurerm_api_management" "apim" {
   resource_group_name = data.azurerm_resource_group.rg_api.name
 }
 
-data "azurerm_key_vault" "mock_kv" {
-  name                = local.mock_kv
-  resource_group_name = local.mock_kv_rg
-}
-
 data "azurerm_key_vault_secret" "mocker_db_user" {
   name         = "db-mocker-user-name"
-  key_vault_id = data.azurerm_key_vault.mock_kv.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 data "azurerm_key_vault_secret" "mocker_db_pwd" {
   name         = "db-mocker-user-pwd"
-  key_vault_id = data.azurerm_key_vault.mock_kv.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 data "azurerm_postgresql_server" "postgresql" {

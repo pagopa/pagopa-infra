@@ -1,36 +1,31 @@
 #!/bin/bash
-############################################################
 # Terraform script for managing infrastructure on Azure
-# Fingerprint: d2hhdHlvdXdhbnQ/Cg==
-############################################################
-# Global variables
-# Version format x.y accepted
-vers="1.3"
-script_name=$(basename "$0")
-git_repo="https://raw.githubusercontent.com/pagopa/eng-common-scripts/main/azure/${script_name}"
-tmp_file="${script_name}.new"
-
+# Version 1.0 (version format x.y accepted)
+#
 # Define functions
 function clean_environment() {
-  rm -rf .terraform
-  rm tfplan 2>/dev/null
+  rm -rf .terraform*
+  rm tfplan
   echo "cleaned!"
 }
 
 function help_usage() {
-  echo "terraform.sh Version ${vers}"
-  echo
+  echo "terraform.sh Version $(sed -n '3p' "$0" | awk '{print $3}')"
   echo "Usage: ./script.sh [ACTION] [ENV] [OTHER OPTIONS]"
   echo "es. ACTION: init, apply, plan, etc."
   echo "es. ENV: dev, uat, prod, etc."
-  echo
   echo "Available actions:"
   echo "  clean         Remove .terraform* folders and tfplan files"
   echo "  help          This help"
+  echo "  init          Initialize Terraform backend and modules"
   echo "  list          List every environment available"
-  echo "  update        Update this script if possible"
+  echo "  plan          Generate Terraform plan"
+  echo "  apply         Apply Terraform plan"
+  echo "  output        Show Terraform output"
+  echo "  state         Show Terraform state"
+  echo "  taint         Taint Terraform resource"
+  echo "  destroy       Destroy Terraform-managed infrastructure"
   echo "  summ          Generate summary of Terraform plan"
-  echo "  *             any terraform option"
 }
 
 function init_terraform() {
@@ -68,7 +63,7 @@ function list_env() {
 
 function other_actions() {
   if [ -n "$env" ] && [ -n "$action" ]; then
-    terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings $other
+    terraform $action -var-file="./env/$env/terraform.tfvars" -compact-warnings $other
   else
     echo "ERROR: no env or action configured!"
     exit 1
@@ -91,50 +86,56 @@ function tfsummary() {
 }
 
 function update_script() {
-  # Check if the repository was cloned successfully
-  if ! curl -sL "$git_repo" -o "$tmp_file"; then
-    echo "Error cloning the repository"
-    rm "$tmp_file" 2>/dev/null
-    return 1
+  set -x
+  # Check if update is needed
+  if [ -z "$(command -v curl)" ]; then
+    echo "curl not found, cannot update script"
+    exit 1
   fi
 
-  # Check if a newer version exists
-  remote_vers=$(sed -n '8s/vers="\(.*\)"/\1/p' "$tmp_file")
-  if [ "$(printf '%s\n' "$vers" "$remote_vers" | sort -V | tail -n 1)" == "$vers" ]; then
-    echo "The local script version is equal to or newer than the remote version."
-    rm "$tmp_file" 2>/dev/null
-    return 0
-  fi
+  current_version=$(sed -n '3p' "$0" | awk '{print $3}')
+  repo_url="https://raw.githubusercontent.com/pagopa/eng-common-scripts/main/azure/terraform.sh"
+  response=$(curl -s -w "%{http_code}" "$repo_url")
 
-  # Check the fingerprint
-  local_fingerprint=$(sed -n '4p' "$0")
-  remote_fingerprint=$(sed -n '4p' "$tmp_file")
-
-  if [ "$local_fingerprint" != "$remote_fingerprint" ]; then
-    echo "The local and remote file fingerprints do not match."
-    rm "$tmp_file" 2>/dev/null
-    return 0
-  fi
-
-  # Show the current and available versions to the user
-  echo "Current script version: $vers"
-  echo "Available script version: $remote_vers"
-
-  # Ask the user if they want to update the script
-  read -rp "Do you want to update the script to version $remote_vers? (y/n): " answer
-
-  if [ "$answer" == "y" ] || [ "$answer" == "Y" ]; then
-    # Replace the local script with the updated version
-    cp "$tmp_file" "$script_name"
-    chmod +x "$script_name"
-    rm "$tmp_file" 2>/dev/null
-
-    echo "Script successfully updated to version $remote_vers"
+  if [ "${response: -3}" == "404" ]; then
+    echo "Script not found in the repository!"
+    exit 1
   else
-    echo "Update canceled by the user"
+    new_version=$(echo "$response" | sed -n '1p')
+    new_script=$(curl -s "$repo_url")
   fi
 
-  rm "$tmp_file" 2>/dev/null
+  exit 0
+  ###
+  ### it will be modified in the future releases
+  ###
+  if [ "$(printf '%s\n' "$new_version" "$current_version" | sort -V | head -n 1)" != "$new_version" ]; then
+    # Ask for confirmation
+    read -p "New version $new_version available. Do you want to update? (y/n) " choice
+    case "$choice" in
+      y|Y )
+        echo "Updating script to version $new_version"
+        ;;
+      * )
+        echo "Update canceled"
+        exit 0
+        ;;
+    esac
+  elif [ "$current_version" == "$new_version" ]; then
+    echo "Script is up to date"
+    exit 0
+  fi
+
+
+  # Download new version
+  new_script=$(curl -s "$repo_url")
+  if [ -n "$new_script" ]; then
+    echo "$new_script" > "$0"
+    echo "Script updated to version $new_version"
+  else
+    echo "Failed to download new script"
+    exit 1
+  fi
 }
 
 # Check arguments number
@@ -150,7 +151,6 @@ shift 2
 other=$@
 
 if [ -n "$env" ]; then
-  # shellcheck source=/dev/null
   source "./env/$env/backend.ini"
   if [ -z "$(command -v az)" ]; then
     echo "az not found, cannot proceed"
@@ -169,7 +169,7 @@ case $action in
     ;;
   init)
     init_terraform
-    init_terraform "$other"
+    init_terraform $other
     ;;
   list)
     list_env
@@ -180,13 +180,13 @@ case $action in
     ;;
   summ)
     init_terraform
-    tfsummary "$other"
+    tfsummary $other
     ;;
-  update)
+  update_script)
     update_script
     ;;
   *)
-    terraform init
-    other_actions "$other"
+    init_terraform
+    other_actions $other
     ;;
 esac

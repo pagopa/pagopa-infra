@@ -125,12 +125,11 @@ app_gateway_deny_paths_2 = [
   "/wfesp/.*",
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
-  "/pagopa-node-forwarder/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
   "/shared/authorizer/.*",                # internal use no sub-keys
-  "/gpd/api/.*",
+  "/gpd/api/.*",                          # internal use no sub-keys
 ]
 app_gateway_kibana_deny_paths = [
   "/kibana/*",
@@ -173,11 +172,6 @@ postgresql_sku_name                      = "GP_Gen5_2" # todo change before laun
 postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = false
 postgres_private_endpoint_enabled        = false
-
-# mock
-mock_ec_enabled              = false
-mock_ec_secondary_enabled    = false
-mock_payment_gateway_enabled = false
 
 
 # apim x nodo pagamenti

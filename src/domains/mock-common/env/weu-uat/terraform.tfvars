@@ -34,6 +34,7 @@ dns_zone_internal_prefix = "internal.uat.platform"
 mock_ec_enabled              = true
 mock_ec_secondary_enabled    = true
 mock_payment_gateway_enabled = true
+mock_ec_always_on            = true
 
 postgresql_network_rules = {
   ip_rules = [
