@@ -117,7 +117,7 @@ module "apim_mock_psp_nexi_api" {
   api_version    = "v1"
 
   description  = "Mock Psp Nexi PRF"
-  display_name = "Mock Psp Nexi PRF "
+  display_name = "Mock Psp Nexi PRF"
   path         = "psp-mockprf"
   protocols    = ["https"]
 
