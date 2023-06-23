@@ -41,10 +41,7 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder           = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis                = ["10.1.163.0/24"]
-cidr_subnet_mock_ec              = ["10.1.137.0/29"]
-cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
-
+cidr_subnet_redis = ["10.1.163.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -130,13 +127,6 @@ postgresql_network_rules = {
   allow_access_to_azure_services = false
 }
 prostgresql_db_mockpsp = "mock-psp"
-
-# mock
-mock_ec_enabled                    = true
-mock_ec_secondary_enabled          = true
-mock_psp_service_enabled           = true
-mock_psp_secondary_service_enabled = true
-mock_payment_gateway_enabled       = true
 
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
