@@ -336,6 +336,27 @@ eventhubs = [
     ]
   },
   {
+    name              = "fdr-re"
+    partitions        = 30
+    message_retention = 7
+    consumers         = ["fdr-re-rx"]
+    keys = [
+      {
+        name   = "fdr-re-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-re-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
     name              = "nodo-dei-pagamenti-fdr"
     partitions        = 32
     message_retention = 7
