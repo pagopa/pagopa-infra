@@ -101,6 +101,10 @@ module "api_config_app_service" {
     AFM_UTILS_RETRY_MAX_DELAY    = 2000
     NODO_MONITORING_HOST         = var.env_short == "p" ? "https://api.platform.pagopa.it/nodo-monitoring/monitoring/v1" : format("https://api.%s.platform.pagopa.it/nodo/monitoring/v1", lower(var.tags["Environment"]))
 
+    # Azure table storage
+    AZURE_STORAGE_CONNECTION_STRING = data.azurerm_key_vault_secret.apiconfig_ica_sa_connection_string.value
+    AZURE_STORAGE_TABLE_NAME        = replace(format("%s-sa-icatable", local.project), "-", "")
+
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
     # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
