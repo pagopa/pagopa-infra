@@ -62,4 +62,4 @@ tls_cert_check_helm = {
 image_name = "pagopadacr.azurecr.io/reporting-fdr"
 image_tag  = "1.0.10"
 
-apim_fdr_nodo_pagopa_enable = true
+apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
