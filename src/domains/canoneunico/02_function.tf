@@ -7,7 +7,7 @@ module "canoneunico_function" {
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.canoneunico_function_snet.id
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   always_on                                = var.canoneunico_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.canoneunico_service_plan.id
