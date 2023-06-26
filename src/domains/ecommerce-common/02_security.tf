@@ -197,6 +197,18 @@ resource "azurerm_key_vault_secret" "ecommerce_storage_deadletter_connection_str
   }
 }
 
+resource "azurerm_key_vault_secret" "ecommerce_storage_transient_account_key" {
+  name         = "ecommerce-storage-transient-account-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 resource "azurerm_key_vault_secret" "mongo_ecommerce_password" {
   name         = "mongo-ecommerce-password"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
