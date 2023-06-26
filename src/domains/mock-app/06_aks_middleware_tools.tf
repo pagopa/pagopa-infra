@@ -14,8 +14,8 @@ module "tls_checker" {
   application_insights_resource_group                       = data.azurerm_resource_group.monitor_rg.name
   application_insights_id                                   = data.azurerm_application_insights.application_insights.id
   application_insights_action_group_ids                     = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
-  keyvault_name                                             = data.azurerm_key_vault.mock_kv.name
-  keyvault_tenant_id                                        = data.azurerm_key_vault.mock_kv.tenant_id
+  keyvault_name                                             = data.azurerm_key_vault.kv.name
+  keyvault_tenant_id                                        = data.azurerm_key_vault.kv.tenant_id
   kv_secret_name_for_application_insights_connection_string = "ai-connection-string"
 }
 

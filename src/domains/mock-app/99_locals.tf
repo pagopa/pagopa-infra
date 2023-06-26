@@ -19,8 +19,9 @@ locals {
 
   vnet_name                = "${var.prefix}-${var.env_short}-vnet"
   vnet_resource_group_name = "${var.prefix}-${var.env_short}-vnet-rg"
-  vnet_integration_name    = "${var.prefix}-${var.env_short}-vnet-integration"
+  pagopa_vnet_integration  = "${var.prefix}-${var.env_short}-vnet-integration"
 
+  subscription_name = "${var.env}-${var.prefix}"
 
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"

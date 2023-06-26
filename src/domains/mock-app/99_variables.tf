@@ -162,6 +162,12 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
+variable "dns_zone_internal_prefix" {
+  type        = string
+  default     = null
+  description = "The dns internal subdomain."
+}
+
 variable "dns_zone_prefix" {
   type        = string
   default     = null
