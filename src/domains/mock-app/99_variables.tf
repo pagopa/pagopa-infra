@@ -146,3 +146,20 @@ variable "dns_zone_prefix" {
   description = "The dns subdomain."
 }
 
+# mock_psp_service NEXI
+variable "mock_psp_service_enabled" {
+  type        = bool
+  description = "Mock PSP service Nexi"
+  default     = false
+}
+variable "mock_psp_secondary_service_enabled" {
+  type        = bool
+  description = "Mock Secondary PSP service Nexi"
+  default     = false
+}
+
+variable "lb_aks" {
+  type        = string
+  description = "IP load balancer AKS Nexi/SIA"
+  default     = "0.0.0.0"
+}

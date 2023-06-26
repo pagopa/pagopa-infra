@@ -19,8 +19,8 @@ module "apim_mock_ec_nexi_product" {
   display_name = "product-mock-ec-nexi"
   description  = "product-mock-ec-nexi"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = false
@@ -33,8 +33,8 @@ resource "azurerm_api_management_api_version_set" "mock_ec_nexi_api" {
   count = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
 
   name                = format("%s-mock-ec-nexi-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "Mock Ec Nexi"
   versioning_scheme   = "Segment"
 }
@@ -44,8 +44,8 @@ module "apim_mock_ec_nexi_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-mock-ec-nexi-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_mock_ec_nexi_product[0].product_id]
   subscription_required = false
 
@@ -61,7 +61,7 @@ module "apim_mock_ec_nexi_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_nexi/ec/v1/mock.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/mock_nexi/ec/v1/_base_policy.xml", {
@@ -83,8 +83,8 @@ module "apim_mock_psp_nexi_product" {
   display_name = "product-mock-psp-nexi"
   description  = "product-mock-psp-nexi"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = false
@@ -97,8 +97,8 @@ resource "azurerm_api_management_api_version_set" "mock_psp_nexi_api" {
   count = var.env_short == "u" ? 1 : 0 # only UAT pointing out to NEXI PRF environment
 
   name                = format("%s-mock-psp-nexi-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "Mock Psp Nexi"
   versioning_scheme   = "Segment"
 }
@@ -108,8 +108,8 @@ module "apim_mock_psp_nexi_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-mock-psp-nexi-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_mock_psp_nexi_product[0].product_id]
   subscription_required = false
 
@@ -117,7 +117,7 @@ module "apim_mock_psp_nexi_api" {
   api_version    = "v1"
 
   description  = "Mock Psp Nexi PRF"
-  display_name = "Mock Psp Nexi PRF "
+  display_name = "Mock Psp Nexi PRF"
   path         = "psp-mockprf"
   protocols    = ["https"]
 
@@ -125,7 +125,7 @@ module "apim_mock_psp_nexi_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_nexi/psp/v1/mock.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {
@@ -146,8 +146,8 @@ module "apim_mock_pm_nexi_product" {
   display_name = "product-mock-pm-nexi"
   description  = "product-mock-pm-nexi"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = false
@@ -160,8 +160,8 @@ resource "azurerm_api_management_api_version_set" "mock_pm_nexi_api" {
   count = var.env_short != "p" ? 1 : 0 # only UAT pointing out to NEXI PRF environment Esposizione apim SIT mock PM
 
   name                = format("%s-mock-pm-nexi-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = "Mock PM Nexi"
   versioning_scheme   = "Segment"
 }
@@ -170,10 +170,11 @@ module "apim_mock_pm_nexi_api" {
   count  = var.env_short != "p" ? 1 : 0 # only UAT pointing out to NEXI PRF environment + Esposizione apim SIT mock PM
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = format("%s-mock-pm-nexi-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_mock_pm_nexi_product[0].product_id, local.apim_x_node_product_id]
+  name                = format("%s-mock-pm-nexi-api", var.env_short)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  # product_ids           = [module.apim_mock_pm_nexi_product[0].product_id, local.apim_x_node_product_id]
+  product_ids           = [module.apim_mock_pm_nexi_product[0].product_id]
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.mock_pm_nexi_api[0].id
@@ -188,7 +189,7 @@ module "apim_mock_pm_nexi_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_nexi/psp/v1/mock.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.apim_hostname
   })
 
   xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {
