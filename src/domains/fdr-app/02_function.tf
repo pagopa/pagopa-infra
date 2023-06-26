@@ -33,7 +33,7 @@ module "reporting_fdr_function" {
   location                                 = var.location
   health_check_path                        = "/api/info"
   subnet_id                                = module.reporting_fdr_function_snet[0].id
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   always_on                                = var.reporting_fdr_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   cors = ({
