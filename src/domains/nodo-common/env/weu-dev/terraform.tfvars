@@ -143,4 +143,13 @@ cosmos_mongo_db_nodo_re_params = {
   events_ttl         = 1800
 }
 
+nodo_re_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 15
+  public_network_access_enabled = true
+}
 

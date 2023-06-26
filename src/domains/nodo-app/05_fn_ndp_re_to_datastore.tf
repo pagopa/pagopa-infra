@@ -1,8 +1,16 @@
+# info for cosmos mongodb
 data "azurerm_cosmosdb_account" "mongo_ndp_re_account" {
   name                = "${local.project}-cosmos-account"
   resource_group_name = "${local.project}-db-rg"
 }
 
+data "azurerm_cosmosdb_mongo_database" "nodo_re" {
+  name                = "nodo_re"
+  resource_group_name = format("%s-db-rg", local.project)
+  account_name        = format("%s-cosmos-account", local.project)
+}
+
+# info for event hub
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx" {
   name                = "nodo-dei-pagamenti-re-to-datastore-rx"
   namespace_name      = "${local.product}-evh-ns01"
@@ -19,6 +27,12 @@ data "azurerm_subnet" "apim_vnet" {
   name                 = local.apim_snet
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_integration_name
+}
+
+# info for table storage
+data "azurerm_storage_account" "nodo_re_storage" {
+  name                = replace(format("%s-re-2-data-st", local.project), "-", "")
+  resource_group_name = "pagopa-d-weu-nodo-re-to-datastore-rg"
 }
 
 resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
@@ -98,7 +112,7 @@ module "nodo_re_to_datastore_function" {
     zone_balancing_enabled        = false
   }
 
-  storage_account_name = replace(format("%s-re-2-data-st", local.project), "-", "")
+  storage_account_name = data.azurerm_storage_account.nodo_re_storage.name
 
   app_settings = {
     linux_fx_version                    = "JAVA|11"
@@ -111,7 +125,14 @@ module "nodo_re_to_datastore_function" {
     DOCKER_REGISTRY_SERVER_USERNAME = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
     DOCKER_REGISTRY_SERVER_PASSWORD = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
-    COSMOS_CONN_STRING         = local.function_re_to_datastore_settings.COSMOS_CONN_STRING
+    COSMOS_CONN_STRING          = local.function_re_to_datastore_settings.COSMOS_CONN_STRING
+    COSMOS_DB_NAME              = data.azurerm_cosmosdb_mongo_database.nodo_re.name
+    COSMOS_DB_COLLECTION_NAME   = "events"
+
+    TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.nodo_re_storage.primary_connection_string
+    TABLE_STORAGE_TABLE_NAME    = "events"
+#    TABLE_STORAGE_PARTITION_KEY =
+
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
