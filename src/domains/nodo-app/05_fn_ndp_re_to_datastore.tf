@@ -129,6 +129,8 @@ module "nodo_re_to_datastore_function" {
     COSMOS_DB_NAME              = data.azurerm_cosmosdb_mongo_database.nodo_re.name
     COSMOS_DB_COLLECTION_NAME   = "events"
 
+    EVENTHUB_CONN_STRING        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_connection_string
+
     TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.nodo_re_storage.primary_connection_string
     TABLE_STORAGE_TABLE_NAME    = "events"
   }
