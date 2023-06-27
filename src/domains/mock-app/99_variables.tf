@@ -50,6 +50,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_string" {
+  type        = string
+  description = "One of West Europe, North Europe"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -67,6 +72,23 @@ variable "tags" {
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
+}
+
+variable "log_analytics_workspace_name" {
+  type        = string
+  description = "Specifies the name of the Log Analytics Workspace."
+}
+
+variable "log_analytics_workspace_resource_group_name" {
+  type        = string
+  description = "The name of the resource group in which the Log Analytics workspace is located in."
+}
+
+### Aks
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
 }
 variable "mock_ec_enabled" {
   type        = bool
@@ -140,10 +162,40 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
+variable "dns_zone_internal_prefix" {
+  type        = string
+  default     = null
+  description = "The dns internal subdomain."
+}
+
 variable "dns_zone_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
+}
+
+variable "apim_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for apim."
+}
+
+variable "tls_cert_check_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
+}
+
+# Network
+variable "ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
 }
 
 # mock_psp_service NEXI
