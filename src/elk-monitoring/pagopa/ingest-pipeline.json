@@ -1,0 +1,11 @@
+{
+  "processors": [
+    {
+      "json": {
+        "field": "message",
+        "target_field": "app",
+        "ignore_failure": true
+      }
+    }
+  ]
+}
