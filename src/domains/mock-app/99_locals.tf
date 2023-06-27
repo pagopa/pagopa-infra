@@ -39,7 +39,7 @@ locals {
   apim_hostname    = "api.${var.dns_zone_prefix}.${var.external_domain}"
   apim_subnet_name = "${var.prefix}-${var.env_short}-apim-snet"
 
-  mock_hostname  = "weu${var.env}.mock.internal.${var.env}.platform.pagopa.it"
+  mock_hostname = "weu${var.env}.mock.internal.${var.env}.platform.pagopa.it"
 
   mock_kv_rg = "${local.product}-${var.domain}-sec-rg"
   mock_kv    = "${local.product}-${var.domain}-kv"
@@ -47,8 +47,8 @@ locals {
   mock_ec_default_site_hostname              = "pagopa-${var.env_short}-app-mock-ec.azurewebsites.net"
   mock_payment_gateway_default_site_hostname = "pagopa-${var.env_short}-app-mock-payment-gateway.azurewebsites.net"
 
-  mocker_db_hostname     = data.azurerm_postgresql_server.postgresql.fqdn
-  mocker_dbms_port    = "5432" # replace data fetch of module.postgres_flexible_server_private[0].connection_port present in gpd-common
+  mocker_db_hostname = data.azurerm_postgresql_server.postgresql.fqdn
+  mocker_dbms_port   = "5432" # replace data fetch of module.postgres_flexible_server_private[0].connection_port present in gpd-common
 
   mocker_core_api_locals = {
     product_id            = "mocker"
