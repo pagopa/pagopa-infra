@@ -53,7 +53,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "fdr_per_pa_api" {
-  name                = format("%s-fdr-per-pa-api", var.env_short)
+  name                = "${var.env_short}-fdr-per-pa-api"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = local.apim_fdr_per_pa_api.display_name
@@ -61,7 +61,7 @@ resource "azurerm_api_management_api_version_set" "fdr_per_pa_api" {
 }
 
 resource "azurerm_api_management_api" "apim_fdr_per_pa_api_v1" {
-  name                  = format("%s-fdr-per-pa-api", var.env_short)
+  name                  = "${var.env_short}-fdr-per-pa-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   subscription_required = local.apim_fdr_per_pa_api.subscription_required
