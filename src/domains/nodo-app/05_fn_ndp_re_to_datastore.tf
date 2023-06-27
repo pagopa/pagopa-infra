@@ -131,7 +131,7 @@ module "nodo_re_to_datastore_function" {
 
     TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.nodo_re_storage.primary_connection_string
     TABLE_STORAGE_TABLE_NAME    = "events"
-#    TABLE_STORAGE_PARTITION_KEY =
+    TABLE_STORAGE_PARTITION_KEY = "insertedTimestamp"
 
   }
 
