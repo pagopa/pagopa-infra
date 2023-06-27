@@ -43,7 +43,6 @@
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_autoscale_setting.reporting_fdr_function](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_resource_group.reporting_fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/resource_group) | resource |
-| [helm_release.cert-mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
@@ -104,6 +103,7 @@
 | <a name="input_event_name"></a> [event\_name](#input\_event\_name) | Event name related to an EventHub | `string` | `null` | no |
 | <a name="input_eventhub_name"></a> [eventhub\_name](#input\_eventhub\_name) | EventHub name | `string` | `null` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_fn_app_runtime_version"></a> [fn\_app\_runtime\_version](#input\_fn\_app\_runtime\_version) | Function app runtime version. | `string` | `"~4"` | no |
 | <a name="input_github"></a> [github](#input\_github) | n/a | <pre>object({<br>    org = string<br>  })</pre> | <pre>{<br>  "org": "pagopa"<br>}</pre> | no |
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | The image name to use with a function app | `string` | `null` | no |
 | <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | The image tag to use with a function app | `string` | `null` | no |
