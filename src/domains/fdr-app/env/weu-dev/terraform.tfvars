@@ -21,10 +21,11 @@ reporting_fdr_function_always_on = false
 app_service_plan_info = {
   kind                         = "Linux"
   sku_size                     = "S1"
-  maximum_elastic_worker_count = 0
+  maximum_elastic_worker_count = 1
   worker_count                 = 1
   zone_balancing_enabled       = false
 }
+fn_app_runtime_version = "~4"
 
 storage_account_info = {
   account_kind                      = "StorageV2"

@@ -26,6 +26,7 @@ app_service_plan_info = {
   worker_count                 = 1
   zone_balancing_enabled       = false
 }
+fn_app_runtime_version = "~3"
 
 storage_account_info = {
   account_kind                      = "StorageV2"
@@ -60,7 +61,7 @@ tls_cert_check_helm = {
 }
 
 # docker image
-image_name = "pagopapcommonacr.azurecr.io/reporting-fdr"
-image_tag  = "1.1.0"
+image_name = "reporting-fdr"
+image_tag  = "latest"
 
 apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione

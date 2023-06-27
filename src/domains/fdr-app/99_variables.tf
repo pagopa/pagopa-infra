@@ -190,6 +190,12 @@ variable "event_name" {
   description = "Event name related to an EventHub"
 }
 
+variable "fn_app_runtime_version" {
+  type        = string
+  description = "Function app runtime version."
+  default     = "~4"
+}
+
 variable "reporting_fdr_function_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
