@@ -53,7 +53,7 @@ locals {
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_key
+    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_connection_string
     COSMOS_CONN_STRING   = format("mongodb://%s-cosmos-account:%s@%s-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@%s-cosmos-account@",
       local.project, data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key, local.project, local.project)
   }
@@ -65,11 +65,6 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
 }
-
-#output "COSMOS_CONN_STRING" {
-#  value     = data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_sql_connection_string
-#  sensitive = true
-#}
 
 ## Function nodo_re_to_datastore
 module "nodo_re_to_datastore_function" {
@@ -90,7 +85,7 @@ module "nodo_re_to_datastore_function" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   docker = {
-    image_name        = "${local.docker_settings.DOCKER_REGISTRY_SERVER_URL}/pagopanodoretodatastore"
+    image_name        = "pagopanodoretodatastore"
     image_tag         = var.nodo_re_to_datastore_function_app_image_tag
     registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
     registry_url      = "https://${local.docker_settings.DOCKER_REGISTRY_SERVER_URL}"
