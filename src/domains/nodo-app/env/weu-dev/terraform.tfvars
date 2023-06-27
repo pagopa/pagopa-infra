@@ -93,7 +93,7 @@ nodo_re_to_datastore_function = {
   kind                          = "Linux"
   sku_size                      = "B1"
   sku_tier                      = "Basic"
-  maximum_elastic_worker_count  = 0
+  maximum_elastic_worker_count  = null
 }
 nodo_re_to_datastore_function_always_on       = true
 nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]

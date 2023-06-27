@@ -27,15 +27,3 @@ resource "azurerm_storage_table" "nodo_re_table" {
   name                 = "events"
   storage_account_name = module.nodo_re_storage_account.name
 }
-
-resource "azurerm_storage_table_entity" "nodo_re_table_entity" {
-  storage_account_name = module.nodo_re_storage_account.name
-  table_name           = azurerm_storage_table.nodo_re_table.name
-
-  partition_key        = "insertedTimestamp"
-  row_key              = "uniqueId"
-
-  entity = {
-    events = "events"
-  }
-}

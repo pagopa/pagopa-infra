@@ -72,7 +72,7 @@ output "COSMOS_CONN_STRING" {
 
 ## Function nodo_re_to_datastore
 module "nodo_re_to_datastore_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
 
   resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
   name                = "${local.project}-re-to-datastore-fn"
@@ -112,7 +112,7 @@ module "nodo_re_to_datastore_function" {
     zone_balancing_enabled        = false
   }
 
-  storage_account_name = data.azurerm_storage_account.nodo_re_storage.name
+  storage_account_name = replace(format("%s-re-2-dst-fn-sa", local.project), "-", "")
 
   app_settings = {
     linux_fx_version                    = "JAVA|11"
@@ -131,8 +131,6 @@ module "nodo_re_to_datastore_function" {
 
     TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.nodo_re_storage.primary_connection_string
     TABLE_STORAGE_TABLE_NAME    = "events"
-    TABLE_STORAGE_PARTITION_KEY = "insertedTimestamp"
-
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
