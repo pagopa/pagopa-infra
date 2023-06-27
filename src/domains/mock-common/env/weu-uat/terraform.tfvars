@@ -27,14 +27,16 @@ cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
 cidr_subnet_dbms                 = ["10.1.180.0/24"]
 cidr_subnet_pgflex_dbms          = ["10.1.181.0/24"]
 
-external_domain = "pagopa.it"
-dns_zone_prefix = "uat.platform"
+external_domain          = "pagopa.it"
+dns_zone_prefix          = "uat.platform"
 dns_zone_internal_prefix = "internal.uat.platform"
 
-mock_ec_enabled              = true
-mock_ec_secondary_enabled    = true
-mock_payment_gateway_enabled = true
-mock_ec_always_on            = true
+mock_ec_enabled                    = true
+mock_ec_secondary_enabled          = true
+mock_payment_gateway_enabled       = true
+mock_ec_always_on                  = true
+mock_psp_service_enabled           = true
+mock_psp_secondary_service_enabled = true
 
 postgresql_network_rules = {
   ip_rules = [
@@ -46,7 +48,6 @@ postgresql_network_rules = {
 
 # Postgres Flexible
 pgres_flex_params = {
-
   private_endpoint_enabled = true
   sku_name                 = "GP_Standard_D2s_v3"
   db_version               = "13"
