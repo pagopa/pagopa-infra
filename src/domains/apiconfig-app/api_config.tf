@@ -104,6 +104,9 @@ module "api_config_app_service" {
     # Azure table storage
     AZURE_STORAGE_CONNECTION_STRING = data.azurerm_key_vault_secret.apiconfig_ica_sa_connection_string.value
     AZURE_STORAGE_TABLE_NAME        = replace(format("%s-sa-icatable", local.project), "-", "")
+    # ICA CRON CFG
+    CRON_JOB_ICA_SCHEDULE_ENABLED    = var.ica_cron_job_enable
+    CRON_JOB_ICA_SCHEDULE_EXPRESSION = var.ica_cron_schedule
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
