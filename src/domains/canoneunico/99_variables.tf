@@ -80,6 +80,12 @@ variable "canoneunico_plan_sku_size" {
   default     = null
 }
 
+variable "fn_app_runtime_version" {
+  type        = string
+  description = "Function app runtime version."
+  default     = "~4"
+}
+
 variable "canoneunico_batch_size_debt_pos_queue" {
   type        = number
   description = "Batch size Debt Position queue"

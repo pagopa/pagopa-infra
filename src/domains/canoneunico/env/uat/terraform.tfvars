@@ -24,7 +24,10 @@ acr_enabled = true
 
 # docker image
 image_name = "canone-unico"
-image_tag  = "0.0.16"
+image_tag  = "latest"
+
+#fn app
+fn_app_runtime_version = "~4"
 
 # canone unico
 canoneunico_plan_sku_tier = "Standard"
