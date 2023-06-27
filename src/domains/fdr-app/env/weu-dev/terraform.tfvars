@@ -21,7 +21,7 @@ reporting_fdr_function_always_on = false
 app_service_plan_info = {
   kind                         = "Linux"
   sku_size                     = "S1"
-  maximum_elastic_worker_count = 1
+  maximum_elastic_worker_count = 0
   worker_count                 = 1
   zone_balancing_enabled       = false
 }
@@ -59,7 +59,7 @@ tls_cert_check_helm = {
 }
 
 # docker image
-image_name = "pagopadacr.azurecr.io/reporting-fdr"
-image_tag  = "1.0.10"
+image_name = "reporting-fdr"
+image_tag  = "latest"
 
 apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
