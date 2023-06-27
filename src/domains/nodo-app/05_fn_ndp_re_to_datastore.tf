@@ -54,7 +54,8 @@ locals {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_key
-    COSMOS_CONN_STRING   = data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key
+    COSMOS_CONN_STRING   = format("mongodb://%s-cosmos-account:%s@%s-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@%s-cosmos-account@",
+      local.project, data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key, local.project, local.project)
   }
 
   docker_settings = {
@@ -65,10 +66,10 @@ locals {
   }
 }
 
-output "COSMOS_CONN_STRING" {
-  value     = data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key
-  sensitive = true
-}
+#output "COSMOS_CONN_STRING" {
+#  value     = data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_sql_connection_string
+#  sensitive = true
+#}
 
 ## Function nodo_re_to_datastore
 module "nodo_re_to_datastore_function" {
@@ -129,7 +130,7 @@ module "nodo_re_to_datastore_function" {
     COSMOS_DB_NAME              = data.azurerm_cosmosdb_mongo_database.nodo_re.name
     COSMOS_DB_COLLECTION_NAME   = "events"
 
-    EVENTHUB_CONN_STRING        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_connection_string
+    EVENTHUB_CONN_STRING        = local.function_re_to_datastore_settings.EVENTHUB_CONN_STRING
 
     TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.nodo_re_storage.primary_connection_string
     TABLE_STORAGE_TABLE_NAME    = "events"
