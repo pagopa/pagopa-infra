@@ -664,12 +664,19 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "maxOccurrences",
+            "in": "query",
+            "description": "Numero di righe da restituire",
+            "type": "number"
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/ListaRPT"
+              "$ref": "#/definitions/ListaIdSessione"
             }
           },
           "400": {
@@ -702,16 +709,16 @@
   },
   "definitions": {
     "CheckPosition" : {
-        "type": "object",
-        "required": ["positionslist"],
-        "properties": {
-          "positionslist": {
-            "type": "array",
-            "items": { "$ref": "#/definitions/listelement" },
-            "minItems": 1,
-            "maxItems": 5
-          }
-        },
+      "type": "object",
+      "required": ["positionslist"],
+      "properties": {
+        "positionslist": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/listelement" },
+          "minItems": 1,
+          "maxItems": 5
+        }
+      },
     },
     "listelement": {
       "type": "object",
@@ -858,28 +865,27 @@
         }
       }
     },
-    "ListaRPT": {
+    "ListaIdSessione": {
       "type": "object",
       "required": [
-        "totalRows",
+        "totalNumber",
         "idPaymentList"
       ],
       "properties": {
         "totalNumber": {
           "type": "integer",
           "format": "int32",
-          "description": "Numero di RPT totali",
+          "description": "Numero di idSessione totali",
           "minimum": 0,
           "example": "3"
         },
         "idPaymentList": {
           "type": "array",
-          "description": "Array di identificativi univoci di rpt",
+          "description": "Array di idSessione univoci di Rpt",
           "items": {
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           },
-          "example": "[15,39,41]"
+          "example": "[\"idsession1\",\"idsession2\",\"idsession3\"]"
         }
       }
     },
