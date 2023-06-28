@@ -34,8 +34,8 @@
           "ACA"
         ],
         "operationId": "newDebtPosition",
-        "summary": "Create a new debt position",
-        "description": "Create a new debt position.",
+        "summary": "Create / Update / Invalidate a debt position",
+        "description": "Create / Update / Invalidate a debt position.",
         "requestBody": {
           "required": true,
           "content": {
@@ -47,8 +47,8 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "New debt position successfully created"
+          "200": {
+            "description": "create / update / invalidate debt position successfully"
           },
           "400": {
             "description": "Formally invalid input",
