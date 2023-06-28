@@ -166,7 +166,7 @@ variable "receipts_datastore_fn_sa_tier_to_cool_after_last_access" {
 
 variable "receipts_tier_to_archive_after_days_since_last_access_time_greater_than" {
   type        = number
-  description = "Number of days since last access to blob before moving to cool tier"
+  description = "Number of days since last access to blob before moving to archive tier"
   default     = 730
 }
 
