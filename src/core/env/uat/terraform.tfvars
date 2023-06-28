@@ -110,7 +110,6 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
-  # "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
@@ -176,7 +175,7 @@ ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/i
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 base_path_nodo_oncloud        = "/nodo-uat"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-uat"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-uat-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-uat/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-uat"
 base_path_nodo_fatturazione   = "/fatturazione-uat"

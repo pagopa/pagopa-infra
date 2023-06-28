@@ -141,7 +141,7 @@ ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/sit/webservices/i
 lb_aks                 = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
 
 base_path_nodo_oncloud        = "/nodo-sit"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-sit"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-sit-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-sit/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-sit"
 base_path_nodo_fatturazione   = "/fatturazione-sit"
