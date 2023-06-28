@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "db_rg" {
-  name     = format("%s-db-rg", local.project)
+  name     = "${local.project}-db-rg"
   location = var.location
 
   tags = var.tags
@@ -18,7 +18,7 @@ data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
   source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
-  name                                          = format("%s-pgres-flexible-snet", local.project)
+  name                                          = "${local.project}-pgres-flexible-snet"
   address_prefixes                              = var.cidr_subnet_flex_dbms
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
   virtual_network_name                          = data.azurerm_virtual_network.vnet.name
@@ -38,7 +38,7 @@ module "postgres_flexible_snet" {
 
 module "postgres_flexible_server_fdr" {
   source                      = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v6.2.1"
-  name                        = format("%s-flexible-postgresql", local.project)
+  name                        = "${local.project}-flexible-postgresql"
   location                    = azurerm_resource_group.db_rg.location
   resource_group_name         = azurerm_resource_group.db_rg.name
   private_endpoint_enabled    = var.pgres_flex_params.pgres_flex_private_endpoint_enabled

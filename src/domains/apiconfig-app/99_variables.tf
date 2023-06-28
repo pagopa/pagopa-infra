@@ -204,3 +204,15 @@ variable "sku_name" {
   type    = string
   default = "S1"
 }
+
+variable "ica_cron_job_enable" {
+  type        = bool
+  description = "ICA cron job enable"
+  default     = false
+}
+
+variable "ica_cron_schedule" {
+  type        = string
+  description = "ICA cron scheduling (NCRON example '*/35 * * * * *')"
+  default     = "0 0 0 * * *"
+}

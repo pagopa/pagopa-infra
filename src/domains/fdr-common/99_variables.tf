@@ -286,3 +286,28 @@ variable "fdr_convertion_delete_retention_days" {
   description = "Number of days to retain deleted."
   default     = 30
 }
+
+# Storage account
+variable "fdr_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "fdr_enable_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "fdr_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
+variable "reporting_fdr_blobs_retention_days" {
+  type        = number
+  description = "The number of day for storage_management_policy"
+  default     = 30
+}
