@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.163
+  version: 0.0.167
 servers:
   - url: 'https://${host}/${basePath}'
     description: Inferred Url
@@ -1744,6 +1744,46 @@ paths:
       security:
         - bearerAuth:
             - global
+  /creditorinstitutions/ibans/create:
+    post:
+      tags:
+        - Ibans
+      summary: createCreditorInstitutionIbans
+      description: Create creditor institution iban
+      operationId: createCreditorInstitutionIbansUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IbanCreateRequestDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbanResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /stations:
     get:
       tags:
@@ -3321,6 +3361,49 @@ components:
         page_info:
           description: info pageable
           $ref: '#/components/schemas/PageInfo'
+    IbanCreateRequestDto:
+      title: IbanCreateRequestDto
+      required:
+        - creditorInstitutionCode
+        - description
+        - dueDate
+        - iban
+        - labels
+        - validityDate
+      type: object
+      properties:
+        active:
+          type: boolean
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        description:
+          type: string
+          description: The description the Creditor Institution gives to the iban about its usage
+        dueDate:
+          type: string
+          description: The date on which the iban will expire
+          format: date-time
+        iban:
+          type: string
+          description: The iban code
+        labels:
+          type: array
+          description: The labels array associated with the iban
+          items:
+            $ref: '#/components/schemas/IbanLabel'
+        validityDate:
+          type: string
+          description: The date the Creditor Institution wants the iban to be used for its payments
+          format: date-time
+    IbanLabel:
+      title: IbanLabel
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
     IbanRequestDto:
       title: IbanRequestDto
       required:
@@ -3330,24 +3413,49 @@ components:
         creditorInstitutionCode:
           type: string
           description: Creditor Institution's code(Fiscal Code)
+        label:
+          type: string
+          description: Filter by label
     IbanResource:
       title: IbanResource
       required:
-        - ibanValue
+        - dueDate
+        - ecOwner
+        - iban
         - publicationDate
         - validityDate
       type: object
       properties:
-        ibanValue:
+        active:
+          type: boolean
+        companyName:
           type: string
-          description: Creditor Institution's address object
+          description: The Creditor Institution company name
+        description:
+          type: string
+          description: The description the Creditor Institution gives to the iban about its usage
+        dueDate:
+          type: string
+          description: The date on which the iban will expire
+          format: date-time
+        ecOwner:
+          type: string
+          description: Fiscal code of the Creditor Institution who owns the iban
+        iban:
+          type: string
+          description: The iban code
+        labels:
+          type: array
+          description: The labels array associated with the iban
+          items:
+            $ref: '#/components/schemas/IbanLabel'
         publicationDate:
           type: string
-          description: Creditor Institution's address object
+          description: The date on which the iban has been inserted in the system
           format: date-time
         validityDate:
           type: string
-          description: Creditor Institution's address object
+          description: The date the Creditor Institution wants the iban to be used for its payments
           format: date-time
     IbansResource:
       title: IbansResource
