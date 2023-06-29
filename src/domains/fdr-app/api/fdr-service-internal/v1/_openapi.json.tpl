@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "FDR - Flussi di rendicontazione ${service}",
-    "description": "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
+    "title": "FDR - (Internal) Flussi di rendicontazione ${service}",
+    "description": "Manage FDR (Internal) ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
     "termsOfService": "https://www.pagopa.gov.it/",
     "version": "1.0.0-SNAPSHOT"
   },
@@ -34,79 +34,10 @@
     }
   ],
   "paths": {
-    "/organizations/{ec}/flows": {
-      "get": {
-        "tags": [
-          "Organizations"
-        ],
-        "summary": "Get all published reporting flow",
-        "description": "Get all published reporting flow by ec and idPsp(optional param)",
-        "parameters": [
-          {
-            "name": "ec",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "pattern": "^\\w{1,35}$",
-              "type": "string"
-            }
-          },
-          {
-            "name": "idPsp",
-            "in": "query",
-            "schema": {
-              "pattern": "^\\w{1,35}$",
-              "type": "string"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "format": "int64",
-              "default": 1,
-              "minimum": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "schema": {
-              "format": "int64",
-              "default": 50,
-              "minimum": 1,
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
-          },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAllResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/psps/{psp}/flows/{fdr}/payments/del": {
+    "/internal/psps/{psp}/flows/{fdr}/payments/del": {
       "put": {
         "tags": [
-          "PSP"
+          "Internal PSP"
         ],
         "summary": "Delete payments to reporting flow",
         "description": "Delete payments to reporting flow",
@@ -160,22 +91,74 @@
         }
       }
     },
-    "/organizations/{ec}/flows/{fdr}/psps/{psp}/payments": {
+    "/internal/history/organizations/ndp/flows": {
       "get": {
         "tags": [
-          "Organizations"
+          "Internal Organizations"
         ],
-        "summary": "Get payments of reporting flow",
-        "description": "Get only payments of reporting flow by id paginated",
+        "summary": "Get all published reporting flow",
+        "description": "Get all published reporting flow by ec and idPsp(optional param)",
         "parameters": [
           {
-            "name": "ec",
-            "in": "path",
-            "required": true,
+            "name": "idPsp",
+            "in": "query",
             "schema": {
+              "pattern": "^\\w{1,35}$",
               "type": "string"
             }
           },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "format": "int64",
+              "default": 1,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "format": "int64",
+              "default": 50,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "400": {
+            "$ref": "#/components/responses/AppException400"
+          },
+          "404": {
+            "$ref": "#/components/responses/AppException404"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllInternalResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/psps/{psp}/flows/{fdr}/payments/add": {
+      "put": {
+        "tags": [
+          "Internal PSP"
+        ],
+        "summary": "Add payments to reporting flow",
+        "description": "Add payments to reporting flow",
+        "parameters": [
           {
             "name": "fdr",
             "in": "path",
@@ -190,6 +173,120 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "400": {
+            "$ref": "#/components/responses/AppException400"
+          },
+          "404": {
+            "$ref": "#/components/responses/AppException404"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/psps/{psp}/flows/{fdr}/publish": {
+      "post": {
+        "tags": [
+          "Internal PSP"
+        ],
+        "summary": "Publish reporting flow",
+        "description": "Publish reporting flow",
+        "parameters": [
+          {
+            "name": "fdr",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "psp",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "400": {
+            "$ref": "#/components/responses/AppException400"
+          },
+          "404": {
+            "$ref": "#/components/responses/AppException404"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/history/organizations/ndp/flows/{fdr}/rev/{rev}/psps/{psp}/payments": {
+      "get": {
+        "tags": [
+          "Internal Organizations"
+        ],
+        "summary": "Get payments of reporting flow",
+        "description": "Get only payments of reporting flow by id paginated",
+        "parameters": [
+          {
+            "name": "fdr",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "psp",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rev",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
             }
           },
           {
@@ -236,22 +333,14 @@
         }
       }
     },
-    "/organizations/{ec}/flows/{fdr}/psps/{psp}": {
+    "/internal/history/organizations/ndp/flows/{fdr}/rev/{rev}/psps/{psp}": {
       "get": {
         "tags": [
-          "Organizations"
+          "Internal Organizations"
         ],
         "summary": "Get reporting flow",
         "description": "Get reporting flow by id but not payments",
         "parameters": [
-          {
-            "name": "ec",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "fdr",
             "in": "path",
@@ -266,6 +355,15 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "rev",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
             }
           }
         ],
@@ -292,58 +390,10 @@
         }
       }
     },
-    "/psps/{psp}/flows/{fdr}/publish": {
+    "/internal/psps/{psp}/flows/{fdr}": {
       "post": {
         "tags": [
-          "PSP"
-        ],
-        "summary": "Publish reporting flow",
-        "description": "Publish reporting flow",
-        "parameters": [
-          {
-            "name": "fdr",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "psp",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
-          },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/psps/{psp}/flows/{fdr}": {
-      "post": {
-        "tags": [
-          "PSP"
+          "Internal PSP"
         ],
         "summary": "Create reporting flow",
         "description": "Create new reporting flow",
@@ -399,7 +449,7 @@
       },
       "delete": {
         "tags": [
-          "PSP"
+          "Internal PSP"
         ],
         "summary": "Delete reporting flow",
         "description": "Delete reporting flow",
@@ -437,86 +487,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GenericResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/psps/{psp}/flows/{fdr}/payments/add": {
-      "put": {
-        "tags": [
-          "PSP"
-        ],
-        "summary": "Add payments to reporting flow",
-        "description": "Add payments to reporting flow",
-        "parameters": [
-          {
-            "name": "fdr",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "psp",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddPaymentRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
-          },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GenericResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/info": {
-      "get": {
-        "tags": [
-          "Info"
-        ],
-        "summary": "Get info of FDR",
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InfoResponse"
                 }
               }
             }
