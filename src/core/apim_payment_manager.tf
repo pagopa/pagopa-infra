@@ -906,7 +906,7 @@ module "apim_pm_per_nodo_v2" {
   name                  = "${local.project}-pm-per-nodo-api"
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
+  product_ids           = [module.apim_payment_manager_product.product_id, local.apim_x_node_product_id]
   subscription_required = local.apim_pm_per_nodo_api.subscription_required_v2
   version_set_id        = azurerm_api_management_api_version_set.pm_per_nodo_api.id
   api_version           = "v2"
