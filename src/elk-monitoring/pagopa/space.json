@@ -1,0 +1,6 @@
+{
+    "id": "${name}",
+    "name": "${name}",
+    "description" : "Space for ${name}",
+    "disabledFeatures": []
+  }
