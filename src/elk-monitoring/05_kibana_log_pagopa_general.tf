@@ -13,8 +13,15 @@ locals {
 
   pagopa_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/${local.pagopa_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
 
+  snapshot_key        = "pagopa_snapshot_backup"
+  snapshot_policy_key = "pagopa-nightly-snapshots"
+  snapshot_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/${local.pagopa_key}/snapshot_policy.json", {
+    repository_name = local.snapshot_key
+  }), "\""), "\""), "'", "'\\''")
+
+
   pagopa_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/${local.pagopa_key}/ilm-policy.json", {
-    policy_name = local.default_snapshot_policy_key
+    policy_name = local.snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
 
   pagopa_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/${local.pagopa_key}/logs-kubernetes.container_logs@custom.json", {
@@ -113,20 +120,20 @@ resource "null_resource" "pagopa_data_stream_rollover" {
   }
 }
 
-#resource "null_resource" "pagopa_kibana_data_view" {
-#  depends_on = [null_resource.pagopa_kibana_space]
-#
-#  triggers = {
-#    always_run = "${timestamp()}"
-#  }
-#
-#  provisioner "local-exec" {
-#    command     = <<EOT
-#      curl -k -X POST "${local.kibana_url}/s/${local.pagopa_key}/api/data_views/data_view" \
-#      -H 'kbn-xsrf: true' \
-#      -H 'Content-Type: application/json' \
-#      -d '${local.pagopa_data_view}'
-#    EOT
-#    interpreter = ["/bin/bash", "-c"]
-#  }
-#}
+resource "null_resource" "pagopa_kibana_data_view" {
+  depends_on = [null_resource.pagopa_kibana_space]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X POST "${local.kibana_url}/s/${local.pagopa_key}/api/data_views/data_view" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '${local.pagopa_data_view}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
