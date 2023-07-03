@@ -81,7 +81,7 @@ module "authorizer_function_app" {
     APICONFIG_SELFCARE_INTEGRATION_PATH   = data.azurerm_key_vault_secret.apiconfig_selfcare_integration_url.value
     APICONFIG_SELFCARE_INTEGRATION_SUBKEY = data.azurerm_key_vault_secret.apiconfig_selfcare_integration_subkey.value
 
-    EC_SQL_QUERY = "SELECT VALUE i FROM c JOIN i IN c.authorization WHERE c.domain = {domain}"
+    EC_SQL_QUERY             = "SELECT VALUE i FROM c JOIN i IN c.authorization WHERE c.domain = {domain}"
     IS_EC_ENROLLED_SQL_QUERY = "SELECT VALUE COUNT(i) FROM c JOIN i IN c.authorization WHERE c.domain = {domain} AND ARRAY_CONTAINS(c.authorization, {organizationFiscalCode})"
   }
 
