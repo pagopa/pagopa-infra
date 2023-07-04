@@ -42,10 +42,7 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis                = ["10.1.163.0/24"]
-cidr_subnet_mock_ec              = ["10.1.137.0/29"]
-cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
-
+cidr_subnet_redis = ["10.1.163.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -113,12 +110,10 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
-  # "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
-  #"/pagopa-node-forwarder/.*"
   "/shared/authorizer/.*", # internal use no sub-keys
 ]
 app_gateway_kibana_deny_paths = [
@@ -167,17 +162,10 @@ postgresql_network_rules = {
 }
 prostgresql_db_mockpsp = "mock-psp"
 
-# mock
-mock_ec_enabled              = true
-mock_ec_always_on            = true
-mock_ec_secondary_enabled    = false
-mock_payment_gateway_enabled = true
-
-
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
-apim_fdr_nodo_pagopa_enable     = true
+apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -187,7 +175,7 @@ ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/i
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 base_path_nodo_oncloud        = "/nodo-uat"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-uat"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-uat-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-uat/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-uat"
 base_path_nodo_fatturazione   = "/fatturazione-uat"

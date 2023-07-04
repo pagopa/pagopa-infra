@@ -34,8 +34,8 @@
           "ACA"
         ],
         "operationId": "newDebtPosition",
-        "summary": "Create a new debt position",
-        "description": "Create a new debt position.",
+        "summary": "Create / Update / Invalidate a debt position",
+        "description": "Create / Update / Invalidate a debt position.",
         "requestBody": {
           "required": true,
           "content": {
@@ -48,7 +48,7 @@
         },
         "responses": {
           "200": {
-            "description": "New debt position successfully created/updated or cancelled"
+            "description": "create / update / invalidate debt position successfully"
           },
           "400": {
             "description": "Formally invalid input",
@@ -59,35 +59,91 @@
                 },
                 "example": {
                   "value": {
-                    "type": "https://example.com/problem/",
-                    "title": "string",
-                    "status": 400,
-                    "detail": "Formally invalid input"
+                    "invalidInput": {
+                      "type": "https://example.com/problem/",
+                      "title": "string",
+                      "status": 400,
+                      "detail": "Formally invalid input"
+                    }
                   }
                 }
               }
             }
           },
           "404": {
-            "description": "PA or IBAN not found",
+            "description": "Entity not found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
                 },
-                "example": {
-                  "value": {
-                    "type": "https://example.com/problem/",
-                    "title": "string",
-                    "status": 404,
-                    "detail": "PA or IBAN not found"
+                "examples": {
+                  "iupd_not_found": {
+                    "value": {
+                      "type": "https://example.com/problem/",
+                      "title": "Invocation exception",
+                      "status": 404,
+                      "detail": "Error while invalidate debit position. Debit position not found with {iupd}"
+                    }
+                  },
+                  "pa_fiscal_code_not_found": {
+                    "value": {
+                      "type": "https://example.com/problem/",
+                      "title": "Invocation exception",
+                      "status": 404,
+                      "detail": "No debt position found with Creditor institution code {creditorInstitutionCode} and {iupd}"
+                    }
                   }
                 }
               }
             }
           },
           "409": {
-            "description": "Conflict during the debt position census",
+            "description": "Conflict into requested action",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "examples": {
+                  "create": {
+                    "value": {
+                      "type": "https://example.com/problem/",
+                      "title": "Invocation exception",
+                      "status": 409,
+                      "detail": "Error while create new debit position conflict into request"
+                    }
+                  },
+                  "update": {
+                    "value": {
+                      "type": "https://example.com/problem/",
+                      "title": "Invocation exception",
+                      "status": 409,
+                      "detail": "Error while update debit position conflict into request"
+                    }
+                  },
+                  "invalidate": {
+                    "value": {
+                      "type": "https://example.com/problem/",
+                      "title": "Invocation exception",
+                      "status": 409,
+                      "detail": "Error while invalidate debit position conflict into request"
+                    }
+                  },
+                  "unauthorized_action": {
+                    "value": {
+                      "type": "https://example.com/problem/",
+                      "title": "Unauthorized action",
+                      "status": 409,
+                      "detail": "Unauthorized action on debt position with iuv {iuv}"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Can not perform the requested action on debit position",
             "content": {
               "application/json": {
                 "schema": {
@@ -96,9 +152,9 @@
                 "example": {
                   "value": {
                     "type": "https://example.com/problem/",
-                    "title": "string",
-                    "status": 409,
-                    "detail": "Conflict during the debt position census"
+                    "title": "Unprocessable request",
+                    "status": 422,
+                    "detail": "Can not perform the requested action on debit position"
                   }
                 }
               }
@@ -117,6 +173,24 @@
                     "title": "string",
                     "status": 500,
                     "detail": "Internal server error"
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "value": {
+                    "type": "https://example.com/problem/",
+                    "title": "string",
+                    "status": 502,
+                    "detail": "Bad gateway, error while execute request"
                   }
                 }
               }
@@ -143,11 +217,11 @@
         "description": "Request body for creating a new transaction",
         "properties": {
           "paFiscalCode": {
-            "description": "EC fiscal code that issued the payment.",
-            "type": "string"
+            "type": "string",
+            "minLength": 11,
+            "maxLength": 11
           },
           "entityType": {
-            "description": "Payment entity type (physical or legal)",
             "type": "string",
             "enum": [
               "F",
@@ -155,26 +229,29 @@
             ]
           },
           "entityFiscalCode": {
-            "description": "Fiscal code of the entity in charge of the payment",
-            "type": "string"
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 16
           },
           "entityFullName": {
-            "description": "Name of the entity responsible for the payment",
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
           },
           "iuv": {
-            "description": "Unique payment code",
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
           "description": {
-            "description": "Reason for the payment",
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
           },
           "expirationDate": {
-            "description": "Payment due date",
             "type": "string",
             "format": "date-time"
           }

@@ -131,3 +131,21 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
+variable "api_config_enable_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+
+variable "api_config_reporting_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+variable "api_config_reporting_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+

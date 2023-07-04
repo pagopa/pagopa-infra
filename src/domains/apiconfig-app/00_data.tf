@@ -60,3 +60,8 @@ data "azurerm_key_vault_secret" "apiconfig_afm_utils_subscription_key_data" {
   name         = "afm-utils-subscription-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+data "azurerm_key_vault_secret" "apiconfig_ica_sa_connection_string" {
+  name         = format("api-config-ica-%s-sa-connection-string", var.env_short)
+  key_vault_id = data.azurerm_key_vault.kv.id
+}

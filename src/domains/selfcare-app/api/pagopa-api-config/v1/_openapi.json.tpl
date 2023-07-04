@@ -2,11 +2,13 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.149
+  version: 0.0.163
 servers:
   - url: 'https://${host}/${basePath}'
     description: Inferred Url
 tags:
+  - name: Ibans
+    description: Iban Controller
   - name: channels
     description: Api config channels operations
   - name: creditor-institutions
@@ -1702,6 +1704,46 @@ paths:
       security:
         - bearerAuth:
             - global
+  /creditorinstitutions/ibans:
+    post:
+      tags:
+        - Ibans
+      summary: getCreditorInstitutionIbans
+      description: Get creditor institution ibans
+      operationId: getCreditorInstitutionIbansUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IbanRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbansResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /stations:
     get:
       tags:
@@ -2658,6 +2700,10 @@ components:
           example: false
         enabled:
           type: boolean
+        flagPspCp:
+          type: boolean
+          description: Represents the authorization to carry out the transfer of the information present in additional payment information in the tags relating to payment by card for the PA in V1
+          example: false
         flag_io:
           type: boolean
           description: flag io
@@ -3275,6 +3321,45 @@ components:
         page_info:
           description: info pageable
           $ref: '#/components/schemas/PageInfo'
+    IbanRequestDto:
+      title: IbanRequestDto
+      required:
+        - creditorInstitutionCode
+      type: object
+      properties:
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+    IbanResource:
+      title: IbanResource
+      required:
+        - ibanValue
+        - publicationDate
+        - validityDate
+      type: object
+      properties:
+        ibanValue:
+          type: string
+          description: Creditor Institution's address object
+        publicationDate:
+          type: string
+          description: Creditor Institution's address object
+          format: date-time
+        validityDate:
+          type: string
+          description: Creditor Institution's address object
+          format: date-time
+    IbansResource:
+      title: IbansResource
+      required:
+        - ibanList
+      type: object
+      properties:
+        ibanList:
+          type: array
+          description: Creditor Institution's address object
+          items:
+            $ref: '#/components/schemas/IbanResource'
     InputStream:
       title: InputStream
       type: object
@@ -3329,8 +3414,6 @@ components:
           type: boolean
         tax_code:
           type: string
-        transfer:
-          type: boolean
         vat_number:
           type: string
     PaymentServiceProviderDetailsResource:
@@ -3342,7 +3425,6 @@ components:
         - my_bank_code
         - stamp
         - tax_code
-        - transfer
         - vat_number
       type: object
       properties:
@@ -3372,10 +3454,6 @@ components:
         tax_code:
           type: string
           description: tax code of the payment service provider
-        transfer:
-          type: boolean
-          description: transfer  of the payment service provider
-          example: false
         vat_number:
           type: string
           description: of the payment service provider

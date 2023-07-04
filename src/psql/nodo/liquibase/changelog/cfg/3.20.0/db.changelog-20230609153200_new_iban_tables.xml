@@ -37,6 +37,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(255)"/>
+            <column name="due_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
@@ -76,6 +79,9 @@
             <column name="file_size" type="numeric">
                 <constraints nullable="false"/>
             </column>
+            <column name="id_dominio" type="VARCHAR(35)">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
@@ -93,7 +99,6 @@
             <column name="state" type="VARCHAR(10)"/>
             <column name="fk_pa" type="numeric"/>
             <column name="fk_iban" type="numeric"/>
-            <column name="fk_ica_binary_file" type="numeric"/>
         </createTable>
     </changeSet>
 
@@ -106,9 +111,6 @@
     </changeSet>
     <changeSet author="liquibase" id="20230609113612">
         <addForeignKeyConstraint baseColumnNames="fk_pa" baseTableName="iban_master" constraintName="fk_iban_master_to_pa" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="obj_id" referencedTableName="pa" validate="true"/>
-    </changeSet>
-    <changeSet author="liquibase" id="20230609113613">
-        <addForeignKeyConstraint baseColumnNames="fk_ica_binary_file" baseTableName="iban_master" constraintName="fk_iban_master_to_ica_binary_file" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="obj_id" referencedTableName="ica_binary_file" validate="true"/>
     </changeSet>
     <changeSet author="liquibase" id="20230609113614">
         <addForeignKeyConstraint baseColumnNames="fk_iban" baseTableName="iban_master" constraintName="fk_iban_master_to_iban" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="obj_id" referencedTableName="iban" validate="true"/>

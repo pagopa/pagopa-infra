@@ -27,6 +27,11 @@
     "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
     "description": "Design review"
   },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "paths": {
     "/payment-methods": {
       "post": {
@@ -479,13 +484,18 @@
             "items": {
               "$ref": "#/components/schemas/TransferListItem"
             }
+          },
+          "isAllCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
           }
         },
         "required": [
           "paymentAmount",
           "primaryCreditorInstitution",
           "transferList",
-          "touchpoint"
+          "touchpoint",
+          "isAllCCP"
         ]
       },
       "CalculateFeeResponse": {
@@ -657,6 +667,13 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
       }
     }
   }
