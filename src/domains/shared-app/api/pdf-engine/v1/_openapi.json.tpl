@@ -94,7 +94,7 @@
         }
       ]
     },
-    "/pdf-engine": {
+    "/generate-pdf": {
       "post": {
         "tags": [
           "default"

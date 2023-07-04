@@ -129,3 +129,140 @@ variable "cname_record_name" {
   type    = string
   default = "config"
 }
+
+# reporting
+variable "cidr_subnet_reporting_fdr" {
+  type        = list(string)
+  description = "Address prefixes subnet reporting_fdr function"
+  default     = null
+}
+
+variable "private_endpoint_network_policies_enabled" {
+  type        = bool
+  description = "Enables or network policies for private endpoints in Azure."
+}
+
+variable "reporting_fdr_function_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "reporting_fdr_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "reporting_fdr_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "reporting_fdr_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "image_name" {
+  type        = string
+  default     = null
+  description = "The image name to use with a function app"
+}
+
+variable "image_tag" {
+  type        = string
+  default     = null
+  description = "The image tag to use with a function app"
+}
+
+variable "eventhub_name" {
+  type        = string
+  default     = null
+  description = "EventHub name"
+}
+
+variable "event_name" {
+  type        = string
+  default     = null
+  description = "Event name related to an EventHub"
+}
+
+variable "fn_app_runtime_version" {
+  type        = string
+  description = "Function app runtime version."
+  default     = "~4"
+}
+
+variable "reporting_fdr_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "reporting_fdr_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "reporting_fdr_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+# Storage account
+variable "storage_account_info" {
+  type = object({
+    account_kind                      = string
+    account_tier                      = string
+    account_replication_type          = string
+    access_tier                       = string
+    advanced_threat_protection_enable = bool
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+}
+
+# App service plan
+variable "app_service_plan_info" {
+  type = object({
+    kind                         = string # The kind of the App Service Plan to create. Possible values are Windows (also available as App), Linux, elastic (for Premium Consumption) and FunctionApp (for a Consumption Plan).
+    sku_size                     = string # Specifies the plan's instance size.
+    maximum_elastic_worker_count = number # The maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan.
+    worker_count                 = number # The number of Workers (instances) to be allocated.
+    zone_balancing_enabled       = bool   # Should the Service Plan balance across Availability Zones in the region. Changing this forces a new resource to be created.
+  })
+
+  description = "Allows to configurate the internal service plan"
+
+  default = {
+    kind                         = "Linux"
+    sku_size                     = "P1v3"
+    maximum_elastic_worker_count = 0
+    worker_count                 = 0
+    zone_balancing_enabled       = false
+  }
+}
+
+# apim
+variable "apim_fdr_nodo_pagopa_enable" {
+  type        = bool
+  default     = false
+  description = "Enable Fdr Service Nodo pagoPA side"
+}
+
+variable "nodo_pagamenti_subkey_required" {
+  type        = bool
+  description = "Enabled subkeys for nodo dei pagamenti api"
+  default     = false
+}
