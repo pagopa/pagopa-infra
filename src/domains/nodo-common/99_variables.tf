@@ -266,6 +266,12 @@ variable "nodo_storico_storage_account" {
     account_replication_type      = "LRS"
     blob_versioning_enabled       = false
     advanced_threat_protection    = true
-    public_network_access_enabled = false
+    public_network_access_enabled = true
   }
+}
+
+variable "nodo_storico_allowed_ips" {
+  type        = list(string)
+  description = "List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed"
+  default     = []
 }

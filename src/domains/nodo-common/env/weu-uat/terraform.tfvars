@@ -111,4 +111,5 @@ custom_metric_alerts = {
   }
 }
 
+nodo_storico_allowed_ips = ["93.63.219.230"]
 
