@@ -4,7 +4,7 @@
     "title" : "PagoPA API configuration ${service}",
     "description" : "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.45.0"
+    "version" : "0.49.4-3-main"
   },
   "servers" : [ {
     "url": "${host}/apiconfig/api/v1",
@@ -3113,6 +3113,14 @@
             "minimum" : 0,
             "type" : "integer",
             "format" : "int32"
+          }
+        }, {
+          "description" : "Filter by broker",
+          "in" : "query",
+          "name" : "brokercode",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
           }
         }, {
           "description" : "Filter by code",
@@ -10499,7 +10507,7 @@
         "responses" : {
           "200" : {
             "content" : {
-              "text/plain" : {
+              "application/json" : {
                 "schema" : {
                   "type" : "string"
                 }
@@ -14729,6 +14737,14 @@
             "type" : "string"
           }
         }, {
+          "description" : "Filter by broker description",
+          "in" : "query",
+          "name" : "brokerdescription",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
           "description" : "Filter by creditor institution",
           "in" : "query",
           "name" : "creditorinstitutioncode",
@@ -16855,7 +16871,7 @@
         }
       },
       "IbanEnhanced" : {
-        "required" : [ "ci_owner", "iban", "is_active", "publication_date", "validity_date" ],
+        "required" : [ "ci_owner", "due_date", "iban", "is_active", "publication_date", "validity_date" ],
         "type" : "object",
         "properties" : {
           "ci_owner" : {
@@ -16880,6 +16896,12 @@
             "type" : "string",
             "description" : "The description the Creditor Institution gives to the iban about its usage",
             "example" : "Riscossione Tributi"
+          },
+          "due_date" : {
+            "type" : "string",
+            "description" : "The date on which the iban will expire",
+            "format" : "date-time",
+            "example" : "2023-12-31T23:59:59.999Z"
           },
           "iban" : {
             "maxLength" : 35,
@@ -17084,9 +17106,6 @@
           },
           "tax_code" : {
             "type" : "string"
-          },
-          "transfer" : {
-            "type" : "boolean"
           },
           "vat_number" : {
             "type" : "string"
