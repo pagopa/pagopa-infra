@@ -3,7 +3,7 @@
 # 1. BizEventToReceiptProcessor execution logs that a Receipt instance has been set to NOT_QUEUE_SENT
 #
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-sent-to-queue-alert" {
-  //count               = var.env_short != "d" ? 1 : 0
+  count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-receiptsdatastore-not-sent-to-queue-alert"
   location            = var.location
@@ -38,7 +38,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
 # 1. ManageReceiptPoisonQueueProcessor execution logs that a new entry has been set in error
 #
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert" {
-  //count               = var.env_short != "d" ? 1 : 0
+  count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-receipt-in-error-alert"
   location            = var.location
@@ -73,7 +73,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
 # 1. BizEventToReceiptProcessor throws an exception for the function execution (CosmosDB related errors)
 #
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt-error-alert" {
-  //count               = var.env_short != "d" ? 1 : 0
+  count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-receipt-in-poison-queue-alert"
   location            = var.location
