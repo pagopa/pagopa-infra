@@ -288,6 +288,11 @@ variable "fdr_convertion_delete_retention_days" {
 }
 
 # Storage account
+variable "cidr_subnet_storage_account" {
+  type        = list(string)
+  description = "Storage account network address space."
+}
+
 #variable "fdr_advanced_threat_protection" {
 #  type        = bool
 #  description = "Enable contract threat advanced protection"

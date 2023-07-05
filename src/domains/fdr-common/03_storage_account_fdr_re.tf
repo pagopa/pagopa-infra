@@ -23,12 +23,46 @@ module "fdr_re_sa" {
 
   blob_delete_retention_days = var.fdr_re_storage_account.blob_delete_retention_days
 
+  network_rules = var.env_short != "d" ? {
+    default_action             = "Deny"
+    ip_rules                   = []
+    virtual_network_subnet_ids = [module.fdr_storage_snet[0].id]
+    bypass                     = ["AzureServices"]
+  } : null
+
   tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "fdr_re_blob_private_endpoint" {
+  count               = var.env_short == "d" ? 0 : 1
+
+  name                = format("%s-re-blob-private-endpoint", local.project)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.fdr_re_rg.name
+  subnet_id           = module.fdr_storage_snet[0].id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-re-blob-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-re-blob-private-service-connection"
+    private_connection_resource_id = module.fdr_re_sa.id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  tags = var.tags
+
+  depends_on = [
+    module.fdr_re_sa
+  ]
 }
 
 ## share xml file
 resource "azurerm_storage_container" "payload_blob_file" {
-  name                  = "${module.fdr_conversion_sa.name}repayload"
+  name                  = "${module.fdr_re_sa.name}payload"
   storage_account_name  = module.fdr_re_sa.name
   container_access_type = "private"
 }

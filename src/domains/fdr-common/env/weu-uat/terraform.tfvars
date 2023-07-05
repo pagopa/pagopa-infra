@@ -140,6 +140,8 @@ cosmos_mongo_db_fdr_params = {
   throughput         = 1000
 }
 
+cidr_subnet_storage_account = ["10.1.179.0/24"]
+
 fdr_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
@@ -148,5 +150,16 @@ fdr_storage_account = {
   advanced_threat_protection    = false
   public_network_access_enabled = false
   blob_delete_retention_days    = 90
-  enable_low_availability_alert = true
+  enable_low_availability_alert = false
+}
+
+fdr_re_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 90
+  enable_low_availability_alert = false
 }
