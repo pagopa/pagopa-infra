@@ -61,7 +61,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_jdbc_connectio
     | where Problem > threshold
     | order by length desc
     QUERY
-  , module.api_config_app_service.name
+    , module.api_config_app_service.name
   )
 
   severity    = 1
