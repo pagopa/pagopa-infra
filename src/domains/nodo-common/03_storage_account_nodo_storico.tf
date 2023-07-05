@@ -24,7 +24,7 @@ module "nodo_storico_storage_account" {
   blob_delete_retention_days = 0 # disabled
 
   network_rules = {
-    default_action             = "Allow"
+    default_action             = "Deny"
     bypass                     = ["AzureServices"]
     ip_rules                   = var.nodo_storico_allowed_ips
     virtual_network_subnet_ids = [data.azurerm_subnet.private_endpoint_snet.id]
