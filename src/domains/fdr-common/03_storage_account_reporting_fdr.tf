@@ -2,85 +2,6 @@ data "azurerm_resource_group" "reporting_fdr_rg" {
   name = "${local.product}-reporting-fdr-rg"
 }
 
-resource "azurerm_resource_group" "fdr_rg" {
-  name     = "${local.project}-rg"
-  location = var.location
-
-  tags = var.tags
-}
-
-resource "azurerm_resource_group" "fdr_re_rg" {
-  name     = "${local.project}-re-rg"
-  location = var.location
-
-  tags = var.tags
-}
-
-module "fdr_conversion_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
-
-  name                            = replace("${local.project}-sa", "-", "")
-  account_kind                    = "StorageV2"
-  account_tier                    = "Standard"
-  account_replication_type        = "LRS"
-  access_tier                     = "Hot"
-  blob_versioning_enabled         = var.fdr_conversion_versioning
-  resource_group_name             = azurerm_resource_group.fdr_rg.name
-  location                        = var.location
-  advanced_threat_protection      = var.fdr_convertion_advanced_threat_protection
-  allow_nested_items_to_be_public = false
-  public_network_access_enabled   = true
-  enable_low_availability_alert   = false
-
-  blob_delete_retention_days = var.fdr_convertion_delete_retention_days
-
-  tags = var.tags
-}
-
-
-## share xml file
-resource "azurerm_storage_container" "xml_blob_file" {
-  name                  = "${module.fdr_conversion_sa.name}xmlsharefile"
-  storage_account_name  = module.fdr_conversion_sa.name
-  container_access_type = "private"
-}
-
-# send id of fdr mongo collection
-resource "azurerm_storage_queue" "flow_id_send_queue" {
-  name                 = "${module.fdr_conversion_sa.name}flowidsendqueue"
-  storage_account_name = module.fdr_conversion_sa.name
-}
-
-
-module "fdr_re_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
-
-  name                            = replace("${local.project}-re-sa", "-", "")
-  account_kind                    = "StorageV2"
-  account_tier                    = "Standard"
-  account_replication_type        = "LRS"
-  access_tier                     = "Hot"
-  blob_versioning_enabled         = var.fdr_re_versioning
-  resource_group_name             = azurerm_resource_group.fdr_re_rg.name
-  location                        = var.location
-  advanced_threat_protection      = var.fdr_re_advanced_threat_protection
-  allow_nested_items_to_be_public = false
-  public_network_access_enabled   = true
-  enable_low_availability_alert   = false
-
-  blob_delete_retention_days = var.fdr_re_delete_retention_days
-
-  tags = var.tags
-}
-
-## share xml file
-resource "azurerm_storage_container" "payload_blob_file" {
-  name                  = "${module.fdr_conversion_sa.name}repayload"
-  storage_account_name  = module.fdr_re_sa.name
-  container_access_type = "private"
-}
-
-
 ## Flows Storage Account
 module "fdr_flows_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
@@ -90,13 +11,13 @@ module "fdr_flows_sa" {
   account_tier                    = "Standard"
   account_replication_type        = "LRS"
   access_tier                     = "Hot"
-  blob_versioning_enabled         = var.fdr_enable_versioning
+  blob_versioning_enabled         = var.reporting_fdr_storage_account.blob_versioning_enabled
   resource_group_name             = azurerm_resource_group.data.name
   location                        = var.location
-  advanced_threat_protection      = var.fdr_advanced_threat_protection
+  advanced_threat_protection      = var.reporting_fdr_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
 
-  blob_delete_retention_days    = var.fdr_delete_retention_days
+  blob_delete_retention_days    = var.reporting_fdr_storage_account.blob_delete_retention_days
   public_network_access_enabled = true
 
   tags = var.tags
@@ -203,7 +124,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_parsing_0_flows_aler
     | where cloud_RoleName == "%s"
     | where message  matches regex "with.*flows"
     | extend flussi = extract("END opt2ehub.*with(.*)flows", 1, message)
-    | where toint(flussi) == 0  
+    | where toint(flussi) == 0
   QUERY
     , local.function_app_name
   )

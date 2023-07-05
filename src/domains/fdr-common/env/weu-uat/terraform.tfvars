@@ -139,3 +139,14 @@ cosmos_mongo_db_fdr_params = {
   max_throughput     = 5000
   throughput         = 1000
 }
+
+fdr_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 90
+  enable_low_availability_alert = true
+}
