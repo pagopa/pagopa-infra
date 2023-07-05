@@ -282,6 +282,8 @@ data "azurerm_key_vault_secret" "monitor_pm_opsgenie_webhook_key" {
   key_vault_id = module.key_vault.id
 }
 
+
+# DEPRECATED use opsgenie-webhook-token
 data "azurerm_key_vault_secret" "monitor_new_conn_srv_webhook_key" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "new-conn-srv-opsgenie-webhook-token"
@@ -291,6 +293,21 @@ data "azurerm_key_vault_secret" "monitor_new_conn_srv_webhook_key" {
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "newconn_opsgenie_webhook_token" {
   name         = "new-conn-srv-opsgenie-webhook-token"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "team_core_opsgenie_webhook_token" {
+  name         = "opsgenie-webhook-token"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
