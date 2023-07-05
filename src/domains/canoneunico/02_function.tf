@@ -7,7 +7,7 @@ module "canoneunico_function" {
   location                                 = var.location
   health_check_path                        = "info"
   subnet_id                                = module.canoneunico_function_snet.id
-  runtime_version                          = "~3"
+  runtime_version                          = var.fn_app_runtime_version
   always_on                                = var.canoneunico_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.canoneunico_service_plan.id
@@ -16,7 +16,7 @@ module "canoneunico_function" {
     image_name        = var.image_name
     image_tag         = var.image_tag
     registry_password = data.azurerm_container_registry.login_server.admin_password
-    registry_url      = "https://${data.azurerm_container_registry.login_server.login_server}"
+    registry_url      = data.azurerm_container_registry.login_server.login_server
     registry_username = data.azurerm_container_registry.login_server.admin_username
   }
 
