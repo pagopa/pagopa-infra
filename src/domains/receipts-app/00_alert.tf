@@ -1,34 +1,9 @@
-data "azurerm_log_analytics_workspace" "log_analytics" {
-  name                = var.log_analytics_workspace_name
-  resource_group_name = var.log_analytics_workspace_resource_group_name
-}
-
-data "azurerm_resource_group" "monitor_rg" {
-  name = var.monitor_resource_group_name
-}
-
-data "azurerm_application_insights" "application_insights" {
-  name                = local.monitor_appinsights_name
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
-}
-
-data "azurerm_monitor_action_group" "slack" {
-  resource_group_name = var.monitor_resource_group_name
-  name                = local.monitor_action_group_slack_name
-}
-
-data "azurerm_monitor_action_group" "email" {
-  resource_group_name = var.monitor_resource_group_name
-  name                = local.monitor_action_group_email_name
-}
-
-
 ## Alert
 # This alert cover the following error case:
 # 1. BizEventToReceiptProcessor execution logs that a Receipt instance has been set to NOT_QUEUE_SENT
 #
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-sent-to-queue-alert" {
-  count               = var.env_short != "d" ? 1 : 0
+  //count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-receiptsdatastore-not-sent-to-queue-alert"
   location            = var.location
@@ -47,7 +22,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
     | order by timestamp desc
     | where message contains "[BizEventToReceiptService] Error sending message to queue"
   QUERY
-    , format("pagopareceiptpdfdatastore", var.env_short) # from HELM's parameter WEBSITE_SITE_NAME
+    , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME
   )
   severity    = 1
   frequency   = 15
@@ -63,7 +38,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
 # 1. ManageReceiptPoisonQueueProcessor execution logs that a new entry has been set in error
 #
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert" {
-  count               = var.env_short != "d" ? 1 : 0
+  //count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-receipt-in-error-alert"
   location            = var.location
@@ -82,7 +57,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
     | order by timestamp desc
     | where message contains "[ManageReceiptPoisonQueueProcessor] saving new entry to the retry error to review"
   QUERY
-    , format("pagopareceiptpdfdatastore", var.env_short) # from HELM's parameter WEBSITE_SITE_NAME
+    , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME
   )
   severity    = 1
   frequency   = 15
@@ -98,7 +73,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
 # 1. BizEventToReceiptProcessor throws an exception for the function execution (CosmosDB related errors)
 #
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt-error-alert" {
-  count               = var.env_short != "d" ? 1 : 0
+  //count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-receipt-in-poison-queue-alert"
   location            = var.location
@@ -117,7 +92,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt
     | order by timestamp desc
     | where message contains "System.Private.CoreLib: Exception while executing function: Functions.BizEventToReceiptProcessor"
   QUERY
-    , format("pagopareceiptpdfdatastore", var.env_short) # from HELM's parameter WEBSITE_SITE_NAME
+    , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME
   )
   severity    = 1
   frequency   = 15
