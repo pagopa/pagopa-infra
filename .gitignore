@@ -45,3 +45,4 @@ __*.sh
 **/nodo-secret/**/*.zip
 **/*copy.xml
 **/libs
+__import_apim
