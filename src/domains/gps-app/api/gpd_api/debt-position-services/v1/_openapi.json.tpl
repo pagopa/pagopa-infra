@@ -7,7 +7,7 @@
     "version" : "0.4.6"
   },
   "servers" : [ {
-    "url" : ${host},
+    "url" : "${host}",
     "description" : "Generated server url"
   } ],
   "tags" : [ {

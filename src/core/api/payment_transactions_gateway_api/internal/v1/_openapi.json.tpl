@@ -366,6 +366,16 @@
               }
             }
           },
+          "409": {
+            "description": "Payment in DENIED status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayRefundResponse409"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Generic Error",
             "content": {
@@ -831,6 +841,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/VposDeleteResponse404"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Payment in DENIED status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VposDeleteResponse409"
                 }
               }
             }
@@ -1604,6 +1624,30 @@
           "error"
         ]
       },
+      "XPayRefundResponse409": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
+          },
+          "error": {
+            "type": "string",
+            "example": "Payment in DENIED status"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DENIED"
+            ]
+          }
+        },
+        "required": [
+          "requestId",
+          "error",
+          "status"
+        ]
+      },
       "XPayRefundResponse500": {
         "type": "object",
         "properties": {
@@ -1829,6 +1873,30 @@
           },
           "error": {
             "type": "string"
+          }
+        }
+      },
+      "VposDeleteResponse409": {
+        "type": "object",
+        "required": [
+          "requestId",
+          "status",
+          "error"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DENIED"
+            ]
+          },
+          "error": {
+            "type": "string",
+            "example": "Payment in DENIED status"
           }
         }
       },

@@ -97,5 +97,47 @@ locals {
   }
   apim_x_node_product_id = "apim_for_node"
 
+  apiconfig_cache_alert = {
+    pagopa_api_config_cache_name = format("%s-%s", var.prefix, local.apiconfig_cache_locals.path)
+    outOfMemory = {
+      query       = <<-QUERY
+            traces
+            | where cloud_RoleName == "%s"
+            | where message contains "java.lang.OutOfMemoryError: Java heap space"
+            | order by timestamp desc
+            | summarize Total=count() by length=bin(timestamp,1m)
+            | order by length desc
+            QUERY
+      severity    = 0
+      frequency   = 5
+      time_window = 5
+    }
+    writeOnDB = {
+      query       = <<-QUERY
+            traces
+            | where cloud_RoleName == "%s"
+            | where message contains "[ALERT] could not save on db"
+            | order by timestamp desc
+            | summarize Total=count() by length=bin(timestamp,1m)
+            | order by length desc
+            QUERY
+      severity    = 0
+      frequency   = 5
+      time_window = 5
+    }
+    cacheGeneration = {
+      query       = <<-QUERY
+            traces
+            | where cloud_RoleName == "%s"
+            | where message contains "[ALERT] problem to generate cache"
+            | order by timestamp desc
+            | summarize Total=count() by length=bin(timestamp,1m)
+            | order by length desc
+            QUERY
+      severity    = 0
+      frequency   = 5
+      time_window = 5
+    }
+  }
 }
 

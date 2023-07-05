@@ -26,7 +26,7 @@ module "pagopa_ecommerce_redis" {
   family                = var.redis_ecommerce_params.family
   sku_name              = var.redis_ecommerce_params.sku_name
   enable_authentication = true
-  redis_version         = 6
+  redis_version         = var.redis_ecommerce_params.version
 
   private_endpoint = {
     enabled              = true

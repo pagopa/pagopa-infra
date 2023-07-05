@@ -35,9 +35,9 @@ cosmos_mongo_db_params = {
   capabilities = ["EnableMongo", "DisableRateLimitingResponses"]
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "Strong"
-    max_interval_in_seconds = null
-    max_staleness_prefix    = null
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 5
+    max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
   main_geo_location_zone_redundant = false
@@ -48,7 +48,8 @@ cosmos_mongo_db_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled                    = false
+  enable_provisioned_throughput_exceeded_alert = false
 
 }
 
@@ -59,7 +60,7 @@ cidr_subnet_storage_ecommerce  = ["10.1.154.0/24"]
 cosmos_mongo_db_ecommerce_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 4000
+  max_throughput     = 1000
   throughput         = 1000
 }
 
@@ -67,16 +68,27 @@ redis_ecommerce_params = {
   capacity = 0
   sku_name = "Basic"
   family   = "C"
+  version  = 6
 }
 
-ecommerce_storage_params = {
+ecommerce_storage_transient_params = {
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"
   account_replication_type      = "LRS",
   advanced_threat_protection    = true,
   retention_days                = 7,
-  public_network_access_enabled = true,
+  public_network_access_enabled = false,
+}
+
+ecommerce_storage_deadletter_params = {
+  enabled                       = true
+  tier                          = "Standard"
+  kind                          = "StorageV2"
+  account_replication_type      = "LRS",
+  advanced_threat_protection    = true,
+  retention_days                = 7,
+  public_network_access_enabled = false,
 }
 
 enable_iac_pipeline = true

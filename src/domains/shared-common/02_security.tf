@@ -119,6 +119,30 @@ resource "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
 
 }
 
+# https://api.dev.platform.pagopa.it/apiconfig-selfcare-integration/v1
+resource "azurerm_key_vault_secret" "apiconfig_selfcare_integration_url" {
+  name         = format("auth-%s-apiconfig-selfcare-integration-url", var.env_short)
+  value        = var.env == "prod" ? "https://api.platform.pagopa.it/apiconfig-selfcare-integration/v1" : "https://api.${var.env}.platform.pagopa.it/apiconfig-selfcare-integration/v1"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+}
+
+resource "azurerm_key_vault_secret" "apiconfig_selfcare_integration_subkey" {
+  name         = format("auth-%s-apiconfig-selfcare-integration-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 resource "azurerm_key_vault_secret" "authorizer_integrationtest_external_subkey" {
   name         = format("auth-%s-integrationtest-external-subkey", var.env_short)
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
@@ -161,6 +185,22 @@ resource "azurerm_key_vault_secret" "authorizer_integrationtest_invalid_subkey" 
   }
 }
 
+resource "azurerm_key_vault_secret" "pdf_engine_perf_test_subkey" {
+  count = var.env_short == "p" ? 0 : 1
+
+  name         = format("pdf-engine-%s-perftest-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 
 #
 # IaC
@@ -181,4 +221,12 @@ resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy" {
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", ]
 
   storage_permissions = []
+}
+
+resource "azurerm_key_vault_secret" "ai_connection_string" {
+  name         = "ai-${var.env_short}-connection-string"
+  value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
 }
