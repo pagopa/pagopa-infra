@@ -9,6 +9,13 @@ resource "azurerm_resource_group" "fdr_rg" {
   tags = var.tags
 }
 
+resource "azurerm_resource_group" "fdr_re_rg" {
+  name     = "${local.project}-re-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
 module "fdr_conversion_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
 
@@ -44,6 +51,34 @@ resource "azurerm_storage_queue" "flow_id_send_queue" {
   storage_account_name = module.fdr_conversion_sa.name
 }
 
+
+module "fdr_re_sa" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
+
+  name                            = replace("${local.project}-re-sa", "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = var.fdr_re_versioning
+  resource_group_name             = azurerm_resource_group.fdr_re_rg.name
+  location                        = var.location
+  advanced_threat_protection      = var.fdr_re_advanced_threat_protection
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = true
+  enable_low_availability_alert   = false
+
+  blob_delete_retention_days = var.fdr_re_delete_retention_days
+
+  tags = var.tags
+}
+
+## share xml file
+resource "azurerm_storage_container" "payload_blob_file" {
+  name                  = "${module.fdr_conversion_sa.name}repayload"
+  storage_account_name  = module.fdr_re_sa.name
+  container_access_type = "private"
+}
 
 
 ## Flows Storage Account
