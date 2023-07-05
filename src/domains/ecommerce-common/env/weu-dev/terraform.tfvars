@@ -48,7 +48,8 @@ cosmos_mongo_db_params = {
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = false
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled                    = false
+  enable_provisioned_throughput_exceeded_alert = false
 
 }
 
@@ -67,9 +68,20 @@ redis_ecommerce_params = {
   capacity = 0
   sku_name = "Basic"
   family   = "C"
+  version  = 6
 }
 
-ecommerce_storage_params = {
+ecommerce_storage_deadletter_params = {
+  enabled                       = true
+  tier                          = "Standard"
+  kind                          = "StorageV2"
+  account_replication_type      = "LRS",
+  advanced_threat_protection    = true,
+  retention_days                = 7,
+  public_network_access_enabled = true,
+}
+
+ecommerce_storage_transient_params = {
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"

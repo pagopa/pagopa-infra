@@ -39,8 +39,7 @@ authorizer_function_always_on = true
 
 authorizer_functions_app_sku = {
   kind     = "Linux"
-  sku_tier = "Basic"
-  sku_size = "B1"
+  sku_size = "P1v3"
 }
 
 authorizer_functions_autoscale = {

@@ -120,17 +120,18 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   "/nodo-pagamenti/.*",
-  "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
-  "/pagopa-node-forwarder/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
   "/shared/authorizer/.*",                # internal use no sub-keys
-  "/gpd/api/.*",
+  "/gpd/api/.*",                          # internal use no sub-keys
+]
+app_gateway_kibana_deny_paths = [
+  "/kibana/*",
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
@@ -171,15 +172,11 @@ postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = false
 postgres_private_endpoint_enabled        = false
 
-# mock
-mock_ec_enabled              = false
-mock_ec_secondary_enabled    = false
-mock_payment_gateway_enabled = false
-
 
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
+apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -189,7 +186,7 @@ ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 base_path_nodo_oncloud        = "/nodo-prd"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-prd"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-prd"
 base_path_nodo_fatturazione   = "/fatturazione-prd"

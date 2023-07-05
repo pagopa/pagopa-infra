@@ -19,7 +19,6 @@
 | <a name="module_apim_ecommerce_payment_methods_service_api_v1"></a> [apim\_ecommerce\_payment\_methods\_service\_api\_v1](#module\_apim\_ecommerce\_payment\_methods\_service\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_ecommerce_payment_requests_service_api_v1"></a> [apim\_ecommerce\_payment\_requests\_service\_api\_v1](#module\_apim\_ecommerce\_payment\_requests\_service\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_ecommerce_product"></a> [apim\_ecommerce\_product](#module\_apim\_ecommerce\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.6.0 |
-| <a name="module_apim_ecommerce_sessions_service_api_v1"></a> [apim\_ecommerce\_sessions\_service\_api\_v1](#module\_apim\_ecommerce\_sessions\_service\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_ecommerce_transaction_auth_requests_service_api_v1"></a> [apim\_ecommerce\_transaction\_auth\_requests\_service\_api\_v1](#module\_apim\_ecommerce\_transaction\_auth\_requests\_service\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_ecommerce_transaction_user_receipts_service_api_v1"></a> [apim\_ecommerce\_transaction\_user\_receipts\_service\_api\_v1](#module\_apim\_ecommerce\_transaction\_user\_receipts\_service\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_ecommerce_transactions_service_api_v1"></a> [apim\_ecommerce\_transactions\_service\_api\_v1](#module\_apim\_ecommerce\_transactions\_service\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
@@ -31,6 +30,7 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_api_management_api.apim_ecommerce_gec_mock](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_ecommerce_nodo_mock](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_ecommerce_nodo_per_pm_mock](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_ecommerce_pdv_mock](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
@@ -41,21 +41,23 @@
 | [azurerm_api_management_api_operation_policy.get_transaction_info](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.transaction_activation_request](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.transaction_authorization_request](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_policy.apim_ecommerce_gec_mock_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_ecommerce_nodo_mock_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_ecommerce_nodo_per_pm_mock_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_ecommerce_pdv_mock_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
+| [azurerm_api_management_api_version_set.apim_ecommerce_gec_mock_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_ecommerce_nodo_mock_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_ecommerce_nodo_per_pm_mock_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_ecommerce_pdv_mock_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_checkout_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_payment_methods_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_payment_requests_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.ecommerce_sessions_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_transaction_auth_requests_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_transaction_user_receipts_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_transactions_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pagopa_notifications_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_named_value.ecommerce_checkout_transaction_jwt_signing_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_product_api.apim_ecommerce_gec_mock_product_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_product_api.apim_ecommerce_nodo_mock_product_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_product_api.apim_ecommerce_nodo_per_pm_mock_product_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_product_api.apim_ecommerce_pdv_mock_product_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
