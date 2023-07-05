@@ -67,7 +67,7 @@ resource "null_resource" "pagopa_ingest_pipeline" {
 }
 
 resource "null_resource" "pagopa_snapshot_policy" {
-  depends_on = [module.elastic_stack, null_resource.snapshot_repo]
+  depends_on = [module.elastic_stack]
 
   triggers = {
     always_run = "${timestamp()}"
