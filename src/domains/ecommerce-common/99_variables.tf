@@ -158,29 +158,6 @@ variable "cidr_subnet_storage_ecommerce" {
   description = "Azure storage DB address space for ecommerce."
 }
 
-variable "ecommerce_storage_params" {
-  type = object({
-    enabled                       = bool,
-    kind                          = string,
-    tier                          = string,
-    account_replication_type      = string,
-    advanced_threat_protection    = bool,
-    retention_days                = number,
-    public_network_access_enabled = bool,
-  })
-
-  default = {
-    enabled                       = false,
-    kind                          = "StorageV2"
-    tier                          = "Standard",
-    account_replication_type      = "LRS",
-    advanced_threat_protection    = true,
-    retention_days                = 7,
-    public_network_access_enabled = false,
-  }
-  description = "Azure storage DB params for ecommerce."
-}
-
 variable "ecommerce_storage_deadletter_params" {
   type = object({
     enabled                       = bool,
