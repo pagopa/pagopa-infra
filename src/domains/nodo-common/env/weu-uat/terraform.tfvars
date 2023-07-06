@@ -55,7 +55,7 @@ pgres_flex_params = {
 
 sftp_account_replication_type = "LRS"
 sftp_enable_private_endpoint  = true
-sftp_ip_rules                 = [] # List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed
+sftp_ip_rules                 = [] # List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed
 
 custom_metric_alerts = {
 
@@ -121,10 +121,9 @@ cosmos_mongo_db_params = {
     max_interval_in_seconds = 5
     max_staleness_prefix    = 100000
   }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = false
-
+  server_version                    = "4.0"
+  main_geo_location_zone_redundant  = false
+  enable_free_tier                  = false
   additional_geo_locations          = []
   private_endpoint_enabled          = true
   public_network_access_enabled     = false
@@ -134,6 +133,7 @@ cosmos_mongo_db_params = {
 
 }
 
+nodo_storico_allowed_ips     = ["93.63.219.230"]
 cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
 
 cosmos_mongo_db_nodo_re_params = {

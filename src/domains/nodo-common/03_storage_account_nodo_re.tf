@@ -29,8 +29,9 @@ module "nodo_re_storage_account" {
   tags = var.tags
 }
 
+# TODO to fix
 ## table#1 nodo-re
-resource "azurerm_storage_table" "nodo_re_table" {
-  name                 = "events"
-  storage_account_name = module.nodo_re_storage_account.name
-}
+# resource "azurerm_storage_table" "nodo_re_table" {
+#   name                 = "events"
+#   storage_account_name = module.nodo_re_storage_account.name
+# }
