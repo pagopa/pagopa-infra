@@ -1,3 +1,13 @@
+
+locals {
+
+  fn_name_for_alerts_exceptions = var.env_short == "d" ? [] : [
+    {
+      name : "BizEventToReceiptProcessor"
+    }
+  ]
+}
+
 ## Alert
 # This alert cover the following error case:
 # 1. BizEventToReceiptProcessor execution logs that a Receipt instance has been set to NOT_QUEUE_SENT
@@ -9,7 +19,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id] # future need add opsgenie hook
     email_subject          = "[Receipt] queue insertion error"
     custom_webhook_payload = "{}"
   }
@@ -20,11 +30,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "[BizEventToReceiptService] Error sending message to queue"
+    | where message contains "Error sending message to queue"
   QUERY
     , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME
   )
-  severity    = 1
+  severity    = 2 // Sev 2	Warning
   frequency   = 15
   time_window = 15
   trigger {
@@ -55,11 +65,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "[ManageReceiptPoisonQueueProcessor] saving new entry to the retry error to review"
+    | where message contains "saving new entry to the retry error to review"
   QUERY
     , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME
   )
-  severity    = 1
+  severity    = 2 // Sev 2	Warning
   frequency   = 15
   time_window = 15
   trigger {
@@ -73,7 +83,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
 # 1. BizEventToReceiptProcessor throws an exception for the function execution (CosmosDB related errors)
 #
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt-error-alert" {
-  count               = var.env_short != "d" ? 1 : 0
+  for_each = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
+
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-receipt-in-poison-queue-alert"
   location            = var.location
@@ -87,14 +98,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt
   description    = "Binding exception for function BizEventToReceiptProcessor"
   enabled        = true
   query = format(<<-QUERY
-  traces
+  exceptions
     | where cloud_RoleName == "%s"
+    | where outerMessage contains "Exception while executing function: Functions.${each.value.name}"
     | order by timestamp desc
-    | where message contains "System.Private.CoreLib: Exception while executing function: Functions.BizEventToReceiptProcessor"
   QUERY
     , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME
   )
-  severity    = 1
+  severity    = 2 // Sev 2	Warning
   frequency   = 15
   time_window = 15
   trigger {
