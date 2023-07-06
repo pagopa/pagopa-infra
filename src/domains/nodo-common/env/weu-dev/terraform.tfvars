@@ -148,7 +148,7 @@ nodo_re_storage_account = {
   account_tier                  = "Standard"
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
-  advanced_threat_protection    = true
+  advanced_threat_protection    = false
   blob_delete_retention_days    = 15
   public_network_access_enabled = true
 }

@@ -19,6 +19,13 @@ module "nodo_re_storage_account" {
 
   blob_delete_retention_days = var.nodo_re_storage_account.blob_delete_retention_days
 
+  network_rules = var.env_short != "d" ? {
+    default_action             = "Deny"
+    ip_rules                   = []
+    virtual_network_subnet_ids = [module.storage_account_snet[0].id]
+    bypass                     = ["AzureServices"]
+  } : null
+
   tags = var.tags
 }
 

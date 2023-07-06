@@ -54,8 +54,7 @@ locals {
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
     EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_connection_string
-    COSMOS_CONN_STRING   = format("mongodb://%s-cosmos-account:%s@%s-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@%s-cosmos-account@",
-      local.project, data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key, local.project, local.project)
+    COSMOS_CONN_STRING   = "mongodb://${local.project}-cosmos-account:${data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key}@${local.project}-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${local.project}-cosmos-account@"
   }
 
   docker_settings = {
