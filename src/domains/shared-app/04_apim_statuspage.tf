@@ -48,6 +48,11 @@ data "azurerm_linux_function_app" "api_config" {
   resource_group_name = format("%s-%s-api-config-rg", var.prefix, var.env_short)
 }
 
+data "azurerm_function_app" "authorizer" {
+  name                = format("%s-%s-%s-shared-authorizer-fn", var.prefix, var.env_short, var.location_short)
+  resource_group_name = format("%s-%s-%s-shared-rg", var.prefix, var.env_short, var.location_short)
+}
+
 data "azurerm_linux_function_app" "gpd" {
   name                = format("%s-%s-app-gpd", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-gpd-rg", var.prefix, var.env_short)
@@ -91,6 +96,7 @@ module "apim_api_statuspage_api_v1" {
       "apiconfigcacheo"       = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
       "apiconfigcachep"       = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
       "apiconfigselfcare"     = format("%s/pagopa-api-config-selfcare-integration", format(local.aks_path, "apiconfig"))
+      "authorizer"            = format("%s/", data.azurerm_function_app.authorizer.default_hostname)
       "bizevents"             = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastoreneg" = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastorepos" = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
@@ -101,7 +107,7 @@ module "apim_api_statuspage_api_v1" {
       "gps"                   = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
       "gpsdonation"           = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
       "mockec"                = var.env_short != "p" ? format("%s/", data.azurerm_linux_function_app.mockec[0].default_hostname) : "NA"
-      "mocker"                = var.env_short != "p" ? format("%s/mocker", format(local.aks_path, "mocker")) : "NA"
+      "mocker"                = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
       "pdfengine"             = format("%s/pagopa-pdf-engine", format(local.aks_path, "shared"))
       "receiptpdfdatastore"   = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
     }), "\"", "\\\"")
