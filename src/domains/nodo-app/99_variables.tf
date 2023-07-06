@@ -183,19 +183,19 @@ variable "vmss_instance_number" {
 
 variable "nodo_re_to_datastore_function" {
   type = object({
-    always_on                     = bool
-    kind                          = string
-    sku_size                      = string
-    sku_tier                      = string
-    maximum_elastic_worker_count  = number
+    always_on                    = bool
+    kind                         = string
+    sku_size                     = string
+    sku_tier                     = string
+    maximum_elastic_worker_count = number
   })
   description = "Nodo RE to datastore function"
   default = {
-    always_on                     = true
-    kind                          = "Linux"
-    sku_size                      = "B1"
-    sku_tier                      = "Basic"
-    maximum_elastic_worker_count  = 1
+    always_on                    = true
+    kind                         = "Linux"
+    sku_size                     = "B1"
+    sku_tier                     = "Basic"
+    maximum_elastic_worker_count = 1
   }
 }
 

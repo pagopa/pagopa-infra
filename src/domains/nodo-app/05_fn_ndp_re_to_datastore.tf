@@ -72,14 +72,14 @@ module "nodo_re_to_datastore_function" {
   resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
   name                = "${local.project}-re-to-datastore-fn"
 
-  location            = var.location
-  health_check_path   = "/info"
-  subnet_id           = module.nodo_re_to_datastore_function_snet.id
-  runtime_version     = "~4"
+  location          = var.location
+  health_check_path = "/info"
+  subnet_id         = module.nodo_re_to_datastore_function_snet.id
+  runtime_version   = "~4"
 
   system_identity_enabled = true
 
-  always_on           = var.nodo_re_to_datastore_function.always_on
+  always_on = var.nodo_re_to_datastore_function.always_on
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -100,11 +100,11 @@ module "nodo_re_to_datastore_function" {
 
   app_service_plan_name = "${local.project}-re-to-datastore-plan"
   app_service_plan_info = {
-    kind                          = var.nodo_re_to_datastore_function.kind
-    sku_size                      = var.nodo_re_to_datastore_function.sku_size
-    maximum_elastic_worker_count  = var.nodo_re_to_datastore_function.maximum_elastic_worker_count
-    worker_count                  = 1
-    zone_balancing_enabled        = false
+    kind                         = var.nodo_re_to_datastore_function.kind
+    sku_size                     = var.nodo_re_to_datastore_function.sku_size
+    maximum_elastic_worker_count = var.nodo_re_to_datastore_function.maximum_elastic_worker_count
+    worker_count                 = 1
+    zone_balancing_enabled       = false
   }
 
   storage_account_name = replace(format("%s-re-2-dst-fn-sa", local.project), "-", "")
@@ -120,14 +120,14 @@ module "nodo_re_to_datastore_function" {
     DOCKER_REGISTRY_SERVER_USERNAME = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
     DOCKER_REGISTRY_SERVER_PASSWORD = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
-    COSMOS_CONN_STRING          = local.function_re_to_datastore_settings.COSMOS_CONN_STRING
-    COSMOS_DB_NAME              = data.azurerm_cosmosdb_mongo_database.nodo_re.name
-    COSMOS_DB_COLLECTION_NAME   = "events"
+    COSMOS_CONN_STRING        = local.function_re_to_datastore_settings.COSMOS_CONN_STRING
+    COSMOS_DB_NAME            = data.azurerm_cosmosdb_mongo_database.nodo_re.name
+    COSMOS_DB_COLLECTION_NAME = "events"
 
-    EVENTHUB_CONN_STRING        = local.function_re_to_datastore_settings.EVENTHUB_CONN_STRING
+    EVENTHUB_CONN_STRING = local.function_re_to_datastore_settings.EVENTHUB_CONN_STRING
 
-    TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.nodo_re_storage.primary_connection_string
-    TABLE_STORAGE_TABLE_NAME    = "events"
+    TABLE_STORAGE_CONN_STRING = data.azurerm_storage_account.nodo_re_storage.primary_connection_string
+    TABLE_STORAGE_TABLE_NAME  = "events"
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]

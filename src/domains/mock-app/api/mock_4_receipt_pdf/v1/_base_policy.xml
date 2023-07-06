@@ -12,22 +12,30 @@
 -->
 <policies>
     <inbound>
-        <cors>
-            <allowed-origins>
-                <origin>*</origin>
-            </allowed-origins>
-            <allowed-methods preflight-result-max-age="300">
-                <method>*</method>
-            </allowed-methods>
-            <allowed-headers>
-                <header>*</header>
-            </allowed-headers>
-            <expose-headers>
-                <header>*</header>
-            </expose-headers>
-        </cors>
         <base />
-        <set-backend-service base-url="http://{{aks-lb-nexi}}/mockpaymentgateway" />
+        <choose>
+            <!-- Mock response IO  -->
+            <when condition="@(context.Request.Url.Path.Contains("profiles"))">
+                <return-response>
+                    <set-status code="200" reason="OK" />
+                    <set-body template="liquid">
+{
+"sender_allowed": true
+}
+                    </set-body>
+                </return-response>
+            </when>
+            <when condition="@(context.Request.Url.Path.Contains("messages"))">
+                <return-response>
+                    <set-status code="200" reason="OK" />
+                    <set-body template="liquid">
+{
+"id": "01EM6X4JB9VSZTQ8H16KMQFCEJ"
+}                    
+                    </set-body>
+                </return-response>
+            </when>
+        </choose>        
     </inbound>
     <backend>
         <base />

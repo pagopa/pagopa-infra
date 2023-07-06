@@ -11,6 +11,46 @@
     }
   ],
   "paths": {
+		"/info": {
+			"get": {
+				"tags": [
+					"Home"
+				],
+				"summary": "health check",
+				"description": "Return OK if application is started",
+				"operationId": "healthCheck",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"headers": {
+							"X-Request-Id": {
+								"description": "This header identifies the call",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AppInfo"
+								}
+							}
+						}
+					}
+				}
+			},
+			"parameters": [
+				{
+					"name": "X-Request-Id",
+					"in": "header",
+					"description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+					"schema": {
+						"type": "string"
+					}
+				}
+			]
+		},
     "/organizations/domains/{domain}": {
       "get": {
         "tags": [
@@ -146,6 +186,20 @@
           },
           "segregation_code": {
             "type": "string"
+          }
+        }
+      },
+      "AppInfo" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "environment" : {
+            "type" : "string"
           }
         }
       }

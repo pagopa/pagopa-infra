@@ -133,8 +133,8 @@ module "mocker_pgflex" {
   delegated_subnet_id      = module.mocker_pgflex_snet[0].id
 
   ### Admin credentials
-  administrator_login          = data.azurerm_key_vault_secret.psql_admin_user.value
-  administrator_password       = data.azurerm_key_vault_secret.psql_admin_pwd.value
+  administrator_login    = data.azurerm_key_vault_secret.psql_admin_user.value
+  administrator_password = data.azurerm_key_vault_secret.psql_admin_pwd.value
 
   sku_name                     = var.pgflex_params.sku_name
   db_version                   = var.pgflex_params.db_version
