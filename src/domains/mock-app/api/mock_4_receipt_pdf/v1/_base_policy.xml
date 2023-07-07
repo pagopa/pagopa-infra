@@ -17,27 +17,33 @@
             <!-- Mock response IO  -->
             <when condition="@(context.Request.Url.Path.Contains("profiles"))">
                 <choose>
-                    <when condition="@(c(string)context.Request.Body.As<JObject>(preserveContent: true).SelectToken("fiscal_code").Equals("NOT_FOUND", StringComparison.OrdinalIgnoreCase) == true )">
-                        <set-status code="404" reason="NOT_FOUND" />
+                    <when condition="@(context.Request.Body.As<JObject>(true)["fiscal_code"].Value<string>().Equals("NOT_FOUND", StringComparison.OrdinalIgnoreCase) == true )">
+                        <return-response>
+                            <set-status code="404" reason="NOT_FOUND" />
+                        </return-response>
                     </when>
-                    <when condition="@(c(string)context.Request.Body.As<JObject>(preserveContent: true).SelectToken("fiscal_code").Equals("NOT_ACTIVE", StringComparison.OrdinalIgnoreCase) == true )">
-                        <set-status code="200" reason="OK" />
-                        <set-body template="liquid">
-                          {
-                          "sender_allowed": false
-                          }
-                        </set-body>
+                    <when condition="@(context.Request.Body.As<JObject>(true)["fiscal_code"].Value<string>().Equals("NOT_ACTIVE", StringComparison.OrdinalIgnoreCase) == true )">
+                        <return-response>
+                            <set-status code="200" reason="OK" />
+                            <set-body template="liquid">
+{
+"sender_allowed": false
+}
+                            </set-body>
+                        </return-response>                            
                     </when>
-                    <when condition="@(c(string)context.Request.Body.As<JObject>(preserveContent: true).SelectToken("fiscal_code").Equals("ERROR", StringComparison.OrdinalIgnoreCase) == true )">
-                        <set-status code="500" reason="ERROR" />
+                    <when condition="@(context.Request.Body.As<JObject>(true)["fiscal_code"].Value<string>().Equals("ERROR", StringComparison.OrdinalIgnoreCase) == true )">
+                        <return-response>
+                            <set-status code="500" reason="ERROR" />
+                        </return-response>                            
                     </when>
                     <otherwise>
                         <return-response>
                             <set-status code="200" reason="OK" />
                             <set-body template="liquid">
-                                {
-                                "sender_allowed": true
-                                }
+{
+"sender_allowed": true
+}
                             </set-body>
                         </return-response>
                     </otherwise>
@@ -45,16 +51,18 @@
             </when>
             <when condition="@(context.Request.Url.Path.Contains("messages"))">
                 <choose>
-                    <when condition="@(c(string)context.Request.Body.As<JObject>(preserveContent: true).SelectToken("fiscal_code").Equals("ERROR", StringComparison.OrdinalIgnoreCase) == true )">
-                        <set-status code="500" reason="ERROR" />
+                    <when condition="@(context.Request.Body.As<JObject>(true)["fiscal_code"].Value<string>().Equals("ERROR", StringComparison.OrdinalIgnoreCase) == true )">
+                        <return-response>
+                            <set-status code="500" reason="ERROR" />
+                        </return-response>
                     </when>
                     <otherwise>
                         <return-response>
                             <set-status code="200" reason="OK" />
                             <set-body template="liquid">
-                              {
-                              "id": "01EM6X4JB9VSZTQ8H16KMQFCEJ"
-                              }
+{
+"id": "01EM6X4JB9VSZTQ8H16KMQFCEJ"
+}
                             </set-body>
                         </return-response>
                     </otherwise>
