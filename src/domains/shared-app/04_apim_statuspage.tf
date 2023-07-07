@@ -53,6 +53,26 @@ data "azurerm_function_app" "authorizer" {
   resource_group_name = format("%s-%s-%s-shared-rg", var.prefix, var.env_short, var.location_short)
 }
 
+data "azurerm_function_app" "canone_unico" {
+  name                = format("%s-%s-fn-canoneunico", var.prefix, var.env_short)
+  resource_group_name = format("%s-%s-canoneunico-rg", var.prefix, var.env_short)
+}
+
+data "azurerm_function_app" "reporting_analysis" {
+  name                = format("%s-%s-%s-fn-gpd-analysis", var.prefix, var.env_short, var.location_short)
+  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
+}
+
+data "azurerm_function_app" "reporting_batch" {
+  name                = format("%s-%s-%s-fn-gpd-batch", var.prefix, var.env_short, var.location_short)
+  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
+}
+
+data "azurerm_function_app" "reporting_service" {
+  name                = format("%s-%s-%s-fn-gpd-service", var.prefix, var.env_short, var.location_short)
+  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
+}
+
 data "azurerm_linux_function_app" "gpd" {
   name                = format("%s-%s-app-gpd", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-gpd-rg", var.prefix, var.env_short)
@@ -100,13 +120,18 @@ module "apim_api_statuspage_api_v1" {
       "bizevents"             = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastoreneg" = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastorepos" = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
+      "canoneunico"           = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
       "fdrndpnew"             = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
       "gpd"                   = format("%s/", data.azurerm_linux_function_app.gpd.default_hostname)
       "gpdpayments"           = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
       "gpdenrollment"         = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
+      "gpdreportinganalysis"  = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
+      "gpdreportingbatch"     = format("%s/api/", data.azurerm_function_app.reporting_batch.default_hostname)
+      "gpdreportingservice"   = format("%s/api/", data.azurerm_function_app.reporting_service.default_hostname)
       "gps"                   = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
       "gpsdonation"           = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
       "mockec"                = var.env_short != "p" ? format("%s/", data.azurerm_linux_function_app.mockec[0].default_hostname) : "NA"
+      "mockconfig"            = var.env_short != "p" ? format("%s/pagopa-mock-config-be", format(local.aks_path, "mock")) : "NA"
       "mocker"                = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
       "pdfengine"             = format("%s/pagopa-pdf-engine", format(local.aks_path, "shared"))
       "receiptpdfdatastore"   = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
