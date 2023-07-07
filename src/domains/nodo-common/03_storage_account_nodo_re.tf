@@ -29,8 +29,34 @@ module "nodo_re_storage_account" {
   tags = var.tags
 }
 
-# TODO to fix
-## table#1 nodo-re
+resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
+  count = var.env_short == "d" ? 0 : 1
+
+  name                = format("%s-re-private-endpoint", local.project)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.nodo_storico_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-re-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-re-private-service-connection"
+    private_connection_resource_id = module.nodo_re_storage_account.id
+    is_manual_connection           = false
+    subresource_names              = ["table"]
+  }
+
+  tags = var.tags
+
+  depends_on = [
+    module.nodo_re_storage_account
+  ]
+}
+
+# table#1 nodo-re
 # resource "azurerm_storage_table" "nodo_re_table" {
 #   name                 = "events"
 #   storage_account_name = module.nodo_re_storage_account.name

@@ -6,8 +6,10 @@ resource "azurerm_resource_group" "nodo_storico_rg" {
 }
 
 module "nodo_storico_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.20.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
   count  = var.env_short == "d" ? 0 : 1
+
+  enable_low_availability_alert = false
 
   name                            = replace(format("%s-storico-st", local.project), "-", "")
   account_kind                    = var.nodo_storico_storage_account.account_kind
@@ -60,7 +62,7 @@ resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
   ]
 }
 
-## blob container#1 nodo-storico
+# blob container#1 nodo-storico
 resource "azurerm_storage_container" "storico_container" {
   name                  = "storico"
   storage_account_name  = module.nodo_storico_storage_account[0].name
