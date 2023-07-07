@@ -32,7 +32,7 @@ data "azurerm_subnet" "apim_vnet" {
 # info for table storage
 data "azurerm_storage_account" "nodo_re_storage" {
   name                = replace(format("%s-re-2-data-st", local.project), "-", "")
-  resource_group_name = "pagopa-d-weu-nodo-re-to-datastore-rg"
+  resource_group_name = "pagopa-${var.env_short}-weu-nodo-re-to-datastore-rg"
 }
 
 resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
