@@ -166,7 +166,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     metric_name            = "NormalizedRUConsumpion"
     aggregation            = "Maximum"
     operator               = "GreaterThan"
-    threshold              = "90"
+    threshold              = "80"
     skip_metric_validation = false
 
 
