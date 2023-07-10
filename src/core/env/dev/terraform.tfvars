@@ -261,7 +261,11 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
+<<<<<<< HEAD
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx", "nodo-dei-pagamenti-re-to-datastore-rx"]
+=======
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
+>>>>>>> e141b9d3 (NOD-241)
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -286,12 +290,15 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
+<<<<<<< HEAD
       },
       {
         name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
         listen = true
         send   = false
         manage = false
+=======
+>>>>>>> e141b9d3 (NOD-241)
       }
 
     ]
@@ -300,7 +307,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-fdr"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "fdr-re-to-datastore-rx"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-tx"
@@ -316,12 +323,6 @@ eventhubs = [
       },
       {
         name   = "nodo-dei-pagamenti-oper" # oper
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "fdr-re-to-datastore-rx"
         listen = true
         send   = false
         manage = false
@@ -461,7 +462,50 @@ eventhubs = [
         manage = false
       }
     ]
+<<<<<<< HEAD
   }
+=======
+  },
+  {
+    name              = "nodo-dei-pagamenti-re-ndp"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx", "nodo-dei-pagamenti-re-to-datastore-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-SIA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-sia-rx" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # oper
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+>>>>>>> e141b9d3 (NOD-241)
 ]
 
 eventhubs_02 = [
