@@ -232,18 +232,11 @@
         }
       },
       "VPosPollingResponse": {
-        "type": "object",
         "oneOf": [
           {
             "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
           }
-        ],
-        "discriminator": {
-          "propertyName": "status",
-          "mapping": {
-            "CREATED": "#/components/schemas/CcPaymentInfoAcceptedResponse"
-          }
-        }
+        ]
       },
       "CcPaymentInfoAcceptedResponse": {
         "type": "object",
