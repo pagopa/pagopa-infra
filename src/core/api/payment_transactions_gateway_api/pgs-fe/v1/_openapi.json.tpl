@@ -235,6 +235,12 @@
         "oneOf": [
           {
             "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
           }
         ]
       },
