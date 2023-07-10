@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Biz-Events Service",
-    "description": "Microservice for exposing REST APIs about payment receipts.",
+    "description": "Microservice for exposing REST APIs about receipts.",
     "termsOfService": "https://www.pagopa.gov.it/",
     "version": "0.0.2-4"
   },
@@ -258,10 +258,160 @@
           }
         }
       ]
+    },
+    "/messages/{tp_id}/{attachment_url}": {
+      "get": {
+        "tags": [
+          "Receipts REST APIs"
+        ],
+        "summary": "Retrieve the attachment related to the receipt with the tp_id.",
+        "operationId": "getAttachment",
+        "parameters": [
+          {
+            "name": "tp_id",
+            "in": "path",
+            "description": "The third party data id related to the receipt to recover.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attachment_url",
+            "in": "path",
+            "description": "The attachment to recover.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Obtained receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/pdf": {}
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found the receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process the request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     }
   },
   "components": {
     "schemas": {
+      "AppInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "environment": {
+            "type": "string"
+          }
+        }
+      },
       "GetAttachmentDetailsResponse": {
         "type": "object",
         "properties": {
@@ -279,10 +429,10 @@
           },
           "url": {
              "type": "string",
-             "url": "url to be used to recover the attachment"
+             "description": "url to be used to recover the attachment"
           }
         }
-      }
+      },
       "ProblemJson": {
         "type": "object",
         "properties": {
