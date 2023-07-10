@@ -261,8 +261,10 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values = ["nodo-dei-pagamenti-log",
-        "nodo-dei-pagamenti-re"]
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
       }
     ],
   },
@@ -335,7 +337,7 @@ eventhubs = [
     ]
   },
   {
-    name              = "fdr-re"
+    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
     partitions        = 32
     message_retention = 7
     consumers         = ["fdr-re-rx"]
@@ -356,7 +358,7 @@ eventhubs = [
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-fdr"
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
     partitions        = 32
     message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
