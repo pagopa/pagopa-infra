@@ -105,17 +105,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/VPosPollingResponse"
                 }
               }
             }
@@ -240,6 +230,20 @@
             "example": "Bad Request - mandatory parameters missing"
           }
         }
+      },
+      "VPosPollingResponse": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
+          }
+        ]
       },
       "CcPaymentInfoAcceptedResponse": {
         "type": "object",
