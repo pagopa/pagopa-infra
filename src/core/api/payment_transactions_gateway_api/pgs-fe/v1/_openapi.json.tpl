@@ -23,7 +23,7 @@
         "tags": [
           "XPay"
         ],
-        "operationId": "get-auth-payment-xpay",
+        "operationId": "getAuthPaymentXpay",
         "parameters": [
           {
             "in": "path",
@@ -34,16 +34,11 @@
             "schema": {
               "type": "string"
             }
-          },
+          }
+        ],
+        "security": [
           {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
+            "bearerAuth": []
           }
         ],
         "responses": {
@@ -86,6 +81,7 @@
         "tags": [
           "Vpos"
         ],
+        "operationId": "getAuthPaymentVpos",
         "parameters": [
           {
             "in": "path",
@@ -96,16 +92,11 @@
             "schema": {
               "type": "string"
             }
-          },
+          }
+        ],
+        "security": [
           {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
+            "bearerAuth": []
           }
         ],
         "responses": {
@@ -148,6 +139,7 @@
         "tags": [
           "Vpos"
         ],
+        "operationId": "postMethodResumeVpos",
         "parameters": [
           {
             "in": "path",
@@ -159,16 +151,11 @@
               "type": "string",
               "format": "UUID"
             }
-          },
+          }
+        ],
+        "security": [
           {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
+            "bearerAuth": []
           }
         ],
         "requestBody": {
