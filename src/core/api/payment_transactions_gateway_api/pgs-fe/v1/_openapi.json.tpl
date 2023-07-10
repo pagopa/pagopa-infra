@@ -243,7 +243,13 @@
           {
             "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
           }
-        ]
+        ],
+        "discriminator": {
+          "propertyName": "status",
+          "mapping": {
+            "CREATED": "#/components/schemas/CcPaymentInfoAcceptedResponse"
+          }
+        }
       },
       "CcPaymentInfoAcceptedResponse": {
         "type": "object",
