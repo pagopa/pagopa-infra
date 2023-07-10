@@ -103,6 +103,12 @@ variable "canoneunico_function_always_on" {
   default     = false
 }
 
+variable "canoneunico_runtime_version" {
+  type        = string
+  description = "Version for the Azure function runtime"
+  default     = "~4"
+}
+
 variable "canoneunico_enable_versioning" {
   type        = bool
   description = "Enable sa versioning"
