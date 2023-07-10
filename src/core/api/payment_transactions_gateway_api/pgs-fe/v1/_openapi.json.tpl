@@ -357,25 +357,22 @@
       "CcPaymentInfoError": {
         "type": "object",
         "properties": {
-          "redirectUrl": {
+          "timestamp": {
             "type": "string"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "DENIED",
-              "CANCELLED"
-            ]
+            "type": "string"
           },
-          "requestId": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "path": {
             "type": "string"
           }
-        },
-        "required": [
-          "status",
-          "requestId",
-          "redirectUrl"
-        ]
+        }
       },
       "CreditCardResumeRequest": {
         "type": "object",
