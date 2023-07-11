@@ -23,7 +23,7 @@
         "tags": [
           "XPay"
         ],
-        "operationId": "get-auth-payment-xpay",
+        "operationId": "getAuthPaymentXpay",
         "parameters": [
           {
             "in": "path",
@@ -34,16 +34,11 @@
             "schema": {
               "type": "string"
             }
-          },
+          }
+        ],
+        "security": [
           {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
+            "bearerAuth": []
           }
         ],
         "responses": {
@@ -86,6 +81,7 @@
         "tags": [
           "Vpos"
         ],
+        "operationId": "getAuthPaymentVpos",
         "parameters": [
           {
             "in": "path",
@@ -96,16 +92,11 @@
             "schema": {
               "type": "string"
             }
-          },
+          }
+        ],
+        "security": [
           {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
+            "bearerAuth": []
           }
         ],
         "responses": {
@@ -114,17 +105,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/VPosPollingResponse"
                 }
               }
             }
@@ -148,6 +129,7 @@
         "tags": [
           "Vpos"
         ],
+        "operationId": "postMethodResumeVpos",
         "parameters": [
           {
             "in": "path",
@@ -159,16 +141,11 @@
               "type": "string",
               "format": "UUID"
             }
-          },
+          }
+        ],
+        "security": [
           {
-            "in": "header",
-            "name": "MDC-Fields",
-            "description": "MDC information",
-            "example": "97g10t83x7bb0437bbc50sdf58e970gt",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
+            "bearerAuth": []
           }
         ],
         "requestBody": {
@@ -253,6 +230,19 @@
             "example": "Bad Request - mandatory parameters missing"
           }
         }
+      },
+      "VPosPollingResponse": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
+          }
+        ]
       },
       "CcPaymentInfoAcceptedResponse": {
         "type": "object",
@@ -370,25 +360,22 @@
       "CcPaymentInfoError": {
         "type": "object",
         "properties": {
-          "redirectUrl": {
+          "timestamp": {
             "type": "string"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "DENIED",
-              "CANCELLED"
-            ]
+            "type": "string"
           },
-          "requestId": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "path": {
             "type": "string"
           }
-        },
-        "required": [
-          "status",
-          "requestId",
-          "redirectUrl"
-        ]
+        }
       },
       "CreditCardResumeRequest": {
         "type": "object",
