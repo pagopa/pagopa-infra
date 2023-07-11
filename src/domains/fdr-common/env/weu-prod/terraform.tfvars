@@ -119,7 +119,7 @@ cosmos_mongo_db_fdr_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   additional_geo_locations = [{
@@ -135,6 +135,40 @@ cosmos_mongo_db_fdr_params = {
   backup_continuous_enabled = false
 
   container_default_ttl = 315576000 # 10 year in second
+
+  enable_serverless  = true
+  enable_autoscaling = true
+  max_throughput     = 5000
+  throughput         = 1000
+}
+
+cosmos_mongo_db_fdr_re_params = {
+  enabled      = true
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo"] # Serverless accounts do not support multiple regions
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300 # must be greater then 300 (5min) when more then one geo_location is used
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = true
+  enable_free_tier                 = false
+
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = false
+
+  container_default_ttl = 10368000 # 120 days
 
   enable_serverless  = true
   enable_autoscaling = true

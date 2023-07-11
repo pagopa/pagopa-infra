@@ -19,7 +19,7 @@ module "cosmosdb_account_mongodb" {
   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_fdr_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_fdr_params.consistency_policy
-  main_geo_location_location       = azurerm_resource_group.db_rg.location
+  main_geo_location_location       = var.location
   main_geo_location_zone_redundant = var.cosmos_mongo_db_fdr_params.main_geo_location_zone_redundant
   additional_geo_locations         = var.cosmos_mongo_db_fdr_params.additional_geo_locations
 
@@ -129,5 +129,8 @@ module "cosmosdb_fdr_collections" {
 
   indexes     = each.value.indexes
   shard_key   = each.value.shard_key
+
+  default_ttl_seconds = var.cosmos_mongo_db_fdr_params.container_default_ttl
+
   lock_enable = var.env_short == "p" ? true : false
 }
