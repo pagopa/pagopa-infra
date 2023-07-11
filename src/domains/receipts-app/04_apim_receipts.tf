@@ -6,7 +6,7 @@ module "apim_receipts_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
   product_id   = "receipts"
-  display_name = "Receipts Service"
+  display_name = "Receipts Service PDF"
   description  = "Servizio per gestire recupero ricevute"
 
   api_management_name = local.pagopa_apim_name
@@ -25,7 +25,7 @@ module "apim_receipts_product" {
 #################
 locals {
   apim_receipts_service_api = {
-    display_name          = "Receipts Service"
+    display_name          = "Receipts Service PDF"
     description           = "API to handle receipts"
     path                  = "receipts/service"
     subscription_required = true
