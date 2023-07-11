@@ -168,12 +168,34 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChi
   })
 }
 
+# Fdr pagoPA legacy 
+# nodoInviaFlussoRendicontazione DEV 61e9630cb78e981290d7c74c
+# nodoInviaFlussoRendicontazione UAT 61e96321e0f4ba04a49d1280
+# nodoInviaFlussoRendicontazione PRD 61e9633eea7c4a07cc7d4811
 resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
 
   api_name            = data.azurerm_api_management_api.apim_nodo_per_psp_api_v1.name
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
+
+  xml_content = templatefile("./api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
+
+  })
+}
+
+# Fdr pagoPA legacy  AUTH
+# nodoInviaFlussoRendicontazione DEV 6352c3bdc257810f183b399c
+# nodoInviaFlussoRendicontazione UAT 636cbcb7451c1c01c4186a0b
+# nodoInviaFlussoRendicontazione PRD 63b6e2da2a92e811a8f33901
+resource "azurerm_api_management_api_operation_policy" "fdr_policy_auth" {
+
+  api_name            = data.azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "6352c3bdc257810f183b399c" : var.env_short == "u" ? "636cbcb7451c1c01c4186a0b" : "63b6e2da2a92e811a8f33901"
 
   xml_content = templatefile("./api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable

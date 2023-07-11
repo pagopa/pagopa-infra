@@ -205,6 +205,11 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_dev" {
   })
 }
 
+# Fdr pagoPA legacy 
+# nodoInviaFlussoRendicontazione DEV 
+# nodoInviaFlussoRendicontazione UAT 
+# nodoInviaFlussoRendicontazione PRD 
+
 # resource "azurerm_api_management_api_operation_policy" "fdr_policy_dev" {
 
 #   api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_dev[0].name
