@@ -62,3 +62,18 @@ module "fdr_storage_snet" {
     "Microsoft.Storage",
   ]
 }
+
+module "cosmosdb_fdr_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
+  name                 = "${local.project}-cosmosb-snet"
+  address_prefixes     = var.cidr_subnet_cosmosdb_fdr
+  resource_group_name  = local.vnet_resource_group_name
+  virtual_network_name = local.vnet_name
+
+  private_link_service_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+}

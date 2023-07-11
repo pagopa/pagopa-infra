@@ -107,8 +107,8 @@ custom_metric_alerts = {
 }
 
 ### Cosmos
-
-cosmos_mongo_db_params = {
+cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
+cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
   capabilities = ["EnableMongo"] # Serverless accounts do not support multiple regions
@@ -136,17 +136,13 @@ cosmos_mongo_db_params = {
 
   container_default_ttl = 315576000 # 10 year in second
 
-}
-
-cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
-
-cosmos_mongo_db_fdr_params = {
   enable_serverless  = true
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
 }
 
+# Storage Account
 cidr_subnet_storage_account = ["10.1.179.0/24"]
 
 fdr_storage_account = {
