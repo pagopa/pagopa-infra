@@ -23,13 +23,6 @@ module "fdr_re_sa" {
 
   blob_delete_retention_days = var.fdr_re_storage_account.blob_delete_retention_days
 
-  network_rules = var.env_short != "d" ? {
-    default_action             = "Deny"
-    ip_rules                   = []
-    virtual_network_subnet_ids = [module.fdr_storage_snet[0].id]
-    bypass                     = ["AzureServices"]
-  } : null
-
   tags = var.tags
 }
 
