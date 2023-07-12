@@ -33,8 +33,6 @@ module "fdr_conversion_sa" {
   tags = var.tags
 }
 
-
-
 resource "azurerm_private_endpoint" "fdr_blob_private_endpoint" {
   count               = var.env_short == "d" ? 0 : 1
 
