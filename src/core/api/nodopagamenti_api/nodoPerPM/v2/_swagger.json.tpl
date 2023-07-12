@@ -297,6 +297,15 @@
         },
         "psp": {
           "$ref": "#/definitions/Psp"
+        },
+        "errorCode": {
+          "type": "string"
+        },
+        "timestampOperation": {
+          "type": "string"
+        },
+        "paymentGateway": {
+          "type": "string"
         }
       }
     },
@@ -305,7 +314,8 @@
       "required": [
         "idPsp",
         "idChannel",
-        "businessName"
+        "businessName",
+        "brokerName"
       ],
       "properties": {
         "idPsp": {
@@ -316,6 +326,12 @@
         },
         "businessName": {
           "type": "string"
+        },
+        "brokerName": {
+          "type": "string"
+        },
+        "pspOnUs": {
+          "type": "boolean"
         }
       }
     },
@@ -330,6 +346,15 @@
           "type": "string"
         },
         "brandLogo": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        },
+        "paymentMethodName": {
+          "type": "string"
+        },
+        "clientId": {
           "type": "string"
         }
       }
