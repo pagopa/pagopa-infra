@@ -52,7 +52,6 @@ pgres_flex_params = {
 }
 
 custom_metric_alerts = {
-
   cpu_percent = {
     frequency        = "PT5M"
     window_size      = "PT30M"
@@ -106,8 +105,9 @@ custom_metric_alerts = {
 }
 
 ### Cosmos
+cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 
-cosmos_mongo_db_params = {
+cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
   capabilities = ["EnableMongo", "EnableServerless"]
@@ -128,19 +128,45 @@ cosmos_mongo_db_params = {
 
   backup_continuous_enabled = false
 
-}
-
-cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
-
-cosmos_mongo_db_fdr_params = {
   enable_serverless  = true
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
+
+  container_default_ttl = 604800 # 7 days
 }
 
-cidr_subnet_storage_account = ["10.1.179.0/24"]
+cosmos_mongo_db_fdr_re_params = {
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo", "EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 5
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
 
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
+
+  backup_continuous_enabled = false
+
+  enable_serverless  = true
+  enable_autoscaling = true
+  max_throughput     = 5000
+  throughput         = 1000
+
+  container_default_ttl = 259200 # 3 days
+}
+
+
+# Storage Account
+cidr_subnet_storage_account = ["10.1.179.0/24"]
 fdr_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"

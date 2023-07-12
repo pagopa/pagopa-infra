@@ -23,17 +23,8 @@ module "fdr_conversion_sa" {
 
   blob_delete_retention_days = var.fdr_storage_account.blob_delete_retention_days
 
-  network_rules = var.env_short != "d" ? {
-    default_action             = "Deny"
-    ip_rules                   = []
-    virtual_network_subnet_ids = [module.fdr_storage_snet[0].id]
-    bypass                     = ["AzureServices"]
-  } : null
-
   tags = var.tags
 }
-
-
 
 resource "azurerm_private_endpoint" "fdr_blob_private_endpoint" {
   count               = var.env_short == "d" ? 0 : 1
