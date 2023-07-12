@@ -5,7 +5,7 @@
 ############################################################
 # Global variables
 # Version format x.y accepted
-vers="1.5"
+vers="1.8"
 script_name=$(basename "$0")
 git_repo="https://raw.githubusercontent.com/pagopa/eng-common-scripts/main/azure/${script_name}"
 tmp_file="${script_name}.new"
@@ -15,6 +15,24 @@ function clean_environment() {
   rm -rf .terraform
   rm tfplan 2>/dev/null
   echo "cleaned!"
+}
+
+function download_tool() {
+  tool=$1
+  git_repo="https://raw.githubusercontent.com/pagopa/eng-common-scripts/main/golang/${tool}"
+  if ! command -v $tool &> /dev/null; then
+    if ! curl -sL "$git_repo" -o "$tool"; then
+      echo "Error downloading ${tool}"
+      return 1
+    else
+      chmod +x $tool
+      echo "${tool} downloaded! Please note this tool WON'T be copied in your **/bin folder for safety reasons. 
+You need to do it yourself!"
+      read -p "Press enter to continue"
+
+
+    fi
+  fi
 }
 
 function help_usage() {
@@ -30,6 +48,8 @@ function help_usage() {
   echo "  list          List every environment available"
   echo "  update        Update this script if possible"
   echo "  summ          Generate summary of Terraform plan"
+  echo "  tflist        Generate an improved output of terraform state list"
+  echo "  tlock         Generate or update the dependency lock file"
   echo "  *             any terraform option"
 }
 
@@ -76,8 +96,28 @@ function other_actions() {
 }
 
 function state_output_taint_actions() {
-  terraform $action $other
+  if [ "$action" == "tflist" ]; then
+    # If 'tflist' is not installed globally and there is no 'tflist' file in the current directory,
+    # attempt to download the 'tflist' tool
+    if ! command -v tflist &> /dev/null && [ ! -f "tflist" ]; then
+      download_tool "tflist"
+      if [ $? -ne 0 ]; then
+        echo "Error: Failed to download tflist!!"
+        exit 1
+      else
+        echo "tflist downloaded!"
+      fi
+    fi
+    if command -v tflist &> /dev/null; then
+      terraform state list | tflist
+    else
+      terraform state list | ./tflist
+    fi
+  else
+    terraform $action $other
+  fi
 }
+
 
 function parse_tfplan_option() {
   # Create an array to contain arguments that do not start with '-tfplan='
@@ -108,15 +148,14 @@ function tfsummary() {
   other="-out=${plan_file}"
   other_actions
   if [ -n "$(command -v tf-summarize)" ]; then
-    tf-summarize -separate-tree "${plan_file}"
+    tf-summarize -tree "${plan_file}"
   else
-    echo "tf-summarize non è installato"
+    echo "tf-summarize is not installed"
   fi
   if [ "$plan_file" == "tfplan" ]; then
     rm $plan_file
   fi
 }
-
 
 function update_script() {
   # Check if the repository was cloned successfully
@@ -196,19 +235,21 @@ case $action in
     help_usage
     ;;
   init)
-    init_terraform
     init_terraform "$other"
     ;;
   list)
     list_env
     ;;
-  output|state|taint)
+  output|state|taint|tflist)
     init_terraform
     state_output_taint_actions $other
     ;;
   summ)
     init_terraform
     tfsummary "$other"
+    ;;
+  tlock)
+    terraform providers lock -platform=windows_amd64 -platform=darwin_amd64 -platform=darwin_arm64 -platform=linux_amd64
     ;;
   update)
     update_script
