@@ -73,6 +73,11 @@ enable_iac_pipeline      = true
 apim_publisher_name = "pagoPA Platform PROD"
 apim_sku            = "Premium_1"
 apim_alerts_enabled = true
+
+# redis private endpoint
+redis_private_endpoint_enabled = true
+redis_cache_enabled            = true
+
 apim_autoscale = {
   enabled                       = true
   default_instances             = 3
