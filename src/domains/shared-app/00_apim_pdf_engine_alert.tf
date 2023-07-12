@@ -1,7 +1,7 @@
 
 locals {
 
-  fn_name_for_alerts_exceptions = var.env_short == "v" ? [] : [
+  fn_name_for_alerts_exceptions = var.env_short != "p" ? [] : [
     {
       name : "generate-pdf"
     }
@@ -45,17 +45,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pdf-engine-fun-error-ale
   }
 }
 
-# pagopa-<ENV>-opex_pagopa-pdf-engine-responsetime @ _generate-pdf
-# data "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-generate-pdf-responsetime-get" {
-#   count               = var.env_short == "p" ? 1 : 0
-#   resource_group_name = "dashboards"
-#   name                = "pagopa-${var.env_short}-opex_pagopa-generate-pdf-responsetime @ _forward2"
-# }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "opex_generate-pdf-engine-generate-responsetime-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_generate-pdf-engine-generate-responsetime" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-responsetime @ _generate-pdf"
+  name                = "pagopa-${var.env_short}-responsetime @ _generate-pdf"
   location            = var.location
 
   action {
@@ -63,8 +57,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_generate-pdf-engine
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.apim_api_pdf_engine_api_v1.id
-  description    = "Response time for /forward is less than or equal to 5s"
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Response time for /generate-pdf is less than or equal to 5s"
   enabled        = true
   query = (<<-QUERY
 let threshold = 5000;
@@ -86,10 +80,10 @@ AzureDiagnostics
 
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-pdf-engine-pdf-availability-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-pdf-engine-pdf-availability" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-pdf-engine-availability @ _generate-pdf"
+  name                = "pagopa-${var.env_short}-availability @ _generate-pdf"
   location            = var.location
 
   action {
@@ -97,7 +91,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-pdf-engine-p
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.apim_api_pdf_engine_api_v1.id
+  data_source_id = data.azurerm_api_management.apim.id
   description    = "Availability for /generate-pdf is less than or equal to 99%"
   enabled        = true
   query = (<<-QUERY
