@@ -61,3 +61,41 @@ module "pagopa_ecommerce_redis" {
 
   tags = var.tags
 }
+
+# -----------------------------------------------
+# Alerts
+# -----------------------------------------------
+
+resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_ecommerce_redis.name}] Used Memory close to the threshold"
+  resource_group_name = azurerm_resource_group.redis_ecommerce_rg.name
+  scopes              = [azurerm_resource_group.redis_ecommerce_rg.id]
+  description         = "The amount of cache memory in MB that is used for key/value pairs in the cache during the specified reporting interval, this amount is close to 200 MB so close to the threshold (250 MB)"
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.Cache/redis"
+    metric_name            = "usedmemory"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = "200"
+    skip_metric_validation = false
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+  
+  tags = var.tags
+}
