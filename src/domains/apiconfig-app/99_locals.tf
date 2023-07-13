@@ -138,6 +138,22 @@ locals {
       frequency   = 5
       time_window = 5
     }
+    jdbcConnection = {
+      query       = <<-QUERY
+            let threshold = 5;
+            traces
+            | where cloud_RoleName == "%s"
+            | where message contains "Invoking API operation" or message contains "Unable to acquire JDBC Connection"
+            | order by timestamp desc
+            | summarize Total=countif(message contains "Invoking API operation"), Error=countif(message contains "Unable to acquire JDBC Connection") by length=bin(timestamp, 5m)
+            | extend Problem=(toreal(Error) / Total) * 100
+            | where Problem > threshold
+            | order by length desc
+            QUERY
+      severity    = 0
+      frequency   = 5
+      time_window = 5
+    }
   }
 }
 
