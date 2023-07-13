@@ -160,7 +160,7 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
 
   xml_content = templatefile("./api/pagopa_token_exchange/jwt_exchange.xml.tpl", {
     openid-config-url           = local.pagopa-oidc-config_url,
-    selfcare-issuer             = local.selfcare-issuer,
+    selfcare-issuer             = local.selfcare-jwt-issuer,
     pagopa-issuer               = local.pagopa-issuer,
     jwt_cert_signing_thumbprint = azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt.thumbprint,
     pagopa-portal-hostname      = local.pagopa-portal-hostname,
