@@ -4,13 +4,13 @@
     "title": "PagoPA API Calculator Logic for Node",
     "description": "Calculator Logic microservice for pagoPA AFM",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "2.4.1-1-main"
+    "version": "2.6.4"
   },
   "servers": [
-    {
-      "url": "${host}",
-      "description": "Generated server url"
-    }
+      {
+        "url": "${host}",
+        "description": "Generated server url"
+      }
   ],
   "tags": [
     {
@@ -35,6 +35,16 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "allCcp",
+            "in": "query",
+            "description": "Flag for the exclusion of Poste bundles: false -> excluded, true or null -> included",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "true"
             }
           }
         ],
@@ -62,10 +72,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Transfer"
-                  }
+                  "$ref": "#/components/schemas/BundleOption"
                 }
               }
             }
@@ -95,6 +102,42 @@
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process the request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -286,6 +329,16 @@
               "format": "int32",
               "default": 10
             }
+          },
+          {
+            "name": "allCcp",
+            "in": "query",
+            "description": "Flag for the exclusion of Poste bundles: false -> excluded, true or null -> included",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "true"
+            }
           }
         ],
         "requestBody": {
@@ -312,10 +365,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Transfer"
-                  }
+                  "$ref": "#/components/schemas/BundleOption"
                 }
               }
             }
@@ -345,6 +395,42 @@
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process the request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -413,13 +499,77 @@
           }
         }
       },
+      "BundleOption": {
+        "type": "object",
+        "properties": {
+          "belowThreshold": {
+            "type": "boolean",
+            "description": "if true (the payment amount is lower than the threshold value) the bundles onus is not calculated (always false)"
+          },
+          "bundleOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transfer"
+            }
+          }
+        }
+      },
+      "CiBundle": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CiBundleAttribute"
+            }
+          },
+          "ciFiscalCode": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ciFiscalCode",
+          "id"
+        ]
+      },
+      "CiBundleAttribute": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "maxPaymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "transferCategory": {
+            "type": "string"
+          },
+          "transferCategoryRelation": {
+            "type": "string",
+            "enum": [
+              "EQUAL",
+              "NOT_EQUAL"
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
       "PaymentOption": {
         "type": "object",
         "properties": {
+          "bin": {
+            "type": "string"
+          },
           "idPspList": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/PspSearchCriteria"
             }
           },
           "paymentAmount": {
@@ -451,6 +601,15 @@
       "PaymentOptionByPsp": {
         "type": "object",
         "properties": {
+          "bin": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
           "paymentAmount": {
             "type": "integer",
             "format": "int64"
@@ -471,6 +630,25 @@
             }
           }
         }
+      },
+      "PaymentType": {
+        "type": "object",
+        "properties": {
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
       },
       "ProblemJson": {
         "type": "object",
@@ -494,9 +672,44 @@
           }
         }
       },
+      "PspSearchCriteria": {
+        "type": "object",
+        "properties": {
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "idPsp"
+        ]
+      },
+      "Touchpoint": {
+        "type": "object",
+        "properties": {
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "Transfer": {
         "type": "object",
         "properties": {
+          "abi": {
+            "type": "string"
+          },
           "bundleDescription": {
             "type": "string"
           },
@@ -550,6 +763,83 @@
             "type": "string"
           }
         }
+      },
+      "ValidBundle": {
+        "type": "object",
+        "properties": {
+          "abi": {
+            "type": "string"
+          },
+          "ciBundleList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CiBundle"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
+          },
+          "digitalStampRestriction": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "maxPaymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "minPaymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
+          },
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paymentType": {
+            "type": "string"
+          },
+          "touchpoint": {
+            "type": "string"
+          },
+          "transferCategoryList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "GLOBAL",
+              "PUBLIC",
+              "PRIVATE"
+            ]
+          }
+        },
+        "required": [
+          "digitalStamp",
+          "digitalStampRestriction"
+        ]
       }
     },
     "securitySchemes": {
