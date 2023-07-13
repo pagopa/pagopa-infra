@@ -538,12 +538,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.ecommerce_storage_transient.id
+  data_source_id = module.ecommerce_storage_deadletter.id
   description    = "Ecommerce notifications service error queue size > 1"
   enabled        = true
   query = format(<<-QUERY
       StorageQueueLogs
-      | where OperationName == "PutMessage" and ObjectKey startswith %s
+      | where OperationName == "PutMessage" and ObjectKey startswith "%s"
       | summarize count()
     QUERY
     , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_deadletter.name, var.env_short, "ecommerce-notifications-service-errors-queue")
@@ -569,12 +569,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_d
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.ecommerce_storage_transient.id
+  data_source_id = module.ecommerce_storage_deadletter.id
   description    = "Ecommerce dead letter queue size > 1"
   enabled        = true
   query = format(<<-QUERY
       StorageQueueLogs
-      | where OperationName == "PutMessage" and ObjectKey startswith %s
+      | where OperationName == "PutMessage" and ObjectKey startswith "%s"
       | summarize count()
     QUERY
     , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_deadletter.name, var.env_short, "ecommerce-transactions-dead-letter-queue")
