@@ -173,7 +173,7 @@ resource "azurerm_storage_queue" "notifications_service_errors_queue" {
 
 # Ecommerce transient queue alert
 resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnostics" {
-  # count                      = var.env_short == "p" ? 1 : 0
+  count                      = var.env_short == "p" ? 1 : 0
   name                       = "${module.ecommerce_storage_transient.name}-diagnostics"
   target_resource_id         = "${module.ecommerce_storage_transient.id}/queueServices/default/"
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
@@ -199,7 +199,7 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
 
 # Queue size: Ecommerce - ecommerce transactions expiration queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_expiration_queue_size" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-transactions-expiration-queue-size-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
@@ -238,7 +238,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_e
 
 # Queue size: Ecommerce - ecommerce transactions notifications queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_queue_size" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-notifications-queue-size-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
@@ -277,7 +277,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_
 
 # Queue size: Ecommerce - ecommerce notifications service retry queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_service_retry_queue" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-notifications-service-retry-queue-size-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
@@ -316,7 +316,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_
 
 # Queue size: Ecommerce - ecommerce transaction notifications retry queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transaction_notifications_retry_queue" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-transaction-notifications-retry-queue-size-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
@@ -355,7 +355,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transaction_no
 
 # Queue size: Ecommerce - ecommerce close payment queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_close_payment_queue" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-transactions-close-payment-queue-size-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
@@ -394,7 +394,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_c
 
 # Queue size: Ecommerce - ecommerce close payment retry queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_close_payment_retry_queue" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-transactions-close-payment-retry-queue-size-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
@@ -433,7 +433,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_c
 
 # Queue size: Ecommerce - ecommerce refund retry queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_refund_queue" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-transactions-refund-queue-size-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
@@ -472,7 +472,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_r
 
 # Queue size: Ecommerce - ecommerce refund retry queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_refund_retry_queue" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-transactions-refund-retry-queue-size-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
@@ -511,7 +511,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_r
 
 # Ecommerce deadletter queue alert
 resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagnostics" {
-  # count                      = var.env_short == "p" ? 1 : 0
+  count                      = var.env_short == "p" ? 1 : 0
   name                       = "${module.ecommerce_storage_deadletter.name}-diagnostics"
   target_resource_id         = "${module.ecommerce_storage_deadletter.id}/queueServices/default/"
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
@@ -528,7 +528,7 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagno
 
 # Queue size: Ecommerce - ecommerce notifications service error queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_service_errors_queue" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-notifications-service-errors-queue-size-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
@@ -559,7 +559,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_
 
 # Queue size: Ecommerce - ecommerce notifications service error queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_dead_letter_queue" {
-  # count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-transactions-dead-letter-queue"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
