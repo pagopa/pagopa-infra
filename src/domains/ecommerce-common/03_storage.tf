@@ -171,7 +171,8 @@ resource "azurerm_storage_queue" "notifications_service_errors_queue" {
   storage_account_name = module.ecommerce_storage_deadletter.name
 }
 
-resource "azurerm_monitor_diagnostic_setting" "ecommerce_queue_diagnostics" {
+# Ecommerce transient queue alert
+resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnostics" {
   # count                      = var.env_short == "p" ? 1 : 0
   name                       = "${module.ecommerce_storage_transient.name}-diagnostics"
   target_resource_id         = "${module.ecommerce_storage_transient.id}/queueServices/default/"
@@ -195,7 +196,6 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_queue_diagnostics" {
     }
   }
 }
-
 
 # Queue size: Ecommerce - ecommerce transactions expiration queue size
 resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_expiration_queue_size" {
@@ -506,5 +506,84 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_r
   trigger {
     operator  = "GreaterThan"
     threshold = 10
+  }
+}
+
+# Ecommerce deadletter queue alert
+resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagnostics" {
+  # count                      = var.env_short == "p" ? 1 : 0
+  name                       = "${module.ecommerce_storage_deadletter.name}-diagnostics"
+  target_resource_id         = "${module.ecommerce_storage_deadletter.id}/queueServices/default/"
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  enabled_log {
+    category = "StorageWrite"
+
+    retention_policy {
+      enabled = true
+      days    = 7
+    }
+  }
+}
+
+# Queue size: Ecommerce - ecommerce notifications service error queue size
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_service_errors_queue" {
+  # count               = var.env_short == "p" ? 1 : 0
+  name                = "${local.project}-ecommerce-notifications-service-errors-queue-size-alert"
+  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = module.ecommerce_storage_transient.id
+  description    = "Ecommerce notifications service error queue size > 1"
+  enabled        = true
+  query = format(<<-QUERY
+      StorageQueueLogs
+      | where OperationName == "PutMessage" and ObjectKey startswith %s
+      | summarize count()
+    QUERY
+    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_deadletter.name, var.env_short, "ecommerce-notifications-service-errors-queue")
+  )
+  severity    = 3
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+# Queue size: Ecommerce - ecommerce notifications service error queue size
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_dead_letter_queue" {
+  # count               = var.env_short == "p" ? 1 : 0
+  name                = "${local.project}-ecommerce-transactions-dead-letter-queue"
+  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = module.ecommerce_storage_transient.id
+  description    = "Ecommerce dead letter queue size > 1"
+  enabled        = true
+  query = format(<<-QUERY
+      StorageQueueLogs
+      | where OperationName == "PutMessage" and ObjectKey startswith %s
+      | summarize count()
+    QUERY
+    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_deadletter.name, var.env_short, "ecommerce-transactions-dead-letter-queue")
+  )
+  severity    = 3
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
   }
 }
