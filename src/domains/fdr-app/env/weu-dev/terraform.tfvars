@@ -64,3 +64,15 @@ image_name = "reporting-fdr"
 image_tag  = "latest"
 
 apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+
+# fdr re
+fdr_re_function = {
+  always_on                     = true
+  kind                          = "Linux"
+  sku_size                      = "B1"
+  sku_tier                      = "Basic"
+  maximum_elastic_worker_count  = null
+}
+fdr_re_function_always_on       = true
+fdr_re_function_subnet          = ["10.1.180.0/24"]
+fdr_re_function_network_policies_enabled = false
