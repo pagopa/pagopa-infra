@@ -73,16 +73,6 @@ redis_ecommerce_params = {
   version  = 6
 }
 
-ecommerce_storage_params = {
-  enabled                       = true
-  tier                          = "Standard"
-  kind                          = "StorageV2"
-  account_replication_type      = "GZRS",
-  advanced_threat_protection    = true,
-  retention_days                = 30,
-  public_network_access_enabled = false,
-}
-
 ecommerce_storage_transient_params = {
   enabled                       = true
   tier                          = "Standard"

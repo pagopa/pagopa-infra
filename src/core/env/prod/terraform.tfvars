@@ -73,6 +73,11 @@ enable_iac_pipeline      = true
 apim_publisher_name = "pagoPA Platform PROD"
 apim_sku            = "Premium_1"
 apim_alerts_enabled = true
+
+# redis private endpoint
+redis_private_endpoint_enabled = true
+redis_cache_enabled            = true
+
 apim_autoscale = {
   enabled                       = true
   default_instances             = 3
@@ -120,7 +125,6 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   "/nodo-pagamenti/.*",
-  "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
@@ -187,7 +191,7 @@ ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 base_path_nodo_oncloud        = "/nodo-prd"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-prd"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-prd"
 base_path_nodo_fatturazione   = "/fatturazione-prd"
@@ -307,7 +311,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -323,6 +327,12 @@ eventhubs = [
       },
       {
         name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
         listen = true
         send   = false
         manage = false

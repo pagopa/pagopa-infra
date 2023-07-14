@@ -292,3 +292,22 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_privatelink_mongo
 
   tags = var.tags
 }
+
+# Private DNS Zone for Table Storage Account
+# https://learn.microsoft.com/en-us/azure/storage/common/storage-private-endpoints?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json
+resource "azurerm_private_dns_zone" "table_storage_account" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_azure_com_vnet" {
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.table_storage_account.name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}

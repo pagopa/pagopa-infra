@@ -32,8 +32,10 @@
 | <a name="module_apim_mock_psp_service_api_secondary"></a> [apim\_mock\_psp\_service\_api\_secondary](#module\_apim\_mock\_psp\_service\_api\_secondary) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_mock_psp_service_product"></a> [apim\_mock\_psp\_service\_product](#module\_apim\_mock\_psp\_service\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_psp_service_product_secondary"></a> [apim\_mock\_psp\_service\_product\_secondary](#module\_apim\_mock\_psp\_service\_product\_secondary) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
+| <a name="module_apim_mock_receipt_pdf"></a> [apim\_mock\_receipt\_pdf](#module\_apim\_mock\_receipt\_pdf) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mocker_core_api_v1"></a> [apim\_mocker\_core\_api\_v1](#module\_apim\_mocker\_core\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.7.0 |
 | <a name="module_apim_mocker_core_product"></a> [apim\_mocker\_core\_product](#module\_apim\_mocker\_core\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
+| <a name="module_apim_receipt_pdf_api"></a> [apim\_receipt\_pdf\_api](#module\_apim\_receipt\_pdf\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_secondary_mock_ec_api"></a> [apim\_secondary\_mock\_ec\_api](#module\_apim\_secondary\_mock\_ec\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_secondary_mock_ec_product"></a> [apim\_secondary\_mock\_ec\_product](#module\_apim\_secondary\_mock\_ec\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_letsencrypt_mock"></a> [letsencrypt\_mock](#module\_letsencrypt\_mock) | git::https://github.com/pagopa/azurerm.git//letsencrypt_credential | v3.8.1 |
@@ -51,6 +53,7 @@
 | [azurerm_api_management_api_version_set.mock_psp_nexi_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.mock_psp_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.mock_psp_service_api_secondary](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.mock_receipt_pdf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.mocker_core_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.secondary_mock_ec_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.secondary_mock_ec_forwarder_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |

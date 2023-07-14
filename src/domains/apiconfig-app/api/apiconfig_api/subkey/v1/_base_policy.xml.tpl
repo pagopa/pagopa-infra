@@ -33,6 +33,9 @@
             <when condition="@(${addMockResp} && context.Request.Method == "GET" && context.Request.Url.Path.Contains("ibans/enhanced"))">
                 <return-response>
                     <set-status code="200" reason="OK" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
                     <set-body template="liquid">
                     {
                         "ibans_enhanced": [{
