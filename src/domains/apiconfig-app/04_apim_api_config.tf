@@ -113,9 +113,10 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
 }
 
 
-###########################
-## Products for Auth ##
-###########################
+########################
+## Products for Auth  ##
+## version for subkey ##
+########################
 
 module "apim_api_config_auth_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
@@ -135,12 +136,17 @@ module "apim_api_config_auth_product" {
   policy_xml = file("./api_product/apiconfig_api/_base_policy_auth.xml")
 }
 
-########################
+###########################
 ##  API for Subscribers  ##
-########################
-
+###########################
 data "azurerm_api_management_product" "apim_aca_integration_product" {
   product_id          = "aca-integration"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+data "azurerm_api_management_product" "technical_support_api_product" {
+  product_id          = "technical_support_api"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
@@ -160,7 +166,7 @@ module "apim_api_config_auth_api" {
   name                  = format("%s-api-config-auth-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_api_config_auth_product.product_id, data.azurerm_api_management_product.apim_aca_integration_product.product_id]
+  product_ids           = [module.apim_api_config_auth_product.product_id, data.azurerm_api_management_product.apim_aca_integration_product.product_id, data.azurerm_api_management_product.technical_support_api_product.product_id]
   subscription_required = true
 
   version_set_id = azurerm_api_management_api_version_set.api_config_auth_api.id
