@@ -358,7 +358,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_deadletter.id
-  description    = format("%s queue write happens in the last ${each.value.time_window} mins",replace("${each.value.queue_key}","-"," "))
+  description    = format("%s write happens in the last ${each.value.time_window} mins",replace("${each.value.queue_key}","-"," "))
   enabled        = true
   query = format(<<-QUERY
       StorageQueueLogs
