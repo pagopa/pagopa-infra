@@ -291,6 +291,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
       OpCountForQueue("PutMessage", queueKey)
       | join OpCountForQueue("DeleteMessage", queueKey) on count_
       | project name = queueKey, Count = count_ - count_1
+      | where toint(Count) > ${each.value.threshold}
     };
     MessageRateForQueue("%s")
     QUERY
@@ -301,7 +302,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   time_window = each.value.time_window
   trigger {
     operator  = each.value.operator
-    threshold = each.value.threshold
+    threshold = 0
   }
 }
 
@@ -364,6 +365,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
       StorageQueueLogs
       | where OperationName == "PutMessage" and ObjectKey startswith "%s"
       | summarize count()
+      | where toint(count_) > 0
     QUERY
     , "${module.ecommerce_storage_deadletter.name}/pagopa-${var.env_short}-weu-${each.value.queue_key}"
   )
