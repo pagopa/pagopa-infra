@@ -171,7 +171,7 @@ resource "azurerm_storage_queue" "notifications_service_errors_queue" {
   storage_account_name = module.ecommerce_storage_deadletter.name
 }
 
-# Ecommerce transient queue alert
+# Ecommerce transient queue alert diagnostic settings
 resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnostics" {
   count                      = var.env_short == "p" ? 1 : 0
   name                       = "${module.ecommerce_storage_transient.name}-diagnostics"
@@ -197,10 +197,79 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
   }
 }
 
-# Queue size: Ecommerce - ecommerce transactions expiration queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_expiration_queue_size" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-transactions-expiration-queue-size-alert"
+locals {
+  queue_transient_alert_prosp = var.env_short == "p" ? [
+    {
+      "queue_key"   = "ecommerce-transactions-expiration-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15 
+      "operator"    = "GreaterThan"
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "ecommerce-transaction-notifications-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15 
+      "operator"    = "GreaterThan"
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "ecommerce-notifications-service-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15 
+      "operator"    = "GreaterThan"
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "ecommerce-transaction-notifications-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15 
+      "operator"    = "GreaterThan"
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "ecommerce-transactions-close-payment-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15 
+      "operator"    = "GreaterThan"
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "ecommerce-transactions-close-payment-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15 
+      "operator"    = "GreaterThan"
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "ecommerce-transactions-refund-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15 
+      "operator"    = "GreaterThan"
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "ecommerce-transactions-refund-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15 
+      "operator"    = "GreaterThan"
+      "threshold"   = 10
+    },
+  ] : []
+}
+
+# Queue size: Ecommerce - ecommerce queues enqueues rate alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqueue_rate_alert" {
+  for_each            = { for q in local.queue_transient_alert_prosp : q.queue_key => q }
+  name                = "${local.project}-${each.value.queue_key}-rate-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
 
@@ -210,7 +279,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_e
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_transient.id
-  description    = "Ecommerce expirations queue size > 10"
+  description    = format("%s enqueue rate  > 10 per ${each.value.time_window} minutes",replace("${each.value.queue_key}","-"," "))
   enabled        = true
   query = format(<<-QUERY
     let OpCountForQueue = (operation: string, queueKey: string) {
@@ -225,291 +294,19 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_e
     };
     MessageRateForQueue("%s")
     QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_transient.name, var.env_short, "ecommerce-transactions-expiration-queue")
+    , "${module.ecommerce_storage_transient.name}/pagopa-${var.env_short}-weu-${each.value.queue_key}"
   )
-  severity    = 1
-  frequency   = 15
-  time_window = 30
+  severity    = each.value.severity
+  frequency   = each.value.frequency
+  time_window = each.value.time_window
   trigger {
-    operator  = "GreaterThan"
-    threshold = 10
+    operator  = each.value.operator
+    threshold = each.value.threshold
   }
 }
 
-# Queue size: Ecommerce - ecommerce transactions notifications queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_queue_size" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-notifications-queue-size-alert"
-  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
-  location            = var.location
 
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = module.ecommerce_storage_transient.id
-  description    = "Ecommerce notifications queue size > 10"
-  enabled        = true
-  query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
-      StorageQueueLogs
-      | where OperationName == operation and ObjectKey startswith queueKey
-      | summarize count()
-    };
-    let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
-    };
-    MessageRateForQueue("%s")
-    QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_transient.name, var.env_short, "ecommerce-transaction-notifications-queue")
-  )
-  severity    = 1
-  frequency   = 15
-  time_window = 30
-  trigger {
-    operator  = "GreaterThan"
-    threshold = 10
-  }
-}
-
-# Queue size: Ecommerce - ecommerce notifications service retry queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_service_retry_queue" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-notifications-service-retry-queue-size-alert"
-  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
-  location            = var.location
-
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = module.ecommerce_storage_transient.id
-  description    = "Ecommerce notifications retry queue size > 10"
-  enabled        = true
-  query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
-      StorageQueueLogs
-      | where OperationName == operation and ObjectKey startswith queueKey
-      | summarize count()
-    };
-    let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
-    };
-    MessageRateForQueue("%s")
-    QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_transient.name, var.env_short, "ecommerce-notifications-service-retry-queue")
-  )
-  severity    = 1
-  frequency   = 15
-  time_window = 30
-  trigger {
-    operator  = "GreaterThan"
-    threshold = 10
-  }
-}
-
-# Queue size: Ecommerce - ecommerce transaction notifications retry queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transaction_notifications_retry_queue" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-transaction-notifications-retry-queue-size-alert"
-  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
-  location            = var.location
-
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = module.ecommerce_storage_transient.id
-  description    = "Ecommerce transaction notification retry queue size > 10"
-  enabled        = true
-  query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
-      StorageQueueLogs
-      | where OperationName == operation and ObjectKey startswith queueKey
-      | summarize count()
-    };
-    let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
-    };
-    MessageRateForQueue("%s")
-    QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_transient.name, var.env_short, "ecommerce-transaction-notifications-retry-queue")
-  )
-  severity    = 1
-  frequency   = 15
-  time_window = 30
-  trigger {
-    operator  = "GreaterThan"
-    threshold = 10
-  }
-}
-
-# Queue size: Ecommerce - ecommerce close payment queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_close_payment_queue" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-transactions-close-payment-queue-size-alert"
-  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
-  location            = var.location
-
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = module.ecommerce_storage_transient.id
-  description    = "Ecommerce transactions close payment queue size > 10"
-  enabled        = true
-  query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
-      StorageQueueLogs
-      | where OperationName == operation and ObjectKey startswith queueKey
-      | summarize count()
-    };
-    let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
-    };
-    MessageRateForQueue("%s")
-    QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_transient.name, var.env_short, "ecommerce-transactions-close-payment-queue")
-  )
-  severity    = 1
-  frequency   = 15
-  time_window = 30
-  trigger {
-    operator  = "GreaterThan"
-    threshold = 10
-  }
-}
-
-# Queue size: Ecommerce - ecommerce close payment retry queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_close_payment_retry_queue" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-transactions-close-payment-retry-queue-size-alert"
-  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
-  location            = var.location
-
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = module.ecommerce_storage_transient.id
-  description    = "Ecommerce transactions close payment retry queue size > 10"
-  enabled        = true
-  query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
-      StorageQueueLogs
-      | where OperationName == operation and ObjectKey startswith queueKey
-      | summarize count()
-    };
-    let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
-    };
-    MessageRateForQueue("%s")
-    QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_transient.name, var.env_short, "ecommerce-transactions-close-payment-retry-queue")
-  )
-  severity    = 1
-  frequency   = 15
-  time_window = 30
-  trigger {
-    operator  = "GreaterThan"
-    threshold = 10
-  }
-}
-
-# Queue size: Ecommerce - ecommerce refund retry queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_refund_queue" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-transactions-refund-queue-size-alert"
-  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
-  location            = var.location
-
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = module.ecommerce_storage_transient.id
-  description    = "Ecommerce transactions refund queue size > 10"
-  enabled        = true
-  query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
-      StorageQueueLogs
-      | where OperationName == operation and ObjectKey startswith queueKey
-      | summarize count()
-    };
-    let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
-    };
-    MessageRateForQueue("%s")
-    QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_transient.name, var.env_short, "ecommerce-transactions-refund-queue")
-  )
-  severity    = 1
-  frequency   = 15
-  time_window = 30
-  trigger {
-    operator  = "GreaterThan"
-    threshold = 10
-  }
-}
-
-# Queue size: Ecommerce - ecommerce refund retry queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_refund_retry_queue" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-transactions-refund-retry-queue-size-alert"
-  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
-  location            = var.location
-
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = module.ecommerce_storage_transient.id
-  description    = "Ecommerce transactions refund retry queue size > 10"
-  enabled        = true
-  query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
-      StorageQueueLogs
-      | where OperationName == operation and ObjectKey startswith queueKey
-      | summarize count()
-    };
-    let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
-    };
-    MessageRateForQueue("%s")
-    QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_transient.name, var.env_short, "ecommerce-transactions-refund-retry-queue")
-  )
-  severity    = 1
-  frequency   = 15
-  time_window = 30
-  trigger {
-    operator  = "GreaterThan"
-    threshold = 10
-  }
-}
-
-# Ecommerce deadletter queue alert
+# Ecommerce deadletter queue alert diagnostic settings
 resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagnostics" {
   count                      = var.env_short == "p" ? 1 : 0
   name                       = "${module.ecommerce_storage_deadletter.name}-diagnostics"
@@ -526,41 +323,32 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagno
   }
 }
 
-# Queue size: Ecommerce - ecommerce notifications service error queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_service_errors_queue" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-notifications-service-errors-queue-size-alert"
-  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
-  location            = var.location
 
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = module.ecommerce_storage_deadletter.id
-  description    = "Ecommerce notifications service error queue size > 1"
-  enabled        = true
-  query = format(<<-QUERY
-      StorageQueueLogs
-      | where OperationName == "PutMessage" and ObjectKey startswith "%s"
-      | summarize count()
-    QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_deadletter.name, var.env_short, "ecommerce-notifications-service-errors-queue")
-  )
-  severity    = 3
-  frequency   = 15
-  time_window = 15
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
-  }
+locals {
+  queue_deadletter_alert_prosp = var.env_short == "p" ? [
+    {
+      "queue_key"   = "ecommerce-notifications-service-errors-queue"
+      "severity"    = 3
+      "time_window" = 15
+      "frequency"   = 15 
+      "operator"    = "GreaterThanOrEqual"
+      "threshold"   = 1
+    },
+    {
+      "queue_key"   = "ecommerce-transactions-dead-letter-queue"
+      "severity"    = 3
+      "time_window" = 15
+      "frequency"   = 15 
+      "operator"    = "GreaterThanOrEqual"
+      "threshold"   = 1
+    },
+  ] : []
 }
 
-# Queue size: Ecommerce - ecommerce notifications service error queue size
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_dead_letter_queue" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${local.project}-ecommerce-transactions-dead-letter-queue"
+# Queue size: Ecommerce - ecommerce deadletter queues write alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_filling_rate_alert" {
+  for_each            = { for q in local.queue_deadletter_alert_prosp : q.queue_key => q }
+  name                = "${local.project}-${each.value.queue_key}-rate-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   location            = var.location
 
@@ -570,20 +358,20 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_d
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_deadletter.id
-  description    = "Ecommerce dead letter queue size > 1"
+  description    = format("%s queue write happens in the last ${each.value.time_window} mins",replace("${each.value.queue_key}","-"," "))
   enabled        = true
   query = format(<<-QUERY
       StorageQueueLogs
       | where OperationName == "PutMessage" and ObjectKey startswith "%s"
       | summarize count()
     QUERY
-    , format("%s/pagopa-%s-weu-%s", module.ecommerce_storage_deadletter.name, var.env_short, "ecommerce-transactions-dead-letter-queue")
+    , "${module.ecommerce_storage_deadletter.name}/pagopa-${var.env_short}-weu-${each.value.queue_key}"
   )
-  severity    = 3
-  frequency   = 15
-  time_window = 15
+  severity    = each.value.severity
+  frequency   = each.value.frequency
+  time_window = each.value.time_window
   trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
+    operator  = each.value.operator
+    threshold = each.value.threshold
   }
 }
