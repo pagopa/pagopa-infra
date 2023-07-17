@@ -332,16 +332,16 @@ locals {
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15 
-      "operator"    = "GreaterThanOrEqual"
-      "threshold"   = 1
+      "operator"    = "GreaterThan"
+      "threshold"   = 0
     },
     {
       "queue_key"   = "ecommerce-transactions-dead-letter-queue"
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15 
-      "operator"    = "GreaterThanOrEqual"
-      "threshold"   = 1
+      "operator"    = "GreaterThan"
+      "threshold"   = 0
     },
   ] : []
 }
@@ -365,7 +365,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
       StorageQueueLogs
       | where OperationName == "PutMessage" and ObjectKey startswith "%s"
       | summarize count()
-      | where toint(count_) > 0
+      | where toint(count_) > ${each.value.threshold}
     QUERY
     , "${module.ecommerce_storage_deadletter.name}/pagopa-${var.env_short}-weu-${each.value.queue_key}"
   )
@@ -374,6 +374,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
   time_window = each.value.time_window
   trigger {
     operator  = each.value.operator
-    threshold = each.value.threshold
+    threshold = 0
   }
 }
