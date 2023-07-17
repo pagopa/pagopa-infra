@@ -204,7 +204,6 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 10
     },
     {
@@ -212,7 +211,6 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 10
     },
     {
@@ -220,7 +218,6 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 10
     },
     {
@@ -228,7 +225,6 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 10
     },
     {
@@ -236,7 +232,6 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 10
     },
     {
@@ -244,7 +239,6 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 10
     },
     {
@@ -252,7 +246,6 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 10
     },
     {
@@ -260,7 +253,6 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 10
     },
   ] : []
@@ -301,7 +293,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   frequency   = each.value.frequency
   time_window = each.value.time_window
   trigger {
-    operator  = each.value.operator
+    operator  = "GreaterThan"
     threshold = 0
   }
 }
@@ -332,7 +324,6 @@ locals {
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 0
     },
     {
@@ -340,7 +331,6 @@ locals {
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15 
-      "operator"    = "GreaterThan"
       "threshold"   = 0
     },
   ] : []
@@ -373,7 +363,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
   frequency   = each.value.frequency
   time_window = each.value.time_window
   trigger {
-    operator  = each.value.operator
+    operator  = "GreaterThan"
     threshold = 0
   }
 }
