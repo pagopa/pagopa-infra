@@ -70,10 +70,15 @@ apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spa
 fdr_re_function = {
   always_on                     = true
   kind                          = "Linux"
-  sku_size                      = "B1"
+  sku_size                      = "P1v3"
   sku_tier                      = "Basic"
   maximum_elastic_worker_count  = 0
 }
 fdr_re_function_always_on       = true
 fdr_re_function_subnet          = ["10.1.180.0/24"]
 fdr_re_function_network_policies_enabled = false
+fdr_re_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}

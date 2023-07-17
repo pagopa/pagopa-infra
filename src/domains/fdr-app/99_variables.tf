@@ -297,3 +297,18 @@ variable "fdr_re_function" {
     maximum_elastic_worker_count = 1
   }
 }
+
+variable "fdr_re_function_app_image_tag" {
+  type        = string
+  default     = "latest"
+  description = "FdR RE to Datastore function app docker image tag. Defaults to 'latest'"
+}
+
+variable "fdr_re_function_autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+  description = "FdR function autoscaling parameters"
+}

@@ -76,3 +76,8 @@ fdr_re_function = {
 fdr_re_function_always_on       = true
 fdr_re_function_subnet          = ["10.1.180.0/24"]
 fdr_re_function_network_policies_enabled = false
+fdr_re_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}
