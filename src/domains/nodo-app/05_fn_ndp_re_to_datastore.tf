@@ -43,20 +43,6 @@ resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
 }
 
 locals {
-#  function_re_to_datastore_settings = {
-#    FUNCTIONS_WORKER_RUNTIME = "java"
-#    // Keepalive fields are all optionals
-#    FETCH_KEEPALIVE_ENABLED             = "true"
-#    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
-#    FETCH_KEEPALIVE_MAX_SOCKETS         = "40"
-#    FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
-#    FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
-#    FETCH_KEEPALIVE_TIMEOUT             = "60000"
-#
-#    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_connection_string
-#    COSMOS_CONN_STRING   = "mongodb://${local.project}-cosmos-account:${data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key}@${local.project}-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${local.project}-cosmos-account@"
-#  }
-
   function_re_to_datastore_app_settings = {
     linux_fx_version                    = "JAVA|11"
     FUNCTIONS_WORKER_RUNTIME            = "java"
@@ -79,8 +65,9 @@ locals {
   }
 
   docker_settings = {
+    IMAGE_NAME                      = "pagopa${var.env_short}commonacr.azurecr.io/pagopanodoretodatastore"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = data.azurerm_container_registry.acr.login_server
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
@@ -105,11 +92,11 @@ module "nodo_re_to_datastore_function" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   docker = {
-    image_name        = "pagopanodoretodatastore"
+    image_name        = local.docker_settings.IMAGE_NAME
     image_tag         = var.nodo_re_to_datastore_function_app_image_tag
-    registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
-    registry_url      = "https://${local.docker_settings.DOCKER_REGISTRY_SERVER_URL}"
+    registry_url      = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
     registry_username = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
   sticky_connection_string_names = ["COSMOS_CONN_STRING"]
@@ -160,11 +147,11 @@ module "nodo_re_to_datastore_function_slot_staging" {
   app_settings = local.function_re_to_datastore_app_settings
 
   docker = {
-    image_name        = "pagopanodoretodatastore"
+    image_name        = local.docker_settings.IMAGE_NAME
     image_tag         = var.nodo_re_to_datastore_function_app_image_tag
-    registry_password = data.azurerm_container_registry.acr.admin_password
-    registry_url      = "https://${local.docker_settings.DOCKER_REGISTRY_SERVER_URL}"
+    registry_url      = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
     registry_username = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
@@ -190,37 +177,37 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "Requests"
+        metric_name              = "IncomingMessages"
         metric_resource_id       = module.nodo_re_to_datastore_function.id
-        metric_namespace         = "microsoft.web/sites"
+        metric_namespace         = "Microsoft.EventHub/namespaces"
         time_grain               = "PT1M"
         statistic                = "Average"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 4000
+        threshold                = 1000
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
+        value     = "1"
         cooldown  = "PT5M"
       }
     }
 
     rule {
       metric_trigger {
-        metric_name              = "Requests"
+        metric_name              = "IncomingMessages"
         metric_resource_id       = module.nodo_re_to_datastore_function.id
-        metric_namespace         = "microsoft.web/sites"
+        metric_namespace         = "Microsoft.EventHub/namespaces"
         time_grain               = "PT1M"
         statistic                = "Average"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 3000
+        threshold                = 500
         divide_by_instance_count = false
       }
 
@@ -228,7 +215,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT5M"
       }
     }
   }
