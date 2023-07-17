@@ -1,10 +1,8 @@
-##############
-## Products ##
-##############
+####################
+# GPD INTERNAL USE #
+####################
 
-################
-# INTERNAL USE #
-################
+## Products ##
 
 module "apim_gpd_product" {
   source       = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
@@ -23,17 +21,7 @@ module "apim_gpd_product" {
   policy_xml = file("./api_product/gpd/_base_policy.xml")
 }
 
-##############
-##    API   ##
-##############
-
-resource "azurerm_api_management_api_version_set" "api_gpd_api" {
-  name                = format("%s-api-gpd-api", var.env_short)
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "Gestione Posizione Debitorie"
-  versioning_scheme   = "Segment"
-}
+## API ##
 
 module "apim_api_gpd_api" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
@@ -45,31 +33,34 @@ module "apim_api_gpd_api" {
   subscription_required = false
   api_version           = "v1"
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_api.id
-  service_url           = format("https://%s", module.gpd_app_service.default_site_hostname)
-
+  service_url           = format("https://weu${var.env}.gps.internal.%s.platform.pagopa.it/pagopa-gpd-core", var.env == "prod" ? "" : var.env)
 
   description  = "Api Gestione Posizione Debitorie"
   display_name = "GPD pagoPA"
   path         = "gpd/api"
   protocols    = ["https"]
 
-
   content_format = "openapi"
   content_value = templatefile("./api/gpd_api/v1/_openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-
   xml_content = file("./api/gpd_api/v1/_base_policy.xml")
 }
 
-########################
-# GPD-GPS EXTERNAL USE #
-########################
+resource "azurerm_api_management_api_version_set" "api_gpd_api" {
+  name                = format("%s-api-gpd-api", var.env_short)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "Gestione Posizione Debitorie"
+  versioning_scheme   = "Segment"
+}
 
-##############
+####################
+# GPD EXTERNAL USE #
+####################
+
 ## Products ##
-##############
 
 module "apim_debt_positions_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
@@ -88,6 +79,8 @@ module "apim_debt_positions_product" {
 
   policy_xml = file("./api_product/gpd/debt-position-services/_base_policy.xml")
 }
+
+## API ##
 
 resource "azurerm_api_management_api_version_set" "api_debt_positions_api" {
   name                = format("%s-debt-positions-service-api", var.env_short)
@@ -112,7 +105,7 @@ module "apim_api_debt_positions_api_v1" {
   display_name = local.apim_debt_positions_service_api.display_name
   path         = local.apim_debt_positions_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_debt_positions_service_api.service_url
+  service_url  = local.apim_debt_positions_service_api.service_url // todo switch to aks
 
   content_format = "openapi"
   content_value = templatefile("./api/gpd_api/debt-position-services/v1/_openapi.json.tpl", {
