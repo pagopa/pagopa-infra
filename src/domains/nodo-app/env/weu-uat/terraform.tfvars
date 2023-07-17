@@ -104,3 +104,8 @@ nodo_re_to_datastore_function = {
 nodo_re_to_datastore_function_always_on       = true
 nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]
 nodo_re_to_datastore_network_policies_enabled = false
+nodo_re_to_datastore_function_autoscale = {
+  default = 1
+  minimum = 3
+  maximum = 10
+}

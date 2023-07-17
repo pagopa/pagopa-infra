@@ -112,10 +112,15 @@ vmss_instance_number = 1
 nodo_re_to_datastore_function = {
   always_on                    = true
   kind                         = "Linux"
-  sku_size                     = "B1"
+  sku_size                     = "P1v3"
   sku_tier                     = "Basic"
   maximum_elastic_worker_count = 0
 }
 nodo_re_to_datastore_function_always_on       = true
 nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]
 nodo_re_to_datastore_network_policies_enabled = false
+nodo_re_to_datastore_function_autoscale = {
+  default = 1
+  minimum = 3
+  maximum = 10
+}
