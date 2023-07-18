@@ -271,7 +271,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_transient.id
-  description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes",replace("${each.value.queue_key}","-"," "))
+  description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}","-"," "))
   enabled        = true
   query = format(<<-QUERY
     let OpCountForQueue = (operation: string, queueKey: string) {
@@ -287,7 +287,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
     };
     MessageRateForQueue("%s")
     QUERY
-    , "${module.ecommerce_storage_transient.name}/pagopa-${local.project}-${each.value.queue_key}"
+    , "${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
@@ -349,7 +349,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_deadletter.id
-  description    = format("Deadletter message write happened in queue %s during the last ${each.value.time_window} mins",replace("${each.value.queue_key}","-"," "))
+  description    = format("Deadletter message write happened in queue %s during the last ${each.value.time_window} mins", replace("${each.value.queue_key}","-"," "))
   enabled        = true
   query = format(<<-QUERY
       StorageQueueLogs
@@ -357,7 +357,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
       | summarize count()
       | where toint(count_) > ${each.value.threshold}
     QUERY
-    , "${module.ecommerce_storage_transient.name}/pagopa-${local.project}-${each.value.queue_key}"
+    , "${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
