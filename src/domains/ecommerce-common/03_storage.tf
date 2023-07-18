@@ -283,9 +283,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
       OpCountForQueue("PutMessage", queueKey)
       | join OpCountForQueue("DeleteMessage", queueKey) on count_
       | project name = queueKey, Count = count_ - count_1
-      | where toint(Count) > ${each.value.threshold}
     };
-    MessageRateForQueue("%s")
+    MessageRateForQueue("%s") 
+    | where Count > ${each.value.threshold}
     QUERY
     , "${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
