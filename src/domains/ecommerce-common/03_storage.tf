@@ -198,7 +198,7 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
 }
 
 locals {
-  queue_transient_alert_prosp = var.env_short == "p" ? [
+  queue_transient_alert_props = var.env_short == "p" ? [
     {
       "queue_key"   = "ecommerce-transactions-expiration-queue"
       "severity"    = 1
