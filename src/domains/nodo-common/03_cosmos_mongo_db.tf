@@ -15,7 +15,7 @@ module "cosmosdb_nodo_re_snet" {
 
 module "cosmosdb_account_mongodb" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.1"
-  domain              = null
+  domain              = var.domain
   name                = "${local.project}-cosmos-account"
   location            = var.location
   resource_group_name = azurerm_resource_group.db_rg.name

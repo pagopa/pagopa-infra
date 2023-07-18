@@ -63,7 +63,6 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
     COSMOS_CONN_STRING        = "mongodb://${local.project}-cosmos-account:${data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key}@${local.project}-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${local.project}-cosmos-account@"
-#    COSMOS_CONN_STRING        = data.azurerm_cosmosdb_account.mongo_ndp_re_account.connection_strings.0.connection_string
     COSMOS_DB_NAME            = data.azurerm_cosmosdb_mongo_database.nodo_re.name
     COSMOS_DB_COLLECTION_NAME = "events"
 
@@ -124,7 +123,7 @@ module "nodo_re_to_datastore_function" {
     zone_balancing_enabled       = false
   }
 
-  storage_account_name = replace(format("%s-re-2-dst-fn-sa", local.project), "-", "")
+  storage_account_name = replace("${local.project}-re-2-dst-fn-sa", "-", "")
 
   app_settings = local.function_re_to_datastore_app_settings
 
