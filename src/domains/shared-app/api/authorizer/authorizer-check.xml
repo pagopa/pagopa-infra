@@ -7,7 +7,7 @@
     <trace source="authorizer-check" severity="information">authorizer-check</trace>
     <!-- Saving information from request -->
     <set-variable name="domain" value="@((string)context.Variables["application_domain"])" /> <!-- ex. gpd -->
-    <set-variable name="auth_entity" value="@((string)context.Variables["authorization_entity"])" /> <!-- ex. ec 77777777777  -->
+    <set-variable name="auth_entity" value="@("#"+(string)context.Variables["authorization_entity"]+"#")" /> <!-- ex. ec #77777777777#  -->
     <set-variable name="subkey" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", ""))" />
     <set-variable name="authorization_cache_key" value="@("authorizer_"+(string)context.Variables["domain"] + "_" + (string)context.Variables["subkey"])" />
 
