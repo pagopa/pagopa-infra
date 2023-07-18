@@ -104,4 +104,5 @@ locals {
     subscription_required = true
     service_url           = null
   }
+  monitor_action_group_opsgenie_name = "GPD-Opsgenie"
 }
