@@ -271,7 +271,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_transient.id
-  description    = format("%s enqueue rate  > 10 per ${each.value.time_window} minutes",replace("${each.value.queue_key}","-"," "))
+  description    = format("Enqueuing rate for queue %s > ${each.threshold} during last ${each.value.time_window} minutes",replace("${each.value.queue_key}","-"," "))
   enabled        = true
   query = format(<<-QUERY
     let OpCountForQueue = (operation: string, queueKey: string) {
