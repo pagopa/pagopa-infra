@@ -299,7 +299,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
 }
 
 
-# Ecommerce deadletter queue alert diagnostic settings
+# eCommerce deadletter queue alert diagnostic settings
 resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagnostics" {
   count                      = var.env_short == "p" ? 1 : 0
   name                       = "${module.ecommerce_storage_deadletter.name}-diagnostics"
