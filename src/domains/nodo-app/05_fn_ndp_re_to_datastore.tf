@@ -47,6 +47,14 @@ locals {
     linux_fx_version                    = "JAVA|11"
     FUNCTIONS_WORKER_RUNTIME            = "java"
     FUNCTIONS_WORKER_PROCESS_COUNT      = 4
+    // Keepalive fields are all optionals
+    FETCH_KEEPALIVE_ENABLED             = "true"
+    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
+    FETCH_KEEPALIVE_MAX_SOCKETS         = "40"
+    FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
+    FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
+    FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
@@ -65,7 +73,7 @@ locals {
   }
 
   docker_settings = {
-    IMAGE_NAME                      = "pagopa${var.env_short}commonacr.azurecr.io/pagopanodoretodatastore"
+    IMAGE_NAME                      = "pagopanodoretodatastore"
     # ACR
     DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
