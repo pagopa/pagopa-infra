@@ -318,7 +318,7 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagno
 
 
 locals {
-  queue_deadletter_alert_prosp = var.env_short == "p" ? [
+  queue_deadletter_alert_props = var.env_short == "p" ? [
     {
       "queue_key"   = "ecommerce-notifications-service-errors-queue"
       "severity"    = 3
