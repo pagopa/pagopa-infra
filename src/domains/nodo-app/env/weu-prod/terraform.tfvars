@@ -62,6 +62,13 @@ route_aks = [
     next_hop_in_ip_address = "10.230.10.150"
   },
   {
+    # dev aks nodo oncloud
+    name                   = "aks-outbound-to-nexy-proxy-subnet"
+    address_prefix         = "10.79.20.35/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
     #  aks nodo to nexi proxy
     name                   = "aks-outbound-to-nexy-sianet-dr-subnet"
     address_prefix         = "10.101.1.85/32"

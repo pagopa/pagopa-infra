@@ -1827,6 +1827,10 @@
             "description": "Payment method name",
             "type": "string"
           },
+          "paymentMethodDescription": {
+            "description": "Payment method description",
+            "type": "string"
+          },
           "paymentMethodStatus": {
             "$ref": "#/components/schemas/PaymentMethodStatus"
           },
@@ -1845,6 +1849,7 @@
         "required": [
           "bundles",
           "paymentMethodName",
+          "paymentMethodDescription",
           "paymentMethodStatus"
         ]
       },
