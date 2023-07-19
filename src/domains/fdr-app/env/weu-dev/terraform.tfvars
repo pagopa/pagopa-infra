@@ -74,7 +74,7 @@ fdr_re_function = {
   maximum_elastic_worker_count  = null
 }
 fdr_re_function_always_on       = true
-fdr_re_function_subnet          = ["10.1.180.0/24"]
+fdr_re_function_subnet          = ["10.1.181.0/24"]
 fdr_re_function_network_policies_enabled = false
 fdr_re_function_autoscale = {
   default = 1
