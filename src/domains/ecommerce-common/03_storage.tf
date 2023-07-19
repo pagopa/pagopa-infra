@@ -284,7 +284,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
       | join OpCountForQueue("DeleteMessage", queueKey) on count_
       | project name = queueKey, Count = count_ - count_1
     };
-    MessageRateForQueue("%s") 
+    MessageRateForQueue("%s")
     | where Count > ${each.value.threshold}
     QUERY
     , "${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
@@ -357,7 +357,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
       | summarize count()
       | where count_ > ${each.value.threshold}
     QUERY
-    , "${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
+    , "${module.ecommerce_storage_deadletter.name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
