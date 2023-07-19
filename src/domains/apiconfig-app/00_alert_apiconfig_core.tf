@@ -14,7 +14,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Availability less than 99%"
+  description    = "Availability apiconfig less than 99%"
   enabled        = true
   query = format(<<-QUERY
   traces
@@ -47,7 +47,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_jdbc_connectio
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Problem to acquire JDBC connection"
+  description    = "Problem apiconfig to acquire JDBC connection"
   enabled        = true
 
   query = format(<<-QUERY
