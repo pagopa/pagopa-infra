@@ -272,10 +272,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
     custom_webhook_payload = "{}"
   }
   data_source_id = module.apim.id
-  description    = "Response time for /forward is less than or equal to 1,5s - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
+  description    = "Response time for /forward is less than or equal to 8s - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
   enabled        = true
   query = (<<-QUERY
-let threshold = 1500;
+let threshold = 8000;
 AzureDiagnostics
 | where url_s matches regex "/forward"
 | summarize
