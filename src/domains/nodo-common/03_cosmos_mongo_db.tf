@@ -71,6 +71,7 @@ locals {
         unique = true
         }
       ]
+      shard_key = "PartitionKey"
     }
   ]
 }
