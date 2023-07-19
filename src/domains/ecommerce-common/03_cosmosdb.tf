@@ -187,10 +187,10 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   action {
     action_group_id = data.azurerm_monitor_action_group.email.id
   }
-  
+
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
   }
-  
+
   tags = var.tags
 }
