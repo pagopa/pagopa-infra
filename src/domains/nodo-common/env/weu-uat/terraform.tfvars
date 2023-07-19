@@ -43,6 +43,7 @@ pgres_flex_params = {
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 1048576
   zone                                   = 1
+  standby_ha_zone                        = 2
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
