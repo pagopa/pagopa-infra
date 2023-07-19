@@ -48,7 +48,7 @@ module "api_nodo_technical_support_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/technical-support-service/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
     service = data.azurerm_api_management_product.technical_support_api_product.product_id
   })
 
