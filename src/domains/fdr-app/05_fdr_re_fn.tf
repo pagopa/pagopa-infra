@@ -7,7 +7,7 @@ data "azurerm_cosmosdb_account" "mongo_fdr_re_account" {
 data "azurerm_cosmosdb_mongo_database" "fdr_re" {
   name                = "fdr-re"
   resource_group_name = "${local.project}-db-rg"
-  account_name        = "${local.project}-cosmos-account"
+  account_name        = "${local.project}-re-cosmos-account"
 }
 
 # info for event hub
@@ -38,6 +38,13 @@ locals {
     linux_fx_version                    = "JAVA|11"
     FUNCTIONS_WORKER_RUNTIME            = "java"
     FUNCTIONS_WORKER_PROCESS_COUNT      = 4
+    // Keepalive fields are all optionals
+    FETCH_KEEPALIVE_ENABLED             = "true"
+    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
+
+    FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
+    FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
@@ -56,8 +63,9 @@ locals {
   }
 
   docker_settings = {
+    IMAGE_NAME = "pagopafdrretodatastore"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = data.azurerm_container_registry.acr.login_server
+    DOCKER_REGISTRY_SERVER_URL = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
@@ -82,11 +90,11 @@ module "fdr_re_function" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   docker = {
-    image_name        = "pagopafdrre"
+    image_name        = local.docker_settings.IMAGE_NAME
     image_tag         = var.fdr_re_function_app_image_tag
-    registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
-    registry_url      = "https://${local.docker_settings.DOCKER_REGISTRY_SERVER_URL}"
+    registry_url      = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
     registry_username = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
   sticky_connection_string_names = ["COSMOS_CONN_STRING"]
@@ -137,11 +145,11 @@ module "fdr_re_function_slot_staging" {
   app_settings = local.function_re_to_datastore_app_settings
 
   docker = {
-    image_name        = "pagopafdrre"
+    image_name        = local.docker_settings.IMAGE_NAME
     image_tag         = var.fdr_re_function_app_image_tag
-    registry_password = data.azurerm_container_registry.acr.admin_password
-    registry_url      = "https://${local.docker_settings.DOCKER_REGISTRY_SERVER_URL}"
+    registry_url      = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
     registry_username = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
+    registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
@@ -150,65 +158,65 @@ module "fdr_re_function_slot_staging" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "fdr_re_to_datastore_function" {
-  name                = "${module.fdr_re_function.name}-autoscale"
-  resource_group_name = data.azurerm_resource_group.fdr_re_rg.name
-  location            = var.location
-  target_resource_id  = module.fdr_re_function.app_service_plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = var.fdr_re_function_autoscale.default
-      minimum = var.fdr_re_function_autoscale.minimum
-      maximum = var.fdr_re_function_autoscale.maximum
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "IncomingMessages"
-        metric_resource_id       = module.fdr_re_function.id
-        metric_namespace         = "Microsoft.EventHub/namespaces"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 1000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "IncomingMessages"
-        metric_resource_id       = module.fdr_re_function.id
-        metric_namespace         = "Microsoft.EventHub/namespaces"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT5M"
-      }
-    }
-  }
-}
+#resource "azurerm_monitor_autoscale_setting" "fdr_re_to_datastore_function" {
+#  name                = "${module.fdr_re_function.name}-autoscale"
+#  resource_group_name = data.azurerm_resource_group.fdr_re_rg.name
+#  location            = var.location
+#  target_resource_id  = module.fdr_re_function.app_service_plan_id
+#
+#  profile {
+#    name = "default"
+#
+#    capacity {
+#      default = var.fdr_re_function_autoscale.default
+#      minimum = var.fdr_re_function_autoscale.minimum
+#      maximum = var.fdr_re_function_autoscale.maximum
+#    }
+#
+#    rule {
+#      metric_trigger {
+#        metric_name              = "IncomingMessages"
+#        metric_resource_id       = module.fdr_re_function.id
+#        metric_namespace         = "Microsoft.EventHub/namespaces"
+#        time_grain               = "PT1M"
+#        statistic                = "Average"
+#        time_window              = "PT5M"
+#        time_aggregation         = "Average"
+#        operator                 = "GreaterThan"
+#        threshold                = 1000
+#        divide_by_instance_count = false
+#      }
+#
+#      scale_action {
+#        direction = "Increase"
+#        type      = "ChangeCount"
+#        value     = "1"
+#        cooldown  = "PT5M"
+#      }
+#    }
+#
+#    rule {
+#      metric_trigger {
+#        metric_name              = "IncomingMessages"
+#        metric_resource_id       = module.fdr_re_function.id
+#        metric_namespace         = "Microsoft.EventHub/namespaces"
+#        time_grain               = "PT1M"
+#        statistic                = "Average"
+#        time_window              = "PT5M"
+#        time_aggregation         = "Average"
+#        operator                 = "LessThan"
+#        threshold                = 500
+#        divide_by_instance_count = false
+#      }
+#
+#      scale_action {
+#        direction = "Decrease"
+#        type      = "ChangeCount"
+#        value     = "1"
+#        cooldown  = "PT5M"
+#      }
+#    }
+#  }
+#}
 
 

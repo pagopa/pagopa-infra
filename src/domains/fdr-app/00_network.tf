@@ -21,6 +21,11 @@ module "fdr_re_function_snet" {
   virtual_network_name                      = data.azurerm_virtual_network.vnet.name
   private_endpoint_network_policies_enabled = var.fdr_re_function_network_policies_enabled
 
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+  
   delegation = {
     name = "default"
     service_delegation = {
