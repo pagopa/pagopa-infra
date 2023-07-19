@@ -115,7 +115,7 @@ custom_metric_alerts = {
 cosmos_mongo_db_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo", "EnableServerless", "DisableRateLimitingResponses"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -131,7 +131,6 @@ cosmos_mongo_db_params = {
   is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
-
 }
 
 nodo_storico_allowed_ips     = ["93.63.219.230"]
