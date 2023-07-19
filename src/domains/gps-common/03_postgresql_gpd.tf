@@ -87,6 +87,9 @@ module "postgres_flexible_server_private" {
   diagnostic_settings_enabled = false
 
   tags = var.tags
+
+  custom_metric_alerts = var.pgflex_public_metric_alerts
+  alerts_enabled       = var.pgres_flex_params.alerts_enabled
 }
 
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
