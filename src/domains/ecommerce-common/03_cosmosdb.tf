@@ -149,7 +149,7 @@ module "cosmosdb_ecommerce_collections" {
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb.name}] Normalized RU/s Exceeded"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb.name}] Normalized RU Exceeded"
   resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
   scopes              = [module.cosmosdb_account_mongodb.id]
   description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
@@ -163,7 +163,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
   criteria {
     metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
-    metric_name            = "NormalizedRUConsumpion"
+    metric_name            = "NormalizedRUConsumption"
     aggregation            = "Maximum"
     operator               = "GreaterThan"
     threshold              = "80"

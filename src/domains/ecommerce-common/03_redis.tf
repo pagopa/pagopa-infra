@@ -77,6 +77,9 @@ resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
   window_size         = "PT5M"
   frequency           = "PT5M"
   auto_mitigate       = false
+  
+  target_resource_type     = "Microsoft.Cache/redis"
+  target_resource_location = var.location
 
   # Metric info
   # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
