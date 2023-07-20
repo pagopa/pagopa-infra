@@ -89,10 +89,10 @@ module "postgres_flexible_server_private" {
   tags = var.tags
 
   # alert section
-  custom_metric_alerts = var.pgflex_public_metric_alerts
+  custom_metric_alerts = var.pgres_flex_params.alerts_enabled ? var.pgflex_public_metric_alerts : {}
   alerts_enabled       = var.pgres_flex_params.alerts_enabled
 
-  alert_action = [
+  alert_action = var.pgres_flex_params.alerts_enabled ? [
     {
       action_group_id    = data.azurerm_monitor_action_group.email.id
       webhook_properties = null
@@ -102,10 +102,10 @@ module "postgres_flexible_server_private" {
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.opsgenie.id
+      action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
       webhook_properties = null
     }
-  ]
+  ] : []
 }
 
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
