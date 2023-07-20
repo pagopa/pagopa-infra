@@ -116,6 +116,13 @@ resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
   charset   = "utf8"
 }
 
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_connection" {
+  count     = var.env_short != "d" ? 1 : 0
+  name      = "max_connections"
+  server_id = module.postgres_flexible_server_private[0].id
+  value     = var.pgres_flex_params.max_connections
+}
+
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_startup_parameters" {
   count     = var.env_short != "d" ? 1 : 0
