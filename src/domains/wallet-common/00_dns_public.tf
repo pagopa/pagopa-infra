@@ -1,4 +1,4 @@
-resource "azurerm_dns_zone" "wallet_public" {
+resource "azurerm_dns_zone" "payment_wallet_public" {
   name                = "${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 
@@ -6,7 +6,7 @@ resource "azurerm_dns_zone" "wallet_public" {
 }
 
 //Prod ONLY record to DEV public DNS delegation
-resource "azurerm_dns_ns_record" "dev_wallet" {
+resource "azurerm_dns_ns_record" "dev_payment_wallet" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "dev"
   zone_name           = azurerm_dns_zone.wallet_public.name
@@ -22,7 +22,7 @@ resource "azurerm_dns_ns_record" "dev_wallet" {
 }
 
 //Prod ONLY record to UAT public DNS delegation
-resource "azurerm_dns_ns_record" "uat_wallet" {
+resource "azurerm_dns_ns_record" "uat_payment_wallet" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "uat"
   zone_name           = azurerm_dns_zone.wallet_public.name
@@ -37,7 +37,7 @@ resource "azurerm_dns_ns_record" "uat_wallet" {
   tags = var.tags
 }
 
-resource "azurerm_dns_caa_record" "wallet_pagopa_it" {
+resource "azurerm_dns_caa_record" "payment_wallet_pagopa_it" {
   name                = "@"
   zone_name           = azurerm_dns_zone.wallet_public.name
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
