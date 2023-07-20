@@ -54,7 +54,7 @@ locals {
         unique = true
         }
       ]
-      shard_key = null
+      shard_key = "created"
     }
   ]
 }
