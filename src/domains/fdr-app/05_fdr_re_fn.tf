@@ -76,7 +76,7 @@ module "fdr_re_function" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
 
   resource_group_name = data.azurerm_resource_group.fdr_re_rg.name
-  name                = "${local.project}-re-to-datastore-fn"
+  name                = "${local.project}-re-fn"
 
   location          = var.location
   health_check_path = "/info"
