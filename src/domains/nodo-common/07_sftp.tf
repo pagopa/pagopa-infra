@@ -32,26 +32,13 @@ module "sftp" {
   tags = var.tags
 }
 
-# Azure Blob Storage subnet
-module "storage_account_snet" {
-  count = var.sftp_enable_private_endpoint ? 1 : 0
-
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
-  name                                          = format("%s-storage-account-snet", local.project)
-  address_prefixes                              = var.cidr_subnet_storage_account
-  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet.name
-  service_endpoints                             = ["Microsoft.Storage"]
-  private_link_service_network_policies_enabled = true
-}
-
 resource "azurerm_private_endpoint" "sftp_blob" {
   count = var.sftp_enable_private_endpoint ? 1 : 0
 
   name                = "${module.sftp.name}-blob-endpoint"
   resource_group_name = azurerm_resource_group.sftp.name
   location            = azurerm_resource_group.sftp.location
-  subnet_id           = module.storage_account_snet[0].id
+  subnet_id           = module.storage_account_snet.id
 
   private_service_connection {
     name                           = "${module.sftp.name}-blob-endpoint"
