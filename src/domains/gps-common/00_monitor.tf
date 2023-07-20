@@ -22,6 +22,11 @@ data "azurerm_monitor_action_group" "email" {
   name                = local.monitor_action_group_email_name
 }
 
+data "azurerm_monitor_action_group" "opsgenie" {
+  resource_group_name = var.monitor_resource_group_name
+  name                = local.monitor_action_group_opsgenie_name
+}
+
 ## Alert
 #
 # This alert cover two error cases:

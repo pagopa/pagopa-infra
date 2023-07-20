@@ -88,6 +88,7 @@ module "postgres_flexible_server_private" {
 
   tags = var.tags
 
+  alert_action         = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
   custom_metric_alerts = var.pgflex_public_metric_alerts
   alerts_enabled       = var.pgres_flex_params.alerts_enabled
 }

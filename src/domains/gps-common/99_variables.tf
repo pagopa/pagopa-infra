@@ -237,6 +237,26 @@ variable "pgflex_public_metric_alerts" {
 
 }
 
+#variable "pgflex_alert_action" {
+#  type = set(object(
+#    {
+#      action_group_id    = string
+#      webhook_properties = map(string)
+#    }
+#  ))
+#  default = [
+#    {
+#      action_group_id = data.azurerm_monitor_action_group.opsgenie.id
+#    },
+#    {
+#      action_group_id = data.azurerm_monitor_action_group.slack.id
+#    },
+#    {
+#      action_group_id = data.azurerm_monitor_action_group.email.id
+#    }
+#  ]
+#}
+
 variable "postgresql_network_rules" {
   description = "Network rules restricting access to the postgresql server."
   type = object({
