@@ -12,6 +12,12 @@
 <!--                </return-response>-->
 <!--            </when>-->
 <!--        </choose>-->
+        <set-query-parameter name="pageNum" exists-action="skip">
+            <value>0</value>
+        </set-query-parameter>
+        <set-query-parameter name="pageSize" exists-action="skip">
+            <value>100</value>
+        </set-query-parameter>
         <set-backend-service base-url="https://${hostname}/pagopa-gpd-payments" />
         <!-- Calling Authorizer's fragment -->
         <set-variable name="application_domain" value="gpd" />
