@@ -155,6 +155,7 @@ variable "pgres_flex_params" {
     standby_availability_zone    = number
     pgbouncer_enabled            = bool
     alerts_enabled               = bool
+    max_connections              = number
   })
 
   default = null
