@@ -15,23 +15,23 @@
         </allowed-headers>
       </cors>
       <base />
-      <set-variable name="requestId" value="@{
-        return context.Request.MatchedParameters["requestId"];
+      <set-variable name="paymentAuthorizationId" value="@{
+        return context.Request.MatchedParameters["paymentAuthorizationId"];
       }" />
       <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
           <issuer-signing-keys>
                 <key>{{payment-gateway-service-jwt-key}}</key>
             </issuer-signing-keys>
       </validate-jwt>
-      <set-variable name="tokenRequestId" value="@{
+      <set-variable name="tokenPaymentAuthorizationId" value="@{
       var jwt = (Jwt)context.Variables["jwtToken"];
-      if(jwt.Claims.ContainsKey("requestId")){
-          return jwt.Claims["requestId"][0];
+      if(jwt.Claims.ContainsKey("paymentAuthorizationId")){
+          return jwt.Claims["paymentAuthorizationId"][0];
       }
       return "";
       }" />
       <choose>
-          <when condition="@((string)context.Variables.GetValueOrDefault("tokenRequestId","") != (string)context.Variables.GetValueOrDefault("requestId",""))">
+          <when condition="@((string)context.Variables.GetValueOrDefault("tokenPaymentAuthorizationId","") != (string)context.Variables.GetValueOrDefault("paymentAuthorizationId",""))">
               <return-response>
                   <set-status code="401" reason="Unauthorized" />
               </return-response>
