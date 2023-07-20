@@ -111,7 +111,7 @@ variable "dns_zone_internal_prefix" {
 
 variable "dns_default_ttl_sec" {
   type        = number
-  description = "value"
+  description = "The DNS default TTL in seconds"
   default     = 3600
 }
 
