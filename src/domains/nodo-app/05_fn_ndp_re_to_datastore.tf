@@ -86,7 +86,7 @@ module "nodo_re_to_datastore_function" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
 
   resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
-  name                = "${local.project}-re-to-datastore-fn"
+  name                = "${local.project}-re-fn"
 
   location          = var.location
   health_check_path = "/info"
