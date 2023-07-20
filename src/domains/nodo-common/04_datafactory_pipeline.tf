@@ -10,6 +10,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_re" {
   }
 
   activities_json = file("datafactory/pipelines/reActivities.json")
+
+  lifecycle {
+    ignore_changes = [
+      activities_json,
+    ]
+  }
 }
 
 resource "azurerm_data_factory_pipeline" "pipeline_wfesp" {
@@ -25,7 +31,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_wfesp" {
 
   activities_json = file("datafactory/pipelines/wfespActivities.json")
 
-  lifecycle { create_before_destroy = true }
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes = [
+      activities_json,
+    ]
+  }
 }
 
 resource "azurerm_data_factory_pipeline" "pipeline_online" {
@@ -40,4 +51,10 @@ resource "azurerm_data_factory_pipeline" "pipeline_online" {
   }
 
   activities_json = file("datafactory/pipelines/onlineActivities.json")
+
+  lifecycle {
+    ignore_changes = [
+      activities_json,
+    ]
+  }
 }
