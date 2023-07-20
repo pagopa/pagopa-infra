@@ -24,7 +24,7 @@ AzureDiagnostics
 | where duration_percentile_95 > threshold
   QUERY
   )
-  severity    = 1
+  severity    = 2
   frequency   = 5
   time_window = 5
   trigger {
@@ -82,20 +82,20 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-ext
     custom_webhook_payload = "{}"
   }
 
-  data_source_id = data.azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_api_management.apim.id
   description    = "Response time for /gpd/debt-positions-service is less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
-requests
-| where url matches regex "/gpd/debt-positions-service"
+AzureDiagnostics
+| where url_s matches regex "/gpd/debt-positions-service"
 | summarize
     watermark=threshold,
-    duration_percentile_95=percentiles(duration, 95) by bin(timestamp, 5m)
+    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
 | where duration_percentile_95 > threshold
   QUERY
   )
-  severity    = 1
+  severity    = 2
   frequency   = 5
   time_window = 5
   trigger {
@@ -116,19 +116,19 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-ext
     custom_webhook_payload = "{}"
   }
 
-  data_source_id = data.azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_api_management.apim.id
   description    = "Availability for /gpd/debt-positions-service is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position"
   enabled        = true
   query = (<<-QUERY
-let threshold = 99;
-requests
-| where url startswith 'https://api.platform.pagopa.it/gpd/debt-positions-service/'
+let threshold = 0.99;
+AzureDiagnostics
+| where url_s matches regex "/gpd/debt-positions-service/"
 | summarize
     Total=count(),
-    Success=countif(toint(resultCode) >= 200 and toint(resultCode) < 500)
-    by Time=bin(timestamp, 5m)
-| extend Availability=((Success*1.0)/Total)*100
-| where toint(Availability) < threshold
+    Success=count(responseCode_d < 500)
+    by bin(TimeGenerated, 5m)
+| extend availability=toreal(Success) / Total
+| where availability < threshold
   QUERY
   )
   severity    = 1
