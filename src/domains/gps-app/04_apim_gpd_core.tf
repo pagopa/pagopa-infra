@@ -103,7 +103,7 @@ module "apim_api_debt_positions_api_v1" {
   name                  = format("%s-debt-positions-service-api", local.product)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_debt_positions_product.product_id, module.apim_aca_integration_product.product_id]
+  product_ids           = [module.apim_debt_positions_product.product_id, module.apim_aca_integration_product.product_id, module.apim_gpd_integration_product.product_id]
   subscription_required = local.apim_debt_positions_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_debt_positions_api.id
   api_version           = "v1"

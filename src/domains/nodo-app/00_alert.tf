@@ -180,7 +180,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodoapi-general-response
   }
   # data_source_id = data.azurerm_application_insights.application_insights.id
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability ${each.value.primitiva} nodoapi-responsetime "
+  description    = "Response time ${each.value.primitiva} nodoapi-responsetime https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/cbc97060-c05b-48b5-9962-2b229eaa53de and https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/2b9b319b-5e7d-4efe-aaba-613daef8e9fc"
   enabled        = true
   query = (<<-QUERY
 let threshold = 8000;
@@ -222,10 +222,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodoapi-general-availabi
   }
   # data_source_id = data.azurerm_application_insights.application_insights.id
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability ${each.value.primitiva} nodoapi-availability "
+  description    = "Availability ${each.value.primitiva} nodoapi-availability https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/cbc97060-c05b-48b5-9962-2b229eaa53de and https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/2b9b319b-5e7d-4efe-aaba-613daef8e9fc"
   enabled        = true
   query = (<<-QUERY
-let threshold = 0.98;
+let threshold = 0.99;
 AzureDiagnostics
 //| where url_s matches regex "/nodo/${each.value.sub_service}/" 
 | where url_s matches regex "/nodo/"
