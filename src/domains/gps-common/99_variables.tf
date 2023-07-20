@@ -213,16 +213,16 @@ variable "pgflex_public_metric_alerts" {
       threshold        = 80
       severity         = 2
     },
-    #    active_connections = {
-    #      frequency        = "PT5M"
-    #      window_size      = "PT30M"
-    #      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
-    #      aggregation      = "Average"
-    #      metric_name      = "active_connections"
-    #      operator         = "GreaterThan"
-    #      threshold        = 1000
-    #      severity         = 2
-    #    },
+    active_connections = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "active_connections"
+      operator         = "GreaterThan"
+      threshold        = 4000 // 80% of current active connections (5000)
+      severity         = 2
+    },
     connections_failed = {
       frequency        = "PT5M"
       window_size      = "PT30M"
