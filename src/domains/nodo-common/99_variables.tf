@@ -154,6 +154,12 @@ variable "cidr_subnet_storage_account" {
   description = "Storage account network address space."
 }
 
+variable "storage_account_snet_private_link_service_network_policies_enabled" {
+  type        = bool
+  description = "If true, create a private link service"
+  default     = true
+}
+
 variable "custom_metric_alerts" {
 
   description = <<EOD
