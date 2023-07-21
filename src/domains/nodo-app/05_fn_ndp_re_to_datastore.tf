@@ -192,57 +192,41 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
 
     rule {
       metric_trigger {
-        metric_name              = "IncomingMessages"
-        metric_resource_id       = data.azurerm_eventhub.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re.id
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 1000
-        divide_by_instance_count = false
-        dimensions {
-          name     = "EntityName"
-          operator = "Equals"
-          values = [
-            "nodo-dei-pagamenti-re"
-          ]
-        }
+        metric_name        = "CpuPercentage"
+        metric_resource_id = module.nodo_re_to_datastore_function.app_service_plan_id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThan"
+        threshold          = 75
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
     rule {
       metric_trigger {
-        metric_name              = "IncomingMessages"
-        metric_resource_id       = data.azurerm_eventhub.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re.id
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 500
-        divide_by_instance_count = false
-        dimensions {
-          name     = "EntityName"
-          operator = "Equals"
-          values = [
-            "nodo-dei-pagamenti-re"
-          ]
-        }
+        metric_name        = "CpuPercentage"
+        metric_resource_id = module.nodo_re_to_datastore_function.app_service_plan_id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 30
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
   }
