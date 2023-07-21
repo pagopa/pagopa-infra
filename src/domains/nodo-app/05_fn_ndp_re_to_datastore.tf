@@ -209,7 +209,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -229,7 +229,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
   }
