@@ -129,7 +129,141 @@ paths:
       security:
         - bearerAuth:
             - global
+  /channels/brokerdetails:
+    get:
+      tags:
+        - channels
+      summary: getBrokerPsp
+      description: Get PSP broker details
+      operationId: getBrokerPspUsingGET
+      parameters:
+        - name: brokerpspcode
+          in: query
+          description: swagger.request.brokerpspcode
+          required: false
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrokerPspDetailsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /channels/brokerspsp:
+    get:
+      tags:
+        - channels
+      summary: getBrokersPsp
+      description: Create a PSP broker
+      operationId: getBrokersPspUsingGET
+      parameters:
+        - name: limit
+          in: query
+          description: Number of elements on one page. Default = 50
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: Page number. Page value starts from 0
+          required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: code
+          in: query
+          description: Broker's code
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Broker's name
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: orderby
+          in: query
+          description: Order by column name
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: sorting
+          in: query
+          description: Method of sorting
+          required: false
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrokersPspResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
     post:
       tags:
         - channels
@@ -1522,6 +1656,55 @@ paths:
       security:
         - bearerAuth:
             - global
+  /channels/{pspcode}/generateV2:
+    get:
+      tags:
+        - channels
+      summary: getChannelCodeV2
+      description: Generate new channel Code
+      operationId: getChannelCodeV2UsingGET
+      parameters:
+        - name: pspcode
+          in: path
+          description: Code of the payment service provider
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCodeResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /creditor-institutions:
     post:
       tags:
@@ -1589,6 +1772,85 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '401':
           description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /creditor-institutions/get-creditor-institutions:
+    get:
+      tags:
+        - creditor-institutions
+      summary: getCreditorInstitutions
+      description: Get paginated list of creditor institutions
+      operationId: getCreditorInstitutionsUsingGET
+      parameters:
+        - name: limit
+          in: query
+          description: Number of elements on one page. Default = 50
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: Page number. Page value starts from 0
+          required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: ecCode
+          in: query
+          description: Creditor institution code
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Creditor institution name
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: sorting
+          in: query
+          description: Method of sorting
+          required: false
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorInstitutionsResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
           content:
             application/problem+json:
               schema:
@@ -1744,6 +2006,92 @@ paths:
       security:
         - bearerAuth:
             - global
+  /creditorinstitutions/ibans/create:
+    post:
+      tags:
+        - Ibans
+      summary: createCreditorInstitutionIbans
+      description: Create creditor institution iban
+      operationId: createCreditorInstitutionIbansUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IbanCreateRequestDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbanResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /creditorinstitutions/ibans/update:
+    put:
+      tags:
+        - Ibans
+      summary: putCreditorInstitutionIbans
+      description: Update creditor institution ibans
+      operationId: putCreditorInstitutionIbansUsingPUT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IbanCreateRequestDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IbanResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /stations:
     get:
       tags:
@@ -1849,6 +2197,98 @@ paths:
                 $ref: '#/components/schemas/Problem'
         '401':
           description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
+  /stations/brokers-EC:
+    get:
+      tags:
+        - stations
+      summary: getBrokersEC
+      description: Get paginated list of creditor brokers
+      operationId: getBrokersECUsingGET
+      parameters:
+        - name: limit
+          in: query
+          description: Number of elements on one page. Default = 50
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: Page number. Page value starts from 0
+          required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: code
+          in: query
+          description: code
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: name
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: orderby
+          in: query
+          description: order by name or code, default = CODE
+          required: false
+          style: form
+          schema:
+            type: string
+            enum:
+              - CODE
+              - NAME
+        - name: ordering
+          in: query
+          description: ordering
+          required: false
+          style: form
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrokersResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
           content:
             application/problem+json:
               schema:
@@ -2446,6 +2886,55 @@ paths:
       security:
         - bearerAuth:
             - global
+  /stations/{ecCode}/generateV2:
+    get:
+      tags:
+        - stations
+      summary: getStationCodeV2
+      description: Generate a station code given the creditor institution's code
+      operationId: getStationCodeV2UsingGET
+      parameters:
+        - name: ecCode
+          in: path
+          description: Creditor institution code
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationCodeResource'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '500':
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      security:
+        - bearerAuth:
+            - global
   /stations/{ecCode}/station:
     post:
       tags:
@@ -2654,6 +3143,16 @@ components:
           type: boolean
         extended_fault_bean:
           type: boolean
+    BrokerPspResource:
+      title: BrokerPspResource
+      type: object
+      properties:
+        broker_psp_code:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
     BrokerResource:
       title: BrokerResource
       type: object
@@ -2666,6 +3165,26 @@ components:
           type: boolean
         extended_fault_bean:
           type: boolean
+    BrokersPspResource:
+      title: BrokersPspResource
+      type: object
+      properties:
+        brokers_psp:
+          type: array
+          description: Psp's broker
+          items:
+            $ref: '#/components/schemas/BrokerPspResource'
+        page_info:
+          description: info pageable
+          $ref: '#/components/schemas/PageInfo'
+    BrokersResource:
+      title: BrokersResource
+      type: object
+      properties:
+        brokers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrokerResource'
     ChannelCodeResource:
       title: ChannelCodeResource
       type: object
@@ -3321,6 +3840,52 @@ components:
         page_info:
           description: info pageable
           $ref: '#/components/schemas/PageInfo'
+    IbanCreateRequestDto:
+      title: IbanCreateRequestDto
+      required:
+        - creditorInstitutionCode
+        - dueDate
+        - iban
+        - validityDate
+      type: object
+      properties:
+        active:
+          type: boolean
+        creditorInstitutionCode:
+          type: string
+          description: Creditor Institution's code(Fiscal Code)
+        description:
+          type: string
+          description: The description the Creditor Institution gives to the iban about its usage
+        dueDate:
+          type: string
+          description: The date on which the iban will expire
+          format: date-time
+        iban:
+          type: string
+          description: The iban code
+        labels:
+          type: array
+          description: The labels array associated with the iban
+          items:
+            $ref: '#/components/schemas/IbanLabel'
+        validityDate:
+          type: string
+          description: The date the Creditor Institution wants the iban to be used for its payments
+          format: date-time
+    IbanLabel:
+      title: IbanLabel
+      required:
+        - description
+        - name
+      type: object
+      properties:
+        description:
+          type: string
+          description: Label description
+        name:
+          type: string
+          description: Label name
     IbanRequestDto:
       title: IbanRequestDto
       required:
@@ -3330,24 +3895,49 @@ components:
         creditorInstitutionCode:
           type: string
           description: Creditor Institution's code(Fiscal Code)
+        label:
+          type: string
+          description: Filter by label
     IbanResource:
       title: IbanResource
       required:
-        - ibanValue
+        - dueDate
+        - ecOwner
+        - iban
         - publicationDate
         - validityDate
       type: object
       properties:
-        ibanValue:
+        active:
+          type: boolean
+        companyName:
           type: string
-          description: Creditor Institution's address object
+          description: The Creditor Institution company name
+        description:
+          type: string
+          description: The description the Creditor Institution gives to the iban about its usage
+        dueDate:
+          type: string
+          description: The date on which the iban will expire
+          format: date-time
+        ecOwner:
+          type: string
+          description: Fiscal code of the Creditor Institution who owns the iban
+        iban:
+          type: string
+          description: The iban code
+        labels:
+          type: array
+          description: The labels array associated with the iban
+          items:
+            $ref: '#/components/schemas/IbanLabel'
         publicationDate:
           type: string
-          description: Creditor Institution's address object
+          description: The date on which the iban has been inserted in the system
           format: date-time
         validityDate:
           type: string
-          description: Creditor Institution's address object
+          description: The date the Creditor Institution wants the iban to be used for its payments
           format: date-time
     IbansResource:
       title: IbansResource
