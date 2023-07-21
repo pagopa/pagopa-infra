@@ -32,6 +32,7 @@ cidr_subnet_flex_dbms = ["10.1.160.0/24"]
 
 ## CIDR storage subnet
 cidr_subnet_storage_account = ["10.1.137.16/29"]
+storage_account_snet_private_link_service_network_policies_enabled = false
 
 pgres_flex_params = {
 
@@ -42,6 +43,7 @@ pgres_flex_params = {
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 32768
   zone                                   = 1
+  standby_ha_zone                        = 2
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
@@ -152,4 +154,3 @@ nodo_re_storage_account = {
   blob_delete_retention_days    = 15
   public_network_access_enabled = true
 }
-

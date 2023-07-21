@@ -256,6 +256,14 @@
           "schema": {
             "type": "string"
           }
+        },
+        {
+          "name": "fiscal_code",
+          "in": "header",
+          "description": "User fiscal code to be used in the API call",
+          "schema": {
+            "type": "string"
+          }
         }
       ]
     },
@@ -389,6 +397,14 @@
           "name": "X-Request-Id",
           "in": "header",
           "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "fiscal_code",
+          "in": "header",
+          "description": "User fiscal code to be used in the API call",
           "schema": {
             "type": "string"
           }

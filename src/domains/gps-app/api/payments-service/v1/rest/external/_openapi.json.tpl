@@ -156,7 +156,7 @@
                         "name": "pageNum",
                         "in": "query",
                         "description": "Page number",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "minimum": 0,
                             "type": "integer",
@@ -167,7 +167,7 @@
                         "name": "pageSize",
                         "in": "query",
                         "description": "Number of elements per page",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "integer",
                             "format": "int32"
