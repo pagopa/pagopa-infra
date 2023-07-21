@@ -105,7 +105,7 @@ module "apim_api_debt_positions_api_v1" {
   display_name = local.apim_debt_positions_service_api.display_name
   path         = local.apim_debt_positions_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_debt_positions_service_api.service_url // todo switch to aks
+  service_url  = local.apim_debt_positions_service_api.service_url
 
   content_format = "openapi"
   content_value = templatefile("./api/gpd_api/debt-position-services/v1/_openapi.json.tpl", {
