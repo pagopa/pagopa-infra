@@ -112,5 +112,5 @@ module "apim_api_debt_positions_api_v1" {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/gpd_api/debt-position-services/v1/_base_policy.xml")
+  xml_content = file("./api/gpd_api/debt-position-services/v1/_base_policy.xml")
 }
