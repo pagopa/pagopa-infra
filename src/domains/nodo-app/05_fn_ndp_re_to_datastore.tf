@@ -11,6 +11,12 @@ data "azurerm_cosmosdb_mongo_database" "nodo_re" {
 }
 
 # info for event hub
+data "azurerm_eventhub" "pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re" {
+  name                = "nodo-dei-pagamenti-re"
+  resource_group_name = "${local.product}-msg-rg"
+  namespace_name      = "${local.product}-evh-ns01"
+}
+
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx" {
   name                = "nodo-dei-pagamenti-re-to-datastore-rx"
   namespace_name      = "${local.product}-evh-ns01"
@@ -86,7 +92,7 @@ module "nodo_re_to_datastore_function" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
 
   resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
-  name                = "${local.project}-re-to-datastore-fn"
+  name                = "${local.project}-re-fn"
 
   location          = var.location
   health_check_path = "/info"
@@ -168,75 +174,60 @@ module "nodo_re_to_datastore_function_slot_staging" {
   tags = var.tags
 }
 
-#resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
-#  name                = "${module.nodo_re_to_datastore_function.name}-autoscale"
-#  resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
-#  location            = var.location
-#  target_resource_id  = module.nodo_re_to_datastore_function.app_service_plan_id
-#
-#  profile {
-#    name = "default"
-#
-#    capacity {
-#      default = var.nodo_re_to_datastore_function_autoscale.default
-#      minimum = var.nodo_re_to_datastore_function_autoscale.minimum
-#      maximum = var.nodo_re_to_datastore_function_autoscale.maximum
-#    }
-#
-#    rule {
-#      metric_trigger {
-#        metric_name              = "IncomingMessages"
-#        metric_resource_id       = module.nodo_re_to_datastore_function.id
-#        time_grain               = "PT1M"
-#        statistic                = "Average"
-#        time_window              = "PT5M"
-#        time_aggregation         = "Average"
-#        operator                 = "GreaterThan"
-#        threshold                = 1000
-#        divide_by_instance_count = false
-#        dimensions {
-#          name     = "EntityName"
-#          operator = "Equals"
-#          values = [
-#            "nodo-dei-pagamenti-re"
-#          ]
-#        }
-#      }
-#
-#      scale_action {
-#        direction = "Increase"
-#        type      = "ChangeCount"
-#        value     = "1"
-#        cooldown  = "PT5M"
-#      }
-#    }
-#
-#    rule {
-#      metric_trigger {
-#        metric_name              = "IncomingMessages"
-#        metric_resource_id       = module.nodo_re_to_datastore_function.id
-#        time_grain               = "PT1M"
-#        statistic                = "Average"
-#        time_window              = "PT5M"
-#        time_aggregation         = "Average"
-#        operator                 = "LessThan"
-#        threshold                = 500
-#        divide_by_instance_count = false
-#        dimensions {
-#          name     = "EntityName"
-#          operator = "Equals"
-#          values = [
-#            "nodo-dei-pagamenti-re"
-#          ]
-#        }
-#      }
-#
-#      scale_action {
-#        direction = "Decrease"
-#        type      = "ChangeCount"
-#        value     = "1"
-#        cooldown  = "PT5M"
-#      }
-#    }
-#  }
-#}
+resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "${module.nodo_re_to_datastore_function.name}-autoscale"
+  resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
+  location            = var.location
+  target_resource_id  = module.nodo_re_to_datastore_function.app_service_plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.nodo_re_to_datastore_function_autoscale.default
+      minimum = var.nodo_re_to_datastore_function_autoscale.minimum
+      maximum = var.nodo_re_to_datastore_function_autoscale.maximum
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = module.nodo_re_to_datastore_function.app_service_plan_id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThan"
+        threshold          = 75
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = module.nodo_re_to_datastore_function.app_service_plan_id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 30
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+  }
+}
