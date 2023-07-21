@@ -103,7 +103,6 @@ locals {
     description           = "API to support Debt Positions service for organizations"
     path                  = "gpd/debt-positions-service"
     subscription_required = true
-    service_url           = null
-    // service_url = format("https://weu${var.env}.gps.internal.%s.platform.pagopa.it/pagopa-gpd-core", var.env == "prod" ? "" : var.env) todo switch to aks
+    service_url           = format("https://weu${var.env}.gps.internal.%s.platform.pagopa.it/pagopa-gpd-core", var.env == "prod" ? "" : var.env)
   }
 }
