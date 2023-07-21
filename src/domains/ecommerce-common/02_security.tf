@@ -161,8 +161,32 @@ resource "azurerm_key_vault_secret" "aws_ses_accesskey_key" {
   }
 }
 
-resource "azurerm_key_vault_secret" "ecommerce_storage_connection_string" {
-  name         = "ecommerce-storage-connection-string"
+resource "azurerm_key_vault_secret" "ecommerce_storage_transient_connection_string" {
+  name         = "ecommerce-storage-transient-connection-string"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_storage_deadletter_connection_string" {
+  name         = "ecommerce-storage-deadletter-connection-string"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_storage_transient_account_key" {
+  name         = "ecommerce-storage-transient-account-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
@@ -223,6 +247,30 @@ resource "azurerm_key_vault_secret" "notifications_service_api_key" {
 
 resource "azurerm_key_vault_secret" "payment_transactions_gateway_api_key" {
   name         = "payment-transactions-gateway-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "payment_method_api_key" {
+  name         = "payment-method-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 

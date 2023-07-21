@@ -46,7 +46,7 @@ module "postgres_flexible_server" {
   private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
   delegated_subnet_id         = var.env_short != "d" ? module.postgres_flexible_snet.id : null
   high_availability_enabled   = var.pgres_flex_params.pgres_flex_ha_enabled
-  standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_params.zone : null
+  standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_params.standby_ha_zone : null
   pgbouncer_enabled           = var.pgres_flex_params.pgres_flex_pgbouncer_enabled
   diagnostic_settings_enabled = var.pgres_flex_params.pgres_flex_diagnostic_settings_enabled
   administrator_login         = data.azurerm_key_vault_secret.pgres_flex_admin_login.value

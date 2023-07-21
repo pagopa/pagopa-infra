@@ -11,6 +11,46 @@
     }
   ],
   "paths": {
+		"/info": {
+			"get": {
+				"tags": [
+					"Home"
+				],
+				"summary": "health check",
+				"description": "Return OK if application is started",
+				"operationId": "healthCheck",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"headers": {
+							"X-Request-Id": {
+								"description": "This header identifies the call",
+								"schema": {
+									"type": "string"
+								}
+							}
+						},
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AppInfo"
+								}
+							}
+						}
+					}
+				}
+			},
+			"parameters": [
+				{
+					"name": "X-Request-Id",
+					"in": "header",
+					"description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+					"schema": {
+						"type": "string"
+					}
+				}
+			]
+		},
     "/organizations/domains/{domain}": {
       "get": {
         "tags": [
@@ -51,6 +91,56 @@
           }
         }
       }
+    },
+    "/organizations/{organizationFiscalCode}/domains/{domain}": {
+      "get": {
+        "tags": [
+          "Enrolled EC API"
+        ],
+        "summary": "Get list of stations for EC enrolled to a domain.",
+        "operationId": "getStationsForEnrolledEC",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "description": "The subscribing domain.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "organizationFiscalCode",
+            "in": "path",
+            "description": "The creditor institution identifier.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation executed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrolledCreditorInstitutionStations"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -74,6 +164,42 @@
           },
           "segregation_codes": {
             "type": "string"
+          }
+        }
+      },
+      "EnrolledCreditorInstitutionStations": {
+        "type": "object",
+        "properties": {
+          "creditor_institutions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnrolledCreditorInstitutionStation"
+            }
+          }
+        }
+      },
+      "EnrolledCreditorInstitutionStation": {
+        "type": "object",
+        "properties": {
+          "station_id": {
+            "type": "string"
+          },
+          "segregation_code": {
+            "type": "string"
+          }
+        }
+      },
+      "AppInfo" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "environment" : {
+            "type" : "string"
           }
         }
       }

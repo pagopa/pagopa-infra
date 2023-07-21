@@ -27,6 +27,11 @@
     "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
     "description": "Design review"
   },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "paths": {
     "/payment-methods": {
       "post": {
@@ -501,6 +506,10 @@
             "description": "Payment method name",
             "type": "string"
           },
+          "paymentMethodDescription": {
+            "description": "Payment method description",
+            "type": "string"
+          },
           "paymentMethodStatus": {
             "$ref": "#/components/schemas/PaymentMethodStatus"
           },
@@ -519,6 +528,7 @@
         "required": [
           "bundles",
           "paymentMethodName",
+          "paymentMethodDescription",
           "paymentMethodStatus"
         ]
       },
@@ -662,6 +672,13 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
       }
     }
   }

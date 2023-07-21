@@ -66,7 +66,7 @@ resource "azurerm_private_endpoint" "queue_private_endpoint" {
 }
 
 module "receipts_datastore_fn_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=PRDP-54-feat-introduce_last_access_time_in_storage"
 
   name                       = replace(format("%s-fn-sa", local.project), "-", "")
   account_kind               = "StorageV2"
@@ -84,10 +84,17 @@ module "receipts_datastore_fn_sa" {
   blob_delete_retention_days = var.receipts_datastore_fn_sa_delete_retention_days
   tags                       = var.tags
 
+  blob_last_access_time_enabled = true
+
 }
 
 resource "azurerm_storage_queue" "queue-receipt-waiting-4-gen" {
   name                 = "${local.project}-queue-receipt-waiting-4-gen"
+  storage_account_name = module.receipts_datastore_fn_sa.name
+}
+
+resource "azurerm_storage_queue" "queue-receipt-io-notifier-error" {
+  name                 = "${local.project}-queue-receipt-io-notifier-error"
   storage_account_name = module.receipts_datastore_fn_sa.name
 }
 
@@ -113,7 +120,10 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
     actions {
       # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy#delete_after_days_since_modification_greater_than
       base_blob {
-        tier_to_archive_after_days_since_modification_greater_than = var.receipts_datastore_fn_sa_tier_to_cool_after_last_access
+        tier_to_cool_after_days_since_last_access_time_greater_than    = var.receipts_datastore_fn_sa_tier_to_cool_after_last_access
+        tier_to_archive_after_days_since_last_access_time_greater_than = var.receipts_tier_to_archive_after_days_since_last_access_time_greater_than
+        delete_after_days_since_last_access_time_greater_than          = var.receipts_datastore_fn_sa_delete_after_last_access
+        auto_tier_to_hot_from_cool_enabled                             = true
       }
     }
   }

@@ -12,9 +12,10 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
-  monitor_appinsights_name        = "${local.product}-appinsights"
+  monitor_action_group_slack_name    = "SlackPagoPA"
+  monitor_action_group_email_name    = "PagoPA"
+  monitor_action_group_opsgenie_name = "Opsgenie"
+  monitor_appinsights_name           = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
@@ -68,7 +69,7 @@ locals {
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
     # Spring Environment
-    SPRING_DATASOURCE_USERNAME = var.env_short == "d" ? format("%s@pagopa-%s-postgresql", data.azurerm_key_vault_secret.gpd_db_usr.value, var.env_short) : data.azurerm_key_vault_secret.gpd_db_usr.value
+    SPRING_DATASOURCE_USERNAME = data.azurerm_key_vault_secret.gpd_db_usr.value
     SPRING_DATASOURCE_PASSWORD = data.azurerm_key_vault_secret.gpd_db_pwd.value
     # Deactivation prepareThreshold=0 https://jdbc.postgresql.org/documentation/head/server-prepare.html
     SPRING_DATASOURCE_URL                   = (local.gpd_hostname != null ? format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name, (var.env_short != "d" ? "&prepareThreshold=0" : "")) : "")
@@ -102,6 +103,6 @@ locals {
     description           = "API to support Debt Positions service for organizations"
     path                  = "gpd/debt-positions-service"
     subscription_required = true
-    service_url           = null
+    service_url           = format("https://weu${var.env}.gps.internal.%s.platform.pagopa.it/pagopa-gpd-core", var.env == "prod" ? "" : var.env)
   }
 }

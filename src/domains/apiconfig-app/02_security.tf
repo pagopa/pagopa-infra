@@ -3,6 +3,11 @@ data "azurerm_key_vault" "kv" {
   resource_group_name = "${local.product}-${var.domain}-sec-rg"
 }
 
+data "azurerm_key_vault" "core_kv" {
+  name                = "${local.product}-kv"
+  resource_group_name = "${local.product}-sec-rg"
+}
+
 resource "azurerm_key_vault_secret" "apiconfig_client_secret" {
   name         = "apiconfig-core-client-secret"
   value        = "TODO" # TODO

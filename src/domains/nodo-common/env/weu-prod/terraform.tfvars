@@ -41,13 +41,14 @@ pgres_flex_params = {
   db_version = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 32768
+  storage_mb                             = 1048576
   zone                                   = 1
+  standby_ha_zone                        = 3
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
   pgres_flex_private_endpoint_enabled    = true
-  pgres_flex_ha_enabled                  = false
+  pgres_flex_ha_enabled                  = true
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = true
   max_connections                        = 5000
@@ -111,5 +112,45 @@ custom_metric_alerts = {
   }
 }
 
+cosmos_mongo_db_params = {
+  enabled      = true
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo", "EnableServerless", "DisableRateLimitingResponses"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 5
+    max_staleness_prefix    = 100000
+  }
+  server_version                    = "4.0"
+  main_geo_location_zone_redundant  = false
+  enable_free_tier                  = false
+  additional_geo_locations          = []
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
 
+  backup_continuous_enabled = false
 
+}
+
+nodo_storico_allowed_ips     = ["93.63.219.230"]
+cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
+
+cosmos_mongo_db_nodo_re_params = {
+  enable_serverless  = true
+  enable_autoscaling = true
+  max_throughput     = 5000
+  throughput         = 1000
+  events_ttl         = 10368000 # 120 days
+}
+
+nodo_re_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 0
+  public_network_access_enabled = false
+}

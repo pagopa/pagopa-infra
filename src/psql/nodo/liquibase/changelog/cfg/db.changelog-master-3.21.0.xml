@@ -7,6 +7,6 @@
 
   <include file="./db.changelog-master-3.20.0.xml"/>
 
-  <include file="./${version}/db.changelog-20230616115000_add_column_duedate_to_iban.xml"  labels="${version}"/>
+  <include file="./${version}/db.changelog-20230628150500_upd_iban_master_table.xml"  labels="${version}"/>
 
 </databaseChangeLog>

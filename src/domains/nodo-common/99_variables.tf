@@ -108,6 +108,7 @@ variable "pgres_flex_params" {
     db_version                             = string
     storage_mb                             = string
     zone                                   = number
+    standby_ha_zone                        = number
     backup_retention_days                  = number
     geo_redundant_backup_enabled           = bool
     create_mode                            = string
@@ -151,6 +152,12 @@ variable "sftp_enable_private_endpoint" {
 variable "cidr_subnet_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
+}
+
+variable "storage_account_snet_private_link_service_network_policies_enabled" {
+  type        = bool
+  description = "If true, create a private link service"
+  default     = true
 }
 
 variable "custom_metric_alerts" {
@@ -249,4 +256,94 @@ variable "ndp_redis_params" {
     sku_name = "Basic"
     family   = "C"
   }
+}
+
+
+# CosmosDb
+variable "cidr_subnet_cosmosdb_nodo_re" {
+  type        = list(string)
+  description = "Cosmos DB address space for nodo re."
+}
+
+variable "cosmos_mongo_db_params" {
+  type = object({
+    enabled        = bool
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+  })
+}
+
+variable "cosmos_mongo_db_nodo_re_params" {
+  type = object({
+    enable_serverless  = bool
+    enable_autoscaling = bool
+    throughput         = number
+    max_throughput     = number
+    events_ttl         = number
+  })
+}
+
+variable "nodo_re_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+  })
+  default = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = false
+    blob_delete_retention_days    = 3653
+    public_network_access_enabled = false
+  }
+}
+
+variable "nodo_storico_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+  })
+  default = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = true
+    public_network_access_enabled = true
+  }
+}
+
+variable "nodo_storico_allowed_ips" {
+  type        = list(string)
+  description = "List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed"
+  default     = []
 }
