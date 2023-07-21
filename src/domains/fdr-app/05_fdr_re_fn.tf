@@ -158,65 +158,61 @@ module "fdr_re_function_slot_staging" {
   tags = var.tags
 }
 
-#resource "azurerm_monitor_autoscale_setting" "fdr_re_to_datastore_function" {
-#  name                = "${module.fdr_re_function.name}-autoscale"
-#  resource_group_name = data.azurerm_resource_group.fdr_re_rg.name
-#  location            = var.location
-#  target_resource_id  = module.fdr_re_function.app_service_plan_id
-#
-#  profile {
-#    name = "default"
-#
-#    capacity {
-#      default = var.fdr_re_function_autoscale.default
-#      minimum = var.fdr_re_function_autoscale.minimum
-#      maximum = var.fdr_re_function_autoscale.maximum
-#    }
-#
-#    rule {
-#      metric_trigger {
-#        metric_name              = "IncomingMessages"
-#        metric_resource_id       = module.fdr_re_function.id
-#        metric_namespace         = "Microsoft.EventHub/namespaces"
-#        time_grain               = "PT1M"
-#        statistic                = "Average"
-#        time_window              = "PT5M"
-#        time_aggregation         = "Average"
-#        operator                 = "GreaterThan"
-#        threshold                = 1000
-#        divide_by_instance_count = false
-#      }
-#
-#      scale_action {
-#        direction = "Increase"
-#        type      = "ChangeCount"
-#        value     = "1"
-#        cooldown  = "PT5M"
-#      }
-#    }
-#
-#    rule {
-#      metric_trigger {
-#        metric_name              = "IncomingMessages"
-#        metric_resource_id       = module.fdr_re_function.id
-#        metric_namespace         = "Microsoft.EventHub/namespaces"
-#        time_grain               = "PT1M"
-#        statistic                = "Average"
-#        time_window              = "PT5M"
-#        time_aggregation         = "Average"
-#        operator                 = "LessThan"
-#        threshold                = 500
-#        divide_by_instance_count = false
-#      }
-#
-#      scale_action {
-#        direction = "Decrease"
-#        type      = "ChangeCount"
-#        value     = "1"
-#        cooldown  = "PT5M"
-#      }
-#    }
-#  }
-#}
+resource "azurerm_monitor_autoscale_setting" "fdr_re_to_datastore_function" {
+  name                = "${module.fdr_re_function.name}-autoscale"
+  resource_group_name = data.azurerm_resource_group.fdr_re_rg.name
+  location            = var.location
+  target_resource_id  = module.fdr_re_function.app_service_plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.fdr_re_function_autoscale.default
+      minimum = var.fdr_re_function_autoscale.minimum
+      maximum = var.fdr_re_function_autoscale.maximum
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = module.fdr_re_function.app_service_plan_id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThan"
+        threshold          = 75
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = module.fdr_re_function.app_service_plan_id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 30
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT5M"
+      }
+    }
+  }
+}
 
 
