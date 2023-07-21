@@ -1,4 +1,5 @@
 resource "azurerm_resource_group" "nodo_storico_rg" {
+  count = var.env_short == "d" ? 0 : 1
   name     = format("%s-storico-rg", local.project)
   location = var.location
 
@@ -17,7 +18,7 @@ module "nodo_storico_storage_account" {
   account_replication_type        = var.nodo_storico_storage_account.account_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.nodo_storico_storage_account.blob_versioning_enabled
-  resource_group_name             = azurerm_resource_group.nodo_storico_rg.name
+  resource_group_name             = azurerm_resource_group.nodo_storico_rg[0].name
   location                        = var.location
   advanced_threat_protection      = var.nodo_storico_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
@@ -40,7 +41,7 @@ resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
 
   name                = format("%s-storico-private-endpoint", local.project)
   location            = var.location
-  resource_group_name = azurerm_resource_group.nodo_storico_rg.name
+  resource_group_name = azurerm_resource_group.nodo_storico_rg[0].name
   subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
 
   private_dns_zone_group {
@@ -64,6 +65,7 @@ resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
 
 # blob container#1 nodo-storico
 resource "azurerm_storage_container" "storico_container" {
+  count = var.env_short == "d" ? 0 : 1
   name                  = "storico"
   storage_account_name  = module.nodo_storico_storage_account[0].name
   container_access_type = "private"

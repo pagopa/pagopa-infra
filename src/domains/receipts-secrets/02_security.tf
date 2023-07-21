@@ -122,6 +122,10 @@ data "azurerm_cosmosdb_account" "pdf_receipts_cosmos_account" {
   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-ds-cosmos-account"
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
 }
+data "azurerm_cosmosdb_account" "pdf_bizevent_cosmos_account" {
+  name                = "pagopa-${var.env_short}-${var.location_short}-bizevents-ds-cosmos-account"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-bizevents-rg"
+}
 
 data "azurerm_storage_account" "receipts_datastore_fn_sa" {
   name                = "pagopa${var.env_short}${var.location_short}${var.domain}fnsa"
@@ -144,6 +148,13 @@ resource "azurerm_key_vault_secret" "cosmos_receipt_connection_string" {
 resource "azurerm_key_vault_secret" "receipts_cosmos_pkey" {
   name         = "cosmos-receipt-pkey"
   value        = data.azurerm_cosmosdb_account.pdf_receipts_cosmos_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "bizevent_cosmos_pkey" {
+  name         = "cosmos-bizevent-pkey"
+  value        = data.azurerm_cosmosdb_account.pdf_bizevent_cosmos_account.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
