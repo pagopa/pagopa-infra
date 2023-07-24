@@ -2,7 +2,7 @@
   <inbound>
     <base />
     <choose>
-      <when condition="@(((string)(context.Request.Method)).Contains("PUT"))">
+      <when condition="@(((string)(context.Request.Method)).Contains("POST"))">
         <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">
