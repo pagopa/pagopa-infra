@@ -5,7 +5,7 @@ locals {
   apim_gpd_create_flow_mock_api = {
     display_name          = "GPD for ACA pagoPA - GPD mock create flow"
     description           = "API to support integration testing"
-    path                  = "aca/create/mock/gpd"
+    path                  = "aca-mock/creation/gpd"
     subscription_required = false
     service_url           = null
   }
@@ -64,7 +64,7 @@ locals {
   apim_gpd_update_flow_mock_api = {
     display_name          = "GPD for ACA pagoPA - GPD mock update flow"
     description           = "API to support integration testing"
-    path                  = "aca/update/mock/gpd"
+    path                  = "aca-mock/update/gpd"
     subscription_required = false
     service_url           = null
   }
@@ -123,7 +123,7 @@ locals {
   apim_gpd_invalidate_flow_mock_api = {
     display_name          = "GPD for ACA pagoPA - GPD mock invalidate flow"
     description           = "API to support integration testing"
-    path                  = "aca/invalidate/mock/gpd"
+    path                  = "aca-mock/invalidate/gpd"
     subscription_required = false
     service_url           = null
   }
