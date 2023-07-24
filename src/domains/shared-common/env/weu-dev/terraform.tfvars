@@ -74,7 +74,7 @@ cosmos_authorizer_db_params = {
 
 
 # CosmosDb PoC Quarkus
-poc_quarkus_db_params = {
+poc_quarkus_db_account_params = {
   enabled      = true
   kind         = "MongoDB"
   capabilities = ["EnableMongo", "DisableRateLimitingResponses"]
@@ -96,6 +96,13 @@ poc_quarkus_db_params = {
   backup_continuous_enabled                    = false
   enable_provisioned_throughput_exceeded_alert = false
 
+}
+
+poc_quarkus_db_params = {
+  enable_serverless  = true
+  enable_autoscaling = true
+  max_throughput     = 5000
+  throughput         = 1000
 }
 
 

@@ -209,7 +209,7 @@ variable "github_runner" {
   }
 }
 
-variable "poc_quarkus_db_params" {
+variable "poc_quarkus_db_account_params" {
   type = object({
     enabled        = bool
     capabilities   = list(string)
@@ -235,4 +235,18 @@ variable "poc_quarkus_db_params" {
     backup_continuous_enabled                    = bool
     enable_provisioned_throughput_exceeded_alert = bool
   })
+}
+
+variable "poc_quarkus_db_params" {
+  type = object({
+    enable_serverless  = bool
+    enable_autoscaling = bool
+    throughput         = number
+    max_throughput     = number
+  })
+}
+
+variable "cidr_subnet_poc_quarkus_cosmosdb" {
+  type        = list(string)
+  description = "Cosmos DB address space for quarkus PoC."
 }
