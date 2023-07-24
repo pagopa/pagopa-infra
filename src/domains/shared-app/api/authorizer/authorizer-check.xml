@@ -7,7 +7,7 @@
     <trace source="authorizer-check" severity="information">authorizer-check</trace>
     <!-- Saving information from request -->
     <set-variable name="domain" value="@((string)context.Variables["application_domain"])" /> <!-- ex. gpd -->
-    <set-variable name="auth_entity" value="@((string)context.Variables["authorization_entity"])" /> <!-- ex. ec 77777777777  -->
+    <set-variable name="auth_entity" value="@("#"+(string)context.Variables["authorization_entity"]+"#")" /> <!-- ex. ec #77777777777#  -->
     <set-variable name="subkey" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", ""))" />
     <set-variable name="authorization_cache_key" value="@("authorizer_"+(string)context.Variables["domain"] + "_" + (string)context.Variables["subkey"])" />
 
@@ -21,7 +21,7 @@
         <when condition="@(!"store".Equals(context.Variables["apim_cache_domain"]) && !context.Variables.ContainsKey("authorizer_domain_in_progress"))">
 
             <!-- Save state variable for locking purpose -->
-            <cache-store-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" value="True" duration="86400" caching-type="internal" />
+            <cache-store-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" value="True" duration="60" caching-type="internal" />
 
             <!-- Call cache-generator function with retrieved function key -->
             <send-request mode="new" response-variable-name="response_state" timeout="10" ignore-error="true">

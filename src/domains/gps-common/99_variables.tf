@@ -154,9 +154,88 @@ variable "pgres_flex_params" {
     high_availability_enabled    = bool
     standby_availability_zone    = number
     pgbouncer_enabled            = bool
+    alerts_enabled               = bool
+    max_connections              = number
   })
 
   default = null
+}
+
+variable "pgflex_public_metric_alerts" {
+  description = <<EOD
+  Map of name = criteria objects
+  EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    # "Insights.Container/pods" "Insights.Container/nodes"
+    metric_namespace = string
+    metric_name      = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+    # severity: The severity of this Metric Alert. Possible values are 0, 1, 2, 3 and 4. Defaults to 3. Lower is worst
+    severity = number
+  }))
+
+  default = {
+    cpu_percent = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "cpu_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity         = 2
+    },
+    memory_percent = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "memory_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity         = 2
+    },
+    storage_percent = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "storage_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity         = 2
+    },
+    active_connections = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "active_connections"
+      operator         = "GreaterThan"
+      threshold        = 4000 // 80% of current active connections (5000)
+      severity         = 2
+    },
+    connections_failed = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Total"
+      metric_name      = "connections_failed"
+      operator         = "GreaterThan"
+      threshold        = 10
+      severity         = 2
+    }
+  }
+
 }
 
 variable "postgresql_network_rules" {
