@@ -101,6 +101,13 @@ module "api_config_app_service" {
     AFM_UTILS_RETRY_MAX_DELAY    = 2000
     NODO_MONITORING_HOST         = var.env_short == "p" ? "https://api.platform.pagopa.it/nodo-monitoring/monitoring/v1" : format("https://api.%s.platform.pagopa.it/nodo/monitoring/v1", lower(var.tags["Environment"]))
 
+    # Azure table storage
+    AZURE_STORAGE_CONNECTION_STRING = data.azurerm_key_vault_secret.apiconfig_ica_sa_connection_string.value
+    AZURE_STORAGE_TABLE_NAME        = replace(format("%s-sa-icatable", local.project), "-", "")
+    # ICA CRON CFG
+    CRON_JOB_ICA_SCHEDULE_ENABLED    = var.ica_cron_job_enable
+    CRON_JOB_ICA_SCHEDULE_EXPRESSION = var.ica_cron_schedule
+
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
     # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
@@ -119,38 +126,7 @@ module "api_config_app_service" {
   tags = var.tags
 }
 
-# Node database availability: Alerting Action
-resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck" {
-  name                = format("%s-%s", module.api_config_app_service.name, "db-healthcheck")
-  resource_group_name = azurerm_resource_group.api_config_rg.name
-  location            = var.location
 
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "DB Nodo Healthcheck"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Availability greater than or equal 99%"
-  enabled        = true
-  query = format(<<-QUERY
-  traces
-    | where cloud_RoleName == "%s" and tostring(message) contains "dbConnection"
-    | order by timestamp desc
-    | summarize Total=count(), Success=countif(tostring(message) contains "dbConnection=up") by length=bin(timestamp,15m)
-    | extend Availability=((Success*1.0)/Total)*100
-    | where toint(Availability) < 99
-  QUERY
-    , module.api_config_app_service.name
-  )
-  severity    = 1
-  frequency   = 45
-  time_window = 45
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 3
-  }
-}
 
 resource "azurerm_monitor_autoscale_setting" "apiconfig_app_service_autoscale" {
   name                = format("%s-autoscale-apiconfig", local.product)

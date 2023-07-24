@@ -124,7 +124,6 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
   })
-
 }
 
 resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy_auth" { # activatePaymentNoticeV2 verificatore
@@ -203,17 +202,19 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_auth" {
   })
 }
 
-# resource "azurerm_api_management_api_operation_policy" "fdr_policy_auth" {
+resource "azurerm_api_management_api_operation_policy" "fdr_policy_auth" {
 
-#   api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.name
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
+  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.name
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = var.env_short == "d" ? "6352c3bdc257810f183b399c" : var.env_short == "u" ? "636cbcb7451c1c01c4186a0b" : "63b6e2da2a92e811a8f33901"
 
-#   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
-#     base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-#   })
-# }
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
+
+  })
+}
 
 ######################################
 ## WS nodo per psp richiesta avvisi ##

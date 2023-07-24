@@ -131,7 +131,7 @@ prostgresql_db_mockpsp = "mock-psp"
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
-apim_fdr_nodo_pagopa_enable     = true
+apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725"
@@ -141,7 +141,7 @@ ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/sit/webservices/i
 lb_aks                 = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
 
 base_path_nodo_oncloud        = "/nodo-sit"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-sit"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-sit-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-sit/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-sit"
 base_path_nodo_fatturazione   = "/fatturazione-sit"
@@ -261,7 +261,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx", "nodo-dei-pagamenti-re-to-datastore-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -283,6 +283,12 @@ eventhubs = [
       },
       {
         name   = "nodo-dei-pagamenti-sia-rx" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
         listen = true
         send   = false
         manage = false
@@ -449,40 +455,7 @@ eventhubs = [
         manage = false
       }
     ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-re-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-SIA"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-pdnd" # pdnd
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-oper" # oper
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-sia-rx" # oper
-        listen = true
-        send   = false
-        manage = false
-      }
-
-    ]
-  },
+  }
 ]
 
 eventhubs_02 = [

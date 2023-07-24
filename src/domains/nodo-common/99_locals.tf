@@ -24,10 +24,11 @@ locals {
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
-  cosmos_dns_zone_name                = "privatelink.documents.azure.com"
+  cosmos_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"
   cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   storage_dns_zone_name                = "privatelink.blob.core.windows.net"
+  table_dns_zone_name                  = "privatelink.table.core.windows.net"
   storage_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"

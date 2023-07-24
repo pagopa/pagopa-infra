@@ -39,7 +39,7 @@ module "apim_mock_payment_gateway_api" {
   path         = "mock-payment-gateway/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s", local.mock_payment_gateway_default_site_hostname)
+  service_url = null
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_payment_gateway_api/v1/_openapi.json.tpl", {
@@ -73,7 +73,7 @@ module "apim_mock_payment_gateway_mng_api" {
   path         = "mock-payment-gateway/mng-api"
   protocols    = ["https"]
 
-  service_url = format("https://%s", local.mock_payment_gateway_default_site_hostname)
+  service_url = null
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_payment_gateway_mng_api/v1/_openapi.json.tpl", {
