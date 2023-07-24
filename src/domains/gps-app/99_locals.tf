@@ -105,4 +105,6 @@ locals {
     subscription_required = true
     service_url           = format("https://weu${var.env}.gps.internal.%s.platform.pagopa.it/pagopa-gpd-core", var.env == "prod" ? "" : var.env)
   }
+
+  gpd_core_service_url = format("https://weu${var.env}.gps.internal.%s.platform.pagopa.it/pagopa-gpd-core", var.env == "prod" ? "" : var.env)
 }
