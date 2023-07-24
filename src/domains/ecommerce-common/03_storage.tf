@@ -284,7 +284,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
       | join OpCountForQueue("DeleteMessage", queueKey) on count_
       | project name = queueKey, Count = count_ - count_1
     };
-    MessageRateForQueue("%s") 
+    MessageRateForQueue("%s")
     | where Count > ${each.value.threshold}
     QUERY
     , "${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
@@ -357,7 +357,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
       | summarize count()
       | where count_ > ${each.value.threshold}
     QUERY
-    , "${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
+    , "${module.ecommerce_storage_deadletter.name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
@@ -365,5 +365,49 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
   trigger {
     operator  = "GreaterThan"
     threshold = 0
+  }
+}
+
+locals {
+  storage_accounts_queue_message_count_alert_props = var.env_short == "p" ? [
+    {
+      "storage_account_id"   = "${module.ecommerce_storage_transient.id}"
+      "storage_account_name" = "${module.ecommerce_storage_transient.name}"
+      "severity"    = 1
+      "time_window" = "PT1H"
+      "frequency"   = "PT15M"
+      "threshold"   = 100
+    },
+    {
+      "storage_account_id"   = "${module.ecommerce_storage_deadletter.id}"
+      "storage_account_name" = "${module.ecommerce_storage_deadletter.name}"
+      "severity"    = 1
+      "time_window" = "PT1H"
+      "frequency"   = "PT15M"
+      "threshold"   = 10
+    },
+  ] : []
+}
+
+resource "azurerm_monitor_metric_alert" "queue_storage_account_average_messge_count" {
+  for_each            = { for q in local.storage_accounts_queue_message_count_alert_props : q.storage_account_id => q }
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${each.value.storage_account_name}] Queue message count average exceeds ${each.value.threshold}"
+  resource_group_name =  azurerm_resource_group.storage_ecommerce_rg.name
+  scopes              = ["${each.value.storage_account_id}/queueServices/default"]
+  description         = "Queue message count average exceeds ${each.value.threshold} for the storage"
+  severity            = "${each.value.severity}"
+  window_size         = "${each.value.time_window}"
+  frequency           = "${each.value.frequency}"
+  auto_mitigate       = false
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftclassicstoragestorageaccountsqueueservices
+  criteria {
+    metric_namespace       = "Microsoft.Storage/storageAccounts/queueServices"
+    metric_name            = "QueueMessageCount"
+    aggregation            = "Average"
+    operator               = "GreaterThan"
+    threshold              = "${each.value.threshold}"
+    skip_metric_validation = false
   }
 }
