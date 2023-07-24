@@ -43,6 +43,18 @@ resource "azurerm_key_vault_secret" "azure_devops_sa_cacrt" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+resource "azurerm_key_vault_secret" "azure_webhook_dashboard_creation_token" {
+  name         = "azure_webhook_dashboard_creation_token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 #--------------------------------------------------------------------------------------------------
 
 resource "kubernetes_role_binding" "deployer_binding" {
