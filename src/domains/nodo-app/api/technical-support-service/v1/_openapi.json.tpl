@@ -3,7 +3,7 @@
   "info" : {
     "title" : "Node technical support - API (local) ${service}",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "1.0.2"
+    "version" : "1.0.2-1-NOD-357-deploy"
   },
   "servers" : [ {
     "url" : "${host}/technical-support/nodo/api/v1"
@@ -18,9 +18,6 @@
         "tags" : [ "Info" ],
         "summary" : "Get info of Node tech support API",
         "responses" : {
-          "default" : {
-            "$ref" : "#/components/responses/InternalServerError"
-          },
           "200" : {
             "description" : "Success",
             "content" : {
