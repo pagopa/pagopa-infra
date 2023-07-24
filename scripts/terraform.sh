@@ -5,14 +5,14 @@
 ############################################################
 # Global variables
 # Version format x.y accepted
-vers="1.5"
+vers="1.1"
 script_name=$(basename "$0")
 git_repo="https://raw.githubusercontent.com/pagopa/eng-common-scripts/main/azure/${script_name}"
 tmp_file="${script_name}.new"
 
 # Define functions
 function clean_environment() {
-  rm -rf .terraform
+  rm -rf .terraform*
   rm tfplan 2>/dev/null
   echo "cleaned!"
 }
@@ -28,7 +28,6 @@ function help_usage() {
   echo "  clean         Remove .terraform* folders and tfplan files"
   echo "  help          This help"
   echo "  list          List every environment available"
-  echo "  update        Update this script if possible"
   echo "  summ          Generate summary of Terraform plan"
   echo "  *             any terraform option"
 }
@@ -79,44 +78,16 @@ function state_output_taint_actions() {
   terraform $action $other
 }
 
-function parse_tfplan_option() {
-  # Create an array to contain arguments that do not start with '-tfplan='
-  local other_args=()
-
-  # Loop over all arguments
-  for arg in "$@"; do
-    # If the argument starts with '-tfplan=', extract the file name
-    if [[ "$arg" =~ ^-tfplan= ]]; then
-      echo "${arg#*=}"
-    else
-      # If the argument does not start with '-tfplan=', add it to the other_args array
-      other_args+=("$arg")
-    fi
-  done
-
-  # Print all arguments in other_args separated by spaces
-  echo "${other_args[@]}"
-}
-
 function tfsummary() {
-  local plan_file
-  plan_file=$(parse_tfplan_option "$@")
-  if [ -z "$plan_file" ]; then
-    plan_file="tfplan"
-  fi
   action="plan"
-  other="-out=${plan_file}"
+  other="-out=tfplan"
   other_actions
   if [ -n "$(command -v tf-summarize)" ]; then
-    tf-summarize -separate-tree "${plan_file}"
+    tf-summarize -separate-tree tfplan  && rm tfplan 2>/dev/null
   else
-    echo "tf-summarize non è installato"
-  fi
-  if [ "$plan_file" == "tfplan" ]; then
-    rm $plan_file
+    echo "tf-summarize is not installed"
   fi
 }
-
 
 function update_script() {
   # Check if the repository was cloned successfully
@@ -192,7 +163,7 @@ case $action in
   clean)
     clean_environment
     ;;
-  ?|help|-h)
+  ?|help)
     help_usage
     ;;
   init)
@@ -214,7 +185,7 @@ case $action in
     update_script
     ;;
   *)
-    init_terraform
+    # [ -z "$TF_INIT" ] && terraform init
     other_actions "$other"
     ;;
 esac
