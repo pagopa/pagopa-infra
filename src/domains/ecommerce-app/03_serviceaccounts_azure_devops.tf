@@ -44,7 +44,8 @@ resource "azurerm_key_vault_secret" "azure_devops_sa_cacrt" {
 }
 
 resource "azurerm_key_vault_secret" "azure_webhook_dashboard_creation_token" {
-  name         = "azure-webhook-dashboard-creation-token"
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "${var.prefix}-${var.env_short}-azure-webhook-dashboard-creation-token"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
