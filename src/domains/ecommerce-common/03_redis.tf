@@ -89,6 +89,7 @@ resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
     aggregation            = "Maximum"
     operator               = "GreaterThan"
     threshold              = "200"
+    unit                   = "MB"
     skip_metric_validation = false
   }
 

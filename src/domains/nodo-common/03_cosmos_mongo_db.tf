@@ -15,7 +15,7 @@ module "cosmosdb_nodo_re_snet" {
 
 module "cosmosdb_account_mongodb" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.1"
-  domain              = null
+  domain              = var.domain
   name                = "${local.project}-cosmos-account"
   location            = var.location
   resource_group_name = azurerm_resource_group.db_rg.name
@@ -31,7 +31,7 @@ module "cosmosdb_account_mongodb" {
   subnet_id                          = module.cosmosdb_nodo_re_snet.id
   private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
-  allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.nodo_re_to_datastore_function_snet.id]
 
   consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
   main_geo_location_location       = azurerm_resource_group.db_rg.location
@@ -69,8 +69,9 @@ locals {
       indexes = [{
         keys   = ["_id"]
         unique = true
-        }
+      }
       ]
+      shard_key = "PartitionKey"
     }
   ]
 }
@@ -89,7 +90,8 @@ module "cosmosdb_nodo_re_collections" {
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.nodo_re.name
 
-  indexes = each.value.indexes
+  indexes     = each.value.indexes
+  shard_key   = each.value.shard_key
 
   default_ttl_seconds = var.cosmos_mongo_db_nodo_re_params.events_ttl
 

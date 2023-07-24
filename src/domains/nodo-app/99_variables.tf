@@ -215,3 +215,12 @@ variable "nodo_re_to_datastore_function_app_image_tag" {
   default     = "latest"
   description = "Nodo RE to Datastore function app docker image tag. Defaults to 'latest'"
 }
+
+variable "nodo_re_to_datastore_function_autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+  description = "Authorizer functions autoscaling parameters"
+}

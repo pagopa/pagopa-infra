@@ -1,7 +1,6 @@
 <policies>
     <inbound>
         <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
-        <set-variable name="envshort" value="${env_short}" />
         <set-variable name="sub" value="@(context.Subscription.Name)" />
         <set-variable name="subid" value="@(context.Subscription.Id)" />
         <set-variable name="subkey" value="@(context.Subscription.Key)" />
@@ -13,7 +12,6 @@
             subset/restriced api of src/core/api/gpd_api/v1/_openapi.json.tpl (INTERNAL) without /organizations/{organizationfiscalcode}
         -->
 <!--        <rewrite-uri template="@("/organizations/"+(string)context.Variables["organizationFiscalCode"]+"/"+(string)context.Variables["requestPath"])" copy-unmatched-params="true" />-->
-        <set-backend-service base-url="@(String.Format("https://pagopa-{0}-app-gpd.azurewebsites.net", (string)context.Variables["envshort"]))" />
         <!-- Calling Authorizer's fragment -->
         <set-variable name="application_domain" value="gpd" />
         <choose>
