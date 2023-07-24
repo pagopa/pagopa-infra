@@ -110,7 +110,6 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
-  # "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
@@ -176,7 +175,7 @@ ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/i
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 base_path_nodo_oncloud        = "/nodo-uat"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-uat"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-uat-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-uat/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-uat"
 base_path_nodo_fatturazione   = "/fatturazione-uat"
@@ -308,7 +307,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -324,6 +323,12 @@ eventhubs = [
       },
       {
         name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
         listen = true
         send   = false
         manage = false
@@ -456,39 +461,6 @@ eventhubs = [
         send   = false
         manage = false
       }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-re-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-SIA"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-pdnd" # pdnd
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-oper" # oper
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-sia-rx" # oper
-        listen = true
-        send   = false
-        manage = false
-      }
-
     ]
   },
   {

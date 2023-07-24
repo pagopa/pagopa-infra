@@ -7,6 +7,7 @@ locals {
   pagopa-oidc-config_url          = "https://${local.pagopa_cdn_storage_account_name}.blob.core.windows.net/pagopa-fe-oidc-config/openid-configuration.json"
   pagopa-portal-hostname          = "welfare.${local.dns_zone_platform}.${local.external_domain}"
   selfcare-issuer                 = "https://${var.env_short != "p" ? "${var.env}." : ""}selfcare.pagopa.it"
+  selfcare-jwt-issuer             = "https://${var.env_short == "d" ? "${var.env}." : ""}selfcare.pagopa.it"
   pagopa-issuer                   = "https://api.${var.env_short != "p" ? "${var.env}." : ""}platform.pagopa.it"
 }
 
@@ -23,7 +24,7 @@ resource "local_file" "oidc_configuration_file" {
   filename = "./.terraform/tmp/openid-configuration.json"
 
   content = templatefile("./api/pagopa_token_exchange/openid-configuration.json.tpl", {
-    selfcare-issuer = local.selfcare-issuer
+    selfcare-issuer = local.selfcare-jwt-issuer
   })
 
 }
@@ -159,7 +160,7 @@ resource "azurerm_api_management_api_operation_policy" "pagopa_token_exchange_po
 
   xml_content = templatefile("./api/pagopa_token_exchange/jwt_exchange.xml.tpl", {
     openid-config-url           = local.pagopa-oidc-config_url,
-    selfcare-issuer             = local.selfcare-issuer,
+    selfcare-issuer             = local.selfcare-jwt-issuer,
     pagopa-issuer               = local.pagopa-issuer,
     jwt_cert_signing_thumbprint = azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt.thumbprint,
     pagopa-portal-hostname      = local.pagopa-portal-hostname,

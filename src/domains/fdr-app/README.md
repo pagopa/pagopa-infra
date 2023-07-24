@@ -17,8 +17,10 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_apim_api_fdr_api_v1"></a> [apim\_api\_fdr\_api\_v1](#module\_apim\_api\_fdr\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
+| <a name="module_apim_api_fdr_api_v1_internal"></a> [apim\_api\_fdr\_api\_v1\_internal](#module\_apim\_api\_fdr\_api\_v1\_internal) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
 | <a name="module_apim_fdr_nodo_dei_pagamenti_legacy_product"></a> [apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product](#module\_apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_fdr_product"></a> [apim\_fdr\_product](#module\_apim\_fdr\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
+| <a name="module_apim_fdr_product_internal"></a> [apim\_fdr\_product\_internal](#module\_apim\_fdr\_product\_internal) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.17 |
 | <a name="module_reporting_fdr_function"></a> [reporting\_fdr\_function](#module\_reporting\_fdr\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.17.0 |
 | <a name="module_reporting_fdr_function_snet"></a> [reporting\_fdr\_function\_snet](#module\_reporting\_fdr\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.17.0 |
@@ -32,8 +34,10 @@
 | [azurerm_api_management_api_operation_policy.fdr_pagpo_policy_nodoChiediElencoFlussiRendicontazione](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.fdr_pagpo_policy_nodoChiediFlussoRendicontazione](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.fdr_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.fdr_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_policy.apim_fdr_per_pa_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_version_set.api_fdr_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_fdr_api_internal](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.fdr_per_pa_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_named_value.fdrcontainername](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.fdrsaname](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_named_value) | resource |
@@ -43,7 +47,6 @@
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_autoscale_setting.reporting_fdr_function](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_resource_group.reporting_fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/resource_group) | resource |
-| [helm_release.cert-mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
@@ -58,6 +61,7 @@
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management) | data source |
 | [azurerm_api_management_api.apim_nodo_per_pa_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_api) | data source |
 | [azurerm_api_management_api.apim_nodo_per_psp_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_api) | data source |
+| [azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_api) | data source |
 | [azurerm_api_management_group.group_developers](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_group) | data source |
 | [azurerm_api_management_group.group_guests](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_group) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/application_insights) | data source |
@@ -104,6 +108,7 @@
 | <a name="input_event_name"></a> [event\_name](#input\_event\_name) | Event name related to an EventHub | `string` | `null` | no |
 | <a name="input_eventhub_name"></a> [eventhub\_name](#input\_eventhub\_name) | EventHub name | `string` | `null` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_fn_app_runtime_version"></a> [fn\_app\_runtime\_version](#input\_fn\_app\_runtime\_version) | Function app runtime version. | `string` | `"~4"` | no |
 | <a name="input_github"></a> [github](#input\_github) | n/a | <pre>object({<br>    org = string<br>  })</pre> | <pre>{<br>  "org": "pagopa"<br>}</pre> | no |
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | The image name to use with a function app | `string` | `null` | no |
 | <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | The image tag to use with a function app | `string` | `null` | no |
