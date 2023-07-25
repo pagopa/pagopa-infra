@@ -44,6 +44,7 @@ variables:
   PROD_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
   AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
   PROD_AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
+  PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN: '${ PAGOPA-P-AZURE-WEBHOOK-DASHBOARD-CREATION-TOKEN}'
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -142,4 +143,25 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+        - stage:
+          jobs: 
+          - job: test_job
+            steps:
+            - task: InvokeRESTAPI@1 
+              inputs:
+                connectionType: 'connectedServiceName'
+                serviceConnection: 'io-azure-devops-github-pr'
+                method: 'POST'
+                headers: |
+                  { 
+                    "Accept": "*/*", 
+                    "Accept-Encoding": "gzip, deflate, br", 
+                    "Connection": "keep-alive", 
+                    "Content-Type": "application/json", 
+                    "Accept": "application/vnd.github+json", 
+                    "X-GitHub-Api-Version": "2022-11-28", 
+                    "Authorization": "Bearer  bearertokendeatil"
+                  }
+                urlSuffix: 'https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches'
+                waitForCompletion: 'true'
 
