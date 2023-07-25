@@ -893,8 +893,7 @@
           }
         },
         "required": [
-          "amount",
-          "paymentContextCode"
+          "amount"
         ]
       },
       "ValidationFaultPaymentProblemJson": {
