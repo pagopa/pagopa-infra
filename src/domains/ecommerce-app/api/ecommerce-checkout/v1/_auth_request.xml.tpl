@@ -1,5 +1,6 @@
 <policies>
     <inbound>
+        <base />
         <set-header name="x-pgs-id" exists-action="delete" />
         <set-header name="x-transaction-id" exists-action="delete" />
         <set-variable name="requestTransactionId" value="@{
@@ -66,7 +67,6 @@
             </set-header>
           </when>
         </choose>
-        <base />
     </inbound>
     <outbound>
         <base/>
