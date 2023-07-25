@@ -122,7 +122,7 @@ module "apim_api_statuspage_api_v1" {
       "bizeventsdatastorepos" = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
       "canoneunico"           = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
       "fdrndpnew"             = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
-      "gpd"                   = format("%s/", data.azurerm_linux_function_app.gpd.default_hostname)
+      "gpd"                   = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
       "gpdpayments"           = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
       "gpdenrollment"         = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
       "gpdreportinganalysis"  = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
