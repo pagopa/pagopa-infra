@@ -366,6 +366,7 @@
           },
           "details": {
             "description": "details for the specific payment instrument. This field is disciminated by the type field",
+            "type": "object",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/WalletCardDetails"
@@ -453,10 +454,5 @@
         "description": "wallet token"
       }
     }
-  },
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ]
+  }
 }

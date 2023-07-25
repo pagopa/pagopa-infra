@@ -14,7 +14,7 @@ locals {
   apim_technical_support_api = {
     display_name          = "Nodo Technical Support"
     description           = "API Assistenza del Nodo dei Pagamenti"
-    path                  = "technical-support/nodo"
+    path                  = "technical-support/nodo/api"
     subscription_required = true
     service_url           = null
   }
