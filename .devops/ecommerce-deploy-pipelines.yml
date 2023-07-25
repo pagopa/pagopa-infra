@@ -130,22 +130,23 @@ stages:
             targetType: "inline"
             script: | 
               echo "Launching ecommerce dashboard generation apply"
-              branch_name=$(Build.SourceBranchName)
-              echo "##[info] branch name: $(branch_name)"
-              curl -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
-              -H 'Content-Type: application/json' \
-              -H 'X-GitHub-Api-Version: 2022-11-28' \
-              -H 'Authorization: token $(AZURE-DEVOPS-GITHUB-PR-TOKEN)' \
-              --data-binary @- << EOF
+              body=$(cat <<EOF
               {
                   "ref": "main",
                   "inputs": {
                       "api-name": "ecommerce-checkout",
                       "environment": "prod",
-                      "config-options": "{\"branch_ref\": \"$branch_name\"}"
+                      "config-options": "{\"branch_ref\": \"$(Build.SourceBranchName)\"}"
                   }
               }
               EOF
+              )
+              echo "GHA trigger body $body"
+              curl -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
+              -H 'Content-Type: application/json' \
+              -H 'X-GitHub-Api-Version: 2022-11-28' \
+              -H 'Authorization: token $(AZURE-DEVOPS-GITHUB-PR-TOKEN)' \
+              --data "$body"
 
 
     # PROD ecommerce COMMON
