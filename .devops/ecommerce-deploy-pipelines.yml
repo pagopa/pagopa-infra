@@ -146,6 +146,7 @@ stages:
     - stage:
       jobs: 
       - job: test_job
+        pool: server
         steps:
         - task: InvokeRESTAPI@1 
           inputs:
