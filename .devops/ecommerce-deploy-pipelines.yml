@@ -150,7 +150,7 @@ stages:
         steps:
         - task: InvokeRESTAPI@1 
           inputs:
-            connectionType: 'connectedServiceName'
+            connectionType: 'connectedServiceNameARM'
             serviceConnection: 'io-azure-devops-github-pr'
             method: 'POST'
             headers: |
