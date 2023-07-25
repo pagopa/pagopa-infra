@@ -25,8 +25,8 @@
       </validate-jwt>
       <set-variable name="tokenPaymentAuthorizationId" value="@{
       var jwt = (Jwt)context.Variables["jwtToken"];
-      if(jwt.Claims.ContainsKey("paymentAuthorizationId")){
-          return jwt.Claims["paymentAuthorizationId"][0];
+      if(jwt.Claims.ContainsKey("requestId")){
+          return jwt.Claims["requestId"][0];
       }
       return "";
       }" />
