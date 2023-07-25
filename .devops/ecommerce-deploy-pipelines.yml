@@ -148,21 +148,10 @@ stages:
       - job: test_job
         pool: server
         steps:
-        - task: InvokeRESTAPI@1 
+        - task: Bash@3 
+          displayName: 'Dashboard generation'
           inputs:
-            connectionType: 'connectedServiceNameARM'
-            serviceConnection: 'io-azure-devops-github-pr'
-            method: 'POST'
-            headers: |
-              { 
-                "Accept": "*/*", 
-                "Accept-Encoding": "gzip, deflate, br", 
-                "Connection": "keep-alive", 
-                "Content-Type": "application/json", 
-                "Accept": "application/vnd.github+json", 
-                "X-GitHub-Api-Version": "2022-11-28", 
-                "Authorization": "Bearer  bearertokendeatil"
-              }
-            urlSuffix: 'https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches'
-            waitForCompletion: 'true'
+            script: | 
+              echo "Launching ecommerce dashboard generation apply"
+              curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json, X-GitHub-Api-Version: 2022-11-28, Authorization: Bearer bearerToken" -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches
 
