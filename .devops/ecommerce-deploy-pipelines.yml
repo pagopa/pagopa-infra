@@ -130,7 +130,7 @@ stages:
             targetType: "inline"
             script: | 
               echo "Launching ecommerce dashboard generation apply"
-              branch_name=$(echo $(Build.SourceBranchName) | sed -e “s/\.git//g”)
+              branch_name=$(Build.SourceBranchName)
               echo “##[info] branch name: $(branch_name)"
               curl -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
               -H 'Content-Type: application/json' \
