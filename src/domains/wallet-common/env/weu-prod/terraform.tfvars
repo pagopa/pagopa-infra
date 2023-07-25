@@ -24,6 +24,10 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 ingress_load_balancer_ip = "10.1.100.250"
 
+## DNS
+
+dns_zone_prefix          = "payment-wallet"
+dns_zone_platform        = "platform"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 
