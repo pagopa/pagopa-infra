@@ -24,8 +24,8 @@ module "wallet_fe_cdn" {
   index_document     = "index.html"
   error_404_document = "index.html"
 
-  dns_zone_name                = azurerm_dns_zone.wallet_public.name
-  dns_zone_resource_group_name = azurerm_dns_zone.wallet_public.resource_group_name
+  dns_zone_name                = azurerm_dns_zone.payment_wallet_public.name
+  dns_zone_resource_group_name = azurerm_dns_zone.payment_wallet_public.resource_group_name
 
   keyvault_resource_group_name = module.key_vault.resource_group_name
   keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
