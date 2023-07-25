@@ -159,6 +159,7 @@ module "fdr_re_function_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "fdr_re_to_datastore_function" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${module.fdr_re_function.name}-autoscale"
   resource_group_name = data.azurerm_resource_group.fdr_re_rg.name
   location            = var.location
