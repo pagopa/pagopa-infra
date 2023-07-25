@@ -142,7 +142,7 @@ stages:
               EOF
               )
               echo "GHA trigger body $body"
-              curl -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
+              curl -v -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
               -H 'Content-Type: application/json' \
               -H 'X-GitHub-Api-Version: 2022-11-28' \
               -H "Authorization: token $(AZURE-DEVOPS-GITHUB-PR-TOKEN)" \
