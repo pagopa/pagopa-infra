@@ -146,7 +146,6 @@ stages:
     - stage:
       jobs: 
       - job: test_job
-        pool: server
         steps:
         - task: Bash@3 
           displayName: 'Dashboard generation'
