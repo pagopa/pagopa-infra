@@ -454,10 +454,5 @@
         "description": "wallet token"
       }
     }
-  },
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ]
+  }
 }
