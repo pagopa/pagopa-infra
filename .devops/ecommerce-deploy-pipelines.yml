@@ -127,6 +127,7 @@ stages:
         - task: Bash@3 
           displayName: 'Dashboard generation'
           inputs:
+            targetType: "inline"
             script: | 
               echo "Launching ecommerce dashboard generation apply"
               branch_name=$(echo $(Build.SourceBranchName) | sed -e “s/\.git//g”)
