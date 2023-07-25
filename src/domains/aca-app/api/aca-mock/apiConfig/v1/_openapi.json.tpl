@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "PagoPA API configuration ${service}",
+    "title" : "PagoPA API configuration",
     "description" : "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei",
     "termsOfService" : "https://www.pagopa.gov.it/",
     "version" : "0.49.4-3-main"

@@ -12,6 +12,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "apim_gpd_create_mock_api" {
+  count               = var.env_short != "p" ? 1 : 0
   name                = "${local.project}-gpd-create-mock"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -20,6 +21,7 @@ resource "azurerm_api_management_api_version_set" "apim_gpd_create_mock_api" {
 }
 
 resource "azurerm_api_management_api" "apim_gpd_create_mock" {
+  count                 = var.env_short != "p" ? 1 : 0
   name                  = "${local.project}-gpd-create-mock"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
@@ -43,6 +45,7 @@ resource "azurerm_api_management_api" "apim_gpd_create_mock" {
 }
 
 resource "azurerm_api_management_product_api" "apim_gpd_mock_create_product_api" {
+  count               = var.env_short != "p" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_gpd_create_mock[0].name
   product_id          = module.apim_aca_product.product_id
   resource_group_name = local.pagopa_apim_rg
@@ -50,6 +53,7 @@ resource "azurerm_api_management_product_api" "apim_gpd_mock_create_product_api"
 }
 
 resource "azurerm_api_management_api_policy" "apim_gpd_create_mock_policy" {
+  count               = var.env_short != "p" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_gpd_create_mock[0].name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -71,6 +75,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "apim_gpd_update_mock_api" {
+  count               = var.env_short != "p" ? 1 : 0
   name                = "${local.project}-gpd-update-mock"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -79,6 +84,7 @@ resource "azurerm_api_management_api_version_set" "apim_gpd_update_mock_api" {
 }
 
 resource "azurerm_api_management_api" "apim_gpd_update_mock" {
+  count                 = var.env_short != "p" ? 1 : 0
   name                  = "${local.project}-gpd-update-mock"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
@@ -102,6 +108,7 @@ resource "azurerm_api_management_api" "apim_gpd_update_mock" {
 }
 
 resource "azurerm_api_management_product_api" "apim_gpd_mock_update_product_api" {
+  count               = var.env_short != "p" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_gpd_update_mock[0].name
   product_id          = module.apim_aca_product.product_id
   resource_group_name = local.pagopa_apim_rg
@@ -109,6 +116,7 @@ resource "azurerm_api_management_product_api" "apim_gpd_mock_update_product_api"
 }
 
 resource "azurerm_api_management_api_policy" "apim_gpd_update_mock_policy" {
+  count               = var.env_short != "p" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_gpd_update_mock[0].name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -130,6 +138,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "apim_gpd_invalidate_mock_api" {
+  count               = var.env_short != "p" ? 1 : 0
   name                = "${local.project}-gpd-invalidate-mock"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -138,6 +147,7 @@ resource "azurerm_api_management_api_version_set" "apim_gpd_invalidate_mock_api"
 }
 
 resource "azurerm_api_management_api" "apim_gpd_invalidate_mock" {
+  count                 = var.env_short != "p" ? 1 : 0
   name                  = "${local.project}-gpd-invalidate-mock"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
@@ -161,6 +171,7 @@ resource "azurerm_api_management_api" "apim_gpd_invalidate_mock" {
 }
 
 resource "azurerm_api_management_product_api" "apim_gpd_mock_invalidate_product_api" {
+  count               = var.env_short != "p" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_gpd_invalidate_mock[0].name
   product_id          = module.apim_aca_product.product_id
   resource_group_name = local.pagopa_apim_rg
@@ -168,6 +179,7 @@ resource "azurerm_api_management_product_api" "apim_gpd_mock_invalidate_product_
 }
 
 resource "azurerm_api_management_api_policy" "apim_gpd_invalidate_mock_policy" {
+  count               = var.env_short != "p" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_gpd_invalidate_mock[0].name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -189,6 +201,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "apim_api_config_mock_api" {
+  count               = var.env_short != "p" ? 1 : 0
   name                = "${local.project}-api-config-mock"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -197,6 +210,7 @@ resource "azurerm_api_management_api_version_set" "apim_api_config_mock_api" {
 }
 
 resource "azurerm_api_management_api" "apim_api_config_mock" {
+  count                 = var.env_short != "p" ? 1 : 0
   name                  = "${local.project}-api-config-mock"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
@@ -220,6 +234,7 @@ resource "azurerm_api_management_api" "apim_api_config_mock" {
 }
 
 resource "azurerm_api_management_product_api" "apim_api_config_product_api" {
+  count               = var.env_short != "p" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_api_config_mock[0].name
   product_id          = module.apim_aca_product.product_id
   resource_group_name = local.pagopa_apim_rg
@@ -227,6 +242,7 @@ resource "azurerm_api_management_product_api" "apim_api_config_product_api" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_api_config_mock_policy" {
+  count               = var.env_short != "p" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_api_config_mock[0].name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
