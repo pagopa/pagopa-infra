@@ -182,7 +182,7 @@ locals {
   apim_api_config_mock_api = {
     display_name          = "API config for ACA pagoPA - Api Config mock flow"
     description           = "API to support integration testing"
-    path                  = "aca/mock/api-config"
+    path                  = "aca-mock/api-config"
     subscription_required = false
     service_url           = null
   }
