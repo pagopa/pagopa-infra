@@ -100,6 +100,6 @@ module "apim_api_pn_integration_gpd_api_v1" {
   })
 
   xml_content = templatefile("./api/pn-integration/_base_policy.xml", {
-    hostname = "pagopa-${var.env_short}-app-gpd.azurewebsites.net"
+    hostname = local.gpd_core_service_url
   })
 }
