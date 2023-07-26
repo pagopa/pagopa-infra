@@ -2,231 +2,74 @@ openapi: 3.0.3
 info:
   title: pagopa-selfcare-ms-backoffice
   description: PagoPa backoffice API documentation
-  version: 0.0.37
+  version: 0.3.10
 servers:
   - url:  'https://${host}/${basePath}'
 tags:
-  - name: institution
-    description: Institution operations
+  - name: channels
+    description: Api config channels operations
+  - name: stations
+    description: Api config stations operations
 paths:
-  '/institutions':
+  /channels/brokerspsp:
     get:
       tags:
-        - institution
-      summary: getInstitutions
-      description: Retrieves all the onboarded institutions related to the logged user
-      operationId: getInstitutionsUsingGET
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InstitutionResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '404':
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  '/institutions/{institutionId}':
-    get:
-      tags:
-        - institution
-      summary: getInstitution
-      description: Retrieves an institution's details
-      operationId: getInstitutionUsingGET
+        - channels
+      summary: getBrokersPsp
+      description: Get list of psp brokers
+      operationId: getBrokersPspUsingGET
       parameters:
-        - name: institutionId
-          in: path
-          description: Institution's unique internal identifier
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InstitutionDetailResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '404':
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  '/institutions/{institutionId}/api-keys':
-    get:
-      tags:
-        - institution
-      summary: getInstitutionApiKeys
-      description: Retrieve an institution's primary and secondary keys
-      operationId: getInstitutionApiKeysUsingGET
-      parameters:
-        - name: institutionId
-          in: path
-          description: Institution's unique internal identifier
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ApiKeysResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '404':
-          description: Not Found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-    post:
-      tags:
-        - institution
-      summary: createInstitutionApiKeys
-      description: Creates a new subscription for a given Institution and returns its primary and secondary keys
-      operationId: createInstitutionApiKeysUsingPOST
-      parameters:
-        - name: institutionId
-          in: path
-          description: Institution's unique internal identifier
-          required: true
-          style: simple
-          schema:
-            type: string
-        - name: subscriptionCode
+        - name: limit
           in: query
-          description: subscription's unique internal identifier
+          description: Number of elements on one page. Default = 50
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: Page number. Page value starts from 0
           required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: code
+          in: query
+          description: Broker's code
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Broker's name
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: orderby
+          in: query
+          description: Order by column name
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: sorting
+          in: query
+          description: Method of sorting
+          required: false
           style: form
           schema:
             type: string
       responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ApiKeysResource'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  '/institutions/{institutionId}/products':
-    get:
-      tags:
-        - institution
-      summary: getInstitutionProducts
-      description: retrieve all active products for given institution and logged user
-      operationId: getInstitutionProductsUsingGET
-      parameters:
-        - name: institutionId
-          in: path
-          description: Institution's unique internal identifier
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProductsResource'
+                $ref: '#/components/schemas/BrokersPspResource'
         '400':
           description: Bad Request
           content:
@@ -254,24 +97,71 @@ paths:
       security:
         - bearerAuth:
             - global
-  '/institutions/{subscriptionid}/api-keys/primary/regenerate':
-    post:
+  /stations/brokers-EC:
+    get:
       tags:
-        - institution
-      summary: regeneratePrimaryKey
-      description: Regenerates the subscription's primary key
-      operationId: regeneratePrimaryKeyUsingPOST
+        - stations
+      summary: getBrokersEC
+      description: Get paginated list of creditor brokers
+      operationId: getBrokersECUsingGET
       parameters:
-        - name: subscriptionid
-          in: path
-          description: Institution's subscription id
+        - name: limit
+          in: query
+          description: Number of elements on one page. Default = 50
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          description: Page number. Page value starts from 0
           required: true
-          style: simple
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: code
+          in: query
+          description: code
+          required: false
+          style: form
           schema:
             type: string
+        - name: name
+          in: query
+          description: name
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: orderby
+          in: query
+          description: order by name or code, default = CODE
+          required: false
+          style: form
+          schema:
+            type: string
+            enum:
+              - CODE
+              - NAME
+        - name: ordering
+          in: query
+          description: ordering
+          required: false
+          style: form
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
       responses:
-        '204':
-          description: No Content
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrokersResource'
         '400':
           description: Bad Request
           content:
@@ -284,41 +174,8 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
-        '500':
-          description: Internal Server Error
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-      security:
-        - bearerAuth:
-            - global
-  '/institutions/{subscriptionid}/api-keys/secondary/regenerate':
-    post:
-      tags:
-        - institution
-      summary: regenerateSecondaryKey
-      description: Regenerates the subscription's secondary key
-      operationId: regenerateSecondaryKeyUsingPOST
-      parameters:
-        - name: subscriptionid
-          in: path
-          description: Institution's subscription id
-          required: true
-          style: simple
-          schema:
-            type: string
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem'
-        '401':
-          description: Unauthorized
+        '404':
+          description: Not Found
           content:
             application/problem+json:
               schema:
@@ -334,157 +191,172 @@ paths:
             - global
 components:
   schemas:
-    ApiKeysResource:
-      title: ApiKeysResource
-      required:
-        - displayName
-        - id
-        - primaryKey
-        - secondaryKey
+    BrokerOrPspDetailsResource:
+      title: BrokerOrPspDetailsResource
       type: object
       properties:
-        displayName:
-          type: string
-          description: Institution's name Api Key
-        id:
-          type: string
-          description: Institution's subscription id
-        primaryKey:
-          type: string
-          description: Institution's primary Api Key
-        secondaryKey:
-          type: string
-          description: Institution's secondary Api Key
-    AttributeResource:
-      title: AttributeResource
-      required:
-        - code
-        - description
-        - origin
+        brokerPspDetailsResource:
+          $ref: '#/components/schemas/BrokerPspDetailsResource'
+        paymentServiceProviderDetailsResource:
+          $ref: '#/components/schemas/PaymentServiceProviderDetailsResource'
+    BrokerPspDetailsResource:
+      title: BrokerPspDetailsResource
       type: object
       properties:
-        code:
+        broker_psp_code:
           type: string
-          description: Institution's code
         description:
           type: string
-          description: Institution's name
-        origin:
-          type: string
-          description: Institution data origin
-    InstitutionDetailResource:
-      title: InstitutionDetailResource
-      required:
-        - address
-        - attributes
-        - description
-        - digitalAddress
-        - externalId
-        - id
-        - institutionType
-        - origin
-        - originId
-        - taxCode
-        - zipCode
+        enabled:
+          type: boolean
+        extended_fault_bean:
+          type: boolean
+    BrokerPspResource:
+      title: BrokerPspResource
       type: object
       properties:
-        address:
+        broker_psp_code:
           type: string
-          description: Institution's physical address
-        attributes:
+        description:
+          type: string
+        enabled:
+          type: boolean
+    BrokerResource:
+      title: BrokerResource
+      type: object
+      properties:
+        broker_code:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        extended_fault_bean:
+          type: boolean
+    BrokersPspResource:
+      title: BrokersPspResource
+      type: object
+      properties:
+        brokers_psp:
           type: array
-          description: Institution's attributes
+          description: Psp's broker
           items:
-            $ref: '#/components/schemas/AttributeResource'
-        description:
-          type: string
-          description: Institution's name
-        digitalAddress:
-          type: string
-          description: Institution's digitalAddress
-        externalId:
-          type: string
-          description: Institution's unique external identifier
-        id:
-          type: string
-          description: Institution's unique internal identifier
-        institutionType:
-          type: string
-          description: Institution's type
-          enum:
-            - GSP
-            - PA
-            - PSP
-            - PT
-            - SCP
-        origin:
-          type: string
-          description: Institution data origin
-        originId:
-          type: string
-          description: Institution's details origin Id
-        taxCode:
-          type: string
-          description: Institution's taxCode
-        zipCode:
-          type: string
-          description: Institution's zipCode
-    InstitutionResource:
-      title: InstitutionResource
-      required:
-        - address
-        - externalId
-        - fiscalCode
-        - id
-        - mailAddress
-        - name
-        - origin
-        - originId
-        - status
-        - userProductRoles
+            $ref: '#/components/schemas/BrokerPspResource'
+        page_info:
+          description: info pageable
+          $ref: '#/components/schemas/PageInfo'
+    BrokersResource:
+      title: BrokersResource
       type: object
       properties:
-        address:
+        brokers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrokerResource'
+    IbanCreateRequestDto:
+      title: IbanCreateRequestDto
+      required:
+        - active
+        - creditorInstitutionCode
+        - dueDate
+        - iban
+        - validityDate
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: True if the iban is active
+          example: false
+        creditorInstitutionCode:
           type: string
-          description: Institution's physical address
-        externalId:
+          description: Creditor Institution's code(Fiscal Code)
+        description:
           type: string
-          description: Institution's unique external identifier
-        fiscalCode:
+          description: The description the Creditor Institution gives to the iban about its usage
+        dueDate:
           type: string
-          description: Institution's taxCode
-        id:
+          description: The date on which the iban will expire
+          format: date-time
+        iban:
           type: string
-          description: Institution's unique internal identifier
-        institutionType:
+          description: The iban code
+        labels:
+          type: array
+          description: The labels array associated with the iban
+          items:
+            $ref: '#/components/schemas/IbanLabel'
+        validityDate:
           type: string
-          description: Institution's type
-          enum:
-            - GSP
-            - PA
-            - PSP
-            - PT
-            - SCP
-        mailAddress:
+          description: The date the Creditor Institution wants the iban to be used for its payments
+          format: date-time
+    IbanLabel:
+      title: IbanLabel
+      required:
+        - description
+        - name
+      type: object
+      properties:
+        description:
           type: string
-          description: Institution's digitalAddress
+          description: Label description
         name:
           type: string
-          description: Institution's name
-        origin:
+          description: Label name
+    IbanResource:
+      title: IbanResource
+      required:
+        - active
+        - dueDate
+        - ecOwner
+        - iban
+        - publicationDate
+        - validityDate
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: True if the iban is active
+          example: false
+        companyName:
           type: string
-          description: Institution data origin
-        originId:
+          description: The Creditor Institution company name
+        description:
           type: string
-          description: Institution's details origin Id
-        status:
+          description: The description the Creditor Institution gives to the iban about its usage
+        dueDate:
           type: string
-          description: Institution onboarding status
-        userProductRoles:
+          description: The date on which the iban will expire
+          format: date-time
+        ecOwner:
+          type: string
+          description: Fiscal code of the Creditor Institution who owns the iban
+        iban:
+          type: string
+          description: The iban code
+        labels:
           type: array
-          description: Logged user's roles on product
+          description: The labels array associated with the iban
           items:
-            type: string
+            $ref: '#/components/schemas/IbanLabel'
+        publicationDate:
+          type: string
+          description: The date on which the iban has been inserted in the system
+          format: date-time
+        validityDate:
+          type: string
+          description: The date the Creditor Institution wants the iban to be used for its payments
+          format: date-time
+    IbansResource:
+      title: IbansResource
+      required:
+        - ibanList
+      type: object
+      properties:
+        ibanList:
+          type: array
+          description: Creditor Institution's address object
+          items:
+            $ref: '#/components/schemas/IbanResource'
     InvalidParam:
       title: InvalidParam
       required:
@@ -498,6 +370,63 @@ components:
         reason:
           type: string
           description: Invalid parameter reason.
+    PageInfo:
+      title: PageInfo
+      type: object
+      properties:
+        items_found:
+          type: integer
+          format: int32
+        limit:
+          type: integer
+          format: int32
+        page:
+          type: integer
+          format: int32
+        total_pages:
+          type: integer
+          format: int32
+    PaymentServiceProviderDetailsResource:
+      title: PaymentServiceProviderDetailsResource
+      required:
+        - abi
+        - agid_psp
+        - bic
+        - my_bank_code
+        - stamp
+        - tax_code
+        - vat_number
+      type: object
+      properties:
+        abi:
+          type: string
+          description: abi of the payment service provider
+        agid_psp:
+          type: boolean
+          description: agid code of the payment service provider
+          example: false
+        bic:
+          type: string
+          description: bic of the payment service provider
+        business_name:
+          type: string
+        enabled:
+          type: boolean
+        my_bank_code:
+          type: string
+          description: bank code of the payment service provider
+        psp_code:
+          type: string
+        stamp:
+          type: boolean
+          description: stamp of the payment service provider
+          example: false
+        tax_code:
+          type: string
+          description: tax code of the payment service provider
+        vat_number:
+          type: string
+          description: of the payment service provider
     Problem:
       title: Problem
       required:
@@ -528,30 +457,6 @@ components:
           type: string
           description: A URL to a page with more details regarding the problem.
       description: A "problem detail" as a way to carry machine-readable details of errors (https://datatracker.ietf.org/doc/html/rfc7807)
-    ProductsResource:
-      title: ProductsResource
-      required:
-        - description
-        - id
-        - title
-        - urlBO
-      type: object
-      properties:
-        description:
-          type: string
-          description: Product's description
-        id:
-          type: string
-          description: Product's unique identifier
-        title:
-          type: string
-          description: Product's title
-        urlBO:
-          type: string
-          description: URL that redirects to the back-office section, where is possible to manage the product
-        urlPublic:
-          type: string
-          description: URL that redirects to the public information webpage of the product
   securitySchemes:
     bearerAuth:
       type: http
