@@ -95,7 +95,7 @@ terraform-docs markdown . --sort-by required > README.md
 
 Extract cidr subnet from AZ vnet:
 
-`az network vnet subnet list -g pagopa-d-vnet-rg --vnet-name pagopa-d-vnet | grep "\"addressPrefix\""`
+`az network vnet subnet list -g pagopa-d-vnet-rg --vnet-name pagopa-d-vnet | grep "\"addressPrefix\"" | xargs -n2 | sort`
 
 <!-- markdownlint-disable -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
