@@ -336,7 +336,28 @@ eventhubs = [
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-fdr"
+    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
+    partitions        = 30
+    message_retention = 7
+    consumers         = ["fdr-re-rx"]
+    keys = [
+      {
+        name   = "fdr-re-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-re-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
     partitions        = 32
     message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
@@ -407,44 +428,6 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pn"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-biz-evt-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
-    keys = [
-      {
-        name   = "pagopa-biz-evt-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-io"
         listen = true
         send   = false
         manage = false
