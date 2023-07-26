@@ -259,8 +259,8 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-re"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
+    partitions        = 1
+    message_retention = 1
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx", "nodo-dei-pagamenti-re-to-datastore-rx"]
     keys = [
       {
@@ -297,9 +297,30 @@ eventhubs = [
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-fdr"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
+    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["fdr-re-rx"]
+    keys = [
+      {
+        name   = "fdr-re-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-re-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
+    partitions        = 1
+    message_retention = 1
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
     keys = [
       {
@@ -326,7 +347,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-test", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-test", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -354,12 +375,6 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pn"
         listen = true
         send   = false
         manage = false
@@ -396,7 +411,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt-enrich"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -406,38 +421,6 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-biz-evt-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
-    keys = [
-      {
-        name   = "pagopa-biz-evt-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-io"
         listen = true
         send   = false
         manage = false
