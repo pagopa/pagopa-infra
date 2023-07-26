@@ -16,6 +16,7 @@ locals {
   monitor_action_group_email_name = "PagoPA"
 
   vnet_name                = "${local.product}-vnet"
+  vnet_integration_name    = "${local.product}-vnet-integration"
   vnet_resource_group_name = "${local.product}-vnet-rg"
 
   acr_name                = replace("${local.product}commonacr", "-", "")
@@ -39,8 +40,9 @@ locals {
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
     fdr_hostname          = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
-
   }
+
+  apim_snet     = "${local.product}-apim-snet"
 
   fdr_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
