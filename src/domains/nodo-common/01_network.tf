@@ -59,6 +59,12 @@ data "azurerm_subnet" "private_endpoint_snet" {
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 }
 
+data "azurerm_subnet" "nodo_re_to_datastore_function_snet" {
+  name                 = "${local.project}-nodo-re-to-datastore-fn-snet"
+  virtual_network_name = data.azurerm_virtual_network.vnet.name
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+}
+
 data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
   name                = "privatelink.redis.cache.windows.net"
   resource_group_name = local.vnet_resource_group_name
@@ -77,4 +83,15 @@ data "azurerm_private_dns_zone" "privatelink_blob_azure_com" {
 data "azurerm_private_dns_zone" "privatelink_table_azure_com" {
   name                = local.table_dns_zone_name
   resource_group_name = local.storage_dns_zone_resource_group_name
+}
+
+# Azure Storage subnet
+module "storage_account_snet" {
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  name                                          = format("%s-storage-account-snet", local.project)
+  address_prefixes                              = var.cidr_subnet_storage_account
+  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                          = data.azurerm_virtual_network.vnet.name
+  service_endpoints                             = ["Microsoft.Storage"]
+  private_link_service_network_policies_enabled = var.storage_account_snet_private_link_service_network_policies_enabled
 }

@@ -266,3 +266,49 @@ variable "nodo_pagamenti_subkey_required" {
   description = "Enabled subkeys for nodo dei pagamenti api"
   default     = false
 }
+
+# FdR RE
+variable "fdr_re_function_subnet" {
+  type        = list(string)
+  description = "Address prefixes subnet"
+  default     = null
+}
+
+variable "fdr_re_function_network_policies_enabled" {
+  type        = bool
+  description = "Network policies enabled"
+  default     = false
+}
+
+variable "fdr_re_function" {
+  type = object({
+    always_on                    = bool
+    kind                         = string
+    sku_size                     = string
+    sku_tier                     = string
+    maximum_elastic_worker_count = number
+  })
+  description = "FdR RE function"
+  default = {
+    always_on                    = true
+    kind                         = "Linux"
+    sku_size                     = "B1"
+    sku_tier                     = "Basic"
+    maximum_elastic_worker_count = 1
+  }
+}
+
+variable "fdr_re_function_app_image_tag" {
+  type        = string
+  default     = "latest"
+  description = "FdR RE to Datastore function app docker image tag. Defaults to 'latest'"
+}
+
+variable "fdr_re_function_autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+  description = "FdR function autoscaling parameters"
+}
