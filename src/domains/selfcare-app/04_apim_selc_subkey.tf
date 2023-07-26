@@ -2,18 +2,18 @@
 ## Products ##
 ##############
 
-module "apim_selfcare_product" {
+module "apim_selfcare_product_subkey" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.7.0"
 
-  product_id   = "selfcare-be"
-  display_name = local.apim_selfcare_pagopa_api.display_name
-  description  = local.apim_selfcare_pagopa_api.display_name
+  product_id   = "selfcare-be-subkey"
+  display_name = local.apim_selfcare_pagopa_api_subkey.display_name
+  description  = local.apim_selfcare_pagopa_api_subkey.display_name
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
   published             = false
-  subscription_required = false
+  subscription_required = local.apim_selfcare_pagopa_api_subkey.subscription_required
   approval_required     = false
   # subscriptions_limit   = 1000
 
@@ -24,41 +24,41 @@ module "apim_selfcare_product" {
 ##    API selfcare ##
 #################
 locals {
-  apim_selfcare_pagopa_api = {
-    display_name          = "Selfcare Product pagoPA"
+  apim_selfcare_pagopa_api_subkey = {
+    display_name          = "Selfcare Product pagoPA subkey"
     description           = "API to manage institution api key"
-    path                  = "selfcare/pagopa"
-    subscription_required = false
+    path                  = "selfcare/pagopa/subkey"
+    subscription_required = true
     service_url           = null
   }
 }
 
-resource "azurerm_api_management_api_version_set" "api_selfcare_api" {
+resource "azurerm_api_management_api_version_set" "api_selfcare_api_subkey" {
 
-  name                = "${var.env_short}-pagopa-selfcare-api"
+  name                = "${var.env_short}-pagopa-selfcare-api-subkey"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_selfcare_pagopa_api.display_name
+  display_name        = local.apim_selfcare_pagopa_api_subkey.display_name
   versioning_scheme   = "Segment"
 }
 
 
-module "apim_api_selfcare_api_v1" {
+module "apim_api_selfcare_api_subkey_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.7.0"
 
-  name                  = "${local.product}-api"
+  name                  = "${local.product}-api-subkey"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_selfcare_product.product_id]
-  subscription_required = local.apim_selfcare_pagopa_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_selfcare_api.id
+  product_ids           = [module.apim_selfcare_product_subkey.product_id]
+  subscription_required = local.apim_selfcare_pagopa_api_subkey.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_selfcare_api_subkey.id
   api_version           = "v1"
 
-  description  = local.apim_selfcare_pagopa_api.description
-  display_name = local.apim_selfcare_pagopa_api.display_name
-  path         = local.apim_selfcare_pagopa_api.path
+  description  = local.apim_selfcare_pagopa_api_subkey.description
+  display_name = local.apim_selfcare_pagopa_api_subkey.display_name
+  path         = local.apim_selfcare_pagopa_api_subkey.path
   protocols    = ["https"]
-  service_url  = local.apim_selfcare_pagopa_api.service_url
+  service_url  = local.apim_selfcare_pagopa_api_subkey.service_url
 
   content_format = "openapi"
   content_value = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_openapi.json.tpl", {
@@ -71,3 +71,5 @@ module "apim_api_selfcare_api_v1" {
     origin   = local.selfcare_fe_hostname
   })
 }
+
+
