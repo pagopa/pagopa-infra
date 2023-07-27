@@ -52,7 +52,7 @@
     <choose>
         <when condition="@(context.Variables.ContainsKey("authorizer_domain_in_progress") || !context.Variables.ContainsKey("cached_authorized_entities") || (context.Variables.ContainsKey("cached_authorized_entities") && !((string)context.Variables["cached_authorized_entities"]).Contains((string)context.Variables["auth_entity"])) )">
             <choose>
-                <when condition="@(!"*".Equals((string)context.Variables["cached_authorized_entities"]))">
+                <when condition="@(!"#*#".Equals((string)context.Variables["cached_authorized_entities"]))">
                     <return-response>
                         <set-status code="403" reason="Forbidden" />
                     </return-response>
