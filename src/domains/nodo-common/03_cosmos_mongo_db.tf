@@ -66,10 +66,27 @@ locals {
   collections = [
     {
       name = "events"
-      indexes = [{
-        keys   = ["_id"]
-        unique = true
-      }
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["idDominio", "noticeNumber"]
+          unique = false
+        },
+        {
+          keys   = ["idDominio", "noticeNumber", "paymentToken"]
+          unique = false
+        },
+        {
+          keys   = ["idDominio", "iuv"]
+          unique = false
+        },
+        {
+          keys   = ["idDominio", "iuv", "ccp"]
+          unique = false
+        },
       ]
       shard_key = "PartitionKey"
     }
