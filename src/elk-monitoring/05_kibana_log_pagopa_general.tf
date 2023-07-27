@@ -13,17 +13,6 @@ locals {
 
   pagopa_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/${local.pagopa_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
 
-  pagopa_snapshot_key        = "pagopa_snapshot_backup"
-  pagopa_snapshot_policy_key = "pagopa-nightly-snapshots"
-  pagopa_snapshot_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/${local.pagopa_key}/snapshot_policy.json", {
-    repository_name = local.pagopa_snapshot_key
-  }), "\""), "\""), "'", "'\\''")
-
-
-  pagopa_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/${local.pagopa_key}/ilm-policy.json", {
-    policy_name = local.pagopa_snapshot_policy_key
-  }), "\""), "\""), "'", "'\\''")
-
   pagopa_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/${local.pagopa_key}/logs-kubernetes.container_logs@custom.json", {
     name = local.pipeline_name
   }), "\""), "\""), "'", "'\\''")
@@ -66,45 +55,7 @@ resource "null_resource" "pagopa_ingest_pipeline" {
   }
 }
 
-resource "null_resource" "pagopa_snapshot_policy" {
-  depends_on = [module.elastic_stack]
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command     = <<EOT
-      curl -k -X PUT "${local.elastic_url}/_slm/policy/${local.pagopa_snapshot_policy_key}" \
-      -H 'kbn-xsrf: true' \
-      -H 'Content-Type: application/json' \
-      -d '${local.pagopa_snapshot_policy}'
-    EOT
-    interpreter = ["/bin/bash", "-c"]
-  }
-}
-
-resource "null_resource" "pagopa_ilm_policy" {
-  depends_on = [null_resource.pagopa_ingest_pipeline, null_resource.pagopa_snapshot_policy]
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command     = <<EOT
-      curl -k -X PUT "${local.elastic_url}/_ilm/policy/${local.pagopa_key}" \
-      -H 'kbn-xsrf: true' \
-      -H 'Content-Type: application/json' \
-      -d '${local.pagopa_ilm_policy}'
-    EOT
-    interpreter = ["/bin/bash", "-c"]
-  }
-}
-
 resource "null_resource" "pagopa_component_template_custom" {
-  depends_on = [null_resource.pagopa_ilm_policy]
-
   triggers = {
     always_run = "${timestamp()}"
   }
