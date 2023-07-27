@@ -72,6 +72,10 @@ locals {
           unique = true
         },
         {
+          keys   = ["idDominio"]
+          unique = false
+        },
+        {
           keys   = ["idDominio", "noticeNumber"]
           unique = false
         },
