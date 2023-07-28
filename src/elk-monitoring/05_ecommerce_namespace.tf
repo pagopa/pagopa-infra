@@ -1,11 +1,10 @@
 #################################### [ECOMMERCE] ####################################
 locals {
 
-  pagopa_key    = "pagopa"
-  ecommerce_key = "ecommerce"
+  ecommerce_namespace = "ecommerce"
 
-  ecommerce_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/${path.pagopa_key}/${local.ecommerce_key}/namespace/namespace.json", {
-    name = "${local.ecommerce_key}"
+  ecommerce_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/${local.ecommerce_namespace}/namespace/namespace.json", {
+    name = "${local.ecommerce_namespace}"
   }), "\""), "\""), "'", "'\\''")
 }
 
