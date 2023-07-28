@@ -1,7 +1,7 @@
 #################################### [PAGOPA ECOMMERCE] ####################################
 locals {
-  pagopa_key = "pagopa"
-  ecommerce_key    = "ecommerce"
+  pagopa_key               = "pagopa"
+  ecommerce_key            = "ecommerce"
   ecommerce_dashboard_path = "${path.module}/${path.pagopa_key}/${local.ecommerce_key}/dashboards/*.ndjson"
 }
 
