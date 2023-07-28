@@ -135,6 +135,8 @@ module "apim_api_statuspage_api_v1" {
       "mocker"                = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
       "pdfengine"             = format("%s/pagopa-pdf-engine", format(local.aks_path, "shared"))
       "receiptpdfdatastore"   = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
+      "receiptpdfnotifier"   = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
+      "receiptpdfservice"   = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
     }), "\"", "\\\"")
   })
 }
