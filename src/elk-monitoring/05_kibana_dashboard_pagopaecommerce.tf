@@ -1,8 +1,8 @@
 #################################### [PAGOPA ECOMMERCE] ####################################
 locals {
-  pagopa_namespace         = "pagopa"
-  pagopaecommerce_key      = "ecommerce"
-  ecommerce_dashboard_path = "${path.module}/${local.pagopa_namespace}/${local.pagopaecommerce_key}/dashboards/*.ndjson"
+  pagopa_key = "pagopa"
+  ecommerce_key    = "ecommerce"
+  ecommerce_dashboard_path = "${path.module}/${path.pagopa_key}/${local.ecommerce_key}/dashboards/*.ndjson"
 }
 
 resource "null_resource" "pagopaecommerce_upload_dashboard" {
@@ -15,7 +15,7 @@ resource "null_resource" "pagopaecommerce_upload_dashboard" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.pagopa_namespace}/api/saved_objects/_import?overwrite=true" \
+      curl -k -X POST "${local.kibana_url}/s/${local.ecommerce_key}/api/saved_objects/_import?overwrite=true" \
       -H 'kbn-xsrf: true' \
       --form "file=@./${each.value}"
     EOT 
