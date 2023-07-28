@@ -11,7 +11,7 @@ tags:
   - name: stations
     description: Api config stations operations
 paths:
-  /channels/brokerspsp:
+  /channels/getBrokersPsp:
     get:
       tags:
         - channels
