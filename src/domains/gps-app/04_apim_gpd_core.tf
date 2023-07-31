@@ -33,7 +33,7 @@ module "apim_api_gpd_api" {
   subscription_required = false
   api_version           = "v1"
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_api.id
-  service_url           = format("https://weu${var.env}.gps.internal.%s.platform.pagopa.it/pagopa-gpd-core", var.env == "prod" ? "" : var.env)
+  service_url           = local.gpd_core_service_url
 
   description  = "Api Gestione Posizione Debitorie"
   display_name = "GPD pagoPA"
