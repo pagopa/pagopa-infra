@@ -146,7 +146,7 @@ stages:
     
     - stage:
       jobs: 
-      - job: test_job
+      - job: generate_dashboard
         steps:
         - task: Bash@3 
           displayName: 'Dashboard generation'
