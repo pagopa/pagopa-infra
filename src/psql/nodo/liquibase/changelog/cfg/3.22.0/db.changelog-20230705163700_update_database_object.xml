@@ -63,5 +63,11 @@ FROM   ((iban_master mas
 			onUpdate="RESTRICT" referencedColumnNames="obj_id"
 			referencedTableName="ica_binary_file" validate="true" />
 	</changeSet>
+	
+	<changeSet author="liquibase" id="202307311500">
+		<addUniqueConstraint columnNames="iban"
+			constraintName="IBAN_UNIQUE" deferrable="false"
+			initiallyDeferred="false" tableName="iban" validate="true" />
+	</changeSet>
 
 </databaseChangeLog>
