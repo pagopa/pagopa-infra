@@ -11,6 +11,7 @@
       string[] entities = ((JObject) context.Variables["request"])["value"].ToString().Split(',');
       return new System.Text.StringBuilder().Append("#").Append(string.Join("#", entities)).Append("#").ToString();
     }" />
+    <cache-lookup-value variable-name="is_authorizer_store_existent" key="@("authorizer_" + context.Variables["domain"])" caching-type="external" default-value="false" />
 
     <!-- Look up for authorized-DOMAIN_in_progress variable -->
     <choose>
@@ -27,7 +28,13 @@
 
         <!-- Saving domain authorization variable -->
         <cache-store-value key="@("authorizer_" + context.Variables["domain_key"])" value="@((string) context.Variables["autorized_entities"])" duration="86400" caching-type="external" />
-        <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="86400" caching-type="external" />
+
+        <!-- Saving domain authorization state variable, but only if expired -->
+        <choose>
+          <when condition="@("false".Equals(context.Variables["is_authorizer_store_existent"]))">
+            <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="86400" caching-type="external" />
+          </when>
+        </choose>
 
         <!-- Return OK response -->
         <return-response>
@@ -43,7 +50,13 @@
 
         <!-- Saving domain authorization variables -->
         <cache-store-value key="@("authorizer_" + context.Variables["domain_key"])" value="@((string) context.Variables["autorized_entities"])" duration="86400" caching-type="external" />
-        <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="86400" caching-type="external" />
+
+        <!-- Saving domain authorization state variable, but only if expired -->
+        <choose>
+          <when condition="@("false".Equals(context.Variables["is_authorizer_store_existent"]))">
+            <cache-store-value key="@("authorizer_" + context.Variables["domain"])" value="store" duration="86400" caching-type="external" />
+          </when>
+        </choose>
 
         <!-- Removing locking state variable -->
         <cache-remove-value key="@("authorizer_" + context.Variables["domain"] + "_in_progress")" caching-type="internal" />
