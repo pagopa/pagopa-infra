@@ -48,7 +48,7 @@
             "description": "Unique identifier for payment request, so the concatenation of the fiscal code and notice number.",
             "schema": {
               "type": "string",
-              "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+              "pattern": "^([0-9]{29})$"
             },
             "required": true
           }

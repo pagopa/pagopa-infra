@@ -21,7 +21,7 @@
             "description": "Unique identifier for payment request, so the concatenation of the tax code and notice number.",
             "schema": {
               "type": "string",
-              "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
+              "pattern": "^([0-9]{29})$"
             },
             "required": true
           },
