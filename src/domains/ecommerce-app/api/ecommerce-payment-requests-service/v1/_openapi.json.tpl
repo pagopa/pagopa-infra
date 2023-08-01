@@ -205,7 +205,7 @@
           "rptId": {
             "description": "Digital payment request id",
             "type": "string",
-            "pattern": "([a-zA-Z\\d]{1,35})|(RF\\d{2}[a-zA-Z\\d]{1,21})"
+            "pattern": "^([0-9]{29})$"
           },
           "paFiscalCode": {
             "description": "Fiscal code associated to the payment notice",

@@ -659,7 +659,7 @@
         "properties": {
           "rptId": {
             "type": "string",
-            "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
+            "pattern": "^([0-9]{29})$"
           },
           "paFiscalCode": {
             "type": "string",
