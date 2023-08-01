@@ -201,12 +201,9 @@ resource "azurerm_key_vault_secret" "pdf_engine_perf_test_subkey" {
   }
 }
 
-resource "azurerm_key_vault_secret" "elastic_apm_secret_token" {
-
-  name         = "elastic-apm-secret-token"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>" # Authorization=Bearer + elastic_apm_secret_token secret into namespace elastic-system
-  content_type = "text/plain"
-
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
   lifecycle {
