@@ -1,6 +1,6 @@
 # see https://help.github.com/en/articles/about-code-owners#example-of-a-codeowners-file
 
-* @pagopa/infrastructure-admins @pagopa/pagopa-admins @pagopa/pagopa-team-core
+* @pagopa/infrastructure-admins @pagopa/pagopa-team-core @pagopa/pagopa-team-touchpoint
 
-/src/domains/selfcare-common @pagopa/infrastructure-admins @pagopa/pagopa-admins @pagopa/pagopa-team-core @andrea-putzu
-/src/domains/selfcare-app @pagopa/infrastructure-admins @pagopa/pagopa-admins @pagopa/pagopa-team-core @andrea-putzu
+/src/domains/selfcare-common @pagopa/infrastructure-admins @pagopa/pagopa-team-core @pagopa/pagopa-team-touchpoint @andrea-putzu
+/src/domains/selfcare-app @pagopa/infrastructure-admins @pagopa/pagopa-team-core @pagopa/pagopa-team-touchpoint @andrea-putzu
