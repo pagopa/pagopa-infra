@@ -81,3 +81,18 @@ fdr_re_function_autoscale = {
   minimum = 1
   maximum = 3
 }
+
+# fdr xml to json
+fdr_xml_to_json_function = {
+  always_on                     = true
+  kind                          = "Linux"
+  sku_size                      = "B1"
+  sku_tier                      = "Basic"
+  maximum_elastic_worker_count  = null
+}
+
+fdr_xml_to_json_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}

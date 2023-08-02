@@ -13,6 +13,7 @@ data "azurerm_dns_zone" "public" {
   name = join(".", [var.apim_dns_zone_prefix, var.external_domain])
 }
 
+//viene usata per la function fdr-re e per le function di conversion (es. fdr-xml-to-json)
 module "fdr_re_function_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                                      = "${local.project}-re-fn-snet"
