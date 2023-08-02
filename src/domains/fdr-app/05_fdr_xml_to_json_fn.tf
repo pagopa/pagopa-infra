@@ -58,7 +58,7 @@ module "fdr_xml_to_json_function" {
 
   location          = var.location
   health_check_path = "/info"
-  subnet_id         = module.fdr_re_function_snet.id
+  subnet_id         = module.fdr_xml_to_json_function_snet.id
   runtime_version   = "~4"
 
   system_identity_enabled = true
@@ -91,7 +91,7 @@ module "fdr_xml_to_json_function" {
     zone_balancing_enabled       = false
   }
 
-  storage_account_name = replace(format("%s-re-fn-sa", local.project), "-", "")
+  storage_account_name = replace(format("%s-xml-2-json-sa", local.project), "-", "")
 
   app_settings = local.function_xml_to_json_app_settings
 
@@ -117,7 +117,7 @@ module "fdr_xml_to_json_function_slot_staging" {
   always_on                                = var.fdr_xml_to_json_function.always_on
   health_check_path                        = "/info"
   runtime_version                          = "~4"
-  subnet_id                                = module.fdr_re_function_snet.id
+  subnet_id                                = module.fdr_xml_to_json_function_snet.id
 
   # App settings
   app_settings = local.function_xml_to_json_app_settings

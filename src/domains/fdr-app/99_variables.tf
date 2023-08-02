@@ -314,7 +314,17 @@ variable "fdr_re_function_autoscale" {
 }
 
 # FdR xml to json
+variable "fdr_xml_to_json_function_subnet" {
+  type        = list(string)
+  description = "Address prefixes subnet"
+  default     = null
+}
 
+variable "fdr_xml_to_json_function_network_policies_enabled" {
+  type        = bool
+  description = "Network policies enabled"
+  default     = false
+}
 variable "fdr_xml_to_json_function" {
   type = object({
     always_on                    = bool

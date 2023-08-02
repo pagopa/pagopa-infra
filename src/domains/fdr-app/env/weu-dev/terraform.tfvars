@@ -73,7 +73,6 @@ fdr_re_function = {
   sku_tier                      = "Basic"
   maximum_elastic_worker_count  = null
 }
-fdr_re_function_always_on       = true
 fdr_re_function_subnet          = ["10.1.181.0/24"]
 fdr_re_function_network_policies_enabled = false
 fdr_re_function_autoscale = {
@@ -83,6 +82,8 @@ fdr_re_function_autoscale = {
 }
 
 # fdr xml to json
+fdr_xml_to_json_function_subnet          = ["10.1.182.0/24"]
+fdr_xml_to_json_function_network_policies_enabled = false
 fdr_xml_to_json_function = {
   always_on                     = true
   kind                          = "Linux"
