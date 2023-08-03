@@ -1,7 +1,7 @@
 module "cosmosdb_account_mongodb" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.1"
   domain              = var.domain
-  name                = "${local.project}-cosmos-account"
+  name                = "${local.project}-re-cosmos-account"
   location            = var.location
   resource_group_name = azurerm_resource_group.db_rg.name
 
@@ -34,7 +34,7 @@ resource "azurerm_cosmosdb_mongo_database" "nodo_re" {
   resource_group_name = azurerm_resource_group.db_rg.name
   account_name        = module.cosmosdb_account_mongodb.name
 
-  throughput = var.cosmos_mongo_db_nodo_re_params.enable_autoscaling || var.cosmos_mongo_db_nodo_re_params.enable_serverless ? null : var.cosmos_mongo_db_nodo_re_params.throughput
+  throughput = var.cosmos_mongo_db_nodo_re_params.enable_serverless ? null : var.cosmos_mongo_db_nodo_re_params.throughput
 
   dynamic "autoscale_settings" {
     for_each = var.cosmos_mongo_db_nodo_re_params.enable_autoscaling && !var.cosmos_mongo_db_nodo_re_params.enable_serverless ? [""] : []

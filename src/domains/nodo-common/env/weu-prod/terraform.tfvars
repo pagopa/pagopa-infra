@@ -138,7 +138,7 @@ cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
 
 cosmos_mongo_db_nodo_re_params = {
   enable_serverless  = false
-  enable_autoscaling = true
+  enable_autoscaling = false
   max_throughput     = 5000
   throughput         = 1000
   events_ttl         = 10368000 # 120 days
