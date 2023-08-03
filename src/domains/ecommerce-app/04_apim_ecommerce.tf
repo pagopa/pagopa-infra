@@ -336,6 +336,8 @@ resource "azurerm_api_management_api_version_set" "pagopa_helpdesk_service_api" 
   versioning_scheme   = "Segment"
 }
 
+
+#helpdesk assistance api for ecommerce
 module "apim_pagopa_helpdesk_service_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
@@ -363,3 +365,62 @@ module "apim_pagopa_helpdesk_service_api_v1" {
   })
 }
 
+
+##############################
+## API helpdesk assistance service ##
+##############################
+locals {
+  apim_pagopa_helpdesk_assistance_service_api = {
+    display_name          = "pagoPA ecommerce - helpdesk assistance service API"
+    description           = "API to support helpdesk assistance"
+    path                  = "ecommerce/helpdesk-assistance-service"
+    subscription_required = true
+    service_url           = null
+  }
+}
+
+# helpdesk service APIs
+resource "azurerm_api_management_api_version_set" "pagopa_helpdesk_assistance_service_api" {
+  name                = format("%s-helpdesk-assistance-service-api", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_pagopa_helpdesk_assistance_service_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+
+#fetch technical support api product APIM product
+data "azurerm_api_management_product" "technical_support_api_product" {
+  product_id          = "technical_support_api"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+
+#helpdesk assistance api for ecommerce
+module "apim_pagopa_helpdesk_assistance_service_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+
+  name                  = format("%s-helpdesk-assistance-service-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [data.azurerm_api_management_product.technical_support_api_product.product_id]
+  subscription_required = local.apim_pagopa_helpdesk_assistance_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pagopa_helpdesk_assistance_service_api.id
+  api_version           = "v1"
+
+  description  = local.apim_pagopa_helpdesk_assistance_service_api.description
+  display_name = local.apim_pagopa_helpdesk_assistance_service_api.display_name
+  path         = local.apim_pagopa_helpdesk_assistance_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_pagopa_helpdesk_assistance_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-helpdesk-assistance-api/v1/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-helpdesk-assistance-api/v1/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
+}
