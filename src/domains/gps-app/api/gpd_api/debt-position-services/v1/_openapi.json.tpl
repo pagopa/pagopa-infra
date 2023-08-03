@@ -4,7 +4,7 @@
     "title" : "PagoPA API Debt Position for Organizations",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.6.9"
+    "version" : "0.6.10"
   },
   "servers" : [ {
     "url" : "${host}",
@@ -39,8 +39,15 @@
           }
         } ],
         "responses" : {
-          "401" : {
-            "description" : "Wrong or missing function key."
+          "200" : {
+            "description" : "Obtained debt position details.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentPositionModelBaseResponse"
+                }
+              }
+            }
           },
           "404" : {
             "description" : "No debt position found.",
@@ -52,15 +59,8 @@
               }
             }
           },
-          "200" : {
-            "description" : "Obtained debt position details.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PaymentPositionModelBaseResponse"
-                }
-              }
-            }
+          "401" : {
+            "description" : "Wrong or missing function key."
           },
           "500" : {
             "description" : "Service unavailable.",
@@ -119,31 +119,8 @@
           "required" : true
         },
         "responses" : {
-          "401" : {
-            "description" : "Wrong or missing function key."
-          },
           "400" : {
             "description" : "Malformed request.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "200" : {
-            "description" : "Request updated.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PaymentPositionModel"
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "No debt position found.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -158,6 +135,29 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No debt position found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key."
+          },
+          "200" : {
+            "description" : "Request updated.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentPositionModel"
                 }
               }
             }
@@ -211,8 +211,15 @@
               }
             }
           },
-          "401" : {
-            "description" : "Wrong or missing function key."
+          "404" : {
+            "description" : "No debt position position found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "409" : {
             "description" : "Conflict: existing related payment found.",
@@ -224,15 +231,8 @@
               }
             }
           },
-          "404" : {
-            "description" : "No debt position position found.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+          "401" : {
+            "description" : "Wrong or missing function key."
           },
           "500" : {
             "description" : "Service unavailable.",
@@ -351,6 +351,16 @@
           }
         } ],
         "responses" : {
+          "400" : {
+            "description" : "Malformed request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "429" : {
             "description" : "Too many requests."
           },
@@ -363,16 +373,6 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PaymentPositionsInfo"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Malformed request.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -426,8 +426,15 @@
           "required" : true
         },
         "responses" : {
-          "401" : {
-            "description" : "Wrong or missing function key."
+          "400" : {
+            "description" : "Malformed request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "409" : {
             "description" : "Conflict: duplicate debt position found.",
@@ -449,15 +456,8 @@
               }
             }
           },
-          "400" : {
-            "description" : "Malformed request.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+          "401" : {
+            "description" : "Wrong or missing function key."
           },
           "500" : {
             "description" : "Service unavailable.",
@@ -500,11 +500,8 @@
           }
         } ],
         "responses" : {
-          "401" : {
-            "description" : "Wrong or missing function key."
-          },
-          "409" : {
-            "description" : "Conflict: debt position is not in publishable state.",
+          "404" : {
+            "description" : "No debt position found.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -512,6 +509,9 @@
                 }
               }
             }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key."
           },
           "200" : {
             "description" : "Request published.",
@@ -523,8 +523,8 @@
               }
             }
           },
-          "404" : {
-            "description" : "No debt position found.",
+          "409" : {
+            "description" : "Conflict: debt position is not in publishable state.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -574,8 +574,15 @@
           }
         } ],
         "responses" : {
-          "401" : {
-            "description" : "Wrong or missing function key."
+          "404" : {
+            "description" : "No debt position found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "409" : {
             "description" : "Conflict: debt position is not in invalidable state.",
@@ -587,22 +594,15 @@
               }
             }
           },
+          "401" : {
+            "description" : "Wrong or missing function key."
+          },
           "200" : {
             "description" : "Request published.",
             "content" : {
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PaymentPositionModel"
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "No debt position found.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -631,9 +631,6 @@
         "summary" : "Return OK if application is started",
         "operationId" : "healthCheck",
         "responses" : {
-          "401" : {
-            "description" : "Wrong or missing function key."
-          },
           "200" : {
             "description" : "OK.",
             "content" : {
@@ -646,6 +643,9 @@
           },
           "403" : {
             "description" : "Forbidden."
+          },
+          "401" : {
+            "description" : "Wrong or missing function key."
           },
           "500" : {
             "description" : "Service unavailable.",
