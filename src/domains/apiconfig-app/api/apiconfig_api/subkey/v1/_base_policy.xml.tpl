@@ -28,6 +28,8 @@
             </allowed-headers>
         </cors>
         <base />
+        <set-backend-service base-url="https://${hostname}/pagopa-api-config-service/o" />
+
         <choose>
             <!-- Mock response for ibans/enhanced -->
             <when condition="@(${addMockResp} && context.Request.Method == "GET" && context.Request.Url.Path.Contains("ibans/enhanced"))">
