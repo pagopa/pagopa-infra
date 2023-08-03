@@ -260,11 +260,11 @@ variable "cosmos_mongo_db_fdr_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
-    enable_serverless  = bool
-    enable_autoscaling = bool
-    throughput         = number
-    max_throughput     = number
-    container_default_ttl = number
+    enable_serverless                 = bool
+    enable_autoscaling                = bool
+    throughput                        = number
+    max_throughput                    = number
+    container_default_ttl             = number
   })
 }
 
@@ -291,11 +291,11 @@ variable "cosmos_mongo_db_fdr_re_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
-    enable_serverless  = bool
-    enable_autoscaling = bool
-    throughput         = number
-    max_throughput     = number
-    container_default_ttl = number
+    enable_serverless                 = bool
+    enable_autoscaling                = bool
+    throughput                        = number
+    max_throughput                    = number
+    container_default_ttl             = number
   })
 }
 # Storage account
@@ -383,14 +383,14 @@ variable "fdr_re_storage_account" {
 
 variable "reporting_fdr_storage_account" {
   type = object({
-    advanced_threat_protection    = bool
-    blob_versioning_enabled       = bool
-    blob_delete_retention_days    = number
+    advanced_threat_protection = bool
+    blob_versioning_enabled    = bool
+    blob_delete_retention_days = number
   })
 
   default = {
-    advanced_threat_protection    = false
-    blob_versioning_enabled       = false
-    blob_delete_retention_days    = 30
+    advanced_threat_protection = false
+    blob_versioning_enabled    = false
+    blob_delete_retention_days = 30
   }
 }

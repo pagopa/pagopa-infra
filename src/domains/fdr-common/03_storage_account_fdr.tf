@@ -27,7 +27,7 @@ module "fdr_conversion_sa" {
 }
 
 resource "azurerm_private_endpoint" "fdr_blob_private_endpoint" {
-  count               = var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : 1
 
   name                = format("%s-blob-private-endpoint", local.project)
   location            = var.location
@@ -55,7 +55,7 @@ resource "azurerm_private_endpoint" "fdr_blob_private_endpoint" {
 
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
 resource "azurerm_private_endpoint" "fdr_queue_private_endpoint" {
-  count               = var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : 1
 
   name                = format("%s-queue-private-endpoint", local.project)
   location            = var.location
@@ -83,14 +83,14 @@ resource "azurerm_private_endpoint" "fdr_queue_private_endpoint" {
 
 ## share xml file
 resource "azurerm_storage_container" "xml_blob_file" {
-  name                  = "${module.fdr_conversion_sa.name}xmlsharefile"
+  name                  = "xmlsharefile"
   storage_account_name  = module.fdr_conversion_sa.name
   container_access_type = "private"
 }
 
 # send id of fdr mongo collection
 resource "azurerm_storage_queue" "flow_id_send_queue" {
-  name                 = "${module.fdr_conversion_sa.name}flowidsendqueue"
+  name                 = "flowidsendqueue"
   storage_account_name = module.fdr_conversion_sa.name
 }
 

@@ -871,7 +871,7 @@
             "description": "Name of the payment notice issuer",
             "type": "string",
             "minLength": 1,
-            "maxLength": 70
+            "maxLength": 140
           },
           "description": {
             "description": "Payment notice description",
