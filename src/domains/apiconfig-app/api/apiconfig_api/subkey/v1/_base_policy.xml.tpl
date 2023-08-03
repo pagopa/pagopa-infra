@@ -28,7 +28,7 @@
             </allowed-headers>
         </cors>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-api-config-service/o" />
+        <set-backend-service base-url="https://${hostname}/pagopa-api-config-core-service/o" />
 
         <choose>
             <!-- Mock response for ibans/enhanced -->
