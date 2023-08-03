@@ -7,7 +7,7 @@ data "azurerm_cosmosdb_account" "mongo_ndp_re_account" {
 data "azurerm_cosmosdb_mongo_database" "nodo_re" {
   name                = "nodo_re"
   resource_group_name = format("%s-db-rg", local.project)
-  account_name        = format("%s-cosmos-account", local.project)
+  account_name        = format("%s-re-cosmos-account", local.project)
 }
 
 # info for event hub
