@@ -137,7 +137,7 @@ nodo_storico_allowed_ips     = ["93.63.219.230"]
 cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
 
 cosmos_mongo_db_nodo_re_params = {
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000

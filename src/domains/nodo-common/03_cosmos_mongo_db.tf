@@ -1,18 +1,3 @@
-module "cosmosdb_nodo_re_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
-  name                 = "${local.project}-cosmosb-snet"
-  address_prefixes     = var.cidr_subnet_cosmosdb_nodo_re
-  resource_group_name  = local.vnet_resource_group_name
-  virtual_network_name = local.vnet_name
-
-  private_link_service_network_policies_enabled = true
-
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-  ]
-}
-
 module "cosmosdb_account_mongodb" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.1"
   domain              = var.domain
