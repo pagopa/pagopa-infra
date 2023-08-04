@@ -35,6 +35,12 @@
           "schema" : {
             "type" : "string"
           }
+        }, {
+          "name" : "deleteOnlyByKey",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          }
         } ],
         "responses" : {
           "200" : {

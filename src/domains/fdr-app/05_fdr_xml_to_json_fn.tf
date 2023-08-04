@@ -33,7 +33,7 @@ locals {
 
     STORAGE_ACCOUNT_CONN_STRING        = data.azurerm_storage_account.fdr_storage_account.primary_connection_string
     FDR_NEW_BASE_URL                   = var.env == "prod" ? "https://api.platform.pagopa.it/fdr/service-internal/v1" : "https://api.${var.env}.platform.pagopa.it/fdr/service-internal/v1"
-    FDR_NEW_API_KEY                    = data.azurerm_key_vault_secret.fdr_product_subscription_key.id
+    FDR_NEW_API_KEY                    = data.azurerm_key_vault_secret.fdr_product_subscription_key.value
     ADD_PAYMENT_REQUEST_PARTITION_SIZE = "1000"
     TABLE_STORAGE_CONN_STRING          = data.azurerm_storage_account.fdr_storage_account.primary_connection_string
     TABLE_STORAGE_TABLE_NAME           = "xmlsharefileerror"
