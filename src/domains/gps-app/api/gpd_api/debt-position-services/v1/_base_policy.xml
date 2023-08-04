@@ -8,6 +8,8 @@
 <!--            return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;-->
 <!--        }" />-->
         <base />
+        <!-- rate limit by subscription key -->
+        <rate-limit calls="300" renewal-period="10" remaining-calls-variable-name="remainingCallsPerSubscription"/>
         <!--
             subset/restriced api of src/core/api/gpd_api/v1/_openapi.json.tpl (INTERNAL) without /organizations/{organizationfiscalcode}
         -->
