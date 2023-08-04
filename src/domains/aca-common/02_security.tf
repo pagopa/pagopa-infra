@@ -123,3 +123,15 @@ resource "azurerm_key_vault_secret" "aca-load-test-api-key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
