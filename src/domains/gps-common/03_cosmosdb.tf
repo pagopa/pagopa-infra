@@ -146,5 +146,7 @@ resource "azurerm_cosmosdb_table" "payments_receipts_table" {
   name                = "gpdpaymentsreceiptstable"
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gpd_payments_cosmosdb_account.name
-  throughput          = (var.env_short != "p" ? 5000 : 20000)
+  autoscale_settings  {
+    max_throughput  = (var.env_short != "p" ? 1000 : 3000)
+  }
 }
