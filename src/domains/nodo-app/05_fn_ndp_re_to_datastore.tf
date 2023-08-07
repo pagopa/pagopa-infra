@@ -48,6 +48,12 @@ resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
   tags = var.tags
 }
 
+# info for cosmosdb nosql
+data "azurerm_cosmosdb_account" "nodo_re_cosmosdb_nosql" {
+  name                = "${local.project}-re-cosmos-nosql-account"
+  resource_group_name = format("%s-db-rg", local.project)
+}
+
 locals {
   function_re_to_datastore_app_settings = {
     linux_fx_version               = "JAVA|11"
@@ -68,7 +74,8 @@ locals {
     DOCKER_REGISTRY_SERVER_USERNAME = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
     DOCKER_REGISTRY_SERVER_PASSWORD = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
-    COSMOS_CONN_STRING        = "mongodb://${local.project}-re-cosmos-account:${data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key}@${local.project}-re-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${local.project}-re-cosmos-account@"
+#    COSMOS_CONN_STRING        = "mongodb://${local.project}-re-cosmos-account:${data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key}@${local.project}-re-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${local.project}-re-cosmos-account@"
+    COSMOS_CONN_STRING        = "AccountEndpoint=https://${local.project}-re-cosmos-nosql-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.primary_key}"
     COSMOS_DB_NAME            = data.azurerm_cosmosdb_mongo_database.nodo_re.name
     COSMOS_DB_COLLECTION_NAME = "events"
 

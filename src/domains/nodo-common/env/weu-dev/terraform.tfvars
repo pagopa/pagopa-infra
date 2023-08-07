@@ -135,6 +135,30 @@ cosmos_mongo_db_params = {
 
 }
 
+cosmos_nosql_db_params = {
+  enabled      = true
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                    = "4.0"
+  main_geo_location_zone_redundant  = false
+  enable_free_tier                  = false
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
+
+  backup_continuous_enabled         = false
+
+  events_ttl                        = 2629800 # 1 month in second
+  max_throughput                    = 1000
+}
+
 cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
 
 cosmos_mongo_db_nodo_re_params = {
