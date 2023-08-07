@@ -66,13 +66,13 @@ apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spa
 
 # fdr re
 fdr_re_function = {
-  always_on                     = true
-  kind                          = "Linux"
-  sku_size                      = "B1"
-  sku_tier                      = "Basic"
-  maximum_elastic_worker_count  = 0
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
 }
-fdr_re_function_subnet          = ["10.1.181.0/24"]
+fdr_re_function_subnet                   = ["10.1.181.0/24"]
 fdr_re_function_network_policies_enabled = true
 fdr_re_function_autoscale = {
   default = 1
@@ -81,14 +81,14 @@ fdr_re_function_autoscale = {
 }
 
 # fdr xml to json
-fdr_xml_to_json_function_subnet          = ["10.1.182.0/24"]
+fdr_xml_to_json_function_subnet                   = ["10.1.182.0/24"]
 fdr_xml_to_json_function_network_policies_enabled = true
 fdr_xml_to_json_function = {
-  always_on                     = true
-  kind                          = "Linux"
-  sku_size                      = "B1"
-  sku_tier                      = "Basic"
-  maximum_elastic_worker_count  = 0
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
 }
 
 fdr_xml_to_json_function_autoscale = {
