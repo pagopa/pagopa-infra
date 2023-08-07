@@ -12,6 +12,8 @@
 <!--                </return-response>-->
 <!--            </when>-->
 <!--        </choose>-->
+        <!-- rate limit by subscription key -->
+        <rate-limit calls="300" renewal-period="10" remaining-calls-variable-name="remainingCallsPerSubscription"/>
         <set-query-parameter name="pageNum" exists-action="skip">
             <value>0</value>
         </set-query-parameter>

@@ -73,11 +73,6 @@ data "azurerm_function_app" "reporting_service" {
   resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
 }
 
-data "azurerm_linux_function_app" "gpd" {
-  name                = format("%s-%s-app-gpd", var.prefix, var.env_short)
-  resource_group_name = format("%s-%s-gpd-rg", var.prefix, var.env_short)
-}
-
 data "azurerm_linux_function_app" "mockec" {
   count               = var.env_short != "p" ? 1 : 0
   name                = format("%s-%s-app-mock-ec", var.prefix, var.env_short)
@@ -135,6 +130,8 @@ module "apim_api_statuspage_api_v1" {
       "mocker"                = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
       "pdfengine"             = format("%s/pagopa-pdf-engine", format(local.aks_path, "shared"))
       "receiptpdfdatastore"   = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
+      "receiptpdfnotifier"    = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
+      "receiptpdfservice"     = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
     }), "\"", "\\\"")
   })
 }

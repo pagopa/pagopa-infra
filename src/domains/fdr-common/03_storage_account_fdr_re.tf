@@ -27,7 +27,7 @@ module "fdr_re_sa" {
 }
 
 resource "azurerm_private_endpoint" "fdr_re_blob_private_endpoint" {
-  count               = var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : 1
 
   name                = format("%s-re-blob-private-endpoint", local.project)
   location            = var.location
@@ -54,7 +54,7 @@ resource "azurerm_private_endpoint" "fdr_re_blob_private_endpoint" {
 }
 
 resource "azurerm_private_endpoint" "fdr_re_table_private_endpoint" {
-  count               = var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : 1
 
   name                = format("%s-re-table-private-endpoint", local.project)
   location            = var.location
@@ -82,14 +82,14 @@ resource "azurerm_private_endpoint" "fdr_re_table_private_endpoint" {
 
 ## share xml file
 resource "azurerm_storage_container" "payload_blob_file" {
-  name                  = "${module.fdr_re_sa.name}payload"
+  name                  = "payload"
   storage_account_name  = module.fdr_re_sa.name
   container_access_type = "private"
 }
 
 # table#1 fdr-re
 resource "azurerm_storage_table" "fdr_re_table" {
- name                 = "events"
- storage_account_name = module.fdr_re_sa.name
+  name                 = "events"
+  storage_account_name = module.fdr_re_sa.name
 }
 
