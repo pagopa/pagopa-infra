@@ -1,8 +1,5 @@
-resource "azurerm_resource_group" "taxonomy_rg" {
-  name     = "${local.project}-rg"
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "taxonomy_rg" {
+  name = "${local.project}-rg"
 }
 
 module "taxonomy_sa" {
@@ -14,7 +11,7 @@ module "taxonomy_sa" {
   account_replication_type        = var.taxonomy_storage_account.account_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.taxonomy_storage_account.blob_versioning_enabled
-  resource_group_name             = azurerm_resource_group.taxonomy_rg.name
+  resource_group_name             = data.azurerm_resource_group.taxonomy_rg.name
   location                        = var.location
   advanced_threat_protection      = var.taxonomy_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
@@ -31,7 +28,7 @@ resource "azurerm_private_endpoint" "taxonomy_blob_private_endpoint" {
 
   name                = format("%s-blob-private-endpoint", local.project)
   location            = var.location
-  resource_group_name = azurerm_resource_group.taxonomy_rg.name
+  resource_group_name = data.azurerm_resource_group.taxonomy_rg.name
   subnet_id           = module.taxonomy_storage_snet[0].id
 
   private_dns_zone_group {

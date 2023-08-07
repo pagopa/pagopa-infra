@@ -77,7 +77,7 @@ cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
 cidr_subnet_authorizer_cosmosdb   = ["10.1.168.0/24"]
 cidr_subnet_loadtest_agent        = ["10.1.159.0/24"]
 
-cidr_subnet_storage_account = ["10.1.179.0/24"]
+cidr_subnet_storage_account = ["10.1.183.0/24"]
 taxonomy_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"

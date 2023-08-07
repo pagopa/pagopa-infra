@@ -1,11 +1,7 @@
-
-
 data "azurerm_storage_account" "shared_storage_account" {
   name                = replace("${local.project}-sa", "-", "")
   resource_group_name = data.azurerm_resource_group.shared_rg.name
 }
-
-
 
 locals {
   taxonomy_docker_settings = {
@@ -82,7 +78,7 @@ module "taxonomy_function" {
     zone_balancing_enabled       = false
   }
 
-  storage_account_name = replace(format("%s-taxonomy-sa", local.project), "-", "")
+  storage_account_name = replace(format("%s-txn-sa", local.project), "-", "")
 
   app_settings = local.function_taxonomy_app_settings
 
