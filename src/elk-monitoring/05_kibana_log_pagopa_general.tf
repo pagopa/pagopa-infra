@@ -1,7 +1,7 @@
 #################################### [PAGOPA] ####################################
 locals {
   pagopa_key    = "pagopa"
-  pipeline_name = "json_parser"
+  pipeline_name = "pagopa_json_parser"
 
   pagopa_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/${local.pagopa_key}/space.json", {
     name = "${local.pagopa_key}"
