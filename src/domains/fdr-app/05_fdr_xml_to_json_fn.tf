@@ -14,12 +14,12 @@ data "azurerm_storage_account" "fdr_storage_account" {
 
 locals {
   function_xml_to_json_app_settings = {
-    linux_fx_version                    = "JAVA|11"
-    FUNCTIONS_WORKER_RUNTIME            = "java"
-    FUNCTIONS_WORKER_PROCESS_COUNT      = 4
+    linux_fx_version               = "JAVA|11"
+    FUNCTIONS_WORKER_RUNTIME       = "java"
+    FUNCTIONS_WORKER_PROCESS_COUNT = 4
     // Keepalive fields are all optionals
-    FETCH_KEEPALIVE_ENABLED             = "true"
-    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
+    FETCH_KEEPALIVE_ENABLED           = "true"
+    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL = "110000"
 
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
@@ -43,7 +43,7 @@ locals {
   xml_to_json_docker_settings = {
     IMAGE_NAME = "pagopafdrxmltojson"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL = "https://${data.azurerm_container_registry.acr.login_server}"
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
@@ -76,7 +76,7 @@ module "fdr_xml_to_json_function" {
   }
 
   #sticky_connection_string_names = ["COSMOS_CONN_STRING"]
-  client_certificate_mode        = "Optional"
+  client_certificate_mode = "Optional"
 
   cors = {
     allowed_origins = []
