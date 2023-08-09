@@ -1,3 +1,8 @@
+data "azurerm_redis_cache" "redis_cache" {
+  name                = format("%s-%s-redis", var.prefix, var.env_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
 resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
@@ -124,6 +129,14 @@ resource "azurerm_key_vault_secret" "authorizer_cosmos_key" {
 
   key_vault_id = module.key_vault.id
 
+}
+
+resource "azurerm_key_vault_secret" "redis_password" {
+  name         = "redis-password"
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
 }
 
 # https://api.dev.platform.pagopa.it/shared/authorizer/v1
