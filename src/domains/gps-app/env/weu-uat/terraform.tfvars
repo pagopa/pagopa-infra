@@ -52,8 +52,8 @@ cidr_subnet_gpd                 = ["10.1.138.0/24"]
 reporting_function = false
 reporting_functions_app_sku = {
   kind     = "Linux"
-  sku_tier = "Basic"
-  sku_size = "B1"
+  sku_tier = "PremiumV3" # Basic
+  sku_size = "P1v3" # B1
 }
 
 cname_record_name = "config"

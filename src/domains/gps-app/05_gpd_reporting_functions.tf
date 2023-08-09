@@ -183,7 +183,8 @@ module "reporting_batch_function" {
 }
 
 module "reporting_batch_function_slot_staging" {
-  count = var.env_short == "p" ? 1 : 0
+#  count = var.env_short == "p" ? 1 : 0
+  count = var.env_short == "d" ? 0 : 1
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
 
@@ -273,7 +274,8 @@ module "reporting_service_function" {
 }
 
 module "reporting_service_function_slot_staging" {
-  count = var.env_short == "p" ? 1 : 0
+  #  count = var.env_short == "p" ? 1 : 0
+  count = var.env_short == "d" ? 0 : 1
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
 
