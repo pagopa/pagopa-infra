@@ -19,9 +19,9 @@ module "taxonomy_function_snet" {
 
   service_endpoints = [
     "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage"
   ]
-  
+
   delegation = {
     name = "default"
     service_delegation = {

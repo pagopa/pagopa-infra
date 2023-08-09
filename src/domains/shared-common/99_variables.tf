@@ -233,7 +233,7 @@ variable "taxonomy_storage_account" {
     enable_low_availability_alert = false
   }
 }
-variable "cidr_subnet_storage_account" {
+variable "cidr_subnet_taxonomy_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
 }

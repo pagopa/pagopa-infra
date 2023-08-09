@@ -1,9 +1,14 @@
-data "azurerm_storage_account" "shared_storage_account" {
-  name                = replace("${local.project}-sa", "-", "")
-  resource_group_name = data.azurerm_resource_group.shared_rg.name
+data "azurerm_resource_group" "taxonomy_rg" {
+  name = "${local.project}-${local.taxonomy_label}-rg"
+}
+
+data "azurerm_storage_account" "taxonomy_storage_account" {
+  name                = replace("${local.project}-${local.taxonomy_label}-sa", "-", "")
+  resource_group_name = data.azurerm_resource_group.taxonomy_rg.name
 }
 
 locals {
+  taxonomy_label = "txnm"
   taxonomy_docker_settings = {
     IMAGE_NAME = "pagopataxonomy"
     # ACR
@@ -31,9 +36,10 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
     CSV_URL                            = "https://drive.google.com/uc?id=1vRg7_hQA_7XNG6qULo_y0t_GXtdnIHKw&export=download"
-    STORAGE_ACCOUNT_CONN_STRING        = data.azurerm_storage_account.shared_storage_account.primary_connection_string
-    BLOB_CONTAINER_NAME                = "taxonomy"
-    JSON_NAME                          = "taxonomy.json" 
+    STORAGE_ACCOUNT_CONN_STRING        = data.azurerm_storage_account.taxonomy_storage_account.primary_connection_string
+    INPUT_BLOB_CONTAINER_NAME          = "input"
+    OUTPUT_BLOB_CONTAINER_NAME         = "output"
+    JSON_NAME                          = "taxonomy.json"
   }
 }
 
@@ -41,8 +47,8 @@ locals {
 module "taxonomy_function" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
 
-  resource_group_name = data.azurerm_resource_group.shared_rg.name
-  name                = "${local.project}-taxonomy-fn"
+  resource_group_name = data.azurerm_resource_group.taxonomy_rg.name
+  name                = "${local.project}-${local.taxonomy_label}-fn"
 
   location          = var.location
   health_check_path = "/info"
@@ -69,7 +75,7 @@ module "taxonomy_function" {
     allowed_origins = []
   }
 
-  app_service_plan_name = "${local.project}-taxonomy-fn-plan"
+  app_service_plan_name = "${local.project}-${local.taxonomy_label}-fn-plan"
   app_service_plan_info = {
     kind                         = var.taxonomy_function.kind
     sku_size                     = var.taxonomy_function.sku_size
@@ -78,7 +84,7 @@ module "taxonomy_function" {
     zone_balancing_enabled       = false
   }
 
-  storage_account_name = replace(format("%s-txn-sa", local.project), "-", "")
+  storage_account_name = replace(format("%s-${local.taxonomy_label}-fn-sa", local.project), "-", "")
 
   app_settings = local.function_taxonomy_app_settings
 
@@ -98,7 +104,7 @@ module "taxonomy_function_slot_staging" {
   storage_account_name                     = module.taxonomy_function.storage_account_name
   storage_account_access_key               = module.taxonomy_function.storage_account.primary_access_key
   name                                     = "staging"
-  resource_group_name                      = data.azurerm_resource_group.shared_rg.name
+  resource_group_name                      = data.azurerm_resource_group.taxonomy_rg.name
   location                                 = var.location
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.taxonomy_function.always_on
@@ -126,7 +132,7 @@ module "taxonomy_function_slot_staging" {
 resource "azurerm_monitor_autoscale_setting" "taxonomy_function" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "${module.taxonomy_function.name}-autoscale"
-  resource_group_name = data.azurerm_resource_group.shared_rg.name
+  resource_group_name = data.azurerm_resource_group.taxonomy_rg.name
   location            = var.location
   target_resource_id  = module.taxonomy_function.app_service_plan_id
 

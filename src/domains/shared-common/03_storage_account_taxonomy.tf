@@ -1,17 +1,24 @@
-data "azurerm_resource_group" "taxonomy_rg" {
-  name = "${local.project}-rg"
+locals {
+  taxonomy_label = "txnm"
+}
+
+resource "azurerm_resource_group" "taxonomy_rg" {
+  name     = "${local.project}-${local.taxonomy_label}-rg"
+  location = var.location
+
+  tags = var.tags
 }
 
 module "taxonomy_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
 
-  name                            = replace("${local.project}-sa", "-", "")
+  name                            = replace("${local.project}-${local.taxonomy_label}-sa", "-", "")
   account_kind                    = var.taxonomy_storage_account.account_kind
   account_tier                    = var.taxonomy_storage_account.account_tier
   account_replication_type        = var.taxonomy_storage_account.account_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.taxonomy_storage_account.blob_versioning_enabled
-  resource_group_name             = data.azurerm_resource_group.taxonomy_rg.name
+  resource_group_name             = azurerm_resource_group.taxonomy_rg.name
   location                        = var.location
   advanced_threat_protection      = var.taxonomy_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
@@ -26,18 +33,18 @@ module "taxonomy_sa" {
 resource "azurerm_private_endpoint" "taxonomy_blob_private_endpoint" {
   count = var.env_short == "d" ? 0 : 1
 
-  name                = format("%s-blob-private-endpoint", local.project)
+  name                = "${local.project}-${local.taxonomy_label}-blob-sa-private-endpoint"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.taxonomy_rg.name
+  resource_group_name = azurerm_resource_group.taxonomy_rg.name
   subnet_id           = module.taxonomy_storage_snet[0].id
 
   private_dns_zone_group {
-    name                 = "${local.project}-blob-sa-private-dns-zone-group"
+    name                 = "${local.project}-${local.taxonomy_label}-blob-sa-private-dns-zone-group"
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
   }
 
   private_service_connection {
-    name                           = "${local.project}-blob-sa-private-service-connection"
+    name                           = "${local.project}-${local.taxonomy_label}-blob-sa-private-service-connection"
     private_connection_resource_id = module.taxonomy_sa.id
     is_manual_connection           = false
     subresource_names              = ["blob"]
@@ -50,9 +57,16 @@ resource "azurerm_private_endpoint" "taxonomy_blob_private_endpoint" {
   ]
 }
 
-## share xml file
-resource "azurerm_storage_container" "taxonomy_blob_file" {
-  name                  = "taxonomy"
+## taxonomy input file
+resource "azurerm_storage_container" "taxonomy_input_blob_file" {
+  name                  = "input"
+  storage_account_name  = module.taxonomy_sa.name
+  container_access_type = "private"
+}
+
+## taxonomy output file
+resource "azurerm_storage_container" "taxonomy_output_blob_file" {
+  name                  = "output"
   storage_account_name  = module.taxonomy_sa.name
   container_access_type = "private"
 }

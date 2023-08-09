@@ -231,5 +231,5 @@ variable "taxonomy_function_autoscale" {
     minimum = number
     maximum = number
   })
-  description = "FdR function autoscaling parameters"
+  description = "Taxonomy function autoscaling parameters"
 }
