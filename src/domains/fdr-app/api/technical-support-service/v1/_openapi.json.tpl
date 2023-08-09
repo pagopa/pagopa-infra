@@ -6,7 +6,7 @@
     "version" : "0.0.1"
   },
   "servers" : [ {
-    "url" : "${host}/tenchinal-support/api/v1 - APIM"
+    "url" : "${host}/technical-support/fdr/api/v1"
   } ],
   "tags" : [ {
     "name" : "Info",
@@ -18,9 +18,6 @@
         "tags" : [ "Info" ],
         "summary" : "Get info of FDR",
         "responses" : {
-          "default" : {
-            "$ref" : "#/components/responses/InternalServerError"
-          },
           "200" : {
             "description" : "Success",
             "content" : {
