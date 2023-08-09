@@ -3,7 +3,7 @@ locals {
     display_name          = "Authorizer Configurator - API"
     description           = "API for handle the lyfecycle of the authorization for the platform Authorizer"
     path                  = "shared/authorizer-config"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
@@ -21,9 +21,9 @@ module "apim_authorizer_config_product" {
   resource_group_name = local.pagopa_apim_rg
 
   published             = true
-  subscription_required = true
+  subscription_required = local.apim_authorizer_config_api.subscription_required
   approval_required     = false
-  # subscriptions_limit   = 1000
+  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")
 }
