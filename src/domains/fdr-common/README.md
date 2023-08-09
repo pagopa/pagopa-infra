@@ -43,6 +43,7 @@
 | [azurerm_private_endpoint.fdr_queue_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.fdr_re_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.fdr_re_table_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.fdr_table_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.fdr_re_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/resource_group) | resource |
@@ -55,6 +56,7 @@
 | [azurerm_storage_management_policy.storage_account_fdr_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/storage_management_policy) | resource |
 | [azurerm_storage_queue.flow_id_send_queue](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/storage_queue) | resource |
 | [azurerm_storage_table.fdr_re_table](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/storage_table) | resource |
+| [azurerm_storage_table.xml_share_file_error_table](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/storage_table) | resource |
 | [null_resource.change_auth_fdr_blob_container](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |

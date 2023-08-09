@@ -31,7 +31,7 @@ dns_zone_internal_prefix = "internal.dev.platform"
 cidr_subnet_flex_dbms = ["10.1.160.0/24"]
 
 ## CIDR storage subnet
-cidr_subnet_storage_account = ["10.1.137.16/29"]
+cidr_subnet_storage_account                                        = ["10.1.137.16/29"]
 storage_account_snet_private_link_service_network_policies_enabled = false
 
 pgres_flex_params = {

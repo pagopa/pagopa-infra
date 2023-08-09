@@ -26,7 +26,7 @@ module "fdr_re_function_snet" {
     "Microsoft.Web",
     "Microsoft.AzureCosmosDB",
   ]
-  
+
   delegation = {
     name = "default"
     service_delegation = {
@@ -48,7 +48,7 @@ module "fdr_xml_to_json_function_snet" {
     "Microsoft.Web",
     "Microsoft.AzureCosmosDB",
   ]
-  
+
   delegation = {
     name = "default"
     service_delegation = {
