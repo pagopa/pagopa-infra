@@ -265,6 +265,11 @@ variable "cidr_subnet_cosmosdb_nodo_re" {
   description = "Cosmos DB address space for nodo re."
 }
 
+variable "cidr_subnet_cosmosdb_nosql_nodo_re" {
+  type        = list(string)
+  description = "CosmosDB NoSQL address space for Nodo RE."
+}
+
 variable "cosmos_mongo_db_params" {
   type = object({
     enabled        = bool
@@ -304,7 +309,6 @@ variable "cosmos_mongo_db_nodo_re_params" {
 
 variable "cosmos_nosql_db_params" {
   type = object({
-    enabled        = bool
     capabilities   = list(string)
     offer_type     = string
     server_version = string
@@ -316,7 +320,6 @@ variable "cosmos_nosql_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
