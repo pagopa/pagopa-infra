@@ -23,7 +23,7 @@
   "paths" : {
     "/authorizations" : {
       "get" : {
-        "operationId" : "getAuthorizations_2",
+        "operationId" : "getAuthorizations_1",
         "parameters" : [ {
           "description" : "The domain on which the authorizations will be filtered.",
           "in" : "query",
@@ -589,7 +589,7 @@
     },
     "/cachedauthorizations" : {
       "get" : {
-        "operationId" : "getAuthorizations_1",
+        "operationId" : "getAuthorizations",
         "parameters" : [ {
           "description" : "The domain on which the authorizations will be filtered.",
           "in" : "query",
@@ -913,9 +913,9 @@
     },
     "/organizations/domains/{domain}" : {
       "get" : {
-        "operationId" : "getAuthorizations",
+        "operationId" : "getEnrolledOrganizations",
         "parameters" : [ {
-          "description" : "The domain on which the authorizations will be filtered.",
+          "description" : "The domain on which the organizations will be filtered.",
           "in" : "path",
           "name" : "domain",
           "required" : true,
@@ -997,7 +997,113 @@
         "security" : [ {
           "ApiKey" : [ ]
         } ],
-        "summary" : "Get list of enrolled organizations",
+        "summary" : "Get list of organizations enrolled to a specific domain",
+        "tags" : [ "Enrolled Orgs" ]
+      },
+      "parameters" : [ {
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "in" : "header",
+        "name" : "X-Request-Id",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/organizations/{organizationfiscalcode}/domains/{domain}" : {
+      "get" : {
+        "operationId" : "getStationsForEnrolledOrganizations",
+        "parameters" : [ {
+          "description" : "The enrolled organization on which the stations will be extracted.",
+          "in" : "path",
+          "name" : "organizationfiscalcode",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "The domain on which the stations will be filtered.",
+          "in" : "path",
+          "name" : "domain",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EnrolledCreditorInstitutions"
+                }
+              }
+            },
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            },
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ],
+        "summary" : "Get list of stations associated to organizations enrolled to a specific domain",
         "tags" : [ "Enrolled Orgs" ]
       },
       "parameters" : [ {
