@@ -159,6 +159,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "82.112.220.178", # Softlab L1 Pagamenti VPN
     "77.43.17.42",    # Softlab L1 Pagamenti VPN
     "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "87.13.148.2",    # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
   ]
