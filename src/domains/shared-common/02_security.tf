@@ -53,6 +53,23 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   ]
 }
 
+resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
+  count = var.env_short != "p" ? 1 : 0
+
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_externals.object_id
+
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
+  ]
+}
+
 resource "azurerm_key_vault_secret" "iuv_generator_cosmos_connection_string" {
   name = "iuv-generator-cosmos-primary-connection-string"
   // the array is related to the input box in the following section https://portal.azure.com/#@pagopait.onmicrosoft.com/resource/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-shared-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-d-weu-shared-iuv-gen-cosmos-account/tableKeys

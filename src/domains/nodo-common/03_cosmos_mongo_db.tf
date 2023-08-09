@@ -111,8 +111,8 @@ module "cosmosdb_nodo_re_collections" {
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.nodo_re.name
 
-  indexes     = each.value.indexes
-  shard_key   = each.value.shard_key
+  indexes   = each.value.indexes
+  shard_key = each.value.shard_key
 
   default_ttl_seconds = var.cosmos_mongo_db_nodo_re_params.events_ttl
 
