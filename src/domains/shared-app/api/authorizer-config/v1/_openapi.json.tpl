@@ -1,49 +1,281 @@
 {
   "openapi" : "3.0.1",
   "info" : {
+    "title" : "platform-authorizer-config",
     "description" : "A microservice that provides a set of APIs to manage authorization records for the Authorizer system.",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "title" : "platform-authorizer-config",
-    "version" : "0.0.1"
+    "version" : "0.0.2"
   },
   "servers" : [ {
-    "url": "${host}",
+    "url" : "{host}",
     "description" : "Generated server url"
   } ],
   "tags" : [ {
-    "description" : "Everything about enrolled organizations",
-    "name" : "Enrolled Orgs"
+    "name" : "Cached Authorizations",
+    "description" : "Everything about cached authorizations"
   }, {
-    "description" : "Everything about cached authorizations",
-    "name" : "Cached Authorizations"
-  }, {
-    "description" : "Everything about authorizations",
-    "name" : "Authorizations"
+    "name" : "Authorizations",
+    "description" : "Everything about authorizations"
   } ],
   "paths" : {
-    "/authorizations" : {
+    "/authorizations/{authorizationId}" : {
       "get" : {
-        "operationId" : "getAuthorizations_1",
+        "tags" : [ "Authorizations" ],
+        "summary" : "Get authorization by identifier",
+        "operationId" : "getAuthorization",
         "parameters" : [ {
-          "description" : "The domain on which the authorizations will be filtered.",
-          "in" : "query",
+          "name" : "authorizationId",
+          "in" : "path",
+          "description" : "The identifier of the stored authorization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "Not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Authorizations"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "429" : {
+            "description" : "Too many requests"
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "Authorizations" ],
+        "summary" : "Update existing authorization",
+        "operationId" : "updateAuthorization",
+        "parameters" : [ {
+          "name" : "authorizationId",
+          "in" : "path",
+          "description" : "The identifier of the stored authorization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Authorization"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "404" : {
+            "description" : "Not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Authorizations"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "429" : {
+            "description" : "Too many requests"
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "Authorizations" ],
+        "summary" : "Delete existing authorization",
+        "operationId" : "deleteAuthorization",
+        "parameters" : [ {
+          "name" : "authorizationId",
+          "in" : "path",
+          "description" : "The identifier of the stored authorization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "Not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "429" : {
+            "description" : "Too many requests"
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      }
+    },
+    "/cachedauthorizations/{domain}/refresh" : {
+      "post" : {
+        "tags" : [ "Cached Authorizations" ],
+        "summary" : "Refresh cached authorizations by domain",
+        "operationId" : "refreshCachedAuthorizations",
+        "parameters" : [ {
           "name" : "domain",
+          "in" : "path",
+          "description" : "The domain on which the authorizations will be filtered.",
           "required" : true,
           "schema" : {
             "type" : "string"
           }
         }, {
-          "description" : "The identifier of the authorizations' owner.",
-          "in" : "query",
           "name" : "ownerId",
+          "in" : "query",
+          "description" : "The identifier of the authorizations' owner.",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "description" : "Service unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : { }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "429" : {
+            "description" : "Too many requests"
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      }
+    },
+    "/authorizations" : {
+      "get" : {
+        "tags" : [ "Authorizations" ],
+        "summary" : "Get authorization list",
+        "operationId" : "getAuthorizations_1",
+        "parameters" : [ {
+          "name" : "domain",
+          "in" : "query",
+          "description" : "The domain on which the authorizations will be filtered.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "ownerId",
+          "in" : "query",
+          "description" : "The identifier of the authorizations' owner.",
           "required" : false,
           "schema" : {
             "type" : "string"
           }
         }, {
-          "description" : "The number of elements to be included in the page.",
-          "in" : "query",
           "name" : "limit",
+          "in" : "query",
+          "description" : "The number of elements to be included in the page.",
           "required" : true,
           "schema" : {
             "maximum" : 999,
@@ -52,9 +284,9 @@
             "default" : 10
           }
         }, {
-          "description" : "The index of the page, starting from 0.",
-          "in" : "query",
           "name" : "page",
+          "in" : "query",
+          "description" : "The index of the page, starting from 0.",
           "required" : true,
           "schema" : {
             "minimum" : 0,
@@ -64,91 +296,43 @@
           }
         } ],
         "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Authorizations"
-                }
-              }
-            },
-            "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
           "500" : {
+            "description" : "Service unavailable",
             "content" : {
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
+            }
+          },
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
                 "schema" : {
-                  "type" : "string"
+                  "$ref" : "#/components/schemas/Authorizations"
                 }
               }
             }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "429" : {
+            "description" : "Too many requests"
           }
         },
         "security" : [ {
           "ApiKey" : [ ]
-        } ],
-        "summary" : "Get authorization list",
-        "tags" : [ "Authorizations" ]
+        } ]
       },
-      "parameters" : [ {
-        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-        "in" : "header",
-        "name" : "X-Request-Id",
-        "schema" : {
-          "type" : "string"
-        }
-      } ],
       "post" : {
+        "tags" : [ "Authorizations" ],
+        "summary" : "Create new authorization",
         "operationId" : "createAuthorization",
         "requestBody" : {
           "content" : {
@@ -161,455 +345,127 @@
           "required" : true
         },
         "responses" : {
+          "500" : {
+            "description" : "Service unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "200" : {
+            "description" : "OK",
             "content" : {
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/Authorizations"
                 }
               }
-            },
-            "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
             }
           },
           "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
+            "description" : "Unauthorized"
           },
           "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
+            "description" : "Forbidden"
           },
           "409" : {
+            "description" : "Conflict",
             "content" : {
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Conflict",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
                 }
               }
             }
           },
           "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "500" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
+            "description" : "Too many requests"
           }
         },
         "security" : [ {
           "ApiKey" : [ ]
-        } ],
-        "summary" : "Create new authorization",
-        "tags" : [ "Authorizations" ]
+        } ]
       }
     },
-    "/authorizations/{authorizationId}" : {
-      "delete" : {
-        "operationId" : "deleteAuthorization",
-        "parameters" : [ {
-          "description" : "The identifier of the stored authorization.",
-          "in" : "path",
-          "name" : "authorizationId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "404" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Not found",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "500" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ],
-        "summary" : "Delete existing authorization",
-        "tags" : [ "Authorizations" ]
-      },
+    "/info" : {
       "get" : {
-        "operationId" : "getAuthorization",
-        "parameters" : [ {
-          "description" : "The identifier of the stored authorization.",
-          "in" : "path",
-          "name" : "authorizationId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
+        "tags" : [ "Home" ],
+        "summary" : "Return OK if application is started",
+        "operationId" : "healthCheck",
         "responses" : {
           "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Authorizations"
-                }
-              }
-            },
             "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "404" : {
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Not found",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
+                  "$ref" : "#/components/schemas/AppInfo"
                 }
               }
             }
           },
           "500" : {
+            "description" : "Service unavailable",
             "content" : {
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ],
-        "summary" : "Get authorization by identifier",
-        "tags" : [ "Authorizations" ]
-      },
-      "parameters" : [ {
-        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-        "in" : "header",
-        "name" : "X-Request-Id",
-        "schema" : {
-          "type" : "string"
-        }
-      } ],
-      "put" : {
-        "operationId" : "updateAuthorization",
-        "parameters" : [ {
-          "description" : "The identifier of the stored authorization.",
-          "in" : "path",
-          "name" : "authorizationId",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Authorization"
-              }
             }
           },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
+          "400" : {
+            "description" : "Bad Request",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Authorizations"
-                }
-              }
-            },
-            "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
           "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
+            "description" : "Unauthorized"
           },
           "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "404" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Not found",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
+            "description" : "Forbidden"
           },
           "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "500" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
+            "description" : "Too many requests"
           }
         },
         "security" : [ {
           "ApiKey" : [ ]
-        } ],
-        "summary" : "Update existing authorization",
-        "tags" : [ "Authorizations" ]
+        } ]
       }
     },
     "/cachedauthorizations" : {
       "get" : {
+        "tags" : [ "Cached Authorizations" ],
+        "summary" : "Get cached authorizations",
         "operationId" : "getAuthorizations",
         "parameters" : [ {
-          "description" : "The domain on which the authorizations will be filtered.",
-          "in" : "query",
           "name" : "domain",
+          "in" : "query",
+          "description" : "The domain on which the authorizations will be filtered.",
           "required" : true,
           "schema" : {
             "type" : "string"
           }
         }, {
-          "description" : "The identifier of the authorizations' owner.",
-          "in" : "query",
           "name" : "ownerId",
+          "in" : "query",
+          "description" : "The identifier of the authorizations' owner.",
           "required" : false,
           "schema" : {
             "type" : "string"
           }
         }, {
-          "description" : "The identifier of the authorizations' owner.",
-          "in" : "query",
           "name" : "formatTTL",
+          "in" : "query",
+          "description" : "The identifier of the authorizations' owner.",
           "required" : false,
           "schema" : {
             "type" : "boolean",
@@ -617,551 +473,68 @@
           }
         } ],
         "responses" : {
+          "500" : {
+            "description" : "Service unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "200" : {
+            "description" : "OK",
             "content" : {
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/CachedAuthorizations"
                 }
               }
-            },
-            "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
             }
           },
           "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
+            "description" : "Unauthorized"
           },
           "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
+            "description" : "Forbidden"
           },
           "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "500" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
+            "description" : "Too many requests"
           }
         },
         "security" : [ {
           "ApiKey" : [ ]
-        } ],
-        "summary" : "Get cached authorizations",
-        "tags" : [ "Cached Authorizations" ]
-      },
-      "parameters" : [ {
-        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-        "in" : "header",
-        "name" : "X-Request-Id",
-        "schema" : {
-          "type" : "string"
-        }
-      } ]
-    },
-    "/cachedauthorizations/{domain}/refresh" : {
-      "parameters" : [ {
-        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-        "in" : "header",
-        "name" : "X-Request-Id",
-        "schema" : {
-          "type" : "string"
-        }
-      } ],
-      "post" : {
-        "operationId" : "refreshCachedAuthorizations",
-        "parameters" : [ {
-          "description" : "The domain on which the authorizations will be filtered.",
-          "in" : "path",
-          "name" : "domain",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "The identifier of the authorizations' owner.",
-          "in" : "query",
-          "name" : "ownerId",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : { }
-            },
-            "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "500" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ],
-        "summary" : "Refresh cached authorizations by domain",
-        "tags" : [ "Cached Authorizations" ]
+        } ]
       }
-    },
-    "/info" : {
-      "get" : {
-        "operationId" : "healthCheck",
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/AppInfo"
-                }
-              }
-            },
-            "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "400" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Bad Request",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "500" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ],
-        "summary" : "Return OK if application is started",
-        "tags" : [ "Home" ]
-      },
-      "parameters" : [ {
-        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-        "in" : "header",
-        "name" : "X-Request-Id",
-        "schema" : {
-          "type" : "string"
-        }
-      } ]
-    },
-    "/organizations/domains/{domain}" : {
-      "get" : {
-        "operationId" : "getEnrolledOrganizations",
-        "parameters" : [ {
-          "description" : "The domain on which the organizations will be filtered.",
-          "in" : "path",
-          "name" : "domain",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EnrolledCreditorInstitutions"
-                }
-              }
-            },
-            "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "500" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ],
-        "summary" : "Get list of organizations enrolled to a specific domain",
-        "tags" : [ "Enrolled Orgs" ]
-      },
-      "parameters" : [ {
-        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-        "in" : "header",
-        "name" : "X-Request-Id",
-        "schema" : {
-          "type" : "string"
-        }
-      } ]
-    },
-    "/organizations/{organizationfiscalcode}/domains/{domain}" : {
-      "get" : {
-        "operationId" : "getStationsForEnrolledOrganizations",
-        "parameters" : [ {
-          "description" : "The enrolled organization on which the stations will be extracted.",
-          "in" : "path",
-          "name" : "organizationfiscalcode",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "description" : "The domain on which the stations will be filtered.",
-          "in" : "path",
-          "name" : "domain",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EnrolledCreditorInstitutions"
-                }
-              }
-            },
-            "description" : "OK",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "500" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description" : "Service unavailable",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        } ],
-        "summary" : "Get list of stations associated to organizations enrolled to a specific domain",
-        "tags" : [ "Enrolled Orgs" ]
-      },
-      "parameters" : [ {
-        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-        "in" : "header",
-        "name" : "X-Request-Id",
-        "schema" : {
-          "type" : "string"
-        }
-      } ]
     }
   },
   "components" : {
     "schemas" : {
-      "AppInfo" : {
-        "type" : "object",
-        "properties" : {
-          "dbConnection" : {
-            "type" : "string"
-          },
-          "environment" : {
-            "type" : "string"
-          },
-          "name" : {
-            "type" : "string"
-          },
-          "version" : {
-            "type" : "string"
-          }
-        }
-      },
       "Authorization" : {
         "required" : [ "authorized_entities", "domain", "other_metadata", "owner", "subscription_key" ],
         "type" : "object",
         "properties" : {
-          "authorized_entities" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/AuthorizationEntity"
-            }
-          },
-          "description" : {
+          "id" : {
             "type" : "string"
           },
           "domain" : {
             "type" : "string"
           },
-          "id" : {
+          "subscription_key" : {
             "type" : "string"
           },
-          "inserted_at" : {
+          "description" : {
             "type" : "string"
           },
-          "last_forced_refresh" : {
-            "type" : "string"
+          "owner" : {
+            "$ref" : "#/components/schemas/AuthorizationOwner"
           },
-          "last_update" : {
-            "type" : "string"
+          "authorized_entities" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/AuthorizationEntity"
+            }
           },
           "other_metadata" : {
             "type" : "array",
@@ -1169,10 +542,13 @@
               "$ref" : "#/components/schemas/AuthorizationMetadata"
             }
           },
-          "owner" : {
-            "$ref" : "#/components/schemas/AuthorizationOwner"
+          "inserted_at" : {
+            "type" : "string"
           },
-          "subscription_key" : {
+          "last_update" : {
+            "type" : "string"
+          },
+          "last_forced_refresh" : {
             "type" : "string"
           }
         }
@@ -1217,18 +593,18 @@
         "required" : [ "content", "name", "short_key" ],
         "type" : "object",
         "properties" : {
-          "content" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/AuthorizationGenericKeyValue"
-            }
-          },
           "name" : {
             "type" : "string"
           },
           "short_key" : {
             "pattern" : "_[a-zA-Z0-9]{1,3}",
             "type" : "string"
+          },
+          "content" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/AuthorizationGenericKeyValue"
+            }
           }
         }
       },
@@ -1248,6 +624,28 @@
           }
         }
       },
+      "ProblemJson" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string",
+            "description" : "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          },
+          "status" : {
+            "maximum" : 600,
+            "minimum" : 100,
+            "type" : "integer",
+            "description" : "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format" : "int32",
+            "example" : 200
+          },
+          "detail" : {
+            "type" : "string",
+            "description" : "A human readable explanation specific to this occurrence of the problem.",
+            "example" : "There was an error processing the request"
+          }
+        }
+      },
       "Authorizations" : {
         "required" : [ "authorizations", "page_info" ],
         "type" : "object",
@@ -1260,6 +658,49 @@
           },
           "page_info" : {
             "$ref" : "#/components/schemas/PageInfo"
+          }
+        }
+      },
+      "PageInfo" : {
+        "required" : [ "items_found", "limit", "page", "total_pages" ],
+        "type" : "object",
+        "properties" : {
+          "page" : {
+            "type" : "integer",
+            "description" : "Page number",
+            "format" : "int32"
+          },
+          "limit" : {
+            "type" : "integer",
+            "description" : "Required number of items per page",
+            "format" : "int32"
+          },
+          "items_found" : {
+            "type" : "integer",
+            "description" : "Number of items found. (The last page may have fewer elements than required)",
+            "format" : "int32"
+          },
+          "total_pages" : {
+            "type" : "integer",
+            "description" : "Total number of pages",
+            "format" : "int32"
+          }
+        }
+      },
+      "AppInfo" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "environment" : {
+            "type" : "string"
+          },
+          "dbConnection" : {
+            "type" : "string"
           }
         }
       },
@@ -1291,88 +732,14 @@
             }
           }
         }
-      },
-      "EnrolledCreditorInstitution" : {
-        "type" : "object",
-        "properties" : {
-          "organization_fiscal_code" : {
-            "type" : "string"
-          },
-          "segregation_codes" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }
-      },
-      "EnrolledCreditorInstitutions" : {
-        "required" : [ "creditor_institutions" ],
-        "type" : "object",
-        "properties" : {
-          "creditor_institutions" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/EnrolledCreditorInstitution"
-            }
-          }
-        }
-      },
-      "PageInfo" : {
-        "required" : [ "items_found", "limit", "page", "total_pages" ],
-        "type" : "object",
-        "properties" : {
-          "items_found" : {
-            "type" : "integer",
-            "description" : "Number of items found. (The last page may have fewer elements than required)",
-            "format" : "int32"
-          },
-          "limit" : {
-            "type" : "integer",
-            "description" : "Required number of items per page",
-            "format" : "int32"
-          },
-          "page" : {
-            "type" : "integer",
-            "description" : "Page number",
-            "format" : "int32"
-          },
-          "total_pages" : {
-            "type" : "integer",
-            "description" : "Total number of pages",
-            "format" : "int32"
-          }
-        }
-      },
-      "ProblemJson" : {
-        "type" : "object",
-        "properties" : {
-          "detail" : {
-            "type" : "string",
-            "description" : "A human readable explanation specific to this occurrence of the problem.",
-            "example" : "There was an error processing the request"
-          },
-          "status" : {
-            "maximum" : 600,
-            "minimum" : 100,
-            "type" : "integer",
-            "description" : "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format" : "int32",
-            "example" : 200
-          },
-          "title" : {
-            "type" : "string",
-            "description" : "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          }
-        }
       }
     },
     "securitySchemes" : {
       "ApiKey" : {
+        "type" : "apiKey",
         "description" : "The API key to access this function app.",
-        "in" : "header",
         "name" : "Ocp-Apim-Subscription-Key",
-        "type" : "apiKey"
+        "in" : "header"
       }
     }
   }
