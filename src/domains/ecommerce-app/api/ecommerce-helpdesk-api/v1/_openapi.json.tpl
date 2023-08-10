@@ -142,7 +142,7 @@
           "eCommerce"
         ],
         "operationId": "ecommerceSearchTransaction",
-        "summary": "Search transaction by input parmeters",
+        "summary": "Search transaction by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/EcommerceSearchTransactionRequest"
@@ -219,7 +219,7 @@
           "helpDesk"
         ],
         "operationId": "helpDeskSearchTransaction",
-        "summary": "Search transaction by input parmeters",
+        "summary": "Search transaction by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/SearchTransactionRequest"
@@ -464,7 +464,7 @@
       },
       "UserInfo": {
         "type": "object",
-        "description": "User informations",
+        "description": "User information",
         "properties": {
           "userFiscalCode": {
             "type": "string",
@@ -530,7 +530,7 @@
           "rrn": {
             "type": "string"
           },
-          "authotizationCode": {
+          "authorizationCode": {
             "type": "string"
           },
           "paymentMethodName": {
@@ -633,7 +633,7 @@
         "maximum": 99999999
       },
       "PageInfo": {
-        "description": "Informations about the returned query page",
+        "description": "Information about the returned query page",
         "type": "object",
         "properties": {
           "current": {
