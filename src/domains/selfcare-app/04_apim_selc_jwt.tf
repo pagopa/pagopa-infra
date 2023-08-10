@@ -61,13 +61,15 @@ module "apim_api_selfcare_api_v1" {
   service_url  = local.apim_selfcare_pagopa_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/pagopa-selfcare-ms-backoffice/jwt/v1/_openapi.json.tpl", {
     host     = local.selfcare_hostname
     basePath = "selfcare"
   })
 
-  xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/v1/_base_policy.xml", {
+  xml_content = templatefile("./api/pagopa-selfcare-ms-backoffice/jwt/v1/_base_policy.xml", {
     hostname = local.selfcare_hostname
     origin   = local.selfcare_fe_hostname
   })
 }
+
+

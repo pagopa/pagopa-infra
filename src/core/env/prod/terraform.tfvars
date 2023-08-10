@@ -158,6 +158,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "213.215.138.79", # Softlab L1 Pagamenti VPN
     "82.112.220.178", # Softlab L1 Pagamenti VPN
     "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
   ]
@@ -313,7 +314,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -335,6 +336,12 @@ eventhubs = [
       },
       {
         name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
         listen = true
         send   = false
         manage = false

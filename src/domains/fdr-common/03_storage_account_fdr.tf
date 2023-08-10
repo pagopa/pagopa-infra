@@ -27,11 +27,11 @@ module "fdr_conversion_sa" {
 }
 
 resource "azurerm_private_endpoint" "fdr_blob_private_endpoint" {
-  count               = var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : 1
 
   name                = format("%s-blob-private-endpoint", local.project)
   location            = var.location
-  resource_group_name = azurerm_resource_group.fdr_re_rg.name
+  resource_group_name = azurerm_resource_group.fdr_rg.name
   subnet_id           = module.fdr_storage_snet[0].id
 
   private_dns_zone_group {
@@ -55,11 +55,11 @@ resource "azurerm_private_endpoint" "fdr_blob_private_endpoint" {
 
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
 resource "azurerm_private_endpoint" "fdr_queue_private_endpoint" {
-  count               = var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : 1
 
   name                = format("%s-queue-private-endpoint", local.project)
   location            = var.location
-  resource_group_name = azurerm_resource_group.fdr_re_rg.name
+  resource_group_name = azurerm_resource_group.fdr_rg.name
   subnet_id           = module.fdr_storage_snet[0].id
 
   private_dns_zone_group {
@@ -81,17 +81,50 @@ resource "azurerm_private_endpoint" "fdr_queue_private_endpoint" {
   ]
 }
 
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
+resource "azurerm_private_endpoint" "fdr_table_private_endpoint" {
+  count = var.env_short == "d" ? 0 : 1
+
+  name                = format("%s-table-private-endpoint", local.project)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.fdr_rg.name
+  subnet_id           = module.fdr_storage_snet[0].id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-table-sa-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-table-sa-private-service-connection"
+    private_connection_resource_id = module.fdr_conversion_sa.id
+    is_manual_connection           = false
+    subresource_names              = ["table"]
+  }
+
+  tags = var.tags
+
+  depends_on = [
+    module.fdr_conversion_sa
+  ]
+}
+
 ## share xml file
 resource "azurerm_storage_container" "xml_blob_file" {
-  name                  = "${module.fdr_conversion_sa.name}xmlsharefile"
+  name                  = "xmlsharefile"
   storage_account_name  = module.fdr_conversion_sa.name
   container_access_type = "private"
 }
 
 # send id of fdr mongo collection
 resource "azurerm_storage_queue" "flow_id_send_queue" {
-  name                 = "${module.fdr_conversion_sa.name}flowidsendqueue"
+  name                 = "flowidsendqueue"
   storage_account_name = module.fdr_conversion_sa.name
 }
 
+# table#1 fdr-re
+resource "azurerm_storage_table" "xml_share_file_error_table" {
+  name                 = "xmlsharefileerror"
+  storage_account_name = module.fdr_conversion_sa.name
+}
 
