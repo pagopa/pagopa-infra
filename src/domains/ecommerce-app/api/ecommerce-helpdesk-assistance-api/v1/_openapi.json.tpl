@@ -277,9 +277,6 @@
           "paymentInfo": {
             "$ref": "#/components/schemas/PaymentInfo"
           },
-          "paymentDetailInfo": {
-            "$ref": "#/components/schemas/PaymentDetailInfo"
-          },
           "pspInfo": {
             "$ref": "#/components/schemas/PspInfo"
           },
@@ -288,9 +285,9 @@
           }
         },
         "required": [
+          "userInfo",
           "transactionInfo",
           "paymentInfo",
-          "paymentDetailInfo",
           "pspInfo",
           "product"
         ]
@@ -348,6 +345,9 @@
           "statusDetails": {
             "type": "string"
           },
+          "eventStatus": {
+            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/transactions-api.yaml#/components/schemas/TransactionStatus"
+          },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
@@ -374,6 +374,7 @@
           "creationDate": "2023-08-02T14:42:54.047",
           "status": "status",
           "statusDetails": "status detail",
+          "eventStatus": "NOTIFIED_OK",
           "amount": 100,
           "fee": 10,
           "grandTotal": 110,
@@ -387,16 +388,15 @@
         "type": "object",
         "description": "Payment info",
         "properties": {
-          "subject": {
-            "type": "string"
-          },
           "origin": {
             "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentDetailInfo"
+            }
           }
-        },
-        "example": {
-          "subject": "Causale pagamento",
-          "origin": "CHECKOUT"
         }
       },
       "PaymentDetailInfo": {
@@ -406,11 +406,8 @@
           "iuv": {
             "type": "string"
           },
-          "rptIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "rptId": {
+            "type": "string"
           },
           "idTransaction": {
             "type": "string"
@@ -427,10 +424,7 @@
         },
         "example": {
           "iuv": "302001069073736640",
-          "rptId": [
-            "rptId1",
-            "rptId2"
-          ],
+          "rptId": "rptId",
           "idTransaction": "paymentContextCode",
           "paymentToken": "payment token",
           "creditorInstitution": "66666666666",
