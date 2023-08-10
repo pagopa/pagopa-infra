@@ -573,6 +573,9 @@
         "type": "object",
         "description": "Payment details",
         "properties": {
+          "subject": {
+            "type": "string"
+          },
           "iuv": {
             "type": "string"
           },
@@ -593,6 +596,7 @@
           }
         },
         "example": {
+          "subject": "subject",
           "iuv": "302001069073736640",
           "rptId": "rptId",
           "idTransaction": "paymentContextCode",
