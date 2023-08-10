@@ -112,29 +112,6 @@ custom_metric_alerts = {
   }
 }
 
-cosmos_mongo_db_params = {
-  enabled      = true
-  kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 5
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = false
-
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
-
-  backup_continuous_enabled = false
-
-}
-
 cosmos_nosql_db_params = {
   enabled      = true
   kind         = "GlobalDocumentDB"
@@ -160,14 +137,6 @@ cosmos_nosql_db_params = {
 }
 
 cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
-
-cosmos_mongo_db_nodo_re_params = {
-  enable_serverless  = true
-  enable_autoscaling = true
-  max_throughput     = 5000
-  throughput         = 1000
-  events_ttl         = 86400 # 1 days
-}
 
 nodo_re_storage_account = {
   account_kind                  = "StorageV2"

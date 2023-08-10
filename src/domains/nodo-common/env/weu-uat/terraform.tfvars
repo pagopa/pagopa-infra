@@ -112,14 +112,14 @@ custom_metric_alerts = {
   }
 }
 
-cosmos_mongo_db_params = {
+cosmos_nosql_db_params = {
   enabled      = true
-  kind         = "MongoDB"
-  capabilities = ["EnableMongo", "DisableRateLimitingResponses"]
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 5
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
   server_version                    = "4.0"
@@ -130,19 +130,15 @@ cosmos_mongo_db_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled         = false
+
+  events_ttl                        = 2629800 # 1 month in second
+  max_throughput                    = 1000
 }
 
-nodo_storico_allowed_ips     = ["93.63.219.230"]
 cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
 
-cosmos_mongo_db_nodo_re_params = {
-  enable_serverless  = false
-  enable_autoscaling = true
-  max_throughput     = 5000
-  throughput         = 1000
-  events_ttl         = 2592000 # 30 days
-}
+nodo_storico_allowed_ips     = ["93.63.219.230"]
 
 nodo_re_storage_account = {
   account_kind                  = "StorageV2"
