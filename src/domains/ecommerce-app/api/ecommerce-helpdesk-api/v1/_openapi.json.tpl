@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Pagopa eCommerce services for assistence api",
-    "description": "This microservice that expose eCommerce services for assistence api."
+    "title": "Pagopa eCommerce services for assistance api",
+    "description": "This microservice that expose eCommerce services for assistance api."
   },
   "servers": [
     {
@@ -65,7 +65,7 @@
           "PM"
         ],
         "operationId": "pmSearchTransaction",
-        "summary": "Search transaction by input parmeters",
+        "summary": "Search transaction by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/PmSearchTransactionRequest"
@@ -309,7 +309,7 @@
         "exclusiveMaximum": true,
         "example": 200
       },
-      "PmSearchTransactionRequestFiscalCode": {
+      "SearchTransactionRequestFiscalCode": {
         "type": "object",
         "description": "Search transaction by user fiscal code",
         "properties": {
@@ -331,7 +331,7 @@
           "userFiscalCode": "MRGHRN97L02C469W"
         }
       },
-      "PmSearchTransactionRequestEmail": {
+      "SearchTransactionRequestEmail": {
         "type": "object",
         "description": "Search transaction by user fiscal code",
         "properties": {
@@ -371,7 +371,7 @@
           "page"
         ]
       },
-      "EcommerceSearchTransactionRequestRptId": {
+      "SearchTransactionRequestRptId": {
         "type": "object",
         "description": "Search transaction by user fiscal code",
         "properties": {
@@ -392,7 +392,7 @@
           "rptId": "77777777777302011111111111111"
         }
       },
-      "EcommerceSearchTransactionRequestPaymentToken": {
+      "SearchTransactionRequestPaymentToken": {
         "type": "object",
         "description": "Search transaction by payment token",
         "properties": {
@@ -412,7 +412,7 @@
           "paymentToken": "paymentToken"
         }
       },
-      "EcommerceSearchTransactionRequestTransactionId": {
+      "SearchTransactionRequestTransactionId": {
         "type": "object",
         "description": "Search transaction by transaction id",
         "properties": {
@@ -438,6 +438,9 @@
         "type": "object",
         "description": "TransactionResponse",
         "properties": {
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
           "transactionInfo": {
             "$ref": "#/components/schemas/TransactionInfo"
           },
@@ -462,9 +465,47 @@
           "product"
         ]
       },
+      "UserInfo": {
+        "type": "object",
+        "description": "User informations",
+        "properties": {
+          "userFiscalCode": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 16
+          },
+          "notificationEmail": {
+            "type": "string",
+            "pattern": "(?:[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+          },
+          "surname": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 512
+          },
+          "username": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "authenticationType": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "userFiscalCode": "user_fiscal_code",
+          "notificationEmail": "test@test.it",
+          "surname": "Surname",
+          "name": "Name",
+          "username": "username",
+          "authenticationType": "auth type"
+        }
+      },
       "TransactionInfo": {
         "type": "object",
-        "description": "TransactionResponse",
+        "description": "Transaction info",
         "properties": {
           "creationDate": {
             "type": "string",
@@ -472,6 +513,9 @@
             "description": "transaction creation date"
           },
           "status": {
+            "type": "string"
+          },
+          "statusDetails": {
             "type": "string"
           },
           "amount": {
@@ -482,23 +526,37 @@
           },
           "grandTotal": {
             "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "rrn": {
+            "type": "string"
+          },
+          "authotizationCode": {
+            "type": "string"
+          },
+          "paymentMethodName": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
           }
         },
         "example": {
           "creationDate": "2023-08-02T14:42:54.047",
-          "status": "TO BE DEFINED",
+          "status": "status",
+          "statusDetails": "status detail",
           "amount": 100,
           "fee": 10,
-          "grandTotal": 110
+          "grandTotal": 110,
+          "rrn": "rrn",
+          "authorizationCode": "auth code",
+          "paymentMethodName": "payment method name",
+          "brand": "brand"
         }
       },
       "PaymentInfo": {
         "type": "object",
-        "description": "TransactionResponse",
+        "description": "Payment info",
         "properties": {
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
           "subject": {
             "type": "string"
           },
@@ -507,28 +565,31 @@
           }
         },
         "example": {
-          "amount": 100,
           "subject": "Causale pagamento",
           "origin": "CHECKOUT"
         }
       },
       "PaymentDetailInfo": {
         "type": "object",
-        "description": "TransactionResponse",
+        "description": "Payment details",
         "properties": {
           "iuv": {
-            "type": "string",
-            "minLength": 18,
-            "maxLength": 18
+            "type": "string"
           },
-          "paymentContextCode": {
+          "rptIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "idTransaction": {
+            "type": "string"
+          },
+          "paymentToken": {
             "type": "string"
           },
           "creditorInstitution": {
             "type": "string"
-          },
-          "amount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
           },
           "paFiscalCode": {
             "type": "string"
@@ -536,7 +597,12 @@
         },
         "example": {
           "iuv": "302001069073736640",
-          "paymentContextCode": "paymentContextCode",
+          "rptId": [
+            "rptId1",
+            "rptId2"
+          ],
+          "idTransaction": "paymentContextCode",
+          "paymentToken": "payment token",
           "creditorInstitution": "66666666666",
           "amount": 99999999,
           "paFiscalCode": "77777777777"
@@ -544,7 +610,7 @@
       },
       "PspInfo": {
         "type": "object",
-        "description": "TransactionResponse",
+        "description": "PSP info",
         "properties": {
           "pspId": {
             "type": "string"
@@ -603,17 +669,17 @@
         "type": "object",
         "oneOf": [
           {
-            "$ref": "#/components/schemas/PmSearchTransactionRequestFiscalCode"
+            "$ref": "#/components/schemas/SearchTransactionRequestFiscalCode"
           },
           {
-            "$ref": "#/components/schemas/PmSearchTransactionRequestEmail"
+            "$ref": "#/components/schemas/SearchTransactionRequestEmail"
           }
         ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
-            "USER_FISCAL_CODE": "#/components/schemas/PmSearchTransactionRequestFiscalCode",
-            "USER_EMAIL": "#/components/schemas/PmSearchTransactionRequestEmail"
+            "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode",
+            "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
           }
         }
       },
@@ -621,21 +687,21 @@
         "type": "object",
         "oneOf": [
           {
-            "$ref": "#/components/schemas/EcommerceSearchTransactionRequestRptId"
+            "$ref": "#/components/schemas/SearchTransactionRequestRptId"
           },
           {
-            "$ref": "#/components/schemas/EcommerceSearchTransactionRequestPaymentToken"
+            "$ref": "#/components/schemas/SearchTransactionRequestPaymentToken"
           },
           {
-            "$ref": "#/components/schemas/EcommerceSearchTransactionRequestTransactionId"
+            "$ref": "#/components/schemas/SearchTransactionRequestTransactionId"
           }
         ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
-            "RPT_ID": "#/components/schemas/EcommerceSearchTransactionRequestRptId",
-            "PAYMENT_TOKEN": "#/components/schemas/EcommerceSearchTransactionRequestPaymentToken",
-            "TRANSACTION_ID": "#/components/schemas/EcommerceSearchTransactionRequestTransactionId"
+            "RPT_ID": "#/components/schemas/SearchTransactionRequestRptId",
+            "PAYMENT_TOKEN": "#/components/schemas/SearchTransactionRequestPaymentToken",
+            "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId"
           }
         }
       }
@@ -648,17 +714,17 @@
             "schema": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/PmSearchTransactionRequestFiscalCode"
+                  "$ref": "#/components/schemas/SearchTransactionRequestFiscalCode"
                 },
                 {
-                  "$ref": "#/components/schemas/PmSearchTransactionRequestEmail"
+                  "$ref": "#/components/schemas/SearchTransactionRequestEmail"
                 }
               ],
               "discriminator": {
                 "propertyName": "type",
                 "mapping": {
-                  "USER_FISCAL_CODE": "#/components/schemas/PmSearchTransactionRequestFiscalCode",
-                  "USER_EMAIL": "#/components/schemas/PmSearchTransactionRequestEmail"
+                  "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode",
+                  "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
                 }
               }
             },
@@ -696,21 +762,21 @@
             "schema": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/EcommerceSearchTransactionRequestRptId"
+                  "$ref": "#/components/schemas/SearchTransactionRequestRptId"
                 },
                 {
-                  "$ref": "#/components/schemas/EcommerceSearchTransactionRequestPaymentToken"
+                  "$ref": "#/components/schemas/SearchTransactionRequestPaymentToken"
                 },
                 {
-                  "$ref": "#/components/schemas/EcommerceSearchTransactionRequestTransactionId"
+                  "$ref": "#/components/schemas/SearchTransactionRequestTransactionId"
                 }
               ],
               "discriminator": {
                 "propertyName": "type",
                 "mapping": {
-                  "RPT_ID": "#/components/schemas/EcommerceSearchTransactionRequestRptId",
-                  "PAYMENT_TOKEN": "#/components/schemas/EcommerceSearchTransactionRequestPaymentToken",
-                  "TRANSACTION_ID": "#/components/schemas/EcommerceSearchTransactionRequestTransactionId"
+                  "RPT_ID": "#/components/schemas/SearchTransactionRequestRptId",
+                  "PAYMENT_TOKEN": "#/components/schemas/SearchTransactionRequestPaymentToken",
+                  "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId"
                 }
               }
             },
@@ -763,11 +829,11 @@
               "discriminator": {
                 "propertyName": "type",
                 "mapping": {
-                  "USER_FISCAL_CODE": "#/components/schemas/PmSearchTransactionRequestFiscalCode",
-                  "USER_EMAIL": "#/components/schemas/PmSearchTransactionRequestEmail",
-                  "RPT_ID": "#/components/schemas/EcommerceSearchTransactionRequestRptId",
-                  "PAYMENT_TOKEN": "#/components/schemas/EcommerceSearchTransactionRequestPaymentToken",
-                  "TRANSACTION_ID": "#/components/schemas/EcommerceSearchTransactionRequestTransactionId"
+                  "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode",
+                  "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail",
+                  "RPT_ID": "#/components/schemas/SearchTransactionRequestRptId",
+                  "PAYMENT_TOKEN": "#/components/schemas/SearchTransactionRequestPaymentToken",
+                  "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId"
                 }
               }
             },
