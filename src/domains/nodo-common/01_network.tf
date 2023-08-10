@@ -71,7 +71,12 @@ data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
 }
 
 data "azurerm_private_dns_zone" "cosmos" {
-  name                = local.cosmos_dns_zone_name
+  name                = local.cosmos_mongo_dns_zone_name
+  resource_group_name = local.cosmos_dns_zone_resource_group_name
+}
+
+data "azurerm_private_dns_zone" "cosmos_nosql" {
+  name                = local.cosmos_nosql_dns_zone_name
   resource_group_name = local.cosmos_dns_zone_resource_group_name
 }
 
@@ -94,4 +99,20 @@ module "storage_account_snet" {
   virtual_network_name                          = data.azurerm_virtual_network.vnet.name
   service_endpoints                             = ["Microsoft.Storage"]
   private_link_service_network_policies_enabled = var.storage_account_snet_private_link_service_network_policies_enabled
+}
+
+# CosmosDB subnet
+module "cosmosdb_nodo_re_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
+  name                 = "${local.project}-cosmosb-snet"
+  address_prefixes     = var.cidr_subnet_cosmosdb_nodo_re
+  resource_group_name  = local.vnet_resource_group_name
+  virtual_network_name = local.vnet_name
+
+  private_link_service_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
 }

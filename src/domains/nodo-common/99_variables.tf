@@ -259,15 +259,14 @@ variable "ndp_redis_params" {
 }
 
 
-# CosmosDb
+# CosmosDB
 variable "cidr_subnet_cosmosdb_nodo_re" {
   type        = list(string)
   description = "Cosmos DB address space for nodo re."
 }
 
-variable "cosmos_mongo_db_params" {
+variable "cosmos_nosql_db_params" {
   type = object({
-    enabled        = bool
     capabilities   = list(string)
     offer_type     = string
     server_version = string
@@ -279,7 +278,6 @@ variable "cosmos_mongo_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -289,18 +287,12 @@ variable "cosmos_mongo_db_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
+    events_ttl                        = number
+    max_throughput                    = number
   })
 }
 
-variable "cosmos_mongo_db_nodo_re_params" {
-  type = object({
-    enable_serverless  = bool
-    enable_autoscaling = bool
-    throughput         = number
-    max_throughput     = number
-    events_ttl         = number
-  })
-}
+# Nodo RE Storage Account
 
 variable "nodo_re_storage_account" {
   type = object({

@@ -1,13 +1,13 @@
-# info for cosmos mongodb
-data "azurerm_cosmosdb_account" "mongo_ndp_re_account" {
-  name                = "${local.project}-cosmos-account"
-  resource_group_name = "${local.project}-db-rg"
+# info for cosmosdb nosql
+data "azurerm_cosmosdb_account" "nodo_re_cosmosdb_nosql" {
+  name                = "${local.project}-re-cosmos-nosql-account"
+  resource_group_name = format("%s-db-rg", local.project)
 }
 
-data "azurerm_cosmosdb_mongo_database" "nodo_re" {
+data azurerm_cosmosdb_sql_database "nodo_re_cosmosdb_nosql_db" {
   name                = "nodo_re"
-  resource_group_name = format("%s-db-rg", local.project)
-  account_name        = format("%s-cosmos-account", local.project)
+  resource_group_name = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.name
 }
 
 # info for event hub
@@ -68,8 +68,8 @@ locals {
     DOCKER_REGISTRY_SERVER_USERNAME = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
     DOCKER_REGISTRY_SERVER_PASSWORD = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
-    COSMOS_CONN_STRING        = "mongodb://${local.project}-cosmos-account:${data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key}@${local.project}-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${local.project}-cosmos-account@"
-    COSMOS_DB_NAME            = data.azurerm_cosmosdb_mongo_database.nodo_re.name
+    COSMOS_CONN_STRING        = "AccountEndpoint=https://${local.project}-re-cosmos-nosql-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.primary_key}"
+    COSMOS_DB_NAME            = "nodo_re"
     COSMOS_DB_COLLECTION_NAME = "events"
 
     EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_connection_string
@@ -206,7 +206,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -226,7 +226,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
   }
