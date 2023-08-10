@@ -1,0 +1,11 @@
+{
+  "processors": [
+    {
+      "json": {
+        "field": "message",
+        "add_to_root": true,
+        "ignore_failure": true
+      }
+    }
+  ]
+}
