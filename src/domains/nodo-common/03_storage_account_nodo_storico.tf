@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "nodo_storico_rg" {
-  count = var.env_short == "d" ? 0 : 1
+  count    = var.env_short == "d" ? 0 : 1
   name     = format("%s-storico-rg", local.project)
   location = var.location
 
@@ -65,7 +65,7 @@ resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
 
 # blob container#1 nodo-storico
 resource "azurerm_storage_container" "storico_container" {
-  count = var.env_short == "d" ? 0 : 1
+  count                 = var.env_short == "d" ? 0 : 1
   name                  = "storico"
   storage_account_name  = module.nodo_storico_storage_account[0].name
   container_access_type = "private"
