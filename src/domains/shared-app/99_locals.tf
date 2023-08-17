@@ -36,6 +36,7 @@ locals {
 
   apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   shared_hostname = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
+  hostnameAzFunction = var.env == "prod" ? "pagopa-weu-shared-taxonomy-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-shared-taxonomy-fn.azurewebsites.net"
 
   cache_generator_hostname   = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net/api"
   cache_generator_hostname_2 = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net"
