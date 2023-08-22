@@ -4,7 +4,7 @@
     "title" : "PagoPA API Debt Position for Organizations",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.6.10"
+    "version" : "0.6.14"
   },
   "servers" : [ {
     "url" : "${host}",
@@ -39,16 +39,6 @@
           }
         } ],
         "responses" : {
-          "200" : {
-            "description" : "Obtained debt position details.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PaymentPositionModelBaseResponse"
-                }
-              }
-            }
-          },
           "404" : {
             "description" : "No debt position found.",
             "content" : {
@@ -61,6 +51,16 @@
           },
           "401" : {
             "description" : "Wrong or missing function key."
+          },
+          "200" : {
+            "description" : "Obtained debt position details.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentPositionModelBaseResponse"
+                }
+              }
+            }
           },
           "500" : {
             "description" : "Service unavailable.",
@@ -119,26 +119,6 @@
           "required" : true
         },
         "responses" : {
-          "400" : {
-            "description" : "Malformed request.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "409" : {
-            "description" : "Conflict: existing related payment found.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "404" : {
             "description" : "No debt position found.",
             "content" : {
@@ -151,6 +131,26 @@
           },
           "401" : {
             "description" : "Wrong or missing function key."
+          },
+          "409" : {
+            "description" : "Conflict: existing related payment found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Malformed request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "200" : {
             "description" : "Request updated.",
@@ -221,6 +221,9 @@
               }
             }
           },
+          "401" : {
+            "description" : "Wrong or missing function key."
+          },
           "409" : {
             "description" : "Conflict: existing related payment found.",
             "content" : {
@@ -230,9 +233,6 @@
                 }
               }
             }
-          },
-          "401" : {
-            "description" : "Wrong or missing function key."
           },
           "500" : {
             "description" : "Service unavailable.",
@@ -271,6 +271,7 @@
           "description" : "Number of elements on one page. Default = 50",
           "required" : false,
           "schema" : {
+            "maximum" : 100,
             "type" : "integer",
             "format" : "int32",
             "default" : 50
@@ -281,6 +282,7 @@
           "description" : "Page number. Page value starts from 0",
           "required" : true,
           "schema" : {
+            "minimum" : 0,
             "type" : "integer",
             "format" : "int32"
           }
@@ -351,6 +353,9 @@
           }
         } ],
         "responses" : {
+          "401" : {
+            "description" : "Wrong or missing function key."
+          },
           "400" : {
             "description" : "Malformed request.",
             "content" : {
@@ -361,12 +366,6 @@
               }
             }
           },
-          "429" : {
-            "description" : "Too many requests."
-          },
-          "401" : {
-            "description" : "Wrong or missing function key."
-          },
           "200" : {
             "description" : "Obtained all organization payment positions.",
             "content" : {
@@ -376,6 +375,9 @@
                 }
               }
             }
+          },
+          "429" : {
+            "description" : "Too many requests."
           },
           "500" : {
             "description" : "Service unavailable.",
@@ -426,18 +428,11 @@
           "required" : true
         },
         "responses" : {
+          "401" : {
+            "description" : "Wrong or missing function key."
+          },
           "400" : {
             "description" : "Malformed request.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "409" : {
-            "description" : "Conflict: duplicate debt position found.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -456,8 +451,15 @@
               }
             }
           },
-          "401" : {
-            "description" : "Wrong or missing function key."
+          "409" : {
+            "description" : "Conflict: duplicate debt position found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "500" : {
             "description" : "Service unavailable.",
@@ -500,6 +502,16 @@
           }
         } ],
         "responses" : {
+          "409" : {
+            "description" : "Conflict: debt position is not in publishable state.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "404" : {
             "description" : "No debt position found.",
             "content" : {
@@ -519,16 +531,6 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PaymentPositionModel"
-                }
-              }
-            }
-          },
-          "409" : {
-            "description" : "Conflict: debt position is not in publishable state.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -574,8 +576,8 @@
           }
         } ],
         "responses" : {
-          "404" : {
-            "description" : "No debt position found.",
+          "409" : {
+            "description" : "Conflict: debt position is not in invalidable state.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -584,8 +586,8 @@
               }
             }
           },
-          "409" : {
-            "description" : "Conflict: debt position is not in invalidable state.",
+          "404" : {
+            "description" : "No debt position found.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -641,11 +643,11 @@
               }
             }
           },
-          "403" : {
-            "description" : "Forbidden."
-          },
           "401" : {
             "description" : "Wrong or missing function key."
+          },
+          "403" : {
+            "description" : "Forbidden."
           },
           "500" : {
             "description" : "Service unavailable.",
@@ -672,6 +674,10 @@
         "required" : [ "amount", "dueDate", "isPartialPayment", "iuv" ],
         "type" : "object",
         "properties" : {
+          "nav" : {
+            "type" : "string",
+            "readOnly" : true
+          },
           "iuv" : {
             "type" : "string"
           },
@@ -900,6 +906,9 @@
       "PaymentOptionModelResponse" : {
         "type" : "object",
         "properties" : {
+          "nav" : {
+            "type" : "string"
+          },
           "iuv" : {
             "type" : "string"
           },
