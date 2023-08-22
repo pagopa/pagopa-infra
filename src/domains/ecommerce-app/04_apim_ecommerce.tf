@@ -398,7 +398,7 @@ data "azurerm_api_management_product" "technical_support_api_product" {
 
 
 # technical helpdesk api for ecommerce
-module "apim_pagopa_technical_helpdesk_service_api_v1" {
+module "apim_pagopa_ecommerce_technical_helpdesk_service_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = "${local.project}-technical-helpdesk-service-api"
@@ -406,7 +406,7 @@ module "apim_pagopa_technical_helpdesk_service_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [data.azurerm_api_management_product.technical_support_api_product.product_id]
   subscription_required = local.apim_pagopa_ecommerce_technical_helpdesk_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.pagopa_technical_helpdesk_service_api.id
+  version_set_id        = azurerm_api_management_api_version_set.pagopa_ecommerce_technical_helpdesk_service_api.id
   api_version           = "v1"
 
   description  = local.apim_pagopa_ecommerce_technical_helpdesk_service_api.description
