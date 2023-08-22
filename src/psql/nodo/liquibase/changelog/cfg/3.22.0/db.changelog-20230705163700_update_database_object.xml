@@ -35,7 +35,7 @@
        NULL              AS id_banca_seller,
        NULL              AS chiave_avvio,
        NULL              AS chiave_esito,
-       det.obj_id,
+       mas.obj_id,
        mas.obj_id        AS master_obj
 FROM   ((iban_master mas
          JOIN (
