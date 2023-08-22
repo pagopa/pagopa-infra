@@ -17,3 +17,42 @@ module "nat_gw" {
 
   tags = var.tags
 }
+
+
+# https://learn.microsoft.com/en-us/azure/nat-gateway/nat-gateway-resource#snat-ports
+resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
+  count = (var.env_short == "p" && var.nat_gateway_enabled) ? 1 : 0
+
+  name                = "${local.project}-natgw-connetion-over-10k"
+  resource_group_name = azurerm_resource_group.monitor_rg.name
+  scopes              = [module.nat_gw[0].id]
+  description         = "Total SNAT connections over 10K"
+  severity            = 3
+  frequency           = "PT5M"
+  window_size         = "PT5M"
+
+  target_resource_type     = "Microsoft.Network/natGateways"
+  target_resource_location = var.location
+
+
+  criteria {
+    metric_namespace       = "Microsoft.Network/natGateways"
+    metric_name            = "SNATConnectionCount"
+    aggregation            = "Total"
+    operator               = "GreaterThan"
+    threshold              = "10000"
+    skip_metric_validation = false
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+  }
+
+  tags = var.tags
+}
