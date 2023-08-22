@@ -57,4 +57,3 @@ module "fdr_xml_to_json_function_snet" {
     }
   }
 }
-
