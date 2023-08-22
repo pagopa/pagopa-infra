@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Pagopa eCommerce services for assistance api",
+    "title": "Pagopa eCommerce helpdesk service api",
     "description": "This microservice that expose eCommerce services for assistance api."
   },
   "servers": [
@@ -55,6 +55,7 @@
             "name": "pageSize",
             "schema": {
               "type": "integer",
+              "minimum": 1,
               "default": 10
             },
             "required": true,
@@ -132,6 +133,7 @@
             "name": "pageSize",
             "schema": {
               "type": "integer",
+              "minimum": 1,
               "default": 10
             },
             "required": true,
@@ -209,6 +211,7 @@
             "name": "pageSize",
             "schema": {
               "type": "integer",
+              "minimum": 1,
               "default": 10
             },
             "required": true,
@@ -692,6 +695,9 @@
           },
           {
             "$ref": "#/components/schemas/SearchTransactionRequestTransactionId"
+          },
+          {
+            "$ref": "#/components/schemas/SearchTransactionRequestEmail"
           }
         ],
         "discriminator": {
@@ -699,7 +705,8 @@
           "mapping": {
             "RPT_ID": "#/components/schemas/SearchTransactionRequestRptId",
             "PAYMENT_TOKEN": "#/components/schemas/SearchTransactionRequestPaymentToken",
-            "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId"
+            "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId",
+            "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
           }
         }
       }
@@ -767,6 +774,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/SearchTransactionRequestTransactionId"
+                },
+                {
+                  "$ref": "#/components/schemas/SearchTransactionRequestEmail"
                 }
               ],
               "discriminator": {
@@ -774,7 +784,8 @@
                 "mapping": {
                   "RPT_ID": "#/components/schemas/SearchTransactionRequestRptId",
                   "PAYMENT_TOKEN": "#/components/schemas/SearchTransactionRequestPaymentToken",
-                  "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId"
+                  "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId",
+                  "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
                 }
               }
             },
@@ -795,6 +806,12 @@
                 "value": {
                   "type": "TRANSACTION_ID",
                   "transactionId": "transactionId"
+                }
+              },
+              "search by user email": {
+                "value": {
+                  "type": "USER_EMAIL",
+                  "userEmail": "test@test.it"
                 }
               }
             }
