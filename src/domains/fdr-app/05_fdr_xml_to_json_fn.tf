@@ -14,9 +14,9 @@ data "azurerm_storage_account" "fdr_storage_account" {
 
 locals {
   function_xml_to_json_app_settings = {
-    linux_fx_version                    = "JAVA|11"
-    FUNCTIONS_WORKER_RUNTIME            = "java"
-    FUNCTIONS_WORKER_PROCESS_COUNT      = 4
+    linux_fx_version               = "JAVA|11"
+    FUNCTIONS_WORKER_RUNTIME       = "java"
+    FUNCTIONS_WORKER_PROCESS_COUNT = 4
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
