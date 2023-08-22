@@ -1,13 +1,13 @@
-# info for cosmos mongodb
-data "azurerm_cosmosdb_account" "mongo_ndp_re_account" {
-  name                = "${local.project}-cosmos-account"
-  resource_group_name = "${local.project}-db-rg"
+# info for cosmosdb nosql
+data "azurerm_cosmosdb_account" "nodo_re_cosmosdb_nosql" {
+  name                = "${local.project}-re-cosmos-nosql-account"
+  resource_group_name = format("%s-db-rg", local.project)
 }
 
-data "azurerm_cosmosdb_mongo_database" "nodo_re" {
+data azurerm_cosmosdb_sql_database "nodo_re_cosmosdb_nosql_db" {
   name                = "nodo_re"
-  resource_group_name = format("%s-db-rg", local.project)
-  account_name        = format("%s-cosmos-account", local.project)
+  resource_group_name = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.name
 }
 
 # info for event hub
@@ -35,12 +35,6 @@ data "azurerm_subnet" "apim_vnet" {
   virtual_network_name = local.vnet_integration_name
 }
 
-# info for table storage
-data "azurerm_storage_account" "nodo_re_storage" {
-  name                = replace(format("%s-re-2-data-st", local.project), "-", "")
-  resource_group_name = "pagopa-${var.env_short}-weu-nodo-re-to-datastore-rg"
-}
-
 resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
   name     = format("%s-re-to-datastore-rg", local.project)
   location = var.location
@@ -50,9 +44,9 @@ resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
 
 locals {
   function_re_to_datastore_app_settings = {
-    linux_fx_version                    = "JAVA|11"
-    FUNCTIONS_WORKER_RUNTIME            = "java"
-    FUNCTIONS_WORKER_PROCESS_COUNT      = 4
+    linux_fx_version               = "JAVA|11"
+    FUNCTIONS_WORKER_RUNTIME       = "java"
+    FUNCTIONS_WORKER_PROCESS_COUNT = 4
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
@@ -68,18 +62,15 @@ locals {
     DOCKER_REGISTRY_SERVER_USERNAME = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
     DOCKER_REGISTRY_SERVER_PASSWORD = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
-    COSMOS_CONN_STRING        = "mongodb://${local.project}-cosmos-account:${data.azurerm_cosmosdb_account.mongo_ndp_re_account.primary_key}@${local.project}-cosmos-account.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${local.project}-cosmos-account@"
-    COSMOS_DB_NAME            = data.azurerm_cosmosdb_mongo_database.nodo_re.name
+    COSMOS_CONN_STRING        = "AccountEndpoint=https://${local.project}-re-cosmos-nosql-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.primary_key}"
+    COSMOS_DB_NAME            = "nodo_re"
     COSMOS_DB_COLLECTION_NAME = "events"
 
     EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_connection_string
-
-    TABLE_STORAGE_CONN_STRING = data.azurerm_storage_account.nodo_re_storage.primary_connection_string
-    TABLE_STORAGE_TABLE_NAME  = "events"
   }
 
   docker_settings = {
-    IMAGE_NAME                      = "pagopanodoretodatastore"
+    IMAGE_NAME = "pagopanodoretodatastore"
     # ACR
     DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
@@ -206,7 +197,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -226,7 +217,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
   }
