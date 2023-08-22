@@ -35,12 +35,6 @@ data "azurerm_subnet" "apim_vnet" {
   virtual_network_name = local.vnet_integration_name
 }
 
-# info for table storage
-data "azurerm_storage_account" "nodo_re_storage" {
-  name                = replace(format("%s-re-2-data-st", local.project), "-", "")
-  resource_group_name = "pagopa-${var.env_short}-weu-nodo-re-to-datastore-rg"
-}
-
 resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
   name     = format("%s-re-to-datastore-rg", local.project)
   location = var.location
@@ -73,9 +67,6 @@ locals {
     COSMOS_DB_COLLECTION_NAME = "events"
 
     EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_connection_string
-
-    TABLE_STORAGE_CONN_STRING = data.azurerm_storage_account.nodo_re_storage.primary_connection_string
-    TABLE_STORAGE_TABLE_NAME  = "events"
   }
 
   docker_settings = {
