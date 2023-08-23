@@ -319,6 +319,68 @@
           }
         }
       }
+    },
+    "/payment-methods/{id}/sessions/{id_session}": {
+      "get": {
+        "tags": [
+          "payment-methods"
+        ],
+        "operationId": "getSessionPaymentMethod",
+        "summary": "Get session payment method by ID",
+        "description": "API for retrieve payment method information for a given payment method ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id_session",
+            "in": "path",
+            "description": "Session payment method ID related to NPG",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionPaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Session Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -639,6 +701,49 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "SessionPaymentMethodResponse": {
+        "type": "object",
+        "description": "Session Payment method Response",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "description": "Session Payment method ID"
+          },
+          "bin": {
+            "type": "string",
+            "description": "Bin of user card"
+          },
+          "lastFourDigits": {
+            "type": "string",
+            "description": "Last four digits of user card"
+          },
+          "expiringDate": {
+            "type": "string",
+            "pattern": "^[0-9]{6}$",
+            "description": "expiring date of user card"
+          },
+          "brand": {
+            "description": "The card brand name",
+            "type": "string",
+            "enum": [
+              "VISA",
+              "MASTERCARD",
+              "UNKNOWN",
+              "DINERS",
+              "MAESTRO",
+              "AMEX"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "status",
+          "paymentTypeCode",
+          "ranges"
         ]
       }
     },
