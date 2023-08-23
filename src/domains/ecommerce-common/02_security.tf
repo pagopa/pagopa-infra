@@ -328,3 +328,27 @@ resource "azurerm_key_vault_secret" "helpdesk-service-testing-api-key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "helpdesk-service-testing-email" {
+  name         = "helpdesk-service-testing-email"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "helpdesk-service-testing-fiscalCode" {
+  name         = "helpdesk-service-testing-email"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
