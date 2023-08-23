@@ -342,7 +342,7 @@ resource "azurerm_key_vault_secret" "helpdesk-service-testing-email" {
 }
 
 resource "azurerm_key_vault_secret" "helpdesk-service-testing-fiscalCode" {
-  name         = "helpdesk-service-testing-email"
+  name         = "helpdesk-service-testing-fiscalCode"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
