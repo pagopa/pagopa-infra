@@ -318,7 +318,7 @@ resource "azurerm_key_vault_secret" "pm_oracle_db_password" {
 }
 
 resource "azurerm_key_vault_secret" "helpdesk-service-testing-api-key" {
-  count        = var.env_short == "p" ? 1 : 0
+  count        = var.env_short != "p" ? 1 : 0
   name         = "helpdesk-service-testing-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
@@ -331,7 +331,7 @@ resource "azurerm_key_vault_secret" "helpdesk-service-testing-api-key" {
 }
 
 resource "azurerm_key_vault_secret" "helpdesk-service-testing-email" {
-  count        = var.env_short == "p" ? 1 : 0
+  count        = var.env_short != "p" ? 1 : 0
   name         = "helpdesk-service-testing-email"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
@@ -344,7 +344,7 @@ resource "azurerm_key_vault_secret" "helpdesk-service-testing-email" {
 }
 
 resource "azurerm_key_vault_secret" "helpdesk-service-testing-fiscalCode" {
-  count        = var.env_short == "p" ? 1 : 0
+  count        = var.env_short != "p" ? 1 : 0
   name         = "helpdesk-service-testing-fiscalCode"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
