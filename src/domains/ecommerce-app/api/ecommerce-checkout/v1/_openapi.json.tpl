@@ -653,12 +653,12 @@
         }
       }
     },
-    "/payment-methods/{id}/preauthorizations": {
+    "/payment-methods/{id}/sessions": {
       "post": {
         "tags": [
           "ecommerce-methods"
         ],
-        "operationId": "createPreauthorization",
+        "operationId": "createSession",
         "summary": "Create frontend field data paired with a payment gateway session",
         "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `sessionId`.",
         "parameters": [
@@ -678,7 +678,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PreauthorizationResponse"
+                  "$ref": "#/components/schemas/CreateSessionResponse"
                 }
               }
             }
@@ -1992,7 +1992,7 @@
           "INCOMING"
         ]
       },
-      "PreauthorizationResponse": {
+      "CreateSessionResponse": {
         "type": "object",
         "description": "Form data needed to create a payment method input form",
         "properties": {
