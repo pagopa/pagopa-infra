@@ -236,59 +236,6 @@
         }
       }
     },
-    "/payment-methods/{id}/sessions": {
-      "post": {
-        "tags": [
-          "payment-methods"
-        ],
-        "operationId": "createSession",
-        "summary": "Create frontend field data paired with a payment gateway session",
-        "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `sessionId`.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Payment Method id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Payment form data successfully created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateSessionResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Payment method not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Payment gateway did return error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/payment-methods/{id}/fees": {
       "post": {
         "tags": [
@@ -352,6 +299,121 @@
           },
           "404": {
             "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/{id}/sessions": {
+      "post": {
+        "tags": [
+          "payment-methods"
+        ],
+        "operationId": "createSession",
+        "summary": "Create frontend field data paired with a payment gateway session",
+        "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `sessionId`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment form data successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSessionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Payment gateway did return error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/{id}/sessions/{id_session}": {
+      "get": {
+        "tags": [
+          "payment-methods"
+        ],
+        "operationId": "getSessionPaymentMethod",
+        "summary": "Get session payment method by ID",
+        "description": "API for retrieve payment method information for a given payment method ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id_session",
+            "in": "path",
+            "description": "Session payment method ID related to NPG",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionPaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Session Payment method not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -751,6 +813,49 @@
             "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
           }
         }
+      },
+      "SessionPaymentMethodResponse": {
+        "type": "object",
+        "description": "Session Payment method Response",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "description": "Session Payment method ID"
+          },
+          "bin": {
+            "type": "string",
+            "description": "Bin of user card"
+          },
+          "lastFourDigits": {
+            "type": "string",
+            "description": "Last four digits of user card"
+          },
+          "expiringDate": {
+            "type": "string",
+            "pattern": "^[0-9]{6}$",
+            "description": "expiring date of user card"
+          },
+          "brand": {
+            "description": "The card brand name",
+            "type": "string",
+            "enum": [
+              "VISA",
+              "MASTERCARD",
+              "UNKNOWN",
+              "DINERS",
+              "MAESTRO",
+              "AMEX"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "status",
+          "paymentTypeCode",
+          "ranges"
+        ]
       }
     },
     "requestBodies": {
