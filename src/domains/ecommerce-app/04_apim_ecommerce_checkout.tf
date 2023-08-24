@@ -149,3 +149,11 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
   xml_content = file("./api/ecommerce-checkout/v1/_transaction_policy.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "create_session" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "createSession"
+
+  xml_content = file("./api/ecommerce-checkout/v1/_payment_methods_policy.xml.tpl")
+}
