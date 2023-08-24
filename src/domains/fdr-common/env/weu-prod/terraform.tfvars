@@ -132,11 +132,11 @@ cosmos_mongo_db_fdr_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
   container_default_ttl = 315576000 # 10 year in second
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
