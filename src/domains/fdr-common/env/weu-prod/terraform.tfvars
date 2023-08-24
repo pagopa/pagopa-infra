@@ -170,7 +170,7 @@ cosmos_mongo_db_fdr_re_params = {
 
   container_default_ttl = 10368000 # 120 days
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
