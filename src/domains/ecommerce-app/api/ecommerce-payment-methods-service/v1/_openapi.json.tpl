@@ -702,12 +702,12 @@
             "type": "string",
             "description": "Identifier of the payment gateway session associated to the form"
           },
-          "fields": {
+          "paymentMethodData": {
             "$ref": "#/components/schemas/CardFormFields"
           }
         },
         "required": [
-          "fields",
+          "paymentMethodData",
           "sessionId"
         ]
       },
