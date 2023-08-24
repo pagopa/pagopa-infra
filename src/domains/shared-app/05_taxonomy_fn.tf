@@ -35,10 +35,11 @@ locals {
     DOCKER_REGISTRY_SERVER_USERNAME = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
     DOCKER_REGISTRY_SERVER_PASSWORD = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
-    CSV_URL                            = "https://drive.google.com/uc?id=1vRg7_hQA_7XNG6qULo_y0t_GXtdnIHKw&export=download"
+    
     STORAGE_ACCOUNT_CONN_STRING        = data.azurerm_storage_account.taxonomy_storage_account.primary_connection_string
-    INPUT_BLOB_CONTAINER_NAME          = "input"
-    OUTPUT_BLOB_CONTAINER_NAME         = "output"
+    BLOB_CONTAINER_NAME_INPUT          = "input"
+    CSV_NAME                            = "taxonomy.csv"
+    BLOB_CONTAINER_NAME_OUTPUT         = "output"
     JSON_NAME                          = "taxonomy.json"
   }
 }
