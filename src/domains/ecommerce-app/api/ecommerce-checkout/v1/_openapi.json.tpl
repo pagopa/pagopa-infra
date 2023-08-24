@@ -706,7 +706,7 @@
         }
       }
     },
-    "/payment-methods/{id}/sessions/{id_session}": {
+    "/payment-methods/{id}/sessions/{sessionId}": {
       "get": {
         "tags": [
           "ecommerce-methods"
@@ -725,7 +725,7 @@
             }
           },
           {
-            "name": "id_session",
+            "name": "sessionId",
             "in": "path",
             "description": "Session payment method ID related to NPG",
             "required": true,
@@ -1860,12 +1860,11 @@
           }
         },
         "required": [
-          "id",
-          "name",
-          "description",
-          "status",
-          "paymentTypeCode",
-          "ranges"
+          "sessionId",
+          "bin",
+          "lastFourDigits",
+          "expiringDate",
+          "brand"
         ]
       },
       "CartRequest": {
