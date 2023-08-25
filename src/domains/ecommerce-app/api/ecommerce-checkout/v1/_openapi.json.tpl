@@ -1848,15 +1848,7 @@
           },
           "brand": {
             "description": "The card brand name",
-            "type": "string",
-            "enum": [
-              "VISA",
-              "MASTERCARD",
-              "UNKNOWN",
-              "DINERS",
-              "MAESTRO",
-              "AMEX"
-            ]
+            "type": "string"
           }
         },
         "required": [
