@@ -371,6 +371,7 @@
 | [azurerm_dns_ns_record.uat_pagopa_it_ns](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_ns_record) | resource |
 | [azurerm_dns_ns_record.uat_wisp2](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_ns_record) | resource |
 | [azurerm_dns_txt_record.dns-txt-backoffice-platform-pagopa-it-aws-ses](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_txt_record) | resource |
+| [azurerm_dns_txt_record.dns-txt-backoffice-platform-pagopa-it-aws-ses-txt](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_txt_record) | resource |
 | [azurerm_dns_txt_record.dns-txt-email-platform-pagopa-it-aws-ses](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_txt_record) | resource |
 | [azurerm_dns_txt_record.dns-txt-platform-pagopa-it-aws-ses](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_txt_record) | resource |
 | [azurerm_dns_zone.public](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_zone) | resource |
