@@ -1843,7 +1843,6 @@
           },
           "expiringDate": {
             "type": "string",
-            "pattern": "^[0-9]{6}$",
             "description": "expiring date of user card"
           },
           "brand": {
