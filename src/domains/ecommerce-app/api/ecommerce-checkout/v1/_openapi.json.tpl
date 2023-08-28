@@ -1843,20 +1843,11 @@
           },
           "expiringDate": {
             "type": "string",
-            "pattern": "^[0-9]{6}$",
             "description": "expiring date of user card"
           },
           "brand": {
             "description": "The card brand name",
-            "type": "string",
-            "enum": [
-              "VISA",
-              "MASTERCARD",
-              "UNKNOWN",
-              "DINERS",
-              "MAESTRO",
-              "AMEX"
-            ]
+            "type": "string"
           }
         },
         "required": [
