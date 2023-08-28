@@ -30,8 +30,9 @@ locals {
 }
 
 resource "azurerm_dns_cname_record" "dkim-aws-ses-backoffice-platform-pagopa-it" {
-  for_each            = { for d in local.dkim_aws_ses_backoffice_platform_pagopa_it : d.name => d }
-  name                = join(".", [each.value.name, "platform.pagopa.it"])
+  for_each = { for d in local.dkim_aws_ses_backoffice_platform_pagopa_it : d.name => d }
+  # name                = join(".", [each.value.name, "platform.pagopa.it"])
+  name                = each.value.name
   zone_name           = azurerm_dns_zone.public[0].name # platform.pagopa.it
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
