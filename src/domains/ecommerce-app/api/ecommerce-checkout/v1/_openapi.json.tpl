@@ -1572,6 +1572,28 @@
               "brand": "VISA",
               "threeDsData": "threeDsData"
             }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for cards NPG authorization",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'cards'",
+                "type": "string"
+              },
+              "sessionId": {
+                "type": "string",
+                "description": "NPG transaction session id"
+              }
+            },
+            "required": [
+              "detailType",
+              "sessionId"
+            ],
+            "example": {
+              "detailType": "cards",
+              "sessionId": "session-id"
+            }
           }
         ]
       },
@@ -1843,20 +1865,11 @@
           },
           "expiringDate": {
             "type": "string",
-            "pattern": "^[0-9]{6}$",
             "description": "expiring date of user card"
           },
           "brand": {
             "description": "The card brand name",
-            "type": "string",
-            "enum": [
-              "VISA",
-              "MASTERCARD",
-              "UNKNOWN",
-              "DINERS",
-              "MAESTRO",
-              "AMEX"
-            ]
+            "type": "string"
           }
         },
         "required": [
