@@ -1572,6 +1572,28 @@
               "brand": "VISA",
               "threeDsData": "threeDsData"
             }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for cards NPG authorization",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'cards'",
+                "type": "string"
+              },
+              "sessionId": {
+                "type": "string",
+                "description": "NPG transaction session id"
+              }
+            },
+            "required": [
+              "detailType",
+              "sessionId"
+            ],
+            "example": {
+              "detailType": "cards",
+              "sessionId": "session-id"
+            }
           }
         ]
       },
