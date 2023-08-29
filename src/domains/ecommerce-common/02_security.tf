@@ -355,3 +355,16 @@ resource "azurerm_key_vault_secret" "helpdesk-service-testing-fiscalCode" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "npg_psp_cards_keys" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "npg-psp-cards-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
