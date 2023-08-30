@@ -151,7 +151,7 @@
         "tags" : [ "Support" ],
         "summary" : "Get all payments by psp id and iur",
         "description" : "Get all payments by psp id and iur",
-        "operationId" : "getAllPaymentsByPspIdAndIur",
+        "operationId" : "getByIur",
         "parameters" : [ {
           "name" : "iur",
           "in" : "path",
@@ -340,7 +340,7 @@
         "tags" : [ "Support" ],
         "summary" : "Get all payments by psp id and iuv",
         "description" : "Get all payments by psp id and iuv",
-        "operationId" : "getAllPaymentsByPspIdAndIur",
+        "operationId" : "getByIuv",
         "parameters" : [ {
           "name" : "iuv",
           "in" : "path",
