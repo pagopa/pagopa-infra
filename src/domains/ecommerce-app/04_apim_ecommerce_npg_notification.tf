@@ -56,7 +56,7 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_npg_notifications_p
 }
 
 resource "azurerm_api_management_api_operation_policy" "npg_notifications_policy" {
-  api_name            = "${local.project}-ecommerce-checkout-api-v1"
+  api_name            = azurerm_api_management_api.apim_ecommerce_npg_notifications.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "npgNotify"
