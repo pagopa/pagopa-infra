@@ -1,19 +1,6 @@
 <policies>
     <inbound>
-        <cors>
-            <allowed-origins>
-                <origin>*</origin>
-            </allowed-origins>
-            <allowed-methods>
-                <method>*</method>
-            </allowed-methods>
-            <allowed-headers>
-                <header>*</header>
-            </allowed-headers>
-            <expose-headers>
-                <header>*</header>
-            </expose-headers>
-        </cors>
+        <base />
         <!-- start policy variables -->
         <set-variable name="paymentMethodBackendUri" value="https://weudev.ecommerce.internal.dev.platform.pagopa.it/pagopa-ecommerce-payment-methods-service" />
         <set-variable name="transactionServiceBackendUri" value="https://weudev.ecommerce.internal.dev.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
@@ -77,7 +64,6 @@
             </when>
         </choose>
         <!-- end send transactions service PATCH request -->
-        <base />
     </inbound>
     <backend>
         <base />
