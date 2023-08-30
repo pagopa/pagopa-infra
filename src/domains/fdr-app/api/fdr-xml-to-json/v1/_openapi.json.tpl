@@ -1,8 +1,8 @@
 {
   "openapi" : "3.0.3",
   "info" : {
-    "title" : "FDR - XML to API REST ${service}",
-    "description" : "Manage FDR - XML to API REST ( aka \"StService\" ) ${service}",
+    "title" : "FDR - XML to JSON API REST ${service}",
+    "description" : "Manage FDR - XML to JSON API REST ( aka \"StService\" ) ${service}",
     "termsOfService" : "https://www.pagopa.gov.it/",
     "version" : "0.0.0-SNAPSHOT"
   },

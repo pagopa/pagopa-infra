@@ -27,6 +27,9 @@
   }, {
     "name" : "PSP",
     "description" : "PSP operations"
+  }, {
+    "name" : "Support",
+    "description" : "Support operations"
   } ],
   "paths" : {
     "/internal/psps/{pspId}/fdrs/{fdr}/payments/add" : {
@@ -143,6 +146,82 @@
         }
       }
     },
+    "/internal/psps/{pspId}/iur/{iur}" : {
+      "get" : {
+        "tags" : [ "Support" ],
+        "summary" : "Get all payments by psp id and iur",
+        "description" : "Get all payments by psp id and iur",
+        "operationId" : "getByIur",
+        "parameters" : [ {
+          "name" : "iur",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "pattern" : "^(.{1,35})$",
+            "type" : "string"
+          }
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "pattern" : "^(.{1,35})$",
+            "type" : "string"
+          }
+        }, {
+          "name" : "createdFrom",
+          "in" : "query",
+          "schema" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }, {
+          "name" : "createdTo",
+          "in" : "query",
+          "schema" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1000,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
+          },
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FdrByIurResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/internal/organizations/{organizationId}/fdrs" : {
       "get" : {
         "tags" : [ "Internal Organizations" ],
@@ -249,6 +328,82 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/psps/{pspId}/iuv/{iuv}" : {
+      "get" : {
+        "tags" : [ "Support" ],
+        "summary" : "Get all payments by psp id and iuv",
+        "description" : "Get all payments by psp id and iuv",
+        "operationId" : "getByIuv",
+        "parameters" : [ {
+          "name" : "iuv",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "pattern" : "^(.{1,35})$",
+            "type" : "string"
+          }
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "pattern" : "^(.{1,35})$",
+            "type" : "string"
+          }
+        }, {
+          "name" : "createdFrom",
+          "in" : "query",
+          "schema" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }, {
+          "name" : "createdTo",
+          "in" : "query",
+          "schema" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1000,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
+          },
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FdrByIuvResponse"
                 }
               }
             }
@@ -822,6 +977,86 @@
               "$ref" : "#/components/schemas/Instant"
             } ],
             "example" : "2023-04-03T12:00:30.900000Z"
+          }
+        }
+      },
+      "FdrByIur" : {
+        "type" : "object",
+        "properties" : {
+          "pspId" : {
+            "type" : "string"
+          },
+          "organizationId" : {
+            "type" : "string"
+          },
+          "fdr" : {
+            "type" : "string"
+          },
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "created" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }
+      },
+      "FdrByIurResponse" : {
+        "type" : "object",
+        "properties" : {
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
+          },
+          "count" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FdrByIur"
+            }
+          }
+        }
+      },
+      "FdrByIuv" : {
+        "type" : "object",
+        "properties" : {
+          "pspId" : {
+            "type" : "string"
+          },
+          "organizationId" : {
+            "type" : "string"
+          },
+          "fdr" : {
+            "type" : "string"
+          },
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "created" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }
+      },
+      "FdrByIuvResponse" : {
+        "type" : "object",
+        "properties" : {
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
+          },
+          "count" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FdrByIuv"
+            }
           }
         }
       },

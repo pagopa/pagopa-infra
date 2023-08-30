@@ -11,9 +11,10 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
-  monitor_appinsights_name        = "${local.product}-appinsights"
+  monitor_action_group_slack_name     = "SlackPagoPA"
+  monitor_action_group_email_name     = "PagoPA"
+  monitor_action_group_opsgenie_name  = "Opsgenie"
+  monitor_appinsights_name            = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
@@ -36,7 +37,7 @@ locals {
 
   apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   shared_hostname = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
-  hostnameAzFunction = var.env == "prod" ? "pagopa-weu-shared-taxonomy-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-shared-taxonomy-fn.azurewebsites.net"
+  hostnameAzFunction = var.env == "prod" ? "pagopa-weu-shared-txnm-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-shared-txnm-fn.azurewebsites.net"
 
   cache_generator_hostname   = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net/api"
   cache_generator_hostname_2 = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net"

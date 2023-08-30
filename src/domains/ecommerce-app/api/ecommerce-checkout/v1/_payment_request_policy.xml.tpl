@@ -34,7 +34,7 @@
     }" />
     <choose>
       <when condition="@((string)context.Variables["rptId"] != "")">
-        <set-header name="x-rptId-id" exists-action="override">
+        <set-header name="x-rpt-id" exists-action="override">
           <value>@((string)context.Variables.GetValueOrDefault("rptId",""))</value>
         </set-header>
       </when>
