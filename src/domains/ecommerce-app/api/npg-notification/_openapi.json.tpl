@@ -12,6 +12,7 @@
         ],
         "summary": "Notify payment operation result",
         "description": "Notification request containing information about transaction result",
+        "operationId": "npgNotify",
         "parameters": [
           {
             "in": "path",

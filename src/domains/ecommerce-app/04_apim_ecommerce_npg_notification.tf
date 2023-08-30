@@ -20,7 +20,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_npg_notificati
 }
 
 resource "azurerm_api_management_api" "apim_ecommerce_npg_notifications" {
-  name                  = "${local.project}-nodo_mock"
+  name                  = "${local.project}-npg_notifications"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   subscription_required = local.apim_ecommerce_npg_notification_api.subscription_required
@@ -52,7 +52,16 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_npg_notifications_p
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  xml_content = templatefile("./api/npg-notification/_base_policy.xml.tpl", {
-    host = local.apim_hostname
+  xml_content = file("./api/npg-notification/_base_policy.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "npg_notifications_policy" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "npgNotify"
+
+  xml_content = templatefile("./api/npg-notification/_npg_notifications_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
   })
 }
