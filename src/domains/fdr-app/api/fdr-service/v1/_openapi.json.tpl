@@ -27,6 +27,9 @@
   }, {
     "name" : "PSP",
     "description" : "PSP operations"
+  }, {
+    "name" : "Support",
+    "description" : "Support operations"
   } ],
   "paths" : {
     "/psps/{pspId}/fdrs/{fdr}/payments/add" : {
@@ -841,6 +844,86 @@
               "$ref" : "#/components/schemas/Instant"
             } ],
             "example" : "2023-04-03T12:00:30.900000Z"
+          }
+        }
+      },
+      "FdrByIur" : {
+        "type" : "object",
+        "properties" : {
+          "pspId" : {
+            "type" : "string"
+          },
+          "organizationId" : {
+            "type" : "string"
+          },
+          "fdr" : {
+            "type" : "string"
+          },
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "created" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }
+      },
+      "FdrByIurResponse" : {
+        "type" : "object",
+        "properties" : {
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
+          },
+          "count" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FdrByIur"
+            }
+          }
+        }
+      },
+      "FdrByIuv" : {
+        "type" : "object",
+        "properties" : {
+          "pspId" : {
+            "type" : "string"
+          },
+          "organizationId" : {
+            "type" : "string"
+          },
+          "fdr" : {
+            "type" : "string"
+          },
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "created" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }
+      },
+      "FdrByIuvResponse" : {
+        "type" : "object",
+        "properties" : {
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
+          },
+          "count" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FdrByIuv"
+            }
           }
         }
       },
