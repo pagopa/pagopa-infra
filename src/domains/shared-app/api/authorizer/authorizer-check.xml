@@ -63,7 +63,7 @@
           !context.Variables.ContainsKey("cached_authorized_entities") ||
           (context.Variables.ContainsKey("cached_authorized_entities") && !((string)context.Variables["cached_authorized_entities"]).Contains((string)context.Variables["auth_entity"])) )">
             <choose>
-                <when condition="@(!"#*#".Equals((string)context.Variables["cached_authorized_entities"]))">
+                <when condition="@(!((string)context.Variables["cached_authorized_entities"]).Contains("#*#;;"))">
                     <return-response>
                         <set-status code="403" reason="Forbidden" />
                     </return-response>
@@ -77,9 +77,10 @@
         string authorization = ((string) context.Variables["cached_authorized_entities"]);
         int position = authorization.IndexOf(";;");
         if (position < 0) {
-          return "";
+          return "no-metadata";
         }
-        return authorization.Substring(position + 2);
+        string metadata = authorization.Substring(position + 2);
+        return !metadata.Equals("") ? metadata : "no-metadata";
       }" />
 
 </fragment>
