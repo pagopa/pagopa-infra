@@ -38,7 +38,7 @@ module "fdr_json_to_xml_function" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
 
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
-  name                = "${local.project}-json-to-xml-json-fn"
+  name                = "${local.project}-json-to-xml-fn"
 
   location          = var.location
   health_check_path = "/info"
@@ -66,7 +66,7 @@ module "fdr_json_to_xml_function" {
     allowed_origins = []
   }
 
-  app_service_plan_name = "${local.project}-json-to-xml-json-fn-plan"
+  app_service_plan_name = "${local.project}-json-to-xml-fn-plan"
   app_service_plan_info = {
     kind                         = var.fdr_json_to_xml_function.kind
     sku_size                     = var.fdr_json_to_xml_function.sku_size
