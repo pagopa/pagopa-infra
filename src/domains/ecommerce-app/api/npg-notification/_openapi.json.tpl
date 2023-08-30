@@ -5,7 +5,7 @@
     "version": "0.1"
   },
   "paths": {
-    "/api/{sessionId}/notify_payment": {
+    "/api/{sessionId}/notify_payment/{paymentMethodId}": {
       "post": {
         "tags": [
           "Payment Services"
@@ -21,6 +21,15 @@
             },
             "required": true,
             "description": "Transaction session ID"
+          },
+          {
+            "in": "path",
+            "name": "paymentMethodId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Payment method ID used for transaction"
           }
         ],
         "requestBody": {

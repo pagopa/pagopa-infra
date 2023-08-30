@@ -24,7 +24,7 @@ resource "azurerm_api_management_api" "apim_ecommerce_npg_notifications" {
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   subscription_required = local.apim_ecommerce_npg_notification_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_npg_notification_api[0].id
+  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_npg_notification_api.id
   version               = "v1"
   revision              = "1"
 
@@ -36,25 +36,23 @@ resource "azurerm_api_management_api" "apim_ecommerce_npg_notifications" {
 
   import {
     content_format = "openapi"
-    content_value = templatefile("./api/npg-notification/_openapi.json.tpl", {
-      host = local.apim_hostname
-    })
+    content_value  = file("./api/npg-notification/_openapi.json.tpl")
   }
 }
 
 resource "azurerm_api_management_product_api" "apim_ecommerce_npg_notifications_product_api" {
-  count               = var.env_short == "u" ? 1 : 0
-  api_name            = azurerm_api_management_api.apim_ecommerce_npg_notifications[0].name
+  api_name            = azurerm_api_management_api.apim_ecommerce_npg_notifications.name
   product_id          = module.apim_ecommerce_product.product_id
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 }
 
 resource "azurerm_api_management_api_policy" "apim_ecommerce_npg_notifications_policy" {
-  count               = var.env_short == "u" ? 1 : 0
-  api_name            = azurerm_api_management_api.apim_ecommerce_npg_notifications[0].name
+  api_name            = azurerm_api_management_api.apim_ecommerce_npg_notifications.name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  xml_content = file("./api/npg-notification/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/npg-notification/_base_policy.xml.tpl", {
+    host = local.apim_hostname
+  })
 }
