@@ -67,6 +67,6 @@ module "apim_api_fdr_json_to_xml_api_v1" {
   })
 
   xml_content = templatefile("./api/fdr-json-to-xml/v1/_base_policy.xml.tpl", {
-    hostname = local.hostnameAzFunction
+    hostname = local.hostnameAzFunctionJsonToXml
   })
 }
