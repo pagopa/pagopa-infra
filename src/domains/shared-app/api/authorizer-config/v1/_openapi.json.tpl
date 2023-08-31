@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "platform-authorizer-config",
+    "title" : "platform-authorizer-config-crud",
     "description" : "A microservice that provides a set of APIs to manage authorization records for the Authorizer system.",
     "termsOfService" : "https://www.pagopa.gov.it/",
     "version" : "0.0.2"

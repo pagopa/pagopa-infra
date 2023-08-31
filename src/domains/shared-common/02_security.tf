@@ -271,3 +271,16 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+
+
+resource "azurerm_key_vault_secret" "elastic_apm_secret_token" {
+  name         = "elastic-apm-secret-token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
