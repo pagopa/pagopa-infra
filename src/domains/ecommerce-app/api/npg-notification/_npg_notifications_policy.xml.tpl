@@ -15,10 +15,12 @@
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
             </set-header>
-            <set-body template="liquid">
-                    {
-                         "securityToken": "{{body.securityToken}}"
-                    }
+            <set-body>
+                    @(
+                        new JObject(
+                            new JProperty("securityToken", (((JObject)context.Variables["npgNotificationRequestBody"])["securityToken"]))
+                        ).ToString()
+                    )
             </set-body>
         </send-request>
         <choose>
@@ -37,18 +39,37 @@
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
             </set-header>
-            <set-body template="liquid">
-                    {
-                        "outcomeGateway" : {
-                            "paymentGatewayType" : "NPG",
-                            "operationResult" : "{{body.operation?.operationResult}}",
-                            "orderId" : "{{body.operation?.orderId}}",
-                            "operationId" : "{{body.operation?.operationId}}",
-                            "authorizationCode" : "{{body.operation?.additionalData?.authorizationCode}}",
-                            "paymentEndToEndId" : "{{body.operation?.paymentEndToEndId}}"
-                        },
-                        "timestampOperation" : "{{body.operation?.eventTime | date: "yyyy-MM-ddTHH:mm:ss" }}"
-                    }
+            <set-body>
+                     @{
+                        JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
+                        JObject operation = (JObject)requestBody["operation"];
+                        string operationResult = (string)operation["operationResult"];
+                        string orderId = (string)operation["orderId"];
+                        string operationId = (string)operation["operationId"];
+                        JObject additionalData = (JObject)operation["additionalData"];
+                        string authorizationCode = null;
+                        if(additionalData !=null){
+                            authorizationCode = (string)additionalData["authorizationCode"];
+                        }
+                        string paymentEndToEndId = (string)operation["paymentEndToEndId"];
+                        string eventTime = (string)requestBody["eventTime"];
+                        string timestampOperation = null;
+                        if(eventTime != null) {
+                            DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(Double.Parse(eventTime));
+                            timestampOperation = dt.ToString("o");
+                        }
+                        JObject outcomeGateway = new JObject();
+                        outcomeGateway["paymentGatewayType"] = "NPG";
+                        outcomeGateway["operationResult"] = operationResult;
+                        outcomeGateway["orderId"] = orderId;
+                        outcomeGateway["operationId"] = operationId;
+                        outcomeGateway["authorizationCode"] = authorizationCode;
+                        outcomeGateway["paymentEndToEndId"] = paymentEndToEndId;
+                        JObject response = new JObject();
+                        response["timestampOperation"] = timestampOperation;
+                        response["outcomeGateway"] = outcomeGateway;
+                        return response.ToString();
+                     }
             </set-body>
         </send-request>
         <choose>
