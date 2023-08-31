@@ -433,6 +433,62 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "payment-methods"
+        ],
+        "operationId": "updateSession",
+        "summary": "Update session data",
+        "description": "API for updating session data",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sessionId",
+            "in": "path",
+            "description": "Session payment method ID related to NPG",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/PatchSession"
+        },
+        "responses": {
+          "204": {
+            "description": "Session updated"
+          },
+          "404": {
+            "description": "Session not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -846,6 +902,19 @@
           "expiringDate",
           "brand"
         ]
+      },
+      "PatchSessionRequest": {
+        "type": "object",
+        "description": "Session data to update",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction id to associate to this session"
+          }
+        },
+        "required": [
+          "transactionId"
+        ]
       }
     },
     "requestBodies": {
@@ -875,6 +944,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/CalculateFeeRequest"
+            }
+          }
+        }
+      },
+      "PatchSession": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PatchSessionRequest"
             }
           }
         }
