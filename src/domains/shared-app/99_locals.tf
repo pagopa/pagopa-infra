@@ -42,6 +42,8 @@ locals {
   cache_generator_hostname   = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net/api"
   cache_generator_hostname_2 = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net"
 
+  authorizer_config_hostname = "${local.shared_hostname}/authorizer-config"
+
   # DOMAINS
   system_domain_namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
   domain_namespace        = kubernetes_namespace.namespace.metadata[0].name
