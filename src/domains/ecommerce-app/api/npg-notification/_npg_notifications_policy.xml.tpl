@@ -2,8 +2,8 @@
     <inbound>
         <base />
         <!-- start policy variables -->
-        <set-variable name="paymentMethodBackendUri" value="https://weudev.ecommerce.internal.dev.platform.pagopa.it/pagopa-ecommerce-payment-methods-service" />
-        <set-variable name="transactionServiceBackendUri" value="https://weudev.ecommerce.internal.dev.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
+        <set-variable name="paymentMethodBackendUri" value="https://${hostname}/pagopa-ecommerce-payment-methods-service" />
+        <set-variable name="transactionServiceBackendUri" value="https://${hostname}/pagopa-ecommerce-transactions-service" />
         <set-variable name="sessionId" value="@(context.Request.MatchedParameters["sessionId"])" />
         <set-variable name="paymentMethodId" value="@(context.Request.Url.Query.GetValueOrDefault("paymentMethodId",""))" />
         <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
