@@ -478,6 +478,91 @@
               }
             }
           },
+          "409": {
+            "description": "Session already associated to transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/{id}/sessions/{sessionId}/validate": {
+      "post": {
+        "tags": [
+          "payment-methods"
+        ],
+        "operationId": "validateSession",
+        "summary": "Validate sessionId - securityToken pair",
+        "description": "API for validate a sessionId - securityToken pair",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sessionId",
+            "in": "path",
+            "description": "Session payment method ID related to NPG",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/PostSessionValidate"
+        },
+        "responses": {
+          "200": {
+            "description": "Session is valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionValidateResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Session not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Service unavailable",
             "content": {
@@ -915,6 +1000,32 @@
         "required": [
           "transactionId"
         ]
+      },
+      "SessionValidateRequest": {
+        "type": "object",
+        "description": "Session validation request body",
+        "properties": {
+          "securityToken": {
+            "type": "string",
+            "description": "Security token provided by the payment gateway"
+          }
+        },
+        "required": [
+          "securityToken"
+        ]
+      },
+      "SessionValidateResponse": {
+        "type": "object",
+        "description": "Session validation successful response",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction id associated to this NPG session"
+          }
+        },
+        "required": [
+          "transactionId"
+        ]
       }
     },
     "requestBodies": {
@@ -954,6 +1065,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/PatchSessionRequest"
+            }
+          }
+        }
+      },
+      "PostSessionValidate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SessionValidateRequest"
             }
           }
         }
