@@ -75,16 +75,16 @@
             </set-body>
         </send-request>
         <choose>
-            <when condition="@(((int)((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).StatusCode) != 200)">
-                <return-response>
-                    <set-status code="500" reason="Error during transaction status notify" />
-                </return-response>
-            </when>
             <when condition="@(((int)((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).StatusCode) == 200)">
                 <return-response>
                     <set-status code="200" reason="Notification elaborated successfully" />
                 </return-response>
             </when>
+            <otherwise>
+                <return-response>
+                    <set-status code="500" reason="Error during transaction status notify" />
+                </return-response>
+            </otherwise>
         </choose>
         <!-- end send transactions service PATCH request -->
     </inbound>
