@@ -5,7 +5,7 @@
     "version": "0.1"
   },
   "paths": {
-    "/sessions/{sessionId}/outcome": {
+    "/sessions/{sessionId}/outcomes": {
       "post": {
         "tags": [
           "Payment Services"
