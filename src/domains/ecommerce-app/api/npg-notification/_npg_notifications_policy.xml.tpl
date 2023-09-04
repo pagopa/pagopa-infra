@@ -55,7 +55,7 @@
                         string timestampOperation = null;
                         if(eventTime != null) {
                             DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(Double.Parse(eventTime));
-                            timestampOperation = dt.ToString("o");
+                            timestampOperation = dt.ToString("o") + "Z";
                         }
                         JObject outcomeGateway = new JObject();
                         outcomeGateway["paymentGatewayType"] = "NPG";
