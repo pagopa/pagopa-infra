@@ -26,10 +26,10 @@ AzureDiagnostics
   )
   severity    = 2
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
 ## called by internal pagoPA hosts Availability ##
@@ -97,10 +97,10 @@ AzureDiagnostics
   )
   severity    = 2
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
 ## GPD-Core for organizations (alias external) Availability ##

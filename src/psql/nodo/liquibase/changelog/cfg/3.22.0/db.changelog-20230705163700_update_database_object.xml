@@ -29,13 +29,13 @@
 	   SELECT mas.fk_pa,
        det.iban          AS iban_accredito,
        mas.validity_date AS data_inizio_validita,
-       null              AS data_pubblicazione,
+	   TO_TIMESTAMP(null, 'YYYY/MM/DD HH:MI:SS' ) AS data_pubblicazione,
        det.fiscal_code   AS ragione_sociale,
        NULL              AS id_merchant,
        NULL              AS id_banca_seller,
        NULL              AS chiave_avvio,
        NULL              AS chiave_esito,
-       det.obj_id,
+       mas.obj_id,
        mas.obj_id        AS master_obj
 FROM   ((iban_master mas
          JOIN (
@@ -62,6 +62,12 @@ FROM   ((iban_master mas
 			deferrable="false" initiallyDeferred="false" onDelete="RESTRICT"
 			onUpdate="RESTRICT" referencedColumnNames="obj_id"
 			referencedTableName="ica_binary_file" validate="true" />
+	</changeSet>
+	
+	<changeSet author="liquibase" id="202307311500">
+		<addUniqueConstraint columnNames="iban"
+			constraintName="IBAN_UNIQUE" deferrable="false"
+			initiallyDeferred="false" tableName="iban" validate="true" />
 	</changeSet>
 
 </databaseChangeLog>

@@ -280,3 +280,90 @@ resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "npg_api_key" {
+  name         = "npg-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "pm_oracle_db_host" {
+  name         = "pm-oracle-db-host"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "pm_oracle_db_password" {
+  name         = "pm-oracle-db-password"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "helpdesk-service-testing-api-key" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "helpdesk-service-testing-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "helpdesk-service-testing-email" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "helpdesk-service-testing-email"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "helpdesk-service-testing-fiscalCode" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "helpdesk-service-testing-fiscalCode"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_cards_psp_keys" {
+  name         = "npg-cards-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
