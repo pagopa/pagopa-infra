@@ -11,19 +11,16 @@
         <!-- payment method verify session -->
         <send-request mode="new" response-variable-name="paymentMethodSessionVerificationResponse" timeout="10" ignore-error="true">
             <set-url>@(String.Format((string)context.Variables["paymentMethodBackendUri"]+"/payment-methods/{0}/sessions/{1}/validate", (string)context.Variables["paymentMethodId"], (string)context.Variables["sessionId"]))</set-url>
-            <set-method>POST</set-method>
+            <set-method>GET</set-method>
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
             </set-header>
-            <set-body>
-                    @{
+            <set-header name="Authorization" exists-action="override">
+                <value> @{
                         JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
-                        string securityToken = (string)requestBody["securityToken"];
-                        JObject response = new JObject();
-                        response["securityToken"] = securityToken;
-                        return response.ToString();
-                    }
-            </set-body>
+                        return "Bearer " + (string)requestBody["securityToken"];
+                    }</value>
+            </set-header>
         </send-request>
         <choose>
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionVerificationResponse"]).StatusCode) != 200)">
