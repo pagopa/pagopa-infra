@@ -78,7 +78,11 @@
           "operation": {
             "$ref": "#/components/schemas/Operation"
           }
-        }
+        },
+        "required": [
+          "securityToken",
+          "operation"
+        ]
       },
       "Operation": {
         "type": "object",
@@ -166,7 +170,10 @@
               }
             }
           }
-        }
+        },
+        "required": [
+          "operationResult"
+        ]
       },
       "ChannelType": {
         "type": "string",
@@ -472,7 +479,10 @@
             "example": "EUR"
           }
         },
-        "example": null
+        "example": {
+          "value": 100,
+          "currency": "EUR"
+        }
       }
     }
   }
