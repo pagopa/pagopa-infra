@@ -732,6 +732,20 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "x-transaction-id-from-client",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ecommerce transaction id"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "responses": {
@@ -744,6 +758,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Session Payment method not found",
