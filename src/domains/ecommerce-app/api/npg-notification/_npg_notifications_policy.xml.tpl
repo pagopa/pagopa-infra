@@ -29,7 +29,7 @@
                 </return-response>
             </when>
         </choose>
-        <set-variable name="transactionId" value="@(((IResponse)context.Variables["paymentMethodSessionVerificationResponse"]).Body.As<JObject>(preserveContent: true)["transactionId"])" />
+        <set-variable name="transactionId" value="@(((string)((IResponse)context.Variables["paymentMethodSessionVerificationResponse"]).Body.As<JObject>(preserveContent: true)["transactionId"]))" />
         <!-- end payment method verify session -->
         <!-- send transactions service PATCH request -->
         <send-request mode="new" response-variable-name="transactionServiceAuthorizationPatchResponse" timeout="10" ignore-error="true">
