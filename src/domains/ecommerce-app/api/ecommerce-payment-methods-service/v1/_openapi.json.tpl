@@ -501,79 +501,81 @@
         }
       }
     },
-    "/payment-methods/{id}/sessions/{sessionId}/validate": {
-      "post": {
-        "tags": [
-          "payment-methods"
-        ],
-        "operationId": "validateSession",
-        "summary": "Validate sessionId - securityToken pair",
-        "description": "API for validate a sessionId - securityToken pair",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Payment Method ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sessionId",
-            "in": "path",
-            "description": "Session payment method ID related to NPG",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+    "/payment-methods/{id}/sessions/{sessionId}/transactionId": {
+      "get": {
+          "tags": [
+              "payment-methods"
+          ],
+          "operationId": "getTransactionIdForSession",
+          "summary": "Get eCommerce transaction id for the given NPG session",
+          "description": "API to get a transaction id from a NPG session",
+          "parameters": [
+              {
+                  "name": "id",
+                  "in": "path",
+                  "description": "Payment Method ID",
+                  "required": true,
+                  "schema": {
+                      "type": "string"
+                  }
+              },
+              {
+                  "name": "sessionId",
+                  "in": "path",
+                  "description": "Session payment method ID related to NPG",
+                  "required": true,
+                  "schema": {
+                      "type": "string"
+                  }
+              }
+          ],
+          "security": [
+              {
+                  "BearerAuth": []
+              }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Session found",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/SessionGetTransactionId"
+                          }
+                      }
+                  }
+              },
+              "404": {
+                  "description": "Session not found",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/ProblemJson"
+                          }
+                      }
+                  }
+              },
+              "409": {
+                  "description": "Invalid session",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/ProblemJson"
+                          }
+                      }
+                  }
+              },
+              "500": {
+                  "description": "Service unavailable",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/ProblemJson"
+                          }
+                      }
+                  }
+              }
           }
-        ],
-        "requestBody": {
-          "$ref": "#/components/requestBodies/PostSessionValidate"
-        },
-        "responses": {
-          "200": {
-            "description": "Session is valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SessionValidateResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Session not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Invalid session",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
       }
     }
   },
@@ -1001,22 +1003,9 @@
           "transactionId"
         ]
       },
-      "SessionValidateRequest": {
+      "SessionGetTransactionId": {
         "type": "object",
-        "description": "Session validation request body",
-        "properties": {
-          "securityToken": {
-            "type": "string",
-            "description": "Security token provided by the payment gateway"
-          }
-        },
-        "required": [
-          "securityToken"
-        ]
-      },
-      "SessionValidateResponse": {
-        "type": "object",
-        "description": "Session validation successful response",
+        "description": "Transaction id for session successful response",
         "properties": {
           "transactionId": {
             "type": "string",
@@ -1068,16 +1057,6 @@
             }
           }
         }
-      },
-      "PostSessionValidate": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/SessionValidateRequest"
-            }
-          }
-        }
       }
     },
     "securitySchemes": {
@@ -1085,6 +1064,10 @@
         "type": "apiKey",
         "name": "Ocp-Apim-Subscription-Key",
         "in": "header"
+      },
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }
