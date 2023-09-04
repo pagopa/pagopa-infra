@@ -1,16 +1,7 @@
 <policies>
 
   <inbound>
-      <cors>
-        <allowed-origins>
-          <origin>*</origin>
-        </allowed-origins>
-        <allowed-methods>
-          <method>POST</method>
-        </allowed-methods>
-      </cors>
       <base />
-      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
   </inbound>
 
   <outbound>
