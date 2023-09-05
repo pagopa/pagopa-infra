@@ -85,9 +85,9 @@ taxonomy_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
-  advanced_threat_protection    = false
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
   public_network_access_enabled = false
   blob_delete_retention_days    = 0
-  enable_low_availability_alert = false
+  enable_low_availability_alert = true
 }
