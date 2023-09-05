@@ -1,28 +1,28 @@
 {
   "openapi" : "3.0.3",
   "info" : {
-    "title" : "FDR - XML to JSON API REST ${service}",
-    "description" : "Manage FDR - XML to JSON API REST ( aka \"StService\" ) ${service}",
+    "title" : "FDR - JSON to XML API REST ${service}",
+    "description" : "Manage FDR - JSON to XML API REST ( aka \"StService\" ) ${service}",
     "termsOfService" : "https://www.pagopa.gov.it/",
     "version" : "0.0.0-SNAPSHOT"
   },
   "servers" : [ {
-    "url" : "${host}/fdr-xml-to-json/api/v1 - APIM"
+    "url" : "${host}/fdr-json-to-xml/api/v1 - APIM"
   } ],
   "security" : [ {
     "api_key" : [ ]
   } ],
   "tags" : [ {
-    "name" : "XML to JSON",
-    "description" : "Function for convert XML to REST API"
+    "name" : "JSON to XML",
+    "description" : "Function for convert Json to fdr nodo legacy"
   } ],
   "paths" : {
-    "/xmlerror" : {
+    "/jsonerror" : {
       "get" : {
-        "tags" : [ "XML to JSON" ],
+        "tags" : [ "JSON to XML" ],
         "summary" : "Retry to send",
         "description" : "Retry to send all error fdr",
-        "operationId" : "xmlerror",
+        "operationId" : "jsonerror",
         "parameters" : [ {
           "name" : "partitionKey",
           "in" : "query",
@@ -35,13 +35,7 @@
           "schema" : {
             "type" : "string"
           }
-        }, {
-          "name" : "deleteOnlyByKey",
-          "in" : "query",
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
+        }],
         "responses" : {
           "200" : {
             "description" : "OK",

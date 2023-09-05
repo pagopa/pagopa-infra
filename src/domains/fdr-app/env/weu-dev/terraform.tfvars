@@ -97,3 +97,20 @@ fdr_xml_to_json_function_autoscale = {
   minimum = 1
   maximum = 3
 }
+
+# fdr json to xml
+fdr_json_to_xml_function_subnet                   = ["10.1.185.0/24"]
+fdr_json_to_xml_function_network_policies_enabled = false
+fdr_json_to_xml_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = null
+}
+
+fdr_json_to_xml_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}

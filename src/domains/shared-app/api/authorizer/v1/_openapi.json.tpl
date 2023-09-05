@@ -76,8 +76,13 @@
           },
           "value": {
             "type": "string",
-            "description": "The entities that will be saved as value for authorization check. If two or more entities must be added, they must be separated by a comma.",
-            "example": "entity1,entity2,entity3"
+            "description": "The entities that will be saved as value for authorization check. If two or more entities must be added, they must be separated by a hash character.",
+            "example": "entity1#entity2#entity3"
+          },
+          "metadata": {
+            "type": "string",
+            "description": "The metadata that will be saved as additional information for further operations. If two or more entities must be added, they must be separated by a double semicolumn character.",
+            "example": "_o=pagoPA;;_sco=Test Purpose;;"
           }
         }
       }

@@ -112,6 +112,7 @@ module "apim_api_statuspage_api_v1" {
       "apiconfigcachep"       = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
       "apiconfigselfcare"     = format("%s/pagopa-api-config-selfcare-integration", format(local.aks_path, "apiconfig"))
       "authorizer"            = format("%s/", data.azurerm_function_app.authorizer.default_hostname)
+      "authorizerconfig"      = format("%s//authorizer-config", format(local.aks_path, "shared"))
       "bizevents"             = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastoreneg" = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastorepos" = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))

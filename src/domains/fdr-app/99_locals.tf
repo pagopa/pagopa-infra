@@ -47,7 +47,8 @@ locals {
   fdr_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
   hostname           = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
-  hostnameAzFunction = var.env == "prod" ? "pagopa-weu-fdr-xml-to-json-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-fdr-xml-to-json-fn.azurewebsites.net"
+  hostnameAzFunctionXmlToJson = var.env == "prod" ? "pagopa-weu-fdr-xml-to-json-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-fdr-xml-to-json-fn.azurewebsites.net"
+  hostnameAzFunctionJsonToXml = var.env == "prod" ? "pagopa-weu-fdr-json-to-xml-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-fdr-json-to-xml-fn.azurewebsites.net"
 
   product_id            = "fdr"
   display_name          = "Flussi di rendicontazione"
