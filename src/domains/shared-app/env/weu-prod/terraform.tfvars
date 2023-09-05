@@ -55,7 +55,6 @@ taxonomy_function = {
   always_on                     = true
   kind                          = "Linux"
   sku_size                      = "P1v3"
-  sku_tier                      = "Basic"
   maximum_elastic_worker_count  = null
 }
 taxonomy_function_autoscale = {
