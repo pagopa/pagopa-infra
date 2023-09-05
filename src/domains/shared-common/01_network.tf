@@ -38,7 +38,7 @@ module "taxonomy_storage_snet" {
 
   name                 = "${local.project}-${local.taxonomy_label}-storage-snet"
   address_prefixes     = var.cidr_subnet_taxonomy_storage_account
-  resource_group_name  = azurerm_resource_group.taxonomy_rg.name
+  resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 
   private_endpoint_network_policies_enabled = true
