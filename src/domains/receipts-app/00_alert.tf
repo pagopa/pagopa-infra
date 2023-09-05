@@ -112,4 +112,39 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt
     operator  = "GreaterThanOrEqual"
     threshold = 1
   }
+
+## Alert
+# This alert cover the following case:
+# 1. BizEventToReceiptProcessor receive a biz event related to a cart (totalNotice > 1)
+#
+resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-discarded-alert" {
+  for_each = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
+
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-receipt-cart-event-discarded-alert"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[Receipts] biz event related to a cart"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "BizEventToReceiptProcessor received a biz event related to a cart (totalNotice > 1), the event has been discarded"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | where outerMessage contains "" 
+    | order by timestamp desc
+  QUERY
+    , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME
+  ) # TODO set log message in query
+  severity    = 2 // Sev 2	Warning
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
 }
