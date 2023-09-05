@@ -60,6 +60,6 @@ module "apim_api_authorizer_config_api_v1" {
   })
 
   xml_content = templatefile("./api/authorizer-config/v1/_base_policy.xml", {
-    hostname = local.shared_hostname
+    hostname = local.authorizer_config_hostname
   })
 }
