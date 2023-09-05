@@ -51,7 +51,7 @@
                 </when>
             </choose>
             <!-- Add query parameter to the request -->
-            <set-query-parameter name="segregationcodes" exists-action="override">
+            <set-query-parameter name="segregationCodes" exists-action="override">
                 <value>@((string) context.Variables["segregation_codes"])</value>
             </set-query-parameter>
             <!-- ################################################################### -->
