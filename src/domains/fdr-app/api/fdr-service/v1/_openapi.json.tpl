@@ -1,478 +1,668 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "title": "FDR - Flussi di Rendicontazione",
-    "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.0.0-SNAPSHOT"
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "FDR - Flussi di rendicontazione ${service}",
+    "description" : "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
+    "termsOfService" : "https://www.pagopa.gov.it/",
+    "version" : "0.0.0-SNAPSHOT"
   },
-  "servers": [
-    {
-      "url": "${host}/fdr/api/v1 - APIM"
-    }
-  ],
-  "tags": [
-    {
-      "name": "Info",
-      "description": "Info operations"
-    },
-    {
-      "name": "Organizations",
-      "description": "Get reporting flow operations"
-    },
-    {
-      "name": "PSP",
-      "description": "Psp operations"
-    }
-  ],
-  "paths": {
-    "/info": {
-      "get": {
-        "tags": [
-          "Info"
-        ],
-        "summary": "Get info of FDR",
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InfoResponse"
-                }
-              }
-            }
+  "servers" : [ {
+    "url" : "${host}/fdr/api/v1 - APIM"
+  } ],
+  "security" : [ {
+    "api_key" : [ ]
+  } ],
+  "tags" : [ {
+    "name" : "Info",
+    "description" : "Info operations"
+  }, {
+    "name" : "Internal Organizations",
+    "description" : "Organizations operations"
+  }, {
+    "name" : "Internal PSP",
+    "description" : "PSP operations"
+  }, {
+    "name" : "Organizations",
+    "description" : "Organizations operations"
+  }, {
+    "name" : "PSP",
+    "description" : "PSP operations"
+  }, {
+    "name" : "Support",
+    "description" : "Support operations"
+  } ],
+  "paths" : {
+    "/psps/{pspId}/fdrs/{fdr}/payments/add" : {
+      "put" : {
+        "tags" : [ "PSP" ],
+        "summary" : "Add payments to fdr",
+        "description" : "Add payments to fdr",
+        "operationId" : "addPayment",
+        "parameters" : [ {
+          "name" : "fdr",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        }
-      }
-    },
-    "/organizations/{ec}/flows": {
-      "get": {
-        "tags": [
-          "Organizations"
-        ],
-        "summary": "Get all published reporting flow",
-        "description": "Get all published reporting flow by ec and idPsp(optional param)",
-        "parameters": [
-          {
-            "name": "ec",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "idPsp",
-            "in": "query",
-            "schema": {
-              "pattern": "^\\w{1,35}$",
-              "type": "string"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "format": "int64",
-              "default": 1,
-              "minimum": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "schema": {
-              "format": "int64",
-              "default": 50,
-              "minimum": 1,
-              "type": "integer"
-            }
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
-          },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAllResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/organizations/{ec}/flows/{fdr}": {
-      "get": {
-        "tags": [
-          "Organizations"
-        ],
-        "summary": "Get reporting flow",
-        "description": "Get reporting flow by id but not payments",
-        "parameters": [
-          {
-            "name": "ec",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fdr",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
-          },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetIdResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/organizations/{ec}/flows/{fdr}/payments": {
-      "get": {
-        "tags": [
-          "Organizations"
-        ],
-        "summary": "Get payments of reporting flow",
-        "description": "Get only payments of reporting flow by id paginated",
-        "parameters": [
-          {
-            "name": "ec",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fdr",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "format": "int64",
-              "default": 1,
-              "minimum": 1,
-              "type": "integer"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "schema": {
-              "format": "int64",
-              "default": 50,
-              "minimum": 1,
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
-          },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
-          },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetPaymentResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/psps/{psps}/flows": {
-      "post": {
-        "tags": [
-          "PSP"
-        ],
-        "summary": "Create reporting flow",
-        "description": "Create new reporting flow",
-        "parameters": [
-          {
-            "name": "psps",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateFlowRequest"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AddPaymentRequest"
               }
             }
           }
         },
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
           },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
           },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GenericResponse"
+                }
               }
             }
           }
         }
       }
     },
-    "/psps/{psps}/flows/{fdr}": {
-      "delete": {
-        "tags": [
-          "PSP"
-        ],
-        "summary": "Delete reporting flow",
-        "description": "Delete reporting flow",
-        "parameters": [
-          {
-            "name": "fdr",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "psps",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+    "/psps/{pspId}/fdrs/{fdr}/publish" : {
+      "post" : {
+        "tags" : [ "PSP" ],
+        "summary" : "Publish fdr",
+        "description" : "Publish fdr",
+        "operationId" : "publish",
+        "parameters" : [ {
+          "name" : "fdr",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
           },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
           },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GenericResponse"
+                }
               }
             }
           }
         }
       }
     },
-    "/psps/{psps}/flows/{fdr}/payments": {
-      "put": {
-        "tags": [
-          "PSP"
-        ],
-        "summary": "Add payments to reporting flow",
-        "description": "Add payments to reporting flow",
-        "parameters": [
-          {
-            "name": "fdr",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "psps",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+    "/organizations/{organizationId}/fdrs/{fdr}/revisions/{revision}/psps/{pspId}" : {
+      "get" : {
+        "tags" : [ "Organizations" ],
+        "summary" : "Get fdr",
+        "description" : "Get fdr",
+        "operationId" : "get",
+        "parameters" : [ {
+          "name" : "fdr",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddPaymentRequest"
+        }, {
+          "name" : "organizationId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "revision",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
+          },
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetResponse"
+                }
               }
             }
           }
-        },
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
+        }
+      }
+    },
+    "/organizations/{organizationId}/fdrs/{fdr}/revisions/{revision}/psps/{pspId}/payments" : {
+      "get" : {
+        "tags" : [ "Organizations" ],
+        "summary" : "Get payments of fdr",
+        "description" : "Get payments of fdr",
+        "operationId" : "getPayment",
+        "parameters" : [ {
+          "name" : "fdr",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "organizationId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "revision",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1000,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
           },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
           },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetPaymentResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/psps/{pspId}/fdrs/{fdr}" : {
+      "get" : {
+        "tags" : [ "PSP" ],
+        "summary" : "Get created fdr",
+        "description" : "Get created fdr",
+        "operationId" : "getCreated",
+        "parameters" : [ {
+          "name" : "fdr",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
+          },
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetCreatedResponse"
+                }
               }
             }
           }
         }
       },
-      "delete": {
-        "tags": [
-          "PSP"
-        ],
-        "summary": "Delete payments to reporting flow",
-        "description": "Delete payments to reporting flow",
-        "parameters": [
-          {
-            "name": "fdr",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "psps",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+      "post" : {
+        "tags" : [ "PSP" ],
+        "summary" : "Create fdr",
+        "description" : "Create fdr",
+        "operationId" : "create",
+        "parameters" : [ {
+          "name" : "fdr",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "pattern" : "[a-zA-Z0-9\\-_]{1,35}",
+            "type" : "string"
           }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeletePaymentRequest"
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CreateRequest"
               }
             }
           }
         },
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
           },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
           },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "PSP" ],
+        "summary" : "Delete fdr",
+        "description" : "Delete fdr",
+        "operationId" : "delete",
+        "parameters" : [ {
+          "name" : "fdr",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
+          },
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GenericResponse"
+                }
               }
             }
           }
         }
       }
     },
-    "/psps/{psps}/flows/{fdr}/publish": {
-      "post": {
-        "tags": [
-          "PSP"
-        ],
-        "summary": "Publish reporting flow",
-        "description": "Publish reporting flow",
-        "parameters": [
-          {
-            "name": "fdr",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+    "/psps/{pspId}" : {
+      "get" : {
+        "tags" : [ "PSP" ],
+        "summary" : "Get all fdr created",
+        "description" : "Get all fdr created",
+        "operationId" : "getAllcreated",
+        "parameters" : [ {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "createdGt",
+          "in" : "query",
+          "schema" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1000,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
           },
-          {
-            "name": "psps",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
+          },
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetAllCreatedResponse"
+                }
+              }
             }
           }
-        ],
-        "responses": {
-          "500": {
-            "$ref": "#/components/responses/InternalServerError"
+        }
+      }
+    },
+    "/info" : {
+      "get" : {
+        "tags" : [ "Info" ],
+        "summary" : "Get info of FDR",
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
           },
-          "400": {
-            "$ref": "#/components/responses/AppException400"
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/InfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/psps/{pspId}/fdrs/{fdr}/payments/del" : {
+      "put" : {
+        "tags" : [ "PSP" ],
+        "summary" : "Delete payments to fdr",
+        "description" : "Delete payments to fdr",
+        "operationId" : "deletePayment",
+        "parameters" : [ {
+          "name" : "fdr",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DeletePaymentRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
           },
-          "404": {
-            "$ref": "#/components/responses/AppException404"
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
+          },
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/psps/{pspId}/fdrs/{fdr}/payments" : {
+      "get" : {
+        "tags" : [ "PSP" ],
+        "summary" : "Get created payments of fdr",
+        "description" : "Get created payments of fdr",
+        "operationId" : "getCreatedPayment",
+        "parameters" : [ {
+          "name" : "fdr",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "pspId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1000,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
+          },
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetPaymentResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{organizationId}/fdrs" : {
+      "get" : {
+        "tags" : [ "Organizations" ],
+        "summary" : "Get all fdr published",
+        "description" : "Get all fdr published",
+        "operationId" : "getAllPublished",
+        "parameters" : [ {
+          "name" : "organizationId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "pattern" : "^(.{1,35})$",
+            "type" : "string"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        }, {
+          "name" : "pspId",
+          "in" : "query",
+          "schema" : {
+            "pattern" : "^(.{1,35})$",
+            "type" : "string"
+          }
+        }, {
+          "name" : "publishedGt",
+          "in" : "query",
+          "schema" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "schema" : {
+            "format" : "int64",
+            "default" : 1000,
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "#/components/responses/InternalServerError"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/AppException400"
+          },
+          "404" : {
+            "$ref" : "#/components/responses/AppException404"
+          },
+          "200" : {
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetAllResponse"
+                }
               }
             }
           }
@@ -480,556 +670,799 @@
       }
     }
   },
-  "components": {
-    "schemas": {
-      "AddPaymentRequest": {
-        "required": [
-          "payments"
-        ],
-        "type": "object",
-        "properties": {
-          "payments": {
-            "maxItems": 100,
-            "minItems": 1,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Payment"
+  "components" : {
+    "schemas" : {
+      "AddPaymentRequest" : {
+        "required" : [ "payments" ],
+        "type" : "object",
+        "properties" : {
+          "payments" : {
+            "maxItems" : 1000,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Payment"
             }
           }
         }
       },
-      "CreateFlowRequest": {
-        "required": [
-          "reportingFlowName",
-          "reportingFlowDate",
-          "sender",
-          "receiver",
-          "regulation",
-          "regulationDate"
-        ],
-        "type": "object",
-        "properties": {
-          "reportingFlowName": {
-            "pattern": "^\\S+$",
-            "type": "string",
-            "example": "60000000001-1173"
+      "CreateRequest" : {
+        "required" : [ "fdr", "fdrDate", "sender", "receiver", "regulation", "regulationDate", "totPayments", "sumPayments" ],
+        "type" : "object",
+        "properties" : {
+          "fdr" : {
+            "description" : "[XML NodoInviaFlussoRendicontazione]=[identificativoFlusso]",
+            "pattern" : "[a-zA-Z0-9\\-_]{1,35}",
+            "type" : "string",
+            "example" : "2016-08-16pspTest-1178"
           },
-          "reportingFlowDate": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Instant"
-              }
-            ],
-            "example": "2023-04-05T09:21:37.810000Z"
+          "fdrDate" : {
+            "description" : "[XML NodoInviaFlussoRendicontazione]=[dataOraFlusso]",
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-05T09:21:37.810000Z"
           },
-          "sender": {
-            "$ref": "#/components/schemas/Sender"
+          "sender" : {
+            "$ref" : "#/components/schemas/Sender"
           },
-          "receiver": {
-            "$ref": "#/components/schemas/Receiver"
+          "receiver" : {
+            "$ref" : "#/components/schemas/Receiver"
           },
-          "regulation": {
-            "type": "string",
-            "example": "SEPA - Bonifico xzy"
+          "regulation" : {
+            "description" : "[XML FlussoRiversamento]=[identificativoUnivocoRegolamento]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "SEPA - Bonifico xzy"
           },
-          "regulationDate": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Instant"
-              }
-            ],
-            "example": "2023-04-03T12:00:30.900000Z"
+          "regulationDate" : {
+            "description" : "[XML FlussoRiversamento]=[dataRegolamento]",
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
           },
-          "bicCodePouringBank": {
-            "pattern": "^(\\w{8}|\\w{11})$",
-            "type": "string",
-            "example": "UNCRITMMXXX"
+          "bicCodePouringBank" : {
+            "description" : "[XML FlussoRiversamento]=[codiceBicBancaDiRiversamento]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "UNCRITMMXXX"
+          },
+          "totPayments" : {
+            "format" : "int64",
+            "description" : "[XML FlussoRiversamento]=[numeroTotalePagamenti]",
+            "minimum" : 1,
+            "type" : "integer",
+            "example" : 1
+          },
+          "sumPayments" : {
+            "format" : "double",
+            "description" : "[XML FlussoRiversamento]=[importoTotalePagamenti]",
+            "minimum" : 0,
+            "exclusiveMinimum" : true,
+            "pattern" : "^\\d{1,2147483647}([.]\\d{1,2})?$",
+            "type" : "number",
+            "example" : 0.01
           }
         }
       },
-      "DeletePaymentRequest": {
-        "required": [
-          "indexPayments"
-        ],
-        "type": "object",
-        "properties": {
-          "indexPayments": {
-            "maxItems": 100,
-            "minItems": 1,
-            "type": "array",
-            "items": {
-              "format": "int64",
-              "type": "integer"
+      "DeletePaymentRequest" : {
+        "required" : [ "indexList" ],
+        "type" : "object",
+        "properties" : {
+          "indexList" : {
+            "maxItems" : 1000,
+            "minItems" : 1,
+            "type" : "array",
+            "items" : {
+              "format" : "int64",
+              "type" : "integer"
             }
           }
         }
       },
-      "ErrorCode": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "example": "FDR-0500"
+      "ErrorCode" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "example" : "FDR-0500"
           },
-          "description": {
-            "type": "string",
-            "example": "An unexpected error has occurred. Please contact support."
+          "description" : {
+            "type" : "string",
+            "example" : "An unexpected error has occurred. Please contact support."
           },
-          "statusCode": {
-            "format": "int32",
-            "type": "integer",
-            "example": 500
+          "statusCode" : {
+            "format" : "int32",
+            "type" : "integer",
+            "example" : 500
           }
         }
       },
-      "ErrorMessage": {
-        "type": "object",
-        "properties": {
-          "path": {
-            "type": "string",
-            "example": "demo.test"
+      "ErrorMessage" : {
+        "type" : "object",
+        "properties" : {
+          "path" : {
+            "type" : "string",
+            "example" : "demo.test"
           },
-          "message": {
-            "type": "string",
-            "example": "An unexpected error has occurred. Please contact support."
+          "message" : {
+            "type" : "string",
+            "example" : "An unexpected error has occurred. Please contact support."
           }
         }
       },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "errorId": {
-            "type": "string",
-            "example": "50905466-1881-457b-b42f-fb7b2bfb1610"
+      "ErrorResponse" : {
+        "type" : "object",
+        "properties" : {
+          "errorId" : {
+            "type" : "string",
+            "example" : "50905466-1881-457b-b42f-fb7b2bfb1610"
           },
-          "httpStatusCode": {
-            "format": "int32",
-            "type": "integer",
-            "example": 500
+          "httpStatusCode" : {
+            "format" : "int32",
+            "type" : "integer",
+            "example" : 500
           },
-          "httpStatusDescription": {
-            "type": "string",
-            "example": "Internal Server Error"
+          "httpStatusDescription" : {
+            "type" : "string",
+            "example" : "Internal Server Error"
           },
-          "appErrorCode": {
-            "type": "string",
-            "example": "FDR-500"
+          "appErrorCode" : {
+            "type" : "string",
+            "example" : "FDR-500"
           },
-          "errors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ErrorMessage"
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ErrorMessage"
             }
           }
         }
       },
-      "GetAllResponse": {
-        "type": "object",
-        "properties": {
-          "metadata": {
-            "$ref": "#/components/schemas/Metadata"
+      "Fdr" : {
+        "type" : "object",
+        "properties" : {
+          "fdr" : {
+            "type" : "string",
+            "example" : "AAABBB"
           },
-          "count": {
-            "format": "int64",
-            "type": "integer",
-            "example": 100
+          "pspId" : {
+            "type" : "string",
+            "example" : "1"
           },
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "string"
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 1
+          },
+          "published" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
+          }
+        }
+      },
+      "FdrByIur" : {
+        "type" : "object",
+        "properties" : {
+          "pspId" : {
+            "type" : "string"
+          },
+          "organizationId" : {
+            "type" : "string"
+          },
+          "fdr" : {
+            "type" : "string"
+          },
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "created" : {
+            "$ref" : "#/components/schemas/Instant"
+          }
+        }
+      },
+      "FdrByIurResponse" : {
+        "type" : "object",
+        "properties" : {
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
+          },
+          "count" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FdrByIur"
             }
           }
         }
       },
-      "GetIdResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReportingFlowStatusEnum"
-              }
-            ],
-            "example": "643accaa4733f71aea4c71bf"
+      "FdrByIuv" : {
+        "type" : "object",
+        "properties" : {
+          "pspId" : {
+            "type" : "string"
           },
-          "revision": {
-            "format": "int64",
-            "type": "integer",
-            "example": "2023-04-05T09:21:37.810000Z"
+          "organizationId" : {
+            "type" : "string"
           },
-          "created": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Instant"
-              }
-            ],
-            "example": "2023-04-03T12:00:30.900000Z"
+          "fdr" : {
+            "type" : "string"
           },
-          "updated": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Instant"
-              }
-            ],
-            "example": "2023-04-03T12:00:30.900000Z"
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer"
           },
-          "reportingFlowName": {
-            "type": "string",
-            "example": "60000000001-1173"
-          },
-          "reportingFlowDate": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Instant"
-              }
-            ],
-            "example": "2023-04-05T09:21:37.810000Z"
-          },
-          "regulation": {
-            "type": "string",
-            "example": "SEPA - Bonifico xzy"
-          },
-          "regulationDate": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Instant"
-              }
-            ],
-            "example": "2023-04-03T12:00:30.900000Z"
-          },
-          "bicCodePouringBank": {
-            "type": "string",
-            "example": "UNCRITMMXXX"
-          },
-          "sender": {
-            "$ref": "#/components/schemas/Sender"
-          },
-          "receiver": {
-            "$ref": "#/components/schemas/Receiver"
-          },
-          "totPayments": {
-            "format": "int64",
-            "type": "integer",
-            "example": 100
-          },
-          "sumPaymnents": {
-            "format": "double",
-            "type": "number",
-            "example": 100.9
+          "created" : {
+            "$ref" : "#/components/schemas/Instant"
           }
         }
       },
-      "GetPaymentResponse": {
-        "type": "object",
-        "properties": {
-          "metadata": {
-            "$ref": "#/components/schemas/Metadata"
+      "FdrByIuvResponse" : {
+        "type" : "object",
+        "properties" : {
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
           },
-          "count": {
-            "format": "int64",
-            "type": "integer",
-            "example": 100
+          "count" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
           },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Payment"
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FdrByIuv"
             }
           }
         }
       },
-      "InfoResponse": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "pagopa-fdr"
+      "FdrInserted" : {
+        "type" : "object",
+        "properties" : {
+          "fdr" : {
+            "type" : "string",
+            "example" : "AAABBB"
           },
-          "version": {
-            "type": "string",
-            "example": "1.2.3"
+          "pspId" : {
+            "type" : "string",
+            "example" : "1"
           },
-          "environment": {
-            "type": "string",
-            "example": "dev"
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 1
           },
-          "description": {
-            "type": "string",
-            "example": "FDR - Flussi di rendicontazione"
+          "created" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
+          }
+        }
+      },
+      "GenericResponse" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "Success"
+          }
+        }
+      },
+      "GetAllCreatedResponse" : {
+        "type" : "object",
+        "properties" : {
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
           },
-          "errorCodes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ErrorCode"
+          "count" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FdrInserted"
             }
           }
         }
       },
-      "Instant": {
-        "format": "date-time",
-        "type": "string",
-        "example": "2022-03-10T16:15:50Z"
-      },
-      "Metadata": {
-        "type": "object",
-        "properties": {
-          "pageSize": {
-            "format": "int32",
-            "type": "integer",
-            "example": 25
+      "GetAllResponse" : {
+        "type" : "object",
+        "properties" : {
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
           },
-          "pageNumber": {
-            "format": "int32",
-            "type": "integer",
-            "example": 1
+          "count" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
           },
-          "totPage": {
-            "format": "int32",
-            "type": "integer",
-            "example": 3
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Fdr"
+            }
           }
         }
       },
-      "Payment": {
-        "required": [
-          "iuv",
-          "iur",
-          "index",
-          "pay",
-          "payStatus",
-          "payDate"
-        ],
-        "type": "object",
-        "properties": {
-          "iuv": {
-            "pattern": "^\\w+$",
-            "type": "string",
-            "example": "abcdefg"
+      "GetCreatedResponse" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/ReportingFlowStatusEnum"
+            } ],
+            "example" : "CREATED"
           },
-          "iur": {
-            "pattern": "^\\w+$",
-            "type": "string",
-            "example": "abcdefg"
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 4
           },
-          "index": {
-            "format": "int64",
-            "type": "integer",
-            "example": 1
+          "created" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
           },
-          "pay": {
-            "format": "double",
-            "minimum": 0,
-            "exclusiveMinimum": true,
-            "pattern": "^\\d{1,2147483647}([.]\\d{1,2})?$",
-            "type": "number",
-            "example": 0.01
+          "updated" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
           },
-          "payStatus": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/PaymentStatusEnum"
-              }
-            ],
-            "example": "PAGAMENTO_ESEGUITO"
+          "fdr" : {
+            "type" : "string",
+            "example" : "2016-08-16pspTest-1178"
           },
-          "payDate": {
-            "type": "string",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Instant"
-              }
-            ],
-            "example": "2023-02-03T12:00:30.900000Z"
+          "fdrDate" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-05T09:21:37.810000Z"
+          },
+          "regulation" : {
+            "type" : "string",
+            "example" : "SEPA - Bonifico xzy"
+          },
+          "regulationDate" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
+          },
+          "bicCodePouringBank" : {
+            "type" : "string",
+            "example" : "UNCRITMMXXX"
+          },
+          "sender" : {
+            "$ref" : "#/components/schemas/Sender"
+          },
+          "receiver" : {
+            "$ref" : "#/components/schemas/Receiver"
+          },
+          "computedTotPayments" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "computedSumPayments" : {
+            "format" : "double",
+            "type" : "number",
+            "example" : 100.9
+          },
+          "totPayments" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "sumPayments" : {
+            "format" : "double",
+            "type" : "number",
+            "example" : 100.9
           }
         }
       },
-      "PaymentStatusEnum": {
-        "enum": [
-          "EXECUTED",
-          "REVOKED",
-          "NO_RPT"
-        ],
-        "type": "string"
-      },
-      "Receiver": {
-        "required": [
-          "id",
-          "ecId",
-          "ecName"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "pattern": "^\\w+$",
-            "type": "string",
-            "example": "APPBIT2B"
+      "GetPaymentResponse" : {
+        "type" : "object",
+        "properties" : {
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
           },
-          "ecId": {
-            "pattern": "^\\w+$",
-            "type": "string",
-            "example": "20000000001"
+          "count" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
           },
-          "ecName": {
-            "type": "string",
-            "example": "Comune di xyz"
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Payment"
+            }
           }
         }
       },
-      "ReportingFlowStatusEnum": {
-        "enum": [
-          "CREATED",
-          "INSERTED",
-          "PUBLISHED"
-        ],
-        "type": "string"
-      },
-      "Sender": {
-        "required": [
-          "type",
-          "id",
-          "pspId",
-          "pspName",
-          "brokerId",
-          "channelId"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/SenderTypeEnum"
+      "GetResponse" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/ReportingFlowStatusEnum"
+            } ],
+            "example" : "CREATED"
           },
-          "id": {
-            "pattern": "^\\w+$",
-            "type": "string",
-            "example": "SELBIT2B"
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 4
           },
-          "pspId": {
-            "pattern": "^\\w+$",
-            "type": "string",
-            "example": "60000000001"
+          "created" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
           },
-          "pspName": {
-            "pattern": "^\\S+$",
-            "type": "string",
-            "example": "Bank"
+          "updated" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
           },
-          "brokerId": {
-            "pattern": "^\\w+$",
-            "type": "string",
-            "example": "70000000001"
+          "fdr" : {
+            "type" : "string",
+            "example" : "2016-08-16pspTest-1178"
           },
-          "channelId": {
-            "pattern": "^\\w+$",
-            "type": "string",
-            "example": "80000000001"
+          "fdrDate" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-05T09:21:37.810000Z"
           },
-          "password": {
-            "pattern": "^\\S+$",
-            "type": "string",
-            "example": "1234567890",
-            "deprecated": true
+          "regulation" : {
+            "type" : "string",
+            "example" : "SEPA - Bonifico xzy"
+          },
+          "regulationDate" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
+          },
+          "bicCodePouringBank" : {
+            "type" : "string",
+            "example" : "UNCRITMMXXX"
+          },
+          "sender" : {
+            "$ref" : "#/components/schemas/Sender"
+          },
+          "receiver" : {
+            "$ref" : "#/components/schemas/Receiver"
+          },
+          "published" : {
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-04-03T12:00:30.900000Z"
+          },
+          "computedTotPayments" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "computedSumPayments" : {
+            "format" : "double",
+            "type" : "number",
+            "example" : 100.9
+          },
+          "totPayments" : {
+            "format" : "int64",
+            "type" : "integer",
+            "example" : 100
+          },
+          "sumPayments" : {
+            "format" : "double",
+            "type" : "number",
+            "example" : 100.9
           }
         }
       },
-      "SenderTypeEnum": {
-        "enum": [
-          "LEGAL_PERSON",
-          "ABI_CODE",
-          "BIC_CODE"
-        ],
-        "type": "string"
+      "InfoResponse" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "pagopa-fdr"
+          },
+          "version" : {
+            "type" : "string",
+            "example" : "1.2.3"
+          },
+          "environment" : {
+            "type" : "string",
+            "example" : "dev"
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "FDR - Flussi di rendicontazione"
+          },
+          "errorCodes" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ErrorCode"
+            }
+          }
+        }
+      },
+      "Instant" : {
+        "format" : "date-time",
+        "type" : "string",
+        "example" : "2022-03-10T16:15:50Z"
+      },
+      "Metadata" : {
+        "type" : "object",
+        "properties" : {
+          "pageSize" : {
+            "format" : "int32",
+            "type" : "integer",
+            "example" : 25
+          },
+          "pageNumber" : {
+            "format" : "int32",
+            "type" : "integer",
+            "example" : 1
+          },
+          "totPage" : {
+            "format" : "int32",
+            "type" : "integer",
+            "example" : 3
+          }
+        }
+      },
+      "Payment" : {
+        "required" : [ "iuv", "iur", "index", "pay", "payStatus", "payDate" ],
+        "type" : "object",
+        "properties" : {
+          "iuv" : {
+            "description" : "[XML FlussoRiversamento]=[datiSingoliPagamenti.identificativoUnivocoVersamento]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "abcdefg"
+          },
+          "iur" : {
+            "description" : "[XML FlussoRiversamento]=[datiSingoliPagamenti.identificativoUnivocoRiscossione]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "abcdefg"
+          },
+          "index" : {
+            "format" : "int64",
+            "description" : "[XML FlussoRiversamento]=[datiSingoliPagamenti.indiceDatiSingoloPagamento]",
+            "minimum" : 1,
+            "type" : "integer",
+            "example" : 1
+          },
+          "pay" : {
+            "format" : "double",
+            "description" : "[XML FlussoRiversamento]=[datiSingoliPagamenti.singoloImportoPagato]",
+            "minimum" : 0,
+            "exclusiveMinimum" : true,
+            "pattern" : "^\\d{1,2147483647}([.]\\d{1,2})?$",
+            "type" : "number",
+            "example" : 0.01
+          },
+          "payStatus" : {
+            "description" : "[XML FlussoRiversamento]=[datiSingoliPagamenti.codiceEsitoSingoloPagamento] \n0 -> EXECUTED\n3 -> REVOKED\n9 -> NO_RPT",
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/PaymentStatusEnum"
+            } ],
+            "example" : "EXECUTED"
+          },
+          "payDate" : {
+            "description" : "[XML FlussoRiversamento]=[datiSingoliPagamenti.dataEsitoSingoloPagamento]",
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/Instant"
+            } ],
+            "example" : "2023-02-03T12:00:30.900000Z"
+          }
+        }
+      },
+      "PaymentStatusEnum" : {
+        "enum" : [ "EXECUTED", "REVOKED", "NO_RPT" ],
+        "type" : "string"
+      },
+      "Receiver" : {
+        "required" : [ "id", "organizationId", "organizationName" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "description" : "[XML FlussoRiversamento]=[istitutoRicevente.identificativoUnivocoRicevente.codiceIdentificativoUnivoco]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "APPBIT2B"
+          },
+          "organizationId" : {
+            "description" : "[XML NodoInviaFlussoRendicontazione]=[identificativoDominio]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "20000000001"
+          },
+          "organizationName" : {
+            "description" : "[XML FlussoRiversamento]=[istitutoRicevente.denominazioneRicevente]",
+            "pattern" : "^(.{1,140})$",
+            "type" : "string",
+            "example" : "Comune di xyz"
+          }
+        }
+      },
+      "ReportingFlowStatusEnum" : {
+        "enum" : [ "CREATED", "INSERTED", "PUBLISHED" ],
+        "type" : "string"
+      },
+      "Sender" : {
+        "required" : [ "type", "id", "pspId", "pspName", "pspBrokerId", "channelId" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "description" : "[XML FlussoRiversamento]=[istitutoMittente.identificativoUnivocoMittente.tipoIdentificativoUnivoco] \nG -> LEGAL_PERSON\nA -> ABI_CODE\nB -> BIC_CODE",
+            "type" : "string",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/SenderTypeEnum"
+            } ],
+            "example" : "LEGAL_PERSON"
+          },
+          "id" : {
+            "description" : "[XML FlussoRiversamento]=[istitutoMittente.identificativoUnivocoMittente.codiceIdentificativoUnivoco]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "SELBIT2B"
+          },
+          "pspId" : {
+            "description" : "[XML NodoInviaFlussoRendicontazione]=[identificativoPSP]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "60000000001"
+          },
+          "pspName" : {
+            "description" : "[XML FlussoRiversamento]=[istitutoMittente.denominazioneMittente]",
+            "pattern" : "^(.{3,70})$",
+            "type" : "string",
+            "example" : "Bank"
+          },
+          "pspBrokerId" : {
+            "description" : "[XML NodoInviaFlussoRendicontazione]=[identificativoIntermediarioPSP]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "70000000001"
+          },
+          "channelId" : {
+            "description" : "[XML NodoInviaFlussoRendicontazione]=[identificativoCanale]",
+            "pattern" : "^(.{1,35})$",
+            "type" : "string",
+            "example" : "80000000001"
+          },
+          "password" : {
+            "description" : "[XML NodoInviaFlussoRendicontazione]=[password]",
+            "pattern" : "^(\\w{8,15})$",
+            "type" : "string",
+            "example" : "1234567890",
+            "deprecated" : true
+          }
+        }
+      },
+      "SenderTypeEnum" : {
+        "enum" : [ "LEGAL_PERSON", "ABI_CODE", "BIC_CODE" ],
+        "type" : "string"
       }
     },
-    "responses": {
-      "AppException400": {
-        "description": "Default app exception for status 400",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorResponse"
+    "responses" : {
+      "AppException400" : {
+        "description" : "Default app exception for status 400",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
             },
-            "example": {
-              "httpStatusCode": 400,
-              "httpStatusDescription": "Bad Request",
-              "appErrorCode": "FDR-0702",
-              "errors": [
-                {
-                  "message": "Reporting Flow id [<flow-id>] is invalid found"
+            "examples" : {
+              "Error" : {
+                "value" : {
+                  "httpStatusCode" : 400,
+                  "httpStatusDescription" : "Bad Request",
+                  "appErrorCode" : "FDR-0702",
+                  "errors" : [ {
+                    "message" : "Reporting Fdr [<fdr>] is invalid"
+                  } ]
                 }
-              ]
+              },
+              "Errors with path" : {
+                "value" : {
+                  "httpStatusCode" : 400,
+                  "httpStatusDescription" : "Bad Request",
+                  "appErrorCode" : "FDR-0702",
+                  "errors" : [ {
+                    "path" : "<detail.path.if-exist>",
+                    "message" : "<detail.message>"
+                  } ]
+                }
+              }
             }
           }
         }
       },
-      "AppException404": {
-        "description": "Default app exception for status 404",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorResponse"
+      "AppException404" : {
+        "description" : "Default app exception for status 404",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
             },
-            "example": {
-              "httpStatusCode": 404,
-              "httpStatusDescription": "Not Found",
-              "appErrorCode": "FDR-0701",
-              "errors": [
-                {
-                  "message": "Reporting Flow id [<flow-id>] not found"
-                }
-              ]
+            "example" : {
+              "httpStatusCode" : 404,
+              "httpStatusDescription" : "Not Found",
+              "appErrorCode" : "FDR-0701",
+              "errors" : [ {
+                "message" : "Reporting Fdr [<fdr>] not found"
+              } ]
             }
           }
         }
       },
-      "InternalServerError": {
-        "description": "Internal Server Error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorResponse"
+      "InternalServerError" : {
+        "description" : "Internal Server Error",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ErrorResponse"
             },
-            "example": {
-              "errorId": "50905466-1881-457b-b42f-fb7b2bfb1610",
-              "httpStatusCode": 500,
-              "httpStatusDescription": "Internal Server Error",
-              "appErrorCode": "FDR-0500",
-              "errors": [
-                {
-                  "message": "An unexpected error has occurred. Please contact support."
-                }
-              ]
+            "example" : {
+              "errorId" : "50905466-1881-457b-b42f-fb7b2bfb1610",
+              "httpStatusCode" : 500,
+              "httpStatusDescription" : "Internal Server Error",
+              "appErrorCode" : "FDR-0500",
+              "errors" : [ {
+                "message" : "An unexpected error has occurred. Please contact support."
+              } ]
             }
           }
         }
+      }
+    },
+    "securitySchemes" : {
+      "api_key" : {
+        "type" : "apiKey",
+        "name" : "Ocp-Apim-Subscription-Key",
+        "in" : "header"
       },
-      "ValidationBadRequest": {
-        "description": "Bad Request",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/ErrorResponse"
-            },
-            "example": {
-              "httpStatusCode": 400,
-              "httpStatusDescription": "Bad Request",
-              "appErrorCode": "FDR-0400",
-              "errors": [
-                {
-                  "path": "<detail.path.if-exist>",
-                  "message": "<detail.message>"
-                }
-              ]
-            }
-          }
-        }
+      "SecurityScheme" : {
+        "type" : "http",
+        "description" : "Authentication",
+        "scheme" : "basic"
       }
     }
   }

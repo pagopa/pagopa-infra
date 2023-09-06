@@ -118,3 +118,51 @@ module "letsencrypt_receipt" {
   subscription_name = local.subscription_name
 }
 
+data "azurerm_cosmosdb_account" "pdf_receipts_cosmos_account" {
+  name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-ds-cosmos-account"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
+}
+data "azurerm_cosmosdb_account" "pdf_bizevent_cosmos_account" {
+  name                = "pagopa-${var.env_short}-${var.location_short}-bizevents-ds-cosmos-account"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-bizevents-rg"
+}
+
+data "azurerm_storage_account" "receipts_datastore_fn_sa" {
+  name                = "pagopa${var.env_short}${var.location_short}${var.domain}fnsa"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-st-rg"
+}
+
+data "azurerm_application_insights" "application_insights" {
+  name                = "pagopa-${var.env_short}-appinsights"
+  resource_group_name = var.monitor_resource_group_name
+}
+
+
+resource "azurerm_key_vault_secret" "cosmos_receipt_connection_string" {
+  name         = "cosmos-receipt-connection-string"
+  value        = "AccountEndpoint=https://pagopa-${var.env_short}-${var.location_short}-${var.domain}-ds-cosmos-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.pdf_receipts_cosmos_account.primary_key};"
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "receipts_cosmos_pkey" {
+  name         = "cosmos-receipt-pkey"
+  value        = data.azurerm_cosmosdb_account.pdf_receipts_cosmos_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "bizevent_cosmos_pkey" {
+  name         = "cosmos-bizevent-pkey"
+  value        = data.azurerm_cosmosdb_account.pdf_bizevent_cosmos_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "receipts-storage-account-connection-string" {
+  name         = "receipts-storage-account-connection-string"
+  value        = data.azurerm_storage_account.receipts_datastore_fn_sa.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}

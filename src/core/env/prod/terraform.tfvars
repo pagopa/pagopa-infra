@@ -73,6 +73,11 @@ enable_iac_pipeline      = true
 apim_publisher_name = "pagoPA Platform PROD"
 apim_sku            = "Premium_1"
 apim_alerts_enabled = true
+
+# redis private endpoint
+redis_private_endpoint_enabled = true
+redis_cache_enabled            = true
+
 apim_autoscale = {
   enabled                       = true
   default_instances             = 3
@@ -120,17 +125,15 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   "/nodo-pagamenti/.*",
-  "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
-  "/pagopa-node-forwarder/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
   "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
   "/shared/authorizer/.*",                # internal use no sub-keys
-  "/gpd/api/.*",
+  "/gpd/api/.*",                          # internal use no sub-keys
 ]
 app_gateway_kibana_deny_paths = [
   "/kibana/*",
@@ -155,6 +158,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "213.215.138.79", # Softlab L1 Pagamenti VPN
     "82.112.220.178", # Softlab L1 Pagamenti VPN
     "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
   ]
@@ -174,15 +178,11 @@ postgresql_enable_replica                = false
 postgresql_public_network_access_enabled = false
 postgres_private_endpoint_enabled        = false
 
-# mock
-mock_ec_enabled              = false
-mock_ec_secondary_enabled    = false
-mock_payment_gateway_enabled = false
-
 
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
+apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -192,7 +192,7 @@ ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 base_path_nodo_oncloud        = "/nodo-prd"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-prd"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-prd"
 base_path_nodo_fatturazione   = "/fatturazione-prd"
@@ -219,7 +219,7 @@ checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxyprod.azurewebsites.net"
 
 # ecommerce ingress hostname
-ecommerce_ingress_hostname = "disabled"
+ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
 
 ehns_sku_name = "Standard"
 
@@ -267,8 +267,10 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values = ["nodo-dei-pagamenti-log",
-        "nodo-dei-pagamenti-re"]
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
       }
     ],
   },
@@ -312,7 +314,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -331,11 +333,44 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
       }
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-fdr"
+    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["fdr-re-rx"]
+    keys = [
+      {
+        name   = "fdr-re-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-re-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
     partitions        = 32
     message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]

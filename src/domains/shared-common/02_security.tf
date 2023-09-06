@@ -1,3 +1,8 @@
+data "azurerm_redis_cache" "redis_cache" {
+  name                = format("%s-%s-redis", var.prefix, var.env_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
 resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
@@ -41,6 +46,23 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
 
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
   secret_permissions  = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
+  ]
+}
+
+resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
+  count = var.env_short != "p" ? 1 : 0
+
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_externals.object_id
+
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -109,6 +131,14 @@ resource "azurerm_key_vault_secret" "authorizer_cosmos_key" {
 
 }
 
+resource "azurerm_key_vault_secret" "redis_password" {
+  name         = "redis-password"
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 # https://api.dev.platform.pagopa.it/shared/authorizer/v1
 resource "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
   name         = format("auth-%s-refresh-configuration-url", var.env_short)
@@ -117,6 +147,30 @@ resource "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
 
   key_vault_id = module.key_vault.id
 
+}
+
+# https://api.dev.platform.pagopa.it/apiconfig-selfcare-integration/v1
+resource "azurerm_key_vault_secret" "apiconfig_selfcare_integration_url" {
+  name         = format("auth-%s-apiconfig-selfcare-integration-url", var.env_short)
+  value        = var.env == "prod" ? "https://api.platform.pagopa.it/apiconfig-selfcare-integration/v1" : "https://api.${var.env}.platform.pagopa.it/apiconfig-selfcare-integration/v1"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+}
+
+resource "azurerm_key_vault_secret" "apiconfig_selfcare_integration_subkey" {
+  name         = format("auth-%s-apiconfig-selfcare-integration-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
 
 resource "azurerm_key_vault_secret" "authorizer_integrationtest_external_subkey" {
@@ -161,6 +215,33 @@ resource "azurerm_key_vault_secret" "authorizer_integrationtest_invalid_subkey" 
   }
 }
 
+resource "azurerm_key_vault_secret" "pdf_engine_perf_test_subkey" {
+  count = var.env_short == "p" ? 0 : 1
+
+  name         = format("pdf-engine-%s-perftest-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
 
 #
 # IaC
@@ -181,4 +262,25 @@ resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy" {
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", ]
 
   storage_permissions = []
+}
+
+resource "azurerm_key_vault_secret" "ai_connection_string" {
+  name         = "ai-${var.env_short}-connection-string"
+  value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+
+resource "azurerm_key_vault_secret" "elastic_apm_secret_token" {
+  name         = "elastic-apm-secret-token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }

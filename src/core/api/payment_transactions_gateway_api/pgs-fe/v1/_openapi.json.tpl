@@ -1,107 +1,35 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI definition for external payment-transactions-gateway secured by jwt token auth",
-    "version": "v0"
+    "title": "Openapi for pagopa-payment-transactions-gateway (PGS) dedicated to fronted (pgs-fe)",
+    "version": "0.0.1",
+    "description": "Openapi definitåion for the API exposed by the *pagopa-payment-transactions-gateway* (**PGS**) and\nconsumed by fronted (pgs-fe) to\ncheck the payments status via the following payment gateway:\n<ol>\n  <li>xpay</li>\n  <li>vpos</li>\n</ol> \n"
+  },
+  "externalDocs": {
+    "url": "https://pagopa.atlassian.net/wiki/spaces/TKM/overview",
+    "description": "Design review"
   },
   "servers": [
     {
-      "url": "${host}/payment-gateway"
+      "url": "http://localhost:8080/",
+      "description": "Generated server url"
     }
   ],
   "paths": {
-    "/request-payments/postepay/{requestId}": {
+    "/xpay/authorizations/{paymentAuthorizationId}": {
       "get": {
-        "summary": "postepay webview polling call",
+        "summary": "Retrieve xpay payment authorization",
+        "description": "Retrieve xpay payment authorization given paymentAuthorizationId",
         "tags": [
-          "Postepay-pgs-fe"
+          "XPay"
         ],
-        "operationId": "GetPostepayPaymentRequest",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "requestId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true,
-            "description": "PGS-generated GUID of the request to get",
-            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
-          }
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - missing mandatory parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "transactionId already processed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostePayPollingResponseEntity"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/request-payments/xpay/{requestId}": {
-      "get": {
-        "summary": "retrieve XPay payment request",
-        "tags": [
-          "XPay-pgs-fe"
-        ],
-        "operationId": "GetXpayPaymentRequest",
+        "operationId": "getAuthPaymentXpay",
         "parameters": [
           {
             "in": "path",
             "required": true,
-            "name": "requestId",
-            "description": "Id of the request",
+            "name": "paymentAuthorizationId",
+            "description": "Id of the payment authorization",
             "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
             "schema": {
               "type": "string"
@@ -117,19 +45,29 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/XPayPollingResponseEntity"
+                  "$ref": "#/components/schemas/XPayPaymentAuthorization"
                 }
               }
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "payment authorization not found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/XPayPollingResponseEntity404"
+                  "$ref": "#/components/schemas/XPayPaymentAuthorizationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XPayPaymentAuthorizationError"
                 }
               }
             }
@@ -137,18 +75,18 @@
         }
       }
     },
-    "/request-payments/vpos/{requestId}": {
+    "/vpos/authorizations/{paymentAuthorizationId}": {
       "get": {
-        "summary": "retrieve vpos payment request",
+        "summary": "retrieve vpos payment authorization",
         "tags": [
-          "Vpos-pgs-fe"
+          "Vpos"
         ],
-        "operationId": "GetVposPaymentRequest",
+        "operationId": "getAuthPaymentVpos",
         "parameters": [
           {
             "in": "path",
             "required": true,
-            "name": "requestId",
+            "name": "paymentAuthorizationId",
             "description": "Id of the request",
             "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
             "schema": {
@@ -185,22 +123,23 @@
         }
       }
     },
-    "/request-payments/vpos/{requestId}/resume/method": {
+    "/vpos/authorizations/{paymentAuthorizationId}/resume/method": {
       "post": {
-        "summary": "resume vpos payment request",
+        "summary": "resume vpos payment authorization",
         "tags": [
-          "Vpos-pgs-fe"
+          "Vpos"
         ],
-        "operationId": "ResumeVposPaymentRequest",
+        "operationId": "postMethodResumeVpos",
         "parameters": [
           {
             "in": "path",
             "required": true,
-            "name": "requestId",
+            "name": "paymentAuthorizationId",
             "description": "Id of the request",
             "example": "41bc2409-5926-4aa9-afcc-797c7054e467",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "UUID"
             }
           }
         ],
@@ -213,7 +152,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VposResumeRequest"
+                "$ref": "#/components/schemas/CreditCardResumeRequest"
               }
             }
           },
@@ -236,52 +175,11 @@
   },
   "components": {
     "schemas": {
-      "PostePayPollingResponseEntity": {
+      "XPayPaymentAuthorization": {
         "type": "object",
         "required": [
-          "channel",
-          "authOutcome",
-          "urlRedirect",
-          "logoResourcePath",
-          "error"
-        ],
-        "properties": {
-          "channel": {
-            "type": "string",
-            "description": "request payment channel (APP or WEB)",
-            "example": "APP"
-          },
-          "logoResourcePath": {
-            "type": "string",
-            "description": "logo",
-            "example": "logoExamplePath"
-          },
-          "urlRedirect": {
-            "type": "string",
-            "description": "redirect URL generated by PGS logic",
-            "example": "https://.../e2f518a9-9de4-4a27-afb0-5303e6eefcbf"
-          },
-          "authOutcome": {
-            "type": "string",
-            "description": "authorization outcome",
-            "example": "OK"
-          },
-          "clientResponseUrl": {
-            "type": "string",
-            "description": "redirect URL for authorization OK, empty for KO case",
-            "example": "https://..."
-          },
-          "error": {
-            "type": "string",
-            "description": "error description for 400/500 http error codes",
-            "example": ""
-          }
-        }
-      },
-      "XPayPollingResponseEntity": {
-        "type": "object",
-        "required": [
-          "status"
+          "status",
+          "paymentAuthorizationId"
         ],
         "properties": {
           "html": {
@@ -289,20 +187,24 @@
             "description": "HTML received in response from XPay",
             "example": "<html>\n<head>\n<title>\nGestione Pagamento Fraud detection</title>\n<script type=\"text/javascript\" language=\"javascript\">\nfunction moveWindow() {\n    document.tdsFraudForm.submit();\n}\n</script>\n</head>\n<body>\n<form name=\"tdsFraudForm\" action=\"https://coll-ecommerce.nexi.it/ecomm/ecomm/TdsMerchantServlet\" method=\"POST\">\n<input type=\"hidden\" name=\"action\"     value=\"fraud\">\n<input type=\"hidden\" name=\"merchantId\" value=\"31320986\">\n<input type=\"hidden\" name=\"description\" value=\"7090069933_1606392234626\">\n<input type=\"hidden\" name=\"gdiUrl\"      value=\"\">\n<input type=\"hidden\" name=\"gdiNotify\"   value=\"\">\n</form>\n<script type=\"text/javascript\">\n  moveWindow();\n</script>\n</body>\n</html>\n"
           },
+          "paymentAuthorizationId": {
+            "type": "string",
+            "description": "payment authorization Id",
+            "example": "affd8e24-f99a-406f-9ded-67a4a20c097f"
+          },
           "status": {
-            "description": "status",
             "type": "string",
             "enum": [
               "CREATED",
               "AUTHORIZED",
               "DENIED",
-              "CANCELLED"
-            ]
+              "REFUNDED"
+            ],
+            "description": "status",
+            "example": "CREATED"
           },
-          "authOutcome": {
-            "type": "string",
-            "description": "authorization outcome received from XPay",
-            "example": "OK"
+          "outcomeXpayGateway": {
+            "$ref": "#/components/schemas/OutcomeXpayGateway"
           },
           "authCode": {
             "type": "string",
@@ -316,33 +218,31 @@
           }
         }
       },
-      "XPayPollingResponseEntity404": {
+      "XPayPaymentAuthorizationError": {
         "type": "object",
         "required": [
-          "error"
+          "errorDetail"
         ],
         "properties": {
-          "error": {
-            "type": "object",
-            "required": [
-              "code",
-              "message"
-            ],
-            "properties": {
-              "code": {
-                "type": "number",
-                "format": "integer",
-                "description": "error code",
-                "example": 404
-              },
-              "message": {
-                "type": "string",
-                "description": "error message",
-                "example": "RequestId not found"
-              }
-            }
+          "errorDetail": {
+            "type": "string",
+            "description": "error detail",
+            "example": "Bad Request - mandatory parameters missing"
           }
         }
+      },
+      "VPosPollingResponse": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
+          },
+          {
+            "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
+          }
+        ]
       },
       "CcPaymentInfoAcceptedResponse": {
         "type": "object",
@@ -460,27 +360,24 @@
       "CcPaymentInfoError": {
         "type": "object",
         "properties": {
-          "redirectUrl": {
+          "timestamp": {
             "type": "string"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "DENIED",
-              "CANCELLED"
-            ]
+            "type": "string"
           },
-          "requestId": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "path": {
             "type": "string"
           }
-        },
-        "required": [
-          "status",
-          "requestId",
-          "redirectUrl"
-        ]
+        }
       },
-      "VposResumeRequest": {
+      "CreditCardResumeRequest": {
         "type": "object",
         "required": [
           "methodCompleted"
@@ -505,17 +402,53 @@
           }
         }
       },
-      "VPosPollingResponse": {
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/CcPaymentInfoAcceptedResponse"
+      "OutcomeXpayGateway": {
+        "type": "object",
+        "properties": {
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
           },
-          {
-            "$ref": "#/components/schemas/CcPaymentInfoAcsResponse"
+          "authorizationCode": {
+            "type": "string"
           },
-          {
-            "$ref": "#/components/schemas/CcPaymentInfoAuthorizedResponse"
+          "errorCode": {
+            "type": "number",
+            "description": "error code received from XPay - https://ecommerce.nexi.it/specifiche-tecniche/tabelleecodifiche/codicierroreapirestful.html",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              7,
+              8,
+              9,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              50,
+              96,
+              97,
+              98,
+              99,
+              100
+            ]
           }
+        },
+        "required": [
+          "outcome"
         ]
       }
     },

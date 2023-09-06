@@ -42,10 +42,7 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis                = ["10.1.163.0/24"]
-cidr_subnet_mock_ec              = ["10.1.137.0/29"]
-cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
-
+cidr_subnet_redis = ["10.1.163.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -113,12 +110,10 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
-  # "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
-  #"/pagopa-node-forwarder/.*"
   "/shared/authorizer/.*", # internal use no sub-keys
 ]
 app_gateway_kibana_deny_paths = [
@@ -144,6 +139,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "213.215.138.79", # Softlab L1 Pagamenti VPN
     "82.112.220.178", # Softlab L1 Pagamenti VPN
     "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
   ]
@@ -167,17 +163,10 @@ postgresql_network_rules = {
 }
 prostgresql_db_mockpsp = "mock-psp"
 
-# mock
-mock_ec_enabled              = true
-mock_ec_always_on            = true
-mock_ec_secondary_enabled    = false
-mock_payment_gateway_enabled = true
-
-
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
-apim_fdr_nodo_pagopa_enable     = true
+apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -187,7 +176,7 @@ ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/i
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 base_path_nodo_oncloud        = "/nodo-uat"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-uat"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-uat-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-uat/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-uat"
 base_path_nodo_fatturazione   = "/fatturazione-uat"
@@ -319,7 +308,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -338,11 +327,44 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
       }
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-fdr"
+    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
+    partitions        = 30
+    message_retention = 7
+    consumers         = ["fdr-re-rx"]
+    keys = [
+      {
+        name   = "fdr-re-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-re-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
     partitions        = 32
     message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
@@ -429,77 +451,6 @@ eventhubs = [
         send   = false
         manage = false
       }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-biz-evt-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
-    keys = [
-      {
-        name   = "pagopa-biz-evt-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-io"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pn"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-re-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-SIA"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-pdnd" # pdnd
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-oper" # oper
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-sia-rx" # oper
-        listen = true
-        send   = false
-        manage = false
-      }
-
     ]
   },
   {

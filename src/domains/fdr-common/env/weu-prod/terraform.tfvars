@@ -36,7 +36,7 @@ enable_iac_pipeline = true
 pgres_flex_params = {
 
   enabled    = true
-  sku_name   = "GP_Standard_D4s_v3"
+  sku_name   = "GP_Standard_D4ds_v4"
   db_version = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
@@ -107,8 +107,8 @@ custom_metric_alerts = {
 }
 
 ### Cosmos
-
-cosmos_mongo_db_params = {
+cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
+cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
   capabilities = ["EnableMongo"] # Serverless accounts do not support multiple regions
@@ -119,7 +119,41 @@ cosmos_mongo_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
+  enable_free_tier                 = false
+
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = true
+
+  container_default_ttl = 315576000 # 10 year in second
+
+  enable_serverless  = false
+  enable_autoscaling = true
+  max_throughput     = 5000
+  throughput         = 1000
+}
+
+cosmos_mongo_db_fdr_re_params = {
+  enabled      = true
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo"] # Serverless accounts do not support multiple regions
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300 # must be greater then 300 (5min) when more then one geo_location is used
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   additional_geo_locations = [{
@@ -134,15 +168,35 @@ cosmos_mongo_db_params = {
 
   backup_continuous_enabled = false
 
-  container_default_ttl = 315576000 # 10 year in second
+  container_default_ttl = 10368000 # 120 days
 
-}
-
-cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
-
-cosmos_mongo_db_fdr_params = {
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
+}
+
+# Storage Account
+cidr_subnet_storage_account = ["10.1.179.0/24"]
+
+fdr_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 90
+  enable_low_availability_alert = false
+}
+
+fdr_re_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 90
+  enable_low_availability_alert = false
 }

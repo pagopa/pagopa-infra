@@ -121,10 +121,11 @@ variable "cosmos_mongo_db_params" {
       failover_priority = number
       zone_redundant    = bool
     }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
+    private_endpoint_enabled                     = bool
+    public_network_access_enabled                = bool
+    is_virtual_network_filter_enabled            = bool
+    backup_continuous_enabled                    = bool
+    enable_provisioned_throughput_exceeded_alert = bool
   })
 }
 
@@ -148,6 +149,7 @@ variable "redis_ecommerce_params" {
     capacity = number
     sku_name = string
     family   = string
+    version  = string
   })
 }
 
@@ -156,7 +158,7 @@ variable "cidr_subnet_storage_ecommerce" {
   description = "Azure storage DB address space for ecommerce."
 }
 
-variable "ecommerce_storage_params" {
+variable "ecommerce_storage_deadletter_params" {
   type = object({
     enabled                       = bool,
     kind                          = string,
@@ -176,7 +178,29 @@ variable "ecommerce_storage_params" {
     retention_days                = 7,
     public_network_access_enabled = false,
   }
-  description = "Azure storage DB params for ecommerce."
+  description = "Azure storage DB params for ecommerce deadletter resources."
+}
+
+variable "ecommerce_storage_transient_params" {
+  type = object({
+    enabled                       = bool,
+    kind                          = string,
+    tier                          = string,
+    account_replication_type      = string,
+    advanced_threat_protection    = bool,
+    retention_days                = number,
+    public_network_access_enabled = bool,
+  })
+  default = {
+    enabled                       = false,
+    kind                          = "StorageV2"
+    tier                          = "Standard",
+    account_replication_type      = "LRS",
+    advanced_threat_protection    = true,
+    retention_days                = 7,
+    public_network_access_enabled = false,
+  }
+  description = "Azure storage DB params for ecommerce transient resources."
 }
 
 variable "enable_iac_pipeline" {

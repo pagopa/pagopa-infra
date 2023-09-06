@@ -61,16 +61,5 @@ cname_record_name = "config"
 # APIM
 apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"
 
-# gpd
-gpd_plan_kind                = "Linux"
-gpd_plan_sku_tier            = "PremiumV3"
-gpd_plan_sku_size            = "P1v3"
-gpd_always_on                = true
-gpd_cron_job_enable          = true
-gpd_cron_schedule_valid_to   = "0 */30 * * * *"
-gpd_cron_schedule_expired_to = "0 */40 * * * *"
-gpd_autoscale_minimum        = 1
-gpd_autoscale_maximum        = 3
-gpd_autoscale_default        = 1
 # gpd database config for gpd-app-service
 pgbouncer_enabled = true

@@ -77,6 +77,18 @@ locals {
       default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
     },
+    {
+      name               = "receipts-message-errors",
+      partition_key_path = "/id",
+      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+    },
+    {
+      name               = "receipts-io-messages",
+      partition_key_path = "/messageId",
+      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+    },
   ]
 }
 
