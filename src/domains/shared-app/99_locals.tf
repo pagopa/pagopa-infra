@@ -48,4 +48,34 @@ locals {
   system_domain_namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
   domain_namespace        = kubernetes_namespace.namespace.metadata[0].name
 
+  authorizer_healthcheck_criteria = {
+    metric_namespace = "Microsoft.Web/sites"
+    metric_name      = "HealthCheckStatus"
+    aggregation      = "Average"
+    operator         = "LessThan"
+    threshold        = 99
+  }
+  authorizer_healthcheck_action = var.env_short == "p" ? [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id,
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id,
+      webhook_properties = null
+    }
+  ] : [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id,
+      webhook_properties = null
+    }
+  ]
 }
