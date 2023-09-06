@@ -10,7 +10,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_out_of_m
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = format("[%s] Out-of-memory %s", var.env, each.key)
     custom_webhook_payload = "{}"
   }
@@ -36,7 +36,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_write_on
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = format("[%s] Write-On-DB %s", var.env, each.key)
     custom_webhook_payload = "{}"
   }
@@ -62,7 +62,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_generati
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = format("[%s] Cache generation %s", var.env, each.key)
     custom_webhook_payload = "{}"
   }
@@ -88,7 +88,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_jdbc_con
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = format("[%s][APIConfig-Cache] JDBC Connection %s", var.env, each.key)
     custom_webhook_payload = "{}"
   }
