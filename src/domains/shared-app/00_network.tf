@@ -10,8 +10,8 @@ data "azurerm_subnet" "apim_vnet" {
 }
 
 module "taxonomy_function_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
-  name                                      = "${local.project}-taxonomy-fn-snet"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.0"
+  name                                      = "${local.project}-txnm-fn-snet"
   address_prefixes                          = var.taxonomy_function_subnet
   resource_group_name                       = local.vnet_resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet.name

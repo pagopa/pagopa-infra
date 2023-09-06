@@ -35,10 +35,10 @@ locals {
     DOCKER_REGISTRY_SERVER_USERNAME = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
     DOCKER_REGISTRY_SERVER_PASSWORD = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
-    
+
     STORAGE_ACCOUNT_CONN_STRING        = data.azurerm_storage_account.taxonomy_storage_account.primary_connection_string
     BLOB_CONTAINER_NAME_INPUT          = "input"
-    CSV_NAME                            = "taxonomy.csv"
+    CSV_NAME                           = "taxonomy.csv"
     BLOB_CONTAINER_NAME_OUTPUT         = "output"
     JSON_NAME                          = "taxonomy.json"
   }
