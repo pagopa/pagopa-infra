@@ -41,7 +41,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
 
 # JDBC connection problem
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_jdbc_connection" {
-  name                = format("%s-%s", local.app_name, "db-healthcheck")
+  name                = format("%s-%s", local.app_name, "jdbc-connection")
   resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
 
