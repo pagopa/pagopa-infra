@@ -61,7 +61,7 @@ cidr_subnet_cosmosdb_wallet = ["10.1.169.0/24"]
 cosmos_mongo_db_wallet_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 4000
+  max_throughput     = 1000
   throughput         = 1000
 }
 
