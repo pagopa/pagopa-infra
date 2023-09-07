@@ -67,3 +67,14 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
+
+resource "azurerm_key_vault_access_policy" "cdn_wallet_kv" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
+
+  secret_permissions      = ["Get", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", ]
+}
