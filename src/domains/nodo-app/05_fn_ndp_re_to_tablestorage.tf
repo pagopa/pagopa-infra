@@ -73,7 +73,7 @@ module "nodo_re_to_tablestorage_function" {
     registry_password = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
-  client_certificate_mode        = "Optional"
+  client_certificate_mode = "Optional"
 
   cors = {
     allowed_origins = []
