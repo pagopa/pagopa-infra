@@ -68,6 +68,14 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
+resource "azurerm_key_vault_secret" "ai_connection_string" {
+  name         = format("ai-%s-connection-string", var.env_short)
+  value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "ehub_alert_qi_rx_connection_string" {
   name         = format("ehub-%s-rx-qi-alert-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_quality-improvement-alerts_pagopa-qi-alert-rx.primary_connection_string
