@@ -1,7 +1,52 @@
 
 locals {
+  api_nodo_auth_alerts = var.env_short != "p" ? [] : [
+    // general
+    {
+      operationId_s : "",
+      primitiva : "general",
+      sub_service : "",
+    },
+    // node-for-psp
+    {
+      operationId_s : "63b6e2daea7c4a25440fda9f",
+      primitiva : "verifyPaymentNotice",
+      sub_service : "node-for-psp",
+    },
+    {
+      operationId_s : "63b6e2daea7c4a25440fdaa0",
+      primitiva : "activatePaymentNotice",
+      sub_service : "node-for-psp",
+    },
+    {
+      operationId_s : "63b6e2daea7c4a25440fdaa1",
+      primitiva : "sendPaymentOutcome",
+      sub_service : "node-for-psp",
+    },
+    {
+      operationId_s : "63ff4f22aca2fd18dcc4a6f7",
+      primitiva : "nodoInviaFlussoRendicontazione",
+      sub_service : "node-for-psp",
+    },
+    {
+      operationId_s : "63ff4f22aca2fd18dcc4a6f8",
+      primitiva : "nodoChiediInformativaPA",
+      sub_service : "node-for-psp",
+    },
+    {
+      operationId_s : "63b6e2daea7c4a25440fdaa1",
+      primitiva : "primitiva-TBD", // todo: identify primitiva to send an appropriate alert message
+      sub_service : "node-for-psp",
+    }
+  ]
 
-  api_2_alerts = var.env_short != "p" ? [] : [
+  api_nodo_alerts = var.env_short != "p" ? [] : [
+    // general
+    {
+      operationId_s : "",
+      primitiva : "general",
+      sub_service : "",
+    },
     // node-for-io
     {
       operationId_s : "61dedb1eea7c4a07cc7d47b8",
@@ -153,22 +198,12 @@ locals {
       sub_service : "nodo-per-psp-richiesta-avvisi",
     },
   ]
-
-  #  api_2_alerts = var.env_short != "p" ? [] : [
-  #
-  #    // nodo-per-psp-richiesta-avvisi
-  #    {
-  #      operationId_s : "general",
-  #      primitiva : "general",
-  #      sub_service : "general",
-  #    }
-  #  ]
 }
 
 // PROD AzureDiagnostics url_s operationId_s
 // UAT ApiManagementGatewayLogs Url OperationId
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodoapi-general-responsetime" {
-  for_each            = { for c in local.api_2_alerts : c.operationId_s => c }
+  for_each            = { for c in local.api_nodo_alerts : c.operationId_s => c }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-nodoapi-${each.value.primitiva}-responsetime"
   location            = var.location
@@ -186,7 +221,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodoapi-general-response
 let threshold = 8000;
 AzureDiagnostics
 | where url_s matches regex "/nodo/${each.value.sub_service}/"
-| where url_s matches regex "/nodo/"
+//| where url_s matches regex "/nodo/"
 | where operationId_s == "${each.value.operationId_s}"
 | summarize
     watermark=threshold,
@@ -210,7 +245,7 @@ AzureDiagnostics
 
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodoapi-general-availability" {
-  for_each            = { for c in local.api_2_alerts : c.operationId_s => c }
+  for_each            = { for c in local.api_nodo_alerts : c.operationId_s => c }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-nodoapi-${each.value.primitiva}-availability"
   location            = var.location
@@ -228,7 +263,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodoapi-general-availabi
 let threshold = 0.99;
 AzureDiagnostics
 | where url_s matches regex "/nodo/${each.value.sub_service}/"
-| where url_s matches regex "/nodo/"
+//| where url_s matches regex "/nodo/"
 | where operationId_s == "${each.value.operationId_s}"
 | summarize
     Total=count(),
@@ -254,7 +289,7 @@ AzureDiagnostics
 // PROD AzureDiagnostics url_s operationId_s
 // UAT ApiManagementGatewayLogs Url OperationId
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo-auth-api-general-responsetime" {
-  for_each            = { for c in local.api_2_alerts : c.operationId_s => c }
+  for_each            = { for c in local.api_nodo_auth_alerts : c.operationId_s => c }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-nodo-auth-api-${each.value.primitiva}-responsetime"
   location            = var.location
@@ -272,7 +307,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo-auth-api-general-re
 let threshold = 8000;
 AzureDiagnostics
 | where url_s matches regex "/nodo-auth/${each.value.sub_service}/"
-| where url_s matches regex "/nodo-auth/"
+//| where url_s matches regex "/nodo-auth/"
 | where operationId_s == "${each.value.operationId_s}"
 | summarize
     watermark=threshold,
@@ -294,9 +329,8 @@ AzureDiagnostics
 
 }
 
-
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo-auth-api-general-availability" {
-  for_each            = { for c in local.api_2_alerts : c.operationId_s => c }
+  for_each            = { for c in local.api_nodo_auth_alerts : c.operationId_s => c }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-nodo-auth-api-${each.value.primitiva}-availability"
   location            = var.location
