@@ -15,7 +15,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_out_of_m
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "[${var.env}] Problem to generate cache - ${each.key}"
+  description    = "[${var.env}] Problem to generate cache - ${each.key} - ${var.env}"
   enabled        = true
   query          = format(local.apiconfig_cache_alert.outOfMemory.query, format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, each.key))
 
@@ -41,7 +41,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_write_on
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = format("[%s] Problem to save cache on DB - %s", var.env, each.key)
+  description    = format("[%s] Problem to save cache on DB - %s - %s", var.env, each.key, var.env)
   enabled        = true
   query          = format(local.apiconfig_cache_alert.writeOnDB.query, format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, each.key))
 
@@ -67,7 +67,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_generati
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = format("[%s] Problem to generate cache - %s", var.env, each.key)
+  description    = format("[%s] Problem to generate cache - %s - %s", var.env, each.key, var.env)
   enabled        = true
   query          = format(local.apiconfig_cache_alert.cacheGeneration.query, format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, each.key))
 
@@ -93,7 +93,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_cache_jdbc_con
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = format("[%s][APIConfig-Cache] JDBC Connection %s", var.env, each.key)
+  description    = format("[%s][APIConfig-Cache] JDBC Connection %s - %s", var.env, each.key, var.env)
   enabled        = true
 
   query = format(local.apiconfig_cache_alert.jdbcConnection.query, format("%s-%s-%s", var.prefix, local.apiconfig_cache_locals.path, each.key))
