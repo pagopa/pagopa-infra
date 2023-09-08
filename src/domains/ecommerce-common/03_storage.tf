@@ -186,6 +186,25 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
       days    = 7
     }
   }
+  metric {
+    category = "Capacity"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
 
   enabled_log {
     category = "StorageDelete"
@@ -314,6 +333,25 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagno
       days    = 7
     }
   }
+  metric {
+    category = "Capacity"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
 }
 
 
