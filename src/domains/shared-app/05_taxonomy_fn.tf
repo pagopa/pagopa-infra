@@ -12,18 +12,18 @@ locals {
   taxonomy_docker_settings = {
     IMAGE_NAME = "pagopataxonomy"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL = "https://${data.azurerm_container_registry.acr.login_server}"
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }
 
   function_taxonomy_app_settings = {
-    linux_fx_version                    = "JAVA|11"
-    FUNCTIONS_WORKER_RUNTIME            = "java"
-    FUNCTIONS_WORKER_PROCESS_COUNT      = 4
+    linux_fx_version               = "JAVA|11"
+    FUNCTIONS_WORKER_RUNTIME       = "java"
+    FUNCTIONS_WORKER_PROCESS_COUNT = 4
     // Keepalive fields are all optionals
-    FETCH_KEEPALIVE_ENABLED             = "true"
-    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
+    FETCH_KEEPALIVE_ENABLED           = "true"
+    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL = "110000"
 
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
@@ -35,12 +35,12 @@ locals {
     DOCKER_REGISTRY_SERVER_USERNAME = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
     DOCKER_REGISTRY_SERVER_PASSWORD = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
-    
-    STORAGE_ACCOUNT_CONN_STRING        = data.azurerm_storage_account.taxonomy_storage_account.primary_connection_string
-    BLOB_CONTAINER_NAME_INPUT          = "input"
-    CSV_NAME                            = "taxonomy.csv"
-    BLOB_CONTAINER_NAME_OUTPUT         = "output"
-    JSON_NAME                          = "taxonomy.json"
+
+    STORAGE_ACCOUNT_CONN_STRING = data.azurerm_storage_account.taxonomy_storage_account.primary_connection_string
+    BLOB_CONTAINER_NAME_INPUT   = "input"
+    CSV_NAME                    = "taxonomy.csv"
+    BLOB_CONTAINER_NAME_OUTPUT  = "output"
+    JSON_NAME                   = "taxonomy.json"
   }
 }
 
@@ -70,7 +70,7 @@ module "taxonomy_function" {
     registry_password = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
-  client_certificate_mode        = "Optional"
+  client_certificate_mode = "Optional"
 
   cors = {
     allowed_origins = []
