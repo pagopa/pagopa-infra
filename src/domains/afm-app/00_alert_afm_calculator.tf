@@ -16,7 +16,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   query = (<<-QUERY
 let threshold = 1500;
 AzureDiagnostics
-| where url_s matches regex "/fees"
+| where url_s matches regex "/v1/fees"
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -49,7 +49,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/fees"
+| where url_s matches regex "/v1/fees"
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
@@ -85,7 +85,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   query = (<<-QUERY
 let threshold = 1500;
 AzureDiagnostics
-| where url_s matches regex "/psps/[^/]+/fees"
+| where url_s matches regex "/v1/psps/[^/]+/fees"
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -118,7 +118,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/psps/[^/]+/fees"
+| where url_s matches regex "/v1/psps/[^/]+/fees"
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
