@@ -127,8 +127,8 @@ AzureDiagnostics
   QUERY
   )
   severity    = 1
-  frequency   = 2
-  time_window = 4
+  frequency   = 5
+  time_window = 5
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 2
