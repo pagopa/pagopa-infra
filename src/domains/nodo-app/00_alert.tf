@@ -1,4 +1,3 @@
-
 locals {
   api_nodo_auth_alerts = var.env_short != "p" ? [] : [
     // general
@@ -7,7 +6,111 @@ locals {
       primitiva : "general",
       sub_service : ".*",
     },
-    // node-for-psp
+    // Node for IO WS (AUTH)
+    {
+      operationId_s : "63b6e2da2a92e811a8f338ec",
+      primitiva : "activateIOPayment",
+      sub_service : "node-for-io",
+    },
+    // Node for PA WS (AUTH)
+    {
+      operationId_s : "63ff73adea7c4a1860530e3a",
+      primitiva : "nodoChiediElencoFlussiRendicontazione",
+      sub_service : "node-for-pa",
+    },
+    {
+      operationId_s : "63ff73adea7c4a1860530e3b",
+      primitiva : "nodoChiediFlussoRendicontazione",
+      sub_service : "node-for-pa",
+    },
+    //  Nodo per PA WS (AUTH)
+    {
+      operationId_s : "63b6e2da2a92e811a8f338f8",
+      primitiva : "nodoChiediElencoFlussiRendicontazione",
+      sub_service : "nodo-per-pa",
+    },
+    {
+      operationId_s : "63b6e2da2a92e811a8f338f9",
+      primitiva : "nodoChiediFlussoRendicontazione",
+      sub_service : "nodo-per-pa",
+    },
+    {
+      operationId_s : "63e5d8212a92e80448d38dfd",
+      primitiva : "nodoChiediStatoRPT",
+      sub_service : "nodo-per-pa",
+    },
+    {
+      operationId_s : "63e5d8212a92e80448d38dfe",
+      primitiva : "nodoChiediListaPendentiRPT",
+      sub_service : "nodo-per-pa",
+    },
+    {
+      operationId_s : "63e5d8212a92e80448d38dff",
+      primitiva : "nodoInviaRPT",
+      sub_service : "nodo-per-pa",
+    },
+    {
+      operationId_s : "63e5d8212a92e80448d38e00",
+      primitiva : "nodoInviaCarrelloRPT",
+      sub_service : "nodo-per-pa",
+    },
+    {
+      operationId_s : "63e5d8212a92e80448d38e02",
+      primitiva : "nodoChiediInformativaPSP",
+      sub_service : "nodo-per-pa",
+    },
+    {
+      operationId_s : "63e5d8212a92e80448d38e03",
+      primitiva : "nodoPAChiediInformativaPA",
+      sub_service : "nodo-per-pa",
+    },
+    {
+      operationId_s : "63e5d8212a92e80448d38e04",
+      primitiva : "nodoChiediElencoQuadraturePA",
+      sub_service : "nodo-per-pa",
+    },
+    {
+      operationId_s : "63e5d8212a92e80448d38e05",
+      primitiva : "nodoChiediQuadraturaPA",
+      sub_service : "nodo-per-pa",
+    },
+    // Nodo per PSP WS (AUTH)
+    {
+      operationId_s : "63b6e2da2a92e811a8f338fb",
+      primitiva : "nodoVerificaRPT",
+      sub_service : "nodo-per-psp",
+    },
+    {
+      operationId_s : "63b6e2da2a92e811a8f338fc",
+      primitiva : "nodoAttivaRPT",
+      sub_service : "nodo-per-psp",
+    },
+    {
+      operationId_s : "63b6e2da2a92e811a8f338fd",
+      primitiva : "nodoInviaRT",
+      sub_service : "nodo-per-psp",
+    },
+    {
+      operationId_s : "63b6e2da2a92e811a8f338fe",
+      primitiva : "nodoChiediInformativaPA",
+      sub_service : "nodo-per-psp",
+    },
+    {
+      operationId_s : "63b6e2da2a92e811a8f338ff",
+      primitiva : "nodoChiediTemplateInformativaPSP",
+      sub_service : "nodo-per-psp",
+    },
+    {
+      operationId_s : "63b6e2da2a92e811a8f33900",
+      primitiva : "nodoChiediElencoQuadraturePSP",
+      sub_service : "nodo-per-psp",
+    },
+    {
+      operationId_s : "63b6e2da2a92e811a8f33901",
+      primitiva : "nodoInviaFlussoRendicontazione",
+      sub_service : "nodo-per-psp",
+    },
+    // Node for PSP WS (NM3) (AUTH)
     {
       operationId_s : "63b6e2daea7c4a25440fda9f",
       primitiva : "verifyPaymentNotice",
@@ -24,6 +127,31 @@ locals {
       sub_service : "node-for-psp",
     },
     {
+      operationId_s : "63b6e2daea7c4a25440fdaa2",
+      primitiva : "verificaBollettino",
+      sub_service : "node-for-psp",
+    },
+    {
+      operationId_s : "63b6e2daea7c4a25440fdaa3",
+      primitiva : "demandPaymentNotice",
+      sub_service : "node-for-psp",
+    },
+    {
+      operationId_s : "63b6e2daea7c4a25440fdaa4",
+      primitiva : "nodoChiediCatalogoServiziV2",
+      sub_service : "node-for-psp",
+    },
+    {
+      operationId_s : "63b6e2daea7c4a25440fdaa5",
+      primitiva : "activatePaymentNoticeV2",
+      sub_service : "node-for-psp",
+    },
+    {
+      operationId_s : "63b6e2daea7c4a25440fdaa6",
+      primitiva : "sendPaymentOutcomeV2",
+      sub_service : "node-for-psp",
+    },
+    {
       operationId_s : "63ff4f22aca2fd18dcc4a6f7",
       primitiva : "nodoInviaFlussoRendicontazione",
       sub_service : "node-for-psp",
@@ -32,7 +160,23 @@ locals {
       operationId_s : "63ff4f22aca2fd18dcc4a6f8",
       primitiva : "nodoChiediInformativaPA",
       sub_service : "node-for-psp",
-    }
+    },
+    {
+      operationId_s : "63ff4f22aca2fd18dcc4a6f9",
+      primitiva : "nodoChiediTemplateInformativaPSP",
+      sub_service : "node-for-psp",
+    },
+    // Nodo per PSP Richiesta Avvisi WS (AUTH)
+    {
+      operationId_s : "63b6e2da2a92e811a8f338ed",
+      primitiva : "nodoChiediNumeroAvviso",
+      sub_service : "nodo-per-psp-richiesta-avvisi",
+    },
+    {
+      operationId_s : "63b6e2da2a92e811a8f338ee",
+      primitiva : "nodoChiediCatalogoServizi",
+      sub_service : "nodo-per-psp-richiesta-avvisi",
+    },
   ]
 
   api_nodo_alerts = var.env_short != "p" ? [] : [
