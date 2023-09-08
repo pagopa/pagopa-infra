@@ -478,6 +478,16 @@
               }
             }
           },
+          "409": {
+            "description": "Session already associated to transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Service unavailable",
             "content": {
@@ -489,6 +499,83 @@
             }
           }
         }
+      }
+    },
+    "/payment-methods/{id}/sessions/{sessionId}/transactionId": {
+      "get": {
+          "tags": [
+              "payment-methods"
+          ],
+          "operationId": "getTransactionIdForSession",
+          "summary": "Get eCommerce transaction id for the given NPG session",
+          "description": "API to get a transaction id from a NPG session",
+          "parameters": [
+              {
+                  "name": "id",
+                  "in": "path",
+                  "description": "Payment Method ID",
+                  "required": true,
+                  "schema": {
+                      "type": "string"
+                  }
+              },
+              {
+                  "name": "sessionId",
+                  "in": "path",
+                  "description": "Session payment method ID related to NPG",
+                  "required": true,
+                  "schema": {
+                      "type": "string"
+                  }
+              }
+          ],
+          "security": [
+              {
+                  "BearerAuth": []
+              }
+          ],
+          "responses": {
+              "200": {
+                  "description": "Session found",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/SessionGetTransactionId"
+                          }
+                      }
+                  }
+              },
+              "404": {
+                  "description": "Session not found",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/ProblemJson"
+                          }
+                      }
+                  }
+              },
+              "409": {
+                  "description": "Invalid session",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/ProblemJson"
+                          }
+                      }
+                  }
+              },
+              "500": {
+                  "description": "Service unavailable",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/ProblemJson"
+                          }
+                      }
+                  }
+              }
+          }
       }
     }
   },
@@ -915,6 +1002,19 @@
         "required": [
           "transactionId"
         ]
+      },
+      "SessionGetTransactionId": {
+        "type": "object",
+        "description": "Transaction id for session successful response",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction id associated to this NPG session"
+          }
+        },
+        "required": [
+          "transactionId"
+        ]
       }
     },
     "requestBodies": {
@@ -964,6 +1064,10 @@
         "type": "apiKey",
         "name": "Ocp-Apim-Subscription-Key",
         "in": "header"
+      },
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }
