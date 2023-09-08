@@ -135,11 +135,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-disc
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s"
-    | where outerMessage contains "" 
+    | where outerMessage contains "is part of a payment cart and it will be discarded" 
     | order by timestamp desc
   QUERY
     , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME
-  ) # TODO set log message in query
+  )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
   time_window = 15
