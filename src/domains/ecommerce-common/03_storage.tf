@@ -186,6 +186,25 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
       days    = 7
     }
   }
+  metric {
+    category = "Capacity"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
 
   enabled_log {
     category = "StorageDelete"
@@ -281,13 +300,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
     };
     let MessageRateForQueue = (queueKey: string) {
       OpCountForQueue("PutMessage", queueKey)
-      | join OpCountForQueue("DeleteMessage", queueKey) on count_
+      | join kind=fullouter OpCountForQueue("DeleteMessage", queueKey) on count_
       | project name = queueKey, Count = count_ - count_1
     };
     MessageRateForQueue("%s")
     | where Count > ${each.value.threshold}
     QUERY
-    , "${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
+    , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
@@ -314,6 +333,25 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagno
       days    = 7
     }
   }
+  metric {
+    category = "Capacity"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
 }
 
 
@@ -357,7 +395,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
       | summarize count()
       | where count_ > ${each.value.threshold}
     QUERY
-    , "${module.ecommerce_storage_deadletter.name}/${local.project}-${each.value.queue_key}"
+    , "/${module.ecommerce_storage_deadletter.name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency

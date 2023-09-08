@@ -221,17 +221,6 @@ variable "taxonomy_storage_account" {
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
   })
-
-  default = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = true
-    public_network_access_enabled = false
-    blob_delete_retention_days    = 30
-    enable_low_availability_alert = false
-  }
 }
 variable "cidr_subnet_taxonomy_storage_account" {
   type        = list(string)

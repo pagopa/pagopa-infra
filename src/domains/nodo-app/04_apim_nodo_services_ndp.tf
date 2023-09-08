@@ -118,6 +118,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
     base-url   = "https://${local.nodo_hostname}/nodo/webservices/input"
     urlenvpath = var.env_short
+    url_aks    = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
 
@@ -133,6 +134,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
     base-url                  = "https://${local.nodo_hostname}/nodo/webservices/input"
     urlenvpath                = var.env_short
     is-nodo-decoupler-enabled = false
+    url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
 

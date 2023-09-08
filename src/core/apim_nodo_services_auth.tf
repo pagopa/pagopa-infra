@@ -123,6 +123,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
     base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
+    url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
 
@@ -138,6 +139,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
     base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
+    url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 
 }
