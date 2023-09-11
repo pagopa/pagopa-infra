@@ -169,7 +169,7 @@ resource "azurerm_key_vault_secret" "receipts-storage-account-connection-string"
 
 resource "azurerm_key_vault_secret" "receipts-storage-account-pkey" {
   name         = "receipts-storage-account-pkey"
-  value        = data.azurerm_storage_account.receipts_datastore_fn_sa.primary_key
+  value        = data.azurerm_storage_account.receipts_datastore_fn_sa.primary_access_key
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }
