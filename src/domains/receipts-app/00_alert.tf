@@ -113,6 +113,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt
     threshold = 1
   }
 
+}
+
 ## Alert
 # This alert cover the following case:
 # 1. BizEventToReceiptProcessor receive a biz event related to a cart (totalNotice > 1)
@@ -135,7 +137,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-disc
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s"
-    | where outerMessage contains "is part of a payment cart and it will be discarded" 
+    | where outerMessage contains "discarded because is part of a payment cart" 
     | order by timestamp desc
   QUERY
     , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME
