@@ -47,3 +47,18 @@ authorizer_functions_autoscale = {
   minimum = 1
   maximum = 3
 }
+
+# taxonomy
+taxonomy_function_subnet          = ["10.1.183.0/24"]
+taxonomy_function_network_policies_enabled = true
+taxonomy_function = {
+  always_on                     = true
+  kind                          = "Linux"
+  sku_size                      = "P1v3"
+  maximum_elastic_worker_count  = null
+}
+taxonomy_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}
