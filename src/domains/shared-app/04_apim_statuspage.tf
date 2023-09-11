@@ -43,11 +43,6 @@ resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
   versioning_scheme   = "Segment"
 }
 
-data "azurerm_linux_function_app" "api_config" {
-  name                = format("%s-%s-app-api-config", var.prefix, var.env_short)
-  resource_group_name = format("%s-%s-api-config-rg", var.prefix, var.env_short)
-}
-
 data "azurerm_function_app" "authorizer" {
   name                = format("%s-%s-%s-shared-authorizer-fn", var.prefix, var.env_short, var.location_short)
   resource_group_name = format("%s-%s-%s-shared-rg", var.prefix, var.env_short, var.location_short)
@@ -107,7 +102,7 @@ module "apim_api_statuspage_api_v1" {
       "afmcalculator"         = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
       "afmmarketplace"        = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
       "afmutils"              = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
-      "apiconfig"             = format("%s/apiconfig/api/v1", data.azurerm_linux_function_app.api_config.default_hostname)
+      "apiconfig"             = format("%s/apiconfig/api/v1", format(local.aks_path, "apiconfig"))
       "apiconfigcacheo"       = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
       "apiconfigcachep"       = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
       "apiconfigselfcare"     = format("%s/pagopa-api-config-selfcare-integration", format(local.aks_path, "apiconfig"))
@@ -131,6 +126,7 @@ module "apim_api_statuspage_api_v1" {
       "mocker"                = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
       "pdfengine"             = format("%s/pagopa-pdf-engine", format(local.aks_path, "shared"))
       "receiptpdfdatastore"   = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
+      "receiptpdfgenerator"   = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
       "receiptpdfnotifier"    = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
       "receiptpdfservice"     = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
     }), "\"", "\\\"")
