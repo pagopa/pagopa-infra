@@ -13,7 +13,7 @@ locals {
 
   monitor_action_group_slack_name    = "SlackPagoPANODO"
   monitor_action_group_email_name    = "PagoPA"
-  monitor_action_group_opsgenie_name = "NuovaConnettivitOpsgenie"
+  monitor_action_group_opsgenie_name = "Opsgenie"
   monitor_appinsights_name           = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"

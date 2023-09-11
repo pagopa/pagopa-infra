@@ -623,13 +623,17 @@
               },
               {
                 "$ref": "#/components/schemas/CardAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/CardsAuthRequestDetails"
               }
             ],
             "discriminator": {
               "propertyName": "detailType",
               "mapping": {
                 "postepay": "#/components/schemas/PostePayAuthRequestDetails",
-                "card": "#/components/schemas/CardAuthRequestDetails"
+                "card": "#/components/schemas/CardAuthRequestDetails",
+                "cards": "#/components/schemas/CardsAuthRequestDetails"
               }
             }
           }
@@ -649,7 +653,7 @@
         "description": "Additional payment authorization details for the PostePay payment method",
         "properties": {
           "detailType": {
-            "description": "property discriminator, used to discriminate the authorization request detail instance",
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'postepay'",
             "type": "string"
           },
           "accountEmail": {
@@ -672,7 +676,7 @@
         "description": "Additional payment authorization details for credit cards",
         "properties": {
           "detailType": {
-            "description": "property discriminator, used to discriminate the authorization request detail",
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'card'",
             "type": "string"
           },
           "cvv": {
@@ -728,6 +732,28 @@
           "holderName": "Name Surname",
           "brand": "VISA",
           "threeDsData": "threeDsData"
+        }
+      },
+      "CardsAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for cards NPG authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'cards'",
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string",
+            "description": "NPG transaction session id"
+          }
+        },
+        "required": [
+          "detailType",
+          "sessionId"
+        ],
+        "example": {
+          "detailType": "cards",
+          "sessionId": "session-id"
         }
       },
       "RequestAuthorizationResponse": {

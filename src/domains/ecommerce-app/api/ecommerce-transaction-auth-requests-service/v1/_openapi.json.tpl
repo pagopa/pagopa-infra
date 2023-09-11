@@ -224,13 +224,17 @@
               },
               {
                 "$ref": "#/components/schemas/OutcomeXpayGateway"
+              },
+              {
+                "$ref": "#/components/schemas/OutcomeNpgGateway"
               }
             ],
             "discriminator": {
               "propertyName": "paymentGatewayType",
               "mapping": {
                 "XPAY": "#/components/schemas/OutcomeXpayGateway",
-                "VPOS": "#/components/schemas/OutcomeVposGateway"
+                "VPOS": "#/components/schemas/OutcomeVposGateway",
+                "NPG": "#/components/schemas/OutcomeNpgGateway"
               }
             }
           },
@@ -446,6 +450,52 @@
         "required": [
           "outcome",
           "paymentGatewayType"
+        ]
+      },
+      "OutcomeNpgGateway": {
+        "type": "object",
+        "properties": {
+          "paymentGatewayType": {
+            "type": "string",
+            "example": "NPG"
+          },
+          "operationResult": {
+            "type": "string",
+            "description": "outcome received by NPG - https://developer.nexi.it/it/api/notifica",
+            "enum": [
+              "AUTHORIZED",
+              "EXECUTED",
+              "DECLINED",
+              "DENIED_BY_RISK",
+              "THREEDS_VALIDATED",
+              "THREEDS_FAILED",
+              "PENDING",
+              "CANCELED",
+              "VOIDED",
+              "REFUNDED",
+              "FAILED"
+            ]
+          },
+          "orderId": {
+            "description": "Operator unique order ID",
+            "type": "string"
+          },
+          "operationId": {
+            "description": "Operation ID",
+            "type": "string"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Authorization code"
+          },
+          "paymentEndToEndId": {
+            "description": "Circuit unique transaction ID",
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentGatewayType",
+          "operationResult"
         ]
       }
     },

@@ -7,10 +7,7 @@
     <set-variable name="must_add_in_progress" value="@(context.Request.Url.Query.GetValueOrDefault("add_in_progress", "true"))" />
     <set-variable name="request" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
     <set-variable name="domain_key" value="@(((JObject) context.Variables["request"])["key"].ToString())" />
-    <set-variable name="autorized_entities" value="@{
-      string[] entities = ((JObject) context.Variables["request"])["value"].ToString().Split(',');
-      return new System.Text.StringBuilder().Append("#").Append(string.Join("#", entities)).Append("#").ToString();
-    }" />
+    <set-variable name="autorized_entities" value="@("#" + ((JObject) context.Variables["request"])["value"] + "#;;" + ((JObject) context.Variables["request"])["metadata"] )" />
     <cache-lookup-value variable-name="is_authorizer_store_existent" key="@("authorizer_" + context.Variables["domain"])" caching-type="external" default-value="false" />
 
     <!-- Look up for authorized-DOMAIN_in_progress variable -->

@@ -6,7 +6,7 @@ module "apim_fdr_xml_to_json_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
   product_id   = "fdr_xml_to_json"
-  display_name = "FDR - XML to API REST"
+  display_name = "FDR - XML to JSON API REST"
   description  = "Manage FDR ( aka \"StService\" )"
 
   api_management_name = local.pagopa_apim_name
@@ -25,8 +25,8 @@ module "apim_fdr_xml_to_json_product" {
 #################
 locals {
   apim_fdr_xml_to_json_service_api = {
-    display_name          = "FDR - XML to API REST"
-    description           = "FDR - XML to API REST"
+    display_name          = "FDR - XML to JSON API REST"
+    description           = "FDR - XML to JSON API REST"
     path                  = "fdr-xml-to-json/service"
     subscription_required = true
     service_url           = null
@@ -67,6 +67,6 @@ module "apim_api_fdr_xml_to_json_api_v1" {
   })
 
   xml_content = templatefile("./api/fdr-xml-to-json/v1/_base_policy.xml.tpl", {
-    hostname = local.hostnameAzFunction
+    hostname = local.hostnameAzFunctionXmlToJson
   })
 }
