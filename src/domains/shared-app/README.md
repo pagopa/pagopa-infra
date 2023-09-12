@@ -18,6 +18,7 @@
 |------|--------|---------|
 | <a name="module_apim_api_authorizer_api_v1"></a> [apim\_api\_authorizer\_api\_v1](#module\_apim\_api\_authorizer\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_api_authorizer_config_api_v1"></a> [apim\_api\_authorizer\_config\_api\_v1](#module\_apim\_api\_authorizer\_config\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
+| <a name="module_apim_api_authorizer_config_api_v1"></a> [apim\_api\_authorizer\_config\_api\_v1](#module\_apim\_api\_authorizer\_config\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_api_enrolled_orgs_api_v1"></a> [apim\_api\_enrolled\_orgs\_api\_v1](#module\_apim\_api\_enrolled\_orgs\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_api_influxdb_api_v1"></a> [apim\_api\_influxdb\_api\_v1](#module\_apim\_api\_influxdb\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
 | <a name="module_apim_api_influxdb_api_v2"></a> [apim\_api\_influxdb\_api\_v2](#module\_apim\_api\_influxdb\_api\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
@@ -67,6 +68,9 @@
 | [azurerm_monitor_autoscale_setting.taxonomy_function](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_generate-pdf-engine-generate-responsetime](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-pdf-engine-pdf-availability](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-platform-authorizer-availability](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-platform-authorizer-config-availability](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-platform-authorizer-responsetime](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pdf-engine-fun-error-alert](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.taxonomy_appexception](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.taxonomy_genericerror](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -101,7 +105,6 @@
 | [azurerm_key_vault_secret.authorizer_cosmos_uri](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.authorizer_refresh_configuration_url](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/kubernetes_cluster) | data source |
-| [azurerm_linux_function_app.api_config](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/linux_function_app) | data source |
 | [azurerm_linux_function_app.mockec](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/linux_function_app) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/monitor_action_group) | data source |
