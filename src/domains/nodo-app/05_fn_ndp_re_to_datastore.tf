@@ -4,7 +4,7 @@ data "azurerm_cosmosdb_account" "nodo_re_cosmosdb_nosql" {
   resource_group_name = format("%s-db-rg", local.project)
 }
 
-data azurerm_cosmosdb_sql_database "nodo_re_cosmosdb_nosql_db" {
+data "azurerm_cosmosdb_sql_database" "nodo_re_cosmosdb_nosql_db" {
   name                = "nodo_re"
   resource_group_name = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.resource_group_name
   account_name        = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.name
