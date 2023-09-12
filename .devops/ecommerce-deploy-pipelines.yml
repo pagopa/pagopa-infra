@@ -44,7 +44,7 @@ variables:
   PROD_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
   AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
   PROD_AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
-  PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN: '${ PAGOPA-P-AZURE-WEBHOOK-DASHBOARD-CREATION-TOKEN}'
+  PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN: '$(PAGOPA-P-AZURE-WEBHOOK-DASHBOARD-CREATION-TOKEN)'
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -155,7 +155,7 @@ stages:
             targetType: "inline"
             script: | 
               echo "Launching ecommerce dashboard generation apply"
-              token=$(AZURE-DEVOPS-GITHUB-PR-TOKEN)
+              token=$(PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN)
               body=$(cat <<EOF
               {
                   "ref": "main",
