@@ -35,13 +35,12 @@ data "azurerm_storage_account" "fdr_re_storage_account" {
 
 locals {
   function_re_to_datastore_app_settings = {
-    linux_fx_version                    = "JAVA|11"
-    FUNCTIONS_WORKER_RUNTIME            = "java"
-    FUNCTIONS_WORKER_PROCESS_COUNT      = 4
+    linux_fx_version               = "JAVA|11"
+    FUNCTIONS_WORKER_RUNTIME       = "java"
+    FUNCTIONS_WORKER_PROCESS_COUNT = 4
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
-
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
@@ -65,7 +64,7 @@ locals {
   docker_settings = {
     IMAGE_NAME = "pagopafdrretodatastore"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL = "https://${data.azurerm_container_registry.acr.login_server}"
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
   }

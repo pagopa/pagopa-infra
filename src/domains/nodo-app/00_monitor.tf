@@ -82,9 +82,6 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_moetrics_error" {
 
   }
 
-
-
-
   action {
     action_group_id    = data.azurerm_monitor_action_group.slack.id
     webhook_properties = null

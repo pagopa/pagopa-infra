@@ -113,13 +113,13 @@ nodeset_config = {
   data-warm-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_warm"]
-    storage          = "200Gi"
+    storage          = "250Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-warm"
   },
   data-cold-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
-    storage          = "200Gi"
+    storage          = "250Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-cold"
   }
 }

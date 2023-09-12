@@ -110,4 +110,18 @@ nodo_re_to_datastore_function_autoscale = {
   minimum = 1
   maximum = 3
 }
+nodo_re_to_tablestorage_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = null
+}
+nodo_re_to_tablestorage_function_subnet          = ["10.1.184.0/24"]
+nodo_re_to_tablestorage_network_policies_enabled = false
+nodo_re_to_tablestorage_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}
 

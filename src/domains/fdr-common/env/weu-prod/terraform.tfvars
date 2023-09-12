@@ -36,7 +36,7 @@ enable_iac_pipeline = true
 pgres_flex_params = {
 
   enabled    = true
-  sku_name   = "GP_Standard_D4s_v3"
+  sku_name   = "GP_Standard_D4ds_v4"
   db_version = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
@@ -132,11 +132,11 @@ cosmos_mongo_db_fdr_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
   container_default_ttl = 315576000 # 10 year in second
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
@@ -170,7 +170,7 @@ cosmos_mongo_db_fdr_re_params = {
 
   container_default_ttl = 10368000 # 120 days
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
