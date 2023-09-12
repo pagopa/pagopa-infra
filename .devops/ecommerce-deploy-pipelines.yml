@@ -145,7 +145,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
     
     - stage:
-      displayName: 'Dashboards generation GHA'
+      displayName: '💻 Dashboards generation GHA'
       jobs: 
       - job: generate_dashboard
         steps:
