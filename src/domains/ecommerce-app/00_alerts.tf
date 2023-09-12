@@ -43,15 +43,15 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
   description    = "eCommerce Availability less than or equal 99%"
   enabled        = true
   query = (<<-QUERY
-let threshold = 0.99;
 AzureDiagnostics
-| where url startswith 'https://api.platform.pagopa.it/ecommerce/checkout/'
+| where url_s startswith 'https://api.platform.pagopa.it/ecommerce/checkout/'
 | summarize
     Total=count(),
-    Success=count(responseCode_d < 500)
-    by bin(TimeGenerated, 15m)
-| extend availability=toreal(Success) / Total
-| where availability < threshold
+    Success=countif(responseCode_d < 500 or url_s startswith "https://api.platform.pagopa.it/ecommerce/checkout/v1/payment-requests" and ( responseCode_d == 502 or responseCode_d == 504))
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| extend Watermark=99
+| project Watermark, Availability, Time
   QUERY
   )
   severity    = 1
