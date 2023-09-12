@@ -206,17 +206,9 @@ variable "taxonomy_function" {
     always_on                    = bool
     kind                         = string
     sku_size                     = string
-    sku_tier                     = string
     maximum_elastic_worker_count = number
   })
   description = "Taxonomy function"
-  default = {
-    always_on                    = true
-    kind                         = "Linux"
-    sku_size                     = "B1"
-    sku_tier                     = "Basic"
-    maximum_elastic_worker_count = 1
-  }
 }
 
 variable "taxonomy_function_app_image_tag" {

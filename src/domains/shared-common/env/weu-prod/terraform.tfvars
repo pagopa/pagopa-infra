@@ -80,14 +80,14 @@ cidr_subnet_authorizer_cosmosdb   = ["10.1.168.0/24"]
 storage_private_endpoint_enabled  = true
 
 # Taxonomy
-cidr_subnet_taxonomy_storage_account = ["10.1.183.0/24"]
+cidr_subnet_taxonomy_storage_account = ["10.1.186.0/24"]
 taxonomy_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
-  advanced_threat_protection    = false
-  public_network_access_enabled = false
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
   blob_delete_retention_days    = 0
-  enable_low_availability_alert = false
+  enable_low_availability_alert = true
 }
