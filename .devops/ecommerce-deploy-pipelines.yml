@@ -120,6 +120,35 @@ stages:
   #
   - ${{ if eq(parameters['PROD'], true) }}:
 
+    - stage:
+      displayName: '💻 Dashboards generation GHA'
+      jobs: 
+      - job: generate_dashboard
+        steps:
+        - task: Bash@3 
+          displayName: 'Dashboard generation'
+          inputs:
+            targetType: "inline"
+            script: | 
+              echo "Launching ecommerce dashboard generation apply"
+              body=$(cat <<EOF
+              {
+                  "ref": "main",
+                  "inputs": {
+                      "api-name": "ecommerce-checkout",
+                      "environment": "prod",
+                      "config-options": "{\"branch_ref\": \"$(Build.SourceBranchName)\"}"
+                  }
+              }
+              EOF
+              )
+              echo "GHA trigger body $body"
+              curl -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
+              -H 'Content-Type: application/json' \
+              -H 'X-GitHub-Api-Version: 2022-11-28' \
+              -H "Authorization: token $(PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN)" \
+              --data "$body"
+
     # PROD ecommerce COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
@@ -144,32 +173,4 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
     
-    - stage:
-      displayName: '💻 Dashboards generation GHA'
-      jobs: 
-      - job: generate_dashboard
-        steps:
-        - task: Bash@3 
-          displayName: 'Dashboard generation'
-          inputs:
-            targetType: "inline"
-            script: | 
-              echo "Launching ecommerce dashboard generation apply"
-              token=$(PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN)
-              body=$(cat <<EOF
-              {
-                  "ref": "main",
-                  "inputs": {
-                      "api-name": "ecommerce-checkout",
-                      "environment": "prod",
-                      "config-options": "{\"branch_ref\": \"$(Build.SourceBranchName)\"}"
-                  }
-              }
-              EOF
-              )
-              echo "GHA trigger body $body"
-              curl -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
-              -H 'Content-Type: application/json' \
-              -H 'X-GitHub-Api-Version: 2022-11-28' \
-              -H "Authorization: token $token" \
-              --data "$body"
+    
