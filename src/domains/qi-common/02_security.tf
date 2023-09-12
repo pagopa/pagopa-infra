@@ -107,3 +107,11 @@ resource "azurerm_key_vault_secret" "ehub_alert_qi_rx_debug_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+
+resource "azurerm_key_vault_secret" "qi_azurewebjobsstorage" {
+  name         = format("qi-%s-azurewebjobsstorage", var.env_short)
+  value        = module.qi_fn_sa.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
