@@ -120,6 +120,30 @@ stages:
   #
   - ${{ if eq(parameters['PROD'], true) }}:
 
+    # PROD ecommerce COMMON
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'ecommerce_common'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
+        ENVIRONMENT: "prod"
+        TF_ENVIRONMENT_FOLDER: "weu-prod"
+        WORKINGDIR: 'src/domains/ecommerce-common'
+        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
+
+    # PROD ecommerce APP
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'ecommerce_app'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
+        ENVIRONMENT: "prod"
+        TF_ENVIRONMENT_FOLDER: "weu-prod"
+        WORKINGDIR: 'src/domains/ecommerce-app'
+        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
+        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
+    
     - stage:
       displayName: '💻 Dashboards generation GHA'
       jobs: 
@@ -148,32 +172,3 @@ stages:
               -H 'X-GitHub-Api-Version: 2022-11-28' \
               -H "Authorization: token ${{ variables.PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN }}" \
               --data "$body"
-          #env:
-          # GHA_TOKEN: ${{ variables.PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN }}
-            #TIME_OUT: ${{ variables.TIME_OUT }}
-
-#    # PROD ecommerce COMMON
-#    - template: templates/terraform-plan-apply/template.yaml@terraform
-#      parameters:
-#        DOMAIN_NAME: 'ecommerce_common'
-#        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
-#        ENVIRONMENT: "prod"
-#        TF_ENVIRONMENT_FOLDER: "weu-prod"
-#        WORKINGDIR: 'src/domains/ecommerce-common'
-#        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-
-    # PROD ecommerce APP
- #   - template: templates/terraform-plan-apply/template.yaml@terraform
- #     parameters:
- #       DOMAIN_NAME: 'ecommerce_app'
- #       AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
- #       ENVIRONMENT: "prod"
- #       TF_ENVIRONMENT_FOLDER: "weu-prod"
- #       WORKINGDIR: 'src/domains/ecommerce-app'
- #       AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
- #       AKS_NAME: ${{ variables.AKS_PROD_NAME }}
- #       AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
- #       AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
- #       AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-    
-    
