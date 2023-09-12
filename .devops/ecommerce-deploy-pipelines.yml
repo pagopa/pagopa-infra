@@ -146,8 +146,10 @@ stages:
               curl -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
               -H 'Content-Type: application/json' \
               -H 'X-GitHub-Api-Version: 2022-11-28' \
-              -H "Authorization: token $(PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN)" \
+              -H "Authorization: token $GHA_TOKEN" \
               --data "$body"
+          env:
+            GHA_TOKEN: ${{ variables.PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN }}
 
     # PROD ecommerce COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
