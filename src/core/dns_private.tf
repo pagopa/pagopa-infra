@@ -340,3 +340,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_azur
 
   tags = var.tags
 }
+
+
+resource "azurerm_dns_a_record" "dns_a_forwarder" {
+  count               = var.nat_gateway_enabled ? 1 : 0
+  name                = "forwarder"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = tolist(module.nat_gw[0].public_ip_address)
+  tags                = var.tags
+}
