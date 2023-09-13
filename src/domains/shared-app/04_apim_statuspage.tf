@@ -102,7 +102,7 @@ module "apim_api_statuspage_api_v1" {
       "afmcalculator"         = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
       "afmmarketplace"        = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
       "afmutils"              = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
-      "apiconfig"             = format("%s/apiconfig/api/v1", format(local.aks_path, "apiconfig"))
+      "apiconfig"             = format("%s/pagopa-api-config-core-service/o", format(local.aks_path, "apiconfig"))
       "apiconfigcacheo"       = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
       "apiconfigcachep"       = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
       "apiconfigselfcare"     = format("%s/pagopa-api-config-selfcare-integration", format(local.aks_path, "apiconfig"))

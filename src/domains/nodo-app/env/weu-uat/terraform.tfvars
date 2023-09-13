@@ -124,8 +124,8 @@ nodo_re_to_tablestorage_function = {
   sku_tier                     = "Basic"
   maximum_elastic_worker_count = 0
 }
-nodo_re_to_tablestorage_function_subnet           = ["10.1.184.0/24"]
-nodo_re_to_tablestorage_network_policies_enabled  = true
+nodo_re_to_tablestorage_function_subnet          = ["10.1.184.0/24"]
+nodo_re_to_tablestorage_network_policies_enabled = true
 nodo_re_to_tablestorage_function_autoscale = {
   default = 1
   minimum = 1
