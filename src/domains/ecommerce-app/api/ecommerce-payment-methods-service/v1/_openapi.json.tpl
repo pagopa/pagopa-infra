@@ -961,9 +961,9 @@
         "type": "object",
         "description": "Session Payment method Response",
         "properties": {
-          "orderId": {
+          "sessionId": {
             "type": "string",
-            "description": "Order ID related to NPG"
+            "description": "session ID related to NPG"
           },
           "bin": {
             "type": "string",
@@ -983,7 +983,7 @@
           }
         },
         "required": [
-          "orderId",
+          "sessionId",
           "bin",
           "lastFourDigits",
           "expiringDate",
