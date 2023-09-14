@@ -17,7 +17,7 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
     STORAGE_ACCOUNT_CONN_STRING = data.azurerm_storage_account.fdr_storage_account.primary_connection_string
-    FDR_FASE1_BASE_URL          = var.env == "prod" ? "https://api.platform.pagopa.it/fdr-legacy/nodo-per-pa/v1" : "https://api.${var.env}.platform.pagopa.it/fdr-legacy/nodo-per-pa/v1"
+    FDR_FASE1_BASE_URL          = var.env == "prod" ? "https://api.platform.pagopa.it/fdr-legacy/service-internal/v1" : "https://api.${var.env}.platform.pagopa.it/fdr-legacy/service-internal/v1"
     FDR_FASE1_API_KEY           = data.azurerm_key_vault_secret.fdr_nodo_product_subscription_key.value
     TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.fdr_storage_account.primary_connection_string
     TABLE_STORAGE_TABLE_NAME    = "flowidsendqueueerror"
