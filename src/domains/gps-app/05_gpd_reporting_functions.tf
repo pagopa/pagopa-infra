@@ -58,10 +58,8 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
-    # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+    # ghcr
+    DOCKER_REGISTRY_SERVER_URL = "https://ghcr.io/pagopa"
   }
 
   function_service_app_settings = {
@@ -156,8 +154,8 @@ module "reporting_batch_function" {
     registry_url      = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_URL
     image_name        = var.reporting_batch_image
     image_tag         = "latest"
-    registry_username = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
   storage_account_info = {
     account_kind                      = "StorageV2"
@@ -173,7 +171,6 @@ module "reporting_batch_function" {
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
-
 
   tags = var.tags
 
@@ -206,8 +203,8 @@ module "reporting_batch_function_slot_staging" {
     registry_url      = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_URL
     image_name        = var.reporting_batch_image
     image_tag         = "latest"
-    registry_username = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.function_batch_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
