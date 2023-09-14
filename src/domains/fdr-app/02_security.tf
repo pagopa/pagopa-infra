@@ -7,8 +7,3 @@ data "azurerm_key_vault_secret" "fdr_internal_product_subscription_key" {
   name         = "fdr-internal-product-subscription-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
-
-#data "azurerm_key_vault_secret" "fdr_nodo_product_subscription_key" {
-#  name         = "fdr-internal-product-subscription-key"
-#  key_vault_id = data.azurerm_key_vault.kv.id
-#}
