@@ -660,7 +660,7 @@
         ],
         "operationId": "createSession",
         "summary": "Create frontend field data paired with a payment gateway session",
-        "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `sessionId`.",
+        "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `orderId`.",
         "parameters": [
           {
             "name": "id",
@@ -706,7 +706,7 @@
         }
       }
     },
-    "/payment-methods/{id}/sessions/{sessionId}": {
+    "/payment-methods/{id}/sessions/{orderId}": {
       "get": {
         "tags": [
           "ecommerce-methods"
@@ -725,9 +725,9 @@
             }
           },
           {
-            "name": "sessionId",
+            "name": "orderId",
             "in": "path",
-            "description": "Session payment method ID related to NPG",
+            "description": "OrderId ID related to NPG",
             "required": true,
             "schema": {
               "type": "string"
@@ -1598,18 +1598,18 @@
                 "description": "fixed value 'cards'",
                 "type": "string"
               },
-              "sessionId": {
+              "orderId": {
                 "type": "string",
-                "description": "NPG transaction session id"
+                "description": "NPG transaction order id"
               }
             },
             "required": [
               "detailType",
-              "sessionId"
+              "orderId"
             ],
             "example": {
               "detailType": "cards",
-              "sessionId": "session-id"
+              "orderId": "order-id"
             }
           }
         ]
@@ -1868,9 +1868,9 @@
         "type": "object",
         "description": "Session Payment method Response",
         "properties": {
-          "sessionId": {
+          "orderId": {
             "type": "string",
-            "description": "Session Payment method ID"
+            "description": "Order ID related to NPG"
           },
           "bin": {
             "type": "string",
@@ -1890,7 +1890,7 @@
           }
         },
         "required": [
-          "sessionId",
+          "orderId",
           "bin",
           "lastFourDigits",
           "expiringDate",
