@@ -903,7 +903,7 @@
         "type": "object",
         "description": "Form data needed to create a payment method input form",
         "properties": {
-          "sessionId": {
+          "orderId": {
             "type": "string",
             "description": "Identifier of the payment gateway session associated to the form"
           },
@@ -913,7 +913,7 @@
         },
         "required": [
           "paymentMethodData",
-          "sessionId"
+          "orderId"
         ]
       },
       "CardFormFields": {
