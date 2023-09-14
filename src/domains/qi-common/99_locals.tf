@@ -2,6 +2,8 @@ locals {
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product = "${var.prefix}-${var.env_short}"
 
+  subscription_name = "${var.env}-${var.prefix}"
+
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
     "51.144.56.112/28",
