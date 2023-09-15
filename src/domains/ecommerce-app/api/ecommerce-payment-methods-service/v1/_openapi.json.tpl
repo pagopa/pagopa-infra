@@ -327,7 +327,7 @@
         ],
         "operationId": "createSession",
         "summary": "Create frontend field data paired with a payment gateway session",
-        "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `sessionId`.",
+        "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `orderId`.",
         "parameters": [
           {
             "name": "id",
@@ -373,7 +373,7 @@
         }
       }
     },
-    "/payment-methods/{id}/sessions/{sessionId}": {
+    "/payment-methods/{id}/sessions/{orderId}": {
       "get": {
         "tags": [
           "payment-methods"
@@ -392,9 +392,9 @@
             }
           },
           {
-            "name": "sessionId",
+            "name": "orderId",
             "in": "path",
-            "description": "Session payment method ID related to NPG",
+            "description": "order ID related to NPG",
             "required": true,
             "schema": {
               "type": "string"
@@ -452,9 +452,9 @@
             }
           },
           {
-            "name": "sessionId",
+            "name": "orderId",
             "in": "path",
-            "description": "Session payment method ID related to NPG",
+            "description": "order ID related to NPG",
             "required": true,
             "schema": {
               "type": "string"
@@ -501,81 +501,81 @@
         }
       }
     },
-    "/payment-methods/{id}/sessions/{sessionId}/transactionId": {
+    "/payment-methods/{id}/sessions/{orderId}/transactionId": {
       "get": {
-          "tags": [
-              "payment-methods"
-          ],
-          "operationId": "getTransactionIdForSession",
-          "summary": "Get eCommerce transaction id for the given NPG session",
-          "description": "API to get a transaction id from a NPG session",
-          "parameters": [
-              {
-                  "name": "id",
-                  "in": "path",
-                  "description": "Payment Method ID",
-                  "required": true,
-                  "schema": {
-                      "type": "string"
-                  }
-              },
-              {
-                  "name": "sessionId",
-                  "in": "path",
-                  "description": "Session payment method ID related to NPG",
-                  "required": true,
-                  "schema": {
-                      "type": "string"
-                  }
-              }
-          ],
-          "security": [
-              {
-                  "BearerAuth": []
-              }
-          ],
-          "responses": {
-              "200": {
-                  "description": "Session found",
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/SessionGetTransactionId"
-                          }
-                      }
-                  }
-              },
-              "404": {
-                  "description": "Session not found",
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/ProblemJson"
-                          }
-                      }
-                  }
-              },
-              "409": {
-                  "description": "Invalid session",
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/ProblemJson"
-                          }
-                      }
-                  }
-              },
-              "500": {
-                  "description": "Service unavailable",
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/ProblemJson"
-                          }
-                      }
-                  }
-              }
+        "tags": [
+          "payment-methods"
+        ],
+        "operationId": "getTransactionIdForSession",
+        "summary": "Get eCommerce transaction id for the given NPG session",
+        "description": "API to get a transaction id from a NPG session",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Order id related to NPG",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionGetTransactionId"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Session not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -903,7 +903,7 @@
         "type": "object",
         "description": "Form data needed to create a payment method input form",
         "properties": {
-          "sessionId": {
+          "orderId": {
             "type": "string",
             "description": "Identifier of the payment gateway session associated to the form"
           },
@@ -913,7 +913,7 @@
         },
         "required": [
           "paymentMethodData",
-          "sessionId"
+          "orderId"
         ]
       },
       "CardFormFields": {
@@ -963,7 +963,7 @@
         "properties": {
           "sessionId": {
             "type": "string",
-            "description": "Session Payment method ID"
+            "description": "session ID related to NPG"
           },
           "bin": {
             "type": "string",
