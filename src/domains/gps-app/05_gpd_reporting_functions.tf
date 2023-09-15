@@ -59,7 +59,7 @@ locals {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
     # ghcr
-    DOCKER_REGISTRY_SERVER_URL = "https://ghcr.io/pagopa"
+    DOCKER_REGISTRY_SERVER_URL = "https://ghcr.io"
   }
 
   function_service_app_settings = {
