@@ -3,8 +3,7 @@
   "info": {
     "title" : "FDR INTERNAL - Flussi di rendicontazione ${service}",
     "description" : "Manage FDR INTERNAL ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
-    "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.0.0"
+    "version": "1.0.0-SNAPSHOT"
   },
   "servers": [
     {
@@ -13,28 +12,37 @@
   ],
   "tags": [],
   "paths": {
-    "/notify/fdr" : {
-      "post" : {
-        "tags" : [ "Fdr fase 1" ],
-        "summary" : "Notify fdr to convert",
-        "description" : "Notify fdr to convert",
-        "operationId" : "notifyFdrToConvert",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/NotifyFdr"
+    "/notify/fdr": {
+      "post": {
+        "tags": [
+          "Fdr fase 1"
+        ],
+        "summary": "Notify fdr to convert",
+        "description": "Notify fdr to convert",
+        "operationId": "notifyFdrToConvert",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotifyFdr"
               }
             }
           }
         },
         "responses" : {
           "200" : {
-            "description" : "Success"
+            "description" : "Success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GenericResponse"
+                }
+              }
             }
           }
         }
-      },
+      }
+    },
     "/internal/organizations/{organizationId}/fdrs/{fdr}": {
       "get": {
         "tags": [
@@ -88,22 +96,43 @@
     "schemas": {
       "NotifyFdr": {
         "type": "object",
-        "required": ["fdr", "pspId", "retry", "revision"],
+        "required": [
+          "fdr",
+          "pspId",
+          "retry",
+          "revision"
+        ],
         "properties": {
-          "fdr" : {
-            "type" : "string"
+          "fdr": {
+            "type": "string"
           },
-          "pspId" : {
-            "type" : "string"
+          "pspId": {
+            "type": "string"
           },
-          "retry" : {
-            "type" : "integer"
+          "retry": {
+            "type": "integer"
           },
-          "revision" : {
-            "type" : "integer"
+          "revision": {
+            "type": "integer"
           }
         },
         "additionalProperties": false
+      },
+      "GenericResponse": {
+        "type": "object",
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "type": "string",
+            "example": "OK"
+          },
+          "description": {
+            "type": "string",
+            "example": "error description"
+          }
+        }
       },
       "GetXmlRendicontazioneResponse": {
         "type": "object",
