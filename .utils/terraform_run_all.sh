@@ -39,6 +39,8 @@ array=(
     'src/domains/nodo-common::weu-dev'
     'src/domains/nodo-cron::weu-dev'
     'src/domains/nodo-secret::weu-dev'
+    'src/domains/qi-app::weu-dev'
+    'src/domains/qi-common::weu-dev'
     'src/domains/selfcare-app::weu-dev'
     'src/domains/selfcare-common::weu-dev'
     'src/domains/shared-app::weu-dev'
