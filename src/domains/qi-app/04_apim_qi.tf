@@ -32,12 +32,3 @@ locals {
     service_url           = null
   }
 }
-
-# qi service APIs
-resource "azurerm_api_management_api_version_set" "qi_api" {
-  name                = format("%s-api", local.project)
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_qi_api.display_name
-  versioning_scheme   = "Segment"
-}
