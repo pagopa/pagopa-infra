@@ -5,7 +5,7 @@
     "version": "0.1"
   },
   "paths": {
-    "/sessions/{sessionId}/outcomes": {
+    "/sessions/{orderId}/outcomes": {
       "post": {
         "tags": [
           "Payment Services"
@@ -16,12 +16,12 @@
         "parameters": [
           {
             "in": "path",
-            "name": "sessionId",
+            "name": "orderId",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "Transaction session ID"
+            "description": "Transaction order ID"
           },
           {
             "in": "query",
