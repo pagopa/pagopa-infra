@@ -113,6 +113,7 @@ locals {
       operationId_s : "63b6e2da2a92e811a8f33901",
       primitiva : "nodoInviaFlussoRendicontazione",
       sub_service : "nodo-per-psp",
+      response_time : 20000
     },
     // Node for PSP WS (NM3) (AUTH)
     {
@@ -159,6 +160,7 @@ locals {
       operationId_s : "63ff4f22aca2fd18dcc4a6f7",
       primitiva : "nodoInviaFlussoRendicontazione",
       sub_service : "node-for-psp",
+      response_time : 20000
     },
     {
       operationId_s : "63ff4f22aca2fd18dcc4a6f8",
@@ -175,6 +177,7 @@ locals {
       operationId_s : "63b6e2da2a92e811a8f338ed",
       primitiva : "nodoChiediNumeroAvviso",
       sub_service : "nodo-per-psp-richiesta-avvisi",
+      response_time : 20000
     },
     {
       operationId_s : "63b6e2da2a92e811a8f338ee",
@@ -310,6 +313,7 @@ locals {
       operationId_s : "61e9633eea7c4a07cc7d4811",
       primitiva : "nodoInviaFlussoRendicontazione",
       sub_service : "nodo-per-psp",
+      response_time : 20000
     },
     {
       operationId_s : "6217ba1b2a92e81fa4f15e77",
@@ -336,6 +340,7 @@ locals {
       operationId_s : "6217ba1a2a92e81fa4f15e75",
       primitiva : "nodoChiediNumeroAvviso",
       sub_service : "nodo-per-psp-richiesta-avvisi",
+      response_time : 20000
     },
     {
       operationId_s : "6217ba1b2a92e81fa4f15e76",
@@ -412,6 +417,7 @@ AzureDiagnostics
     Success=count(responseCode_d < 500)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
+| where Total > 100
 | where availability < threshold
   QUERY
   )
@@ -494,6 +500,7 @@ AzureDiagnostics
     Success=count(responseCode_d < 500)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
+| where Total > 100
 | where availability < threshold
   QUERY
   )
