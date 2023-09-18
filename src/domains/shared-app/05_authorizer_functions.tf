@@ -16,6 +16,8 @@ locals {
     REFRESH_CONFIGURATION_PATH            = data.azurerm_key_vault_secret.authorizer_refresh_configuration_url.value
     APICONFIG_SELFCARE_INTEGRATION_PATH   = data.azurerm_key_vault_secret.apiconfig_selfcare_integration_url.value
     APICONFIG_SELFCARE_INTEGRATION_SUBKEY = data.azurerm_key_vault_secret.apiconfig_selfcare_integration_subkey.value
+    RETRY_NUMBER                          = 4
+    STARTING_RETRY_DELAY_MILLIS           = 1500
 
     EC_SQL_QUERY             = "SELECT VALUE i FROM c JOIN i IN c.authorization WHERE c.domain = {domain}"
     IS_EC_ENROLLED_SQL_QUERY = "SELECT VALUE COUNT(i) FROM c JOIN i IN c.authorization WHERE c.domain = {domain} AND ARRAY_CONTAINS(c.authorization, {organizationFiscalCode})"
