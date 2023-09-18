@@ -417,7 +417,6 @@ AzureDiagnostics
     Success=count(responseCode_d < 500)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
-| where Total > 100
 | where availability < threshold
   QUERY
   )
@@ -426,10 +425,10 @@ AzureDiagnostics
   # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 
 }
@@ -500,7 +499,6 @@ AzureDiagnostics
     Success=count(responseCode_d < 500)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
-| where Total > 100
 | where availability < threshold
   QUERY
   )
@@ -509,9 +507,9 @@ AzureDiagnostics
   # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
