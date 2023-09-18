@@ -18,7 +18,7 @@
         }
         if (npgList.Contains(pspId)) {
           return "NPG";
-      }
+        }
         return "";
     }" />
     <choose>
