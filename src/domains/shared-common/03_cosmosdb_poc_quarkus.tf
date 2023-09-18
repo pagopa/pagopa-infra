@@ -16,30 +16,37 @@ module "poc_quarkus_cosmosdb_snet" {
 
 module "poc_quarkus_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.4.1"
+  
   name     = "${local.project}-poc-quarkus-cosmos-account"
   location = var.location
   domain   = "shared"
-
   resource_group_name = azurerm_resource_group.shared_rg.name
-  offer_type          = var.poc_quarkus_db_account_params.offer_type
-  kind                = var.poc_quarkus_db_account_params.kind
+  
+  offer_type           = var.poc_quarkus_db_account_params.offer_type
+  kind                 = var.poc_quarkus_db_account_params.kind
+  capabilities       = var.poc_quarkus_db_account_params.capabilities
+  enable_free_tier     = var.poc_quarkus_db_account_params.enable_free_tier
+  mongo_server_version = var.poc_quarkus_db_account_params.server_version
+
 
   public_network_access_enabled    = var.poc_quarkus_db_account_params.public_network_access_enabled
+  private_endpoint_enabled         = var.poc_quarkus_db_account_params.private_endpoint_enabled
   main_geo_location_zone_redundant = var.poc_quarkus_db_account_params.main_geo_location_zone_redundant
 
-  enable_free_tier          = var.poc_quarkus_db_account_params.enable_free_tier
   enable_automatic_failover = true
 
-  capabilities       = var.poc_quarkus_db_account_params.capabilities
   consistency_policy = var.poc_quarkus_db_account_params.consistency_policy
 
   main_geo_location_location = var.location
   additional_geo_locations   = var.poc_quarkus_db_account_params.additional_geo_locations
   backup_continuous_enabled  = var.poc_quarkus_db_account_params.backup_continuous_enabled
 
-  is_virtual_network_filter_enabled = var.poc_quarkus_db_account_params.is_virtual_network_filter_enabled
+  is_virtual_network_filter_enabled            = var.poc_quarkus_db_account_params.is_virtual_network_filter_enabled
+  enable_provisioned_throughput_exceeded_alert = var.poc_quarkus_db_account_params.enable_provisioned_throughput_exceeded_alert
 
-  ip_range = ""
+
+  ip_range  = ""
+  subnet_id = module.poc_quarkus_cosmosdb_snet.id
 
   # add data.azurerm_subnet.<my_service>.id
   # allowed_virtual_network_subnet_ids = var.poc_quarkus_db_account_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
