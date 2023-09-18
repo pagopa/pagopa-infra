@@ -62,6 +62,13 @@ route_aks = [
     next_hop_in_ip_address = "10.230.10.150"
   },
   {
+    # dev aks nodo oncloud
+    name                   = "aks-outbound-to-nexy-proxy-subnet"
+    address_prefix         = "10.79.20.35/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
     #  aks nodo to nexi proxy
     name                   = "aks-outbound-to-nexy-sianet-dr-subnet"
     address_prefix         = "10.101.1.85/32"
@@ -108,3 +115,34 @@ route_aks = [
 
 vmss_zones           = ["1", "2", "3"]
 vmss_instance_number = 1
+
+nodo_re_to_datastore_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "P1v3"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
+}
+nodo_re_to_datastore_function_always_on       = true
+nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]
+nodo_re_to_datastore_network_policies_enabled = true
+nodo_re_to_datastore_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
+
+nodo_re_to_tablestorage_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "P1v3"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
+}
+nodo_re_to_tablestorage_function_subnet          = ["10.1.184.0/24"]
+nodo_re_to_tablestorage_network_policies_enabled = true
+nodo_re_to_tablestorage_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}

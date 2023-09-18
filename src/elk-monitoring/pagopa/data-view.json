@@ -1,0 +1,9 @@
+{
+    "data_view": {
+       "id": "log_${name}",
+       "title": "logs-kubernetes.container_logs-default",
+       "name": "Log ${name}",
+       "timeFieldName": "@timestamp"
+    },
+    "override": true
+  }

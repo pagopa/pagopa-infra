@@ -459,7 +459,7 @@
           "email": {
             "description": "Email string format",
             "type": "string",
-            "pattern": "(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])",
+            "pattern": "(?:[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])",
             "example": "mario.rossi@gmail.it"
           },
           "idCart": {
@@ -623,13 +623,17 @@
               },
               {
                 "$ref": "#/components/schemas/CardAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/CardsAuthRequestDetails"
               }
             ],
             "discriminator": {
               "propertyName": "detailType",
               "mapping": {
                 "postepay": "#/components/schemas/PostePayAuthRequestDetails",
-                "card": "#/components/schemas/CardAuthRequestDetails"
+                "card": "#/components/schemas/CardAuthRequestDetails",
+                "cards": "#/components/schemas/CardsAuthRequestDetails"
               }
             }
           }
@@ -649,7 +653,7 @@
         "description": "Additional payment authorization details for the PostePay payment method",
         "properties": {
           "detailType": {
-            "description": "property discriminator, used to discriminate the authorization request detail instance",
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'postepay'",
             "type": "string"
           },
           "accountEmail": {
@@ -672,7 +676,7 @@
         "description": "Additional payment authorization details for credit cards",
         "properties": {
           "detailType": {
-            "description": "property discriminator, used to discriminate the authorization request detail",
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'card'",
             "type": "string"
           },
           "cvv": {
@@ -728,6 +732,28 @@
           "holderName": "Name Surname",
           "brand": "VISA",
           "threeDsData": "threeDsData"
+        }
+      },
+      "CardsAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for cards NPG authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'cards'",
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string",
+            "description": "NPG transaction session id"
+          }
+        },
+        "required": [
+          "detailType",
+          "sessionId"
+        ],
+        "example": {
+          "detailType": "cards",
+          "sessionId": "session-id"
         }
       },
       "RequestAuthorizationResponse": {

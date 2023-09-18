@@ -11,8 +11,9 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
+  monitor_action_group_slack_name    = "SlackPagoPA"
+  monitor_action_group_email_name    = "PagoPA"
+  monitor_action_group_opsgenie_name = "Opsgenie"
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
@@ -27,5 +28,11 @@ locals {
   cosmos_dns_zone_name                = "privatelink.documents.azure.com"
   cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
+  cosmos_table_dns_zone_name                = "privatelink.table.cosmos.azure.com"
+  cosmos_table_dns_zone_resource_group_name = "${local.product}-vnet-rg"
+
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
+
+  gpd_hostname = var.env_short != "d" ? module.postgres_flexible_server_private[0].fqdn : module.postgresql[0].fqdn
+  gpd_dbmsport = var.env_short != "d" ? "6432" : "5432"
 }

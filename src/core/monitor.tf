@@ -201,6 +201,22 @@ locals {
       host = "wfesp.pagopa.gov.it",
       path = "",
     },
+    # # forwarder[.env].platform.pagopa.it https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/589005731/Certificati+forwarder+.env+.platform.pagopa.it+Nuova+Connettivit
+    # {
+    #   host = join(".",
+    #   compact(["forwarder", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+    #   path = "",
+    # },
+  ]
+
+  # actions grp
+  actions_grp_default = [
+    {
+      action_group_id = azurerm_monitor_action_group.email.id,
+    },
+    {
+      action_group_id = azurerm_monitor_action_group.slack.id,
+    },
   ]
 }
 
@@ -218,14 +234,10 @@ module "web_test_api" {
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   ssl_cert_remaining_lifetime_check = 7
 
-  actions = [
-    {
-      action_group_id = azurerm_monitor_action_group.email.id,
-    },
-    {
-      action_group_id = azurerm_monitor_action_group.slack.id,
-    },
-  ]
+  actions = var.env_short == "p" ? concat([{
+    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id,
+  }, ], local.actions_grp_default) : local.actions_grp_default
+
 }
 
 resource "azurerm_monitor_diagnostic_setting" "activity_log" {

@@ -36,6 +36,8 @@ canoneunico_function_autoscale_default = 1
 
 canoneunico_queue_message_delay = 3600 // in seconds = 1h
 
+canoneunico_runtime_version = "~3"
+
 # storage
 storage_queue_private_endpoint_enabled = true
 storage_account_info = {

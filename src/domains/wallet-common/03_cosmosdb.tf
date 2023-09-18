@@ -1,4 +1,5 @@
 resource "azurerm_resource_group" "cosmosdb_wallet_rg" {
+  count    = var.env_short != "p" ? 1 : 0
   name     = format("%s-cosmosdb-rg", local.project)
   location = var.location
 
@@ -6,6 +7,7 @@ resource "azurerm_resource_group" "cosmosdb_wallet_rg" {
 }
 
 module "cosmosdb_wallet_snet" {
+  count                = var.env_short != "p" ? 1 : 0
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.0"
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_wallet
@@ -21,12 +23,13 @@ module "cosmosdb_wallet_snet" {
 }
 
 module "cosmosdb_account_mongodb" {
+  count = var.env_short != "p" ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.0"
 
   name                = "${local.project}-cosmos-account"
   location            = var.location
-  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg.name
+  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg[0].name
   domain              = var.domain
 
   offer_type           = var.cosmos_mongo_db_params.offer_type
@@ -37,13 +40,13 @@ module "cosmosdb_account_mongodb" {
 
   public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
   private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
-  subnet_id                          = module.cosmosdb_wallet_snet.id
+  subnet_id                          = module.cosmosdb_wallet_snet[0].id
   private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
-  main_geo_location_location       = azurerm_resource_group.cosmosdb_wallet_rg.location
+  main_geo_location_location       = azurerm_resource_group.cosmosdb_wallet_rg[0].location
   main_geo_location_zone_redundant = var.cosmos_mongo_db_params.main_geo_location_zone_redundant
   additional_geo_locations         = var.cosmos_mongo_db_params.additional_geo_locations
 
@@ -53,10 +56,11 @@ module "cosmosdb_account_mongodb" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "wallet" {
+  count = var.env_short != "p" ? 1 : 0
 
   name                = "wallet"
-  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg.name
-  account_name        = module.cosmosdb_account_mongodb.name
+  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg[0].name
+  account_name        = module.cosmosdb_account_mongodb[0].name
 
   throughput = var.cosmos_mongo_db_wallet_params.enable_autoscaling || var.cosmos_mongo_db_wallet_params.enable_serverless ? null : var.cosmos_mongo_db_wallet_params.throughput
 
