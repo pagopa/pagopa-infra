@@ -137,7 +137,7 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
   name                  = format("%s-gpd-payments-rest-api-aks", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_gpd_payments_rest_external_product.product_id, module.apim_gpd_integration_product.product_id]
+  product_ids           = [module.apim_gpd_payments_rest_external_product.product_id, module.apim_gpd_integration_product.product_id, "technical_support_api"]
   subscription_required = local.apim_gpd_payments_rest_external_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_payments_rest_external_api.id
   api_version           = "v1"
