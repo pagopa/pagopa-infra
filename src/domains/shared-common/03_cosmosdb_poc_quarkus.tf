@@ -17,7 +17,7 @@ module "poc_quarkus_cosmosdb_snet" {
 module "poc_quarkus_cosmosdb_account" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.4.1"
   
-  name     = "${local.project}-poc-quarkus-cosmos-account"
+  name     = "${local.project}-quarkus-cosmos-account"
   location = var.location
   domain   = "shared"
   resource_group_name = azurerm_resource_group.shared_rg.name
