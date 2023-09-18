@@ -284,3 +284,15 @@ resource "azurerm_key_vault_secret" "elastic_apm_secret_token" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "mongo_poc_quarkus_password" {
+  name         = "mongo-ecommerce-password"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
