@@ -97,6 +97,16 @@ resource "azurerm_api_management_product_api" "apim_api_gpd_payments_soap_produc
   api_name   = azurerm_api_management_api.apim_api_gpd_payments_soap_api_v1.name
 }
 
+# Associate the SOAP API with the product APIM for Node
+resource "azurerm_api_management_product_api" "apim_api_gpd_payments_soap_product_nodo_api_v1" {
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id = local.apim_x_node_product_id
+  api_name   = azurerm_api_management_api.apim_api_gpd_payments_soap_api_v1.name
+}
+
 ###################
 ## REST Products ##
 ###################
