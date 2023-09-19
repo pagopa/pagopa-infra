@@ -93,15 +93,15 @@ app_gateway_waf_enabled                 = true
 app_gateway_alerts_enabled = false
 app_gateway_deny_paths = [
   # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
-  # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
+  # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
   "/payment-manager/clients/.*",
   "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal/.*",
-  "/payment-manager/pm-per-nodo/.*",
+#  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
   "/checkout/io-for-node/.*",
-  "/gpd-payments/.*", # internal use no sub-keys SOAP
+#  "/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
@@ -110,7 +110,6 @@ app_gateway_deny_paths = [
 ]
 app_gateway_deny_paths_2 = [
   # "/nodo-pagamenti*", - used to test UAT nodo onCloud
-  # "/ppt-lmi/.*",
   "/sync-cron/.*",
   "/wfesp/.*",
   "/fatturazione/.*",
@@ -140,6 +139,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "213.215.138.79", # Softlab L1 Pagamenti VPN
     "82.112.220.178", # Softlab L1 Pagamenti VPN
     "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
   ]
@@ -176,7 +176,7 @@ ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/i
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 base_path_nodo_oncloud        = "/nodo-uat"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-uat"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-uat-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-uat/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-uat"
 base_path_nodo_fatturazione   = "/fatturazione-uat"
@@ -308,7 +308,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -327,11 +327,44 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
       }
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-fdr"
+    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
+    partitions        = 30
+    message_retention = 7
+    consumers         = ["fdr-re-rx"]
+    keys = [
+      {
+        name   = "fdr-re-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-re-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
     partitions        = 32
     message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
@@ -421,77 +454,6 @@ eventhubs = [
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-biz-evt-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
-    keys = [
-      {
-        name   = "pagopa-biz-evt-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-io"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pn"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-re-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-SIA"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-pdnd" # pdnd
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-oper" # oper
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-sia-rx" # oper
-        listen = true
-        send   = false
-        manage = false
-      }
-
-    ]
-  },
-  {
     name              = "nodo-dei-pagamenti-negative-biz-evt"
     partitions        = 32
     message_retention = 7
@@ -560,6 +522,38 @@ eventhubs_02 = [
       },
       {
         name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "quality-improvement-alerts"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-alert-rx", "pagopa-qi-alert-rx-pdnd", "pagopa-qi-alert-rx-debug"]
+    keys = [
+      {
+        name   = "pagopa-qi-alert-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-debug"
         listen = true
         send   = false
         manage = false

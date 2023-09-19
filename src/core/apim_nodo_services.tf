@@ -229,6 +229,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
     base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
+    url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
 
@@ -244,6 +245,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
     base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
+    url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 
 }
@@ -307,6 +309,11 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy" {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }
+
+# Fdr pagoPA legacy 
+# nodoInviaFlussoRendicontazione DEV 61e9630cb78e981290d7c74c
+# nodoInviaFlussoRendicontazione UAT 61e96321e0f4ba04a49d1280
+# nodoInviaFlussoRendicontazione PRD 61e9633eea7c4a07cc7d4811
 
 resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
 

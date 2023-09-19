@@ -53,7 +53,7 @@ module "apim_api_gpd_reporting_analysis_api" {
   name                  = format("%s-api-gpd-reporting-analysis-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_gpd_reporting_analysis_product.product_id]
+  product_ids           = [module.apim_gpd_reporting_analysis_product.product_id, module.apim_gpd_integration_product.product_id]
   subscription_required = local.apim_gpd_reporting_analysis_api.subscription_required
   api_version           = "v1"
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_reporting_analysis_api.id

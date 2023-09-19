@@ -28,11 +28,16 @@
             </allowed-headers>
         </cors>
         <base />
+        <set-backend-service base-url="https://${hostname}/pagopa-api-config-core-service/o" />
+
         <choose>
             <!-- Mock response for ibans/enhanced -->
             <when condition="@(${addMockResp} && context.Request.Method == "GET" && context.Request.Url.Path.Contains("ibans/enhanced"))">
                 <return-response>
                     <set-status code="200" reason="OK" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
                     <set-body template="liquid">
                     {
                         "ibans_enhanced": [{

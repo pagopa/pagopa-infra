@@ -27,6 +27,7 @@
             </expose-headers>
         </cors>
         <base />
+        <set-backend-service base-url="http://{{aks-lb-nexi}}/mockpaymentgateway" />
     </inbound>
     <backend>
         <base />

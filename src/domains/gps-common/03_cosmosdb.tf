@@ -102,11 +102,10 @@ module "gps_cosmosdb_containers" {
 }
 
 module "gpd_payments_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.0.0"
   name     = "${local.project}-payments-cosmos-account"
   location = var.location
   domain   = var.domain
-
 
   resource_group_name = azurerm_resource_group.gps_rg.name
   offer_type          = var.cosmos_gpd_payments_db_params.offer_type
@@ -133,10 +132,10 @@ module "gpd_payments_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.cosmos_gpd_payments_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = "${local.project}-cosmos-sql-endpoint"
-  private_endpoint_enabled = var.cosmos_gpd_payments_db_params.private_endpoint_enabled
-  subnet_id                = module.gps_cosmosdb_snet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_enabled   = var.cosmos_gpd_payments_db_params.private_endpoint_enabled
+  subnet_id                  = module.gps_cosmosdb_snet.id
+  private_dns_zone_sql_ids   = [data.azurerm_private_dns_zone.cosmos.id]
+  private_dns_zone_table_ids = [data.azurerm_private_dns_zone.cosmos_table.id]
 
   tags = var.tags
 }
@@ -146,5 +145,11 @@ resource "azurerm_cosmosdb_table" "payments_receipts_table" {
   name                = "gpdpaymentsreceiptstable"
   resource_group_name = azurerm_resource_group.gps_rg.name
   account_name        = module.gpd_payments_cosmosdb_account.name
-  throughput          = 400
+  throughput          = !var.cosmos_gpd_payments_db_params.payments_receipts_table.autoscale ? var.cosmos_gpd_payments_db_params.payments_receipts_table.throughput : null
+  dynamic "autoscale_settings" {
+    for_each = var.cosmos_gpd_payments_db_params.payments_receipts_table.autoscale ? ["dummy"] : []
+    content {
+      max_throughput = var.cosmos_gpd_payments_db_params.payments_receipts_table.throughput
+    }
+  }
 }
