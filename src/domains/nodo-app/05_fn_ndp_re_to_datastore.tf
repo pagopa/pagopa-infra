@@ -59,8 +59,8 @@ locals {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
     DOCKER_REGISTRY_SERVER_URL      = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
-    DOCKER_REGISTRY_SERVER_USERNAME = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    DOCKER_REGISTRY_SERVER_PASSWORD = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    DOCKER_REGISTRY_SERVER_USERNAME = null
+    DOCKER_REGISTRY_SERVER_PASSWORD = null
 
     COSMOS_CONN_STRING        = "AccountEndpoint=https://${local.project}-re-cosmos-nosql-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.primary_key}"
     COSMOS_DB_NAME            = "nodo_re"
@@ -70,11 +70,9 @@ locals {
   }
 
   docker_settings = {
-    IMAGE_NAME = "pagopanodoretodatastore"
-    # ACR
-    DOCKER_REGISTRY_SERVER_URL      = data.azurerm_container_registry.acr.login_server
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+    IMAGE_NAME = "pagopa/pagopa-nodo-re-to-datastore"
+    # ghcr
+    DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
   }
 }
 
@@ -100,8 +98,8 @@ module "nodo_re_to_datastore_function" {
     image_name        = local.docker_settings.IMAGE_NAME
     image_tag         = var.nodo_re_to_datastore_function_app_image_tag
     registry_url      = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
-    registry_username = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
   sticky_connection_string_names = ["COSMOS_CONN_STRING"]
@@ -155,8 +153,8 @@ module "nodo_re_to_datastore_function_slot_staging" {
     image_name        = local.docker_settings.IMAGE_NAME
     image_tag         = var.nodo_re_to_datastore_function_app_image_tag
     registry_url      = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
-    registry_username = local.docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
