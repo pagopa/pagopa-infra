@@ -7,16 +7,12 @@
     <set-variable name="pgsId" value="@{
         string[] xpayList = ((string)context.Variables["XPAYPspsList"]).Split(',');
         string[] vposList = ((string)context.Variables["VPOSPspsList"]).Split(',');
-        string[] npgList = ((string)context.Variables["NPGPspsList"]).Split(',');
         string pspId = (string)(context.Variables.GetValueOrDefault("pspId",""));
         if (xpayList.Contains(pspId)) {
             return "XPAY";
         }
         if (vposList.Contains(pspId)) {
             return "VPOS";
-        }
-        if (npgList.Contains(pspId)) {
-          return "NPG";
         }
         return "";
     }" />
