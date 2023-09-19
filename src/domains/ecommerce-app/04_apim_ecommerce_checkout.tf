@@ -114,7 +114,7 @@ resource "azurerm_api_management_api_operation_policy" "get_card_data_informatio
   api_management_name = local.pagopa_apim_name
   operation_id        = "getSessionPaymentMethod"
 
-  xml_content = file("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl")
+  xml_content = file("./api/ecommerce-checkout/v1/_validate_jwt_with_order_and_transaction_id.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api_policy" {
