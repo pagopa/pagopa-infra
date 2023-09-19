@@ -733,12 +733,6 @@ variable "ecommerce_vpos_psps_list" {
   default     = ""
 }
 
-variable "ecommerce_npg_psps_list" {
-  type        = string
-  description = "psps list using npg as comma separated value"
-  default     = ""
-}
-
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
