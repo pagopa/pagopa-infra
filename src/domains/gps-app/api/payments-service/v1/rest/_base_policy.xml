@@ -42,18 +42,23 @@
                 }
                 return segregationCodes;
             }" />
-            <!-- Block request if it does not have valid segregation codes -->
             <choose>
                 <when condition="@("".Equals(context.Variables["segregation_codes"]))">
-                    <return-response>
-                        <set-status code="403" reason="Forbidden" />
-                    </return-response>
+                <!-- Block request if it does not have valid segregation codes -->
+<!--                    <return-response>-->
+<!--                        <set-status code="403" reason="Forbidden" />-->
+<!--                    </return-response>-->
+                    <trace source="GPD-Payments External Policy for organizations" severity="information">
+                      <message>No valid segregation codes associated with EC</message>
+                    </trace>
                 </when>
+                <otherwise>
+                    <!-- Add query parameter to the request -->
+                    <set-query-parameter name="segregationCodes" exists-action="override">
+                        <value>@((string) context.Variables["segregation_codes"])</value>
+                    </set-query-parameter>
+                </otherwise>
             </choose>
-            <!-- Add query parameter to the request -->
-            <set-query-parameter name="segregationCodes" exists-action="override">
-                <value>@((string) context.Variables["segregation_codes"])</value>
-            </set-query-parameter>
             <!-- ################################################################### -->
             <!-- ################################################################### -->
           </when>
