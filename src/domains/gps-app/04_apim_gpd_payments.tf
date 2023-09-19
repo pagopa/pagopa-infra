@@ -8,9 +8,9 @@ locals {
     description           = "SOAP API del servizio Payments per Gestione Posizione Debitorie"
     path                  = "gpd-payments/api"
     published             = true
-    subscription_required = false
+    subscription_required = true
     approval_required     = false
-    subscriptions_limit   = 0
+    subscriptions_limit   = 1000
     service_url           = format("https://%s/pagopa-gpd-payments/partner", local.gps_hostname)
   }
   apim_gpd_payments_rest_external_api = {
