@@ -5,7 +5,7 @@
 
     <changeSet author="liquibase" id="202209091531">
         <addColumn tableName="POSITION_ACTIVATE">
-            <column name="PAYMENT_METHOD" type="VARCHAR2(255)" />
+            <column name="PAYMENT_NOTE" type="VARCHAR2(255)" />
         </addColumn>
     </changeSet>
 </databaseChangeLog>
