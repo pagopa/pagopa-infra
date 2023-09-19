@@ -221,9 +221,3 @@ variable "ecommerce_vpos_psps_list" {
   description = "psps list using vpos as comma separated value"
   default     = ""
 }
-
-variable "ecommerce_npg_psps_list" {
-  type        = string
-  description = "psps list using vpos as comma separated value"
-  default     = ""
-}

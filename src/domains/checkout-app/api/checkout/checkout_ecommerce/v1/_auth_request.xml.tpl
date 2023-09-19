@@ -3,7 +3,6 @@
     <set-header name="x-pgs-id" exists-action="delete" />
     <set-variable name="XPAYPspsList" value="${ecommerce_xpay_psps_list}" />
     <set-variable name="VPOSPspsList" value="${ecommerce_vpos_psps_list}" />
-    <set-variable name="NPGPspsList" value="${ecommerce_npg_psps_list}" />
     <set-variable name="pspId" value="@(((string)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["pspId"]))" />
     <set-variable name="pgsId" value="@{
         string[] xpayList = ((string)context.Variables["XPAYPspsList"]).Split(',');
