@@ -18,6 +18,7 @@ data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
 # create json letsencrypt inside kv
 # requierd: Docker
 module "letsencrypt_mock" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
 
   prefix            = var.prefix
