@@ -22,67 +22,67 @@ data "azurerm_key_vault_secret" "psql_admin_pwd" {
 ########################################### POSTGRES DEV ###############################################################
 ########################################################################################################################
 
-module "mocker_postgresql_snet" {
-  count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v6.11.2"
-
-  name                                      = format("%s-mocker-psql-snet", local.product)
-  address_prefixes                          = var.cidr_subnet_dbms
-  resource_group_name                       = local.vnet_resource_group_name
-  virtual_network_name                      = local.vnet_name
-  service_endpoints                         = ["Microsoft.Sql"]
-  private_endpoint_network_policies_enabled = false
-
-  delegation = {
-    name = "delegation"
-    service_delegation = {
-      name    = "Microsoft.ContainerInstance/containerGroups"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
+#module "mocker_postgresql_snet" {
+#  count  = var.env_short == "d" ? 1 : 0
+#  source = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v6.11.2"
+#
+#  name                                      = format("%s-mocker-psql-snet", local.product)
+#  address_prefixes                          = var.cidr_subnet_dbms
+#  resource_group_name                       = local.vnet_resource_group_name
+#  virtual_network_name                      = local.vnet_name
+#  service_endpoints                         = ["Microsoft.Sql"]
+#  private_endpoint_network_policies_enabled = false
+#
+#  delegation = {
+#    name = "delegation"
+#    service_delegation = {
+#      name    = "Microsoft.ContainerInstance/containerGroups"
+#      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+#    }
+#  }
+#}
 
 #tfsec:ignore:azure-database-no-public-access
-module "mocker_postgresql" {
-  count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgresql_server?ref=v6.11.2"
+#module "mocker_postgresql" {
+#  count  = var.env_short == "d" ? 1 : 0
+#  source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgresql_server?ref=v6.11.2"
+#
+#  name                = format("%s-mocker-psql", local.product)
+#  location            = azurerm_resource_group.mock_rg.location
+#  resource_group_name = azurerm_resource_group.mock_rg.name
+#
+#  administrator_login          = data.azurerm_key_vault_secret.psql_admin_user.value
+#  administrator_login_password = data.azurerm_key_vault_secret.psql_admin_pwd.value
+#
+#  sku_name                     = "B_Gen5_1"
+#  db_version                   = 11
+#  geo_redundant_backup_enabled = false
+#
+#  public_network_access_enabled = false
+#  network_rules                 = var.postgresql_network_rules
+#
+#  private_endpoint = {
+#    enabled              = false
+#    virtual_network_id   = data.azurerm_virtual_network.vnet.id
+#    subnet_id            = module.mocker_postgresql_snet[0].id
+#    private_dns_zone_ids = []
+#  }
+#
+#  enable_replica = false
+#  alerts_enabled = false
+#  lock_enable    = false
+#
+#  tags = var.tags
+#}
 
-  name                = format("%s-mocker-psql", local.product)
-  location            = azurerm_resource_group.mock_rg.location
-  resource_group_name = azurerm_resource_group.mock_rg.name
-
-  administrator_login          = data.azurerm_key_vault_secret.psql_admin_user.value
-  administrator_login_password = data.azurerm_key_vault_secret.psql_admin_pwd.value
-
-  sku_name                     = "B_Gen5_1"
-  db_version                   = 11
-  geo_redundant_backup_enabled = false
-
-  public_network_access_enabled = false
-  network_rules                 = var.postgresql_network_rules
-
-  private_endpoint = {
-    enabled              = false
-    virtual_network_id   = data.azurerm_virtual_network.vnet.id
-    subnet_id            = module.mocker_postgresql_snet[0].id
-    private_dns_zone_ids = []
-  }
-
-  enable_replica = false
-  alerts_enabled = false
-  lock_enable    = false
-
-  tags = var.tags
-}
-
-resource "azurerm_postgresql_database" "mocker_db" {
-  count               = var.env_short == "d" ? 1 : 0
-  name                = var.mocker_db_name
-  resource_group_name = azurerm_resource_group.mock_rg.name
-  server_name         = module.mocker_postgresql[0].name
-  collation           = "en_US.utf8"
-  charset             = "utf8"
-}
+#resource "azurerm_postgresql_database" "mocker_db" {
+#  count               = var.env_short == "d" ? 1 : 0
+#  name                = var.mocker_db_name
+#  resource_group_name = azurerm_resource_group.mock_rg.name
+#  server_name         = module.mocker_pgflex[0].name
+#  collation           = "en_US.utf8"
+#  charset             = "utf8"
+#}
 
 
 ########################################################################################################################
@@ -120,7 +120,7 @@ module "mocker_pgflex_snet" {
 
 #tfsec:ignore:azure-database-no-public-access
 module "mocker_pgflex" {
-  count  = var.env_short != "d" ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v6.11.2"
 
   name                = format("%s-mocker-pgflex", local.product)
@@ -129,8 +129,8 @@ module "mocker_pgflex" {
 
   ### Network
   private_endpoint_enabled = var.pgflex_params.private_endpoint_enabled
-  private_dns_zone_id      = data.azurerm_private_dns_zone.postgres[0].id
-  delegated_subnet_id      = module.mocker_pgflex_snet[0].id
+  private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  delegated_subnet_id      = var.env_short != "d" ? module.mocker_pgflex_snet[0].id : null
 
   ### Admin credentials
   administrator_login    = data.azurerm_key_vault_secret.psql_admin_user.value
@@ -154,10 +154,10 @@ module "mocker_pgflex" {
 }
 
 resource "azurerm_postgresql_database" "mocker_pgflex_db" {
-  count               = var.env_short != "d" ? 1 : 0
+  count               = var.env_short == "d" ? 1 : 0
   name                = var.mocker_db_name
   resource_group_name = azurerm_resource_group.mock_rg.name
-  server_name         = module.mocker_postgresql[0].name
+  server_name         = module.mocker_pgflex[0].name
   charset             = "UTF8"
   collation           = "Italian_Italy.1252"
 }
@@ -165,17 +165,17 @@ resource "azurerm_postgresql_database" "mocker_pgflex_db" {
 
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
 resource "azurerm_postgresql_flexible_server_configuration" "mocker_pgflex_db_flex_ignore_startup_parameters" {
-  count     = var.env_short != "d" ? 1 : 0
+  count     = var.env_short == "d" ? 1 : 0
   name      = "pgbouncer.ignore_startup_parameters"
   server_id = module.mocker_pgflex[0].id
   value     = "extra_float_digits"
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "mocker_pgflex_db_flex_min_pool_size" {
-  count     = var.env_short != "d" ? 1 : 0
+  count     = var.env_short == "d" ? 1 : 0
   name      = "pgbouncer.min_pool_size"
   server_id = module.mocker_pgflex[0].id
-  value     = 10
+  value     = 500
 }
 
 

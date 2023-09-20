@@ -46,17 +46,16 @@ postgresql_network_rules = {
 }
 
 # Postgres Flexible
-pgres_flex_params = {
+pgflex_params = {
   private_endpoint_enabled = false
-  sku_name                 = "B_Standard_B1ms"
+  sku_name                 = "GP_Standard_D4s_v3"
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                   = 32768
-  zone                         = 1
+  zone                         = 2
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
-  create_mode                  = "Default"
   high_availability_enabled    = false
   standby_availability_zone    = 2
   pgbouncer_enabled            = true
