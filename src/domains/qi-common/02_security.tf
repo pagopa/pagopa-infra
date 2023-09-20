@@ -165,3 +165,27 @@ module "letsencrypt_receipt" {
   key_vault_name    = "${local.product}-${var.domain}-kv"
   subscription_name = local.subscription_name
 }
+
+resource "azurerm_key_vault_secret" "qi_jira_url" {
+  name         = format("qi-%s-jira-url", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "qi_jira_username" {
+  name         = format("qi-%s-jira-username", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "qi_jira_token" {
+  name         = format("qi-%s-jira-token", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
