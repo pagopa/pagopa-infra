@@ -83,8 +83,8 @@ module "apim_mock_psp_nexi_product" {
   display_name = "product-mock-psp-nexi"
   description  = "product-mock-psp-nexi"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = false
