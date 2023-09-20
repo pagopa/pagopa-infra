@@ -19,9 +19,9 @@ data "azurerm_key_vault_secret" "mocker_db_pwd" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-data "azurerm_postgresql_server" "postgresql" {
+data "azurerm_postgresql_flexible_server" "postgresql" {
   count               = var.env_short == "d" ? 1 : 0
-  name                = format("%s-mocker-psql", local.product)
+  name                = format("%s-mocker-pgflex", local.product)
   resource_group_name = format("%s-mock-rg", local.product)
 }
 

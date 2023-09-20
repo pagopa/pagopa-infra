@@ -1,5 +1,4 @@
 data "azurerm_key_vault" "kv" {
-  count               = var.env_short == "d" ? 1 : 0
   name                = "${local.product}-${var.domain}-kv"
   resource_group_name = "${local.product}-${var.domain}-sec-rg"
 }
