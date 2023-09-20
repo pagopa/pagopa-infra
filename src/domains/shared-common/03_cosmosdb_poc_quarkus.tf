@@ -23,7 +23,7 @@ module "poc_quarkus_cosmosdb_account" {
   
   offer_type           = var.poc_quarkus_db_account_params.offer_type
   kind                 = var.poc_quarkus_db_account_params.kind
-  capabilities       = var.poc_quarkus_db_account_params.capabilities
+  capabilities         = var.poc_quarkus_db_account_params.capabilities
   enable_free_tier     = var.poc_quarkus_db_account_params.enable_free_tier
   mongo_server_version = var.poc_quarkus_db_account_params.server_version
 
@@ -57,7 +57,7 @@ module "poc_quarkus_cosmosdb_account" {
 
 resource "azurerm_cosmosdb_mongo_database" "poc_quarkus" {
 
-  name                = "poc_quarkus"
+  name                = "organizations"
   resource_group_name = azurerm_resource_group.shared_rg.name
   account_name        = module.poc_quarkus_cosmosdb_account.name
 
@@ -76,7 +76,7 @@ resource "azurerm_cosmosdb_mongo_database" "poc_quarkus" {
 locals {
   collections = [
     {
-      name = "organizations"
+      name = "OrganizationEntity"
       indexes = [{
         keys   = ["_id"]
         unique = true
