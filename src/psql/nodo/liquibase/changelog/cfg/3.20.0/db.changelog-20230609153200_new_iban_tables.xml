@@ -8,6 +8,7 @@
   <!-- create sequence section -->
 
   <changeSet author="liquibase" id="20230609113600">
+    <validCheckSum>ANY</validCheckSum>
     <createSequence cacheSize="2000000" cycle="false" incrementBy="1"
                     maxValue="9223372036854775807" minValue="1"
                     sequenceName="iban_seq" startValue="2000000"/>
