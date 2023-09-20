@@ -153,13 +153,12 @@ module "mocker_pgflex" {
   tags = var.tags
 }
 
-resource "azurerm_postgresql_database" "mocker_pgflex_db" {
+resource "azurerm_postgresql_flexible_server_database" "mocker_pgflex_db" {
   count               = var.env_short == "d" ? 1 : 0
   name                = var.mocker_db_name
-  resource_group_name = azurerm_resource_group.mock_rg.name
-  server_name         = module.mocker_pgflex[0].name
-  charset             = "UTF8"
-  collation           = "Italian_Italy.1252"
+  server_id           = module.mocker_pgflex[0].id
+  collation           = "en_US.utf8"
+  charset             = "utf8"
 }
 
 
