@@ -620,7 +620,18 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
+    base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1" {
+  api_name            = format("%s-nodo-per-pm-api-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "parkedList"
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
