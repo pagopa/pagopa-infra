@@ -18,11 +18,6 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_fdr-re_fdr-re-rx" {
   resource_group_name = "${local.product}-msg-rg"
 }
 
-data "azurerm_container_registry" "acr" {
-  name                = local.acr_name
-  resource_group_name = local.acr_resource_group_name
-}
-
 # info for table storage
 data "azurerm_resource_group" "fdr_re_rg" {
   name = "${local.project}-re-rg"
@@ -62,11 +57,11 @@ locals {
   }
 
   docker_settings = {
-    IMAGE_NAME = "pagopafdrretodatastore"
+    IMAGE_NAME = "pagopa/pagopa-fdr-re-to-datastore"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = data.azurerm_container_registry.acr.login_server
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "ghcr.io"
+    DOCKER_REGISTRY_SERVER_USERNAME = null
+    DOCKER_REGISTRY_SERVER_PASSWORD = null
   }
 }
 
