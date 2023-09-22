@@ -49,7 +49,7 @@ module "apim_api_mock_psp_api_replica_v1" {
   name                  = format("%s-mock-psp-service-api-replica", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_psp_product_replica[0].product_id]
+  product_ids           = [module.apim_mock_psp_product_replica[0].product_id, module.apim_apim_for_node_product.product_id]
   subscription_required = local.apim_mock_psp_service_api_replica.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_mock_psp_api_replica[0].id
   api_version           = "v1"
