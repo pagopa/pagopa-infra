@@ -162,7 +162,8 @@ locals {
     display_name          = "IO for Node WS"
     description           = "SOAP service used from Nodo to relay idPayment"
     path                  = "checkout/io-for-node/CdInfoWisp"
-    subscription_required = false
+    subscription_required = true
+    subscription_limit    = 1000
     service_url           = null
   }
 }
@@ -180,6 +181,7 @@ resource "azurerm_api_management_api" "apim_cd_info_wisp_v1" {
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
   subscription_required = local.apim_cd_info_wisp.subscription_required
+  subscription_limit    = local.apim_cd_info_wisp.subscription_limit
   service_url           = local.apim_cd_info_wisp.service_url
   version_set_id        = azurerm_api_management_api_version_set.cd_info_wisp.id
   version               = "v1"
