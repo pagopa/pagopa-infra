@@ -1,7 +1,11 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-dev/v1" />
+        <choose>
+            <when condition="@(${is-fdr-nodo-pagopa-enable})">
+                <set-backend-service base-url="${base-url}" />
+            </when>
+        </choose>  
     </inbound>
     <backend>
         <base />

@@ -64,3 +64,5 @@ pgres_flex_params = {
 }
 
 enable_iac_pipeline = false
+
+mock_ec_size = "P1v3"

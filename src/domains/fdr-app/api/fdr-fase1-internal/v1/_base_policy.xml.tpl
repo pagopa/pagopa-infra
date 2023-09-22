@@ -1,14 +1,14 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-dev/v1" />
+        <set-backend-service base-url="https://${hostname}/pagopa-fdr-nodo-service" />
     </inbound>
-    <backend>
-        <base />
-    </backend>
     <outbound>
         <base />
     </outbound>
+    <backend>
+        <base />
+    </backend>
     <on-error>
         <base />
     </on-error>
