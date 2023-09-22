@@ -219,6 +219,13 @@ resource "azurerm_api_management_product_api" "apim_cd_info_wisp_product_v1" {
   resource_group_name = data.azurerm_resource_group.rg_api.name
 }
 
+resource "azurerm_api_management_product_api" "apim_cd_info_wisp_product_v1_apim_for_node" {
+  product_id          = "apim_for_node"
+  api_name            = resource.azurerm_api_management_api.apim_cd_info_wisp_v1.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+
 ######################################
 ## API checkout payment transaction ##
 ######################################
