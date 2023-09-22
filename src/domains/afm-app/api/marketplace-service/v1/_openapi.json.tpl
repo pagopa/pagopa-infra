@@ -4,7 +4,7 @@
     "title": "Marketplace API for PagoPA AFM",
     "description": "marketplace-be",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.13.3"
+    "version": "0.14.0"
   },
   "servers": [
     {
@@ -28,7 +28,7 @@
         "tags": [
           "CI"
         ],
-        "summary": "Get bundles by type",
+        "summary": "Get paginated list of bundles",
         "operationId": "getGlobalBundles",
         "parameters": [
           {
@@ -45,13 +45,13 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
+            "description": "Page number. Page number value starts from 0. Default = 0",
             "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1
+              "default": 0
             }
           },
           {
@@ -72,6 +72,15 @@
               "default": [
                 "GLOBAL"
               ]
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Bundle name.",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -2532,6 +2541,35 @@
             }
           },
           {
+            "name": "types",
+            "in": "query",
+            "description": "Bundle type. Default = GLOBAL",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "GLOBAL",
+                  "PUBLIC",
+                  "PRIVATE"
+                ]
+              },
+              "default": [
+                "GLOBAL"
+              ]
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Bundle name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "description": "Number of items for page. Default = 50",
@@ -2545,13 +2583,13 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
+            "description": "Page number. Page number value starts from 0. Default = 0",
             "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1
+              "default": 0
             }
           }
         ],
