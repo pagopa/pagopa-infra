@@ -20,7 +20,7 @@
             "name": "clientId",
             "schema": {
               "type": "string",
-              "enum": ["swclient","ecomm"]
+              "enum": ["swclient","ecomm","ecommdev"]
             },
             "required": true,
             "description": "Identify who to call among `swclient` or `ecomm`"

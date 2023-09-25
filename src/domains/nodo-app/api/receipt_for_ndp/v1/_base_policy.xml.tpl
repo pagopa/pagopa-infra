@@ -49,6 +49,8 @@
                         <rewrite-uri template="@("/mil-payment-notice/payments/"+(string)context.Variables["transactionId"])" copy-unmatched-params="true" />
                     </when>
                     <otherwise>
+
+                        
                         <!-- if ecommerce -->
                         <!-- endpoint2 + /ecommerce/transaction-user-receipts-service/v1/transactions/{transactionId}/user-receipts -->
 
@@ -60,7 +62,14 @@
                         -->
                         
                         <!-- https://github.com/MicrosoftDocs/azure-docs/issues/79088 -->
-                        <set-backend-service base-url="https://weu${environ}.ecommerce.internal.${environ}.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
+                        <choose>
+                            <when condition="@("ecomm".Equals(context.Variables["clientId"]))">
+                                <set-backend-service base-url="https://weu${environ}.ecommerce.internal.${environ}.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
+                            </when>
+                            <otherwise>
+                                <set-backend-service base-url="https://weudev.ecommerce.internal.dev.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
+                            </otherwise>
+                        </choose>
                     </otherwise>                       
                 </choose>
         
