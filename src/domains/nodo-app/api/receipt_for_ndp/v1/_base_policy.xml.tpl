@@ -67,7 +67,7 @@
                                 <set-backend-service base-url="https://weu${environ}.ecommerce.internal.${environ}.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
                             </when>
                             <otherwise>
-                                <set-backend-service base-url="https://weudev.ecommerce.internal.dev.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
+                                <set-backend-service base-url="https://api.dev.platform.pagopa.it/ecommerce/transaction-user-receipts-service/v1" />
                             </otherwise>
                         </choose>
                     </otherwise>                       
