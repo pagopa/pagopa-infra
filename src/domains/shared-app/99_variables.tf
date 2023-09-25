@@ -160,6 +160,11 @@ variable "cidr_subnet_authorizer_functions" {
   description = "CIDR subnet for Authorizer functions"
 }
 
+variable "cidr_subnet_app_service" {
+  type        = string
+  description = "CIDR subnet for App Service"
+}
+
 variable "authorizer_function_always_on" {
   type        = bool
   description = "Should authorizer-functions app be always on?"
@@ -224,4 +229,27 @@ variable "taxonomy_function_autoscale" {
     maximum = number
   })
   description = "Taxonomy function autoscaling parameters"
+}
+
+variable "app_service_autoscale_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "app_service_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = false
+}
+
+variable "app_service_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "app_service_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
 }

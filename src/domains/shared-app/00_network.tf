@@ -30,3 +30,20 @@ module "taxonomy_function_snet" {
     }
   }
 }
+
+module "shared_app_service_snet" {
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+  name                                           = format("%s-node-forwarder-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_app_service
+  resource_group_name                            = local.vnet_resource_group_name
+  virtual_network_name                           = local.vnet_name
+  enforce_private_link_endpoint_network_policies = true
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
