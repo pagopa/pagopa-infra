@@ -100,7 +100,7 @@ app_gateway_deny_paths = [
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal/.*",
 #  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
-  "/checkout/io-for-node/.*",
+#  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
 #  "/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
