@@ -67,6 +67,9 @@
                                 <set-backend-service base-url="https://weu${environ}.ecommerce.internal.${environ}.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
                             </when>
                             <otherwise>
+                                <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
+                                    <value>${subscriptionKey}</value>
+                                </set-header>
                                 <set-backend-service base-url="https://api.dev.platform.pagopa.it/ecommerce/transaction-user-receipts-service/v1" />
                             </otherwise>
                         </choose>
