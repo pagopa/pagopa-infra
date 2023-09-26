@@ -125,7 +125,8 @@ module "apim_mock_psp_nexi_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_nexi/psp/v1/mock.openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_mock_psp_nexi_product[0].product_id
   })
 
   xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {
@@ -188,7 +189,8 @@ module "apim_mock_pm_nexi_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/mock_nexi/psp/v1/mock.openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_mock_pm_nexi_product[0].product_id
   })
 
   xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {
