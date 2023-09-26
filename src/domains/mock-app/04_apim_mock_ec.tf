@@ -34,10 +34,11 @@ module "apim_mock_ec_api" {
   count  = var.mock_ec_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
-  name                  = format("%s-mock-ec-api", var.env_short)
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_ec_product[0].product_id, local.apim_x_node_product_id]
+  name                = format("%s-mock-ec-api", var.env_short)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  # product_ids           = [module.apim_mock_ec_product[0].product_id, local.apim_x_node_product_id]
+  product_ids           = [module.apim_mock_ec_product[0].product_id]
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.mock_ec_api[0].id

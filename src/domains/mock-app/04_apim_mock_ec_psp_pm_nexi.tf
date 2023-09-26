@@ -170,9 +170,9 @@ module "apim_mock_pm_nexi_api" {
   count  = var.env_short != "p" ? 1 : 0 # only UAT pointing out to NEXI PRF environment + Esposizione apim SIT mock PM
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                = format("%s-mock-pm-nexi-api", var.env_short)
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
+  name                  = format("%s-mock-pm-nexi-api", var.env_short)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_mock_pm_nexi_product[0].product_id, local.apim_x_node_product_id]
   subscription_required = true
 
