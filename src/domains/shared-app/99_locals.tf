@@ -79,7 +79,7 @@ locals {
     }
   ]
 
-  shared_app_settings = {
+  shared_pdf_engine_app_settings = {
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights.instrumentation_key
     APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", data.azurerm_application_insights.application_insights.instrumentation_key)
@@ -106,9 +106,9 @@ locals {
     WEBSITES_PORT                       = 3000
     # WEBSITE_SWAP_WARMUP_PING_PATH       = "/actuator/health"
     # WEBSITE_SWAP_WARMUP_PING_STATUSES   = "200"
-    DOCKER_REGISTRY_SERVER_URL      = "https://${module.container_registry.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = module.container_registry.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = module.container_registry.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.container_registry.login_server}"
+    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.container_registry.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.container_registry.admin_password
 
     # Connection Pool
     MAX_CONNECTIONS           = 80

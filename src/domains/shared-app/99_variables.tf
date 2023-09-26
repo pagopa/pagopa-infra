@@ -160,11 +160,6 @@ variable "cidr_subnet_authorizer_functions" {
   description = "CIDR subnet for Authorizer functions"
 }
 
-variable "cidr_subnet_app_service" {
-  type        = string
-  description = "CIDR subnet for App Service"
-}
-
 variable "authorizer_function_always_on" {
   type        = bool
   description = "Should authorizer-functions app be always on?"
@@ -231,25 +226,28 @@ variable "taxonomy_function_autoscale" {
   description = "Taxonomy function autoscaling parameters"
 }
 
-variable "app_service_autoscale_enabled" {
+# pdf-engine
+variable "cidr_subnet_pdf_engine_app_service" {
+  type        = list(string)
+  description = "CIDR subnet for App Service"
+  default     = null
+}
+
+
+variable "app_service_pdf_engine_autoscale_enabled" {
   type    = bool
   default = true
 }
 
-variable "app_service_always_on" {
+variable "app_service_pdf_engine_always_on" {
   type        = bool
   description = "Always on property"
-  default     = false
+  default     = true
 }
 
-variable "app_service_function_sku_tier" {
+variable "app_service_pdf_engine_sku_name" {
   type        = string
-  description = "App service plan sku tier"
-  default     = null
+  description = "app service plan size"
+  default     = "P1v3"
 }
 
-variable "app_service_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
