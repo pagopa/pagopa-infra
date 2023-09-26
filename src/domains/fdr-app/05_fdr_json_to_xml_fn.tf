@@ -12,24 +12,18 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
-    DOCKER_REGISTRY_SERVER_URL      = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_URL
-    DOCKER_REGISTRY_SERVER_USERNAME = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    DOCKER_REGISTRY_SERVER_PASSWORD = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
-
     STORAGE_ACCOUNT_CONN_STRING = data.azurerm_storage_account.fdr_storage_account.primary_connection_string
-    FDR_FASE1_BASE_URL          = var.env == "prod" ? "https://api.platform.pagopa.it/fdr-legacy/nodo-per-pa/v1" : "https://api.${var.env}.platform.pagopa.it/fdr-legacy/nodo-per-pa/v1"
-    FDR_FASE1_API_KEY           = data.azurerm_key_vault_secret.fdr_nodo_product_subscription_key.value
+    FDR_FASE1_BASE_URL          = var.env == "prod" ? "https://api.platform.pagopa.it/fdr-legacy/service-internal/v1" : "https://api.${var.env}.platform.pagopa.it/fdr-legacy/service-internal/v1"
+    FDR_FASE1_API_KEY           = data.azurerm_key_vault_secret.fdr_internal_product_subscription_key.value
     TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.fdr_storage_account.primary_connection_string
     TABLE_STORAGE_TABLE_NAME    = "flowidsendqueueerror"
     QUEUE_NAME                  = "flowidsendqueue"
   }
 
   json_to_xml_docker_settings = {
-    IMAGE_NAME = "pagopafdrjsontoxml"
+    IMAGE_NAME = "pagopa/pagopa-fdr-json-to-xml"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "ghcr.io"
   }
 }
 
@@ -55,8 +49,8 @@ module "fdr_json_to_xml_function" {
     image_name        = local.json_to_xml_docker_settings.IMAGE_NAME
     image_tag         = var.fdr_json_to_xml_function_app_image_tag
     registry_url      = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_URL
-    registry_username = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
   #sticky_connection_string_names = ["COSMOS_CONN_STRING"]
@@ -110,8 +104,8 @@ module "fdr_json_to_xml_function_slot_staging" {
     image_name        = local.json_to_xml_docker_settings.IMAGE_NAME
     image_tag         = var.fdr_json_to_xml_function_app_image_tag
     registry_url      = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_URL
-    registry_username = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.json_to_xml_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]

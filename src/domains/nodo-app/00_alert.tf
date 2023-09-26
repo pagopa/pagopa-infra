@@ -17,6 +17,7 @@ locals {
       operationId_s : "63ff73adea7c4a1860530e3a",
       primitiva : "nodoChiediElencoFlussiRendicontazione",
       sub_service : "node-for-pa",
+      response_time : 20000
     },
     {
       operationId_s : "63ff73adea7c4a1860530e3b",
@@ -28,6 +29,7 @@ locals {
       operationId_s : "63b6e2da2a92e811a8f338f8",
       primitiva : "nodoChiediElencoFlussiRendicontazione",
       sub_service : "nodo-per-pa",
+      response_time : 20000
     },
     {
       operationId_s : "63b6e2da2a92e811a8f338f9",
@@ -43,6 +45,7 @@ locals {
       operationId_s : "63e5d8212a92e80448d38dfe",
       primitiva : "nodoChiediListaPendentiRPT",
       sub_service : "nodo-per-pa",
+      response_time : 20000,
     },
     {
       operationId_s : "63e5d8212a92e80448d38dff",
@@ -89,6 +92,7 @@ locals {
       operationId_s : "63b6e2da2a92e811a8f338fd",
       primitiva : "nodoInviaRT",
       sub_service : "nodo-per-psp",
+      response_time : 20000
     },
     {
       operationId_s : "63b6e2da2a92e811a8f338fe",
@@ -109,6 +113,7 @@ locals {
       operationId_s : "63b6e2da2a92e811a8f33901",
       primitiva : "nodoInviaFlussoRendicontazione",
       sub_service : "nodo-per-psp",
+      response_time : 20000
     },
     // Node for PSP WS (NM3) (AUTH)
     {
@@ -155,6 +160,7 @@ locals {
       operationId_s : "63ff4f22aca2fd18dcc4a6f7",
       primitiva : "nodoInviaFlussoRendicontazione",
       sub_service : "node-for-psp",
+      response_time : 20000
     },
     {
       operationId_s : "63ff4f22aca2fd18dcc4a6f8",
@@ -171,6 +177,7 @@ locals {
       operationId_s : "63b6e2da2a92e811a8f338ed",
       primitiva : "nodoChiediNumeroAvviso",
       sub_service : "nodo-per-psp-richiesta-avvisi",
+      response_time : 20000
     },
     {
       operationId_s : "63b6e2da2a92e811a8f338ee",
@@ -238,6 +245,7 @@ locals {
       operationId_s : "61e9633dea7c4a07cc7d480d",
       primitiva : "nodoChiediElencoFlussiRendicontazione",
       sub_service : "nodo-per-pa",
+      response_time : 20000
     },
     {
       operationId_s : "61e9633dea7c4a07cc7d480e",
@@ -253,6 +261,7 @@ locals {
       operationId_s : "62189aea2a92e81fa4f15ec5",
       primitiva : "nodoChiediListaPendentiRPT",
       sub_service : "nodo-per-pa",
+      response_time : 20000
     },
     {
       operationId_s : "62189aea2a92e81fa4f15ec6",
@@ -304,6 +313,7 @@ locals {
       operationId_s : "61e9633eea7c4a07cc7d4811",
       primitiva : "nodoInviaFlussoRendicontazione",
       sub_service : "nodo-per-psp",
+      response_time : 20000
     },
     {
       operationId_s : "6217ba1b2a92e81fa4f15e77",
@@ -330,6 +340,7 @@ locals {
       operationId_s : "6217ba1a2a92e81fa4f15e75",
       primitiva : "nodoChiediNumeroAvviso",
       sub_service : "nodo-per-psp-richiesta-avvisi",
+      response_time : 20000
     },
     {
       operationId_s : "6217ba1b2a92e81fa4f15e76",
@@ -356,8 +367,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-responsetime"
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Response time ${each.value.primitiva} ${each.value.sub_service} nodoapi-responsetime https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/cbc97060-c05b-48b5-9962-2b229eaa53de and https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/2b9b319b-5e7d-4efe-aaba-613daef8e9fc"
   enabled        = true
-  query = (<<-QUERY
-let threshold = 8000;
+  query = format(<<-QUERY
+let threshold = %d;
 AzureDiagnostics
 | where url_s matches regex "/nodo/${each.value.sub_service}/"
 | where operationId_s matches regex "${each.value.operationId_s}"
@@ -366,19 +377,18 @@ AzureDiagnostics
     duration_percentile_95=percentiles(DurationMs, 95)
     by bin(TimeGenerated, 5m)
 | where duration_percentile_95 > threshold
-  QUERY
-  )
+QUERY
+  , lookup(each.value, "response_time", "") != "" ? each.value.response_time : 8000)
 
   # https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-alerts#alert-severity
   # Sev 2	Warning	A problem that doesn't include any current loss in availability or performance, although it has the potential to lead to more severe problems if unaddressed.
   severity    = 2
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
-
 }
 
 
@@ -415,10 +425,10 @@ AzureDiagnostics
   # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 
 }
@@ -440,8 +450,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-auth-response
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Response time ${each.value.primitiva} ${each.value.sub_service} nodo-auth-api-responsetime https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/cbc97060-c05b-48b5-9962-2b229eaa53de and https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/2b9b319b-5e7d-4efe-aaba-613daef8e9fc"
   enabled        = true
-  query = (<<-QUERY
-let threshold = 8000;
+  query = format(<<-QUERY
+let threshold = %d;
 AzureDiagnostics
 | where url_s matches regex "/nodo-auth/${each.value.sub_service}/"
 | where operationId_s matches regex "${each.value.operationId_s}"
@@ -450,19 +460,18 @@ AzureDiagnostics
     duration_percentile_95=percentiles(DurationMs, 95)
     by bin(TimeGenerated, 5m)
 | where duration_percentile_95 > threshold
-  QUERY
-  )
+QUERY
+  , lookup(each.value, "response_time", "") != "" ? each.value.response_time : 8000)
 
   # https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-alerts#alert-severity
   # Sev 2	Warning	A problem that doesn't include any current loss in availability or performance, although it has the potential to lead to more severe problems if unaddressed.
   severity    = 2
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
-
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-auth-availability" {
@@ -498,10 +507,9 @@ AzureDiagnostics
   # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
   severity    = 1
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
-
 }
