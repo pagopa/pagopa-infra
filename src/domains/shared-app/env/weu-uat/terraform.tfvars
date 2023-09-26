@@ -65,5 +65,5 @@ taxonomy_function_autoscale = {
 }
 
 # pdf-engine
-cidr_subnet_pdf_engine_app_service = ["10.1.186.0/24"]
+cidr_subnet_pdf_engine_app_service = ["10.1.187.0/24"]
 app_service_pdf_engine_sku_name    = "P1v3"

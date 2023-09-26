@@ -44,95 +44,99 @@ module "shared_pdf_engine_app_service" {
   tags = var.tags
 }
 
-# module "shared_pdf_engine_slot_staging" {
-#   count = var.env_short != "d" ? 1 : 0
+module "shared_pdf_engine_slot_staging" {
+  count = var.env_short != "d" ? 1 : 0
 
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v6.6.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v6.6.0"
 
-#   # App service plan
-#   app_service_plan_id = module.shared_pdf_engine_app_service.plan_id
-#   app_service_id      = module.shared_pdf_engine_app_service.id
-#   app_service_name    = module.shared_pdf_engine_app_service.name
+  # App service plan
+  # app_service_plan_id = module.shared_pdf_engine_app_service.plan_id
+  app_service_id   = module.shared_pdf_engine_app_service.id
+  app_service_name = module.shared_pdf_engine_app_service.name
 
-#   # App service
-#   name                = "staging"
-#   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
-#   location            = var.location
+  # App service
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
+  location            = var.location
 
-#   always_on         = true
-#   linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-#   health_check_path = "/info"
+  always_on = true
+  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
+  docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image_tag  = "latest"
+  health_check_path = "/info"
 
 
-#   # App settings
-#   app_settings = local.shared_app_settings
+  # App settings
+  app_settings = local.shared_pdf_engine_app_settings
 
-#   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-#   allowed_ips     = []
-#   subnet_id       = module.shared_pdf_engine_app_service_snet.id
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips     = []
+  subnet_id       = module.shared_pdf_engine_app_service_snet.id
 
-#   tags = var.tags
-# }
+  tags = var.tags
+}
 
-# resource "azurerm_monitor_autoscale_setting" "wgq43e_app_service_autoscale" {
-#   name                = format("%s-autoscale-node-forwarder", local.project)
-#   resource_group_name = azurerm_resource_group.shared_app_service_rg.name
-#   location            = azurerm_resource_group.shared_app_service_rg.location
-#   target_resource_id  = module.shared_app_service.plan_id
-#   enabled             = var.app_service_autoscale_enabled
+resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_autoscale" {
+  count = var.env_short != "d" ? 1 : 0
 
-#   profile {
-#     name = "default"
+  name                = format("%s-autoscale-pdf-engine", local.project)
+  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
+  location            = azurerm_resource_group.shared_pdf_engine_app_service_rg.location
+  target_resource_id  = module.shared_pdf_engine_app_service.plan_id
+  enabled             = var.app_service_pdf_engine_autoscale_enabled
 
-#     capacity {
-#       default = 5
-#       minimum = 1
-#       maximum = 10
-#     }
+  profile {
+    name = "default"
 
-#     rule {
-#       metric_trigger {
-#         metric_name              = "Requests"
-#         metric_resource_id       = module.shared_app_service.id
-#         metric_namespace         = "microsoft.web/sites"
-#         time_grain               = "PT1M"
-#         statistic                = "Average"
-#         time_window              = "PT5M"
-#         time_aggregation         = "Average"
-#         operator                 = "GreaterThan"
-#         threshold                = 3000
-#         divide_by_instance_count = false
-#       }
+    capacity {
+      default = 5
+      minimum = var.env_short == "p" ? 2 : 1
+      maximum = 10
+    }
 
-#       scale_action {
-#         direction = "Increase"
-#         type      = "ChangeCount"
-#         value     = "2"
-#         cooldown  = "PT5M"
-#       }
-#     }
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.shared_pdf_engine_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 2000
+        divide_by_instance_count = false
+      }
 
-#     rule {
-#       metric_trigger {
-#         metric_name              = "Requests"
-#         metric_resource_id       = module.shared_app_service.id
-#         metric_namespace         = "microsoft.web/sites"
-#         time_grain               = "PT1M"
-#         statistic                = "Average"
-#         time_window              = "PT5M"
-#         time_aggregation         = "Average"
-#         operator                 = "LessThan"
-#         threshold                = 2500
-#         divide_by_instance_count = false
-#       }
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
 
-#       scale_action {
-#         direction = "Decrease"
-#         type      = "ChangeCount"
-#         value     = "1"
-#         cooldown  = "PT20M"
-#       }
-#     }
-#   }
-# }
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.shared_pdf_engine_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 1000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+  }
+}
 

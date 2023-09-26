@@ -248,6 +248,6 @@ variable "app_service_pdf_engine_always_on" {
 variable "app_service_pdf_engine_sku_name" {
   type        = string
   description = "app service plan size"
-  default     = "P1v3"
+  default     = "S1"
 }
 
