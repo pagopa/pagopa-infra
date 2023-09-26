@@ -1,5 +1,5 @@
 resource "kubernetes_namespace" "namespace" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
   metadata {
     name = var.domain
   }
@@ -22,7 +22,7 @@ module "pod_identity" {
 }
 
 resource "helm_release" "reloader" {
-  count  = var.env_short == "d" ? 1 : 0
+  count      = var.env_short == "d" ? 1 : 0
   name       = "reloader"
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"
