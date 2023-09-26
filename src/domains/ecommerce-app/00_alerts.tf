@@ -36,7 +36,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
   count = var.env_short == "p" ? 1 : 0
 
   name                = "ecommerce-for-checkout-availability-alert"
-  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
   location            = var.location
 
   action {
