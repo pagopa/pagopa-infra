@@ -130,10 +130,10 @@ cosmos_nosql_db_params = {
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = false
 
-  backup_continuous_enabled         = false
+  backup_continuous_enabled = false
 
-  events_ttl                        = 2629800 # 1 month in second
-  max_throughput                    = 1000
+  events_ttl     = 2629800 # 1 month in second
+  max_throughput = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]

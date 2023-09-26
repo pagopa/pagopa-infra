@@ -201,12 +201,12 @@ locals {
       host = "wfesp.pagopa.gov.it",
       path = "",
     },
-    # forwarder[.env].platform.pagopa.it https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/589005731/Certificati+forwarder+.env+.platform.pagopa.it+Nuova+Connettivit
-    {
-      host = join(".",
-      compact(["forwarder", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
-      path = "",
-    },
+    # # forwarder[.env].platform.pagopa.it https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/589005731/Certificati+forwarder+.env+.platform.pagopa.it+Nuova+Connettivit
+    # {
+    #   host = join(".",
+    #   compact(["forwarder", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+    #   path = "",
+    # },
   ]
 
   # actions grp
