@@ -130,15 +130,15 @@ cosmos_nosql_db_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled         = false
+  backup_continuous_enabled = false
 
-  events_ttl                        = 2629800 # 1 month in second
-  max_throughput                    = 1000
+  events_ttl     = 2629800 # 1 month in second
+  max_throughput = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
 
-nodo_storico_allowed_ips     = ["93.63.219.230"]
+nodo_storico_allowed_ips = ["93.63.219.230"]
 
 nodo_re_storage_account = {
   account_kind                  = "StorageV2"

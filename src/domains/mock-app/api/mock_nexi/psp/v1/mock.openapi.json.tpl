@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Mock",
+    "title": "Mock ${service}",
     "description": "Api and Models",
     "version": "1.0"
   },

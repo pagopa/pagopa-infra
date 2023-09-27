@@ -18,11 +18,16 @@
 |------|--------|---------|
 | <a name="module_apim_api_fdr_api_v1"></a> [apim\_api\_fdr\_api\_v1](#module\_apim\_api\_fdr\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
 | <a name="module_apim_api_fdr_api_v1_internal"></a> [apim\_api\_fdr\_api\_v1\_internal](#module\_apim\_api\_fdr\_api\_v1\_internal) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
+| <a name="module_apim_api_fdr_json_to_xml_api_v1"></a> [apim\_api\_fdr\_json\_to\_xml\_api\_v1](#module\_apim\_api\_fdr\_json\_to\_xml\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
 | <a name="module_apim_api_fdr_xml_to_json_api_v1"></a> [apim\_api\_fdr\_xml\_to\_json\_api\_v1](#module\_apim\_api\_fdr\_xml\_to\_json\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
+| <a name="module_apim_fdr_json_to_xml_product"></a> [apim\_fdr\_json\_to\_xml\_product](#module\_apim\_fdr\_json\_to\_xml\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
 | <a name="module_apim_fdr_nodo_dei_pagamenti_legacy_product"></a> [apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product](#module\_apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_fdr_product"></a> [apim\_fdr\_product](#module\_apim\_fdr\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
 | <a name="module_apim_fdr_product_internal"></a> [apim\_fdr\_product\_internal](#module\_apim\_fdr\_product\_internal) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
 | <a name="module_apim_fdr_xml_to_json_product"></a> [apim\_fdr\_xml\_to\_json\_product](#module\_apim\_fdr\_xml\_to\_json\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
+| <a name="module_fdr_json_to_xml_function"></a> [fdr\_json\_to\_xml\_function](#module\_fdr\_json\_to\_xml\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.20.0 |
+| <a name="module_fdr_json_to_xml_function_slot_staging"></a> [fdr\_json\_to\_xml\_function\_slot\_staging](#module\_fdr\_json\_to\_xml\_function\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.9.0 |
+| <a name="module_fdr_json_to_xml_function_snet"></a> [fdr\_json\_to\_xml\_function\_snet](#module\_fdr\_json\_to\_xml\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
 | <a name="module_fdr_re_function"></a> [fdr\_re\_function](#module\_fdr\_re\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.20.0 |
 | <a name="module_fdr_re_function_slot_staging"></a> [fdr\_re\_function\_slot\_staging](#module\_fdr\_re\_function\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.9.0 |
 | <a name="module_fdr_re_function_snet"></a> [fdr\_re\_function\_snet](#module\_fdr\_re\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
@@ -46,6 +51,7 @@
 | [azurerm_api_management_api_policy.apim_fdr_per_pa_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_version_set.api_fdr_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_fdr_api_internal](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_fdr_json_to_xml_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_fdr_xml_to_json_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.fdr_per_pa_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_named_value.fdrcontainername](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_named_value) | resource |
@@ -54,6 +60,7 @@
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_monitor_autoscale_setting.fdr_json_to_xml_function](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.fdr_re_to_datastore_function](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.fdr_xml_to_json_function](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.reporting_fdr_function](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/monitor_autoscale_setting) | resource |
@@ -88,7 +95,7 @@
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_fdr-re_fdr-re-rx](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_namespace.event_hub01_namespace](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/eventhub_namespace) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/key_vault) | data source |
-| [azurerm_key_vault_secret.fdr_product_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.fdr_internal_product_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/monitor_action_group) | data source |
@@ -129,6 +136,11 @@
 | <a name="input_event_name"></a> [event\_name](#input\_event\_name) | Event name related to an EventHub | `string` | `null` | no |
 | <a name="input_eventhub_name"></a> [eventhub\_name](#input\_eventhub\_name) | EventHub name | `string` | `null` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_fdr_json_to_xml_function"></a> [fdr\_json\_to\_xml\_function](#input\_fdr\_json\_to\_xml\_function) | FdR JSON to XML function | <pre>object({<br>    always_on                    = bool<br>    kind                         = string<br>    sku_size                     = string<br>    sku_tier                     = string<br>    maximum_elastic_worker_count = number<br>  })</pre> | <pre>{<br>  "always_on": true,<br>  "kind": "Linux",<br>  "maximum_elastic_worker_count": 1,<br>  "sku_size": "B1",<br>  "sku_tier": "Basic"<br>}</pre> | no |
+| <a name="input_fdr_json_to_xml_function_app_image_tag"></a> [fdr\_json\_to\_xml\_function\_app\_image\_tag](#input\_fdr\_json\_to\_xml\_function\_app\_image\_tag) | FdR JSON to XML function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
+| <a name="input_fdr_json_to_xml_function_autoscale"></a> [fdr\_json\_to\_xml\_function\_autoscale](#input\_fdr\_json\_to\_xml\_function\_autoscale) | FdR JSON to XML function autoscaling parameters | <pre>object({<br>    default = number<br>    minimum = number<br>    maximum = number<br>  })</pre> | n/a | yes |
+| <a name="input_fdr_json_to_xml_function_network_policies_enabled"></a> [fdr\_json\_to\_xml\_function\_network\_policies\_enabled](#input\_fdr\_json\_to\_xml\_function\_network\_policies\_enabled) | Network policies enabled | `bool` | `false` | no |
+| <a name="input_fdr_json_to_xml_function_subnet"></a> [fdr\_json\_to\_xml\_function\_subnet](#input\_fdr\_json\_to\_xml\_function\_subnet) | Address prefixes subnet | `list(string)` | `null` | no |
 | <a name="input_fdr_re_function"></a> [fdr\_re\_function](#input\_fdr\_re\_function) | FdR RE function | <pre>object({<br>    always_on                    = bool<br>    kind                         = string<br>    sku_size                     = string<br>    sku_tier                     = string<br>    maximum_elastic_worker_count = number<br>  })</pre> | <pre>{<br>  "always_on": true,<br>  "kind": "Linux",<br>  "maximum_elastic_worker_count": 1,<br>  "sku_size": "B1",<br>  "sku_tier": "Basic"<br>}</pre> | no |
 | <a name="input_fdr_re_function_app_image_tag"></a> [fdr\_re\_function\_app\_image\_tag](#input\_fdr\_re\_function\_app\_image\_tag) | FdR RE to Datastore function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
 | <a name="input_fdr_re_function_autoscale"></a> [fdr\_re\_function\_autoscale](#input\_fdr\_re\_function\_autoscale) | FdR function autoscaling parameters | <pre>object({<br>    default = number<br>    minimum = number<br>    maximum = number<br>  })</pre> | n/a | yes |

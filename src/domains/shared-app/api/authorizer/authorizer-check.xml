@@ -66,6 +66,8 @@
                 <when condition="@(!((string)context.Variables["cached_authorized_entities"]).Contains("#*#;;"))">
                     <return-response>
                         <set-status code="403" reason="Forbidden" />
+                        <set-header name="Content-Type"><value>application/json</value></set-header>
+                        <set-body template="liquid">{ "statusCode": 403, "message": "You are not allowed to access this resource." }</set-body>
                     </return-response>
                 </when>
             </choose>

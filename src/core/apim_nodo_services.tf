@@ -229,6 +229,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
     base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
+    url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
 
@@ -244,6 +245,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
     base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
+    url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 
 }
@@ -305,25 +307,6 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy" {
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/_base_policy.xml.tpl", {
     base-url                  = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
-  })
-}
-
-# Fdr pagoPA legacy 
-# nodoInviaFlussoRendicontazione DEV 61e9630cb78e981290d7c74c
-# nodoInviaFlussoRendicontazione UAT 61e96321e0f4ba04a49d1280
-# nodoInviaFlussoRendicontazione PRD 61e9633eea7c4a07cc7d4811
-
-resource "azurerm_api_management_api_operation_policy" "fdr_policy" {
-
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1.name
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
-
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
-    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
-
   })
 }
 
@@ -581,43 +564,6 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
   })
 }
 
-# Fdr pagoPA legacy 
-# nodoChiediFlussoRendicontazione DEV 6218976195aa0303ccfcf902
-# nodoChiediFlussoRendicontazione UAT 61e96321e0f4ba04a49d1286
-# nodoChiediFlussoRendicontazione PRD 61e9633dea7c4a07cc7d480e
-resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChiediFlussoRendicontazione" { # 
-
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf902" : var.env_short == "u" ? "61e96321e0f4ba04a49d1286" : "61e9633dea7c4a07cc7d480e"
-
-  #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
-    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
-  })
-}
-
-# nodoChiediElencoFlussiRendicontazione DEV 6218976195aa0303ccfcf901
-# nodoChiediElencoFlussiRendicontazione UAT 61e96321e0f4ba04a49d1285
-# nodoChiediElencoFlussiRendicontazione PRD 61e9633dea7c4a07cc7d480d
-resource "azurerm_api_management_api_operation_policy" "fdr_pagpo_policy_nodoChiediElencoFlussiRendicontazione" { # 
-
-  api_name            = resource.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf901" : var.env_short == "u" ? "61e96321e0f4ba04a49d1285" : "61e9633dea7c4a07cc7d480d"
-
-  #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
-    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.apim_nodo_per_pa_api.fdr_hostname}/pagopa-fdr-nodo-service"
-  })
-}
-
-
-
 ######################
 ## Nodo per PM API  ##
 ######################
@@ -674,7 +620,18 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
+    base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1" {
+  api_name            = format("%s-nodo-per-pm-api-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "parkedList"
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })

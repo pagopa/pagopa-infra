@@ -29,8 +29,6 @@ locals {
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
     DOCKER_REGISTRY_SERVER_URL      = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_URL
-    DOCKER_REGISTRY_SERVER_USERNAME = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    DOCKER_REGISTRY_SERVER_PASSWORD = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
 
     EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-tablestorage-rx.primary_connection_string
 
@@ -39,11 +37,9 @@ locals {
   }
 
   ts_docker_settings = {
-    IMAGE_NAME = "pagopanodoretotablestorage"
-    # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+    IMAGE_NAME = "pagopa/pagopa-nodo-re-to-tablestorage"
+    # ghcr
+    DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
   }
 }
 
@@ -69,11 +65,11 @@ module "nodo_re_to_tablestorage_function" {
     image_name        = local.ts_docker_settings.IMAGE_NAME
     image_tag         = var.nodo_re_to_tablestorage_function_app_image_tag
     registry_url      = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_URL
-    registry_username = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
-  client_certificate_mode        = "Optional"
+  client_certificate_mode = "Optional"
 
   cors = {
     allowed_origins = []
@@ -123,8 +119,8 @@ module "nodo_re_to_tablestorage_function_slot_staging" {
     image_name        = local.ts_docker_settings.IMAGE_NAME
     image_tag         = var.nodo_re_to_tablestorage_function_app_image_tag
     registry_url      = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_URL
-    registry_username = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]

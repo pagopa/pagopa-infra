@@ -93,15 +93,15 @@ app_gateway_waf_enabled                 = true
 app_gateway_alerts_enabled = false
 app_gateway_deny_paths = [
   # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
-  # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
+  # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
   "/payment-manager/clients/.*",
   "/payment-manager/pp-restapi-rtd/.*",
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal/.*",
-  "/payment-manager/pm-per-nodo/.*",
-  "/checkout/io-for-node/.*",
-  "/gpd-payments/.*", # internal use no sub-keys SOAP
+#  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+#  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+#  "/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
@@ -522,6 +522,38 @@ eventhubs_02 = [
       },
       {
         name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "quality-improvement-alerts"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-alert-rx", "pagopa-qi-alert-rx-pdnd", "pagopa-qi-alert-rx-debug"]
+    keys = [
+      {
+        name   = "pagopa-qi-alert-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-debug"
         listen = true
         send   = false
         manage = false
