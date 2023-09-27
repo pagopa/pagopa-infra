@@ -1,0 +1,78 @@
+[
+  {
+    "name": "insertedTimestamp",
+    "type": "datetime"
+  },
+  {
+    "name": "categoriaEvento",
+    "type": "string"
+  },
+  {
+    "name": "sottoTipoEvento",
+    "type": "string"
+  },
+  {
+    "name": "idDominio",
+    "type": "string"
+  },
+  {
+    "name": "iuv",
+    "type": "string"
+  },
+  {
+    "name": "ccp",
+    "type": "string"
+  },
+  {
+    "name": "psp",
+    "type": "string"
+  },
+  {
+    "name": "tipoEvento",
+    "type": "string"
+  },
+  {
+    "name": "stazione",
+    "type": "string"
+  },
+  {
+    "name": "canale",
+    "type": "string"
+  },
+  {
+    "name": "sessionId",
+    "type": "string"
+  },
+  {
+    "name": "payload",
+    "type": "string"
+  },
+  {
+    "name": "pspDescr",
+    "type": "string"
+  },
+  {
+    "name": "noticeNumber",
+    "type": "string"
+  },
+  {
+    "name": "creditorReferenceId",
+    "type": "string"
+  },
+  {
+    "name": "paymentToken",
+    "type": "string"
+  },
+  {
+    "name": "sessionIdOriginal",
+    "type": "string"
+  },
+  {
+    "name": "dataOraEvento",
+    "type": "datetime"
+  },
+  {
+    "name": "uniqueId",
+    "type": "string"
+  }
+]
