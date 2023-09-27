@@ -1,5 +1,5 @@
 resource "azurerm_api_management_api_version_set" "mocker_core_api" {
-  count  = var.env_short == "d" ? 1 : 0
+  count               = var.env_short == "d" ? 1 : 0
   name                = format("%s-mocker-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -39,7 +39,7 @@ module "apim_mocker_core_api_v1" {
 }
 
 resource "azurerm_api_management_group" "api_mocker_group" {
-  count  = var.env_short == "d" ? 1 : 0
+  count               = var.env_short == "d" ? 1 : 0
   name                = local.mocker_core_api_locals.product_id
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
