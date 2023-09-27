@@ -245,6 +245,21 @@ resource "azurerm_key_vault_secret" "pdf_engine_perf_test_subkey" {
     ]
   }
 }
+resource "azurerm_key_vault_secret" "pdf_engine_node_perf_test_subkey" {
+  count = var.env_short == "p" ? 0 : 1
+
+  name         = format("pdf-engine-node-%s-perftest-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
 
 resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
   name         = "elastic-otel-token-header"
