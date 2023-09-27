@@ -296,7 +296,7 @@
                         "noTruncation": false
                     },
                     "dataset": {
-                        "referenceName": "SMO_ReEventDataset",
+                        "referenceName": "${inputdataset}",
                         "type": "DatasetReference"
                     },
                     "firstRowOnly": false
