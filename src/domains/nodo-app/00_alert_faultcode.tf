@@ -29,7 +29,7 @@ requests
 json_resp["Envelope"]["Body"]["primitiva"]["fault"]["originalFaultCode"] != "", tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["originalFaultCode"]),
 extract("FaultCode PA: ([A-Z_]+)", 1, tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["description"])))
 | where cloud_RoleName == "pagopa-p-apim West Europe"
-| where operation_Name == "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc" // activatePaymentNotice v1 legacy
+| where operation_Name == "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc" or operation_Name == "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0" // activatePaymentNotice v1 legacy or auth
 | summarize
 Total=count(),
 Success=countif(resp_outcome == "OK" or faultCode in ("PPT_PAGAMENTO_IN_CORSO","PPT_PAGAMENTO_DUPLICATO", "PPT_STAZIONE_INT_PA_TIMEOUT","PPT_ATTIVAZIONE_IN_CORSO", "PPT_ERRORE_EMESSO_DA_PAA"))
