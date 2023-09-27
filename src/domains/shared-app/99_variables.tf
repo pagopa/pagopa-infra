@@ -225,3 +225,29 @@ variable "taxonomy_function_autoscale" {
   })
   description = "Taxonomy function autoscaling parameters"
 }
+
+# pdf-engine
+variable "cidr_subnet_pdf_engine_app_service" {
+  type        = list(string)
+  description = "CIDR subnet for App Service"
+  default     = null
+}
+
+
+variable "app_service_pdf_engine_autoscale_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "app_service_pdf_engine_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = true
+}
+
+variable "app_service_pdf_engine_sku_name" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
+
