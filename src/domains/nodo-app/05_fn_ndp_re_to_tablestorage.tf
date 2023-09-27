@@ -28,7 +28,7 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
-    DOCKER_REGISTRY_SERVER_URL      = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_URL
+    DOCKER_REGISTRY_SERVER_URL = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_URL
 
     EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-tablestorage-rx.primary_connection_string
 

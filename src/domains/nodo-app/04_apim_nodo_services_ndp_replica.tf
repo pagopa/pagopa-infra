@@ -465,7 +465,7 @@ module "apim_nodo_per_pm_api_v1_replica_ndp" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_swagger.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
     service = module.apim_nodo_dei_pagamenti_product_replica_ndp[0].product_id
   })
 
