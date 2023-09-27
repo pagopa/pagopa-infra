@@ -6,14 +6,14 @@ module "apim_fdr_nodo_dei_pagamenti_legacy_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
   product_id   = "fdr-legacy"
-  display_name = "Fdr Nodo dei Pagamenti Legacy"
-  description  = "Fdr Nodo dei Pagamenti Legacy"
+  display_name = "FdR Legacy - Nodo dei Pagamenti"
+  description  = "FdR Legacy - Nodo dei Pagamenti"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = false
-  subscription_required = false
+  published             = true
+  subscription_required = true
   approval_required     = false
 
   policy_xml = file("./api_product/nodoPerPa/_base_policy.xml")
