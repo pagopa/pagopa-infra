@@ -352,6 +352,7 @@
 | [azurerm_application_insights_web_test.assets_cdn_platform_web_test](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/application_insights_web_test) | resource |
 | [azurerm_dns_a_record.dns_a_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_api_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
+| [azurerm_dns_a_record.dns_a_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_kibana](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_management](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.dns_a_management_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/dns_a_record) | resource |

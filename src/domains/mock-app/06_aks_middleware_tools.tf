@@ -21,7 +21,7 @@ module "tls_checker" {
 }
 
 resource "helm_release" "cert_mounter" {
-  count  = var.env_short == "d" ? 1 : 0
+  count        = var.env_short == "d" ? 1 : 0
   name         = "cert-mounter-blueprint"
   repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
   chart        = "cert-mounter-blueprint"
