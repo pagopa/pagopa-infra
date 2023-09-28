@@ -299,10 +299,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-														<amount>{{context.Variables["amount"]}}</amount>
-														{{context.Variables["dueDate"]}}
-														{{context.Variables["paymentNote"]}}
-													</nod:activatePaymentNoticeReq>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -325,10 +322,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-														<amount>{{context.Variables["amount"]}}</amount>
-														{{context.Variables["dueDate"]}}
-														{{context.Variables["paymentNote"]}}
-													</nod:activatePaymentNoticeReq>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -351,10 +345,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-														<amount>{{context.Variables["amount"]}}</amount>
-														{{context.Variables["dueDate"]}}
-														{{context.Variables["paymentNote"]}}
-													</nod:activatePaymentNoticeReq>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -377,10 +368,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-														<amount>{{context.Variables["amount"]}}</amount>
-														{{context.Variables["dueDate"]}}
-														{{context.Variables["paymentNote"]}}
-													</nod:activatePaymentNoticeReq>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -542,10 +530,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-												<amount>{{context.Variables["amount"]}}</amount>
-												{{context.Variables["dueDate"]}}
-												{{context.Variables["paymentNote"]}}
-											</nod:activatePaymentNoticeReq>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -568,10 +553,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-												<amount>{{context.Variables["amount"]}}</amount>
-												{{context.Variables["dueDate"]}}
-												{{context.Variables["paymentNote"]}}
-											</nod:activatePaymentNoticeReq>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -594,10 +576,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-												<amount>{{context.Variables["amount"]}}</amount>
-												{{context.Variables["dueDate"]}}
-												{{context.Variables["paymentNote"]}}
-											</nod:activatePaymentNoticeReq>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -620,10 +599,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-												<amount>{{context.Variables["amount"]}}</amount>
-												{{context.Variables["dueDate"]}}
-												{{context.Variables["paymentNote"]}}
-											</nod:activatePaymentNoticeReq>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeReq>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
