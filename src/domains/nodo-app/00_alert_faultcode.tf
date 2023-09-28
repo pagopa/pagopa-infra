@@ -19,7 +19,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availab
   description    = "Availability Fault Code on activatePaymentNotice operation of node-for-psp API <grafana-dashboard-on-application-code>" #todo
   enabled        = true
   query = (<<-QUERY
-let threshold = 0.95;
+let threshold = 0.97;
 requests
 | extend xml_resp = replace_regex(replace_regex(replace_regex(tostring(customDimensions["Response-Body"]), '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), 'activatePaymentNoticeRes|sendPaymentOutcomeRes|verificaBollettinoRes|verifyPaymentNoticeRes|nodoVerificaRPT', 'primitiva')
 | extend json_resp=parse_xml(xml_resp)
@@ -29,7 +29,7 @@ requests
 json_resp["Envelope"]["Body"]["primitiva"]["fault"]["originalFaultCode"] != "", tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["originalFaultCode"]),
 extract("FaultCode PA: ([A-Z_]+)", 1, tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["description"])))
 | where cloud_RoleName == "pagopa-p-apim West Europe"
-| where operation_Name == "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc" // activatePaymentNotice v1 legacy
+| where operation_Name == "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc" or operation_Name == "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0" // activatePaymentNotice v1 legacy or auth
 | summarize
 Total=count(),
 Success=countif(resp_outcome == "OK" or faultCode in ("PPT_PAGAMENTO_IN_CORSO","PPT_PAGAMENTO_DUPLICATO", "PPT_STAZIONE_INT_PA_TIMEOUT","PPT_ATTIVAZIONE_IN_CORSO", "PPT_ERRORE_EMESSO_DA_PAA"))
@@ -49,6 +49,64 @@ by bin(timestamp, 5m)
     threshold = 2
   }
 }
+
+
+## Error alert on specific faultCode
+
+locals {
+  api_nodo_faultcode_alerts = var.env_short != "p" ? [] : [
+    {
+      faultcode : "PPT_ERRORE_IDEMPOTENZA",
+      threshold : "10",
+    },
+  ]
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-specific-threshold" {
+  for_each = { for c in local.api_nodo_faultcode_alerts : c.faultcode => c }
+
+
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-node-specific-${each.value.faultcode}-fault-code-threshold"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "FaultCode ${each.value.faultcode} on activatePaymentNotice operation GreaterThan ${each.value.threshold}"
+  enabled        = true
+  query = (<<-QUERY
+let threshold = ${each.value.threshold};
+requests
+| extend xml_resp = replace_regex(replace_regex(replace_regex(tostring(customDimensions["Response-Body"]), '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), 'activatePaymentNoticeRes|sendPaymentOutcomeRes|verificaBollettinoRes|verifyPaymentNoticeRes|nodoVerificaRPT', 'primitiva')
+| extend json_resp=parse_xml(xml_resp)
+| extend resp_outcome = tostring(json_resp["Envelope"]["Body"]["primitiva"]["outcome"])
+| extend faultCode= tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["faultCode"])
+| extend originalFaultCode = case(
+json_resp["Envelope"]["Body"]["primitiva"]["fault"]["originalFaultCode"] != "", tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["originalFaultCode"]),
+extract("FaultCode PA: ([A-Z_]+)", 1, tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["description"])))
+| where cloud_RoleName == "pagopa-p-apim West Europe"
+| where operation_Name == "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc" or operation_Name == "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0" // activatePaymentNotice v1 legacy or auth
+| where resp_outcome != "OK" and faultCode == "${each.value.faultcode}"
+| summarize Total=count() by bin(timestamp, 5m)
+| where Total > threshold
+  QUERY
+  )
+
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-alerts#alert-severity
+  # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
+  severity    = 1
+  frequency   = 5
+  time_window = 10
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
 
 # TODO REFINE 
 
