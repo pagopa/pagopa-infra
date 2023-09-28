@@ -125,6 +125,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "/bo-nodo/.*",
     "/pp-admin-panel/.*",
     "/tkm/tkmacquirermanager/.*",
+    "/nodo-monitoring/monitoring/.*",
     "/nodo-ndp/monitoring/.*",
     "/nodo-replica-ndp/monitoring/.*",
     "/wfesp-ndp/.*",

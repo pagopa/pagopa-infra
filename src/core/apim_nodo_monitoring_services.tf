@@ -17,13 +17,13 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
   approval_required     = false
 
   policy_xml = var.apim_nodo_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
-    address-range-from       = "0.0.0.0"
-    address-range-to         = "0.0.0.0"
+    address-range-from       = var.env_short != "d" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to         = var.env_short != "d" ? "10.1.128.255" : "0.0.0.0"
     base-url                 = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
     is-nodo-auth-pwd-replace = false
   }) : templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", { # decoupler OFF
-    address-range-from = "0.0.0.0"
-    address-range-to   = "0.0.0.0"
+    address-range-from = var.env_short != "d" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short != "d" ? "10.1.128.255" : "0.0.0.0"
   })
 }
 
@@ -32,11 +32,10 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
 ######################
 locals {
   apim_nodo_monitoring_api = {
-    display_name = "Nodo monitoring "
+    display_name = "Nodo monitoring"
     description  = "Nodo monitoring"
-    # path                  = "nodo/monitoring"
-    path                  = var.env_short == "p" ? "nodo-monitoring/monitoring" : "nodo/monitoring"
-    subscription_required = var.nodo_pagamenti_subkey_required
+    path                  = "nodo-monitoring/monitoring"
+    subscription_required = false
     service_url           = null
   }
 }
@@ -71,7 +70,7 @@ module "apim_nodo_monitoring_api" {
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-    service = module.apim_nodo_dei_pagamenti_product.product_id
+    service = module.apim_nodo_dei_pagamenti_monitoring_product.product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
