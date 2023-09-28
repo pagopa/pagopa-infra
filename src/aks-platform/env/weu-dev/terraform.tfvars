@@ -63,7 +63,7 @@ ingress_load_balancer_ip  = "10.1.100.250"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.7.1"
+  version = "4.7.2"
   controller = {
     image = {
       registry     = "k8s.gcr.io"
