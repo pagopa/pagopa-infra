@@ -13,7 +13,7 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = true
+  subscription_required = false
   approval_required     = false
 
   policy_xml = var.apim_nodo_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
