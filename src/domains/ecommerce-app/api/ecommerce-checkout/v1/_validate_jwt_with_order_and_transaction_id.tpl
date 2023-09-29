@@ -28,7 +28,7 @@
         return "";
         }" />
         <choose>
-            <when condition="@( (string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId","") && (string)context.Variables.GetValueOrDefault("tokenOrderId","") != (string)context.Variables.GetValueOrDefault("requestOrderId",""))">
+            <when condition="@( (string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId","") || (string)context.Variables.GetValueOrDefault("tokenOrderId","") != (string)context.Variables.GetValueOrDefault("requestOrderId",""))">
                 <return-response>
                     <set-status code="401" reason="Unauthorized" />
                 </return-response>
