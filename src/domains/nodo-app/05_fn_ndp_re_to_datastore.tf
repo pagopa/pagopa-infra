@@ -58,7 +58,7 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
-    DOCKER_REGISTRY_SERVER_URL      = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
+    DOCKER_REGISTRY_SERVER_URL = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
 
     COSMOS_CONN_STRING        = "AccountEndpoint=https://${local.project}-re-cosmos-nosql-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.primary_key}"
     COSMOS_DB_NAME            = "nodo_re"

@@ -32,12 +32,12 @@ resource "azurerm_api_management_api_version_set" "mock_ec_api" {
 
 module "apim_mock_ec_api" {
   count  = var.mock_ec_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = format("%s-mock-ec-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_ec_product[0].product_id]
+  product_ids           = [module.apim_mock_ec_product[0].product_id, local.apim_x_node_product_id]
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.mock_ec_api[0].id
@@ -59,6 +59,17 @@ module "apim_mock_ec_api" {
     mock_ec_host_path = var.env_short == "u" ? format("https://%s/mock-ec", local.mock_ec_default_site_hostname) : var.env_short == "d" ? "http://${var.lb_aks}/mock-ec-sit/servizi/PagamentiTelematiciRPT" : ""
   })
 
+}
+
+
+resource "azurerm_api_management_api_operation_policy" "apim_mock_ec_api_policy" {
+
+  api_name            = module.apim_mock_ec_api[0].name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "mock-ec"
+
+  xml_content = file("./api/mockec_api/v1/_base_policy_rewrite.xml")
 }
 
 #############################
@@ -99,7 +110,7 @@ module "apim_secondary_mock_ec_api" {
   name                  = format("%s-secondary-mock-ec-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_secondary_mock_ec_product[0].product_id]
+  product_ids           = [module.apim_secondary_mock_ec_product[0].product_id, local.apim_x_node_product_id]
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.secondary_mock_ec_api[0].id
