@@ -13,7 +13,7 @@
     <set-variable name="metadata" value="no-metadata" />
     <choose>
       <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
-      <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode") && !context.Request.Headers.GetValueOrDefault(" Ocp-Apim-Subscription-Key", "").Equals(""))">
+      <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
         <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
         <include-fragment fragment-id="authorizer" />
         <!-- ################################################################### -->
@@ -43,7 +43,7 @@
           }" />
         <!-- Block request if it does not have valid segregation codes -->
         <choose>
-          <when condition="@("".Equals(context.Variables[" segregation_codes"]))">
+          <when condition="@("".Equals(context.Variables["segregation_codes"]))">
           <!-- Block request if it does not have valid segregation codes -->
           <!--                    <return-response>-->
           <!--                        <set-status code="403" reason="Forbidden" />-->
