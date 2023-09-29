@@ -226,3 +226,7 @@ variable "cidr_subnet_taxonomy_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
 }
+variable "taxonomy_pdnd_datasource" {
+  type        = list(string)
+  description = "IPs of NAT GW of PDND on AWS"
+}

@@ -27,6 +27,18 @@ module "taxonomy_sa" {
 
   blob_delete_retention_days = var.taxonomy_storage_account.blob_delete_retention_days
 
+  network_rules = var.env_short == "d" ? {} : {
+    default_action = "Allow"
+    ip_rules = var.taxonomy_pdnd_datasource
+    virtual_network_subnet_ids = []
+  }
+
+
+#  default_action             = string       # Specifies the default action of allow or deny when no other rules match. Valid options are Deny or Allow
+#  bypass                     = set(string)  # Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Valid options are any combination of Logging, Metrics, AzureServices, or None
+#  ip_rules                   = list(string) # List of public IP or IP ranges in CIDR Format. Only IPV4 addresses are allowed
+#  virtual_network_subnet_ids = list(string) # A list of resource ids for subnets.
+
   tags = var.tags
 }
 
