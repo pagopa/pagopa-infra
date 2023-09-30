@@ -1,5 +1,5 @@
 {
-  "name": "Copy From ReEvent To KPI_TPNP ",
+  "name": "Copy From ReEvent To pspNotifyPayment_KPI",
   "type": "Copy",
   "dependsOn": [
     {
@@ -22,13 +22,13 @@
         {
           "name": "pipelineRunID",
           "value": {
-            "value": "@variables('run_id')",
+            "value": "@pipeline().parameters.run_id",
             "type": "Expression"
           }
         }
       ],
       "query": {
-        "value": "let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add('minute', -15, trigger_start);\nlet end=datetime_add('minute', 10, start);\nlet end_resp=datetime_add('minute', 15, start);\nlet pspNotifyPayment_Req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , payload_xml)\n| extend channel = extract(\"<idChannel>(.*)</idChannel>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, idBrokerPSP, psp, channel, sessionId, tipoEvento;\nlet pspNotifyPayment_Resp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, sessionId, outcome, tipoEvento;\npspNotifyPayment_Req\n| join kind=leftouter pspNotifyPayment_Resp on idDominio, iuv, ccp, sessionId, tipoEvento\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend diff_time_in_ms=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n| extend IS_TIMEOUT=case(isempty(RESPONSE_TIMESTAMP), true, false)\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento",
+        "value": "let trigger_start=bin(datetime('@{pipeline().parameters.start_date}'), 10m);\nlet start=trigger_start;\nlet end=datetime_add('minute', 10, start);\nlet end_resp=datetime_add('minute', 15, start);\nlet pspNotifyPayment_Req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , payload_xml)\n| extend channel = extract(\"<idChannel>(.*)</idChannel>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, idBrokerPSP, psp, channel, sessionId, tipoEvento;\nlet pspNotifyPayment_Resp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, sessionId, outcome, tipoEvento;\nlet result = pspNotifyPayment_Req\n| join kind=leftouter pspNotifyPayment_Resp on idDominio, iuv, ccp, sessionId, tipoEvento\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend diff_time_in_ms=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n| extend IS_TIMEOUT=case(isempty(RESPONSE_TIMESTAMP), true, false)\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento;\nlet notCopy = KPI_TPNP\n| where REQUEST_TIMESTAMP between (start .. end)\n| where pipelineRunID == \"@{pipeline().parameters.run_id}\";\nresult\n| join kind=leftanti notCopy on $left.REQUEST_TIMESTAMP == $right.REQUEST_TIMESTAMP, $left.idDominio == $right.ID_DOMINIO, $left.iuv == $right.IUV, $left.ccp == $right.TOKEN, $left.tipoEvento == $right.TIPO_EVENTO\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento ",
         "type": "Expression"
       },
       "queryTimeout": "00:10:00",
@@ -220,53 +220,9 @@
   ]
 },
 {
-  "name": "run_id",
-  "type": "SetVariable",
-  "dependsOn": [],
-  "policy": {
-    "secureOutput": false,
-    "secureInput": false
-  },
-  "userProperties": [],
-  "typeProperties": {
-    "variableName": "run_id",
-    "value": {
-      "value": "@pipeline().RunId",
-      "type": "Expression"
-    }
-  }
-},
-{
-  "name": "start_date",
-  "type": "SetVariable",
-  "dependsOn": [
-    {
-      "activity": "run_id",
-      "dependencyConditions": ["Completed"]
-    }
-  ],
-  "policy": {
-    "secureOutput": false,
-    "secureInput": false
-  },
-  "userProperties": [],
-  "typeProperties": {
-    "variableName": "start_date",
-    "value": {
-      "value": "@pipeline().TriggerTime",
-      "type": "Expression"
-    }
-  }
-},
-{
   "name": "Lookup1",
   "type": "Lookup",
-  "dependsOn": [
-    {
-      "activity": "start_date",
-      "dependencyConditions": ["Completed"]
-    }
-  ],
+  "dependsOn": [],
   "policy": {
     "timeout": "0.12:00:00",
     "retry": 0,
@@ -279,7 +235,7 @@
     "source": {
       "type": "AzureDataExplorerSource",
       "query": {
-        "value": "let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add('minute', -15, trigger_start);\nlet end=datetime_add('minute', 10, start);\nlet end_resp=datetime_add('minute', 15, start);\nlet pspNotifyPayment_Req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , payload_xml)\n| extend channel = extract(\"<idChannel>(.*)</idChannel>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, idBrokerPSP, psp, channel, sessionId, tipoEvento;\nlet pspNotifyPayment_Resp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, sessionId, outcome, tipoEvento;\npspNotifyPayment_Req\n| join kind=leftouter pspNotifyPayment_Resp on idDominio, iuv, ccp, sessionId\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend diff_time_in_ms=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n| extend IS_TIMEOUT=case(isempty(RESPONSE_TIMESTAMP), true, false)\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento",
+        "value": "let trigger_start=bin(datetime('@{pipeline().parameters.start_date}'), 10m);\nlet start=trigger_start;\nlet end=datetime_add('minute', 10, start);\nlet end_resp=datetime_add('minute', 15, start);\nlet pspNotifyPayment_Req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , payload_xml)\n| extend channel = extract(\"<idChannel>(.*)</idChannel>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, idBrokerPSP, psp, channel, sessionId, tipoEvento;\nlet pspNotifyPayment_Resp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, sessionId, outcome, tipoEvento;\nlet result = pspNotifyPayment_Req\n| join kind=leftouter pspNotifyPayment_Resp on idDominio, iuv, ccp, sessionId, tipoEvento\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend diff_time_in_ms=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n| extend IS_TIMEOUT=case(isempty(RESPONSE_TIMESTAMP), true, false)\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento;\nlet notCopy = KPI_TPNP\n| where REQUEST_TIMESTAMP between (start .. end)\n| where pipelineRunID == \"@{pipeline().parameters.run_id}\";\nresult\n| join kind=leftanti notCopy on $left.REQUEST_TIMESTAMP == $right.REQUEST_TIMESTAMP, $left.idDominio == $right.idDominio, $left.iuv == $right.iuv, $left.ccp == $right.ccp, $left.tipoEvento == $right.tipoEvento\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento",
         "type": "Expression"
       },
       "queryTimeout": "00:10:00",
@@ -319,14 +275,14 @@
   "type": "IfCondition",
   "dependsOn": [
     {
-      "activity": "Copy From ReEvent To KPI_TPNP",
+      "activity": "Copy From ReEvent To pspNotifyPayment_KPI",
       "dependencyConditions": ["Completed"]
     }
   ],
   "userProperties": [],
   "typeProperties": {
     "expression": {
-      "value": "@equals(variables('count_record'),string(activity('Copy From ReEvent To KPI_TPNP').output.rowsCopied))",
+      "value": "@equals(variables('count_record'),string(activity('Copy From ReEvent To pspNotifyPayment_KPI').output.rowsCopied))",
       "type": "Expression"
     },
     "ifFalseActivities": [
@@ -337,7 +293,7 @@
         "userProperties": [],
         "typeProperties": {
           "message": {
-            "value": "@concat('Lette :' ,variables('count_record'), ' Scritte : ', activity('Copy From ReEvent To KPI_TPNP').output.rowsCopied)",
+            "value": "@concat('Lette :' ,variables('count_record'), ' Scritte : ', activity('Copy From ReEvent To pspNotifyPayment_KPI').output.rowsCopied)",
             "type": "Expression"
           },
           "errorCode": "412"
