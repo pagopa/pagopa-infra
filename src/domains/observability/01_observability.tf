@@ -35,6 +35,13 @@ resource "azurerm_kusto_cluster" "data_explorer_cluster" {
   engine                        = "V3"
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+      sku
+    ]
+  }
 }
 
 resource "azurerm_kusto_database" "re_db" {
