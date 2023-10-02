@@ -16,14 +16,8 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = var.apim_nodo_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
-    address-range-from       = var.env_short != "d" ? "10.1.128.0" : "0.0.0.0"
-    address-range-to         = var.env_short != "d" ? "10.1.128.255" : "0.0.0.0"
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/monitoring/base_policy.xml.tpl", {
     base-url                 = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
-    is-nodo-auth-pwd-replace = false
-  }) : templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", { # decoupler OFF
-    address-range-from = var.env_short != "d" ? "10.1.128.0" : "0.0.0.0"
-    address-range-to   = var.env_short != "d" ? "10.1.128.255" : "0.0.0.0"
   })
 }
 
