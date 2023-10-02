@@ -3,7 +3,7 @@
       <base />
       <set-variable  name="sessionToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
-          <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/check-session?sessionToken=?sessionToken={(string)context.Variables["sessionToken"]}")</set-url>
+          <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/check-session?sessionToken={(string)context.Variables["sessionToken"]}")</set-url>
           <set-method>GET</set-method>
       </send-request>
        <choose>
