@@ -69,6 +69,5 @@ module "apim_nodo_monitoring_api" {
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
     base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
-    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }
