@@ -205,10 +205,10 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_dev" {
   })
 }
 
-# Fdr pagoPA legacy 
-# nodoInviaFlussoRendicontazione DEV 
-# nodoInviaFlussoRendicontazione UAT 
-# nodoInviaFlussoRendicontazione PRD 
+# Fdr pagoPA legacy
+# nodoInviaFlussoRendicontazione DEV
+# nodoInviaFlussoRendicontazione UAT
+# nodoInviaFlussoRendicontazione PRD
 
 # resource "azurerm_api_management_api_operation_policy" "fdr_policy_dev" {
 
@@ -612,7 +612,7 @@ locals {
   apim_nodo_monitoring_api_dev = {
     display_name          = "Nodo monitoring (DEV)"
     description           = "Nodo monitoring"
-    path                  = "nodo-dev/monitoring"
+    path                  = "nodo-dev-monitoring/monitoring"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }

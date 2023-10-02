@@ -1444,7 +1444,7 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS",
+            "pattern": "XPAY|VPOS|NPG",
             "description": "Pgs identifier"
           }
         },

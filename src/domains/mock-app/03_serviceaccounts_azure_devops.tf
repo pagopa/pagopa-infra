@@ -1,12 +1,12 @@
 resource "kubernetes_namespace" "namespace_system" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
   metadata {
     name = "${var.domain}-system"
   }
 }
 
 resource "kubernetes_service_account" "azure_devops" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
 
   metadata {
     name      = "azure-devops"
@@ -16,7 +16,7 @@ resource "kubernetes_service_account" "azure_devops" {
 }
 
 data "kubernetes_secret" "azure_devops_secret" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
   metadata {
     name      = kubernetes_service_account.azure_devops[0].default_secret_name
     namespace = kubernetes_namespace.namespace_system[0].metadata[0].name
@@ -29,7 +29,7 @@ data "kubernetes_secret" "azure_devops_secret" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "azure_devops_sa_token" {
-  count  = var.env_short == "d" ? 1 : 0
+  count        = var.env_short == "d" ? 1 : 0
   depends_on   = [kubernetes_service_account.azure_devops]
   name         = "${local.aks_name}-azure-devops-sa-token"
   value        = data.kubernetes_secret.azure_devops_secret[0].binary_data["token"] # base64 value
@@ -40,7 +40,7 @@ resource "azurerm_key_vault_secret" "azure_devops_sa_token" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "azure_devops_sa_cacrt" {
-  count  = var.env_short == "d" ? 1 : 0
+  count        = var.env_short == "d" ? 1 : 0
   depends_on   = [kubernetes_service_account.azure_devops]
   name         = "${local.aks_name}-azure-devops-sa-cacrt"
   value        = data.kubernetes_secret.azure_devops_secret[0].binary_data["ca.crt"] # base64 value
@@ -55,7 +55,7 @@ resource "azurerm_key_vault_secret" "azure_devops_sa_cacrt" {
 #
 
 resource "kubernetes_role_binding" "deployer_binding" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
   metadata {
     name      = "deployer-binding"
     namespace = kubernetes_namespace.namespace[0].metadata[0].name
@@ -73,7 +73,7 @@ resource "kubernetes_role_binding" "deployer_binding" {
 }
 
 resource "kubernetes_role_binding" "system_deployer_binding" {
-  count  = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
   metadata {
     name      = "system-deployer-binding"
     namespace = kubernetes_namespace.namespace_system[0].metadata[0].name

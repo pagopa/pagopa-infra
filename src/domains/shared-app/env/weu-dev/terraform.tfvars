@@ -65,3 +65,6 @@ taxonomy_function_autoscale = {
   minimum = 1
   maximum = 1
 }
+
+# pdf-engine
+cidr_subnet_pdf_engine_app_service = ["10.1.187.0/24"]
