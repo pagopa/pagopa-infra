@@ -6,6 +6,13 @@ locals {
       name : "BizEventToReceiptProcessor"
     }
   ]
+
+
+  action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+
+  # ENABLE PROD afert deploy 
+  # action_groups = var.env_short == "p" ? concat(local.action_groups_default,data.azurerm_monitor_action_group.opsgenie[0].id) : local.action_groups_default
+  action_groups = local.action_groups_default
 }
 
 ###########################################
@@ -163,7 +170,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-disc
 ## Alert
 # This alert cover the following error case:
 # 1. NotifierRetry execution logs that a new entry has been set in error
-# https://github.com/pagopa/pagopa-receipt-pdf-notifier/src/main/java/it/gov/pagopa/receipt/pdf/generator/NotifierRetry.java#L50
+# https://github.com/pagopa/pagopa-receipt-pdf-notifier/blob/26067525b154796962168e661ee932d4e628f1be/src/main/java/it/gov/pagopa/receipt/pdf/notifier/NotifierRetry.java#L52
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-to-notify-in-retry-alert" {
   count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
@@ -182,7 +189,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-to-notify-in-re
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "NotifierRetry function called"
+    | where message contains "[NotifierRetryProcessor] function called at"
   QUERY
     , "pagopareceiptpdfnotifier" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-notifier/helm/values-prod.yaml
   )
@@ -198,7 +205,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-to-notify-in-re
 ## Alert
 # This alert cover the following error case:
 # 1. ReceiptToIoService execution logs that a receipt could not be notified (due to maximum retries, or failing to send to message queue)
-# https://github.com/pagopa/pagopa-receipt-pdf-notifier/src/main/java/it/gov/pagopa/receipt/pdf/generator/ReceiptToIOServiceImpl.java#L354
+# https://github.com/pagopa/pagopa-receipt-pdf-notifier/blob/26067525b154796962168e661ee932d4e628f1be/src/main/java/it/gov/pagopa/receipt/pdf/notifier/service/impl/ReceiptToIOServiceImpl.java#L333
+
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-unable-to-notify-alert" {
   count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
