@@ -102,6 +102,23 @@ locals {
       ]
       shard_key = "_id"
     },
+    {
+      name = "wallet-log-events"
+      indexes = [{
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["walletId", "eventType", "timestamp"]
+          unique = true
+        },
+        {
+          keys   = ["walletId"]
+          unique = false
+        }
+      ]
+      shard_key = "walletId"
+    },
   ]
 }
 
@@ -116,10 +133,10 @@ module "cosmosdb_wallet_collections" {
   }
 
   name                = each.value.name
-  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg.name
+  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg[0].name
 
-  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
-  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.wallet.name
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb[0].name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.wallet[0].name
 
   indexes     = each.value.indexes
   shard_key   = each.value.shard_key
@@ -133,9 +150,9 @@ module "cosmosdb_wallet_collections" {
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb.name}] Normalized RU Exceeded"
-  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg.name
-  scopes              = [module.cosmosdb_account_mongodb.id]
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb[0].name}] Normalized RU Exceeded"
+  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg[0].name
+  scopes              = [module.cosmosdb_account_mongodb[0].id]
   description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
   severity            = 0
   window_size         = "PT5M"
@@ -157,7 +174,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     dimension {
       name     = "Region"
       operator = "Include"
-      values   = [azurerm_resource_group.cosmosdb_wallet_rg.location]
+      values   = [azurerm_resource_group.cosmosdb_wallet_rg[0].location]
     }
 
     dimension {
