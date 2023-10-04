@@ -15,7 +15,7 @@ module "apim_taxonomy_product" {
   published             = true
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1000
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/taxonomy/_base_policy.xml")
 }
