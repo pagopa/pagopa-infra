@@ -1,0 +1,96 @@
+{
+  "processors": [
+    {
+      "json": {
+        "field": "message",
+        "target_field": "json_message",
+        "on_failure": [
+          {
+            "set": {
+              "field": "error-info.message",
+              "value": "Field 'message' is not a json format and not create 'json_message"
+            }
+          },
+          {
+            "set": {
+              "description": "Record error detail",
+              "field": "error-info.message-detail",
+              "value": "Processor {{ _ingest.on_failure_processor_type }} with tag {{ _ingest.on_failure_processor_tag }} in pipeline {{ _ingest.on_failure_pipeline }} failed with message {{ _ingest.on_failure_message }}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "set": {
+        "field": "message",
+        "copy_from": "json_message.message",
+        "on_failure": [
+          {
+            "set": {
+              "field": "error-info.message",
+              "value": "Field 'json_message.message' not found"
+            }
+          },
+          {
+            "set": {
+              "description": "Record error detail",
+              "field": "error-info.message-detail",
+              "value": "Processor {{ _ingest.on_failure_processor_type }} with tag {{ _ingest.on_failure_processor_tag }} in pipeline {{ _ingest.on_failure_pipeline }} failed with message {{ _ingest.on_failure_message }}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "set": {
+        "field": "mdc",
+        "copy_from": "json_message.mdc",
+        "ignore_failure": true,
+        "on_failure" : [
+          {
+            "set" : {
+              "field" : "error-mdc-internalMessage-info.message",
+              "value" : "Field 'mdc.internalMessage' not found"
+            }
+          },
+          {
+            "set": {
+              "description": "Record error detail",
+              "field": "error-mdc-internalMessage-info.message-detail",
+              "value": "Processor {{ _ingest.on_failure_processor_type }} with tag {{ _ingest.on_failure_processor_tag }} in pipeline {{ _ingest.on_failure_pipeline }} failed with message {{ _ingest.on_failure_message }}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "convert" : {
+        "if": "ctx.mdc?.httpType == 'RES'",
+        "field" : "mdc.elapsed",
+        "type": "integer"
+      }
+    },
+    {
+      "script": {
+        "if": "ctx.mdc?.httpType == 'RES'",
+        "lang": "painless",
+        "source": """
+        ctx.mdc.elapsed = Long.parseLong(ctx.mdc.elapsed.toString());
+        """
+      }
+    },
+    {
+      "remove": {
+        "field": "json_message.mdc",
+        "ignore_missing": true
+      }
+    },
+    {
+      "remove": {
+        "field": "json_message.message",
+        "ignore_missing": true
+      }
+    }
+  ]
+}
