@@ -1,7 +1,7 @@
 prefix          = "pagopa"
 env_short       = "p"
 env             = "prod"
-domain          = "ecommerce"
+domain          = "receipts"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
@@ -11,7 +11,7 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
   Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ecommerce-app"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/receipts"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -32,17 +32,3 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
-
-# PSP for xpay
-# - CIPBITMM  (NEXI)
-ecommerce_xpay_psps_list = "CIPBITMM"
-# PSP for vpos
-# - BNLIITRR (WORLDLINE)
-# - BCITITMM (INTESA)
-# - UNCRITMM (UNICREDIT)
-# - BPPIITRRXXX (POSTE)
-# - PPAYITR1XXX (POSTEPAY)
-ecommerce_vpos_psps_list = "BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX"
-ecommerce_npg_psps_list  = ""
-
-dns_zone_checkout = "checkout"
