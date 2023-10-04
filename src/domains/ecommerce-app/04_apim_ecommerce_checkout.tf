@@ -199,6 +199,7 @@ module "apim_ecommerce_checkout_api_v2" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "transaction_activation_request_v2" {
+  depends_on          = [module.apim_ecommerce_checkout_api_v2]
   api_name            = "${local.project}-ecommerce-checkout-api-v2"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
