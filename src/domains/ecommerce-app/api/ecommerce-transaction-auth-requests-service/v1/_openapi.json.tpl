@@ -495,6 +495,9 @@
           "paymentCircuit": {
             "description": "Payment circuit",
             "type": "string"
+          },
+          "rrn": {
+            "type": "string"
           }
         },
         "required": [
