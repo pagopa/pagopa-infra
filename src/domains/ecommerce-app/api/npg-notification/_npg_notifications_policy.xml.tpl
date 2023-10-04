@@ -50,10 +50,13 @@
                         string operationResult = (string)operation["operationResult"];
                         string orderId = (string)operation["orderId"];
                         string operationId = (string)operation["operationId"];
+                        string paymentCircuit = (string)operation["paymentCircuit"];
                         JObject additionalData = (JObject)operation["additionalData"];
                         string authorizationCode = null;
+                        string rrn = null;
                         if(additionalData !=null){
                             authorizationCode = (string)additionalData["authorizationCode"];
+                            rrn = (string)additionalData["rrn"];
                         }
                         string paymentEndToEndId = (string)operation["paymentEndToEndId"];
                         string eventTime = (string)requestBody["eventTime"];
@@ -69,6 +72,8 @@
                         outcomeGateway["operationId"] = operationId;
                         outcomeGateway["authorizationCode"] = authorizationCode;
                         outcomeGateway["paymentEndToEndId"] = paymentEndToEndId;
+                        outcomeGateway["paymentCircuit"] = paymentCircuit;
+                        outcomeGateway["rrn"] = rrn;
                         JObject response = new JObject();
                         response["timestampOperation"] = timestampOperation;
                         response["outcomeGateway"] = outcomeGateway;
