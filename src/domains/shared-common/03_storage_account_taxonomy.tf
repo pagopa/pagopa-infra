@@ -27,6 +27,8 @@ module "taxonomy_sa" {
 
   blob_delete_retention_days = var.taxonomy_storage_account.blob_delete_retention_days
 
+  network_rules = var.taxonomy_network_rules
+
   tags = var.tags
 }
 
