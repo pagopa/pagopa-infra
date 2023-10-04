@@ -491,6 +491,10 @@
           "paymentEndToEndId": {
             "description": "Circuit unique transaction ID",
             "type": "string"
+          },
+          "paymentCircuit": {
+            "description": "Payment circuit",
+            "type": "string"
           }
         },
         "required": [
