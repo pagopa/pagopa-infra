@@ -2,7 +2,7 @@
 ## Products ##
 ##############
 
-module "apim_wallet_product" {
+module "apim_payment_wallet_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
   product_id   = "payment-wallet"
@@ -48,7 +48,7 @@ module "apim_payment_wallet_api_v1" {
   name                  = "${local.project}-payment-wallet-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_wallet_product.product_id]
+  product_ids           = [module.apim_payment_wallet_product.product_id]
   subscription_required = local.apim_payment_wallet_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.payment_wallet_api.id
   api_version           = "v1"
@@ -108,7 +108,7 @@ module "apim_webview_payment_wallet_api_v1" {
   name                  = "${local.project}-webview-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_wallet_product.product_id]
+  product_ids           = [module.apim_payment_wallet_product.product_id]
   subscription_required = local.apim_webview_payment_wallet_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.wallet_webview_api.id
   api_version           = "v1"
@@ -156,7 +156,7 @@ module "apim_wallet_service_notifications_api_v1" {
   name                  = "${local.project}-notifications-service-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_wallet_product.product_id]
+  product_ids           = [module.apim_payment_wallet_product.product_id]
   subscription_required = local.apim_wallet_notifications_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.wallet_notifications_service_api.id
   api_version           = "v1"
