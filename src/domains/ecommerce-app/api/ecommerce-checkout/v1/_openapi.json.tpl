@@ -1337,11 +1337,6 @@
             "description": "Cart identifier provided by creditor institution",
             "type": "string",
             "example": "idCartFromCreditorInstitution"
-          },
-          "orderId": {
-            "description": "NPG orderId",
-            "type": "string",
-            "example": "orderId"
           }
         },
         "required": [
