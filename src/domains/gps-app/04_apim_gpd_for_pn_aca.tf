@@ -10,7 +10,7 @@ locals {
     subscription_required = true
     approval_required     = true
     subscriptions_limit   = 1000
-    service_url           = null
+    service_url           = local.gpd_core_service_url
     gpd_service = {
       display_name = "GPD PN Integration"
       description  = "GPD API per Piattaforma Notifiche"
@@ -100,6 +100,5 @@ module "apim_api_pn_integration_gpd_api_v1" {
   })
 
   xml_content = templatefile("./api/pn-integration/_base_policy.xml", {
-    hostname = local.gpd_core_service_url
   })
 }
