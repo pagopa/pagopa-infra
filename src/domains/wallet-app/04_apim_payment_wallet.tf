@@ -5,9 +5,9 @@
 module "apim_wallet_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
-  product_id   = "wallet"
-  display_name = "wallet pagoPA"
-  description  = "Product for wallet pagoPA"
+  product_id   = "payment-wallet"
+  display_name = "payment wallet pagoPA"
+  description  = "Product for payment wallet pagoPA"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -25,7 +25,7 @@ module "apim_wallet_product" {
 #################################################
 locals {
   apim_payment_wallet_api = {
-    display_name          = "pagoPA - wallet API for IO APP"
+    display_name          = "pagoPA - payment wallet API for IO APP"
     description           = "API to support payment wallet for IO APP"
     path                  = "payment-wallet"
     subscription_required = true
@@ -33,9 +33,9 @@ locals {
   }
 }
 
-# Wallet service APIs
-resource "azurerm_api_management_api_version_set" "wallet_service_api" {
-  name                = format("%s-service-api", local.project)
+# Payment wallet service APIs
+resource "azurerm_api_management_api_version_set" "payment_wallet_api" {
+  name                = format("%s-payment-wallet-api", local.project)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_payment_wallet_api.display_name
@@ -45,12 +45,12 @@ resource "azurerm_api_management_api_version_set" "wallet_service_api" {
 module "apim_payment_wallet_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
 
-  name                  = "${local.project}-service-api"
+  name                  = "${local.project}-payment-wallet-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_wallet_product.product_id]
   subscription_required = local.apim_payment_wallet_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.wallet_service_api.id
+  version_set_id        = azurerm_api_management_api_version_set.payment_wallet_api.id
   api_version           = "v1"
 
   description  = local.apim_payment_wallet_api.description
@@ -70,12 +70,13 @@ module "apim_payment_wallet_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "post_wallets" {
-  api_name            = "${local.project}-service-api-v1"
+  count               = var.payment_wallet_with_pm_enabled ? 1 : 0
+  api_name            = "${local.project}-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "createWallet"
 
-  xml_content = file("./api/payment-wallet/v1/_post_wallets_policy.xml.tpl")
+  xml_content = file("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl")
 }
 
 
