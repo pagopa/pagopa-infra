@@ -7,4 +7,6 @@
 
   <include file="./db.changelog-master-3.23.0.xml"/>
 
+  <include file="./${version}/db.changelog-20231003000000_stand-in.xml" labels="${version}"/>
+
 </databaseChangeLog>
