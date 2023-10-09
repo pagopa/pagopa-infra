@@ -899,34 +899,35 @@ module "apim_pm_events_v1" {
   xml_content = file("./api/payment_manager_api/payment-events/v1/_base_policy.xml.tpl")
 }
 
-module "apim_pm_per_nodo_v2" {
+// removed shift to nodo-app domain
+# module "apim_pm_per_nodo_v2" { 
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+#   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
-  name                  = "${local.project}-pm-per-nodo-api"
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id, local.apim_x_node_product_id]
-  subscription_required = local.apim_pm_per_nodo_api.subscription_required_v2
-  version_set_id        = azurerm_api_management_api_version_set.pm_per_nodo_api.id
-  api_version           = "v2"
-  service_url           = local.apim_pm_per_nodo_api.service_url
+#   name                  = "${local.project}-pm-per-nodo-api"
+#   api_management_name   = module.apim.name
+#   resource_group_name   = azurerm_resource_group.rg_api.name
+#   product_ids           = [module.apim_payment_manager_product.product_id, local.apim_x_node_product_id]
+#   subscription_required = local.apim_pm_per_nodo_api.subscription_required_v2
+#   version_set_id        = azurerm_api_management_api_version_set.pm_per_nodo_api.id
+#   api_version           = "v2"
+#   service_url           = local.apim_pm_per_nodo_api.service_url
 
-  description  = local.apim_pm_per_nodo_api.description
-  display_name = local.apim_pm_per_nodo_api.display_name
-  path         = local.apim_pm_per_nodo_api.path
-  protocols    = ["https"]
+#   description  = local.apim_pm_per_nodo_api.description
+#   display_name = local.apim_pm_per_nodo_api.display_name
+#   path         = local.apim_pm_per_nodo_api.path
+#   protocols    = ["https"]
 
-  content_format = "openapi"
-  content_value = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
+#   content_format = "openapi"
+#   content_value = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_openapi.json.tpl", {
+#     host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+#   })
 
-  xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_base_policy.xml.tpl", {
-    host                       = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name,
-    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
-  })
-}
+#   xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_base_policy.xml.tpl", {
+#     host                       = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name,
+#     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
+#   })
+# }
 
 ########################
 ## client IO bpd API  ##

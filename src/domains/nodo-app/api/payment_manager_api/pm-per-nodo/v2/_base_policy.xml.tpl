@@ -9,7 +9,11 @@
 
 <policies>
     <inbound>
-        <base />
+      <base />
+      <!-- pagopa-p-appgateway-snet  -->
+      <!-- <ip-filter action="forbid">
+        <address-range from="10.1.128.0" to="10.1.128.255" />
+      </ip-filter> -->
 
         <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
         <set-variable name="deviceId" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("deviceId"))" />
