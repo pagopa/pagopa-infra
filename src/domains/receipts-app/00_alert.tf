@@ -11,8 +11,8 @@ locals {
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
 
   # ENABLE PROD afert deploy 
-  # action_groups = var.env_short == "p" ? concat(local.action_groups_default,data.azurerm_monitor_action_group.opsgenie[0].id) : local.action_groups_default
-  action_groups = local.action_groups_default
+  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id]) : local.action_groups_default
+  # action_groups = local.action_groups_default
 }
 
 ###########################################
@@ -31,7 +31,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
     email_subject          = "[Receipts] error on initial saving receipt to Cosmos"
     custom_webhook_payload = "{}"
   }
@@ -72,7 +73,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id] # future need add opsgenie hook
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id] # future need add opsgenie hook
+    action_group           = local.action_groups
     email_subject          = "[Receipt] queue insertion error"
     custom_webhook_payload = "{}"
   }
@@ -107,7 +109,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
     email_subject          = "[Receipt] entry in error to review"
     custom_webhook_payload = "{}"
   }
@@ -143,7 +146,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-disc
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
     email_subject          = "[Receipts] biz event related to a cart"
     custom_webhook_payload = "{}"
   }
@@ -178,7 +182,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-to-notify-in-re
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
     email_subject          = "NotifierRetry function called"
     custom_webhook_payload = "{}"
   }
@@ -214,7 +219,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-unable-to-notify
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
     email_subject          = "Failed to notify receipt to IO"
     custom_webhook_payload = "{}"
   }
