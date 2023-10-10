@@ -91,3 +91,10 @@ taxonomy_storage_account = {
   blob_delete_retention_days    = 0
   enable_low_availability_alert = true
 }
+
+taxonomy_network_rules  = {
+  default_action              = "Deny"
+  ip_rules                    = ["18.159.227.69", "3.126.198.129", "18.192.147.151"]
+  virtual_network_subnet_ids  = []
+  bypass                      = ["AzureServices"]
+}
