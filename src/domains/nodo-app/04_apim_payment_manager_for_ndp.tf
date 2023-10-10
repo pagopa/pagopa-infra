@@ -29,7 +29,7 @@ data "azurerm_key_vault_secret" "subscriptionkey_ecomm" {
 locals {
   apim_pm_per_nodo_v2 = {
     display_name                 = "Payment Manager - PM per Nodo API (Ecomm & SwClient)"
-    description                  = "API PM for Nodo"
+    description                  = "PM Apis per Nodo"
     path                         = "payment-manager/pm-per-nodo"
     apim_payment_manager_product = "payment-manager"
     apim_x_node_product_id       = "apim_for_node"
@@ -38,6 +38,13 @@ locals {
     service_url                  = null
   }
 }
+
+data "azurerm_api_management_api_version_set" "pm_events_api" {
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  name                = local.apim_pm_per_nodo_v2.pm_per_nodo_api
+}
+
 
 module "apim_pm_per_nodo_v2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
@@ -48,7 +55,7 @@ module "apim_pm_per_nodo_v2" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [local.apim_pm_per_nodo_v2.apim_payment_manager_product, local.apim_pm_per_nodo_v2.apim_x_node_product_id]
   subscription_required = local.apim_pm_per_nodo_v2.subscription_required
-  version_set_id        = local.apim_pm_per_nodo_v2.pm_per_nodo_api
+  version_set_id        = data.azurerm_api_management_api_version_set.pm_events_api.id
   api_version           = "v2"
 
   description  = local.apim_pm_per_nodo_v2.description
