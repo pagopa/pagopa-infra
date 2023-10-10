@@ -95,7 +95,7 @@ module "authorizer_function_app" {
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = var.app_service_storage_account_replication_type
+    account_replication_type          = var.function_app_storage_account_replication_type
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }

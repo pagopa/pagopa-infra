@@ -154,7 +154,7 @@ nodo_re_to_tablestorage_function_autoscale = {
   maximum = 10
 }
 
-app_service_storage_account_replication_type = "GZRS"
+function_app_storage_account_replication_type = "GZRS"
 
 nodo_verifyko_to_datastore_function = {
   always_on                    = true

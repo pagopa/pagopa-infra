@@ -64,7 +64,7 @@ taxonomy_function_autoscale = {
 }
 
 
-app_service_storage_account_replication_type = "GZRS"
+function_app_storage_account_replication_type = "GZRS"
 
 # pdf-engine
 cidr_subnet_pdf_engine_app_service   = ["10.1.187.0/24"]

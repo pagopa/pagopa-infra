@@ -256,7 +256,7 @@ variable "app_service_pdf_engine_sku_name_java" {
   default     = "S1"
 }
 
-variable "app_service_storage_account_replication_type" {
+variable "function_app_storage_account_replication_type" {
   type = string
   default = "ZRS"
   description = "(Optional) Storage account replication type used for function apps"
