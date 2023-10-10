@@ -491,6 +491,9 @@
           "paymentEndToEndId": {
             "description": "Circuit unique transaction ID",
             "type": "string"
+          },
+          "rrn": {
+            "type": "string"
           }
         },
         "required": [
