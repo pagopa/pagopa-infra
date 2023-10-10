@@ -79,7 +79,7 @@ resource "azurerm_logic_app_standard" "logic_app_biz_evt" {
   }
   version = "~4"
 
-  // Logic app declaration from docs 
+  // Logic app declaration from docs
   identity {
     type = "SystemAssigned"
   }

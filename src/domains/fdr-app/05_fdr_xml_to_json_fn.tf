@@ -84,6 +84,14 @@ module "fdr_xml_to_json_function" {
 
   storage_account_name = replace(format("%s-xml-2-json-sa", local.project), "-", "")
 
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = var.app_service_storage_account_replication_type
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+
   app_settings = local.function_xml_to_json_app_settings
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]

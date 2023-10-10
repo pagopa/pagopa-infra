@@ -125,6 +125,13 @@ module "nodo_re_to_datastore_function" {
   }
 
   storage_account_name = replace("${local.project}-re-2-dst-fn-sa", "-", "")
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = var.app_service_storage_Account_replication_type
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
 
   app_settings = local.function_re_to_datastore_app_settings
 

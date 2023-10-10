@@ -403,6 +403,12 @@ variable "fdr_json_to_xml_function_autoscale" {
   description = "FdR JSON to XML function autoscaling parameters"
 }
 
+variable "app_service_storage_account_replication_type" {
+  type = string
+  default = "ZRS"
+  description = "(Optional) Storage account replication type used for function apps"
+}
+
 variable "ftp_organization" {
   type        = string
   description = "Organization configured with FTP"

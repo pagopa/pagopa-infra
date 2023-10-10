@@ -53,6 +53,8 @@ module "fdr_json_to_xml_function" {
     registry_password = null
   }
 
+
+
   #sticky_connection_string_names = ["COSMOS_CONN_STRING"]
   client_certificate_mode = "Optional"
 
@@ -70,6 +72,13 @@ module "fdr_json_to_xml_function" {
   }
 
   storage_account_name = replace(format("%s-json-2-xml-sa", local.project), "-", "")
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = var.app_service_storage_account_replication_type
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
 
   app_settings = local.function_json_to_xml_app_settings
 

@@ -264,6 +264,13 @@ variable "nodo_re_to_tablestorage_function_autoscale" {
   description = "Nodo RE functions autoscaling parameters"
 }
 
+
+variable "app_service_storage_account_replication_type" {
+  type = string
+  default = "ZRS"
+  description = "(Optional) Storage account replication type used for function apps"
+}
+
 variable "nodo_verifyko_to_datastore_function" {
   type = object({
     always_on                    = bool

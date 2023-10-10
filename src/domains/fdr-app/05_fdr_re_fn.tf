@@ -109,6 +109,14 @@ module "fdr_re_function" {
 
   storage_account_name = replace(format("%s-re-fn-sa", local.project), "-", "")
 
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = var.app_service_storage_account_replication_type
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+
   app_settings = local.function_re_to_datastore_app_settings
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
