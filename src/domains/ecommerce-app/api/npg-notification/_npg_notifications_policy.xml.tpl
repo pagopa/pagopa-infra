@@ -58,11 +58,10 @@
                             rrn = (string)additionalData["rrn"];
                         }
                         string paymentEndToEndId = (string)operation["paymentEndToEndId"];
-                        string eventTime = (string)requestBody["eventTime"];
+                        string operationTime = (string)operation["operationTime"];
                         string timestampOperation = null;
-                        if(eventTime != null) {
-                            DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(Double.Parse(eventTime));
-                            timestampOperation = dt.ToString("o") + "Z";
+                        if(operationTime != null) {
+                            timestampOperation = operationTime.Replace(' ','T') + "+02:00";
                         }
                         JObject outcomeGateway = new JObject();
                         outcomeGateway["paymentGatewayType"] = "NPG";
