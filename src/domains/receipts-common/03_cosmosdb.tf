@@ -49,6 +49,22 @@ module "receipts_datastore_cosmosdb_account" {
 
   enable_provisioned_throughput_exceeded_alert = var.env_short == "p" ? true : false
 
+
+  action = [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
+      webhook_properties = null
+    }
+  ]
+
   # add data.azurerm_subnet.<my_service>.id
   # allowed_virtual_network_subnet_ids = var.receipts_datastore_cosmos_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
   allowed_virtual_network_subnet_ids = []
@@ -151,12 +167,11 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   action {
     action_group_id = data.azurerm_monitor_action_group.email.id
   }
-
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.opsgenie[0].id
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
   }
 
   tags = var.tags

@@ -11,8 +11,8 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
+  monitor_action_group_slack_name    = "SlackPagoPA"
+  monitor_action_group_email_name    = "PagoPA"
   monitor_action_group_opsgenie_name = "Opsgenie"
 
   vnet_name                = "${local.product}-vnet"
