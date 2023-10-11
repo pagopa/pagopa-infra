@@ -47,8 +47,9 @@ api_config_tier = "PremiumV3"
 sku_name        = "P1v3"
 
 # API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
+api_config_fe_enabled                = true
+cname_record_name                    = "config"
+cdn_storage_account_replication_type = "GZRS"
 
 pod_disruption_budgets = {
   "apiconfig-selfcare-integration" = {

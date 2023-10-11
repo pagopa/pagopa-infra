@@ -224,11 +224,11 @@ variable "ecommerce_vpos_psps_list" {
 
 variable "function_app_storage_account_info" {
   type = object({
-    account_kind                      = optional(string,"StorageV2" )
-    account_tier                      = optional(string,"Standard" )
-    account_replication_type          = optional(string,"LRS" )
-    access_tier                       = optional(string,"Hot" )
-    advanced_threat_protection_enable = optional(bool,  true)
+    account_kind                      = optional(string, "StorageV2")
+    account_tier                      = optional(string, "Standard")
+    account_replication_type          = optional(string, "LRS")
+    access_tier                       = optional(string, "Hot")
+    advanced_threat_protection_enable = optional(bool, true)
   })
 
   default = {
@@ -238,4 +238,10 @@ variable "function_app_storage_account_info" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
+}
+
+variable "checkout_cdn_storage_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Checkout cnd storage replication type"
 }

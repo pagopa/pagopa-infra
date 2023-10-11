@@ -145,8 +145,8 @@ variable "certs_storage_account_replication_type" {
 }
 
 variable "certs_storage_account_replication_type" {
-  type = string
-  default = "LRS"
+  type        = string
+  default     = "LRS"
   description = "(Optional) Certificates storage account replication type"
 }
 

@@ -174,12 +174,12 @@ nodo_storico_allowed_ips = ["93.63.219.230"]
 
 
 nodo_storico_storage_account = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "GZRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = true
-    public_network_access_enabled = true
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
 }
 
 nodo_re_storage_account = {

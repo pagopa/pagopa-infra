@@ -157,7 +157,7 @@ module "reporting_batch_function" {
     registry_username = null
     registry_password = null
   }
-  storage_account_info = var.fn_app_storage_account_info
+  storage_account_info                     = var.fn_app_storage_account_info
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
@@ -229,7 +229,7 @@ module "reporting_service_function" {
   #    worker_count                 = 1
   #    zone_balancing_enabled       = false
   #  }
-  storage_account_info = var.fn_app_storage_account_info
+  storage_account_info                     = var.fn_app_storage_account_info
   always_on                                = var.reporting_service_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id

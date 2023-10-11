@@ -32,7 +32,7 @@ upload_firmatore = {
 
 cacerts_path = "./env/weu-prod/resources/cacerts"
 
-pipe_service_principel_application_id = "22dff46c-7e53-4e83-abeb-1d7e3bf72e53"
+pipe_service_principel_application_id  = "22dff46c-7e53-4e83-abeb-1d7e3bf72e53"
 certs_storage_account_replication_type = "GZRS"
 
 
