@@ -9,7 +9,11 @@
 
 <policies>
     <inbound>
-        <base />
+      <base />
+      <!-- pagopa-p-appgateway-snet  -->
+      <!-- <ip-filter action="forbid">
+        <address-range from="10.1.128.0" to="10.1.128.255" />
+      </ip-filter> -->
 
         <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
         <set-variable name="deviceId" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("deviceId"))" />
@@ -49,6 +53,8 @@
                         <rewrite-uri template="@("/mil-payment-notice/payments/"+(string)context.Variables["transactionId"])" copy-unmatched-params="true" />
                     </when>
                     <otherwise>
+
+                        
                         <!-- if ecommerce -->
                         <!-- endpoint2 + /ecommerce/transaction-user-receipts-service/v1/transactions/{transactionId}/user-receipts -->
 
@@ -60,7 +66,17 @@
                         -->
                         
                         <!-- https://github.com/MicrosoftDocs/azure-docs/issues/79088 -->
-                        <set-backend-service base-url="https://weu${environ}.ecommerce.internal.${environ}.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
+                        <choose>
+                            <when condition="@("ecomm".Equals(context.Variables["clientId"]))">
+                                <set-backend-service base-url="https://weu${environ}.ecommerce.internal.${environ}.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
+                            </when>
+                            <otherwise>
+                                <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
+                                    <value>${subscriptionKey}</value>
+                                </set-header>
+                                <set-backend-service base-url="https://api.dev.platform.pagopa.it/ecommerce/transaction-user-receipts-service/v1" />
+                            </otherwise>
+                        </choose>
                     </otherwise>                       
                 </choose>
         

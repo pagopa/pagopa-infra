@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "version": "2.0.0",
-    "title": "Receipt sendPaymentResult for NDP ${service}",
+    "title": "Payment Manager API - PM per Nodo",
     "description": "PM Apis per Nodo"
   },
   "servers": [
@@ -20,7 +20,7 @@
             "name": "clientId",
             "schema": {
               "type": "string",
-              "enum": ["swclient","ecomm"]
+              "enum": ["swclient","ecomm","ecommdev"]
             },
             "required": true,
             "description": "Identify who to call among `swclient` or `ecomm`"
@@ -45,7 +45,7 @@
           },
         
         ],
-        "summary": "Add receipt for user to specific transaction",
+        "summary": "Add receipt for user to specific transaction (sendPaymentResult)",
         "requestBody": {
           "$ref": "#/components/requestBodies/AddUserReceiptRequest"
         },
