@@ -21,7 +21,7 @@ module "apim_payment_wallet_product" {
 }
 
 #################################################
-## API wallet service for IO                   ##
+## API payment wallet for IO                   ##
 #################################################
 locals {
   apim_payment_wallet_api = {
@@ -35,7 +35,7 @@ locals {
 
 # Payment wallet service APIs
 resource "azurerm_api_management_api_version_set" "payment_wallet_api" {
-  name                = format("%s-payment-wallet-api", local.project)
+  name                = "${local.project}-payment-wallet-api"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_payment_wallet_api.display_name
@@ -79,55 +79,6 @@ resource "azurerm_api_management_api_operation_policy" "post_wallets" {
   xml_content = file("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl")
 }
 
-
-#################################################
-## API wallet service for Webview                   ##
-#################################################
-locals {
-  apim_webview_payment_wallet_api = {
-    display_name          = "pagoPA - wallet API for webview"
-    description           = "API to support payment wallet for webview"
-    path                  = "webview-payment-wallet"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-# Wallet service APIs
-resource "azurerm_api_management_api_version_set" "wallet_webview_api" {
-  name                = format("%s-webview-api", local.project)
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_webview_payment_wallet_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_webview_payment_wallet_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
-
-  name                  = "${local.project}-webview-api"
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_payment_wallet_product.product_id]
-  subscription_required = local.apim_webview_payment_wallet_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.wallet_webview_api.id
-  api_version           = "v1"
-
-  description  = local.apim_webview_payment_wallet_api.description
-  display_name = local.apim_webview_payment_wallet_api.display_name
-  path         = local.apim_webview_payment_wallet_api.path
-  protocols    = ["https"]
-  service_url  = local.apim_webview_payment_wallet_api.service_url
-
-  content_format = "openapi"
-  content_value = templatefile("./api/webview-payment-wallet/v1/_openapi.json.tpl", {
-    hostname = local.apim_hostname
-  })
-
-  xml_content = file("./api/webview-payment-wallet/v1/_base_policy.xml.tpl")
-}
-
-
 #################################################
 ## API wallet notifications service                          ##
 #################################################
@@ -136,7 +87,7 @@ locals {
     display_name          = "pagoPA - wallet notifications API"
     description           = "API to support wallet notifications service"
     path                  = "wallet-notifications-service"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
