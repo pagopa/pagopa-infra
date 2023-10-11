@@ -11,7 +11,7 @@ resource "azurerm_resource_group" "rg_pair_vnet" {
 module "vnet_pair" {
   count  = local.vpn_pair_enabled ? 1 : 0
 
-  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v4.18.1"
   name                 = "${local.project_pair}-vnet"
   location             = azurerm_resource_group.rg_pair_vnet[count.index].location
   resource_group_name  = azurerm_resource_group.rg_pair_vnet[count.index].name
@@ -25,7 +25,7 @@ module "vnet_pair" {
 module "vnet_peering_pair_vs_core" {
  count  = local.vpn_pair_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v4.18.1"
 
   location = azurerm_resource_group.rg_vnet.location
 
@@ -33,7 +33,7 @@ module "vnet_peering_pair_vs_core" {
   source_virtual_network_name      = module.vnet_pair[count.index].name
   source_remote_virtual_network_id = module.vnet_pair[count.index].id
   source_allow_gateway_transit     = false
-  source_use_remote_gateways       = true
+  source_use_remote_gateways       = false
   source_allow_forwarded_traffic   = true
   # needed by vpn gateway for enabling routing from vnet to vnet_integration
   target_resource_group_name       = azurerm_resource_group.rg_vnet.name
@@ -47,7 +47,7 @@ module "vnet_peering_pair_vs_core" {
 module "vnet_peering_pair_vs_integration" {
 count  = local.vpn_pair_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v4.18.1"
 
   location = azurerm_resource_group.rg_vnet.location
 
