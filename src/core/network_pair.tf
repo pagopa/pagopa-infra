@@ -1,5 +1,6 @@
 resource "azurerm_resource_group" "rg_pair_vnet" {
-  count = var.vnet_pair_linking_enabled ? 1 : 0
+    count  = local.vpn_pair_enabled ? 1 : 0
+
 
   name     = "${local.project_pair}-vnet-rg"
   location = var.location_pair
@@ -8,7 +9,7 @@ resource "azurerm_resource_group" "rg_pair_vnet" {
 }
 
 module "vnet_pair" {
-  count = var.vnet_pair_linking_enabled ? 1 : 0
+  count  = local.vpn_pair_enabled ? 1 : 0
 
   source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
   name                 = "${local.project_pair}-vnet"
@@ -22,7 +23,7 @@ module "vnet_pair" {
 
 ## Peering between the vnet(main) and integration vnet
 module "vnet_peering_pair_vs_core" {
-  count = var.vnet_pair_linking_enabled ? 1 : 0
+ count  = local.vpn_pair_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.90"
 
@@ -44,7 +45,7 @@ module "vnet_peering_pair_vs_core" {
 }
 
 module "vnet_peering_pair_vs_integration" {
-  count = var.vnet_pair_linking_enabled ? 1 : 0
+count  = local.vpn_pair_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.90"
 

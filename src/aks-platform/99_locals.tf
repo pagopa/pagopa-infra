@@ -34,4 +34,6 @@ locals {
   vnet_pair_resource_group_name = "${local.product}-${var.location_pair_short}-vnet-rg"
   vnet_pair_name                = "${local.product}-${var.location_pair_short}-vnet"
 
+  vpn_pair_enabled = var.env_short != "d"
+
 }
