@@ -229,3 +229,168 @@ variable "custom_metric_alerts" {
     }
   }
 }
+
+# CosmosDB
+variable "cidr_subnet_cosmosdb_fdr" {
+  type        = list(string)
+  description = "Cosmos DB address space for fdr."
+}
+
+variable "cosmos_mongo_db_fdr_params" {
+  type = object({
+    enabled        = bool
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    enable_serverless                 = bool
+    enable_autoscaling                = bool
+    throughput                        = number
+    max_throughput                    = number
+    container_default_ttl             = number
+  })
+}
+
+variable "cosmos_mongo_db_fdr_re_params" {
+  type = object({
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    enable_serverless                 = bool
+    enable_autoscaling                = bool
+    throughput                        = number
+    max_throughput                    = number
+    container_default_ttl             = number
+  })
+}
+# Storage account
+variable "fdr_convertion_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
+# Storage account
+variable "cidr_subnet_storage_account" {
+  type        = list(string)
+  description = "Storage account network address space."
+}
+
+variable "reporting_fdr_blobs_retention_days" {
+  type        = number
+  description = "The number of day for storage_management_policy"
+  default     = 30
+}
+
+variable "fdr_re_versioning" {
+  type        = bool
+  description = "Enable sa versioning"
+  default     = false
+}
+variable "fdr_re_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+variable "fdr_re_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted."
+  default     = 30
+}
+
+variable "fdr_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+  })
+
+  default = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = true
+    public_network_access_enabled = false
+    blob_delete_retention_days    = 30
+    enable_low_availability_alert = false
+  }
+}
+
+variable "fdr_re_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+  })
+
+  default = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = true
+    public_network_access_enabled = false
+    blob_delete_retention_days    = 30
+    enable_low_availability_alert = false
+  }
+}
+
+variable "reporting_fdr_storage_account" {
+  type = object({
+    advanced_threat_protection = bool
+    blob_versioning_enabled    = bool
+    blob_delete_retention_days = number
+  })
+
+  default = {
+    advanced_threat_protection = false
+    blob_versioning_enabled    = false
+    blob_delete_retention_days = 30
+  }
+}

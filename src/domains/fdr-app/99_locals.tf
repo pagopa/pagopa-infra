@@ -16,6 +16,7 @@ locals {
   monitor_action_group_email_name = "PagoPA"
 
   vnet_name                = "${local.product}-vnet"
+  vnet_integration_name    = "${local.product}-vnet-integration"
   vnet_resource_group_name = "${local.product}-vnet-rg"
 
   acr_name                = replace("${local.product}commonacr", "-", "")
@@ -30,11 +31,24 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
 
+  # apim
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  apim_nodo_per_pa_api = {
+    display_name          = "Nodo per PA WS"
+    description           = "Web services to support PA in payment activations, defined in nodoPerPa.wsdl"
+    path                  = "nodo/nodo-per-pa"
+    subscription_required = var.nodo_pagamenti_subkey_required
+    service_url           = null
+  }
+
+  apim_snet = "${local.product}-apim-snet"
 
   fdr_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
-  hostname = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
+  # TODO fix the following uing fdr_hostname
+  hostname                    = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
+  hostnameAzFunctionXmlToJson = var.env == "prod" ? "pagopa-weu-fdr-xml-to-json-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-fdr-xml-to-json-fn.azurewebsites.net"
+  hostnameAzFunctionJsonToXml = var.env == "prod" ? "pagopa-weu-fdr-json-to-xml-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-fdr-json-to-xml-fn.azurewebsites.net"
 
   product_id            = "fdr"
   display_name          = "Flussi di rendicontazione"

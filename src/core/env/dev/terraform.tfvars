@@ -28,16 +28,14 @@ cidr_vnet = ["10.1.0.0/16"]
 cidr_pair_vnet = ["10.101.0.0/16"]
 
 # common
-cidr_subnet_appgateway         = ["10.1.128.0/24"]
-cidr_subnet_postgresql         = ["10.1.129.0/24"]
-cidr_subnet_azdoa              = ["10.1.130.0/24"]
-cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-cidr_subnet_pagopa_proxy       = ["10.1.132.0/24"]
-cidr_subnet_checkout_be        = ["10.1.133.0/24"]
-cidr_subnet_buyerbanks         = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr      = ["10.1.135.0/24"]
-# cidr_subnet_reporting_common         = ["10.1.136.0/24"]
-cidr_subnet_gpd                      = ["10.1.138.0/24"]
+cidr_subnet_appgateway               = ["10.1.128.0/24"]
+cidr_subnet_postgresql               = ["10.1.129.0/24"]
+cidr_subnet_azdoa                    = ["10.1.130.0/24"]
+cidr_subnet_pagopa_proxy_redis       = ["10.1.131.0/24"]
+cidr_subnet_pagopa_proxy             = ["10.1.132.0/24"]
+cidr_subnet_checkout_be              = ["10.1.133.0/24"]
+cidr_subnet_buyerbanks               = ["10.1.134.0/24"]
+cidr_subnet_reporting_fdr            = ["10.1.135.0/24"]
 cidr_subnet_cosmosdb_paymentsdb      = ["10.1.139.0/24"]
 cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
 cidr_subnet_pg_flex_dbms             = ["10.1.141.0/24"]
@@ -50,10 +48,7 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder           = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis                = ["10.1.163.0/24"]
-cidr_subnet_mock_ec              = ["10.1.137.0/29"]
-cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
-
+cidr_subnet_redis = ["10.1.163.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -99,6 +94,9 @@ app_gateway_alerts_enabled              = false
 app_gateway_deny_paths = [
   "/notfound/*",
 ]
+app_gateway_kibana_deny_paths = [
+  "/notfound/*",
+]
 app_gateway_deny_paths_2 = [
   "/notfound2/*",
 ]
@@ -107,6 +105,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "/allowed/*",
   ]
   ips = [
+    "0.0.0.0",
     "0.0.0.0",
     "0.0.0.0",
     "0.0.0.0",
@@ -137,17 +136,10 @@ postgresql_network_rules = {
 }
 prostgresql_db_mockpsp = "mock-psp"
 
-# mock
-mock_ec_enabled                    = true
-mock_ec_secondary_enabled          = true
-mock_psp_service_enabled           = true
-mock_psp_secondary_service_enabled = true
-mock_payment_gateway_enabled       = true
-
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
-apim_fdr_nodo_pagopa_enable     = true
+apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725"
@@ -157,7 +149,7 @@ ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/sit/webservices/i
 lb_aks                 = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
 
 base_path_nodo_oncloud        = "/nodo-sit"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-sit"
+base_path_nodo_ppt_lmi        = "/ppt-lmi-sit-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-sit/syncWisp"
 base_path_nodo_wfesp          = "/wfesp-sit"
 base_path_nodo_fatturazione   = "/fatturazione-sit"
@@ -275,9 +267,9 @@ eventhubs = [
   },
   {
     name              = "nodo-dei-pagamenti-re"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx", "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -302,14 +294,46 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["fdr-re-rx"]
+    keys = [
+      {
+        name   = "fdr-re-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-re-rx"
+        listen = true
+        send   = false
+        manage = false
       }
 
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-fdr"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
+    partitions        = 1
+    message_retention = 1
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
     keys = [
       {
@@ -336,7 +360,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-test", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-test", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -364,12 +388,6 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pn"
         listen = true
         send   = false
         manage = false
@@ -406,7 +424,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-biz-evt-enrich"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -416,38 +434,6 @@ eventhubs = [
       },
       {
         name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-biz-evt-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
-    keys = [
-      {
-        name   = "pagopa-biz-evt-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-io"
         listen = true
         send   = false
         manage = false
@@ -465,40 +451,7 @@ eventhubs = [
         manage = false
       }
     ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-re-ndp"
-    partitions        = 1 # in PROD shall be changed
-    message_retention = 1 # in PROD shall be changed
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-SIA"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-pdnd" # pdnd
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-oper" # oper
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-sia-rx" # oper
-        listen = true
-        send   = false
-        manage = false
-      }
-
-    ]
-  },
+  }
 ]
 
 eventhubs_02 = [
@@ -554,24 +507,46 @@ eventhubs_02 = [
       }
     ]
   },
+  {
+    name              = "quality-improvement-alerts"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-alert-rx", "pagopa-qi-alert-rx-pdnd", "pagopa-qi-alert-rx-debug"]
+    keys = [
+      {
+        name   = "pagopa-qi-alert-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-debug"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
 
 # acr
 acr_enabled = true
 
 # db nodo dei pagamenti
-db_port                            = 1522
-db_service_name                    = "NDPSPCT_PP_NODO4_CFG"
 dns_a_reconds_dbnodo_ips           = ["10.70.67.18"] # db onCloud
 private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
-
-# API Config
-api_config_always_on    = false
-apiconfig_logging_level = "DEBUG"
-
-# API Config FE
-api_config_fe_enabled = true
-cname_record_name     = "config"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
@@ -618,15 +593,6 @@ fdr_delete_retention_days       = 30
 reporting_fdr_function_kind     = "Linux"
 reporting_fdr_function_sku_tier = "Standard"
 reporting_fdr_function_sku_size = "S1"
-
-# gpd
-gpd_plan_kind                = "Linux"
-gpd_plan_sku_tier            = "Standard"
-gpd_plan_sku_size            = "S1"
-gpd_always_on                = false
-gpd_cron_job_enable          = true
-gpd_cron_schedule_valid_to   = "0 */10 * * * *"
-gpd_cron_schedule_expired_to = "0 */20 * * * *"
 
 users = [
   {

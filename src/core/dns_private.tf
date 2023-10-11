@@ -119,16 +119,6 @@ resource "azurerm_private_dns_a_record" "platform_dns_a_private_apim" {
   tags                = var.tags
 }
 
-resource "azurerm_private_dns_cname_record" "config_platform_dns_private_cname" {
-
-  name                = "config"
-  zone_name           = azurerm_private_dns_zone.platform_private_dns_zone.name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  record              = module.api_config_fe_cdn[0].hostname
-  tags                = var.tags
-}
-
 resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet" {
   name                  = module.vnet.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
@@ -266,6 +256,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_
 
   tags = var.tags
 }
+
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_azure_com_vnet_integration" {
   name                  = module.vnet_integration.name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
@@ -287,6 +278,34 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_
   tags = var.tags
 }
 
+# Private DNS Zone for Cosmos DB Table API
+# https://docs.microsoft.com/it-it/azure/cosmos-db/how-to-configure-private-endpoints
+resource "azurerm_private_dns_zone" "privatelink_table_cosmos_azure_com" {
+  name                = "privatelink.table.cosmos.azure.com"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_cosmos_azure_com_vnet" {
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_table_cosmos_azure_com.name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_cosmos_azure_com_vnet_integration" {
+  name                  = module.vnet_integration.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_table_cosmos_azure_com.name
+  virtual_network_id    = module.vnet_integration.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
 
 # Private DNS Zone for Storage Accounts
 
@@ -402,4 +421,34 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_privatelink_mongo
   registration_enabled  = false
 
   tags = var.tags
+}
+
+# Private DNS Zone for Table Storage Account
+# https://learn.microsoft.com/en-us/azure/storage/common/storage-private-endpoints?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json
+resource "azurerm_private_dns_zone" "table_storage_account" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_azure_com_vnet" {
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.table_storage_account.name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+
+resource "azurerm_dns_a_record" "dns_a_forwarder" {
+  count               = var.nat_gateway_enabled ? 1 : 0
+  name                = "forwarder"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = tolist(module.nat_gw[0].public_ip_address)
+  tags                = var.tags
 }

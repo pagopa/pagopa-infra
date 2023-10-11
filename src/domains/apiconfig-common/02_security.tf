@@ -258,3 +258,25 @@ module "letsencrypt_apiconfig" {
   subscription_name = local.subscription_name
 
 }
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "storage_connection_string" {
+  name         = format("api-config-ica-%s-sa-connection-string", var.env_short)
+  value        = data.azurerm_storage_account.api_config_ica_sa.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
+  name         = "nodo5-slack-webhook-url"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

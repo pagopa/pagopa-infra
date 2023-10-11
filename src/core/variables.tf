@@ -75,162 +75,6 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
-# mock_psp_service NEXI
-variable "mock_psp_service_enabled" {
-  type        = bool
-  description = "Mock PSP service Nexi"
-  default     = false
-}
-variable "mock_psp_secondary_service_enabled" {
-  type        = bool
-  description = "Mock Secondary PSP service Nexi"
-  default     = false
-}
-
-# mock_ec
-
-variable "mock_ec_enabled" {
-  type        = bool
-  description = "Mock EC enabled"
-  default     = false
-}
-
-variable "mock_ec_secondary_enabled" {
-  type        = bool
-  description = "Mock Secondary EC enabled"
-  default     = false
-}
-
-variable "mock_ec_always_on" {
-  type        = bool
-  description = "Mock EC always on property"
-  default     = false
-}
-
-variable "mock_ec_tier" {
-  type        = string
-  description = "Mock EC Plan tier"
-  default     = "Standard"
-}
-
-variable "mock_ec_size" {
-  type        = string
-  description = "Mock EC Plan size"
-  default     = "S1"
-}
-
-variable "cidr_subnet_mock_ec" {
-  type        = list(string)
-  description = "Address prefixes subnet mock ec"
-  default     = null
-}
-
-# mock_ec
-
-variable "mock_payment_gateway_enabled" {
-  type        = bool
-  description = "Mock payment gateway enabled"
-  default     = false
-}
-
-variable "mock_payment_gateway_always_on" {
-  type        = bool
-  description = "Mock payment gateway always on property"
-  default     = false
-}
-
-variable "mock_payment_gateway_tier" {
-  type        = string
-  description = "Mock payment gateway Plan tier"
-  default     = "Standard"
-}
-
-variable "mock_payment_gateway_size" {
-  type        = string
-  description = "Mock payment gateway Plan size"
-  default     = "S1"
-}
-
-variable "cidr_subnet_mock_payment_gateway" {
-  type        = list(string)
-  description = "Address prefixes subnet mock payment_gateway"
-  default     = null
-}
-
-# api_config
-
-variable "cidr_subnet_api_config" {
-  type        = list(string)
-  description = "Address prefixes subnet api config"
-  default     = null
-}
-
-variable "api_config_tier" {
-  type        = string
-  description = "Api config Plan tier"
-  default     = "Standard"
-}
-
-variable "api_config_size" {
-  type        = string
-  description = "Api Config Plan size"
-  default     = "S1"
-}
-
-variable "api_config_always_on" {
-  type        = bool
-  description = "Api Config always on property"
-  default     = true
-}
-
-variable "db_port" {
-  type        = number
-  description = "Port number of the DB"
-  default     = 1521
-}
-
-variable "db_service_name" {
-  type        = string
-  description = "Service Name of DB"
-  default     = null
-}
-
-variable "apiconfig_logging_level" {
-  type        = string
-  description = "Logging level of Api Config"
-  default     = "INFO"
-}
-
-variable "xsd_ica" {
-  type        = string
-  description = "XML Schema of Informatica Conto Accredito"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/InformativaContoAccredito_1_2_1.xsd"
-}
-
-variable "xsd_counterpart" {
-  type        = string
-  description = "XML Schema of Tabelle delle Controparti"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/TabellaDelleControparti_1_0_8.xsd"
-}
-
-variable "xsd_cdi" {
-  type        = string
-  description = "XML Schema of Catalogo Dati Informativi"
-  default     = "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.2.0/xsd/CatalogoDatiInformativiPSP.xsd"
-}
-
-
-# api_config_fe
-variable "api_config_fe_enabled" {
-  type        = bool
-  description = "Api Config FE enabled"
-  default     = false
-}
-
-variable "cname_record_name" {
-  type = string
-}
-
 # nodo dei pagamenti
 
 variable "nodo_pagamenti_enabled" {
@@ -669,6 +513,12 @@ variable "app_gateway_max_capacity" {
 variable "app_gateway_deny_paths" {
   type        = list(string)
   description = "Deny paths on app gateway"
+  default     = []
+}
+
+variable "app_gateway_kibana_deny_paths" {
+  type        = list(string)
+  description = "Deny paths on app gateway kibana"
   default     = []
 }
 
@@ -1684,7 +1534,6 @@ variable "platform_private_dns_zone_records" {
 }
 
 # node forwarder
-# api_config
 
 variable "cidr_subnet_node_forwarder" {
   type        = list(string)

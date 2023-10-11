@@ -42,12 +42,6 @@ locals {
   }
 }
 
-
-data "azurerm_key_vault_secret" "io_backend_subscription_key" {
-  name         = "io-backend-subscription-key"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
 # Payment activation APIs (new)
 resource "azurerm_api_management_api_version_set" "checkout_payment_activations_api" {
   name                = format("%s-checkout-payment-activations-api", local.parent_project)
@@ -168,7 +162,7 @@ locals {
     display_name          = "IO for Node WS"
     description           = "SOAP service used from Nodo to relay idPayment"
     path                  = "checkout/io-for-node/CdInfoWisp"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
@@ -220,6 +214,13 @@ resource "azurerm_api_management_api_policy" "apim_cd_info_wisp_policy_v1" {
 
 resource "azurerm_api_management_product_api" "apim_cd_info_wisp_product_v1" {
   product_id          = module.apim_checkout_product[0].product_id
+  api_name            = resource.azurerm_api_management_api.apim_cd_info_wisp_v1.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+
+resource "azurerm_api_management_product_api" "apim_cd_info_wisp_product_v1_apim_for_node" {
+  product_id          = "apim_for_node"
   api_name            = resource.azurerm_api_management_api.apim_cd_info_wisp_v1.name
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
@@ -390,4 +391,12 @@ resource "azurerm_api_management_api_diagnostic" "apim_logs" {
   backend_response {
     body_bytes = 8192
   }
+}
+
+resource "azurerm_api_management_named_value" "pagopa_appservice_proxy_url_value" {
+  name                = "pagopa-appservice-proxy-url"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  display_name        = "pagopa-appservice-proxy-url"
+  value               = format("https://%s", module.pagopa_proxy_app_service.default_site_hostname)
 }

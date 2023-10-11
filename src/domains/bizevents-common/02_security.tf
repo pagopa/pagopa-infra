@@ -178,6 +178,24 @@ resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "ehub_rx_negative_final_biz_conn_string" {
+  count        = var.env_short == "d" ? 1 : 0
+  name         = format("ehub-rx-%s-negative-final-biz-conn-string", var.env_short)
+  value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_rx_negative_awakable_biz_conn_string" {
+  count        = var.env_short == "d" ? 1 : 0
+  name         = format("ehub-rx-%s-negative-awakable-biz-conn-string", var.env_short)
+  value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "payment_manager_subscription_key" {
   name         = "payment-manager-subscription-key"
@@ -191,4 +209,32 @@ resource "azurerm_key_vault_secret" "payment_manager_subscription_key" {
       value,
     ]
   }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "elastic-apm-secret-token" {
+  name         = "payment-manager-subscription-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+data "azurerm_redis_cache" "redis_cache" {
+  name                = format("%s-%s-redis", var.prefix, var.env_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
+resource "azurerm_key_vault_secret" "redis_password" {
+  name         = "redis-password"
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
 }

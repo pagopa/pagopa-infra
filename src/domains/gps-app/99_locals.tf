@@ -12,9 +12,10 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
-  monitor_appinsights_name        = "${local.product}-appinsights"
+  monitor_action_group_slack_name    = "SlackPagoPA"
+  monitor_action_group_email_name    = "PagoPA"
+  monitor_action_group_opsgenie_name = "Opsgenie"
+  monitor_appinsights_name           = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
@@ -38,4 +39,17 @@ locals {
 
   gps_kv_rg = "${local.product}-${var.domain}-sec-rg"
   gps_kv    = "${local.product}-${var.domain}-kv"
+
+  ## APIM GPD ##
+  apim_debt_positions_service_api = {
+    display_name          = "GPD pagoPA - Debt Positions service API for organizations"
+    description           = "API to support Debt Positions service for organizations"
+    path                  = "gpd/debt-positions-service"
+    subscription_required = true
+    service_url           = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-core" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-core"
+  }
+  gpd_core_service_url = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-core" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-core"
+
+  # Product APIM for Node
+  apim_x_node_product_id = "apim_for_node"
 }

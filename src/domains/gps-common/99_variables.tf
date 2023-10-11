@@ -136,6 +136,127 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+variable "cidr_subnet_pg_flex_dbms" {
+  type        = list(string)
+  description = "Postgres Flexible Server network address space."
+}
+
+# Postgres Flexible
+variable "pgres_flex_params" {
+  type = object({
+    private_endpoint_enabled     = bool
+    sku_name                     = string
+    db_version                   = string
+    storage_mb                   = string
+    zone                         = number
+    backup_retention_days        = number
+    geo_redundant_backup_enabled = bool
+    high_availability_enabled    = bool
+    standby_availability_zone    = number
+    pgbouncer_enabled            = bool
+    alerts_enabled               = bool
+    max_connections              = number
+  })
+
+  default = null
+}
+
+variable "pgflex_public_metric_alerts" {
+  description = <<EOD
+  Map of name = criteria objects
+  EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    # "Insights.Container/pods" "Insights.Container/nodes"
+    metric_namespace = string
+    metric_name      = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+    # severity: The severity of this Metric Alert. Possible values are 0, 1, 2, 3 and 4. Defaults to 3. Lower is worst
+    severity = number
+  }))
+
+  default = {
+    cpu_percent = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "cpu_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity         = 2
+    },
+    memory_percent = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "memory_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity         = 2
+    },
+    storage_percent = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "storage_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity         = 2
+    },
+    active_connections = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "active_connections"
+      operator         = "GreaterThan"
+      threshold        = 4000 // 80% of current active connections (5000)
+      severity         = 2
+    },
+    connections_failed = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Total"
+      metric_name      = "connections_failed"
+      operator         = "GreaterThan"
+      threshold        = 10
+      severity         = 2
+    }
+  }
+
+}
+
+variable "postgresql_network_rules" {
+  description = "Network rules restricting access to the postgresql server."
+  type = object({
+    ip_rules                       = list(string)
+    allow_access_to_azure_services = bool
+  })
+  default = {
+    ip_rules                       = []
+    allow_access_to_azure_services = false
+  }
+}
+
+// gpd Database
+variable "gpd_db_name" {
+  type        = string
+  description = "Name of the DB to connect to"
+  default     = "apd"
+}
+
 variable "cosmos_gps_db_params" {
   type = object({
     kind           = string
@@ -165,6 +286,42 @@ variable "cosmos_gps_db_params" {
 variable "cidr_subnet_gps_cosmosdb" {
   type        = list(string)
   description = "Cosmos DB address space"
+  default     = null
+}
+
+variable "cosmos_gpd_payments_db_params" {
+  type = object({
+    kind           = string
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    payments_receipts_table = object({
+      autoscale  = bool
+      throughput = number
+    })
+  })
+}
+
+variable "cidr_subnet_gpd_payments_cosmosdb" {
+  type        = list(string)
+  description = "Cosmos DB gpd payments address space"
   default     = null
 }
 

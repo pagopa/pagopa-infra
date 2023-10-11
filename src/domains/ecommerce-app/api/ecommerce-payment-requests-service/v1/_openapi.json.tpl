@@ -27,6 +27,11 @@
       "url": "https://${hostname}"
     }
   ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "paths": {
     "/payment-requests/{rpt_id}": {
       "get": {
@@ -212,7 +217,7 @@
             "description": "Name of the payment notice issuer",
             "type": "string",
             "minLength": 1,
-            "maxLength": 70
+            "maxLength": 140
           },
           "description": {
             "description": "Payment notice description",
@@ -578,6 +583,13 @@
             "maxLength": 140
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
       }
     }
   }

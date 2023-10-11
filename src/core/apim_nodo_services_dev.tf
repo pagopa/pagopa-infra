@@ -205,6 +205,11 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_dev" {
   })
 }
 
+# Fdr pagoPA legacy
+# nodoInviaFlussoRendicontazione DEV
+# nodoInviaFlussoRendicontazione UAT
+# nodoInviaFlussoRendicontazione PRD
+
 # resource "azurerm_api_management_api_operation_policy" "fdr_policy_dev" {
 
 #   api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_dev[0].name
@@ -553,7 +558,20 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_dev
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
+    base-url                  = "http://{{aks-lb-nexi}}/nodo-dev"
+    is-nodo-decoupler-enabled = false
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
+  api_name            = format("%s-nodo-per-pm-api-dev-v1", local.project)
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "parkedList"
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     base-url                  = "http://{{aks-lb-nexi}}/nodo-dev"
     is-nodo-decoupler-enabled = false
   })
@@ -594,7 +612,7 @@ locals {
   apim_nodo_monitoring_api_dev = {
     display_name          = "Nodo monitoring (DEV)"
     description           = "Nodo monitoring"
-    path                  = "nodo-dev/monitoring"
+    path                  = "nodo-dev-monitoring/monitoring"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
   }

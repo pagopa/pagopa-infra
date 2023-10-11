@@ -15,15 +15,16 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-### External resources
+## APIM
+apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"
 
+### External resources
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
-
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.platform"
-apim_dns_zone_prefix     = "dev.platform"
+external_domain                             = "pagopa.it"
+dns_zone_internal_prefix                    = "internal.dev.platform"
+apim_dns_zone_prefix                        = "dev.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -34,7 +35,7 @@ tls_cert_check_helm = {
 }
 
 # function_app docker
-reporting_batch_image    = "pagopagpdreportingbatch"
+reporting_batch_image    = "pagopa/pagopa-gpd-reporting-batch"
 reporting_service_image  = "pagopagpdreportingservice"
 reporting_analysis_image = "pagopagpdreportinganalysis"
 
@@ -47,6 +48,7 @@ reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
 cidr_subnet_reporting_functions = ["10.1.177.0/24"]
+cidr_subnet_gpd                 = ["10.1.138.0/24"]
 
 reporting_function = false
 reporting_functions_app_sku = {
@@ -56,3 +58,7 @@ reporting_functions_app_sku = {
 }
 
 cname_record_name = "config"
+
+# gpd database config for gpd-app-service
+pgbouncer_enabled = false
+

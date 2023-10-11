@@ -34,7 +34,7 @@ tls_cert_check_helm = {
 }
 
 # function_app docker
-reporting_batch_image    = "pagopagpdreportingbatch"
+reporting_batch_image    = "pagopa/pagopa-gpd-reporting-batch"
 reporting_service_image  = "pagopagpdreportingservice"
 reporting_analysis_image = "pagopagpdreportinganalysis"
 
@@ -47,6 +47,7 @@ reporting_service_function_always_on  = true
 reporting_analysis_function_always_on = true
 
 cidr_subnet_reporting_functions = ["10.1.177.0/24"]
+cidr_subnet_gpd                 = ["10.1.138.0/24"]
 
 reporting_function = false
 reporting_functions_app_sku = {
@@ -56,3 +57,9 @@ reporting_functions_app_sku = {
 }
 
 cname_record_name = "config"
+
+# APIM
+apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
+
+# gpd database config for gpd-app-service
+pgbouncer_enabled = true

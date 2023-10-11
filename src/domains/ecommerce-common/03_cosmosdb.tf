@@ -49,7 +49,8 @@ module "cosmosdb_account_mongodb" {
   main_geo_location_zone_redundant = var.cosmos_mongo_db_params.main_geo_location_zone_redundant
   additional_geo_locations         = var.cosmos_mongo_db_params.additional_geo_locations
 
-  backup_continuous_enabled = var.cosmos_mongo_db_params.backup_continuous_enabled
+  backup_continuous_enabled                    = var.cosmos_mongo_db_params.backup_continuous_enabled
+  enable_provisioned_throughput_exceeded_alert = var.cosmos_mongo_db_params.enable_provisioned_throughput_exceeded_alert
 
   tags = var.tags
 }
@@ -97,7 +98,7 @@ locals {
       shard_key = "transactionId"
     },
     {
-      name = "view"
+      name = "transactions-view"
       indexes = [{
         keys   = ["_id"]
         unique = true
@@ -115,7 +116,7 @@ locals {
           unique = false
         }
       ]
-      shard_key = null
+      shard_key = "_id"
     },
   ]
 }
@@ -139,4 +140,57 @@ module "cosmosdb_ecommerce_collections" {
   indexes     = each.value.indexes
   shard_key   = each.value.shard_key
   lock_enable = var.env_short == "d" ? false : true
+}
+
+# -----------------------------------------------
+# Alerts
+# -----------------------------------------------
+
+resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb.name}] Normalized RU Exceeded"
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+  scopes              = [module.cosmosdb_account_mongodb.id]
+  description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "NormalizedRUConsumption"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [azurerm_resource_group.cosmosdb_ecommerce_rg.location]
+    }
+
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  tags = var.tags
 }

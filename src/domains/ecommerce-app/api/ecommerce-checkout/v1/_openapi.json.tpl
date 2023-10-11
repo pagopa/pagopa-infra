@@ -583,6 +583,20 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "name": "x-transaction-id-from-client",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ecommerce transaction id"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "requestBody": {
@@ -618,6 +632,147 @@
           },
           "404": {
             "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/{id}/sessions": {
+      "post": {
+        "tags": [
+          "ecommerce-methods"
+        ],
+        "operationId": "createSession",
+        "summary": "Create frontend field data paired with a payment gateway session",
+        "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `orderId`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "recaptchaResponse",
+            "description": "Recaptcha response",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment form data successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSessionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Payment gateway did return error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment-methods/{id}/sessions/{orderId}": {
+      "get": {
+        "tags": [
+          "ecommerce-methods"
+        ],
+        "operationId": "getSessionPaymentMethod",
+        "summary": "Get session payment method by ID",
+        "description": "API for retrieve payment method information for a given payment method ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "OrderId ID related to NPG",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-transaction-id-from-client",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ecommerce transaction id"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionPaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Session Payment method not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -857,7 +1012,7 @@
             "description": "Name of the payment notice issuer",
             "type": "string",
             "minLength": 1,
-            "maxLength": 70
+            "maxLength": 140
           },
           "description": {
             "description": "Payment notice description",
@@ -879,8 +1034,7 @@
           }
         },
         "required": [
-          "amount",
-          "paymentContextCode"
+          "amount"
         ]
       },
       "ValidationFaultPaymentProblemJson": {
@@ -1119,6 +1273,10 @@
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
+          "isAllCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
+          },
           "transferList": {
             "type": "array",
             "items": {
@@ -1131,7 +1289,8 @@
         "required": [
           "rptId",
           "amount",
-          "transferList"
+          "transferList",
+          "isAllCCP"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
@@ -1139,6 +1298,7 @@
           "reason": "reason1",
           "amount": 600,
           "authToken": "authToken1",
+          "isAllCCP": false,
           "transferList": [
             {
               "paFiscalCode": "77777777777",
@@ -1275,11 +1435,12 @@
             "example": "idCartFromCreditorInstitution"
           },
           "sendPaymentResultOutcome": {
-            "description": "The outcome of sendPaymentResult api",
+            "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
             "type": "string",
             "enum": [
               "OK",
-              "KO"
+              "KO",
+              "NOT_RECEIVED"
             ]
           },
           "authorizationCode": {
@@ -1292,7 +1453,7 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS",
+            "pattern": "XPAY|VPOS|NPG",
             "description": "Pgs identifier"
           }
         },
@@ -1331,6 +1492,10 @@
             ],
             "description": "Requested language"
           },
+          "isAllCCP": {
+            "type": "boolean",
+            "description": "Check flag for psp validation"
+          },
           "details": {
             "$ref": "#/components/schemas/PaymentInstrumentDetail"
           }
@@ -1341,6 +1506,7 @@
           "paymentInstrumentId",
           "pspId",
           "language",
+          "isAllCCP",
           "details"
         ]
       },
@@ -1431,6 +1597,28 @@
               "holderName": "Name Surname",
               "brand": "VISA",
               "threeDsData": "threeDsData"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for cards NPG authorization",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'cards'",
+                "type": "string"
+              },
+              "orderId": {
+                "type": "string",
+                "description": "NPG transaction order id"
+              }
+            },
+            "required": [
+              "detailType",
+              "orderId"
+            ],
+            "example": {
+              "detailType": "cards",
+              "orderId": "order-id"
             }
           }
         ]
@@ -1627,6 +1815,97 @@
           }
         }
       },
+      "CreateSessionResponse": {
+        "type": "object",
+        "description": "Form data needed to create a payment method input form",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "Identifier of the payment gateway session associated to the form"
+          },
+          "paymentMethodData": {
+            "$ref": "#/components/schemas/CardFormFields"
+          }
+        },
+        "required": [
+          "paymentMethodData",
+          "orderId"
+        ]
+      },
+      "CardFormFields": {
+        "type": "object",
+        "description": "Form fields for credit cards",
+        "properties": {
+          "paymentMethod": {
+            "type": "string"
+          },
+          "form": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            }
+          }
+        },
+        "required": [
+          "paymentMethod",
+          "form"
+        ]
+      },
+      "Field": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "text"
+          },
+          "class": {
+            "type": "string",
+            "example": "cardData"
+          },
+          "id": {
+            "type": "string",
+            "example": "cardholderName"
+          },
+          "src": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
+          }
+        }
+      },
+      "SessionPaymentMethodResponse": {
+        "type": "object",
+        "description": "Session Payment method Response",
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "description": "session ID related to NPG"
+          },
+          "bin": {
+            "type": "string",
+            "description": "Bin of user card"
+          },
+          "lastFourDigits": {
+            "type": "string",
+            "description": "Last four digits of user card"
+          },
+          "expiringDate": {
+            "type": "string",
+            "description": "expiring date of user card"
+          },
+          "brand": {
+            "description": "The card brand name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "sessionId",
+          "bin",
+          "lastFourDigits",
+          "expiringDate",
+          "brand"
+        ]
+      },
       "CartRequest": {
         "description": "Cart request body",
         "type": "object",
@@ -1779,13 +2058,18 @@
             "items": {
               "$ref": "#/components/schemas/TransferListItem"
             }
+          },
+          "isAllCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
           }
         },
         "required": [
           "paymentAmount",
           "primaryCreditorInstitution",
           "transferList",
-          "touchpoint"
+          "touchpoint",
+          "isAllCCP"
         ]
       },
       "CalculateFeeResponse": {
@@ -1794,6 +2078,10 @@
         "properties": {
           "paymentMethodName": {
             "description": "Payment method name",
+            "type": "string"
+          },
+          "paymentMethodDescription": {
+            "description": "Payment method description",
             "type": "string"
           },
           "paymentMethodStatus": {
@@ -1814,6 +2102,7 @@
         "required": [
           "bundles",
           "paymentMethodName",
+          "paymentMethodDescription",
           "paymentMethodStatus"
         ]
       },
