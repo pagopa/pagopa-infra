@@ -62,7 +62,7 @@
                         string timestampOperation = null;
                         if(operationTime != null) {
                             DateTime npgDateTime = DateTime.Parse(operationTime.Replace(" ","T"));
-                            TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Rome");
+                            TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
                             DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(npgDateTime, zone);
                             DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
                             timestampOperation = dateTimeOffset.ToString("o");
