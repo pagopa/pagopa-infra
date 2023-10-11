@@ -29,7 +29,7 @@ locals {
     description           = "PDF Engine Service pagoPA - API"
     path                  = "shared/pdf-engine"
     subscription_required = true
-    service_url           = null
+    service_url           = module.shared_pdf_engine_app_service_java.default_site_hostname
   }
   apim_pdf_engine_node_service_api = {
     display_name          = "PDF Engine Node Service pagoPA - API"
@@ -73,7 +73,7 @@ module "apim_api_pdf_engine_api_v1" {
   })
 
   xml_content = templatefile("./api/pdf-engine/v1/_base_policy.xml", {
-    hostname = local.shared_hostname
+    hostname = local.apim_pdf_engine_service_api.service_url
   })
 }
 
