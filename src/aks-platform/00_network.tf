@@ -23,7 +23,7 @@ data "azurerm_virtual_network" "vnet_pair" {
   count  = local.vpn_pair_enabled ? 1 : 0
 
   name                = local.vnet_pair_name
-  resource_group_name = data.azurerm_resource_group.vnet_pair_rg.name
+  resource_group_name = data.azurerm_resource_group.vnet_pair_rg[0].name
 }
 
 #

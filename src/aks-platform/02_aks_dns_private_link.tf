@@ -88,11 +88,11 @@ resource "null_resource" "create_vnet_integration_aks_link" {
 # linking vnet AKS to vnet pair
 resource "null_resource" "create_aks_dns_private_link_to_vnet_pair" {
 
-  count = var.aks_private_cluster_is_enabled ? 1 : 0
+  count = var.aks_private_cluster_is_enabled && local.vpn_pair_enabled ? 1 : 0
   triggers = {
     cluster_name = module.aks[0].name
-    vnet_id      = data.azurerm_virtual_network.vnet_pair.id
-    vnet_name    = data.azurerm_virtual_network.vnet_pair.name
+    vnet_id      = data.azurerm_virtual_network.vnet_pair[0].id
+    vnet_name    = data.azurerm_virtual_network.vnet_pair[0].name
   }
 
   provisioner "local-exec" {
