@@ -22,9 +22,9 @@ locals {
   #
   # Container App
   #
-  container_app_dns_forwarder_environment_resource_group = "dvopla-d-diego-container-app-rg"
+  container_app_dns_forwarder_environment_resource_group = "dvopla-${var.env_short}-diego-container-app-rg"
 
-  container_app_dns_forwarder_environment_name              = "dvopla-d-diego-cappenv"
+  container_app_dns_forwarder_environment_name              = "dvopla-${var.env_short}-dns-forwarder-cappenv"
   container_app_dapr_environment_name               = "dvopla-d-dapr-cappenv"
   container_app_dapr_environment_component_cosmosdb = "/tmp/${local.container_app_dapr_environment_name}.yaml"
 
@@ -156,25 +156,4 @@ variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
-}
-
-#
-# VNET
-#
-variable "cidr_subnet_container_apps" {
-  type        = list(string)
-  description = "Subnet for container apps in diego domain"
-}
-
-variable "cidr_subnet_container_apps_dapr" {
-  type        = list(string)
-  description = "Subnet for container apps dapr in diego domain"
-}
-
-variable "is_resource_enabled" {
-  type = object({
-    mongodb_dapr            = bool,
-    container_app_dapr      = bool,
-    container_app_dns_forwarder_env = bool,
-  })
 }
