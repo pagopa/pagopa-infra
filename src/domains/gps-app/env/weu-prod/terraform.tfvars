@@ -100,3 +100,7 @@ pod_disruption_budgets = {
   },
 }
 
+
+fn_app_storage_account_info = {
+  account_replication_type = "GZRS"
+}

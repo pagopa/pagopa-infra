@@ -358,6 +358,26 @@ variable "apim_logger_resource_id" {
   default     = null
 }
 
+
+variable "fn_app_storage_account_info" {
+  type = object({
+    account_kind                  = optional(string, "StorageV2")
+    account_tier                  = optional(string, "Standard")
+    account_replication_type      = optional(string, "LRS")
+    advanced_threat_protection    = optional(bool, true)
+    access_tier                   = optional(string, "Hot")
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection = true
+  }
+}
+
+
 variable "pod_disruption_budgets" {
   type = map(object({
     name         = optional(string, null)

@@ -55,7 +55,7 @@ pgres_flex_params = {
   enable_private_dns_registration        = true
 }
 
-sftp_account_replication_type = "LRS"
+sftp_account_replication_type = "GZRS"
 sftp_enable_private_endpoint  = true
 sftp_ip_rules                 = [] # List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed
 
@@ -171,6 +171,16 @@ cidr_subnet_cosmosdb_nodo_re       = ["10.1.170.0/24"]
 cidr_subnet_cosmosdb_nodo_verifyko = ["10.1.173.0/24"]
 
 nodo_storico_allowed_ips = ["93.63.219.230"]
+
+
+nodo_storico_storage_account = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "GZRS"
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = true
+    public_network_access_enabled = true
+}
 
 nodo_re_storage_account = {
   account_kind                  = "StorageV2"

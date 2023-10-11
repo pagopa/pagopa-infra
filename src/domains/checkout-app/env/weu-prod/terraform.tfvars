@@ -54,3 +54,12 @@ checkout_function_autoscale_default = 1
 
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "disabled"
+
+
+function_app_storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "GZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+}

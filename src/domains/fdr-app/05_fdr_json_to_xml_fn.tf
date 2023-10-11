@@ -72,13 +72,7 @@ module "fdr_json_to_xml_function" {
   }
 
   storage_account_name = replace(format("%s-json-2-xml-sa", local.project), "-", "")
-  storage_account_info = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = var.function_app_storage_account_replication_type
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
-  }
+  storage_account_info = var.storage_account_info
 
   app_settings = local.function_json_to_xml_app_settings
 

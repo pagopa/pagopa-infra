@@ -409,17 +409,20 @@ variable "fdr_re_storage_account" {
   }
 }
 
+
 variable "reporting_fdr_storage_account" {
   type = object({
     advanced_threat_protection = bool
     blob_versioning_enabled    = bool
     blob_delete_retention_days = number
+    account_replication_type      = string
   })
 
   default = {
     advanced_threat_protection = false
     blob_versioning_enabled    = false
     blob_delete_retention_days = 30
+    account_replication_type      = "LRS"
   }
 }
 

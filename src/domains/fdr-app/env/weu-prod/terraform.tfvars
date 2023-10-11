@@ -117,6 +117,12 @@ fdr_json_to_xml_function_autoscale = {
   maximum = 10
 }
 
-function_app_storage_account_replication_type = "GZRS"
+storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "GZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+}
 
 ftp_organization = "80078750587,00488410010,97532760580,12300020158"

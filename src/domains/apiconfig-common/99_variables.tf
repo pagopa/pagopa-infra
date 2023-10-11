@@ -160,3 +160,9 @@ variable "enable_apiconfig_sa_backup" {
   default     = false
   description = "(Optional) Enables apiconfig storage account backup"
 }
+
+variable "api_config_replication_type" {
+  type = string
+  default = "LRS"
+  description = "(Optional) Api config storage account replication type"
+}

@@ -76,3 +76,12 @@ afm_storage_params = {
 storage_private_endpoint_enabled = false
 
 enable_iac_pipeline = true
+afm_storage_params = {
+    enabled                       = false,
+    kind                          = "StorageV2"
+    tier                          = "Standard",
+    account_replication_type      = "GZRS",
+    advanced_threat_protection    = false,
+    retention_days                = 30,
+    public_network_access_enabled = false
+}

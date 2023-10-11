@@ -33,7 +33,7 @@ module "logic_app_biz_evt_sa" {
   name                       = replace(format("%s-logic-app-biz-evt-sa", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
-  account_replication_type   = "LRS"
+  account_replication_type   = var.logic_app_storage_account_replication_type
   access_tier                = "Hot"
   versioning_name            = "versioning"
   enable_versioning          = false

@@ -136,3 +136,6 @@ elk_snapshot_sa = {
   blob_versioning_enabled    = true
   advanced_threat_protection = true
 }
+
+
+snapshot_storage_replication_type = "GZRS"

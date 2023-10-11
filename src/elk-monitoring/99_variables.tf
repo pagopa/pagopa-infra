@@ -241,3 +241,9 @@ variable "elk_snapshot_sa" {
     advanced_threat_protection = true
   }
 }
+
+variable "snapshot_storage_replication_type" {
+  type = string
+  default = "LRS"
+  description = "(Optional) ELK snapshot storage replication type"
+}

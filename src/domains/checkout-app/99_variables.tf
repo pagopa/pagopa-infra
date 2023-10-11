@@ -221,3 +221,21 @@ variable "ecommerce_vpos_psps_list" {
   description = "psps list using vpos as comma separated value"
   default     = ""
 }
+
+variable "function_app_storage_account_info" {
+  type = object({
+    account_kind                      = optional(string,"StorageV2" )
+    account_tier                      = optional(string,"Standard" )
+    account_replication_type          = optional(string,"LRS" )
+    access_tier                       = optional(string,"Hot" )
+    advanced_threat_protection_enable = optional(bool,  true)
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+}

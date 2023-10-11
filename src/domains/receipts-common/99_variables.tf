@@ -218,6 +218,13 @@ variable "receipts_queue_delay_sec" {
 }
 
 
+variable "receipts_storage_account_replication_type" {
+  type = string
+  default = "LRS"
+  description = "(Optional) Receipts datastore storage account replication type"
+}
+
+
 variable "enable_sa_backup" {
   type        = bool
   default     = false

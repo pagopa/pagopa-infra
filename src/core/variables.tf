@@ -1639,3 +1639,42 @@ variable "logos_sa_delete_retention_days" {
   default     = null
   description = "(Optional) nodo sftp storage delete retention"
 }
+
+
+variable "logic_app_storage_account_replication_type" {
+  type = string
+  default = "LRS"
+  description = "(Optional) Storage account replication type used for function apps"
+}
+
+
+variable "function_app_storage_account_info" {
+  type = object({
+    account_kind                      = optional(string,"StorageV2" )
+    account_tier                      = optional(string,"Standard" )
+    account_replication_type          = optional(string,"LRS" )
+    access_tier                       = optional(string,"Hot" )
+    advanced_threat_protection_enable = optional(bool,  true)
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+}
+
+
+variable "logos_donations_storage_account_replication_type" {
+  type = string
+  default = "LRS"
+  description = "(Optional) Logos donations storage account replication type"
+}
+
+variable "buyer_banks_storage_account_replication_type" {
+  type = string
+  default = "LRS"
+  description = "(Optional) Buyer banks storage account replication type"
+}
