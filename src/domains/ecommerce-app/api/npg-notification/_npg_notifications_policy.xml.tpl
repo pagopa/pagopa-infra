@@ -61,10 +61,11 @@
                         string operationTime = (string)operation["operationTime"];
                         string timestampOperation = null;
                         if(operationTime != null) {
-                            DateTime npgDateTime = DateTime.Parse(operationTime).Replace(" ","T");
+                            DateTime npgDateTime = DateTime.Parse(operationTime.Replace(" ","T"));
+                            TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Rome");
                             DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(npgDateTime, zone);
                             DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
-                            timestampOperation = dateTimeOffset.ToString("o", CultureInfo.InvariantCulture);
+                            timestampOperation = dateTimeOffset.ToString("o");
                         }
                         JObject outcomeGateway = new JObject();
                         outcomeGateway["paymentGatewayType"] = "NPG";
