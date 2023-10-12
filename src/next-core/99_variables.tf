@@ -22,23 +22,9 @@ locals {
   #
   # Container App
   #
-  container_app_dns_forwarder_environment_resource_group = "dvopla-${var.env_short}-diego-container-app-rg"
 
-  container_app_dns_forwarder_environment_name              = "dvopla-${var.env_short}-dns-forwarder-cappenv"
-  container_app_dapr_environment_name               = "dvopla-d-dapr-cappenv"
-  container_app_dapr_environment_component_cosmosdb = "/tmp/${local.container_app_dapr_environment_name}.yaml"
+  container_app_dns_forwarder_environment_name              = "${local.project}-dns-forwarder-cappenv"
 
-
-  container_app_devops_java_springboot_color_name           = "devops-color-java-capp"
-  container_app_devops_java_springboot_color_revision_id    = "v1"
-  container_app_devops_java_springboot_color_yaml_file_name = "/tmp/${local.container_app_devops_java_springboot_color_revision_id}-${local.container_app_devops_java_springboot_color_name}.yaml"
-
-  container_app_devops_ambassador_name           = "ambassador-capp"
-  container_app_devops_ambassador_revision_id    = "v3"
-  container_app_devops_ambassador_yaml_file_name = "/tmp/${local.container_app_devops_java_springboot_color_revision_id}-${local.container_app_devops_ambassador_name}.yaml"
-
-  cosmosdb_db_name         = "mydbsqldapr"
-  cosmosdb_collection_name = "mycollectiondapr"
 }
 
 variable "prefix" {
@@ -109,15 +95,6 @@ variable "tags" {
   }
 }
 
-variable "terraform_remote_state_core" {
-  type = object({
-    resource_group_name  = string,
-    storage_account_name = string,
-    container_name       = string,
-    key                  = string
-  })
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -147,10 +124,6 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
-variable "dns_zone_prefix" {
-  type        = string
-  description = "The dns subdomain."
-}
 
 variable "dns_zone_internal_prefix" {
   type        = string

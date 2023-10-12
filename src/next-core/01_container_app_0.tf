@@ -15,9 +15,4 @@ resource "null_resource" "update_az_cli" {
       az provider register --namespace Microsoft.OperationalInsights
     EOT
   }
-
-  depends_on = [
-    module.container_apps_snet,
-    azurerm_resource_group.container_app_diego
-  ]
 }
