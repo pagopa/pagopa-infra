@@ -8,8 +8,16 @@
   },
   "tags": [
     {
+      "name": "paymentMethods",
+      "description": "Api's to retrive payment methods",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/WA/overview?homepageId=622658099",
+        "description": "Documentation"
+      }
+    },
+    {
       "name": "wallets",
-      "description": "Api's for handle a wallet",
+      "description": "Api's to handle a wallet",
       "externalDocs": {
         "url": "https://pagopa.atlassian.net/wiki/spaces/WA/overview?homepageId=622658099",
         "description": "Documentation"
@@ -22,6 +30,86 @@
     }
   ],
   "paths": {
+    "/payment-methods": {
+      "get": {
+        "tags": [
+          "paymentMethods"
+        ],
+        "operationId": "getAllPaymentMethods",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Retrieve all Payment Methods",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "description": "Payment Amount",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment methods not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      }
+    },
     "/wallets": {
       "post": {
         "tags": [
@@ -624,6 +712,89 @@
         "maximum": 600,
         "exclusiveMaximum": true,
         "example": 502
+      },
+      "PaymentMethodsResponse": {
+        "type": "object",
+        "description": "Payment methods response",
+        "properties": {
+          "paymentMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodResponse"
+            }
+          }
+        }
+      },
+      "PaymentMethodResponse": {
+        "type": "object",
+        "description": "Payment method Response",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Payment method ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Payment method name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Payment method description"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Payment method asset name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "paymentTypeCode": {
+            "type": "string",
+            "description": "Payment method type code"
+          },
+          "ranges": {
+            "description": "Payment amount range in eurocents",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/Range"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "status",
+          "paymentTypeCode",
+          "ranges"
+        ]
+      },
+      "PaymentMethodStatus": {
+        "type": "string",
+        "description": "Payment method status",
+        "enum": [
+          "ENABLED",
+          "DISABLED",
+          "INCOMING"
+        ]
+      },
+      "Range": {
+        "type": "object",
+        "description": "Payment amount range in cents",
+        "properties": {
+          "min": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "description": "Range min amount"
+          },
+          "max": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          }
+        }
       }
     },
     "securitySchemes": {
