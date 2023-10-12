@@ -91,10 +91,13 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
         
     # E2E test
-    - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
-      parameters:
-        ENVIRONMENT: DEV
-        CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
+    - stage:
+      displayName: '🧪 E2E test on Checkout DEV'
+      jobs: 
+        - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
+          parameters:
+            ENVIRONMENT: DEV
+            CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
 
 
 
@@ -126,11 +129,14 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-    # E2E test in UAT environment
-    - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
-      parameters:
-        ENVIRONMENT: UAT
-        CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
+     # E2E test
+    - stage:
+      displayName: '🧪 E2E test on Checkout UAT'
+      jobs: 
+        - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
+          parameters:
+            ENVIRONMENT: UAT
+            CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
 
 
   #
