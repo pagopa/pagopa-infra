@@ -12,7 +12,7 @@ locals {
   taxonomy_docker_settings = {
     IMAGE_NAME = "pagopa/pagopa-taxonomy"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "ghcr.io"
+    DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
   }
 
   function_taxonomy_app_settings = {
@@ -29,7 +29,7 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
-    DOCKER_REGISTRY_SERVER_URL      = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_URL
+    DOCKER_REGISTRY_SERVER_URL = local.taxonomy_docker_settings.DOCKER_REGISTRY_SERVER_URL
 
     STORAGE_ACCOUNT_CONN_STRING = data.azurerm_storage_account.taxonomy_storage_account.primary_connection_string
     BLOB_CONTAINER_NAME_INPUT   = "input"
