@@ -30,6 +30,7 @@
 | <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
 | <a name="module_apim_apiconfig_cache_product"></a> [apim\_apiconfig\_cache\_product](#module\_apim\_apiconfig\_cache\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
 | <a name="module_apim_apiconfig_selfcare_integration_product"></a> [apim\_apiconfig\_selfcare\_integration\_product](#module\_apim\_apiconfig\_selfcare\_integration\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
+| <a name="module_apim_apiconfig_testing_support_product"></a> [apim\_apiconfig\_testing\_support\_product](#module\_apim\_apiconfig\_testing\_support\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.17 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.2.1 |
 
@@ -49,6 +50,7 @@
 | [azurerm_api_management_group.apiconfig_grp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_product_group.access_control_developers_for_cache](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_group) | resource |
 | [azurerm_api_management_product_group.access_control_developers_for_selfcare_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_group) | resource |
+| [azurerm_api_management_product_group.access_control_developers_for_testing_support](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_group) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.apiconfig_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |

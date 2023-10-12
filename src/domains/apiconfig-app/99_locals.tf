@@ -95,6 +95,16 @@ locals {
 
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
+
+  apiconfig_testing_support_locals = {
+    product_id            = "apiconfig-testing-support"
+    display_name          = "API Config Testing Support"
+    description           = "APIs for testing flow on ApiConfig and Nodo"
+    subscription_required = true
+    subscription_limit    = 1000
+
+    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
+  }
   apim_x_node_product_id = "apim_for_node"
 
   apiconfig_cache_alert = {
