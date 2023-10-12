@@ -113,7 +113,7 @@ locals {
           unique = true
         }
       ]
-      shard_key = "walletId"
+      shard_key = null
     },
   ]
 }
