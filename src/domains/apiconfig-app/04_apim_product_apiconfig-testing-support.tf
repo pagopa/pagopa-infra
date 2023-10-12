@@ -1,4 +1,5 @@
 module "apim_apiconfig_testing_support_product" {
+  count  = var.env_short != "p" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v5.1.0"
 
   product_id   = local.apiconfig_testing_support_locals.product_id
@@ -17,8 +18,10 @@ module "apim_apiconfig_testing_support_product" {
 }
 
 resource "azurerm_api_management_product_group" "access_control_developers_for_testing_support" {
-  product_id          = module.apim_apiconfig_testing_support_product.product_id
+  count               = var.env_short != "p" ? 1 : 0
+  product_id          = module.apim_apiconfig_testing_support_product[0].product_id
   group_name          = data.azurerm_api_management_group.group_developers.name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
+
