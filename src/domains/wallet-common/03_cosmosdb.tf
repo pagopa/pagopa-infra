@@ -109,12 +109,8 @@ locals {
           unique = true
         },
         {
-          keys   = ["walletId", "eventType", "timestamp"]
+          keys   = ["walletId", "timestamp", "eventType"]
           unique = true
-        },
-        {
-          keys   = ["walletId"]
-          unique = false
         }
       ]
       shard_key = "walletId"
