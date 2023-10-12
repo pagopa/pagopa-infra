@@ -92,7 +92,7 @@ stages:
 
     # E2E test
     - stage: "E2E_Tests_Checkout_UAT_environment"
-      displayName: '🧪 Running E2E test on green app'
+      displayName: '🧪 Running E2E test on DEV env'
       pool:
         vmImage: 'ubuntu-latest'
       dependsOn: dev_apply_ecommerce_app
@@ -135,7 +135,7 @@ stages:
 
       # E2E test
     - stage: "E2E_Tests_Checkout_UAT_environment"
-      displayName: '🧪 Running E2E test on green app'
+      displayName: '🧪 Running E2E test on UAT env'
       pool:
         vmImage: 'ubuntu-latest'
       dependsOn: uat_apply_ecommerce_app
