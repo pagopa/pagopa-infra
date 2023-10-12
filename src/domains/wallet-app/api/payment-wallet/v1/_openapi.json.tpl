@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "pagoPA Wallet API",
+    "title": "pagoPA Payment Wallet API",
     "version": "0.0.1",
-    "description": "API to handle wallets PagoPA, where a wallet is triple between user identifier, payment instrument and services (i.e pagoPA, bpd).",
+    "description": "API to handle payment wallets PagoPA for App IO, where a wallet is triple between user identifier, payment instrument and services (i.e pagoPA, bpd).",
     "termsOfService": "https://pagopa.it/terms/"
   },
   "tags": [
@@ -471,10 +471,14 @@
           },
           "useDiagnosticTracing": {
             "type": "boolean"
+          },
+          "paymentMethodTypeId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "required": [
-          "type",
+          "paymentMethodTypeId",
           "services",
           "useDiagnosticTracing"
         ]
@@ -483,9 +487,6 @@
         "type": "object",
         "description": "Wallet creation response",
         "properties": {
-          "walletId": {
-            "$ref": "#/components/schemas/WalletId"
-          },
           "redirectUrl": {
             "type": "string",
             "format": "url",
