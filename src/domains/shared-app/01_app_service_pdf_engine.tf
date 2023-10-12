@@ -93,7 +93,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 
     capacity {
       default = 5
-      minimum = var.env_short == "p" ? 2 : 1
+      minimum = var.env_short == "p" ? 3 : 1
       maximum = 10
     }
 
@@ -169,7 +169,7 @@ module "shared_pdf_engine_app_service_java" {
 
   health_check_path = "/info"
 
-  app_settings = local.shared_pdf_engine_app_settings
+  app_settings = local.shared_pdf_engine_app_settings_java
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
@@ -202,7 +202,7 @@ module "shared_pdf_engine_java_slot_staging" {
 
 
   # App settings
-  app_settings = local.shared_pdf_engine_app_settings
+  app_settings = local.shared_pdf_engine_app_settings_java
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
@@ -225,7 +225,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 
     capacity {
       default = 5
-      minimum = var.env_short == "p" ? 2 : 1
+      minimum = var.env_short == "p" ? 3 : 1
       maximum = 10
     }
 
