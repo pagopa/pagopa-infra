@@ -91,7 +91,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
     # E2E test
-    - stage: "E2E_Tests_Checkout_UAT_environment"
+    - stage: "E2E_Tests_Checkout_DEV_environment"
       displayName: '🧪 Running E2E test on DEV env'
       pool:
         vmImage: 'ubuntu-latest'
