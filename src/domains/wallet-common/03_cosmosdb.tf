@@ -83,8 +83,8 @@ locals {
         unique = true
         },
         {
-        keys   = ["name"]
-        unique = true
+          keys   = ["name"]
+          unique = true
         }
       ]
       shard_key = null
@@ -92,8 +92,8 @@ locals {
     {
       name = "wallets"
       indexes = [{
-          keys   = ["_id"]
-          unique = true
+        keys   = ["_id"]
+        unique = true
         },
         {
           keys   = ["userId"]
@@ -105,8 +105,8 @@ locals {
     {
       name = "wallet-log-events"
       indexes = [{
-          keys   = ["_id"]
-          unique = true
+        keys   = ["_id"]
+        unique = true
         },
         {
           keys   = ["walletId", "timestamp", "eventType"]
