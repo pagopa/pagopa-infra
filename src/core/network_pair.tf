@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg_pair_vnet" {
-    count  = local.vpn_pair_enabled ? 1 : 0
+  count  = local.vpn_pair_enabled ? 1 : 0
 
 
   name     = "${local.project_pair}-vnet-rg"
