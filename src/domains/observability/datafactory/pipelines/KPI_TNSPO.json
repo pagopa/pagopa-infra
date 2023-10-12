@@ -1,9 +1,9 @@
 {
-    "name":"Copy From ReEvent To KPI_TPNP",
+    "name":"Copy of data for KPI",
     "type":"Copy",
     "dependsOn":[
        {
-          "activity":"Set variable1",
+          "activity":"Configure count_record variable",
           "dependencyConditions":[
              "Completed"
           ]
@@ -32,7 +32,7 @@
              }
           ],
           "query":{
-             "value":"let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add('minute', -15, trigger_start);\nlet end=datetime_add('minute', 10, start);\nlet end_resp=datetime_add('minute', 15, start);\nlet pspNotifyPayment_Req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , payload_xml)\n| extend channel = extract(\"<idChannel>(.*)</idChannel>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, idBrokerPSP, psp, channel, sessionId, tipoEvento;\nlet pspNotifyPayment_Resp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, sessionId, outcome, tipoEvento;\npspNotifyPayment_Req\n| join kind=leftouter pspNotifyPayment_Resp on idDominio, iuv, ccp, sessionId, tipoEvento\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend diff_time_in_ms=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n| extend IS_TIMEOUT=case(isempty(RESPONSE_TIMESTAMP), true, false)\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento",
+             "value":"let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add('minute', -15, trigger_start);\nlet end=datetime_add('minute', 10, start);\nlet end_sp=datetime_add('minute', 15, start);\nlet pspNP = ReEvent\n| where insertedTimestamp between (start .. end)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where sottoTipoEvento == \"RESP\"\n| project insertedTimestamp, idDominio, iuv, ccp, psp, paymentToken, PSP_METHOD=tipoEvento;\nlet SPO = ReEvent\n| where insertedTimestamp between (start .. end_sp)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| project insertedTimestamp, idDominio, iuv, ccp, psp, outcome, stazione, canale, paymentToken, NODE_METHOD=tipoEvento;\npspNP\n| join kind=leftouter SPO on idDominio, iuv, paymentToken\n| extend diff_time_in_ms = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| project-rename REQUEST_PSPNOTIFY=insertedTimestamp, REQUEST_SPO=insertedTimestamp1\n| extend NO_RESPONSE=case(isempty(REQUEST_SPO), true, false)\n| extend ID_BROKER_PSP=split(canale, \"_\", 0)[0]\n| extend ID_BROKER_PA=split(stazione, \"_\", 0)[0]\n| project REQUEST_PSPNOTIFY, REQUEST_SPO, ID_DOMINIO=idDominio, IUV=iuv, TOKEN=paymentToken, DIFF_TIME_IN_MS=diff_time_in_ms, PSP=psp, OUTCOME=outcome, STAZIONE=stazione, CANALE=canale, ID_BROKER_PSP, ID_BROKER_PA, NO_RESPONSE, NODE_METHOD, PSP_METHOD",
              "type":"Expression"
           },
           "queryTimeout":"00:10:00",
@@ -49,31 +49,31 @@
           "mappings":[
              {
                 "source":{
-                   "name":"REQUEST_TIMESTAMP",
+                   "name":"REQUEST_PSPNOTIFY",
                    "type":"DateTime",
                    "physicalType":"datetime"
                 },
                 "sink":{
-                   "name":"REQUEST_TIMESTAMP",
+                   "name":"REQUEST_PSPNOTIFY",
                    "type":"DateTime",
                    "physicalType":"datetime"
                 }
              },
              {
                 "source":{
-                   "name":"RESPONSE_TIMESTAMP",
+                   "name":"REQUEST_SPO",
                    "type":"DateTime",
                    "physicalType":"datetime"
                 },
                 "sink":{
-                   "name":"RESPONSE_TIMESTAMP",
+                   "name":"REQUEST_SPO",
                    "type":"DateTime",
                    "physicalType":"datetime"
                 }
              },
              {
                 "source":{
-                   "name":"idDominio",
+                   "name":"ID_DOMINIO",
                    "type":"String",
                    "physicalType":"string"
                 },
@@ -85,7 +85,7 @@
              },
              {
                 "source":{
-                   "name":"iuv",
+                   "name":"IUV",
                    "type":"String",
                    "physicalType":"string"
                 },
@@ -97,7 +97,7 @@
              },
              {
                 "source":{
-                   "name":"ccp",
+                   "name":"TOKEN",
                    "type":"String",
                    "physicalType":"string"
                 },
@@ -109,9 +109,9 @@
              },
              {
                 "source":{
-                   "name":"idBrokerPSP",
+                   "name":"ID_BROKER_PSP",
                    "type":"String",
-                   "physicalType":"string"
+                   "physicalType":"dynamic"
                 },
                 "sink":{
                    "name":"ID_BROKER_PSP",
@@ -121,7 +121,19 @@
              },
              {
                 "source":{
-                   "name":"psp",
+                   "name":"ID_BROKER_PA",
+                   "type":"String",
+                   "physicalType":"dynamic"
+                },
+                "sink":{
+                   "name":"ID_BROKER_PA",
+                   "type":"String",
+                   "physicalType":"string"
+                }
+             },
+             {
+                "source":{
+                   "name":"PSP",
                    "type":"String",
                    "physicalType":"string"
                 },
@@ -133,7 +145,19 @@
              },
              {
                 "source":{
-                   "name":"channel",
+                   "name":"STAZIONE",
+                   "type":"String",
+                   "physicalType":"string"
+                },
+                "sink":{
+                   "name":"STAZIONE",
+                   "type":"String",
+                   "physicalType":"string"
+                }
+             },
+             {
+                "source":{
+                   "name":"CANALE",
                    "type":"String",
                    "physicalType":"string"
                 },
@@ -145,19 +169,7 @@
              },
              {
                 "source":{
-                   "name":"outcome",
-                   "type":"String",
-                   "physicalType":"string"
-                },
-                "sink":{
-                   "name":"OUTCOME",
-                   "type":"String",
-                   "physicalType":"string"
-                }
-             },
-             {
-                "source":{
-                   "name":"diff_time_in_ms",
+                   "name":"DIFF_TIME_IN_MS",
                    "type":"Int64",
                    "physicalType":"long"
                 },
@@ -169,12 +181,24 @@
              },
              {
                 "source":{
-                   "name":"IS_TIMEOUT",
+                   "name":"OUTCOME",
+                   "type":"String",
+                   "physicalType":"string"
+                },
+                "sink":{
+                   "name":"OUTCOME",
+                   "type":"String",
+                   "physicalType":"string"
+                }
+             },
+             {
+                "source":{
+                   "name":"NO_RESPONSE",
                    "type":"Boolean",
                    "physicalType":"bool"
                 },
                 "sink":{
-                   "name":"IS_TIMEOUT",
+                   "name":"NO_RESPONSE",
                    "type":"Boolean",
                    "physicalType":"bool"
                 }
@@ -186,6 +210,30 @@
                 },
                 "sink":{
                    "name":"pipelineRunID",
+                   "type":"String",
+                   "physicalType":"string"
+                }
+             },
+             {
+                "source":{
+                   "name":"NODE_METHOD",
+                   "type":"String",
+                   "physicalType":"string"
+                },
+                "sink":{
+                   "name":"NODE_METHOD",
+                   "type":"String",
+                   "physicalType":"string"
+                }
+             },
+             {
+                "source":{
+                   "name":"PSP_METHOD",
+                   "type":"String",
+                   "physicalType":"string"
+                },
+                "sink":{
+                   "name":"PSP_METHOD",
                    "type":"String",
                    "physicalType":"string"
                 }
@@ -210,9 +258,10 @@
           "type":"DatasetReference"
        }
     ]
-},
-{
-    "name":"run_id",
+ },
+ {
+    "name":"Configure run_id variable",
+    "description":"La variabile contiene l'id univoco di esecuzione della pipeLine",
     "type":"SetVariable",
     "dependsOn":[
        
@@ -231,13 +280,14 @@
           "type":"Expression"
        }
     }
-},
-{
-    "name":"start_date",
+ },
+ {
+    "name":"Configure start_date variable",
+    "description":"La variabile contiene il valore relativo alla data di start della pipeline, prelevato a sua volta dalla data di start del trigger",
     "type":"SetVariable",
     "dependsOn":[
        {
-          "activity":"run_id",
+          "activity":"Configure run_id variable",
           "dependencyConditions":[
              "Completed"
           ]
@@ -257,13 +307,14 @@
           "type":"Expression"
        }
     }
-},
-{
-    "name":"Lookup1",
+ },
+ {
+    "name":"Count dei record",
+    "description":"Prelevo la count dei record per un check finale",
     "type":"Lookup",
     "dependsOn":[
        {
-          "activity":"start_date",
+          "activity":"Configure start_date variable",
           "dependencyConditions":[
              "Completed"
           ]
@@ -283,7 +334,7 @@
        "source":{
           "type":"AzureDataExplorerSource",
           "query":{
-             "value":"let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add('minute', -15, trigger_start);\nlet end=datetime_add('minute', 10, start);\nlet end_resp=datetime_add('minute', 15, start);\nlet pspNotifyPayment_Req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , payload_xml)\n| extend channel = extract(\"<idChannel>(.*)</idChannel>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, idBrokerPSP, psp, channel, sessionId, tipoEvento;\nlet pspNotifyPayment_Resp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, sessionId, outcome, tipoEvento;\npspNotifyPayment_Req\n| join kind=leftouter pspNotifyPayment_Resp on idDominio, iuv, ccp, sessionId\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend diff_time_in_ms=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n| extend IS_TIMEOUT=case(isempty(RESPONSE_TIMESTAMP), true, false)\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento",
+             "value":"let trigger_start=bin(datetime_utc_to_local(datetime('@{variables('start_date')}'), \"Europe/Rome\"), 10m);\nlet start=datetime_add('minute', -15, trigger_start);\nlet end=datetime_add('minute', 10, start);\nlet end_sp=datetime_add('minute', 15, start);\nlet pspNP = ReEvent\n| where insertedTimestamp between (start .. end)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where sottoTipoEvento == \"RESP\"\n| project insertedTimestamp, idDominio, iuv, ccp, psp, paymentToken, PSP_METHOD=tipoEvento;\nlet SPO = ReEvent\n| where insertedTimestamp between (start .. end_sp)\n| where categoriaEvento == \"INTERFACCIA\"\n| where tipoEvento in (\"sendPaymentOutcome\", \"sendPaymentOutcomeV2\")\n| where sottoTipoEvento == \"REQ\"\n| extend xml_payload = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1, xml_payload)\n| project insertedTimestamp, idDominio, iuv, ccp, psp, outcome, stazione, canale, paymentToken, NODE_METHOD=tipoEvento;\npspNP\n| join kind=leftouter SPO on idDominio, iuv, paymentToken\n| extend diff_time_in_ms = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| project-rename REQUEST_PSPNOTIFY=insertedTimestamp, REQUEST_SPO=insertedTimestamp1\n| extend NO_RESPONSE=case(isempty(REQUEST_SPO), true, false)\n| extend ID_BROKER_PSP=split(canale, \"_\", 0)[0]\n| extend ID_BROKER_PA=split(stazione, \"_\", 0)[0]\n| project REQUEST_PSPNOTIFY, REQUEST_SPO, ID_DOMINIO=idDominio, IUV=iuv, TOKEN=paymentToken, DIFF_TIME_IN_MS=diff_time_in_ms, PSP=psp, OUTCOME=outcome, STAZIONE=stazione, CANALE=canale, ID_BROKER_PSP, ID_BROKER_PA, NO_RESPONSE, NODE_METHOD, PSP_METHOD",
              "type":"Expression"
           },
           "queryTimeout":"00:10:00",
@@ -295,13 +346,14 @@
        },
        "firstRowOnly":false
     }
-},
-{
-    "name":"Set variable1",
+ },
+ {
+    "name":"Configure count_record variable",
+    "description":"Contiene il numero totale dei record che saranno oggetto di ingestion. Viene utilizzato per il check del caricamento ",
     "type":"SetVariable",
     "dependsOn":[
        {
-          "activity":"Lookup1",
+          "activity":"Count dei record",
           "dependencyConditions":[
              "Completed"
           ]
@@ -317,17 +369,17 @@
     "typeProperties":{
        "variableName":"count_record",
        "value":{
-          "value":"@string(activity('Lookup1').output.count)",
+          "value":"@string(activity('Count dei record').output.count)",
           "type":"Expression"
        }
     }
-},
-{
+ },
+ {
     "name":"If Condition1",
     "type":"IfCondition",
     "dependsOn":[
        {
-          "activity":"Copy From ReEvent To KPI_TPNP",
+          "activity":"Copy of data for KPI",
           "dependencyConditions":[
              "Completed"
           ]
@@ -338,7 +390,7 @@
     ],
     "typeProperties":{
        "expression":{
-          "value":"@equals(variables('count_record'),string(activity('Copy From ReEvent To KPI_TPNP').output.rowsCopied))",
+          "value":"@equals(variables('count_record'),string(activity('Copy of data for KPI').output.rowsCopied))",
           "type":"Expression"
        },
        "ifFalseActivities":[
@@ -353,7 +405,7 @@
              ],
              "typeProperties":{
                 "message":{
-                   "value":"@concat('Lette :' ,variables('count_record'), ' Scritte : ', activity('Copy From ReEvent To KPI_TPNP').output.rowsCopied)",
+                   "value":"@concat('Lette :' ,variables('count_record'), ' Scritte : ', activity('Copy of data for KPI').output.rowsCopied)",
                    "type":"Expression"
                 },
                 "errorCode":"412"
@@ -361,4 +413,4 @@
           }
        ]
     }
-}
+ }
