@@ -46,11 +46,10 @@
       <choose>
           <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") )">
               <set-variable name="walletId" value="@{
-                string requestBody = ((string)context.Variables["requestBody"]);
-                string parameters = requestBody!=null && requestBody.Split('?').Length >= 1 ? requestBody.Split('?')[1] : "";
-                string[] queryParams = parameters != null ? queryParams = parameters.Split('&'): null;
-                string[] firstQueryParam = queryParams != null && queryParams.Length >=1 ? queryParams[0].Split('=') : null;
-                return firstQueryParam!=null && firstQueryParam.Length ==2 ? firstQueryParam[1]: "";
+                    string requestBody = ((string)context.Variables["requestBody"]);
+                    string walletParam = requestBody!=null && requestBody.Split('&').Length >= 1 ? requestBody.Split('&')[0] : "";
+                    string walletId = walletParam != null && walletParam.Split('=').Length == 2 ? walletParam.Split('=')[1] : "";
+                    return walletId;
                 }" />
               <set-header name="Set-Cookie" exists-action="append">
                   <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
