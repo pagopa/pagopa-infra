@@ -136,7 +136,7 @@ module "cosmosdb_wallet_collections" {
 
   indexes     = each.value.indexes
   shard_key   = each.value.shard_key
-  lock_enable = var.env_short == "d" ? false : true
+  lock_enable = var.env_short != "p" ? false : true
 }
 
 # -----------------------------------------------
