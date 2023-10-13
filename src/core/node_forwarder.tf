@@ -142,6 +142,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
   target_resource_id  = module.node_forwarder_app_service.plan_id
   enabled             = var.node_forwarder_autoscale_enabled
 
+  # default profile on REQUESTs
   profile {
     name = "default"
 
@@ -195,16 +196,6 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
       }
     }
 
-  }
-  profile {
-    name = "response-time"
-
-    capacity {
-      default = 5
-      minimum = 3
-      maximum = 10
-    }
-
     # Supported metrics for Microsoft.Web/sites 
     # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
@@ -250,7 +241,73 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
         cooldown  = "PT20M"
       }
     }
+
   }
+
+  # addded profile on CPU avg
+  # profile {
+  #   name = "response-time"
+
+  #   capacity {
+  #     default = 5
+  #     minimum = 3
+  #     maximum = 10
+  #   }
+
+  #   # Supported metrics for Microsoft.Web/sites 
+  #   # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+  #   rule {
+  #     metric_trigger {
+  #       metric_name              = "HttpResponseTime"
+  #       metric_resource_id       = module.node_forwarder_app_service.id
+  #       metric_namespace         = "microsoft.web/sites"
+  #       time_grain               = "PT1M"
+  #       statistic                = "Average"
+  #       time_window              = "PT5M"
+  #       time_aggregation         = "Average"
+  #       operator                 = "GreaterThan"
+  #       threshold                = 3 #sec
+  #       divide_by_instance_count = false
+  #     }
+
+  #     scale_action {
+  #       direction = "Increase"
+  #       type      = "ChangeCount"
+  #       value     = "2"
+  #       cooldown  = "PT5M"
+  #     }
+  #   }
+
+  #   rule {
+  #     metric_trigger {
+  #       metric_name              = "HttpResponseTime"
+  #       metric_resource_id       = module.node_forwarder_app_service.id
+  #       metric_namespace         = "microsoft.web/sites"
+  #       time_grain               = "PT1M"
+  #       statistic                = "Average"
+  #       time_window              = "PT5M"
+  #       time_aggregation         = "Average"
+  #       operator                 = "LessThan"
+  #       threshold                = 2 #sec
+  #       divide_by_instance_count = false
+  #     }
+
+  #     scale_action {
+  #       direction = "Decrease"
+  #       type      = "ChangeCount"
+  #       value     = "1"
+  #       cooldown  = "PT20M"
+  #     }
+  #   }
+
+  #   recurrence {
+  #     timezone = "E. Europe Standard Time"
+  #     days     = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+  #     hours    = [6]
+  #     minutes  = [0]
+  #   }
+
+  # }
 
 }
 
