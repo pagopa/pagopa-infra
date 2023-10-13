@@ -52,7 +52,7 @@
           </when>
       </choose>
       <choose>
-        <when condition="@( context.Request.Url.Path.Contains("/logout") )">
+        <when condition="@( context.Request.Body != null && context.Request.Url.Path.Contains("/logout") )">
           <set-variable name="walletIdLogout" value="@{
               var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
               var pattern = "walletId=([\\S]*);";
