@@ -79,6 +79,16 @@ resource "azurerm_api_management_api_operation_policy" "post_wallets" {
   xml_content = file("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_payment_methods" {
+  api_name            = "${local.project}-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getAllPaymentMethods"
+
+  xml_content = templatefile("./api/payment-wallet/v1/_get_payment_methods_policy.xml.tpl", { ecommerce_hostname = local.ecommerce_hostname }
+  )
+}
+
 #################################################
 ## API wallet notifications service                          ##
 #################################################

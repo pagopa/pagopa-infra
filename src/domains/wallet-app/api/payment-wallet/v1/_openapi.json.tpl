@@ -560,13 +560,13 @@
           "useDiagnosticTracing": {
             "type": "boolean"
           },
-          "paymentMethodTypeId": {
+          "paymentMethodId": {
             "type": "string",
             "format": "uuid"
           }
         },
         "required": [
-          "paymentMethodTypeId",
+          "paymentMethodId",
           "services",
           "useDiagnosticTracing"
         ]
