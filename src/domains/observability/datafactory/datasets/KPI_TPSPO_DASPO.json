@@ -1,0 +1,22 @@
+[
+    {
+        "name": "ACTIVATE_REQ",
+        "type": "datetime"
+    },
+    {
+        "name": "INTERMEDIARIO_PSP",
+        "type": "string"
+    },
+    {
+        "name": "PSP",
+        "type": "string"
+    },
+    {
+        "name": "DETAILED_INFO",
+        "type": "dynamic"
+    },
+    {
+        "name": "pipelineRunID",
+        "type": "string"
+    }
+]

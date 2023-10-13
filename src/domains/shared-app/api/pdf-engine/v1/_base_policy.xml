@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://${hostname}/pagopa-pdf-engine" />
+      <set-backend-service base-url="https://${hostname}" />
     </inbound>
     <outbound>
       <base />
