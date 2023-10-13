@@ -45,7 +45,13 @@
       <!-- cookie for walletId for new wallet backward compatible -->
       <choose>
           <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") )">
-              <set-variable name="walletId" value="@(((string)context.Variables["requestBody"]).Split('&')[0].Split('=')[1])" />
+              <set-variable name="walletId" value="@{
+                string requestBody = ((string)context.Variables["requestBody"]);
+                string parameters = requestBody!=null && requestBody.Split('?').Length >= 1 ? requestBody.Split('?')[1] : "";
+                string[] queryParams = parameters != null ? queryParams = parameters.Split('&'): null;
+                string[] firstQueryParam = queryParams != null && queryParams.Length >=1 ? queryParams[0].Split('=') : null;
+                return firstQueryParam!=null && firstQueryParam.Length ==2 ? firstQueryParam[1]: "";
+                }" />
               <set-header name="Set-Cookie" exists-action="append">
                   <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
               </set-header>
