@@ -25,6 +25,12 @@
         </otherwise>
       </choose>
       <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
+      <!-- cookie for walletId for new wallet backward compatible -->
+      <choose>
+        <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") && context.Request.Body != null ) ">
+          <set-variable name="requestBody" value="@(context.Request.Body.As<string>(preserveContent: true))" />
+        </when>
+      </choose>
     </inbound>
     <outbound>
       <base />
@@ -33,6 +39,38 @@
           <set-variable name="locationIn" value=" @(Regex.Replace((string)context.Response.Headers.GetValueOrDefault("location",""), "{{pm-host}}", "https://{{wisp2-gov-it}}"))" />
           <set-header name="location" exists-action="override">
               <value>@(context.Variables.GetValueOrDefault<string>("locationIn"))</value>
+          </set-header>
+        </when>
+      </choose>
+      <!-- cookie for walletId for new wallet backward compatible -->
+      <choose>
+          <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") )">
+              <set-variable name="walletId" value="@(((string)context.Variables["requestBody"]).Split('&')[0].Split('=')[1])" />
+              <set-header name="Set-Cookie" exists-action="append">
+                  <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
+              </set-header>
+          </when>
+      </choose>
+      <choose>
+        <when condition="@( context.Request.Url.Path.Contains("/logout") )">
+          <set-variable name="walletIdLogout" value="@{
+              var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
+              var pattern = "walletId=([\\S]*);";
+
+              var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+              Match match = regex.Match(cookie);
+              if(match.Success && match.Groups.Count == 2)
+              {
+                  return match.Groups[1].Value;
+              }
+
+              return "";
+          }" />
+          <set-header name="Set-Cookie" exists-action="override">
+            <value>walletId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+          </set-header>
+          <set-header name="location" exists-action="override">
+            <value>@($"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}")</value>
           </set-header>
         </when>
       </choose>
