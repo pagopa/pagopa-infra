@@ -27,6 +27,8 @@ ingress_load_balancer_ip = "10.1.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
+dns_zone_prefix          = "uat.receipts"
+dns_zone_platform        = "uat.platform"
 
 # CosmosDB Receipts Datastore
 receipts_datastore_cosmos_db_params = {
