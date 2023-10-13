@@ -46,7 +46,7 @@
           {
             "name": "amount",
             "in": "query",
-            "description": "Payment Amount",
+            "description": "Payment Amount expressed in eurocents",
             "required": false,
             "schema": {
               "type": "number"
