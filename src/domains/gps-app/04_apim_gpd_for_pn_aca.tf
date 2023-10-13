@@ -4,16 +4,16 @@
 
 locals {
   apim_pn_integration_rest_api = {
-    display_name          = "Integrazione PN GPD"
-    description           = "REST API del servizio Payments per Gestione Posizione Debitorie"
-    published             = true
+    display_name          = "GPD PN Integration"
+    description           = "GPD REST API for PN for retrieve payment options and update payment option fee"
+    published             = false
     subscription_required = true
     approval_required     = true
     subscriptions_limit   = 1000
-    service_url           = null
+    service_url           = local.gpd_core_service_url
     gpd_service = {
-      display_name = "Integrazione PN"
-      description  = "REST API GPD per piattaforma notifiche"
+      display_name = "GPD PN Integration"
+      description  = "GPD API per Piattaforma Notifiche"
       path         = "pn-integration/gpd/api"
     }
   }
@@ -44,6 +44,7 @@ module "apim_pn_integration_product" {
 #############################
 ## Product aca-integration ##
 #############################
+
 module "apim_aca_integration_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
@@ -78,7 +79,6 @@ resource "azurerm_api_management_api_version_set" "api_pn_integration_api" {
 module "apim_api_pn_integration_gpd_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
-
   name                  = format("%s-pn-integration-gpd-api-aks", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
@@ -100,6 +100,5 @@ module "apim_api_pn_integration_gpd_api_v1" {
   })
 
   xml_content = templatefile("./api/pn-integration/_base_policy.xml", {
-    hostname = local.gpd_core_service_url
   })
 }
