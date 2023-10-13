@@ -88,11 +88,24 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
+variable "dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The receipts dns subdomain."
+}
+
 variable "external_domain" {
   type        = string
   default     = null
   description = "Domain for delegation"
 }
+
+variable "dns_zone_platform" {
+  type        = string
+  default     = null
+  description = "The platform dns subdomain."
+}
+
 
 variable "dns_zone_internal_prefix" {
   type        = string
@@ -144,6 +157,12 @@ variable "receipts_datastore_fn_sa_enable_versioning" {
   type        = bool
   description = "Enable sa versioning"
   default     = false
+}
+
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "The DNS default TTL in seconds"
+  default     = 3600
 }
 
 variable "receipts_datastore_fn_sa_advanced_threat_protection" {
