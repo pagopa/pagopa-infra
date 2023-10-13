@@ -28,7 +28,7 @@ locals {
     display_name          = "pagoPA - payment wallet API for IO APP"
     description           = "API to support payment wallet for IO APP"
     path                  = "payment-wallet"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
