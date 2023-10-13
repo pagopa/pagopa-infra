@@ -388,4 +388,81 @@ AzureDiagnostics
 
 }
 
+#################################
+# Alert on mem or cpu avr 
+#################################
+resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-pagopa-node-forwarder-cpu-usage-over-80"
+
+  scopes      = [module.node_forwarder_app_service.plan_id]
+  description = "Forwarder CPU usage greater than 80% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
+  severity    = 3
+  frequency   = "PT5M"
+  window_size = "PT5M"
+
+  target_resource_type     = "microsoft.web/serverfarms"
+  target_resource_location = var.location
+
+
+  criteria {
+    metric_namespace       = "microsoft.web/serverfarms"
+    metric_name            = "CpuPercentage"
+    aggregation            = "Average"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-pagopa-node-forwarder-mem-usage-over-80"
+
+  scopes      = [module.node_forwarder_app_service.plan_id]
+  description = "Forwarder MEM usage greater than 80% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
+  severity    = 3
+  frequency   = "PT5M"
+  window_size = "PT5M"
+
+  target_resource_type     = "microsoft.web/serverfarms"
+  target_resource_location = var.location
+
+
+  criteria {
+    metric_namespace       = "microsoft.web/serverfarms"
+    metric_name            = "MemoryPercentage"
+    aggregation            = "Average"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+  }
+
+  tags = var.tags
+}
+
 
