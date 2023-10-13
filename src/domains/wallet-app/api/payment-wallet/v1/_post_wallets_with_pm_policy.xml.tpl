@@ -21,7 +21,7 @@
         </set-header>
         <set-body>@{
             return new JObject(
-                          new JProperty("redirectUrl", $"https://${var.env}.payment-wallet.pagopa.it/onboarding#sessionToken={((string)((JObject) context.Variables["pmSession"])["data"]["sessionToken"])}")
+                          new JProperty("redirectUrl", $"https://${env}.payment-wallet.pagopa.it/onboarding#sessionToken={((string)((JObject) context.Variables["pmSession"])["data"]["sessionToken"])}")
                 ).ToString();
         }</set-body>
       </return-response>

@@ -76,7 +76,9 @@ resource "azurerm_api_management_api_operation_policy" "post_wallets" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "createWallet"
 
-  xml_content = file("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl")
+  xml_content = templatefile("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl", {
+    env = var.env
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_payment_methods" {
@@ -90,7 +92,7 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods" {
 }
 
 #################################################
-## API wallet notifications service                          ##
+## API wallet notifications service            ##
 #################################################
 locals {
   apim_wallet_notifications_service_api = {
