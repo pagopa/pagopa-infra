@@ -1,7 +1,7 @@
 prefix          = "pagopa"
 env_short       = "u"
 env             = "uat"
-domain          = "next-core"
+domain          = "core"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
@@ -27,8 +27,11 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 
-is_resource_enabled = {
-  mongodb_dapr            = false,
-  container_app_dapr      = false,
-  container_app_diego_env = false,
+#
+# CIRDs
+#
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
+
+dns_forwarder_backup_is_enabled = {
+  uat = true
 }

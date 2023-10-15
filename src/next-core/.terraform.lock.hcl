@@ -47,3 +47,10 @@ provider "registry.terraform.io/hashicorp/null" {
     "h1:Pctug/s/2Hg5FJqjYcTM0kPyx3AoYK1MpRWO0T9V2ns=",
   ]
 }
+
+provider "registry.terraform.io/hashicorp/tls" {
+  version = "4.0.4"
+  hashes = [
+    "h1:Wd3RqmQW60k2QWPN4sK5CtjGuO1d+CRNXgC+D4rKtXc=",
+  ]
+}

@@ -13,17 +13,7 @@ locals {
   vnet_core_name                = "${local.product}-vnet"
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
 
-  #
-  # KeyVault
-  #
-  key_vault_domain_name           = "dvopla-d-diego-kv"
-  key_vault_domain_resource_group = "dvopla-d-diego-sec-rg"
-
-  #
-  # Container App
-  #
-
-  container_app_dns_forwarder_environment_name              = "${local.project}-dns-forwarder-cappenv"
+  dns_forwarder_backup_name = "${local.product}-dns-forwarder-backup-vmss"
 
 }
 
@@ -94,6 +84,14 @@ variable "tags" {
     CreatedBy = "Terraform"
   }
 }
+### Network
+
+variable "cidr_subnet_dns_forwarder_backup" {
+  type        = list(string)
+  description = "Address prefixes subnet dns forwarder backup."
+  default     = null
+}
+
 
 ### External resources
 
@@ -112,11 +110,6 @@ variable "log_analytics_workspace_resource_group_name" {
   description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
-
 # DNS
 variable "external_domain" {
   type        = string
@@ -124,9 +117,16 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
-
 variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
+}
+
+variable "dns_forwarder_backup_is_enabled" {
+  type = object({
+    uat = optional(bool, false)
+    prod = optional(bool, false)
+  })
+  description = "Allow to enable or disable dns forwarder backup"
 }
