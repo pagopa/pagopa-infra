@@ -31,7 +31,7 @@ module "vnet_integration" {
 
 ## Peering between the vnet(main) and integration vnet
 module "vnet_peering" {
-  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=vnet-peering-custom-name"
+  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v4.19.0"
 
   location = azurerm_resource_group.rg_vnet.location
 
