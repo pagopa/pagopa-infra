@@ -74,6 +74,11 @@ data "azurerm_linux_function_app" "mockec" {
   resource_group_name = format("%s-%s-mock-ec-rg", var.prefix, var.env_short)
 }
 
+data "azurerm_linux_web_app" "pdf_engine" {
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
+}
+
 module "apim_api_statuspage_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
@@ -124,7 +129,7 @@ module "apim_api_statuspage_api_v1" {
       "mockec"                = var.env_short != "p" ? format("%s/", data.azurerm_linux_function_app.mockec[0].default_hostname) : "NA"
       "mockconfig"            = var.env_short != "p" ? format("%s/pagopa-mock-config-be", format(local.aks_path, "mock")) : "NA"
       "mocker"                = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
-      "pdfengine"             = format("%s/pagopa-pdf-engine", format(local.aks_path, "shared"))
+      "pdfengine"             = format("%s/", data.azurerm_linux_web_app.pdf_engine.default_hostname)
       "receiptpdfdatastore"   = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
       "receiptpdfgenerator"   = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
       "receiptpdfnotifier"    = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
