@@ -154,6 +154,7 @@ variable "pgres_flex_params" {
     db_version                             = string
     storage_mb                             = string
     zone                                   = number
+    standby_zone                           = optional(number, 1)
     backup_retention_days                  = number
     geo_redundant_backup_enabled           = bool
     create_mode                            = string
