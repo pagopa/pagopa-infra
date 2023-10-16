@@ -13,6 +13,9 @@ locals {
   vnet_core_name                = "${local.product}-vnet"
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
 
+  vnet_integration_name                = "${local.product}-vnet-integration"
+  vnet_integration_resource_group_name = "${local.product}-vnet-rg"
+
   dns_forwarder_backup_name = "${local.product}-dns-forwarder-backup-vmss"
 
 }
@@ -125,7 +128,7 @@ variable "dns_zone_internal_prefix" {
 
 variable "dns_forwarder_backup_is_enabled" {
   type = object({
-    uat = optional(bool, false)
+    uat  = optional(bool, false)
     prod = optional(bool, false)
   })
   description = "Allow to enable or disable dns forwarder backup"

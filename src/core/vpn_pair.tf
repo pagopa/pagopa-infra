@@ -68,7 +68,7 @@ module "dns_forwarder_integration_subnet" {
 
 
 resource "random_id" "integration_dns_forwarder_hash" {
-  count  = var.env_short == "d" ? 1 : 0
+  count       = var.env_short == "d" ? 1 : 0
   byte_length = 3
 }
 

@@ -8,13 +8,13 @@ resource "azurerm_resource_group" "mock_rg" {
 
 # KV secrets flex server
 data "azurerm_key_vault_secret" "psql_admin_user" {
-  count  = var.env_short == "d" ? 1 : 0
+  count        = var.env_short == "d" ? 1 : 0
   name         = "psql-mocker-admin-user"
   key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "psql_admin_pwd" {
-  count  = var.env_short == "d" ? 1 : 0
+  count        = var.env_short == "d" ? 1 : 0
   name         = "psql-mocker-admin-pwd"
   key_vault_id = module.key_vault.id
 }
@@ -27,7 +27,7 @@ data "azurerm_private_dns_zone" "postgres" {
 }
 
 module "mocker_pgflex_snet" {
-#  count  = var.env_short != "d" ? 1 : 0
+  #  count  = var.env_short != "d" ? 1 : 0
   count  = 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v6.11.2"
 
@@ -85,11 +85,11 @@ module "mocker_pgflex" {
 }
 
 resource "azurerm_postgresql_flexible_server_database" "mocker_pgflex_db" {
-  count               = var.env_short == "d" ? 1 : 0
-  name                = var.mocker_db_name
-  server_id           = module.mocker_pgflex[0].id
-  collation           = "en_US.utf8"
-  charset             = "utf8"
+  count     = var.env_short == "d" ? 1 : 0
+  name      = var.mocker_db_name
+  server_id = module.mocker_pgflex[0].id
+  collation = "en_US.utf8"
+  charset   = "utf8"
 }
 
 

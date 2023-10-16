@@ -5,7 +5,7 @@ module "dns_forwarder_image" {
   image_name          = "${local.product}-dns-forwarder-ubuntu2204-image"
   image_version       = var.dns_forwarder_backup_image_version
   subscription_id     = data.azurerm_subscription.current.subscription_id
-  prefix = local.product
+  prefix              = local.product
 
   tags = var.tags
 }
