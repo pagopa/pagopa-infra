@@ -92,9 +92,9 @@ taxonomy_storage_account = {
   enable_low_availability_alert = true
 }
 
-taxonomy_network_rules  = {
-  default_action              = "Deny"
-  ip_rules                    = ["18.159.227.69", "3.126.198.129", "18.192.147.151"]
-  virtual_network_subnet_ids  = []
-  bypass                      = ["AzureServices"]
+taxonomy_network_rules = {
+  default_action             = "Deny"
+  ip_rules                   = ["18.159.227.69", "3.126.198.129", "18.192.147.151"]
+  virtual_network_subnet_ids = []
+  bypass                     = ["AzureServices"]
 }

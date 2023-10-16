@@ -21,7 +21,7 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
     address-range-to         = var.env_short != "d" ? "10.1.128.255" : "0.0.0.0"
     base-url                 = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
     is-nodo-auth-pwd-replace = false
-  }) : templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", { # decoupler OFF
+    }) : templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", { # decoupler OFF
     address-range-from = var.env_short != "d" ? "10.1.128.0" : "0.0.0.0"
     address-range-to   = var.env_short != "d" ? "10.1.128.255" : "0.0.0.0"
   })
@@ -32,8 +32,8 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
 ######################
 locals {
   apim_nodo_monitoring_api = {
-    display_name = "Nodo monitoring"
-    description  = "Nodo monitoring"
+    display_name          = "Nodo monitoring"
+    description           = "Nodo monitoring"
     path                  = "nodo-monitoring/monitoring"
     subscription_required = false
     service_url           = null
