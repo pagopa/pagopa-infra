@@ -8,7 +8,7 @@ resource "null_resource" "create_vnet_core_aks_link" {
 
   count = var.aks_private_cluster_is_enabled ? 1 : 0
   triggers = {
-    cluster_name = module.aks[0].name
+    cluster_name = module.aks.name
     vnet_id      = data.azurerm_virtual_network.vnet.id
     vnet_name    = data.azurerm_virtual_network.vnet.name
   }
@@ -49,7 +49,7 @@ resource "null_resource" "create_vnet_integration_aks_link" {
 
   count = var.aks_private_cluster_is_enabled ? 1 : 0
   triggers = {
-    cluster_name = module.aks[0].name
+    cluster_name = module.aks.name
     vnet_id      = data.azurerm_virtual_network.vnet_integration.id
     vnet_name    = data.azurerm_virtual_network.vnet_integration.name
   }
