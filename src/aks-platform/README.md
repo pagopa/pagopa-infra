@@ -44,8 +44,6 @@
 | [kubernetes_namespace.keda](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.monitoring](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_secret_v1.prometheus_basic_auth](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/secret_v1) | resource |
-| [null_resource.create_vnet_core_aks_link](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
-| [null_resource.create_vnet_integration_aks_link](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |

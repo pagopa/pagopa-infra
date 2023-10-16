@@ -148,12 +148,12 @@
 | <a name="module_redis_snet"></a> [redis\_snet](#module\_redis\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.18.3 |
 | <a name="module_reporting_fdr_function"></a> [reporting\_fdr\_function](#module\_reporting\_fdr\_function) | git::https://github.com/pagopa/azurerm.git//function_app | v2.2.0 |
 | <a name="module_reporting_fdr_function_snet"></a> [reporting\_fdr\_function\_snet](#module\_reporting\_fdr\_function\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
-| <a name="module_route_table_peering_sia"></a> [route\_table\_peering\_sia](#module\_route\_table\_peering\_sia) | git::https://github.com/pagopa/azurerm.git//route_table | v1.0.90 |
-| <a name="module_vnet"></a> [vnet](#module\_vnet) | git::https://github.com/pagopa/azurerm.git//virtual_network | v1.0.90 |
-| <a name="module_vnet_integration"></a> [vnet\_integration](#module\_vnet\_integration) | git::https://github.com/pagopa/azurerm.git//virtual_network | v1.0.90 |
-| <a name="module_vnet_peering"></a> [vnet\_peering](#module\_vnet\_peering) | git::https://github.com/pagopa/azurerm.git//virtual_network_peering | v1.0.90 |
-| <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/azurerm.git//vpn_gateway | v2.0.28 |
-| <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
+| <a name="module_route_table_peering_sia"></a> [route\_table\_peering\_sia](#module\_route\_table\_peering\_sia) | git::https://github.com/pagopa/azurerm.git//route_table | v4.18.1 |
+| <a name="module_vnet"></a> [vnet](#module\_vnet) | git::https://github.com/pagopa/azurerm.git//virtual_network | v4.18.1 |
+| <a name="module_vnet_integration"></a> [vnet\_integration](#module\_vnet\_integration) | git::https://github.com/pagopa/azurerm.git//virtual_network | v4.18.1 |
+| <a name="module_vnet_peering"></a> [vnet\_peering](#module\_vnet\_peering) | git::https://github.com/pagopa/azurerm.git//virtual_network_peering | v4.19.0 |
+| <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/azurerm.git//vpn_gateway | v4.18.1 |
+| <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v4.18.1 |
 | <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview | v2.19.1 |
 
 ## Resources
