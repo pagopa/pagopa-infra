@@ -11,8 +11,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_TPNP" {
   # activities_json = file("datafactory/pipelines/KPI_TPNP.json")
 
   variables = {
-    run_id = "",
-    start_date = "",
+    run_id       = "",
+    start_date   = "",
     count_record = ""
   }
 
@@ -36,7 +36,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TPNP" {
   activated = true
   time_zone = "W. Europe Standard Time"
 
-  description = "Description of Trigger_KPI_TPNP"
+  description   = "Description of Trigger_KPI_TPNP"
   pipeline_name = azurerm_data_factory_pipeline.pipeline_KPI_TPNP.name
 
 }
@@ -85,8 +85,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_TNSPO" {
   # activities_json = file("datafactory/pipelines/KPI_TPNP.json")
 
   variables = {
-    run_id = "",
-    start_date = "",
+    run_id       = "",
+    start_date   = "",
     count_record = ""
   }
 
@@ -110,7 +110,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TNSPO" {
   activated = true
   time_zone = "W. Europe Standard Time"
 
-  description = "Description of Trigger_KPI_TNSPO"
+  description   = "Description of Trigger_KPI_TNSPO"
   pipeline_name = azurerm_data_factory_pipeline.pipeline_KPI_TNSPO.name
 
 }
@@ -131,8 +131,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_TPSPO_DASPO" {
   # activities_json = file("datafactory/pipelines/KPI_TPNP.json")
 
   variables = {
-    run_id = "",
-    start_date = "",
+    run_id       = "",
+    start_date   = "",
     count_record = ""
   }
 
@@ -156,7 +156,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TPSPO_DASPO" {
   activated = true
   time_zone = "W. Europe Standard Time"
 
-  description = "Description of Trigger_KPI_TPSPO_DASPO"
+  description   = "Description of Trigger_KPI_TPSPO_DASPO"
   pipeline_name = azurerm_data_factory_pipeline.pipeline_KPI_TPSPO_DASPO.name
 
 }
