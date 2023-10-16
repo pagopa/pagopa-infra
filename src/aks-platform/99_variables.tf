@@ -50,18 +50,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-
-variable "location_pair" {
-  type        = string
-  description = "Location pair name complete"
-}
-
-
-variable "location_pair_short" {
-  type        = string
-  description = "Location short like eg: weu, neu.."
-}
-
 variable "location_string" {
   type        = string
   description = "One of West Europe, North Europe"

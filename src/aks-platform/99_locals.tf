@@ -31,9 +31,4 @@ locals {
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
   vnet_core_name                = "${local.product}-vnet"
 
-  vnet_pair_resource_group_name = "${local.product}-${var.location_pair_short}-vnet-rg"
-  vnet_pair_name                = "${local.product}-${var.location_pair_short}-vnet"
-
-  vpn_pair_enabled = var.env_short != "d"
-
 }
