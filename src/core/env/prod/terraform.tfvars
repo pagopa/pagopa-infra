@@ -1,10 +1,6 @@
 # general
 env_short                 = "p"
 env                       = "prod"
-vnet_pair_linking_enabled = true
-pair_vpn_enabled          = true
-location_pair             = "northeurope"
-location_pair_short       = "neu"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -29,8 +25,6 @@ ddos_protection_plan = {
 
 # main vnet
 cidr_vnet = ["10.1.0.0/16"]
-# pair vnet
-cidr_pair_vnet = ["10.101.0.0/16"]
 
 # common
 cidr_subnet_appgateway               = ["10.1.128.0/24"]
@@ -46,7 +40,6 @@ cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
 cidr_subnet_pg_flex_dbms             = ["10.1.141.0/24"]
 cidr_subnet_vpn                      = ["10.1.142.0/24"]
 cidr_subnet_dns_forwarder            = ["10.1.143.0/29"]
-cidr_subnet_pair_dnsforwarder        = ["10.101.143.0/29"]
 cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
 cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]

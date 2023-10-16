@@ -4,18 +4,6 @@ variable "location" {
   default     = "westeurope"
 }
 
-variable "location_pair" {
-  type        = string
-  description = "One of westeurope, northeurope"
-  default     = "northeurope"
-}
-
-variable "location_pair_short" {
-  type        = string
-  description = "One of weu, neu"
-  default     = "neu"
-}
-
 variable "prefix" {
   type    = string
   default = "pagopa"
@@ -245,11 +233,6 @@ variable "cidr_subnet_appgateway" {
   description = "Application gateway address space."
 }
 
-variable "cidr_pair_vnet" {
-  type        = list(string)
-  description = "Virtual network address space."
-}
-
 # nat gateway
 variable "nat_gateway_enabled" {
   type        = bool
@@ -330,16 +313,10 @@ variable "cidr_subnet_dns_forwarder" {
   description = "DNS Forwarder network address space."
 }
 
-variable "cidr_subnet_pair_dnsforwarder" {
-  type        = list(string)
-  description = "DNS Forwarder network address space."
-}
-
 variable "cidr_common_private_endpoint_snet" {
   type        = list(string)
   description = "Common Private Endpoint network address space."
 }
-
 
 # apim
 variable "apim_publisher_name" {
@@ -1597,17 +1574,4 @@ variable "apim_fdr_nodo_pagopa_enable" {
   type        = bool
   default     = false
   description = "Enable Fdr Service Nodo pagoPA side"
-}
-
-
-variable "pair_vpn_enabled" {
-  type        = bool
-  default     = true
-  description = "Whether to enable the creation of a vpn and dns forwarder instance"
-}
-
-variable "vnet_pair_linking_enabled" {
-  type        = bool
-  default     = true
-  description = "Whether to enable the linking of pair vnet to main vnet resources"
 }

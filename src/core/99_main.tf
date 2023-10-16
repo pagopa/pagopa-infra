@@ -47,5 +47,4 @@ data "azurerm_client_config" "current" {}
 
 locals {
   project      = "${var.prefix}-${var.env_short}"
-  project_pair = "${var.prefix}-${var.env_short}-${var.location_pair_short}"
 }
