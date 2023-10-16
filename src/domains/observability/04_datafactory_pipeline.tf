@@ -105,7 +105,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_TNSPO" {
   name            = "Trigger_KPI_TNSPO"
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
-  interval  = 15
+  interval  = 10
   frequency = "Minute"
   activated = true
   time_zone = "W. Europe Standard Time"
