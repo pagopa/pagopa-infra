@@ -18,7 +18,6 @@ module "dns_forwarder_backup_vmss_li" {
   subscription_name   = data.azurerm_subscription.current.display_name
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
-  image_type          = "custom"
   source_image_name   = "${local.product}-dns-forwarder-ubuntu2204-image-v4"
 
   tags = var.tags
