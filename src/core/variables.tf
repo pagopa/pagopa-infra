@@ -1575,3 +1575,5 @@ variable "apim_fdr_nodo_pagopa_enable" {
   default     = false
   description = "Enable Fdr Service Nodo pagoPA side"
 }
+
+
