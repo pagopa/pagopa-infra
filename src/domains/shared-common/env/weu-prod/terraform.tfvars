@@ -41,7 +41,11 @@ cosmos_iuvgenerator_db_params = {
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
-  additional_geo_locations          = []
+  additional_geo_locations          = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
   private_endpoint_enabled          = true
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
@@ -67,7 +71,11 @@ cosmos_authorizer_db_params = {
   private_endpoint_enabled      = true
   public_network_access_enabled = false
 
-  additional_geo_locations = []
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
 
   is_virtual_network_filter_enabled = true
 
