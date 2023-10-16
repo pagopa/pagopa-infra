@@ -46,5 +46,5 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 locals {
-  project      = "${var.prefix}-${var.env_short}"
+  project = "${var.prefix}-${var.env_short}"
 }

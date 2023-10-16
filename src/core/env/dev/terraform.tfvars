@@ -1,6 +1,6 @@
 # general
-env_short                 = "d"
-env                       = "dev"
+env_short = "d"
+env       = "dev"
 
 tags = {
   CreatedBy   = "Terraform"
