@@ -35,8 +35,8 @@ Total=count(),
 Success=countif(resp_outcome == "OK" or faultCode in ("PPT_PAGAMENTO_IN_CORSO","PPT_PAGAMENTO_DUPLICATO", "PPT_STAZIONE_INT_PA_TIMEOUT","PPT_ATTIVAZIONE_IN_CORSO", "PPT_ERRORE_EMESSO_DA_PAA"))
 by bin(timestamp, 5m)
 | extend availability=toreal(Success) / Total
-| where availability < threshold
-  QUERY
+| where (Total >= 100 and availability < threshold ) or (Total < 100 and availability < 0.80)
+QUERY
   )
 
   # https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-alerts#alert-severity
