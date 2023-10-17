@@ -15,9 +15,9 @@ locals {
   # action_groups = local.action_groups_default
 }
 
-###########################################
-# On exceptions                           #
-###########################################
+#########################################
+##      pagopareceiptpdfdatastore      ##
+#########################################
 
 ## Alert
 # This alert cover the following error case:
@@ -57,10 +57,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt
 
 }
 
-###########################################
-# On traces                               #
-###########################################
-
 ## Alert
 # This alert cover the following error case:
 # 1. BizEventToReceiptProcessor execution logs that a Receipt instance has been set to NOT_QUEUE_SENT
@@ -99,6 +95,45 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
 }
 
 ## Alert
+# This alert cover the following case:
+# 1. BizEventToReceiptProcessor receive a biz event related to a cart (totalNotice > 1)
+# https://github.com/pagopa/pagopa-receipt-pdf-datastore/blob/1a0b36f9693c17ceeffe5d35bf7ace7371a72a13/src/main/java/it/gov/pagopa/receipt/pdf/datastore/BizEventToReceipt.java#L160
+resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-discarded-alert" {
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-receipt-cart-event-discarded-alert"
+  location            = var.location
+
+  action {
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
+    email_subject          = "[Receipts] biz event related to a cart"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "BizEventToReceiptProcessor received a biz event related to a cart (totalNotice > 1), the event has been discarded"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | where message contains "discarded because is part of a payment cart"
+    | order by timestamp desc
+  QUERY
+    , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-datastore/blob/1a0b36f9693c17ceeffe5d35bf7ace7371a72a13/helm/values-prod.yaml#L81
+  )
+  severity    = 2 // Sev 2	Warning
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+#########################################
+##      pagopareceiptpdfgenerator      ##
+#########################################
+
+## Alert
 # This alert cover the following error case:
 # 1. ManageReceiptPoisonQueueProcessor execution logs that a new entry has been set in error
 # https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/6b6c600db4b13ad7cd4b64596ba29fd0f6c38e70/src/main/java/it/gov/pagopa/receipt/pdf/generator/ManageReceiptPoisonQueue.java#L105
@@ -135,41 +170,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
 }
 
 
-
-## Alert
-# This alert cover the following case:
-# 1. BizEventToReceiptProcessor receive a biz event related to a cart (totalNotice > 1)
-# https://github.com/pagopa/pagopa-receipt-pdf-datastore/blob/1a0b36f9693c17ceeffe5d35bf7ace7371a72a13/src/main/java/it/gov/pagopa/receipt/pdf/datastore/BizEventToReceipt.java#L160
-resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-discarded-alert" {
-  resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-receipt-cart-event-discarded-alert"
-  location            = var.location
-
-  action {
-    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    action_group           = local.action_groups
-    email_subject          = "[Receipts] biz event related to a cart"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "BizEventToReceiptProcessor received a biz event related to a cart (totalNotice > 1), the event has been discarded"
-  enabled        = true
-  query = format(<<-QUERY
-  traces
-    | where cloud_RoleName == "%s"
-    | where message contains "discarded because is part of a payment cart"
-    | order by timestamp desc
-  QUERY
-    , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-datastore/blob/1a0b36f9693c17ceeffe5d35bf7ace7371a72a13/helm/values-prod.yaml#L81
-  )
-  severity    = 2 // Sev 2	Warning
-  frequency   = 15
-  time_window = 15
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
-  }
-}
+#########################################
+##      pagopareceiptpdfnotifier       ##
+#########################################
 
 ## Alert
 # This alert cover the following error case:
