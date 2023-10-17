@@ -1260,110 +1260,25 @@
         "oneOf": [
           {
             "type": "object",
-            "description": "Additional payment authorization details for the PostePay payment method",
+            "description": "Additional payment authorization details for payment performed with wallet",
             "properties": {
               "detailType": {
-                "type": "string",
-                "description": "fixed value 'postepay'"
-              },
-              "accountEmail": {
-                "type": "string",
-                "format": "email",
-                "description": "PostePay account email"
-              }
-            },
-            "required": [
-              "detailType",
-              "accountEmail"
-            ],
-            "example": {
-              "detailType": "postepay",
-              "accountEmail": "user@example.com"
-            }
-          },
-          {
-            "type": "object",
-            "description": "Additional payment authorization details for credit cards",
-            "properties": {
-              "detailType": {
-                "type": "string",
-                "description": "fixed value 'card'"
-              },
-              "cvv": {
-                "type": "string",
-                "description": "Credit card CVV",
-                "pattern": "^[0-9]{3,4}$"
-              },
-              "pan": {
-                "type": "string",
-                "description": "Credit card PAN",
-                "pattern": "^[0-9]{14,16}$"
-              },
-              "expiryDate": {
-                "type": "string",
-                "description": "Credit card expiry date. The date format is `YYYYMM`",
-                "pattern": "^[0-9]{6}$"
-              },
-              "holderName": {
-                "type": "string",
-                "description": "The card holder name"
-              },
-              "brand": {
-                "description": "The card brand name",
-                "type": "string",
-                "enum": [
-                  "VISA",
-                  "MASTERCARD",
-                  "UNKNOWN",
-                  "DINERS",
-                  "MAESTRO",
-                  "AMEX"
-                ]
-              },
-              "threeDsData": {
-                "type": "string",
-                "description": "the 3ds data evaluated by the client"
-              }
-            },
-            "required": [
-              "detailType",
-              "cvv",
-              "pan",
-              "expiryDate",
-              "holderName",
-              "brand",
-              "threeDsData"
-            ],
-            "example": {
-              "detailType": "card",
-              "cvv": "123",
-              "pan": "0123456789012345",
-              "expiryDate": "209901",
-              "holderName": "Name Surname",
-              "brand": "VISA",
-              "threeDsData": "threeDsData"
-            }
-          },
-          {
-            "type": "object",
-            "description": "Additional payment authorization details for cards NPG authorization",
-            "properties": {
-              "detailType": {
-                "description": "fixed value 'cards'",
+                "description": "fixed value 'wallet'",
                 "type": "string"
               },
-              "orderId": {
+              "walletId": {
                 "type": "string",
-                "description": "NPG transaction order id"
+                "format": "uuid",
+                "description": "User wallet id"
               }
             },
             "required": [
               "detailType",
-              "orderId"
+              "walletId"
             ],
             "example": {
-              "detailType": "cards",
-              "orderId": "order-id"
+              "detailType": "wallet,",
+              "walletId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
             }
           }
         ]
