@@ -404,7 +404,7 @@ variable "fdr_json_to_xml_function_autoscale" {
 }
 
 variable "ftp_organization" {
-  type        = list(string)
+  type        = string
   description = "Organization configured with FTP"
-  default     = []
+  default     = null
 }
