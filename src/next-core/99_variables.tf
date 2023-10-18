@@ -126,10 +126,18 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+#
+# dns forwarder
+#
 variable "dns_forwarder_backup_is_enabled" {
   type = object({
     uat  = optional(bool, false)
     prod = optional(bool, false)
   })
   description = "Allow to enable or disable dns forwarder backup"
+}
+
+variable "dns_forwarder_vm_image_name" {
+  type = string
+  description = "Image name for dns forwarder"
 }

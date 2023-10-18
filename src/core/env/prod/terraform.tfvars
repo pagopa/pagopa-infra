@@ -48,6 +48,7 @@ cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
 cidr_subnet_redis = ["10.1.163.0/24"]
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
