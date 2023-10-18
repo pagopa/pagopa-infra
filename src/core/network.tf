@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg_vnet" {
 
 # vnet
 module "vnet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v4.18.1"
   name                 = format("%s-vnet", local.project)
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
@@ -19,7 +19,7 @@ module "vnet" {
 
 # vnet integration
 module "vnet_integration" {
-  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v4.18.1"
   name                 = format("%s-vnet-integration", local.project)
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
@@ -48,7 +48,7 @@ module "vnet_peering" {
 }
 
 module "route_table_peering_sia" {
-  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v4.18.1"
 
   name                          = format("%s-sia-rt", local.project)
   location                      = azurerm_resource_group.rg_vnet.location
@@ -142,7 +142,7 @@ module "route_table_peering_sia" {
 
 # subnet acr
 module "common_private_endpoint_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.18.1"
   name                 = format("%s-common-private-endpoint-snet", local.project)
   address_prefixes     = var.cidr_common_private_endpoint_snet
   resource_group_name  = azurerm_resource_group.rg_vnet.name
