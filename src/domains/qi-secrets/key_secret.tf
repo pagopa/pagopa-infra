@@ -1,10 +1,10 @@
 data "azurerm_resource_group" "sec_rg" {
-  name     = "${local.product}-${var.domain}-sec-rg"
+  name = "${local.product}-${var.domain}-sec-rg"
 }
 
 data "azurerm_key_vault" "qi_kv" {
-  name                       = "${local.product}-${var.domain}-kv"
-  resource_group_name        = data.azurerm_resource_group.sec_rg.name
+  name                = "${local.product}-${var.domain}-kv"
+  resource_group_name = data.azurerm_resource_group.sec_rg.name
 }
 
 resource "azurerm_key_vault_key" "generated" {
