@@ -138,6 +138,6 @@ variable "dns_forwarder_backup_is_enabled" {
 }
 
 variable "dns_forwarder_vm_image_name" {
-  type = string
+  type        = string
   description = "Image name for dns forwarder"
 }

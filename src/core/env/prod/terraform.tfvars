@@ -47,7 +47,7 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis = ["10.1.163.0/24"]
+cidr_subnet_redis                = ["10.1.163.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 # integration vnet

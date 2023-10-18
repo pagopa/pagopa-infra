@@ -43,6 +43,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_cidr_subnet_dns_forwarder_backup"></a> [cidr\_subnet\_dns\_forwarder\_backup](#input\_cidr\_subnet\_dns\_forwarder\_backup) | Address prefixes subnet dns forwarder backup. | `list(string)` | `null` | no |
 | <a name="input_dns_forwarder_backup_is_enabled"></a> [dns\_forwarder\_backup\_is\_enabled](#input\_dns\_forwarder\_backup\_is\_enabled) | Allow to enable or disable dns forwarder backup | <pre>object({<br>    uat  = optional(bool, false)<br>    prod = optional(bool, false)<br>  })</pre> | n/a | yes |
+| <a name="input_dns_forwarder_vm_image_name"></a> [dns\_forwarder\_vm\_image\_name](#input\_dns\_forwarder\_vm\_image\_name) | Image name for dns forwarder | `string` | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
