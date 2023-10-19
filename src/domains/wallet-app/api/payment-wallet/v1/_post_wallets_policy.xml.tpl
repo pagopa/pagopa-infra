@@ -20,12 +20,12 @@
         <set-url>@($"{{pdv_api_base_path}}/tokens")</set-url>
         <set-body>@{
           JObject requestBody = (JObject)context.Variables["user-auth-body"];
-          string fiscalCode = (string)operation["fiscalCode"];
+          string fiscalCode = (string)requestBody["fiscalCode"];
           return new JObject(
-                  new JProperty("fiscalCode", context.Variables["userAuth"])
+                  new JProperty("pii", context.Variables["fiscalCode"])
               ).ToString();}
         </set-body>
-        <set-method>POST</set-method>
+        <set-method>PUT</set-method>
       </send-request>
       <choose>
         <when condition="@(((IResponse)context.Variables["pdv-token"]).StatusCode != 200)">
@@ -35,6 +35,7 @@
         </when>
       </choose>
       <set-variable name="token" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
+      <set-variable name="fiscalCodeTokenized" value="@((string)token["token"])" />
       <!-- Post Token PDV END-->
       <!-- Token JWT START-->
       <!-- Token JWT END-->
