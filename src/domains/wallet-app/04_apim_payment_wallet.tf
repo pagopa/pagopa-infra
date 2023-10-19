@@ -70,14 +70,15 @@ module "apim_payment_wallet_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "post_wallets" {
-  count               = var.payment_wallet_with_pm_enabled ? 1 : 0
   api_name            = "${local.project}-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "createWallet"
 
-  xml_content = templatefile("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl", {
+  xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl", {
     env = var.env
+  }) : templatefile("./api/payment-wallet/v1/_post_wallets_policy.xml.tpl", {
+    env = var.env, pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path
   })
 }
 

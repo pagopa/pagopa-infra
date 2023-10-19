@@ -3,7 +3,13 @@
       <set-variable  name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <!-- Get User IO START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
-          <set-url>@($"{{io-host}}/users?userId={(string)context.Variables["userId"]}")</set-url>
+          <set-url>@("${io_backend_base_path}/pagopa/api/v1/users?version='20200114'")</set-url> <!-- TO BE VARIABLE mock for dev  https://api.dev.platform.pagopa.it/pmmockserviceapi -->
+          <set-header name="Content-Type" exists-action="override">
+            <value>"application/json"</value>
+          </set-header>
+          <set-header name="Authorization" exists-action="override">
+            <value>@("Bearer " + (string)context.Variables.GetValueOrDefault("walletToken"))</value>
+          </set-header>
           <set-method>GET</set-method>
       </send-request>
       <choose>
@@ -17,7 +23,7 @@
       <!-- Get User IO END-->
       <!-- Post Token PDV START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
-        <set-url>@($"{{pdv_api_base_path}}/tokens")</set-url>
+        <set-url>@($"${pdv_api_base_path}/tokens")</set-url>
         <set-body>@{
           JObject requestBody = (JObject)context.Variables["user-auth-body"];
           string fiscalCode = (string)requestBody["fiscalCode"];
