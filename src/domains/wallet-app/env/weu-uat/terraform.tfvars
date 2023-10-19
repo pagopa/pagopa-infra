@@ -34,5 +34,5 @@ tls_cert_check_helm = {
 }
 
 payment_wallet_with_pm_enabled = false
-pdv_api_base_path = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
-io_backend_base_path = "https://api-app.io.pagopa.it"
+pdv_api_base_path              = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
+io_backend_base_path           = "https://api-app.io.pagopa.it"
