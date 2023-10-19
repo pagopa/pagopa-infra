@@ -314,3 +314,15 @@ resource "azurerm_key_vault_secret" "elastic_apm_secret_token" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
+  name         = "nodo5-slack-webhook-url"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

@@ -318,7 +318,6 @@ variable "cidr_common_private_endpoint_snet" {
   description = "Common Private Endpoint network address space."
 }
 
-
 # apim
 variable "apim_publisher_name" {
   type = string
@@ -1576,3 +1575,5 @@ variable "apim_fdr_nodo_pagopa_enable" {
   default     = false
   description = "Enable Fdr Service Nodo pagoPA side"
 }
+
+
