@@ -117,3 +117,9 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
+
+variable "payment_wallet_with_pm_enabled" {
+  type        = bool
+  default     = false
+  description = "payment wallet using Payment Manager"
+}

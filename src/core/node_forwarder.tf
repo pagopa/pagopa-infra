@@ -142,12 +142,13 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
   target_resource_id  = module.node_forwarder_app_service.plan_id
   enabled             = var.node_forwarder_autoscale_enabled
 
+  # default profile on REQUESTs
   profile {
     name = "default"
 
     capacity {
       default = 5
-      minimum = 1
+      minimum = 3
       maximum = 10
     }
 
@@ -194,8 +195,122 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
         cooldown  = "PT20M"
       }
     }
+
+    # Supported metrics for Microsoft.Web/sites 
+    # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
   }
+
+  # addded profile on CPU avg
+  # profile {
+  #   name = "response-time"
+
+  #   capacity {
+  #     default = 5
+  #     minimum = 3
+  #     maximum = 10
+  #   }
+
+  #   # Supported metrics for Microsoft.Web/sites 
+  #   # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+  #   rule {
+  #     metric_trigger {
+  #       metric_name              = "HttpResponseTime"
+  #       metric_resource_id       = module.node_forwarder_app_service.id
+  #       metric_namespace         = "microsoft.web/sites"
+  #       time_grain               = "PT1M"
+  #       statistic                = "Average"
+  #       time_window              = "PT5M"
+  #       time_aggregation         = "Average"
+  #       operator                 = "GreaterThan"
+  #       threshold                = 3 #sec
+  #       divide_by_instance_count = false
+  #     }
+
+  #     scale_action {
+  #       direction = "Increase"
+  #       type      = "ChangeCount"
+  #       value     = "2"
+  #       cooldown  = "PT5M"
+  #     }
+  #   }
+
+  #   rule {
+  #     metric_trigger {
+  #       metric_name              = "HttpResponseTime"
+  #       metric_resource_id       = module.node_forwarder_app_service.id
+  #       metric_namespace         = "microsoft.web/sites"
+  #       time_grain               = "PT1M"
+  #       statistic                = "Average"
+  #       time_window              = "PT5M"
+  #       time_aggregation         = "Average"
+  #       operator                 = "LessThan"
+  #       threshold                = 2 #sec
+  #       divide_by_instance_count = false
+  #     }
+
+  #     scale_action {
+  #       direction = "Decrease"
+  #       type      = "ChangeCount"
+  #       value     = "1"
+  #       cooldown  = "PT20M"
+  #     }
+  #   }
+
+  #   recurrence {
+  #     timezone = "E. Europe Standard Time"
+  #     days     = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+  #     hours    = [6]
+  #     minutes  = [0]
+  #   }
+
+  # }
+
 }
+
 
 # KV placeholder for CERT and KEY certificate
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
@@ -328,6 +443,83 @@ AzureDiagnostics
     threshold = 1
   }
 
+}
+
+#################################
+# Alert on mem or cpu avr 
+#################################
+resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-pagopa-node-forwarder-cpu-usage-over-80"
+
+  scopes      = [module.node_forwarder_app_service.plan_id]
+  description = "Forwarder CPU usage greater than 80% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
+  severity    = 3
+  frequency   = "PT5M"
+  window_size = "PT5M"
+
+  target_resource_type     = "microsoft.web/serverfarms"
+  target_resource_location = var.location
+
+
+  criteria {
+    metric_namespace       = "microsoft.web/serverfarms"
+    metric_name            = "CpuPercentage"
+    aggregation            = "Average"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-pagopa-node-forwarder-mem-usage-over-80"
+
+  scopes      = [module.node_forwarder_app_service.plan_id]
+  description = "Forwarder MEM usage greater than 80% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
+  severity    = 3
+  frequency   = "PT5M"
+  window_size = "PT5M"
+
+  target_resource_type     = "microsoft.web/serverfarms"
+  target_resource_location = var.location
+
+
+  criteria {
+    metric_namespace       = "microsoft.web/serverfarms"
+    metric_name            = "MemoryPercentage"
+    aggregation            = "Average"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+  }
+
+  tags = var.tags
 }
 
 
