@@ -112,7 +112,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Form fields retrieved successfully",
+            "description": "Verify requested",
             "content": {
               "application/json": {
                 "schema": {
@@ -224,7 +224,7 @@
       },
       "WalletVerifyRequestsResponse": {
         "type": "object",
-        "description": "Data to perform a new wallet verify requests",
+        "description": "Data to perform a wallet verify with payment gateway",
         "properties": {
           "sessionId": {
             "type": "string",
