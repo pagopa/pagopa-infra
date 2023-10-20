@@ -47,3 +47,10 @@ ecommerce_vpos_psps_list = "BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX,B
 ecommerce_npg_psps_list  = ""
 
 dns_zone_checkout = "checkout"
+
+# BEGIN Variables needed for PM <-> eCommerce compatibility layer for IO app
+
+pagopa_proxy_basepath = "CHANGEME"
+pm_basepath           = "CHANGEME"
+
+# END Variables needed for PM <-> eCommerce compatibility layer for IO app
