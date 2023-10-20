@@ -297,7 +297,7 @@ variable "nodo_verifyko_to_datastore_network_policies_enabled" {
 variable "nodo_verifyko_to_datastore_function_app_image_tag" {
   type        = string
   default     = "latest"
-  description = "Nodo RE to Datastore function app docker image tag. Defaults to 'latest'"
+  description = "Nodo Verify KO to Datastore function app docker image tag. Defaults to 'latest'"
 }
 
 variable "nodo_verifyko_to_datastore_function_autoscale" {
@@ -307,4 +307,41 @@ variable "nodo_verifyko_to_datastore_function_autoscale" {
     maximum = number
   })
   description = "Nodo Verify KO event functions autoscaling parameters"
+}
+variable "nodo_verifyko_to_tablestorage_function" {
+  type = object({
+    always_on                    = bool
+    kind                         = string
+    sku_size                     = string
+    sku_tier                     = string
+    maximum_elastic_worker_count = number
+  })
+  description = "Nodo Verify KO events to table storage function"
+}
+
+variable "nodo_verifyko_to_tablestorage_function_subnet" {
+  type        = list(string)
+  description = "Address prefixes subnet"
+  default     = null
+}
+
+variable "nodo_verifyko_to_tablestorage_network_policies_enabled" {
+  type        = bool
+  description = "Network policies enabled"
+  default     = false
+}
+
+variable "nodo_verifyko_to_tablestorage_function_app_image_tag" {
+  type        = string
+  default     = "latest"
+  description = "Nodo Verify KO events to Table Storage function app docker image tag. Defaults to 'latest'"
+}
+
+variable "nodo_verifyko_to_tablestorage_function_autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+  description = "Nodo Verify KO events to Table Storage functions autoscaling parameters"
 }

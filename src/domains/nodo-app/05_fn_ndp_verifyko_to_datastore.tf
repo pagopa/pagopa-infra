@@ -10,13 +10,6 @@ data "azurerm_cosmosdb_sql_database" "nodo_verifyko_cosmosdb_nosql_db" {
   account_name        = data.azurerm_cosmosdb_account.nodo_verifyko_cosmosdb_nosql.name
 }
 
-# info for event hub
-data "azurerm_eventhub" "pagopa-evh-ns02_nodo-dei-pagamenti-re_nodo-dei-pagamenti-verifyko" {
-  name                = "nodo-dei-pagamenti-verify-ko"
-  namespace_name      = "${local.product}-evh-ns02"
-  resource_group_name = "${local.product}-msg-rg"
-}
-
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns02_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx" {
   name                = "nodo-dei-pagamenti-verify-ko-datastore-rx"
   namespace_name      = "${local.product}-evh-ns02"
@@ -63,7 +56,7 @@ locals {
   }
 }
 
-## Function nodo_re_to_datastore
+## Function nodo_verifyko_to_datastore
 module "nodo_verifyko_to_datastore_function" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
 
