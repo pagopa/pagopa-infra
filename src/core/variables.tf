@@ -1576,4 +1576,15 @@ variable "apim_fdr_nodo_pagopa_enable" {
   description = "Enable Fdr Service Nodo pagoPA side"
 }
 
+variable "devops_agent_zones" {
+  type        = list(number)
+  default     = null
+  description = "(Optional) List of zones in which the scale set for azdo agent will be deployed"
+}
 
+
+variable "devops_agent_balance_zones" {
+  type        = bool
+  default     = false
+  description = "(Optional) True if the devops agent instances must be evenly balanced between the configured zones"
+}
