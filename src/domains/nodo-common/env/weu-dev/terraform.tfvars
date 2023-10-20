@@ -174,7 +174,7 @@ nodo_re_storage_account = {
   public_network_access_enabled = true
 }
 
-nodo_verifiko_storage_account = {
+nodo_verifyko_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "LRS"
