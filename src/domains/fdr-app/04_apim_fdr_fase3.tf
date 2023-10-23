@@ -2,11 +2,15 @@
 ## Products ##
 ##############
 
-module "apim_fdr_product" {
+#########
+## PSP ##
+#########
+
+module "apim_fdr_product_psp" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
-  product_id   = "fdr"
-  display_name = "FDR - Flussi di rendicontazione"
+  product_id   = "fdr-psp"
+  display_name = "FDR - Flussi di rendicontazione [PSP]"
   description  = "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
 
   api_management_name = local.pagopa_apim_name
@@ -17,8 +21,34 @@ module "apim_fdr_product" {
   approval_required     = true
   subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/fdr-service/_base_policy.xml")
+  policy_xml = file("./api_product/fdr-service/psp/_base_policy.xml")
 }
+
+#########
+## ORG ##
+#########
+
+module "apim_fdr_product_org" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
+
+  product_id   = "fdr-org"
+  display_name = "FDR - Flussi di rendicontazione [ORG]"
+  description  = "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/fdr-service/org/_base_policy.xml")
+}
+
+###############
+##  INTERNAL  ##
+###############
 
 module "apim_fdr_product_internal" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
@@ -37,6 +67,8 @@ module "apim_fdr_product_internal" {
 
   policy_xml = file("./api_product/fdr-service-internal/_base_policy.xml")
 }
+
+
 
 ###############
 ##  API FdR  ##
@@ -86,7 +118,7 @@ module "apim_api_fdr_api_v1_psp" {
   name                  = "${local.project}-fdr-service-api-psp"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_fdr_product.product_id]
+  product_ids           = [module.apim_fdr_product_psp.product_id]
   subscription_required = local.apim_fdr_psp_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_fdr_api_psp.id
   api_version           = "v1"
@@ -101,7 +133,7 @@ module "apim_api_fdr_api_v1_psp" {
 
   content_value = templatefile("./api/fdr-service/psp/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
-    service = module.apim_fdr_product.product_id
+    service = module.apim_fdr_product_psp.product_id
   })
 
   xml_content = templatefile("./api/fdr-service/psp/v1/_base_policy.xml.tpl", {
@@ -114,7 +146,7 @@ module "apim_api_fdr_api_v1_psp" {
 ##################
 
 resource "azurerm_api_management_api_version_set" "api_fdr_api_org" {
-  name                = "${var.env_short}-fdr-service-api"
+  name                = "${var.env_short}-fdr-service-api-org"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_fdr_org_service_api.display_name
@@ -128,7 +160,7 @@ module "apim_api_fdr_api_v1_org" {
   name                  = "${local.project}-fdr-service-api-org"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_fdr_product.product_id]
+  product_ids           = [module.apim_fdr_product_org.product_id]
   subscription_required = local.apim_fdr_org_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_fdr_api_org.id
   api_version           = "v1"
@@ -143,7 +175,7 @@ module "apim_api_fdr_api_v1_org" {
 
   content_value = templatefile("./api/fdr-service/org/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
-    service = module.apim_fdr_product.product_id
+    service = module.apim_fdr_product_org.product_id
   })
 
   xml_content = templatefile("./api/fdr-service/org/v1/_base_policy.xml.tpl", {
@@ -183,7 +215,7 @@ module "apim_api_fdr_api_v1_internal" {
   content_format = "openapi"
   content_value = templatefile("./api/fdr-service-internal/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
-    service = module.apim_fdr_product.product_id
+    service = module.apim_fdr_product_internal.product_id
   })
 
   xml_content = templatefile("./api/fdr-service-internal/v1/_base_policy.xml.tpl", {

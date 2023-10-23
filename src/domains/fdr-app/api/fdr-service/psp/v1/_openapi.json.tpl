@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.3",
   "info" : {
-    "title" : "FDR - Flussi di rendicontazione ${service}",
+    "title" : "FDR - Flussi di rendicontazione [PSP] ${service}",
     "description" : "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
     "termsOfService" : "https://www.pagopa.gov.it/",
     "version" : "0.0.0-SNAPSHOT"
