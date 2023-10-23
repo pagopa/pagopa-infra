@@ -78,3 +78,15 @@ resource "azurerm_key_vault_access_policy" "cdn_wallet_kv" {
   storage_permissions     = []
   certificate_permissions = ["Get", ]
 }
+
+resource "azurerm_key_vault_secret" "personal-data-vault-api-key" {
+  name         = "personal-data-vault-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

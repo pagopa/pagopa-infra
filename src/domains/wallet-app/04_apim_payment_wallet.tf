@@ -170,7 +170,7 @@ module "apim_webview_payment_wallet_api_v1" {
   name                  = "${local.project}-webview-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_wallet_product.product_id]
+  product_ids           = [module.apim_payment_wallet_product.product_id]
   subscription_required = local.apim_webview_payment_wallet_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.wallet_webview_api.id
   api_version           = "v1"
@@ -187,4 +187,18 @@ module "apim_webview_payment_wallet_api_v1" {
   })
 
   xml_content = file("./api/webview-payment-wallet/v1/_base_policy.xml.tpl")
+}
+
+data "azurerm_key_vault_secret" "wallet_personal_data_vault_api_key_secret" {
+  name         = "personal-data-vault-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "wallet_personal_data_vault_api_key" {
+  name                = "wallet-personal-data-vault-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wallet-personal-data-vault-api-key"
+  value               = data.azurerm_key_vault_secret.wallet_personal_data_vault_api_key_secret.value
+  secret              = true
 }
