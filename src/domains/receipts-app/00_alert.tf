@@ -99,6 +99,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
 # 1. BizEventToReceiptProcessor receive a biz event related to a cart (totalNotice > 1)
 # https://github.com/pagopa/pagopa-receipt-pdf-datastore/blob/1a0b36f9693c17ceeffe5d35bf7ace7371a72a13/src/main/java/it/gov/pagopa/receipt/pdf/datastore/BizEventToReceipt.java#L160
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-discarded-alert" {
+  count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-receipt-cart-event-discarded-alert"
   location            = var.location
@@ -237,7 +238,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-engine-resp
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 10
   }
 }
 
@@ -273,7 +274,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-save-to-blo
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 10
   }
 }
 
