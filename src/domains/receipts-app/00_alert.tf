@@ -99,6 +99,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
 # 1. BizEventToReceiptProcessor receive a biz event related to a cart (totalNotice > 1)
 # https://github.com/pagopa/pagopa-receipt-pdf-datastore/blob/1a0b36f9693c17ceeffe5d35bf7ace7371a72a13/src/main/java/it/gov/pagopa/receipt/pdf/datastore/BizEventToReceipt.java#L160
 resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-discarded-alert" {
+  count               = var.env_short != "d" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-receipt-cart-event-discarded-alert"
   location            = var.location
@@ -166,6 +167,114 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
+  }
+}
+
+## Alert
+# This alert cover the following error case:
+# 1. GenerateReceiptProcess execution logs that the receipt pdf cant be generated because there are missing property in biz-event
+# https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/653edca00eee4fc3ecf65b60c91c9b20395e7df2/src/main/java/it/gov/pagopa/receipt/pdf/generator/service/impl/GenerateReceiptPdfServiceImpl.java#L165
+resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-missing-bizevent-property-alert" {
+  count               = var.env_short != "d" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-missing-bizevent-property-alert"
+  location            = var.location
+
+  action {
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
+    email_subject          = "[Receipt] receipt cannot be generated for missing property"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Receipt PDF can not be generated because there are missing property in biz-event"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "Error mapping bizEvent data to template, missing property"
+  QUERY
+    , "pagopareceiptpdfgenerator" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/6b6c600db4b13ad7cd4b64596ba29fd0f6c38e70/helm/values-prod.yaml#L81C25-L81C50
+  )
+  severity    = 2 // Sev 2	Warning
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 10
+  }
+}
+
+## Alert
+# This alert cover the following error case:
+# 1. GenerateReceiptProcess execution logs that the pdf engine responded with KO
+# https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/653edca00eee4fc3ecf65b60c91c9b20395e7df2/src/main/java/it/gov/pagopa/receipt/pdf/generator/service/impl/GenerateReceiptPdfServiceImpl.java#L165
+resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-engine-response-ko" {
+  count               = var.env_short != "d" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-pdf-engine-response-ko"
+  location            = var.location
+
+  action {
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
+    email_subject          = "[Receipt] PDF Engine invocation responded with KO"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Receipt PDF not generated, PDF Engine responded with KO"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "PDF-Engine response KO"
+  QUERY
+    , "pagopareceiptpdfgenerator" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/6b6c600db4b13ad7cd4b64596ba29fd0f6c38e70/helm/values-prod.yaml#L81C25-L81C50
+  )
+  severity    = 2 // Sev 2	Warning
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 10
+  }
+}
+
+## Alert
+# This alert cover the following error case:
+# 1. GenerateReceiptProcess execution logs that cannot save the PDF Receipt in blob storage
+# https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/653edca00eee4fc3ecf65b60c91c9b20395e7df2/src/main/java/it/gov/pagopa/receipt/pdf/generator/service/impl/GenerateReceiptPdfServiceImpl.java#L165
+resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-save-to-blob-error" {
+  count               = var.env_short != "d" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-pdf-save-to-blob-error"
+  location            = var.location
+
+  action {
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
+    email_subject          = "[Receipt] Unable to save PDF Receipt in Blob Storage"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Error saving Receipt PDF in Blob Storage"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "Error saving pdf to blob storage"
+  QUERY
+    , "pagopareceiptpdfgenerator" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/6b6c600db4b13ad7cd4b64596ba29fd0f6c38e70/helm/values-prod.yaml#L81C25-L81C50
+  )
+  severity    = 2 // Sev 2	Warning
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 10
   }
 }
 
