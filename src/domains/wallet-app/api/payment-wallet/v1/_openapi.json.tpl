@@ -111,6 +111,63 @@
       }
     },
     "/wallets": {
+      "get" {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Get wallets for authenticated users",
+        "description": "Retrieves user's wallets",
+        "operationId": "getUserWallets",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Wallets retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletCreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+      },
       "post": {
         "tags": [
           "wallets"
