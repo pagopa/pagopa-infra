@@ -79,6 +79,10 @@ locals {
       indexes = [{
         keys   = ["_id"] # reporting_flow_name
         unique = true
+        },
+        {
+          keys   = ["revision"] # reporting_flow_name revision
+          unique = false
         }
       ]
       shard_key = null
