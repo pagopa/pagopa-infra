@@ -30,6 +30,11 @@
         "summary": "Create a new session wallet",
         "description": "This endpoint returns an object containing data on how a frontend can build a html form to allow direct exchanging of payment information to the payment gateway without `wallet` having to store PCI data (or other sensitive data tied to the payment method).The returned data is tied to a session on the payment gateway identified by the field `orderId`.",
         "operationId": "createSessionWallet",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "walletId",
