@@ -3,7 +3,7 @@
       <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <!-- Get User IO START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
-          <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
+          <set-url>@($"{io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
           <set-method>GET</set-method>
           <set-header name="Accept" exists-action="override">
             <value>@("application/json")</value>
@@ -30,9 +30,8 @@
         </set-header>
         <set-body>@{
           JObject requestBody = (JObject)context.Variables["user-auth-body"];
-          string fiscalCode = (string)requestBody["fiscalCode"];
           return new JObject(
-                  new JProperty("pii", context.Variables["fiscalCode"])
+                  new JProperty("pii",  (string)requestBody["fiscal_code"])
               ).ToString();}
         </set-body>
       </send-request>
@@ -44,7 +43,7 @@
         </when>
       </choose>
       <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
-      <set-variable name="fiscalCodeTokenized" value="@(((JObject)context.Variables["pdvToken"])["token"])" />
+      <set-variable name="fiscalCodeTokenized" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
       <choose>
       <when condition="@((string)context.Variables["fiscalCodeTokenized"] != "")">
           <set-header name="x-fiscal-code-tokenized" exists-action="override">
@@ -84,7 +83,7 @@
           var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
 
           // 3) Construct the Base64Url-encoded signature                
-          var signature = new HMACSHA256(Encoding.UTF8.GetBytes({{wallet-jwt-signing-key}})).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
+          var signature = new HMACSHA256(Encoding.UTF8.GetBytes("{{wallet-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
           var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
 
           // 4) Return the HMAC SHA256-signed JWT as the value for the Authorization header
