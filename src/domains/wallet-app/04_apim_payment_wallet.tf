@@ -189,16 +189,30 @@ module "apim_webview_payment_wallet_api_v1" {
   xml_content = file("./api/webview-payment-wallet/v1/_base_policy.xml.tpl")
 }
 
-data "azurerm_key_vault_secret" "wallet_personal_data_vault_api_key_secret" {
+data "azurerm_key_vault_secret" "personal_data_vault_api_key_secret" {
   name         = "personal-data-vault-api-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-resource "azurerm_api_management_named_value" "wallet_personal_data_vault_api_key" {
-  name                = "wallet-personal-data-vault-api-key"
+resource "azurerm_api_management_named_value" "personal-data-vault-api-key" {
+  name                = "personal-data-vault-api-key"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "wallet-personal-data-vault-api-key"
-  value               = data.azurerm_key_vault_secret.wallet_personal_data_vault_api_key_secret.value
+  display_name        = "personal-data-vault-api-key"
+  value               = data.azurerm_key_vault_secret.personal_data_vault_api_key_secret.value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "wallet_jwt_signing_key_secret" {
+  name         = "wallet-jwt-signing-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
+  name                = "wallet-jwt-signing-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wallet-jwt-signing-key"
+  value               = data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value
   secret              = true
 }

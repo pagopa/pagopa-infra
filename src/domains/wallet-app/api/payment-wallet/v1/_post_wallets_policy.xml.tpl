@@ -6,7 +6,7 @@
           <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
           <set-method>GET</set-method>
           <set-header name="Accept" exists-action="override">
-            <value>"application/json"</value>
+            <value>@("application/json")</value>
           </set-header>
           <set-header name="Authorization" exists-action="override">
             <value>@("Bearer " + (string)context.Variables.GetValueOrDefault("walletToken"))</value>
@@ -26,7 +26,7 @@
         <set-url>@($"${pdv_api_base_path}/tokens")</set-url>
         <set-method>PUT</set-method>
         <set-header name="x-api-key" exists-action="override">
-            <value>{{wallet_personal_data_vault_api_key}}</value>
+            <value>{{personal-data-vault-api-key}}</value>
         </set-header>
         <set-body>@{
           JObject requestBody = (JObject)context.Variables["user-auth-body"];
@@ -84,7 +84,7 @@
           var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
 
           // 3) Construct the Base64Url-encoded signature                
-          var signature = new HMACSHA256(Encoding.UTF8.GetBytes("hashing-secret")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
+          var signature = new HMACSHA256(Encoding.UTF8.GetBytes({{wallet-jwt-signing-key}})).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
           var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
 
           // 4) Return the HMAC SHA256-signed JWT as the value for the Authorization header

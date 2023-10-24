@@ -90,3 +90,15 @@ resource "azurerm_key_vault_secret" "personal-data-vault-api-key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "wallet-jwt-signing-key" {
+  name         = "wallet-jwt-signing-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
