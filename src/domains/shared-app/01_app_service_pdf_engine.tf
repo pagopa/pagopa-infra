@@ -159,7 +159,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         threshold                = 5 #sec
         divide_by_instance_count = false
       }
-    
+
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
@@ -197,8 +197,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service.id
-        metric_namespace         = "microsoft.web/sites"
+        metric_resource_id       = module.shared_pdf_engine_app_service.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
         time_window              = "PT5M"
@@ -207,7 +207,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         threshold                = 75
         divide_by_instance_count = false
       }
-    
+
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
@@ -219,8 +219,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service.id
-        metric_namespace         = "microsoft.web/sites"
+        metric_resource_id       = module.shared_pdf_engine_app_service.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
         time_window              = "PT5M"
@@ -390,7 +390,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         threshold                = 5 #sec
         divide_by_instance_count = false
       }
-    
+
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
@@ -428,8 +428,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java.id
-        metric_namespace         = "microsoft.web/sites"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
         time_window              = "PT5M"
@@ -438,7 +438,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         threshold                = 75
         divide_by_instance_count = false
       }
-    
+
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
@@ -450,8 +450,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java.id
-        metric_namespace         = "microsoft.web/sites"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
         time_window              = "PT5M"
