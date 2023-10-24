@@ -169,7 +169,7 @@ module "apim_webview_payment_wallet_api_v1" {
   name                  = "${local.project}-webview-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_wallet_product.product_id]
+  product_ids           = [module.apim_payment_wallet_product.product_id]
   subscription_required = local.apim_webview_payment_wallet_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.wallet_webview_api.id
   api_version           = "v1"
