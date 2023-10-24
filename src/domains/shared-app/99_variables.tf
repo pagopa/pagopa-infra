@@ -250,4 +250,9 @@ variable "app_service_pdf_engine_sku_name" {
   description = "app service plan size"
   default     = "S1"
 }
+variable "app_service_pdf_engine_sku_name_java" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
 

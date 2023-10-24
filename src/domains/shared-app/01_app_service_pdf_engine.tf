@@ -92,7 +92,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     name = "default"
 
     capacity {
-      default = 5
+      default = 3
       minimum = var.env_short == "p" ? 3 : 1
       maximum = 10
     }
@@ -140,6 +140,53 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         cooldown  = "PT20M"
       }
     }
+
+    # Supported metrics for Microsoft.Web/sites 
+    # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.shared_pdf_engine_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 5 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.shared_pdf_engine_app_service.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
   }
 }
 
@@ -157,7 +204,7 @@ module "shared_pdf_engine_app_service_java" {
   # App service plan vars
   plan_name = format("%s-plan-pdf-engine-java", local.project)
   plan_kind = "Linux"
-  sku_name  = var.app_service_pdf_engine_sku_name
+  sku_name  = var.app_service_pdf_engine_sku_name_java
 
   # App service plan
   name                = format("%s-app-pdf-engine-java", local.project)
@@ -224,7 +271,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     name = "default"
 
     capacity {
-      default = 5
+      default = 3
       minimum = var.env_short == "p" ? 3 : 1
       maximum = 10
     }
@@ -262,6 +309,52 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_aggregation         = "Average"
         operator                 = "LessThan"
         threshold                = 1000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    # Supported metrics for Microsoft.Web/sites 
+    # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 5 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "HttpResponseTime"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2 #sec
         divide_by_instance_count = false
       }
 
