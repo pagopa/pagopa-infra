@@ -103,7 +103,7 @@
         }
       }
     },
-    "/wallets/{walletId}/sessions/{idOrder}/validations": {
+    "/wallets/{walletId}/sessions/{orderId}/validations": {
       "post": {
         "tags": [
           "payment-wallet-webview"
@@ -124,6 +124,15 @@
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/WalletId"
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "ID of order session",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrderId"
             }
           }
         ],
@@ -232,13 +241,17 @@
         "type": "string",
         "format": "uuid"
       },
+      "OrderId": {
+        "description": "Order session payment gatewa identifier",
+        "type": "string",
+        "format": "uuid"
+      },
       "WalletVerifyRequestsResponse": {
         "type": "object",
         "description": "Data to perform a wallet verify with payment gateway",
         "properties": {
-          "sessionId": {
-            "type": "string",
-            "description": "Identifier of the payment gateway session"
+          "orderId": {
+            "$ref": "#/components/schemas/OrderId"
           },
           "details": {
             "description": "Redirection URL or iframe url according payment method type",
