@@ -113,7 +113,9 @@ resource "azurerm_api_management_api_operation_policy" "io_webview_get" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "getWebView"
 
-  xml_content = file("./api/ecommerce-io/v1/pay-pm-webview.xml.tpl")
+  xml_content = templatefile("./api/ecommerce-io/v1/pay-pm-webview.xml.tpl", {
+    pm_webview_path = "${local.apim_hostname}/pp-restapi-CD/v3/webview/transactions/pay"
+  })
 }
 
 data "azurerm_key_vault_secret" "ecommerce_io_sessions_jwt_secret" {
@@ -166,7 +168,7 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   xml_content = templatefile("./api/ecommerce-io/v1/_auth_request.xml.tpl", {
     pagopa_proxy_host = local.apim_hostname
     pagopa_proxy_path = "checkout/payments/v1/payment-activations"
-    pm_webview_host   = local.apim_hostname
-    pm_webview_path   = "ecommerce/io-webview/v1/pay"
+    webview_host      = local.apim_hostname
+    webview_path      = "ecommerce/io-webview/v1/pay"
   })
 }

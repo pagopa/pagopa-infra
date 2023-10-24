@@ -28,8 +28,8 @@
                 "language", "IT"
             }};
 
-            var query = "?" + string.Join("&", paymentPageParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-            var url = new UriBuilder("https","${pm_webview_host}", 443, "${pm_webview_path}", query);
+            var fragment = "#" + string.Join("&", paymentPageParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+            var url = new UriBuilder("https","${webview_host}", 443, "${webview_path}", fragment);
             
             var response = new JObject();
             response["authorizationUrl"] = url;

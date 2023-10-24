@@ -1,16 +1,24 @@
 <policies>
   <inbound>
-
-    <set-method>POST</set-method>
     <set-body>
-        @{ 
-            var queryParams = context.Request.Url.Query;
+      <html>
+        <body>
+          <script>
+            const fragment = window.location.hash.slice(1);
+            const requestBody = new URLSearchParams(fragment);
 
-            return new FormUrlEncodedContent(queryParams!); 
-        }
+            fetch(${pm_webview_path}, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              referrerPolicy: "no-referrer",
+              body: requestBody,
+            });
+          </script>
+        </body>
+      </html>
     </set-body>
-
-    <base />
   </inbound>
 
   <outbound>
