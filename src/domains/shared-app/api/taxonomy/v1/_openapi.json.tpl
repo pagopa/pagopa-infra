@@ -2,201 +2,350 @@
   "openapi" : "3.0.3",
   "info" : {
     "title" : "Taxonomy ${service}",
-    "description" : "Taxonomy ${service}",
+    "description" : "Taxonomy Azure Function. This function has the role of converting a CSV file to JSON and then to retrieve it from a blob storage whenever needed. ${service}",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.0.0-SNAPSHOT"
+    "version": "1.1.1"
   },
   "servers" : [ {
-    "url" : "${host}/taxonomy/api/v1 - APIM"
-  } ],
-  "security" : [ {
-    "api_key" : [ ]
-  } ],
-  "tags" : [ {
-    "name" : "Taxonomy",
-    "description" : "Taxonomy operations"
+    "url" : "${host}/taxonomy/api/v1"
   } ],
   "paths" : {
-    "/generate" : {
-      "get" : {
-        "tags" : [ "Taxonomy" ],
-        "summary" : "Generate taxonomy",
-        "description" : "Generate taxonomy",
-        "operationId" : "generate",
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Message"
+    "/info": {
+      "get": {
+        "operationId": "Info",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfoMessage"
                 }
               }
-            }
-          },
-          "400" : {
-            "description" : "Bad Request",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorMessage"
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorMessage"
-                }
-              }
-            }
-          },
-          "500" : {
-            "description" : "Internal Server Error",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorMessage"
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
           }
+        },
+        "summary": "Healthcheck"
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
         }
-      }
+      ]
     },
-    "/taxonomy" : {
-      "get" : {
-        "tags" : [ "Taxonomy" ],
-        "summary" : "Get taxonomy",
-        "description" : "Get taxonomy",
-        "operationId" : "taxonomy",
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Taxonomy"
-                  }
+    "/generate": {
+      "get": {
+        "operationId": "TaxonomyUpdate",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            },
+            "description": "OK, Taxonomy updated successfully",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Bad Request",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorMessage"
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            },
+            "description": "Not Found, cannot access CSV file.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
           },
-          "404" : {
-            "description" : "Not found",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorMessage"
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
                 }
               }
-            }
-          },
-          "500" : {
-            "description" : "Internal Server Error",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ErrorMessage"
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
           }
+        },
+        "summary": "Generates taxonomy JSON file"
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
         }
-      }
+      ]
+    },
+    "/taxonomy": {
+      "get": {
+        "operationId": "getTaxonomy",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "extension",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "json"
+            }
+          },
+          {
+            "in": "query",
+            "name": "version",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "standard"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TaxonomyStandardVersion"
+                    },
+                    {
+                      "$ref": "#/components/schemas/TaxonomyTopicFlagVersion"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Bad Request, file extension or version do not exist.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Not Found, JSON OR CSV file were not found.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {}
+            },
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get Taxonomy"
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     }
   },
   "components" : {
-    "schemas" : {
-      "ErrorMessage" : {
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string"
-          },
-          "error" : {
-            "type" : "string"
+    "schemas": {
+      "Message": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
           }
         }
       },
-      "Message" : {
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string"
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
           }
         }
       },
-      "Taxonomy" : {
-        "type" : "object",
-        "properties" : {
-          "CODICE TIPO ENTE CREDITORE" : {
-            "type" : "string"
+      "InfoMessage": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
           },
-          "TIPO ENTE CREDITORE" : {
-            "type" : "string"
-          },
-          "Progressivo Macro Area per Ente Creditore" : {
-            "type" : "string"
-          },
-          "NOME MACRO AREA" : {
-            "type" : "string"
-          },
-          "DESCRIZIONE MACRO AREA" : {
-            "type" : "string"
-          },
-          "CODICE TIPOLOGIA SERVIZIO" : {
-            "type" : "string"
-          },
-          "TIPO SERVIZIO" : {
-            "type" : "string"
-          },
-          "Motivo Giuridico della riscossione" : {
-            "type" : "string"
-          },
-          "DESCRIZIONE TIPO SERVIZIO" : {
-            "type" : "string"
-          },
-          "VERSIONE TASSONOMIA" : {
-            "type" : "string"
-          },
-          "DATI SPECIFICI INCASSO" : {
-            "type" : "string"
-          },
-          "DATA INIZIO VALIDITA" : {
-            "type" : "string"
-          },
-          "DATA FINE VALIDITA" : {
-            "type" : "string"
+          "version": {
+            "type": "string"
           }
         }
-      }
-    },
-    "securitySchemes" : {
-      "api_key" : {
-        "type" : "apiKey",
-        "name" : "Ocp-Apim-Subscription-Key",
-        "in" : "header"
       },
-      "SecurityScheme" : {
-        "type" : "http",
-        "description" : "Authentication",
-        "scheme" : "basic"
+      "TaxonomyTopicFlagVersion": {
+        "type": "object",
+        "properties": {
+          "CODICE TIPO ENTE CREDITORE": {
+            "type": "string"
+          },
+          "TIPO ENTE CREDITORE": {
+            "type": "string"
+          },
+          "PROGRESSIVO MACRO AREA PER ENTE CREDITORE": {
+            "type": "string"
+          },
+          "NOME MACRO AREA": {
+            "type": "string"
+          },
+          "DESCRIZIONE MACRO AREA": {
+            "type": "string"
+          },
+          "CODICE TIPOLOGIA SERVIZIO": {
+            "type": "string"
+          },
+          "TIPO SERVIZIO": {
+            "type": "string"
+          },
+          "MOTIVO GIURIDICO DELLA RISCOSSIONE": {
+            "type": "string"
+          },
+          "DESCRIZIONE TIPO SERVIZIO": {
+            "type": "string"
+          },
+          "VERSIONE TASSONOMIA": {
+            "type": "string"
+          },
+          "DATI SPECIFICI INCASSO": {
+            "type": "string"
+          },
+          "DATA INIZIO VALIDITA": {
+            "type": "string"
+          },
+          "DATA FINE VALIDITA": {
+            "type": "string"
+          },
+          "COMBINAZIONE TOPIC E SUBTOPIC": {
+            "type": "string"
+          }
+        }
+      },
+      "TaxonomyStandardVersion": {
+        "type": "object",
+        "properties": {
+          "CODICE TIPO ENTE CREDITORE": {
+            "type": "string"
+          },
+          "TIPO ENTE CREDITORE": {
+            "type": "string"
+          },
+          "PROGRESSIVO MACRO AREA PER ENTE CREDITORE": {
+            "type": "string"
+          },
+          "NOME MACRO AREA": {
+            "type": "string"
+          },
+          "DESCRIZIONE MACRO AREA": {
+            "type": "string"
+          },
+          "CODICE TIPOLOGIA SERVIZIO": {
+            "type": "string"
+          },
+          "TIPO SERVIZIO": {
+            "type": "string"
+          },
+          "MOTIVO GIURIDICO DELLA RISCOSSIONE": {
+            "type": "string"
+          },
+          "DESCRIZIONE TIPO SERVIZIO": {
+            "type": "string"
+          },
+          "VERSIONE TASSONOMIA": {
+            "type": "string"
+          },
+          "DATI SPECIFICI INCASSO": {
+            "type": "string"
+          },
+          "DATA INIZIO VALIDITA": {
+            "type": "string"
+          },
+          "DATA FINE VALIDITA": {
+            "type": "string"
+          }
+        }
       }
     }
   }
