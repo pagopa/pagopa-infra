@@ -54,7 +54,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v3.0.0
+      ref: refs/tags/v5.2.1
       endpoint: 'io-azure-devops-github-ro'
     #Checkout tests repo that contains e2e tests to be executed after domain apply
     - repository: pagopaCheckoutTests
