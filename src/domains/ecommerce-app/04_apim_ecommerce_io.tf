@@ -80,6 +80,15 @@ resource "azurerm_api_management_named_value" "ecommerce_io_transaction_jwt_sign
   secret              = true
 }
 
+resource "azurerm_api_management_api_operation_policy" "io_get_payment_requests_info" {
+  api_name            = "${local.project}-ecommerce-io-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getPaymentRequestInfo"
+
+  xml_content = file("./api/ecommerce-io/v1/payment_requests.xml.tpl")
+}
+
 resource "azurerm_api_management_api_operation_policy" "io_get_transaction_info" {
   api_name            = "${local.project}-ecommerce-io-api-v1"
   resource_group_name = local.pagopa_apim_rg
