@@ -97,6 +97,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
       maximum = 10
     }
 
+    # Requests 
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -140,6 +141,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         cooldown  = "PT20M"
       }
     }
+
+    # HttpResponseTime 
 
     # Supported metrics for Microsoft.Web/sites 
     # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
@@ -186,6 +189,55 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         cooldown  = "PT20M"
       }
     }
+
+    # CpuPercentage 
+
+    # Supported metrics for Microsoft.Web/sites 
+    # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.shared_pdf_engine_app_service.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 75
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.shared_pdf_engine_app_service.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 30 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
 
   }
 }
@@ -276,6 +328,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
       maximum = 10
     }
 
+    # Requests 
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -320,6 +373,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
       }
     }
 
+    # HttpResponseTime 
+
     # Supported metrics for Microsoft.Web/sites 
     # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
@@ -355,6 +410,54 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_aggregation         = "Average"
         operator                 = "LessThan"
         threshold                = 2 #sec
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    # CpuPercentage 
+
+    # Supported metrics for Microsoft.Web/sites 
+    # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 75
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.shared_pdf_engine_app_service_java.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 30 #sec
         divide_by_instance_count = false
       }
 
