@@ -103,7 +103,7 @@
         }
       }
     },
-    "/wallets/{walletId}/validations": {
+    "/wallets/{walletId}/sessions/{idOrder}/validations": {
       "post": {
         "tags": [
           "payment-wallet-webview"
