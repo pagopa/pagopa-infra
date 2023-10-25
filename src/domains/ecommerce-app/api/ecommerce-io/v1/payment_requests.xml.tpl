@@ -1,19 +1,15 @@
 <policies>
-
-  <inbound>
-    <base />
-  </inbound>
-
-  <outbound>
+    <inbound>
       <base />
-  </outbound>
-
-  <backend>
+      <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-payment-requests-service" />
+    </inbound>
+    <outbound>
       <base />
-  </backend>
-
-  <on-error>
+    </outbound>
+    <backend>
       <base />
-  </on-error>
-
-</policies>
+    </backend>
+    <on-error>
+      <base />
+    </on-error>
+  </policies>
