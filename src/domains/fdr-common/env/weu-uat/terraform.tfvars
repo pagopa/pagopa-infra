@@ -48,7 +48,9 @@ pgres_flex_params = {
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 1000
+  max_connections                        = 1700
+  pgbouncer_min_pool_size                = 500
+  pgbouncer_default_pool_size            = 1000
 }
 
 custom_metric_alerts = {

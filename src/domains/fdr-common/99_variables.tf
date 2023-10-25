@@ -143,6 +143,8 @@ variable "pgres_flex_params" {
     pgres_flex_pgbouncer_enabled           = bool
     pgres_flex_diagnostic_settings_enabled = bool
     max_connections                        = number
+    pgbouncer_min_pool_size                = number
+    pgbouncer_default_pool_size            = number
   })
 
 }
