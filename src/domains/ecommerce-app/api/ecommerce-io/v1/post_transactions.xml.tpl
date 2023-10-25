@@ -43,12 +43,13 @@
         <choose>
           <when condition="@(context.Response.StatusCode == 200)">
             <set-body>@{
-            eCommerceResponseBody["transactionId"] = (string) context.Variables["ccp"];
-            eCommerceResponseBody["payments"] = "[]";
-            eCommerceResponseBody["clientId"] = "IO";
-            eCommerceResponseBody["authToken"] = (string) context.Variables["bearerToken"];
-            return eCommerceResponseBody.ToString();
-          }</set-body>
+              JObject eCommerceResponseBody = new JObject();
+              eCommerceResponseBody["transactionId"] = (string) context.Variables["ccp"];
+              eCommerceResponseBody["payments"] = "[]";
+              eCommerceResponseBody["clientId"] = "IO";
+              eCommerceResponseBody["authToken"] = (string) context.Variables["bearerToken"];
+              return eCommerceResponseBody.ToString();
+            }</set-body>
           </when>
         </choose> 
     </outbound>
