@@ -4,10 +4,10 @@
     "title" : "PagoPA API Debt Position for PN ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie per PN",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.4.7"
+    "version" : "0.7.2"
   },
   "servers" : [ {
-    "url" : "${host}/gpd/api/v1",
+    "url" : "${host}/${service}/gpd/api/v1",
     "description" : "Generated server url"
   } ],
   "tags" : [ {
@@ -47,18 +47,8 @@
           "required" : true
         },
         "responses" : {
-          "500" : {
-            "description" : "Service unavailable.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Malformed request.",
+          "422" : {
+            "description" : "Unprocessable payment option.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -70,8 +60,8 @@
           "401" : {
             "description" : "Wrong or missing function key."
           },
-          "422" : {
-            "description" : "Unprocessable payment option.",
+          "500" : {
+            "description" : "Service unavailable.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -86,6 +76,16 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/PaymentsModelResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Malformed request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -131,16 +131,6 @@
           }
         } ],
         "responses" : {
-          "500" : {
-            "description" : "Service unavailable.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "200" : {
             "description" : "Obtained payment option details.",
             "content" : {
@@ -154,8 +144,58 @@
           "401" : {
             "description" : "Wrong or missing function key."
           },
+          "500" : {
+            "description" : "Service unavailable.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "404" : {
             "description" : "No payment option found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
+      }
+    },
+    "/info" : {
+      "get" : {
+        "tags" : [ "Home" ],
+        "summary" : "Return OK if application is started",
+        "operationId" : "healthCheck",
+        "responses" : {
+          "200" : {
+            "description" : "OK.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AppInfo"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key."
+          },
+          "403" : {
+            "description" : "Forbidden."
+          },
+          "500" : {
+            "description" : "Service unavailable.",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -409,6 +449,9 @@
             "type" : "string",
             "enum" : [ "PO_UNPAID", "PO_PAID", "PO_PARTIALLY_REPORTED", "PO_REPORTED" ]
           },
+          "iupd" : {
+            "type" : "string"
+          },
           "type" : {
             "type" : "string",
             "enum" : [ "F", "G" ]
@@ -461,6 +504,20 @@
             "items" : {
               "$ref" : "#/components/schemas/PaymentsTransferModelResponse"
             }
+          }
+        }
+      },
+      "AppInfo" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "environment" : {
+            "type" : "string"
           }
         }
       }

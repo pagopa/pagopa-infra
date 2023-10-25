@@ -67,7 +67,11 @@ cosmos_authorizer_db_params = {
   private_endpoint_enabled      = true
   public_network_access_enabled = false
 
-  additional_geo_locations = []
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
 
   is_virtual_network_filter_enabled = true
 
@@ -92,9 +96,9 @@ taxonomy_storage_account = {
   enable_low_availability_alert = true
 }
 
-taxonomy_network_rules  = {
-  default_action              = "Deny"
-  ip_rules                    = ["18.159.227.69", "3.126.198.129", "18.192.147.151"]
-  virtual_network_subnet_ids  = []
-  bypass                      = ["AzureServices"]
+taxonomy_network_rules = {
+  default_action             = "Deny"
+  ip_rules                   = ["18.159.227.69", "3.126.198.129", "18.192.147.151"]
+  virtual_network_subnet_ids = []
+  bypass                     = ["AzureServices"]
 }

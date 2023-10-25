@@ -318,7 +318,6 @@ variable "cidr_common_private_endpoint_snet" {
   description = "Common Private Endpoint network address space."
 }
 
-
 # apim
 variable "apim_publisher_name" {
   type = string
@@ -1575,4 +1574,17 @@ variable "apim_fdr_nodo_pagopa_enable" {
   type        = bool
   default     = false
   description = "Enable Fdr Service Nodo pagoPA side"
+}
+
+variable "devops_agent_zones" {
+  type        = list(number)
+  default     = null
+  description = "(Optional) List of zones in which the scale set for azdo agent will be deployed"
+}
+
+
+variable "devops_agent_balance_zones" {
+  type        = bool
+  default     = false
+  description = "(Optional) True if the devops agent instances must be evenly balanced between the configured zones"
 }

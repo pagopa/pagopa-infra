@@ -37,4 +37,5 @@ locals {
   apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   wallet_hostname = "${var.location_short}${var.env}.wallet.internal.${var.env}.platform.pagopa.it"
 
+  ecommerce_hostname = "${var.location_short}${var.env}.ecommerce.internal.${var.env}.platform.pagopa.it"
 }

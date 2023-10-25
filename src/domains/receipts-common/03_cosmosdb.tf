@@ -5,6 +5,30 @@ resource "azurerm_resource_group" "receipts_rg" {
   tags = var.tags
 }
 
+
+locals {
+
+  action_groups_default = [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    }
+  ]
+
+  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [{
+    action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
+    webhook_properties = null
+  }]) : local.action_groups_default
+}
+
+
+
+
+
 module "receipts_datastore_cosmosdb_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                 = "${local.project}-datastore-cosmosdb-snet"
@@ -49,21 +73,7 @@ module "receipts_datastore_cosmosdb_account" {
 
   enable_provisioned_throughput_exceeded_alert = var.env_short == "p" ? true : false
 
-
-  action = [
-    {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
-      webhook_properties = null
-    }
-  ]
+  action = local.action_groups
 
   # add data.azurerm_subnet.<my_service>.id
   # allowed_virtual_network_subnet_ids = var.receipts_datastore_cosmos_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]

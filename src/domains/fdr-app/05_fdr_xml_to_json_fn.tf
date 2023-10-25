@@ -36,7 +36,7 @@ locals {
   xml_to_json_docker_settings = {
     IMAGE_NAME = "pagopa/pagopa-fdr-xml-to-json"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "ghcr.io"
+    DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
   }
 }
 

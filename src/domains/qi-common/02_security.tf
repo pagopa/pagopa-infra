@@ -33,7 +33,8 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  count = var.env_short != "p" ? 1 : 0
+  # count = var.env_short != "p" ? 1 : 0
+  count = 1
 
   key_vault_id = module.key_vault.id
 
@@ -157,11 +158,53 @@ resource "azurerm_key_vault_secret" "qi_azurewebjobsstorage" {
 
 # create json letsencrypt inside kv
 # requierd: Docker
-module "letsencrypt_receipt" {
+module "letsencrypt_qi" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential?ref=v6.8.0"
 
   prefix            = var.prefix
   env               = var.env_short
   key_vault_name    = "${local.product}-${var.domain}-kv"
   subscription_name = local.subscription_name
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "qi_jira_url" {
+  name  = format("qi-%s-jira-url", var.env_short)
+  value = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "qi_jira_username" {
+  name  = format("qi-%s-jira-username", var.env_short)
+  value = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "qi_jira_token" {
+  name  = format("qi-%s-jira-token", var.env_short)
+  value = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
