@@ -186,7 +186,9 @@ module "apim_webview_payment_wallet_api_v1" {
     hostname = local.apim_hostname
   })
 
-  xml_content = file("./api/webview-payment-wallet/v1/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/webview-payment-wallet/v1/_base_policy.xml.tpl", {
+    hostname = local.wallet_hostname
+  })
 }
 
 data "azurerm_key_vault_secret" "personal_data_vault_api_key_secret" {

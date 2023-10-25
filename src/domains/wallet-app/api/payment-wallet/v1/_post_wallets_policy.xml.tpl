@@ -1,9 +1,10 @@
 <policies>
     <inbound>
+      <base />
       <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <!-- Get User IO START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
-          <set-url>@($"{io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
+          <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
           <set-method>GET</set-method>
           <set-header name="Accept" exists-action="override">
             <value>@("application/json")</value>
@@ -29,11 +30,11 @@
             <value>{{personal-data-vault-api-key}}</value>
         </set-header>
         <set-body>@{
-          JObject requestBody = (JObject)context.Variables["user-auth-body"];
+          JObject requestBody = (JObject)context.Variables["userAuth"];
           return new JObject(
                   new JProperty("pii",  (string)requestBody["fiscal_code"])
-              ).ToString();}
-        </set-body>
+              ).ToString();
+            }</set-body>
       </send-request>
       <choose>
         <when condition="@(((IResponse)context.Variables["pdv-token"]).StatusCode != 200)">
