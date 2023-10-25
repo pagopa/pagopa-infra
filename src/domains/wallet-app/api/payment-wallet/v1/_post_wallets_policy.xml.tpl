@@ -46,56 +46,59 @@
       <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
       <set-variable name="fiscalCodeTokenized" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
       <choose>
-      <when condition="@((string)context.Variables["fiscalCodeTokenized"] != "")">
-          <set-header name="x-fiscal-code-tokenized" exists-action="override">
-              <value>@((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized",""))</value>
-          </set-header>
-      </when>
-      <otherwise>
-              <return-response>
-                  <set-status code="502"/>
-                  <set-header name="Content-Type" exists-action="override">
-                      <value>application/json</value>
-                  </set-header>
-                  <set-body>@{
-                return new JObject(
-                  new JProperty("title", "Bad gateway - Invalid PDV response"),
-                  new JProperty("status", 502),
-                  new JProperty("detail", "Cannot tokenize fiscal code")
-                ).ToString();
-              }</set-body>
-              </return-response>
-          </otherwise>
-    </choose>
+        <when condition="@(String.IsNullOrEmpty((string)context.Variables["fiscalCodeTokenized"]))">
+            <return-response>
+                <set-status code="502" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>@{
+            return new JObject(
+              new JProperty("title", "Bad gateway - Invalid PDV response"),
+              new JProperty("status", 502),
+              new JProperty("detail", "Cannot tokenize fiscal code")
+            ).ToString();
+          }</set-body>
+            </return-response>
+        </when>
+      </choose>
       <!-- Post Token PDV END-->
-      <!-- Token JWT START-->
-      <set-header name="x-jwt-token" exists-action="override">
-      <value>@{
-          // 1) Construct the Base64Url-encoded header
-          var header = new { typ = "JWT", alg = "HS256" };
-          var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-          // As the header is a constant, you may use this equivalent Base64Url-encoded string instead to save the repetitive computation above.
-          // var jwtHeaderBase64UrlEncoded = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9";
-
-          // 2) Construct the Base64Url-encoded payload 
-          var exp = new DateTimeOffset(DateTime.Now.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
-          var username = "john_doe"; // wihich is the value to pass to the payload as a claim? wallet_token?
-          var payload = new { exp, username }; 
-          var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-          // 3) Construct the Base64Url-encoded signature                
-          var signature = new HMACSHA256(Encoding.UTF8.GetBytes("{{wallet-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
-          var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-          // 4) Return the HMAC SHA256-signed JWT as the value for the Authorization header
-          return $"Bearer {jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}"; 
-      }</value>
-  </set-header>
-      <!-- Token JWT END-->
     </inbound>
     <outbound>
-      <base />
-    </outbound>
+    <base />
+    <choose>
+        <when condition="@(context.Response.StatusCode == 201)">
+            <!-- Token JWT START-->
+            <set-variable name="x-jwt-token" value="@{
+            // 1) Construct the Base64Url-encoded header
+            var header = new { typ = "JWT", alg = "HS256" };
+            var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
+            // As the header is a constant, you may use this equivalent Base64Url-encoded string instead to save the repetitive computation above.
+            // var jwtHeaderBase64UrlEncoded = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9";
+  
+            // 2) Construct the Base64Url-encoded payload 
+            var exp = new DateTimeOffset(DateTime.Now.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
+            var fiscalCodeTokenized = ((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized","")); // wihich is the value to pass to the payload as a claim? wallet_token?
+            var payload = new { exp, fiscalCodeTokenized }; 
+            var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
+  
+            // 3) Construct the Base64Url-encoded signature                
+            var signature = new HMACSHA256(Encoding.UTF8.GetBytes("{{wallet-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
+            var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
+  
+            // 4) Return the HMAC SHA256-signed JWT as the value for the Authorization header
+            return $"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}"; 
+        }" />
+            <!-- Token JWT END-->
+            <set-body>@{ 
+                JObject inBody = context.Response.Body.As<JObject>(); 
+                var redirectUrl = inBody["redirectUrl"];
+                inBody["redirectUrl"] = redirectUrl + "#" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
+                return inBody.ToString(); 
+            }</set-body>
+        </when>
+    </choose>
+</outbound>
     <backend>
       <base />
     </backend>
