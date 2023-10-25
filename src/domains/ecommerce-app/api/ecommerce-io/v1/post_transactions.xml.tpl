@@ -6,7 +6,7 @@
         name="body"
         value="@(context.Request.Body.As<JObject>(preserveContent: true))"
     />
-    <set-variable name="rptId" value="@(context.Variables["body"]["paymentNotices"][0]["rptId"])" />
+    <set-variable name="rptId" value="@(context.Variables["body"]["paymentNotices"][0]["rptId"].As<string>())" />
     <set-variable name="amount" value="@(context.Variables["body"]["paymentNotices"][0]["amount"].Value<int>)" />
     <set-variable name="bearerToken" value="@{
       string authorizationHeader = context.Request.Headers["Authorization"];
@@ -20,7 +20,7 @@
     }" />
 
     <choose>
-        <when condition="@(context.Variables["numberOfPaymentNotices"] > 1)">
+        <when condition="@(context.Variables["numberOfPaymentNotices"].As<int>() > 1)">
             <return-response>
                 <set-status code="422" reason="Unprocessable Entity" />
                 <set-body>
@@ -40,7 +40,7 @@
         pagopaProxyBody["rptId"] = context.Variables["rptId"];
         pagopaProxyBody["amount"] = context.Variables["amount"];
 
-        return pagopaProxyBody;
+        return pagopaProxyBody.ToString();
       }
     </set-body>
 
@@ -50,9 +50,9 @@
   <outbound>
       <base />
 
-      <set-variable name="ccp" value="@(context.Response.Body.As<JObject>()["codiceContestoPagamento"])" />
+      <set-variable name="ccp" value="@(context.Response.Body.As<JObject>()["codiceContestoPagamento"].As<string>())" />
 
-      <cache-store-value key="@(context.Variables["ccp"])" value="@(context.Variables["body"]["walletId"])" duration="600" />
+      <cache-store-value key="@(context.Variables["ccp"])" value="@(context.Variables["body"]["walletId"].As<string>())" duration="600" />
 
       <set-body>
         @{
