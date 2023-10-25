@@ -155,8 +155,8 @@ locals {
     # custom prop
     HTML_TEMPLATE_FILE_NAME           = "template"
     WORKING_DIRECTORY_PATH            = "/temp"
-    PDF_ENGINE_NODE_INFO_ENDPOINT     = "https://api.${var.env}.platform.pagopa.it/shared/pdf-engine-node/v1/info"
-    PDF_ENGINE_NODE_GENERATE_ENDPOINT = "https://api.${var.env}.platform.pagopa.it/shared/pdf-engine-node/v1/generate-pdf"
+    PDF_ENGINE_NODE_INFO_ENDPOINT     = var.env_short != "p" ? "https://api.${var.env}.platform.pagopa.it/shared/pdf-engine-node/v1/info" : "https://api.platform.pagopa.it/shared/pdf-engine-node/v1/info"
+    PDF_ENGINE_NODE_GENERATE_ENDPOINT = var.env_short != "p" ? "https://api.${var.env}.platform.pagopa.it/shared/pdf-engine-node/v1/generate-pdf" : "https://api.platform.pagopa.it/shared/pdf-engine-node/v1/generate-pdf"
     ENABLE_ECS_CONSOLE                = "true"
     CONSOLE_LOG_THRESHOLD             = "DEBUG"
     CONSOLE_LOG_PATTERN               = "%d{HH:mm:ss.SSS}[%thread]%-5level%logger{36}-%msg%n"

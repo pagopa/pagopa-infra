@@ -35,6 +35,7 @@ jobs:
             src/domains/nodo-secret
             src/domains/qi-app
             src/domains/qi-common
+            src/domains/qi-secret
             src/domains/selfcare-app
             src/domains/selfcare-common
             src/domains/shared-app

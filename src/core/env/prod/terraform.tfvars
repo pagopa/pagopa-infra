@@ -47,7 +47,8 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis = ["10.1.163.0/24"]
+cidr_subnet_redis                = ["10.1.163.0/24"]
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -534,7 +535,40 @@ eventhubs_02 = [
       }
     ]
   },
+  {
+    name              = "quality-improvement-alerts"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-alert-rx", "pagopa-qi-alert-rx-pdnd", "pagopa-qi-alert-rx-debug"]
+    keys = [
+      {
+        name   = "pagopa-qi-alert-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-debug"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
+
 # acr
 acr_enabled = true
 
@@ -659,3 +693,5 @@ node_forwarder_size            = "P1v3"
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
+devops_agent_zones         = [1, 2, 3]
+devops_agent_balance_zones = false
