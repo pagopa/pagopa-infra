@@ -18,7 +18,7 @@ module "azdoa_snet" {
 
 
 module "azdoa_li_app" {
-  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v4.16.0"
+  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v4.20.0"
   count               = var.enable_azdoa ? 1 : 0
   name                = "${local.project}-azdoa-vmss-ubuntu-app"
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
@@ -29,11 +29,14 @@ module "azdoa_li_app" {
   image_type          = "custom" # enables usage of "source_image_name"
   source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
 
+  zones        = var.devops_agent_zones
+  zone_balance = var.devops_agent_balance_zones
+
   tags = var.tags
 }
 
 module "azdoa_li_infra" {
-  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v4.16.0"
+  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v4.20.0"
   count               = var.enable_azdoa ? 1 : 0
   name                = "${local.project}-azdoa-vmss-ubuntu-infra"
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
@@ -43,6 +46,9 @@ module "azdoa_li_infra" {
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
   source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
+
+  zones        = var.devops_agent_zones
+  zone_balance = var.devops_agent_balance_zones
 
   tags = var.tags
 }
