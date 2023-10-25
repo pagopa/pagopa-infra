@@ -114,13 +114,13 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_min_poo
   count     = var.pgres_flex_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_flexible_server_fdr.id
-  value     = 500
+  value     = var.pgres_flex_params.pgbouncer_min_pool_size
 }
 resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_default_pool_size" {
   count     = var.pgres_flex_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.default_pool_size"
   server_id = module.postgres_flexible_server_fdr.id
-  value     = 1000
+  value     = var.pgres_flex_params.pgbouncer_default_pool_size
 }
 
 
