@@ -1,5 +1,6 @@
 <policies>
     <inbound>
+        <base />
         <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
         <rewrite-uri template="/payment-activations" />
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
@@ -35,7 +36,6 @@
         <set-header name="X-Client-Id" exists-action="override">
             <value>CLIENT_IO</value>
         </set-header>
-        <base />
     </inbound>
     <outbound>
         <base />
