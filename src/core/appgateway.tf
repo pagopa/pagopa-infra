@@ -4,11 +4,12 @@ locals {
   # listeners
   listeners = {
     api = {
-      protocol           = "Https"
-      host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
-      firewall_policy_id = null
+      protocol         = "Https"
+      host             = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port             = 443
+      ssl_profile_name = format("%s-ssl-profile", local.project)
+      # firewall_policy_id = null
+      firewall_policy_id = azurerm_web_application_firewall_policy.api_platform.id
 
       certificate = {
         name = var.app_gateway_api_certificate_name
@@ -561,6 +562,48 @@ module "app_gw" {
       ]
     }
 
+  }
+
+  tags = var.tags
+}
+
+
+# waf policy rules disable
+resource "azurerm_web_application_firewall_policy" "api_platform" {
+  name                = format("%s-waf-appgateway-api-app-policy", local.project)
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = azurerm_resource_group.rg_vnet.location
+
+
+  policy_settings {
+    enabled                     = true
+    mode                        = "Prevention"
+    request_body_check          = true
+    file_upload_limit_in_mb     = 100
+    max_request_body_size_in_kb = 128
+  }
+
+  managed_rules {
+
+    managed_rule_set {
+      type    = "OWASP"
+      version = "3.1"
+
+      rule_group_override {
+        rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
+        disabled_rules = [
+          "920300",
+        ]
+      }
+
+      rule_group_override {
+        rule_group_name = "REQUEST-942-APPLICATION-ATTACK-SQLI"
+        disabled_rules = [
+          "942450",
+        ]
+      }
+
+    }
   }
 
   tags = var.tags
