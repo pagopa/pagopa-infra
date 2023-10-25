@@ -26,10 +26,11 @@
                 </return-response>
             </when>
         </choose>
+        <set-variable name="ccp" value="@(Guid.NewGuid().ToString("N"))" />
         <set-body>@{
         JObject pagopaProxyBody = new JObject();
         pagopaProxyBody["rptId"] = ((string) context.Variables["rptId"]);
-        pagopaProxyBody["codiceContestoPagamento"] = Guid.NewGuid().ToString("N");
+        pagopaProxyBody["codiceContestoPagamento"] = ((string) context.Variables["ccp"]);
         pagopaProxyBody["importoSingoloVersamento"] = ((int) context.Variables["amount"]);
         return pagopaProxyBody.ToString();
       }</set-body>
@@ -39,16 +40,17 @@
     </inbound>
     <outbound>
         <base />
-        <set-variable name="ccp" value="@(context.Response.Body.As<JObject>()["codiceContestoPagamento"].ToObject<string>())" />
-        <cache-store-value key="@(((string) context.Variables["ccp"]))" value="@(((string) ((JObject) context.Variables["body"])["walletId"].ToObject<string>()))" duration="600" />
-        <set-body>@{
-        JObject eCommerceResponseBody = new JObject();
-        eCommerceResponseBody["transactionId"] = (string) context.Variables["ccp"];
-        eCommerceResponseBody["payments"] = "[]";
-        eCommerceResponseBody["clientId"] = "IO";
-        eCommerceResponseBody["authToken"] = (string) context.Variables["bearerToken"];
-        return eCommerceResponseBody.ToString();
-      }</set-body>
+        <choose>
+          <when condition="@(context.Response.StatusCode == 200)">
+            <set-body>@{
+            eCommerceResponseBody["transactionId"] = (string) context.Variables["ccp"];
+            eCommerceResponseBody["payments"] = "[]";
+            eCommerceResponseBody["clientId"] = "IO";
+            eCommerceResponseBody["authToken"] = (string) context.Variables["bearerToken"];
+            return eCommerceResponseBody.ToString();
+          }</set-body>
+          </when>
+        </choose> 
     </outbound>
     <backend>
         <base />
