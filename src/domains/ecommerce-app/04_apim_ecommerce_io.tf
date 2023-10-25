@@ -119,14 +119,3 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
     ecommerce_npg_psps_list  = var.ecommerce_npg_psps_list
   })
 }
-
-resource "azurerm_api_management_api_operation_policy" "io_get_payment_request_info" {
-  api_name            = "${local.project}-ecommerce-io-api-v1"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "getPaymentRequestInfo"
-
-  xml_content = templatefile("./api/ecommerce-io/v1/payment_requests.xml.tpl", {
-    hostname = local.ecommerce_hostname
-  })
-}
