@@ -144,6 +144,7 @@
 | <a name="input_app_service_pdf_engine_always_on"></a> [app\_service\_pdf\_engine\_always\_on](#input\_app\_service\_pdf\_engine\_always\_on) | Always on property | `bool` | `true` | no |
 | <a name="input_app_service_pdf_engine_autoscale_enabled"></a> [app\_service\_pdf\_engine\_autoscale\_enabled](#input\_app\_service\_pdf\_engine\_autoscale\_enabled) | n/a | `bool` | `true` | no |
 | <a name="input_app_service_pdf_engine_sku_name"></a> [app\_service\_pdf\_engine\_sku\_name](#input\_app\_service\_pdf\_engine\_sku\_name) | app service plan size | `string` | `"S1"` | no |
+| <a name="input_app_service_pdf_engine_sku_name_java"></a> [app\_service\_pdf\_engine\_sku\_name\_java](#input\_app\_service\_pdf\_engine\_sku\_name\_java) | app service plan size | `string` | `"S1"` | no |
 | <a name="input_authorizer_function_always_on"></a> [authorizer\_function\_always\_on](#input\_authorizer\_function\_always\_on) | Should authorizer-functions app be always on? | `bool` | n/a | yes |
 | <a name="input_authorizer_functions_app_image_tag"></a> [authorizer\_functions\_app\_image\_tag](#input\_authorizer\_functions\_app\_image\_tag) | Authorizer functions app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
 | <a name="input_authorizer_functions_app_sku"></a> [authorizer\_functions\_app\_sku](#input\_authorizer\_functions\_app\_sku) | Authorizer functions app plan SKU | <pre>object({<br>    kind     = string<br>    sku_size = string<br>  })</pre> | n/a | yes |
