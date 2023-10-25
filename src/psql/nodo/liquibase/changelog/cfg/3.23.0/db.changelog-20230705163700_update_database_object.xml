@@ -29,10 +29,10 @@
 	   SELECT mas.fk_pa,
        det.iban          AS iban_accredito,
        mas.validity_date AS data_inizio_validita,
-	   TO_TIMESTAMP(null, 'YYYY/MM/DD HH:MI:SS' ) AS data_pubblicazione,
-       det.fiscal_code   AS ragione_sociale,
+	   mas.inserted_date AS data_pubblicazione,
+       p.ID_DOMINIO   AS ragione_sociale,
        NULL              AS id_merchant,
-       NULL              AS id_banca_seller,
+       'NA'              AS id_banca_seller,
        NULL              AS chiave_avvio,
        NULL              AS chiave_esito,
        mas.obj_id,
@@ -44,7 +44,9 @@ FROM   ((iban_master mas
                WHERE  ( iban_master.validity_date &lt;= current_timestamp )
                ) right_id_by_pk ON (( mas.obj_id = right_id_by_pk.obj_id )))
         JOIN iban det
-          ON (( mas.fk_iban = det.obj_id ))); 
+          ON (( mas.fk_iban = det.obj_id ))
+        JOIN PA p 
+          ON (( mas.fk_pa = p.obj_id))); 
           </createView>
 	</changeSet>
 
