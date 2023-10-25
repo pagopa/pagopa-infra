@@ -1,5 +1,7 @@
 <policies>
   <inbound>
+    <set-backend-service base-url="{{pagopa-appservice-proxy-url}}"/>
+
     <set-variable
         name="body"
         value="@(context.Request.Body.As<JObject>(preserveContent: true))"
