@@ -13,7 +13,7 @@ module "apim_ecommerce_checkout_product" {
   resource_group_name = local.pagopa_apim_rg
 
   published             = true
-  subscription_required = false
+  subscription_required = true
   approval_required     = true
   subscriptions_limit   = 1000
 
