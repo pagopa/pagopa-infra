@@ -40,12 +40,17 @@
     </inbound>
     <outbound>
         <base />
+        <set-variable name="pagopaProxyResponseBody" value="@(context.Response.Body.As<JObject>())" />
         <choose>
           <when condition="@(context.Response.StatusCode == 200)">
             <set-body>@{
               JObject eCommerceResponseBody = new JObject();
+              JArray payments = new JArray();
+              JObject payment = new JObject();
+              payment["rptId"] = (string) context.Variables["rptId"];
+              payments.Add(payment);
               eCommerceResponseBody["transactionId"] = (string) context.Variables["ccp"];
-              eCommerceResponseBody["payments"] = "[]";
+              eCommerceResponseBody["payments"] = payments;
               eCommerceResponseBody["clientId"] = "IO";
               eCommerceResponseBody["authToken"] = (string) context.Variables["bearerToken"];
               return eCommerceResponseBody.ToString();
