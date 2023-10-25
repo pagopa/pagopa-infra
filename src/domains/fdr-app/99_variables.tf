@@ -402,3 +402,9 @@ variable "fdr_json_to_xml_function_autoscale" {
   })
   description = "FdR JSON to XML function autoscaling parameters"
 }
+
+variable "ftp_organization" {
+  type        = string
+  description = "Organization configured with FTP"
+  default     = null
+}
