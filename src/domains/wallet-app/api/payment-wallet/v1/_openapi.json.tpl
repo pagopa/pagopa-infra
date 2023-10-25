@@ -319,71 +319,6 @@
             "description": "Timeout serving request"
           }
         }
-      },
-      "patch": {
-        "tags": [
-          "wallets"
-        ],
-        "summary": "Partial wallet update",
-        "description": "Update wallet partially",
-        "operationId": "patchWalletById",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "description": "Create a new wallet",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WalletPatchRequest"
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "walletId",
-            "in": "path",
-            "description": "ID of wallet to return",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/WalletId"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Wallet updated successfully"
-          },
-          "400": {
-            "description": "Invalid input id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Wallet not found"
-          },
-          "504": {
-            "description": "Timeout serving request"
-          }
-        }
       }
     }
   },
@@ -529,22 +464,6 @@
           "abi",
           "maskedEmail"
         ]
-      },
-      "WalletPatchRequest": {
-        "type": "object",
-        "description": "Wallet update request",
-        "items": {
-          "$ref": "#/components/schemas/PatchService"
-        },
-        "properties": {
-          "services": {
-            "type": "array",
-            "description": "List of services to update",
-            "items": {
-              "$ref": "#/components/schemas/PatchService"
-            }
-          }
-        }
       },
       "WalletCreateRequest": {
         "type": "object",
