@@ -14,7 +14,7 @@
       <when condition="@( context.Request.Url.Path.Contains("payment-methods") )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("payment-requests") || context.Request.Url.Path.Contains("carts") )"> <!-- TODO use startWith -->
+      <when condition="@( context.Request.Url.Path.Contains("payment-requests") )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
       </when>
     </choose>
