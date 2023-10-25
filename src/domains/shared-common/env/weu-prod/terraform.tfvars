@@ -38,7 +38,7 @@ cosmos_iuvgenerator_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   additional_geo_locations          = []
@@ -46,7 +46,7 @@ cosmos_iuvgenerator_db_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
 }
 
