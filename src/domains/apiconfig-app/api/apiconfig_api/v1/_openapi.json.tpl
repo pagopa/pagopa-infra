@@ -8,7 +8,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080/apiconfig/api/v1"
+      "url": "${host}/apiconfig/api/v1"
     },
     {
       "url": "https://{host}/{basePath}",
