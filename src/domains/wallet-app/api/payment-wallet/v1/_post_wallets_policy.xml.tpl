@@ -7,7 +7,7 @@
           <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
           <set-method>GET</set-method>
           <set-header name="Accept" exists-action="override">
-            <value>@("application/json")</value>
+            <value>application/json</value>
           </set-header>
           <set-header name="Authorization" exists-action="override">
             <value>@("Bearer " + (string)context.Variables.GetValueOrDefault("walletToken"))</value>
