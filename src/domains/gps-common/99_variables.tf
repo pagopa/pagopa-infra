@@ -330,3 +330,15 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
+
+variable "enable_gpd_payments_backup" {
+  type = bool
+  default = false
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "gpd_payments_sa_delete_retention_days" {
+  type = number
+  default = null
+  description = "(Optional) nodo sftp storage delete retention"
+}

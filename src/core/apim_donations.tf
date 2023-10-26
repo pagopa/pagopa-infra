@@ -93,13 +93,22 @@ module "logos_donation_flows_sa" {
   account_replication_type   = "LRS"
   access_tier                = "Hot"
   versioning_name            = "versioning"
-  enable_versioning          = false
+  enable_versioning          = var.enable_logos_backup
   resource_group_name        = azurerm_resource_group.data.name
   location                   = var.location
   advanced_threat_protection = false
   allow_blob_public_access   = false
 
   blob_properties_delete_retention_policy_days = 30
+
+  blob_change_feed_enabled = var.enable_logos_backup
+  blob_change_feed_retention_in_days = var.enable_logos_backup ? var.logos_sa_delete_retention_days : null
+  blob_container_delete_retention_days = var.enable_logos_backup ? var.logos_sa_delete_retention_days : null
+  blob_storage_policy = var.enable_logos_backup ? {
+    enable_immutability_policy = false
+    blob_restore_policy_days = var.logos_sa_delete_retention_days
+  } : null
+  blob_delete_retention_days = var.gpd_payments_delete_retention_days
 
   tags = var.tags
 }

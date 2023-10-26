@@ -175,3 +175,9 @@ variable "storage_account_info" {
     advanced_threat_protection_enable = true
   }
 }
+
+variable "enable_canoneunico_backup" {
+  type = bool
+  default = false
+  description = "(Optional) Enables canoneunico storage account backup"
+}

@@ -152,3 +152,17 @@ nodo_re_storage_account = {
   blob_delete_retention_days    = 0
   public_network_access_enabled = false
 }
+
+
+nodo_storico_storage_account = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    blob_versioning_enabled       = true
+    advanced_threat_protection    = true
+    public_network_access_enabled = true
+}
+
+
+enable_sftp_backup = true
+sftp_sa_delete_retention_days = 30

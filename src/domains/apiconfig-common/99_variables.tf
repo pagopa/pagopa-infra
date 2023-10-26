@@ -149,3 +149,8 @@ variable "api_config_reporting_delete_retention_days" {
   default     = 30
 }
 
+variable "enable_apiconfig_sa_backup" {
+  type = bool
+  default = false
+  description = "(Optional) Enables apiconfig storage account backup"
+}

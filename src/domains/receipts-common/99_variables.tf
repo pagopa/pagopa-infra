@@ -211,3 +211,10 @@ variable "receipts_queue_delay_sec" {
   description = "The length of time during which the message will be invisible, starting when it is added to the queue."
   default     = 3600
 }
+
+
+variable "enable_sa_backup" {
+  type = bool
+  default = false
+  description = "(Optional) Enables storage account backup PIT restore"
+}

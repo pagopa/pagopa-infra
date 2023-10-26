@@ -22,6 +22,15 @@ module "sftp" {
   access_tier                   = "Hot"
   is_hns_enabled                = true
 
+  blob_versioning_enabled = var.enable_sftp_backup
+  blob_change_feed_enabled = var.enable_sftp_backup
+  blob_change_feed_retention_in_days = var.enable_sftp_backup ? var.sftp_sa_delete_retention_days : null
+  blob_container_delete_retention_days = var.enable_sftp_backup ? var.sftp_sa_delete_retention_days : null
+  blob_storage_policy = var.enable_sftp_backup ? {
+    enable_immutability_policy = false
+    blob_restore_policy_days = var.sftp_sa_delete_retention_days
+  } : null
+
   network_rules = {
     default_action             = var.sftp_disable_network_rules ? "Allow" : "Deny"
     bypass                     = ["AzureServices"]

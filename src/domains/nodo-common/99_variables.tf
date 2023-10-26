@@ -339,3 +339,16 @@ variable "nodo_storico_allowed_ips" {
   description = "List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed"
   default     = []
 }
+
+
+variable "enable_sftp_backup" {
+  type = bool
+  default = false
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "sftp_sa_delete_retention_days" {
+  type = number
+  default = null
+  description = "(Optional) nodo sftp storage delete retention"
+}

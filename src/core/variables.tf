@@ -1588,3 +1588,16 @@ variable "devops_agent_balance_zones" {
   default     = false
   description = "(Optional) True if the devops agent instances must be evenly balanced between the configured zones"
 }
+
+
+variable "enable_logos_backup" {
+  type = bool
+  default = false
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "logos_sa_delete_retention_days" {
+  type = number
+  default = null
+  description = "(Optional) nodo sftp storage delete retention"
+}

@@ -19,6 +19,14 @@ module "payments_receipt_sa" {
   public_network_access_enabled   = true
   enable_low_availability_alert   = false
 
+
+  blob_change_feed_enabled = var.enable_gpd_payments_backup
+  blob_change_feed_retention_in_days = var.enable_gpd_payments_backup ? var.gpd_payments_sa_delete_retention_days : null
+  blob_container_delete_retention_days = var.enable_gpd_payments_backup ? var.gpd_payments_sa_delete_retention_days : null
+  blob_storage_policy = var.enable_gpd_payments_backup ? {
+    enable_immutability_policy = false
+    blob_restore_policy_days = var.gpd_payments_sa_delete_retention_days
+  } : null
   blob_delete_retention_days = var.gpd_payments_delete_retention_days
 
   tags = var.tags
