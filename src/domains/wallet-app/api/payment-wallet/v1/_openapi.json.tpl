@@ -513,20 +513,8 @@
           "walletId": {
             "$ref": "#/components/schemas/WalletId"
           },
-          "userId": {
-            "type": "string",
-            "description": "user identifier"
-          },
-          "paymentInstrumentId": {
-            "description": "Payment instrument identifier",
-            "type": "string"
-          },
           "paymentMethodId": {
             "description": "Payment method identifier",
-            "type": "string"
-          },
-          "contractId": {
-            "description": "User contract identifier to be used with payment instrument to make a new payment",
             "type": "string"
           },
           "status": {
@@ -572,12 +560,9 @@
         "required": [
           "walletId",
           "paymentMethodId",
-          "userId",
           "status",
           "creationDate",
-          "contractId",
           "updateDate",
-          "type",
           "services"
         ]
       },
