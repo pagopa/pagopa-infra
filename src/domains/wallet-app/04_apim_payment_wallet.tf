@@ -76,7 +76,7 @@ resource "azurerm_api_management_api_operation_policy" "get_wallets_for_user" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "getWalletsByIdUser"
 
-  xml_content = templatefile("./api/payment-wallet/v1/get_wallets_by_user.xml.tpl",{
+  xml_content = templatefile("./api/payment-wallet/v1/get_wallets_by_user.xml.tpl", {
     ecommerce-basepath = local.ecommerce_hostname
   })
 
