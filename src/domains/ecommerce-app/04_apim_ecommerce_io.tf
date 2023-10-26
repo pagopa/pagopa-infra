@@ -166,8 +166,6 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   operation_id        = "requestTransactionAuthorization"
 
   xml_content = templatefile("./api/ecommerce-io/v1/_auth_request.xml.tpl", {
-    pagopa_proxy_host = local.apim_hostname
-    pagopa_proxy_path = "checkout/payments/v1/payment-activations"
     webview_host      = local.apim_hostname
     webview_path      = "ecommerce/io-webview/v1/pay"
   })
