@@ -25,7 +25,7 @@
         <!-- END get payment methods -->
 
         <!-- START get user wallets -->
-        <set-variable  name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
+        <set-variable  name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", ""))"  />
         <send-request ignore-error="false" timeout="10" response-variable-name="pmWalletResponse">
             <set-url>{{pm-host}}/pp-restapi-CD/v1/wallet</set-url>
             <set-method>GET</set-method>
