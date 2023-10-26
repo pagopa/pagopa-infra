@@ -58,7 +58,7 @@
                     JObject errorResponse = new JObject();
                     errorResponse["title"] = "Wallet not found";
                     errorResponse["status"] = 404;
-                    errorResponse["detail"] = "Wallet not found";
+                    errorResponse["detail"] = "No wallet found for input wallet token";
                     return errorResponse.ToString();
                 }
             </set-body>
