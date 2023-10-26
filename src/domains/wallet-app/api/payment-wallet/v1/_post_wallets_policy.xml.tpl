@@ -70,11 +70,9 @@
         <when condition="@(context.Response.StatusCode == 201)">
             <!-- Token JWT START-->
             <set-variable name="x-jwt-token" value="@{
-            // 1) Construct the Base64Url-encoded header
+            // Construct the Base64Url-encoded header
             var header = new { typ = "JWT", alg = "HS256" };
             var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-            // As the header is a constant, you may use this equivalent Base64Url-encoded string instead to save the repetitive computation above.
-            // var jwtHeaderBase64UrlEncoded = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9";
   
             // 2) Construct the Base64Url-encoded payload 
             var exp = new DateTimeOffset(DateTime.Now.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
