@@ -57,6 +57,7 @@
     <outbound>
         <base />
 
+        <set-status code="200" reason="OK" />
         <set-body>
             @{
                 JObject eCommerceResponseBody = new JObject();
@@ -66,8 +67,7 @@
                 eCommerceResponseBody["clientId"] = "IO";
 
                 return eCommerceResponseBody.ToString();
-                }
-            
+            }
         </set-body>
 
     </outbound>
