@@ -94,5 +94,12 @@
     </backend>
     <on-error>
         <base />
+        <set-body>
+          {
+            "status": 502,
+            "title": "Bad Gateway",
+            "details": "Error while contacting pagopa-proxy"
+          }
+        </set-body>
     </on-error>
 </policies>
