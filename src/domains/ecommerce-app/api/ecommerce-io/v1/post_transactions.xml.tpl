@@ -9,7 +9,7 @@
         <set-variable name="amount" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["amount"].Value<int>())" />
 
         <choose>
-            <when condition="@(((int) context.Request.Headers["Authorization"].Length) == 0)">
+            <when condition="@(!context.Request.Headers.ContainsKey("Authorization"))">
                 <return-response>
                     <set-status code="401" reason="Unauthorized" />
                     <set-body>
@@ -25,7 +25,7 @@
 
         <set-variable name="bearerToken" value="@{
           string authorizationHeader = context.Request.Headers["Authorization"][0];
-          return authorizationHeader.Substring(0, "Bearer ".Length);
+          return authorizationHeader.Substring("Bearer ".Length);
         }" />
         <set-variable name="numberOfPaymentNotices" value="@{
           var body = context.Request.Body.As<JObject>();
