@@ -65,15 +65,19 @@
         <choose>
           <when condition="@(context.Response.StatusCode == 200)">
             <set-body>@{
-              JObject eCommerceResponseBody = new JObject();
-              JArray payments = new JArray();
               JObject payment = new JObject();
               payment["rptId"] = (string) context.Variables["rptId"];
+              payment["amount"] = (int) ((JObject) context.Variables["pagopaProxyResponseBody"])["importoSingoloVersamento"];
+
+              JArray payments = new JArray();
               payments.Add(payment);
+
+              JObject eCommerceResponseBody = new JObject();
               eCommerceResponseBody["transactionId"] = (string) context.Variables["ccp"];
               eCommerceResponseBody["payments"] = payments;
               eCommerceResponseBody["clientId"] = "IO";
               eCommerceResponseBody["authToken"] = (string) context.Variables["bearerToken"];
+
               return eCommerceResponseBody.ToString();
             }</set-body>
           </when>
