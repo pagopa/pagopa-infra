@@ -77,6 +77,16 @@
               return eCommerceResponseBody.ToString();
             }</set-body>
           </when>
+          <otherwise>
+            <set-status code="502" reason="Bad Gateway" />
+            <set-body>
+              {
+                "status": 502,
+                "title": "Bad Gateway",
+                "details": "pagopa-proxy returned non-200 status code"
+              }
+            </set-body>
+          </otherwise>
         </choose> 
     </outbound>
     <backend>
