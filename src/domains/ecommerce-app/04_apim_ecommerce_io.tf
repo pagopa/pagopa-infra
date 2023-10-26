@@ -75,7 +75,7 @@ module "apim_ecommerce_io_api_v1" {
 }
 
 resource "azurerm_api_management_api_version_set" "ecommerce_io_webview_pay_v1" {
-  name                = "${local.project}-ecommerce-io-api-webview-pay"
+  name                = "${local.project}-io-api-webview-pay"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_ecommerce_io_webview_pay.display_name
@@ -85,7 +85,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_io_webview_pay_v1" 
 module "apim_ecommerce_io_webview_pay_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
-  name                  = "${local.project}-ecommerce-io-api-webiew-pay-v1"
+  name                  = "${local.project}-io-api-webiew-pay"
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
   product_ids           = [module.apim_ecommerce_io_product.product_id]
@@ -103,15 +103,6 @@ module "apim_ecommerce_io_webview_pay_v1" {
   content_value = templatefile("./api/ecommerce-io/v1/_webview_openapi.json.tpl", {
     hostname = local.apim_hostname
   })
-
-  xml_content = file("./api/ecommerce-io/v1/_base_policy.xml.tpl")
-}
-
-resource "azurerm_api_management_api_operation_policy" "io_webview_get" {
-  api_name            = "${local.project}-ecommerce-io-api-webview-pay-v1"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "getWebView"
 
   xml_content = templatefile("./api/ecommerce-io/v1/pay-pm-webview.xml.tpl", {
     pm_webview_path = "${local.apim_hostname}/pp-restapi-CD/v3/webview/transactions/pay"
