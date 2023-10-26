@@ -24,7 +24,7 @@
       <!-- Get User IO END-->
       <!-- Post Token PDV START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
-        <set-url>@($"${pdv_api_base_path}/tokens")</set-url>
+        <set-url>${pdv_api_base_path}/tokens</set-url>
         <set-method>PUT</set-method>
         <set-header name="x-api-key" exists-action="override">
             <value>{{personal-data-vault-api-key}}</value>
