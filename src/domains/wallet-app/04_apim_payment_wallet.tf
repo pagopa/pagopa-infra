@@ -69,22 +69,17 @@ module "apim_payment_wallet_api_v1" {
   })
 }
 
-resource "azurerm_api_management_named_value" "ecommerce_io_transaction_jwt_signing_key" {
-  name                = "ecommerce-credit-card-method-id"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "eCommerce UUID for Credit Cards method id"
-  value               = "<REPLACE ME>"
-  secret              = false
-}
-
 resource "azurerm_api_management_api_operation_policy" "get_wallets_for_user" {
+  count               = var.payment_wallet_with_pm_enabled ? 1 : 0
   api_name            = "${local.project}-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "getWalletsByIdUser"
 
-  xml_content = file("./api/payment-wallet/v1/get_wallets_by_user.xml.tpl")
+  xml_content = templatefile("./api/payment-wallet/v1/get_wallets_by_user.xml.tpl",{
+    ecommerce-basepath = local.ecommerce_hostname
+  })
+
 }
 
 resource "azurerm_api_management_api_operation_policy" "post_wallets" {
