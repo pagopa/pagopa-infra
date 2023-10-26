@@ -1,5 +1,6 @@
 <policies>
     <inbound>
+        <base />
         <set-variable name="requestTransactionId" value="@{
             var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
             if(transactionId == ""){
@@ -23,6 +24,9 @@
         <send-request ignore-error="false" timeout="10" response-variable-name="pagopaProxyCcpResponse">
             <set-url>@("{{pagopa-appservice-proxy-url}}/payment-activations/" + context.Variables["requestTransactionId"])</set-url>
             <set-method>GET</set-method>
+            <set-header name="X-Client-Id" exists-action="override">
+                <value>CLIENT_IO</value>
+            </set-header>
         </send-request>
         <choose>
             <when condition="@(((int)((IResponse)context.Variables["pagopaProxyCcpResponse"]).StatusCode) == 200)">
@@ -47,6 +51,7 @@
                 </return-response>
             </otherwise>
         </choose>
+      
     </inbound>
 
     <outbound>
