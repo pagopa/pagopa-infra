@@ -98,6 +98,7 @@
         <set-body>
             @{
                 JObject pmWalletResponse = (JObject)context.Variables["pmUserWalletResponseBody"];
+                var walletServices = new List<String>{"PAGOPA"};
                 var eCommerceWalletTypes = new Dictionary<string, string>
                     {
                         { "CREDIT_CARD", "CARDS" }
@@ -121,15 +122,18 @@
                 result["status"] = "VALIDATED";
                 result["creationDate"] = wallet["lastUsage"];
                 result["updateDate"] = wallet["lastUsage"];
-                result["services"] = JArray.FromObject(
-                    wallet["services"].Select(service => {
+                var convertedServices = new List<JObject>();
+                foreach(JValue service in wallet["services"]){
+                    string serviceName = service.ToString().ToUpper();
+                    if(walletServices.Contains(serviceName)){
                         JObject converted = new JObject();
-                        converted["name"] = ((string) service).ToUpper();
+                        converted["name"] = serviceName;
                         converted["status"] = "ENABLED";
                         converted["updateDate"] = wallet["lastUsage"];
-                        return converted;
-                    }).ToList()
-                );
+                        convertedServices.Add(converted);
+                    }
+                }
+                result["services"] = JArray.FromObject(convertedServices);
                 JObject details = new JObject();
                 details["type"] = eCommerceWalletType;
                 if (eCommerceWalletType == "CARDS") {
