@@ -46,7 +46,7 @@
     <set-variable name="pmUserWalletResponseBody" value="@(((IResponse)context.Variables["pmWalletResponse"]).Body.As<JObject>())" />
     <set-variable name="pmUserWalletsNumber" value="@(((JArray)((JObject)context.Variables["pmUserWalletResponseBody"])["data"]).Count)" />
     <choose>
-        <when condition="@(((int)context.Variables["pmUserWalletResponseBodyLength"])==0)">
+        <when condition="@(((int)context.Variables["pmUserWalletsNumber"])==0)">
             <return-response>
             <set-status code="404" reason="Wallet not found" />
             <set-body>
