@@ -165,7 +165,7 @@ variable "enable_iac_pipeline" {
 # Redis
 variable "cidr_subnet_redis_wallet" {
   type        = list(string)
-  description = "Redis DB address space for ecommerce."
+  description = "Redis DB address space for wallet."
 }
 
 variable "redis_wallet_params" {
