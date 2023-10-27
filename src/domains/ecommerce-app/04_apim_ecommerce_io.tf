@@ -123,6 +123,15 @@ resource "azurerm_api_management_named_value" "ecommerce_io_transaction_jwt_sign
   secret              = true
 }
 
+resource "azurerm_api_management_api_operation_policy" "io_create_transaction" {
+  api_name            = "${local.project}-ecommerce-io-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "newTransaction"
+
+  xml_content = file("./api/ecommerce-io/v1/post_transactions.xml.tpl")
+}
+
 resource "azurerm_api_management_api_operation_policy" "io_get_transaction_info" {
   api_name            = "${local.project}-ecommerce-io-api-v1"
   resource_group_name = local.pagopa_apim_rg
