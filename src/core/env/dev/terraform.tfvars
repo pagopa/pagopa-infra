@@ -536,7 +536,7 @@ eventhubs_02 = [
     name              = "nodo-dei-pagamenti-verify-ko"
     partitions        = 32
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-verify-ko-to-datastore-rx", "nodo-dei-pagamenti-verify-ko-to-tablestorage-rx"]
+    consumers         = ["nodo-dei-pagamenti-verify-ko-to-datastore-rx", "nodo-dei-pagamenti-verify-ko-to-tablestorage-rx", "nodo-dei-pagamenti-verify-ko-test-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-verify-ko-tx"
