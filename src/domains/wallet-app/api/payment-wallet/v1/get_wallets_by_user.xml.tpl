@@ -118,7 +118,7 @@
                     eCommerceWalletType = eCommerceWalletTypes[pmWalletType];
                 }
                 result["paymentMethodId"] = eCommercePaymentMethodIds[eCommerceWalletType];
-                result["status"] = "SCA_COMPLETED";
+                result["status"] = "VALIDATED";
                 result["creationDate"] = wallet["lastUsage"];
                 result["updateDate"] = wallet["lastUsage"];
                 result["services"] = JArray.FromObject(
