@@ -48,7 +48,7 @@
         </when>
     </choose>
     <set-variable name="pmUserWalletResponseBody" value="@(((IResponse)context.Variables["pmWalletResponse"]).Body.As<JObject>())" />
-    <set-variable name="pmUserWalletResponseBodyLength" value="@(((JArray)((JObject)context.Variables["pmUserWalletResponseBody"])["data"]).Count)" />
+    <set-variable name="pmUserWalletsNumber" value="@(((JArray)((JObject)context.Variables["pmUserWalletResponseBody"])["data"]).Count)" />
     <choose>
         <when condition="@(((int)context.Variables["pmUserWalletResponseBodyLength"])==0)">
             <return-response>
