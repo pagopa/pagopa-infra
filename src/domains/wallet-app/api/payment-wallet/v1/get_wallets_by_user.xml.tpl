@@ -137,9 +137,9 @@
                 JObject details = new JObject();
                 details["type"] = eCommerceWalletType;
                 if (eCommerceWalletType == "CARDS") {
-                    details["bin"] = wallet["creditCard"]["abiCode"];
+                    //details["bin"] = wallet["creditCard"]["abiCode"];
                     details["maskedPan"] = wallet["creditCard"]["pan"];
-                    details["expiryDate"] = $"{(string)wallet["creditCard"]["expireMonth"]}{(string)wallet["creditCard"]["expireYear"]}";
+                    details["expiryDate"] = $"20{(string)wallet["creditCard"]["expireYear"]}{(string)wallet["creditCard"]["expireMonth"]}";
                     details["holder"] = wallet["creditCard"]["holder"];
                     details["brand"] = wallet["creditCard"]["brand"];
                 }
