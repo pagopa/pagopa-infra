@@ -50,7 +50,7 @@
                 <return-response>
                     <set-status code="404" reason="Not found" />
                     <set-body>{
-                            "title": "Unable to get get Psps",
+                            "title": "Unable to get Psps",
                             "status": 404,
                             "detail": "Psps not found",
                         }</set-body>
