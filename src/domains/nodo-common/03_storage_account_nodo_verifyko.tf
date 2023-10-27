@@ -49,8 +49,15 @@ resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint" {
   ]
 }
 
-# table#1 nodo-re
+# table nodo-verify-ko
 resource "azurerm_storage_table" "nodo_verifyko_table" {
   name                 = "events"
   storage_account_name = module.nodo_verifyko_storage_account.name
+}
+
+# blob nodo-verify-ko
+resource "azurerm_storage_container" "nodo_verifyko_blob" {
+  name                  = "payload"
+  storage_account_name  = module.nodo_verifyko_storage_account.name
+  container_access_type = "private"
 }

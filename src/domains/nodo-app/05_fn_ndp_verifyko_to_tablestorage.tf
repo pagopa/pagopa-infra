@@ -32,8 +32,10 @@ locals {
 
     EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tablestorage-rx.primary_connection_string
 
-    TABLE_STORAGE_CONN_STRING = data.azurerm_storage_account.nodo_verifyko_storage.primary_connection_string
-    TABLE_STORAGE_TABLE_NAME  = "events"
+    TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.nodo_verifyko_storage.primary_connection_string
+    BLOB_STORAGE_CONN_STRING    = data.azurerm_storage_account.nodo_verifyko_storage.primary_connection_string
+    TABLE_STORAGE_TABLE_NAME    = "events"
+    BLOB_STORAGE_CONTAINER_NAME = "payload"
   }
 
   verifyko_ts_docker_settings = {

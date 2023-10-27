@@ -1,11 +1,12 @@
 # AppException during datastore dumping
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datastore_appexception" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${module.nodo_verifyko_to_datastore_function.name}-app-exception"
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
     email_subject          = "AppException on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
@@ -33,12 +34,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datasto
 
 # AppException during table storage dumping
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablestorage_appexception" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${module.nodo_verifyko_to_tablestorage_function.name}-app-exception"
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
     email_subject          = "AppException on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
@@ -66,12 +68,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablest
 
 # CosmosException
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datastore_cosmosexception" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${module.nodo_verifyko_to_datastore_function.name}-cosmosexception"
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
     email_subject          = "CosmosException on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
@@ -101,12 +104,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datasto
 
 # Exception during table storage saving
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablestorage_persistenceexception" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${module.nodo_verifyko_to_tablestorage_function.name}-persistence-exception"
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
     email_subject          = "Persistence exception on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }

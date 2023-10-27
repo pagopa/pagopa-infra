@@ -72,6 +72,7 @@
 | [azurerm_resource_group.nodo_storico_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sftp](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/resource_group) | resource |
 | [azurerm_storage_blob.sogei_dirs](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/storage_blob) | resource |
+| [azurerm_storage_container.nodo_verifyko_blob](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.sogei](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.storico_container](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_table.nodo_re_table](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/storage_table) | resource |
