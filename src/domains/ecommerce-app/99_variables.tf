@@ -141,15 +141,3 @@ variable "dns_zone_checkout" {
   default     = null
   description = "The checkout dns subdomain."
 }
-
-variable "pagopa_proxy_basepath" {
-  type        = string
-  default     = null
-  description = "The basepath for pagopa-proxy APIs."
-}
-
-variable "pm_basepath" {
-  type        = string
-  default     = null
-  description = "The basepath for Payment Manager APIs."
-}
