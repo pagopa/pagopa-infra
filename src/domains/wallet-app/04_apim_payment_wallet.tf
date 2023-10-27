@@ -83,14 +83,15 @@ resource "azurerm_api_management_api_operation_policy" "get_wallets_for_user" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "post_wallets" {
-  count               = var.payment_wallet_with_pm_enabled ? 1 : 0
   api_name            = "${local.project}-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "createWallet"
 
-  xml_content = templatefile("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl", {
+  xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl", {
     env = var.env
+    }) : templatefile("./api/payment-wallet/v1/_post_wallets_policy.xml.tpl", {
+    env = var.env, pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path
   })
 }
 
@@ -198,5 +199,35 @@ module "apim_webview_payment_wallet_api_v1" {
     hostname = local.apim_hostname
   })
 
-  xml_content = file("./api/webview-payment-wallet/v1/_base_policy.xml.tpl")
+  xml_content = templatefile("./api/webview-payment-wallet/v1/_base_policy.xml.tpl", {
+    hostname = local.wallet_hostname
+  })
+}
+
+data "azurerm_key_vault_secret" "personal_data_vault_api_key_secret" {
+  name         = "personal-data-vault-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "personal-data-vault-api-key" {
+  name                = "personal-data-vault-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "personal-data-vault-api-key"
+  value               = data.azurerm_key_vault_secret.personal_data_vault_api_key_secret.value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "wallet_jwt_signing_key_secret" {
+  name         = "wallet-jwt-signing-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
+  name                = "wallet-jwt-signing-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wallet-jwt-signing-key"
+  value               = data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value
+  secret              = true
 }
