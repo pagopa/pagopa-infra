@@ -9,7 +9,7 @@
       <set-body template="liquid">
         <html>
           <body>
-            <form id="pmPay" action="https://api.dev.platform.pagopa.it/pp-restapi-CD/v3/webview/transactions/pay" method="POST" style="display: none">
+            <form id="pmPay" action="/pp-restapi-CD/v3/webview/transactions/pay" method="POST" style="display: none">
               <input type="number" id="idWallet" name="idWallet" readOnly="true" hidden="true" />
               <input type="text" id="sessionToken" name="sessionToken" readOnly="true" hidden="true" />
               <input type="text" id="language" name="language" value="IT" readOnly="true" hidden="true" />
