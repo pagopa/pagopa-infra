@@ -34,3 +34,11 @@ resource "azurerm_key_vault_secret" "ehub_verifyko_tablestorage_rx_connection_st
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
+
+resource "azurerm_key_vault_secret" "ehub_verifyko_test_rx_connection_string" {
+  name         = format("ehub-%s-verifyko-test-rx-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-test-rx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}

@@ -555,6 +555,12 @@ eventhubs_02 = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-test-rx" # re->anywhere for test
+        listen = true
+        send   = false
+        manage = false
       }
     ]
   }
