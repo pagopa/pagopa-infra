@@ -11,12 +11,10 @@
           <return-response>
             <set-status code="502" reason="Bad Gateway" />
         <set-body>
-            @{
-                JObject errorResponse = new JObject();
-                errorResponse["title"] = "Error starting session";
-                errorResponse["status"] = 502;
-                errorResponse["detail"] = "There was an error starting session for input wallet token";
-                return errorResponse.ToString();
+            {
+               "title": "Error starting session",
+               "status": 502,
+               "detail": "There was an error starting session for input wallet token"
             }
         </set-body>
           </return-response>
@@ -36,13 +34,11 @@
             <return-response>
             <set-status code="502" reason="Bad Gateway" />
             <set-body>
-                @{
-                    JObject errorResponse = new JObject();
-                    errorResponse["title"] = "Error retrieving user wallet data";
-                    errorResponse["status"] = 502;
-                    errorResponse["detail"] = "There was an error retrieving user wallet data";
-                    return errorResponse.ToString();
-                }
+            {
+               "title": "Error retrieving user wallet data",
+               "status": 502,
+               "detail": "There was an error retrieving user wallet data"
+            }
             </set-body>
             </return-response>
         </when>
@@ -54,13 +50,11 @@
             <return-response>
             <set-status code="404" reason="Wallet not found" />
             <set-body>
-                @{
-                    JObject errorResponse = new JObject();
-                    errorResponse["title"] = "Wallet not found";
-                    errorResponse["status"] = 404;
-                    errorResponse["detail"] = "No wallet found for input wallet token";
-                    return errorResponse.ToString();
-                }
+            {
+               "title": "Wallet not found",
+               "status": 404,
+               "detail": "No wallet found for input wallet token"
+            }
             </set-body>
             </return-response>
         </when>
@@ -77,13 +71,11 @@
             <return-response>
             <set-status code="502" reason="Bad Gateway" />
             <set-body>
-                @{
-                    JObject errorResponse = new JObject();
-                    errorResponse["title"] = "Error retrieving eCommerce payment methods";
-                    errorResponse["status"] = 502;
-                    errorResponse["detail"] = "There was an error retrieving eCommerce payment methods";
-                    return errorResponse.ToString();
-                }
+            {
+               "title": "Error retrieving eCommerce payment methods",
+               "status": 502,
+               "detail": "There was an error retrieving eCommerce payment methods"
+            }
             </set-body>
             </return-response>
         </when>
