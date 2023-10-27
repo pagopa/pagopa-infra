@@ -138,7 +138,7 @@ resource "azurerm_api_management_api_operation_policy" "io_get_transaction_info"
   api_management_name = local.pagopa_apim_name
   operation_id        = "getTransactionInfo"
 
-  xml_content = file("./api/ecommerce-io/v1/_validate_transactions_jwt_token.tpl")
+  xml_content = file("./api/ecommerce-io/v1/get_transaction.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_delete_transaction" {
