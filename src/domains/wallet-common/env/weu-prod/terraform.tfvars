@@ -66,7 +66,7 @@ cosmos_mongo_db_wallet_params = {
   throughput         = 1000
 }
 
-redis_ecommerce_wallet = {
+redis_wallet_params = {
   capacity = 0
   sku_name = "Standard"
   family   = "C"
