@@ -1413,11 +1413,11 @@
         "properties": {
           "walletId": {
             "type": "string",
-            "description": "wallet if"
+            "description": "wallet id related to user"
           },
           "paymentToken": {
             "type": "string",
-            "description": "pamentToken related to nodo activation"
+            "description": "paymentToken related to nodo activation"
           },
           "language": {
             "type": "string"
