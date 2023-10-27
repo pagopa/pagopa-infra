@@ -1,14 +1,10 @@
 <policies>
     <inbound>
         <base />
-        <set-variable name="requestTransactionId" value="@{
+        <set-variable name="s" value="@{
             var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
-            if(transactionId == ""){
-                transactionId = context.Request.Headers.GetValueOrDefault("x-transaction-id-from-client","");
-            }
             return transactionId;
         }" />
-        <set-header name="x-transaction-id" exists-action="delete" />
         <!--
         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
             <issuer-signing-keys>
