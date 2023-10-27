@@ -4,12 +4,8 @@
     <!-- Get transactionId from request -->
     <set-variable name="requestTransactionId" value="@{
         var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
-        if(transactionId == ""){
-            transactionId = context.Request.Headers.GetValueOrDefault("x-transaction-id-from-client","");
-        }
         return transactionId;
     }" />
-    <set-header name="x-transaction-id" exists-action="delete" />
 
     <!-- SessionToken check -->
     <!--
@@ -39,14 +35,15 @@
     <choose>
         <when condition="@(((int)((IResponse)context.Variables["pagopaProxyResponse"]).StatusCode) == 200)">
           <set-variable name="idPayment" value="@((string)((IResponse)context.Variables["pagopaProxyResponse"]).Body.As<JObject>()["idPagamento"])" />
-          <set-variable  name="sessiontToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
+          <set-variable  name="sessionToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
+          <set-variable name="walletId" value="@((string) context.Request.Body.As<JObject>()["details"]["walletId"])" />
           <!-- Return url to execute PM webview -->
           <return-response>
-            <set-status code="200" reason="Ok" />
+            <set-status code="200" reason="OK" />
             <set-body>
                 @{
                     JObject response = new JObject();
-                    response["authorizationUrl"] = $"https://${webview_host}/${webview_path}#idWallet={(string)context.Variables["requestTransactionId"]}&idPayment={(string)context.Variables["idPayment"]}&sessionToken={(string)context.Variables["sessiontToken"]}&language=IT";
+                    response["authorizationUrl"] = $"https://${webview_host}/${webview_path}#idWallet={(string)context.Variables["walletId"]}&idPayment={(string)context.Variables["idPayment"]}&sessionToken={(string)context.Variables["sessionToken"]}&language=IT";
                     response["authorizationRequestId"] = (string)context.Variables["requestTransactionId"];
                     return response.ToString();
                 }
