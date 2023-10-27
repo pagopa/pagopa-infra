@@ -2,9 +2,9 @@
   "openapi": "3.0.3",
   "info": {
     "title": "FDR - Flussi di rendicontazione (ORGS) ${service}",
-    "description": "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
+        "description": "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.0.0"
+    "version": "1.0.4"
   },
   "servers": [
     {
@@ -195,6 +195,29 @@
         }
       }
     },
+    "/info": {
+      "get": {
+        "tags": [
+          "Info"
+        ],
+        "summary": "Get info of FDR",
+        "responses": {
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/organizations/{organizationId}/fdrs": {
       "get": {
         "tags": [
@@ -271,28 +294,7 @@
           }
         }
       }
-    },
-    "/info" : {
-      "get" : {
-        "tags" : [ "Info" ],
-        "summary" : "Get info of FDR",
-        "responses" : {
-          "500" : {
-            "$ref" : "#/components/responses/InternalServerError"
-          },
-          "200" : {
-            "description" : "Success",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/InfoResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
+    }
   },
   "components": {
     "schemas": {
@@ -537,7 +539,7 @@
             "type": "string",
             "example": "AAABBB"
           },
-          "pspId": {
+          "organizationId": {
             "type": "string",
             "example": "1"
           },
@@ -547,6 +549,33 @@
             "example": 1
           },
           "created": {
+            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Instant"
+              }
+            ],
+            "example": "2023-04-03T12:00:30.900000Z"
+          }
+        }
+      },
+      "FdrPublished": {
+        "type": "object",
+        "properties": {
+          "fdr": {
+            "type": "string",
+            "example": "AAABBB"
+          },
+          "organizationId": {
+            "type": "string",
+            "example": "1"
+          },
+          "revision": {
+            "format": "int64",
+            "type": "integer",
+            "example": 1
+          },
+          "published": {
             "type": "string",
             "allOf": [
               {
@@ -581,6 +610,25 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FdrInserted"
+            }
+          }
+        }
+      },
+      "GetAllPublishedResponse": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          "count": {
+            "format": "int64",
+            "type": "integer",
+            "example": 100
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FdrPublished"
             }
           }
         }

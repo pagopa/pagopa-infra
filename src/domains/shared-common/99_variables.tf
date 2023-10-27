@@ -236,3 +236,21 @@ variable "taxonomy_network_rules" {
   description = "Network configuration of Taxonomy storage account"
   default     = null
 }
+
+variable "test_data_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+  })
+}
+
+variable "cidr_subnet_test_data_storage_account" {
+  type        = list(string)
+  description = "Storage account network address space."
+}
