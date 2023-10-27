@@ -128,6 +128,7 @@ variable "afm_marketplace_cosmos_db_params" {
 
 variable "afm_storage_params" {
   type = object({
+    enable_backup                 = optional(bool, false)
     enabled                       = bool,
     kind                          = string,
     tier                          = string,
@@ -138,6 +139,7 @@ variable "afm_storage_params" {
   })
 
   default = {
+    enable_backup                 = false
     enabled                       = false,
     kind                          = "StorageV2"
     tier                          = "Standard",

@@ -120,3 +120,11 @@ enable_iac_pipeline = true
 gpd_payments_versioning = true
 enable_gpd_payments_backup = true
 gpd_payments_sa_delete_retention_days = 30
+
+
+reporting_storage_account = {
+    blob_versioning_enabled       = true
+    advanced_threat_protection    = true
+    blob_delete_retention_days    = 30
+    backup_enabled                = true
+}

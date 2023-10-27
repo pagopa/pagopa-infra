@@ -149,8 +149,9 @@ nodo_re_storage_account = {
   account_replication_type      = "GZRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
-  blob_delete_retention_days    = 0
+  blob_delete_retention_days    = 30
   public_network_access_enabled = false
+  backup_enabled                = true
 }
 
 

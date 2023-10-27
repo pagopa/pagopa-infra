@@ -23,6 +23,14 @@ module "fdr_re_sa" {
 
   blob_delete_retention_days = var.fdr_re_storage_account.blob_delete_retention_days
 
+  blob_change_feed_enabled = var.fdr_re_storage_account.backup_enabled
+  blob_change_feed_retention_in_days = var.fdr_re_storage_account.backup_enabled ? var.fdr_re_storage_account.blob_delete_retention_days : null
+  blob_container_delete_retention_days = var.fdr_re_storage_account.backup_enabled ? var.fdr_re_storage_account.blob_delete_retention_days : null
+  blob_storage_policy = var.fdr_re_storage_account.backup_enabled ? {
+    enable_immutability_policy = false
+    blob_restore_policy_days = var.fdr_re_storage_account.blob_delete_retention_days
+  } : null
+
   tags = var.tags
 }
 

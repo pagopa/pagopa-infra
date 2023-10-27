@@ -128,3 +128,11 @@ opentelemetry_operator_helm = {
   chart_version = "0.24.3"
   values_file   = "./env/opentelemetry_operator_helm/values.yaml"
 }
+
+elk_snapshot_sa = {
+  blob_versioning_enabled       = true
+  blob_delete_retention_days    = 60
+  backup_enabled                = true
+  blob_versioning_enabled         = true
+  advanced_threat_protection      = true
+}

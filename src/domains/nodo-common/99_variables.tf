@@ -303,6 +303,7 @@ variable "nodo_re_storage_account" {
     blob_delete_retention_days    = number
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
+    backup_enabled                = bool
   })
   default = {
     account_kind                  = "StorageV2"
@@ -310,8 +311,9 @@ variable "nodo_re_storage_account" {
     account_replication_type      = "LRS"
     blob_versioning_enabled       = false
     advanced_threat_protection    = false
-    blob_delete_retention_days    = 3653
+    blob_delete_retention_days    = 0
     public_network_access_enabled = false
+    backup_enabled                = false
   }
 }
 

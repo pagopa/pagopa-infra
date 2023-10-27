@@ -137,3 +137,21 @@ variable "pipe_service_principel_application_id" {
   type        = string
   description = "SP for pipeline application_id - pagopaspa-pagoPA-projects-[subscriptionid]"
 }
+
+
+variable "nodo_cert_storage_account" {
+  type = object({
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    backup_enabled                = bool
+  })
+  default = {
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = false
+    blob_delete_retention_days    = 0
+    public_network_access_enabled = false
+    backup_enabled                = false
+  }
+}

@@ -345,6 +345,7 @@ variable "fdr_storage_account" {
     public_network_access_enabled = bool
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
   })
 
   default = {
@@ -356,6 +357,7 @@ variable "fdr_storage_account" {
     public_network_access_enabled = false
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false
+    backup_enabled                = false
   }
 }
 
@@ -369,6 +371,7 @@ variable "fdr_re_storage_account" {
     public_network_access_enabled = bool
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
   })
 
   default = {
@@ -380,6 +383,7 @@ variable "fdr_re_storage_account" {
     public_network_access_enabled = false
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false
+    backup_enabled                = false
   }
 }
 

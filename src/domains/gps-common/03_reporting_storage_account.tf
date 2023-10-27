@@ -14,15 +14,23 @@ module "flows" {
   account_tier                    = "Standard"
   account_replication_type        = "LRS"
   access_tier                     = "Hot"
-  blob_versioning_enabled         = var.gpd_enable_versioning
+  blob_versioning_enabled         = var.reporting_storage_account.blob_versioning_enabled
   resource_group_name             = azurerm_resource_group.gpd_rg.name
   location                        = var.location
-  advanced_threat_protection      = var.gpd_reporting_advanced_threat_protection
+  advanced_threat_protection      = var.reporting_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
   enable_low_availability_alert   = false
 
-  blob_delete_retention_days = var.gpd_reporting_delete_retention_days
+  blob_delete_retention_days = var.reporting_storage_account.blob_delete_retention_days
+
+  blob_change_feed_enabled = var.reporting_storage_account.backup_enabled
+  blob_change_feed_retention_in_days = var.reporting_storage_account.backup_enabled ? var.reporting_storage_account.blob_delete_retention_days : null
+  blob_container_delete_retention_days = var.reporting_storage_account.backup_enabled ? var.reporting_storage_account.blob_delete_retention_days : null
+  blob_storage_policy = var.reporting_storage_account.backup_enabled ? {
+    enable_immutability_policy = false
+    blob_restore_policy_days = var.reporting_storage_account.blob_delete_retention_days
+  } : null
 
   tags = var.tags
 }

@@ -16,6 +16,15 @@ resource "azurerm_storage_account" "elk_snapshot_sa" {
   location                 = azurerm_resource_group.elk_rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
+
+  blob_change_feed_enabled = var.elk_snapshot_sa.backup_enabled
+  blob_change_feed_retention_in_days = var.elk_snapshot_sa.backup_enabled ? var.elk_snapshot_sa.blob_delete_retention_days : null
+  blob_container_delete_retention_days = var.elk_snapshot_sa.backup_enabled ? var.elk_snapshot_sa.blob_delete_retention_days : null
+  blob_storage_policy = var.elk_snapshot_sa.backup_enabled ? {
+    enable_immutability_policy = false
+    blob_restore_policy_days = var.elk_snapshot_sa.blob_delete_retention_days
+  } : null
+  blob_delete_retention_days = var.elk_snapshot_sa.blob_delete_retention_days
 }
 
 resource "azurerm_storage_container" "snapshot_container" {
