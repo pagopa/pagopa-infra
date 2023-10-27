@@ -22,14 +22,14 @@
     }
   ],
   "paths": {
-    "/wallets/{walletId}/fields": {
-      "get": {
+    "/wallets/{walletId}/sessions": {
+      "post": {
         "tags": [
           "payment-wallet-webview"
         ],
-        "summary": "Get input fields to create html form and to add card data given a inizialized wallet",
-        "description": "This endpoint returns an object containing data on how a frontend can build a html form\nto allow direct exchanging of payment information to the payment gateway without `wallet`\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `orderId`.",
-        "operationId": "getWalletFieldsById",
+        "summary": "Create a new session wallet",
+        "description": "This endpoint returns an object containing data on how a frontend can build a html form to allow direct exchanging of payment information to the payment gateway without `wallet` having to store PCI data (or other sensitive data tied to the payment method).The returned data is tied to a session on the payment gateway identified by the field `orderId`.",
+        "operationId": "createSessionWallet",
         "security": [
           {
             "bearerAuth": []
@@ -39,7 +39,7 @@
           {
             "name": "walletId",
             "in": "path",
-            "description": "ID of wallet",
+            "description": "ID of wallet to return",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/WalletId"
@@ -48,17 +48,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Form fields retrieved successfully",
+            "description": "Session Wallet created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WalletFieldsResponse"
+                  "$ref": "#/components/schemas/SessionWalletCreateResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid input id",
+            "description": "Formally invalid input",
             "content": {
               "application/json": {
                 "schema": {
@@ -78,7 +78,24 @@
             }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "504": {
             "description": "Timeout serving request"
@@ -86,14 +103,14 @@
         }
       }
     },
-    "/wallets/{walletId}/verify-requests": {
+    "/wallets/{walletId}/sessions/{orderId}/validations": {
       "post": {
         "tags": [
           "payment-wallet-webview"
         ],
-        "summary": "Create new verify requests given a inizialized wallet",
-        "description": "This endpoint returns an object containing data on how a frontend can build a html form\nto allow direct exchanging of payment information to the payment gateway without `wallet`\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `orderId`.",
-        "operationId": "postWalletVerifyRequest",
+        "summary": "Create new validation requests given a inizialized wallet",
+        "description": "This endpoint returns an object with a url to which to redirect in case of APM or a url on which to build an iframe for GDI check.",
+        "operationId": "postWalletValidations",
         "security": [
           {
             "bearerAuth": []
@@ -107,6 +124,15 @@
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/WalletId"
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "ID of order session",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrderId"
             }
           }
         ],
@@ -176,14 +202,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Form fields retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WalletFieldsResponse"
-                }
-              }
-            }
+            "description": "Form fields retrieved successfully"
           },
           "400": {
             "description": "Invalid input id",
@@ -222,13 +241,17 @@
         "type": "string",
         "format": "uuid"
       },
+      "OrderId": {
+        "description": "Order session payment gatewa identifier",
+        "type": "string",
+        "format": "uuid"
+      },
       "WalletVerifyRequestsResponse": {
         "type": "object",
         "description": "Data to perform a wallet verify with payment gateway",
         "properties": {
-          "sessionId": {
-            "type": "string",
-            "description": "Identifier of the payment gateway session"
+          "orderId": {
+            "$ref": "#/components/schemas/OrderId"
           },
           "details": {
             "description": "Redirection URL or iframe url according payment method type",
@@ -289,11 +312,11 @@
           }
         }
       },
-      "WalletFieldsResponse": {
+      "SessionWalletCreateResponse": {
         "type": "object",
         "description": "Form data needed to create a credit card input form",
         "properties": {
-          "sessionId": {
+          "orderId": {
             "type": "string"
           },
           "cardFormFields": {
@@ -304,7 +327,7 @@
           }
         },
         "required": [
-          "sessionId",
+          "orderId",
           "cardFormFields"
         ]
       },
