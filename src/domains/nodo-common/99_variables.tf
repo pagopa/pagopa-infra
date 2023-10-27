@@ -325,6 +325,8 @@ variable "nodo_storico_storage_account" {
     advanced_threat_protection    = bool
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
+    backup_enabled                = optional(bool, false)
+    blob_delete_retention_days    = optional(number, 0)
   })
   default = {
     account_kind                  = "StorageV2"
@@ -333,6 +335,8 @@ variable "nodo_storico_storage_account" {
     blob_versioning_enabled       = false
     advanced_threat_protection    = true
     public_network_access_enabled = true
+    backup_enabled                = false
+    blob_delete_retention_days    = 0
   }
 }
 

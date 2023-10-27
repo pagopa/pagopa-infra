@@ -156,12 +156,14 @@ nodo_re_storage_account = {
 
 
 nodo_storico_storage_account = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = true
-    advanced_threat_protection    = true
-    public_network_access_enabled = true
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
+  backup_enabled = true
+  blob_delete_retention_days = 30
 }
 
 
