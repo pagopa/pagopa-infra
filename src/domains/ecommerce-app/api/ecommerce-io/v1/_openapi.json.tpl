@@ -32,6 +32,14 @@
         "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611745793/-servizio+payment+requests+service",
         "description": "Technical specifications"
       }
+    },
+    {
+      "name": "ecommerce-sessions",
+      "description": "Api's for initiate a payment session",
+      "externalDocs": {
+        "url": "https://TODO",
+        "description": "Technical specifications"
+      }
     }
   ],
   "servers": [
@@ -44,6 +52,52 @@
     "description": "Design review"
   },
   "paths": {
+    "/sessions": {
+      "post": {
+        "summary": "Create a new payment session token",
+        "description": "Api used to create a payment session token from wallet token",
+        "tags": [
+          "ecommerce-sessions"
+        ],
+        "security": [
+          {
+            "walletToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New transaction successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewSessionTokenResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Generic error during session token creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/payment-requests/{rpt_id}": {
       "get": {
         "summary": "Verify single payment notice",
@@ -52,6 +106,11 @@
           "ecommerce-payment-requests"
         ],
         "operationId": "getPaymentRequestInfo",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -146,6 +205,11 @@
         "operationId": "newTransaction",
         "summary": "Make a new transaction",
         "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -156,17 +220,6 @@
           },
           "required": true
         },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
         "responses": {
           "200": {
             "description": "New transaction successfully created",
@@ -260,7 +313,7 @@
         ],
         "security": [
           {
-            "eCommerceToken": []
+            "eCommerceSessionToken": []
           }
         ],
         "summary": "Get transaction information",
@@ -329,7 +382,7 @@
         ],
         "security": [
           {
-            "eCommerceToken": []
+            "eCommerceSessionToken": []
           }
         ],
         "summary": "Performs the transaction cancellation",
@@ -404,7 +457,7 @@
         ],
         "security": [
           {
-            "eCommerceToken": []
+            "eCommerceSessionToken": []
           }
         ],
         "requestBody": {
@@ -522,7 +575,7 @@
         ],
         "security": [
           {
-            "eCommerceToken": []
+            "eCommerceSessionToken": []
           }
         ],
         "requestBody": {
@@ -1524,6 +1577,20 @@
           "DISABLED",
           "INCOMING"
         ]
+      },
+      "NewSessionTokenResponse": {
+        "type": "object",
+        "title": "NewSessionTokenResponse",
+        "description": "New session token response body",
+        "properties": {
+          "sessionToken": {
+            "description": "Session token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "sessionToken"
+        ]
       }
     },
     "requestBodies": {
@@ -1579,11 +1646,15 @@
       }
     },
     "securitySchemes": {
-      "eCommerceToken": {
+      "eCommerceSessionToken": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "JWT token received into POST transaction response body (authToken field) "
+        "description": "JWT session token taken from /sessions response body"
+      },
+      "walletToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Wallet token associated to the user"
       }
     }
   }
