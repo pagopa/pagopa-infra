@@ -161,3 +161,18 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
+
+# Redis
+variable "cidr_subnet_redis_wallet" {
+  type        = list(string)
+  description = "Redis DB address space for ecommerce."
+}
+
+variable "redis_wallet_params" {
+  type = object({
+    capacity = number
+    sku_name = string
+    family   = string
+    version  = string
+  })
+}
