@@ -56,6 +56,7 @@
       "post": {
         "summary": "Create a new payment session token",
         "description": "Api used to create a payment session token from wallet token",
+        "operationId": "newSessionToken",
         "tags": [
           "ecommerce-sessions"
         ],
@@ -1161,9 +1162,6 @@
               "CHECKOUT_CART",
               "UNKNOWN"
             ]
-          },
-          "authToken": {
-            "type": "string"
           },
           "idCart": {
             "description": "Cart identifier provided by creditor institution",
