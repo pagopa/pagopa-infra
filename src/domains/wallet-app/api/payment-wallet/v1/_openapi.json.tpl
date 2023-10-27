@@ -398,13 +398,6 @@
             "type": "string",
             "description": "Wallet details discriminator field."
           },
-          "bin": {
-            "description": "Card BIN (first 6 PAN digits)",
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 6,
-            "example": "123456"
-          },
           "maskedPan": {
             "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
             "type": "string",
@@ -431,7 +424,6 @@
         },
         "required": [
           "type",
-          "bin",
           "maskedPan",
           "expiryDate",
           "holder",
@@ -513,20 +505,8 @@
           "walletId": {
             "$ref": "#/components/schemas/WalletId"
           },
-          "userId": {
-            "type": "string",
-            "description": "user identifier"
-          },
-          "paymentInstrumentId": {
-            "description": "Payment instrument identifier",
-            "type": "string"
-          },
           "paymentMethodId": {
             "description": "Payment method identifier",
-            "type": "string"
-          },
-          "contractId": {
-            "description": "User contract identifier to be used with payment instrument to make a new payment",
             "type": "string"
           },
           "status": {
@@ -572,12 +552,9 @@
         "required": [
           "walletId",
           "paymentMethodId",
-          "userId",
           "status",
           "creationDate",
-          "contractId",
           "updateDate",
-          "type",
           "services"
         ]
       },
