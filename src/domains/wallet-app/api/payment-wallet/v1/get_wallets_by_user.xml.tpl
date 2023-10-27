@@ -110,9 +110,11 @@
                 } 
                 Object[] wallets = pmWalletResponse["data"].Select(wallet =>{
                 JObject result = new JObject();
-                byte[] bytes = new byte[16];
-                BitConverter.GetBytes((long)wallet["idWallet"]).CopyTo(bytes, 0);
-                result["walletId"] = new Guid(bytes).ToString();
+                //convert wallet id (long) to UUID v4 with all bit set to 0 (except for the version).
+                //wallet id long value is stored into UUID latest 8 byte
+                string walletIdHex = ((long)wallet["idWallet"])`.ToString("X").PadLeft(16,'0');
+		        string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
+                result["walletId"] = walletIdToUuid;
                 string eCommerceWalletType = "";
                 string pmWalletType = (string) wallet["type"];
                 if (eCommerceWalletTypes.ContainsKey(pmWalletType)) {
@@ -137,7 +139,6 @@
                 JObject details = new JObject();
                 details["type"] = eCommerceWalletType;
                 if (eCommerceWalletType == "CARDS") {
-                    //details["bin"] = wallet["creditCard"]["abiCode"];
                     details["maskedPan"] = wallet["creditCard"]["pan"];
                     details["expiryDate"] = $"20{(string)wallet["creditCard"]["expireYear"]}{(string)wallet["creditCard"]["expireMonth"]}";
                     details["holder"] = wallet["creditCard"]["holder"];
