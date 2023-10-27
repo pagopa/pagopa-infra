@@ -6,13 +6,11 @@
             <return-response>
                 <set-status code="401" reason="Unauthorized" />
                 <set-body>
-                    @{
-                    JObject errorResponse = new JObject();
-                    errorResponse["title"] = "Unauthorized";
-                    errorResponse["status"] = 401;
-                    errorResponse["detail"] = "Unauthorized";
-                    return errorResponse.ToString();
-                    }
+                {
+                    "status": 401,
+                    "title": "Unauthorized",
+                    "detail": "Unauthorized"
+                }
                 </set-body>
           </return-response>
         </when>
