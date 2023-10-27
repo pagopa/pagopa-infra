@@ -23,7 +23,7 @@ module "test_data_sa" {
   resource_group_name             = azurerm_resource_group.test_data_rg[0].name
   location                        = var.location
   advanced_threat_protection      = var.test_data_storage_account.advanced_threat_protection
-  allow_nested_items_to_be_public = false
+  allow_nested_items_to_be_public = true
   public_network_access_enabled   = var.test_data_storage_account.public_network_access_enabled
   enable_low_availability_alert   = var.test_data_storage_account.enable_low_availability_alert
 
