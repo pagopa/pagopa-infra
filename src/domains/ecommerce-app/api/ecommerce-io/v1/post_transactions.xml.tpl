@@ -23,10 +23,6 @@
             </when>
         </choose>
 
-        <set-variable name="bearerToken" value="@{
-          string authorizationHeader = context.Request.Headers["Authorization"][0];
-          return authorizationHeader.Substring("Bearer ".Length);
-        }" />
         <set-variable name="numberOfPaymentNotices" value="@{
           var body = context.Request.Body.As<JObject>();
           return body["paymentNotices"].ToObject<object[]>().Length;
@@ -76,7 +72,6 @@
               eCommerceResponseBody["transactionId"] = (string) context.Variables["ccp"];
               eCommerceResponseBody["payments"] = payments;
               eCommerceResponseBody["clientId"] = "IO";
-              eCommerceResponseBody["authToken"] = (string) context.Variables["bearerToken"];
 
               return eCommerceResponseBody.ToString();
             }</set-body>
