@@ -1411,13 +1411,16 @@
         "description": "Calculate fee request",
         "type": "object",
         "properties": {
-          "touchpoint": {
+          "walletId": {
             "type": "string",
-            "description": "The touchpoint name"
+            "description": "wallet if"
           },
-          "bin": {
+          "paymentToken": {
             "type": "string",
-            "description": "The user card bin"
+            "description": "pamentToken related to nodo activation"
+          },
+          "language": {
+            "type": "string"
           },
           "idPspList": {
             "description": "List of psps",
@@ -1448,11 +1451,9 @@
           }
         },
         "required": [
-          "paymentAmount",
-          "primaryCreditorInstitution",
-          "transferList",
-          "touchpoint",
-          "isAllCCP"
+          "walletId",
+          "pamentToken",
+          "paymentAmount"
         ]
       },
       "CalculateFeeResponse": {

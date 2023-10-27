@@ -98,13 +98,13 @@ resource "azurerm_api_management_api_operation_policy" "io_delete_transaction" {
   xml_content = file("./api/ecommerce-io/v1/_validate_transactions_jwt_token.tpl")
 }
 
-resource "azurerm_api_management_api_operation_policy" "io_get_fees" {
+resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
   api_name            = "${local.project}-ecommerce-io-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = file("./api/ecommerce-io/v1/_validate_transactions_jwt_token.tpl")
+  xml_content = file("./api/ecommerce-io/v1/_post_fees_policy.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_transaction_authorization_request" {
@@ -118,14 +118,4 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
     ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
     ecommerce_npg_psps_list  = var.ecommerce_npg_psps_list
   })
-}
-
-
-resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
-  api_name            = "${local.project}-ecommerce-io-api-v1"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "calculateFees"
-
-  xml_content = file("./api/ecommerce-io/v1/_post_fees_policy.xml.tpl")
 }
