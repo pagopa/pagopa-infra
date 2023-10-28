@@ -22,8 +22,8 @@
             </set-body>
           </return-response>
         </when>
-      </choose>
-      <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
+    </choose>
+    <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
     <!-- START get user wallets -->
     <send-request ignore-error="false" timeout="10" response-variable-name="pmWalletResponse">
         <set-url>{{pm-host}}/pp-restapi-CD/v1/wallet</set-url>
@@ -50,9 +50,9 @@
         </when>
     </choose>
     <set-variable name="pmUserWalletResponseBody" value="@(((IResponse)context.Variables["pmWalletResponse"]).Body.As<JObject>())" />
-    <set-variable name="pmUserWalletsNumber" value="@(((JArray)((JObject)context.Variables["pmUserWalletResponseBody"])["data"]).Count)" />
+    <set-variable name="pmUserWalletResponseBodyLength" value="@(((JArray)((JObject)context.Variables["pmUserWalletResponseBody"])["data"]).Count)" />
     <choose>
-        <when condition="@(((int)context.Variables["pmUserWalletsNumber"])==0)">
+        <when condition="@(((int)context.Variables["pmUserWalletResponseBodyLength"])==0)">
             <return-response>
                 <set-status code="404" reason="Wallet not found" />
                 <set-header name="Content-Type" exists-action="override">
@@ -69,7 +69,6 @@
         </when>
     </choose>
     <!-- END get user wallets -->
-
     <!-- START get payment methods -->
     <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
         <set-url>https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-service/payment-methods</set-url>
@@ -116,8 +115,8 @@
                 JObject result = new JObject();
                 //convert wallet id (long) to UUID v4 with all bit set to 0 (except for the version).
                 //wallet id long value is stored into UUID latest 8 byte
-                string walletIdHex = ((long)wallet["idWallet"])`.ToString("X").PadLeft(16,'0');
-		        string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
+                string walletIdHex = ((long)wallet["idWallet"]).ToString("X").PadLeft(16,'0');
+                string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
                 result["walletId"] = walletIdToUuid;
                 string eCommerceWalletType = "";
                 string pmWalletType = (string) wallet["type"];
