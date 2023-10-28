@@ -12,6 +12,9 @@
             <when condition="@(!context.Request.Headers.ContainsKey("Authorization"))">
                 <return-response>
                     <set-status code="401" reason="Unauthorized" />
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                    </set-header>
                     <set-body>
                       {
                         "status": 401,
@@ -31,6 +34,9 @@
             <when condition="@(((int) context.Variables["numberOfPaymentNotices"]) > 1)">
                 <return-response>
                     <set-status code="422" reason="Unprocessable Entity" />
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                    </set-header>
                     <set-body>
                       {
                         "status": 422,
@@ -78,6 +84,9 @@
           </when>
           <otherwise>
             <set-status code="502" reason="Bad Gateway" />
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+            </set-header>
             <set-body>
               {
                 "status": 502,
