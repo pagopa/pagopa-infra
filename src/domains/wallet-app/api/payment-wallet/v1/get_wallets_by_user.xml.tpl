@@ -10,13 +10,16 @@
         <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
           <return-response>
             <set-status code="502" reason="Bad Gateway" />
-        <set-body>
-            {
-               "title": "Error starting session",
-               "status": 502,
-               "detail": "There was an error starting session for input wallet token"
-            }
-        </set-body>
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>
+                {
+                "title": "Error starting session",
+                "status": 502,
+                "detail": "There was an error starting session for input wallet token"
+                }
+            </set-body>
           </return-response>
         </when>
       </choose>
@@ -32,14 +35,17 @@
     <choose>
         <when condition="@(((IResponse)context.Variables["pmWalletResponse"]).StatusCode != 200)">
             <return-response>
-            <set-status code="502" reason="Bad Gateway" />
-            <set-body>
-            {
-               "title": "Error retrieving user wallet data",
-               "status": 502,
-               "detail": "There was an error retrieving user wallet data"
-            }
-            </set-body>
+                <set-status code="502" reason="Bad Gateway" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>
+                    {
+                    "title": "Error retrieving user wallet data",
+                    "status": 502,
+                    "detail": "There was an error retrieving user wallet data"
+                    }
+                </set-body>
             </return-response>
         </when>
     </choose>
@@ -48,14 +54,17 @@
     <choose>
         <when condition="@(((int)context.Variables["pmUserWalletsNumber"])==0)">
             <return-response>
-            <set-status code="404" reason="Wallet not found" />
-            <set-body>
-            {
-               "title": "Wallet not found",
-               "status": 404,
-               "detail": "No wallet found for input wallet token"
-            }
-            </set-body>
+                <set-status code="404" reason="Wallet not found" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>
+                    {
+                    "title": "Wallet not found",
+                    "status": 404,
+                    "detail": "No wallet found for input wallet token"
+                    }
+                </set-body>
             </return-response>
         </when>
     </choose>
@@ -70,12 +79,15 @@
         <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode != 200)">
             <return-response>
             <set-status code="502" reason="Bad Gateway" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
             <set-body>
-            {
-               "title": "Error retrieving eCommerce payment methods",
-               "status": 502,
-               "detail": "There was an error retrieving eCommerce payment methods"
-            }
+                {
+                    "title": "Error retrieving eCommerce payment methods",
+                    "status": 502,
+                    "detail": "There was an error retrieving eCommerce payment methods"
+                }
             </set-body>
             </return-response>
         </when>
