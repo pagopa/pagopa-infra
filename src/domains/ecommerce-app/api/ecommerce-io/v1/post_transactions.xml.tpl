@@ -76,6 +76,7 @@
 
               JObject eCommerceResponseBody = new JObject();
               eCommerceResponseBody["transactionId"] = (string) context.Variables["ccp"];
+              eCommerceResponseBody["status"] = "ACTIVATION_REQUESTED";
               eCommerceResponseBody["payments"] = payments;
               eCommerceResponseBody["clientId"] = "IO";
 
