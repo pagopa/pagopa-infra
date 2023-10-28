@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-variable name="s" value="@{
+        <set-variable name="requestTransactionId" value="@{
             var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
             return transactionId;
         }" />
@@ -39,6 +39,9 @@
             <otherwise>
                 <return-response response-variable-name="existing context variable">
                     <set-status code="404" reason="Not found" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
                     <set-body>{
                             "title": "Unable to get transaction status",
                             "status": 404,
