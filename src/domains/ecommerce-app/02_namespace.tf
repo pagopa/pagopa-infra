@@ -20,7 +20,6 @@ module "pod_identity" {
 
 resource "kubernetes_pod_disruption_budget_v1" "ecommerce" {
 
-  # count = var.env_short == "p" ? var.pod_disruption_budgets : [{}]
   for_each = var.pod_disruption_budgets
 
   metadata {
