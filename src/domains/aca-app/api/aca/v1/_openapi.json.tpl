@@ -257,7 +257,7 @@
         }
       },
       "AmountEuroCents": {
-        "description": "Amount for payments, in eurocents",
+        "description": "Amount for payments, in euro cents",
         "type": "integer",
         "minimum": 0,
         "maximum": 99999999999
