@@ -39,7 +39,7 @@
           <set-variable name="walletId" value="@{
                 string walletIdUUID = (string) context.Request.Body.As<JObject>()["details"]["walletId"];
                 string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , ""); 
-                return Convert.ToInt64(walletIdHex , 16);
+                return Convert.ToInt64(walletIdHex , 16).ToString();
             }" />
           <!-- Return url to execute PM webview -->
           <return-response>
