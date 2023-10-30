@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-variable name="s" value="@{
+        <set-variable name="requestTransactionId" value="@{
             var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
             return transactionId;
         }" />
