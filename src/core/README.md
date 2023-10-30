@@ -111,7 +111,7 @@
 | <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/azurerm.git//app_gateway | v2.20.0 |
 | <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_assets_cdn_platform"></a> [assets\_cdn\_platform](#module\_assets\_cdn\_platform) | git::https://github.com/pagopa/azurerm.git//cdn | v3.2.0 |
-| <a name="module_azdoa_li_app"></a> [azdoa\_li\_app](#module\_azdoa\_li\_app) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v4.16.0 |
+| <a name="module_azdoa_li_app"></a> [azdoa\_li\_app](#module\_azdoa\_li\_app) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v4.20.0 |
 | <a name="module_azdoa_li_infra"></a> [azdoa\_li\_infra](#module\_azdoa\_li\_infra) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v4.20.0 |
 | <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v3.5.0 |
 | <a name="module_backupstorage"></a> [backupstorage](#module\_backupstorage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.1.26 |
