@@ -123,3 +123,15 @@ variable "payment_wallet_with_pm_enabled" {
   default     = false
   description = "payment wallet using Payment Manager"
 }
+
+variable "pdv_api_base_path" {
+  type        = string
+  default     = null
+  description = "Personal data vault api base path"
+}
+
+variable "io_backend_base_path" {
+  type        = string
+  default     = null
+  description = "io backend api base path"
+}

@@ -320,6 +320,93 @@
           }
         }
       }
+    },
+    "/wallets/{walletId}/fees": {
+      "post": {
+        "tags": [
+          "wallets"
+        ],
+        "operationId": "calculateFees",
+        "summary": "Calculate wallet fees for given amount",
+        "description": "GET with body payload - no resources created: Return the fees for the choosen wallet based on payment amount etc.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "walletId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of wallet to return ID"
+          },
+          {
+            "name": "maxOccurrences",
+            "in": "query",
+            "description": "max occurrences",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculateFeeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New payment method successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculateFeeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -352,25 +439,6 @@
           }
         }
       },
-      "PatchService": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "$ref": "#/components/schemas/ServiceName"
-          },
-          "status": {
-            "$ref": "#/components/schemas/ServicePatchStatus"
-          }
-        }
-      },
-      "ServicePatchStatus": {
-        "type": "string",
-        "description": "Enumeration of wallet statuses",
-        "enum": [
-          "ENABLED",
-          "DISABLED"
-        ]
-      },
       "ServiceStatus": {
         "type": "string",
         "description": "Enumeration of wallet statuses",
@@ -398,13 +466,6 @@
             "type": "string",
             "description": "Wallet details discriminator field."
           },
-          "bin": {
-            "description": "Card BIN (first 6 PAN digits)",
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 6,
-            "example": "123456"
-          },
           "maskedPan": {
             "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
             "type": "string",
@@ -431,7 +492,6 @@
         },
         "required": [
           "type",
-          "bin",
           "maskedPan",
           "expiryDate",
           "holder",
@@ -513,20 +573,8 @@
           "walletId": {
             "$ref": "#/components/schemas/WalletId"
           },
-          "userId": {
-            "type": "string",
-            "description": "user identifier"
-          },
-          "paymentInstrumentId": {
-            "description": "Payment instrument identifier",
-            "type": "string"
-          },
           "paymentMethodId": {
             "description": "Payment method identifier",
-            "type": "string"
-          },
-          "contractId": {
-            "description": "User contract identifier to be used with payment instrument to make a new payment",
             "type": "string"
           },
           "status": {
@@ -572,12 +620,9 @@
         "required": [
           "walletId",
           "paymentMethodId",
-          "userId",
           "status",
           "creationDate",
-          "contractId",
           "updateDate",
-          "type",
           "services"
         ]
       },
@@ -712,6 +757,167 @@
             "type": "integer",
             "format": "int64",
             "minimum": 0
+          }
+        }
+      },
+      "CalculateFeeRequest": {
+        "description": "Calculate fee request",
+        "type": "object",
+        "properties": {
+          "walletId": {
+            "type": "string",
+            "description": "wallet id related to user"
+          },
+          "paymentToken": {
+            "type": "string",
+            "description": "paymentToken related to nodo activation"
+          },
+          "language": {
+            "type": "string"
+          },
+          "idPspList": {
+            "description": "List of psps",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "paymentAmount": {
+            "description": "The transaction payment amount",
+            "type": "integer",
+            "format": "int64"
+          },
+          "primaryCreditorInstitution": {
+            "description": "The primary creditor institution",
+            "type": "string"
+          },
+          "transferList": {
+            "description": "Transfert list",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          },
+          "isAllCCP": {
+            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "walletId",
+          "pamentToken",
+          "paymentAmount"
+        ]
+      },
+      "CalculateFeeResponse": {
+        "description": "Calculate fee response",
+        "type": "object",
+        "properties": {
+          "paymentMethodName": {
+            "description": "Payment method name",
+            "type": "string"
+          },
+          "paymentMethodDescription": {
+            "description": "Payment method description",
+            "type": "string"
+          },
+          "paymentMethodStatus": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "belowThreshold": {
+            "description": "Boolean value indicating if the payment is below the configured threshold",
+            "type": "boolean"
+          },
+          "bundles": {
+            "description": "Bundle list",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bundle"
+            }
+          }
+        },
+        "required": [
+          "bundles",
+          "paymentMethodName",
+          "paymentMethodDescription",
+          "paymentMethodStatus"
+        ]
+      },
+      "Bundle": {
+        "description": "Bundle object",
+        "type": "object",
+        "properties": {
+          "abi": {
+            "description": "Bundle ABI code",
+            "type": "string"
+          },
+          "bundleDescription": {
+            "description": "Bundle description",
+            "type": "string"
+          },
+          "bundleName": {
+            "description": "Bundle name",
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "description": "Bundle PSP broker id",
+            "type": "string"
+          },
+          "idBundle": {
+            "description": "Bundle id",
+            "type": "string"
+          },
+          "idChannel": {
+            "description": "Channel id",
+            "type": "string"
+          },
+          "idCiBundle": {
+            "description": "CI bundle id",
+            "type": "string"
+          },
+          "idPsp": {
+            "description": "PSP id",
+            "type": "string"
+          },
+          "onUs": {
+            "description": "Boolean value indicating if this bundle is an on-us ones",
+            "type": "boolean"
+          },
+          "paymentMethod": {
+            "description": "Payment method",
+            "type": "string"
+          },
+          "primaryCiIncurredFee": {
+            "description": "Primary CI incurred fee",
+            "type": "integer",
+            "format": "int64"
+          },
+          "taxPayerFee": {
+            "description": "Tax payer fee",
+            "type": "integer",
+            "format": "int64"
+          },
+          "touchpoint": {
+            "description": "The touchpoint name",
+            "type": "string"
+          }
+        }
+      },
+      "TransferListItem": {
+        "description": "Transfert list item",
+        "type": "object",
+        "properties": {
+          "creditorInstitution": {
+            "description": "Creditor institution",
+            "type": "string"
+          },
+          "digitalStamp": {
+            "description": "Boolean value indicating if there is digital stamp",
+            "type": "boolean"
+          },
+          "transferCategory": {
+            "description": "Transfer category",
+            "type": "string"
           }
         }
       }

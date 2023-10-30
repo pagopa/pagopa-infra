@@ -107,19 +107,19 @@ nodeset_config = {
   data-hot-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_hot"]
-    storage          = "350Gi"
+    storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
   },
   data-warm-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_warm"]
-    storage          = "350Gi"
+    storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-warm"
   },
   data-cold-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
-    storage          = "400Gi"
+    storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-cold"
   }
 }
