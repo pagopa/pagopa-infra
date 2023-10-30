@@ -47,3 +47,48 @@ ecommerce_vpos_psps_list = "BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX,B
 ecommerce_npg_psps_list  = ""
 
 dns_zone_checkout = "checkout"
+
+pod_disruption_budgets = {
+  "pagopaecommerceeventdispatcherservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommerceeventdispatcherservice"
+    }
+  },
+  "pagopaecommercehelpdeskservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommercehelpdeskservice"
+    }
+  },
+  "pagopaecommercepaymentmethodsservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommercepaymentmethodsservice"
+    }
+  },
+  "pagopaecommercepaymentrequestsservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommercepaymentrequestsservice"
+    }
+  },
+  "pagopaecommercetransactionsservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommercetransactionsservice"
+    }
+  },
+  "pagopaecommercetxschedulerservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommercetransactionsschedulerservice"
+    }
+  },
+  "pagopanotificationsservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopanotificationsservice"
+    }
+  },
+}
