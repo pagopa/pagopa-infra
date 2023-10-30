@@ -230,8 +230,7 @@
           },
           "entityFiscalCode": {
             "type": "string",
-            "minLength": 16,
-            "maxLength": 16
+            "minLength": 2
           },
           "entityFullName": {
             "type": "string",
@@ -261,7 +260,7 @@
         "description": "Amount for payments, in euro cents",
         "type": "integer",
         "minimum": 0,
-        "maximum": 99999999
+        "maximum": 99999999999
       },
       "ProblemJson": {
         "type": "object",
