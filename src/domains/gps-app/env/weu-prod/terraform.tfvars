@@ -71,28 +71,28 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "gpd-core"
     }
   },
-    "pagopagpdpayments" = {
+  "pagopagpdpayments" = {
     minAvailable = 1
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopagpdpayments"
     }
   },
 
-    "pagopagpsdonationservice" = {
+  "pagopagpsdonationservice" = {
     minAvailable = 1
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopagpsdonationservice"
     }
   },
 
-      "pagopareportingorgsenrollment" = {
+  "pagopareportingorgsenrollment" = {
     minAvailable = 1
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopareportingorgsenrollment"
     }
   },
 
-      "pagopaspontaneouspayments" = {
+  "pagopaspontaneouspayments" = {
     minAvailable = 1
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaspontaneouspayments"

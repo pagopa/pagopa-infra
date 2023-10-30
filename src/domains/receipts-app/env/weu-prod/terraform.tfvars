@@ -47,7 +47,7 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "pagopapagopareceiptpdfgenerator"
     }
   },
-   "pagopapagopareceiptpdfservice" = {
+  "pagopapagopareceiptpdfservice" = {
     minAvailable = 1
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopapagopareceiptpdfservice"
