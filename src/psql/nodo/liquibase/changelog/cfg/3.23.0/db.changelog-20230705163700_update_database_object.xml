@@ -71,5 +71,11 @@ FROM   ((iban_master mas
 			constraintName="IBAN_UNIQUE" deferrable="false"
 			initiallyDeferred="false" tableName="iban" validate="true" />
 	</changeSet>
+	
+	<changeSet author="liquibase" id="202310311019">
+		<addUniqueConstraint columnNames="fk_iban, fk_pa"
+			constraintName="IBAN_PA_UNIQUE" deferrable="false"
+			initiallyDeferred="false" tableName="iban_master" validate="true" />
+	</changeSet>
 
 </databaseChangeLog>
