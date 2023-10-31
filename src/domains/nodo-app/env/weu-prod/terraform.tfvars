@@ -146,3 +146,39 @@ nodo_re_to_tablestorage_function_autoscale = {
   minimum = 1
   maximum = 10
 }
+
+
+pod_disruption_budgets = {
+  "node-technicalsupport" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "node-technicalsupport"
+    }
+  },
+
+  "nodo" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "nodo"
+    }
+  },
+  "nodo-cfg-data-migration" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "nodo-cfg-data-migration"
+    }
+  },
+
+  "pagopawebbo" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopawebbo"
+    }
+  },
+  "pagopawfespwfesp" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopawfespwfesp"
+    }
+  },
+}

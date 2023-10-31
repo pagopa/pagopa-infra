@@ -141,3 +141,13 @@ variable "dns_zone_checkout" {
   default     = null
   description = "The checkout dns subdomain."
 }
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}
