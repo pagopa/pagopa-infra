@@ -38,7 +38,7 @@ jobs:
             src/domains/ecommerce-common
             src/domains/fdr-app
             src/domains/fdr-common
-            src/domains/fdr-secrets
+            src/domains/fdr-secret
             src/domains/gps-app
             src/domains/gps-common
             src/domains/load-test
