@@ -220,6 +220,8 @@ variable "taxonomy_storage_account" {
     public_network_access_enabled = bool
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
   })
 }
 variable "cidr_subnet_taxonomy_storage_account" {
