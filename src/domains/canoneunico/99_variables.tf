@@ -127,6 +127,12 @@ variable "canoneunico_delete_retention_days" {
   default     = 30
 }
 
+variable "canoneunico_backup_retention_days" {
+  type        = number
+  description = "Number of days to retain backup."
+  default     = 0
+}
+
 variable "canoneunico_schedule_batch" {
   type        = string
   description = "Cron scheduling (NCRON) default : every hour"
@@ -174,4 +180,10 @@ variable "storage_account_info" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
+}
+
+variable "enable_canoneunico_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables canoneunico storage account backup"
 }
