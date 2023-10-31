@@ -155,7 +155,13 @@ variable "receipts_datastore_fn_sa_advanced_threat_protection" {
 variable "receipts_datastore_fn_sa_delete_retention_days" {
   type        = number
   description = "Number of days to retain deleted."
-  default     = 30
+  default     = 0
+}
+
+variable "receipts_datastore_fn_sa_backup_retention_days" {
+  type        = number
+  description = "Number of days to retain backups."
+  default     = 0
 }
 
 variable "receipts_datastore_fn_sa_tier_to_cool_after_last_access" {

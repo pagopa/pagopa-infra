@@ -191,6 +191,7 @@ fdr_storage_account = {
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
   backup_enabled                = true
+  backup_retention              = 30
 }
 
 fdr_re_storage_account = {
@@ -203,4 +204,5 @@ fdr_re_storage_account = {
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
   backup_enabled                = true
+  backup_retention              = 30
 }

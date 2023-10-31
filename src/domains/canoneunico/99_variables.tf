@@ -127,6 +127,12 @@ variable "canoneunico_delete_retention_days" {
   default     = 30
 }
 
+variable "canoneunico_backup_retention_days" {
+  type        = number
+  description = "Number of days to retain backup."
+  default     = 0
+}
+
 variable "canoneunico_schedule_batch" {
   type        = string
   description = "Cron scheduling (NCRON) default : every hour"

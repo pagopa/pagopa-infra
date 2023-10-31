@@ -92,9 +92,10 @@ taxonomy_storage_account = {
   blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = true
-  blob_delete_retention_days    = 30
+  blob_delete_retention_days    = 31
   enable_low_availability_alert = true
   backup_enabled                = true
+  backup_retention              = 30
 }
 
 taxonomy_network_rules = {

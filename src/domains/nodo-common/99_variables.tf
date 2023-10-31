@@ -304,6 +304,7 @@ variable "nodo_re_storage_account" {
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
     backup_enabled                = bool
+    backup_retention              = optional(number, 0)
   })
   default = {
     account_kind                  = "StorageV2"
@@ -314,6 +315,7 @@ variable "nodo_re_storage_account" {
     blob_delete_retention_days    = 0
     public_network_access_enabled = false
     backup_enabled                = false
+    backup_retention              = 0
   }
 }
 
@@ -325,8 +327,10 @@ variable "nodo_storico_storage_account" {
     advanced_threat_protection    = bool
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
-    backup_enabled                = optional(bool, false)
-    blob_delete_retention_days    = optional(number, 0)
+    backup_enabled                = bool
+    blob_delete_retention_days    = number
+    backup_retention              = optional(number, 0)
+
   })
   default = {
     account_kind                  = "StorageV2"
@@ -337,6 +341,8 @@ variable "nodo_storico_storage_account" {
     public_network_access_enabled = true
     backup_enabled                = false
     blob_delete_retention_days    = 0
+    backup_retention              = 0
+
   }
 }
 
@@ -355,6 +361,12 @@ variable "enable_sftp_backup" {
 
 variable "sftp_sa_delete_retention_days" {
   type = number
-  default = null
+  default = 0
   description = "(Optional) nodo sftp storage delete retention"
+}
+
+variable "sftp_sa_backup_retention_days" {
+  type = number
+  default = 0
+  description = "(Optional) nodo sftp storage backup retention"
 }

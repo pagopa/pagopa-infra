@@ -38,8 +38,10 @@ canoneunico_queue_message_delay = 3600 // in seconds = 1h
 
 canoneunico_runtime_version = "~3"
 
-canoneunico_delete_retention_days = 30
+canoneunico_delete_retention_days = 31
+canoneunico_backup_retention_days = 30
 enable_canoneunico_backup = true
+canoneunico_enable_versioning = true
 
 # storage
 storage_queue_private_endpoint_enabled = true

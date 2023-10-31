@@ -1,5 +1,5 @@
 module "canoneunico_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.15.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
   name                            = replace("${local.project}-canoneunico-sa", "-", "")
   account_kind                    = var.storage_account_info.account_kind
@@ -16,12 +16,12 @@ module "canoneunico_sa" {
   blob_delete_retention_days = var.canoneunico_delete_retention_days
 
   blob_change_feed_enabled = var.enable_canoneunico_backup
-  blob_change_feed_retention_in_days = var.enable_canoneunico_backup ? var.canoneunico_delete_retention_days : null
-  blob_container_delete_retention_days = var.enable_canoneunico_backup ? var.canoneunico_delete_retention_days : null
-  blob_storage_policy = var.enable_canoneunico_backup ? {
+  blob_change_feed_retention_in_days = var.enable_canoneunico_backup ? var.canoneunico_backup_retention_days : null
+  blob_container_delete_retention_days =  var.canoneunico_backup_retention_days
+  blob_storage_policy = {
     enable_immutability_policy = false
-    blob_restore_policy_days = var.canoneunico_delete_retention_days
-  } : null
+    blob_restore_policy_days = var.canoneunico_backup_retention_days
+  }
 
   tags = var.tags
 }

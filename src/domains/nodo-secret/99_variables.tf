@@ -146,12 +146,14 @@ variable "nodo_cert_storage_account" {
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
     backup_enabled                = bool
+    backup_retention              = optional(number, 0)
   })
   default = {
     blob_versioning_enabled       = false
     advanced_threat_protection    = false
-    blob_delete_retention_days    = 0
+    blob_delete_retention_days    = 30
     public_network_access_enabled = false
     backup_enabled                = false
+    backup_retention              = 0
   }
 }

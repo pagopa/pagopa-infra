@@ -136,6 +136,7 @@ variable "afm_storage_params" {
     advanced_threat_protection    = bool,
     retention_days                = number,
     public_network_access_enabled = bool,
+    backup_retention_days         = optional(number, 0)
   })
 
   default = {
@@ -147,6 +148,7 @@ variable "afm_storage_params" {
     advanced_threat_protection    = false,
     retention_days                = 30,
     public_network_access_enabled = false
+    backup_retention_days         = 0
   }
 }
 

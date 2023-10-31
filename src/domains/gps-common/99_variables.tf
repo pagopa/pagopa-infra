@@ -74,11 +74,6 @@ variable "gpd_payments_advanced_threat_protection" {
   default     = false
 }
 
-variable "gpd_payments_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
 
 ### External resources
 
@@ -321,10 +316,15 @@ variable "enable_gpd_payments_backup" {
 
 variable "gpd_payments_sa_delete_retention_days" {
   type = number
-  default = null
+  default = 0
   description = "(Optional) nodo sftp storage delete retention"
 }
 
+variable "gpd_payments_sa_backup_retention_days" {
+  type = number
+  default = 0
+  description = "(Optional) nodo sftp storage backup retention"
+}
 
 variable "reporting_storage_account" {
   type = object({
@@ -332,11 +332,13 @@ variable "reporting_storage_account" {
     blob_delete_retention_days    = number
     blob_versioning_enabled       = bool
     backup_enabled                = bool
+    backup_retention              = optional(number, 0)
   })
   default = {
     blob_versioning_enabled       = false
     advanced_threat_protection    = false
     blob_delete_retention_days    = 30
     backup_enabled                = false
+    backup_retention              = 0
   }
 }

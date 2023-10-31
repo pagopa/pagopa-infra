@@ -147,11 +147,13 @@ nodo_re_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
-  blob_delete_retention_days    = 30
+  blob_delete_retention_days    = 31
   public_network_access_enabled = false
   backup_enabled                = true
+  backup_retention              = 30
+
 }
 
 
@@ -162,10 +164,13 @@ nodo_storico_storage_account = {
   blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = true
-  backup_enabled = true
-  blob_delete_retention_days = 30
+  backup_enabled                = true
+  blob_delete_retention_days    = 31
+  backup_retention              = 30
+
 }
 
 
 enable_sftp_backup = true
-sftp_sa_delete_retention_days = 30
+sftp_sa_delete_retention_days = 31
+sftp_sa_backup_retention_days = 30

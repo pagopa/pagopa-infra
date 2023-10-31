@@ -346,6 +346,7 @@ variable "fdr_storage_account" {
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
     backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
   })
 
   default = {
@@ -358,6 +359,7 @@ variable "fdr_storage_account" {
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false
     backup_enabled                = false
+    backup_retention              = 0
   }
 }
 
@@ -372,6 +374,7 @@ variable "fdr_re_storage_account" {
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
     backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
   })
 
   default = {
@@ -384,6 +387,7 @@ variable "fdr_re_storage_account" {
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false
     backup_enabled                = false
+    backup_retention              = 0
   }
 }
 

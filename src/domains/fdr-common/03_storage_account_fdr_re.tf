@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "fdr_re_rg" {
 }
 
 module "fdr_re_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
   name                            = replace("${local.project}-re-sa", "-", "")
   account_kind                    = var.fdr_re_storage_account.account_kind
@@ -24,12 +24,12 @@ module "fdr_re_sa" {
   blob_delete_retention_days = var.fdr_re_storage_account.blob_delete_retention_days
 
   blob_change_feed_enabled = var.fdr_re_storage_account.backup_enabled
-  blob_change_feed_retention_in_days = var.fdr_re_storage_account.backup_enabled ? var.fdr_re_storage_account.blob_delete_retention_days : null
-  blob_container_delete_retention_days = var.fdr_re_storage_account.backup_enabled ? var.fdr_re_storage_account.blob_delete_retention_days : null
-  blob_storage_policy = var.fdr_re_storage_account.backup_enabled ? {
+  blob_change_feed_retention_in_days = var.fdr_re_storage_account.backup_enabled ? var.fdr_re_storage_account.backup_retention : null
+  blob_container_delete_retention_days = var.fdr_re_storage_account.backup_retention
+  blob_storage_policy = {
     enable_immutability_policy = false
-    blob_restore_policy_days = var.fdr_re_storage_account.blob_delete_retention_days
-  } : null
+    blob_restore_policy_days = var.fdr_re_storage_account.backup_retention
+  }
 
   tags = var.tags
 }

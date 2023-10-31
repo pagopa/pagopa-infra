@@ -131,7 +131,7 @@ opentelemetry_operator_helm = {
 
 elk_snapshot_sa = {
   blob_versioning_enabled       = true
-  blob_delete_retention_days    = 60
+  blob_delete_retention_days    = 30
   backup_enabled                = true
   blob_versioning_enabled         = true
   advanced_threat_protection      = true

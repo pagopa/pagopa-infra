@@ -3,7 +3,7 @@ data "azurerm_resource_group" "nodo_re_to_datastore_rg" {
 }
 
 module "nodo_re_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
   name                            = replace(format("%s-re-2-data-st", local.project), "-", "")
   account_kind                    = var.nodo_re_storage_account.account_kind
@@ -20,12 +20,12 @@ module "nodo_re_storage_account" {
   blob_delete_retention_days = var.nodo_re_storage_account.blob_delete_retention_days
 
   blob_change_feed_enabled = var.nodo_re_storage_account.backup_enabled
-  blob_change_feed_retention_in_days = var.nodo_re_storage_account.backup_enabled ? var.nodo_re_storage_account.blob_delete_retention_days : null
-  blob_container_delete_retention_days = var.nodo_re_storage_account.backup_enabled ? var.nodo_re_storage_account.blob_delete_retention_days : null
-  blob_storage_policy = var.nodo_re_storage_account.backup_enabled ? {
+  blob_change_feed_retention_in_days = var.nodo_re_storage_account.backup_enabled ? var.nodo_re_storage_account.backup_retention : null
+  blob_container_delete_retention_days =  var.nodo_re_storage_account.backup_retention
+  blob_storage_policy =  {
     enable_immutability_policy = false
-    blob_restore_policy_days = var.nodo_re_storage_account.blob_delete_retention_days
-  } : null
+    blob_restore_policy_days = var.nodo_re_storage_account.backup_retention
+  }
 
   tags = var.tags
 }

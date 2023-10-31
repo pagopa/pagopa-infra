@@ -66,14 +66,14 @@ resource "azurerm_private_endpoint" "queue_private_endpoint" {
 }
 
 module "receipts_datastore_fn_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=PRDP-54-feat-introduce_last_access_time_in_storage"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
   name                       = replace(format("%s-fn-sa", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   account_replication_type   = "LRS"
   access_tier                = "Hot"
-  blob_versioning_enabled    = false
+  blob_versioning_enabled    = var.enable_sa_backup
   resource_group_name        = azurerm_resource_group.st_receipts_rg.name
   location                   = var.location
   advanced_threat_protection = var.receipts_datastore_fn_sa_advanced_threat_protection
@@ -88,12 +88,12 @@ module "receipts_datastore_fn_sa" {
 
 
   blob_change_feed_enabled = var.enable_sa_backup
-  blob_change_feed_retention_in_days = var.enable_sa_backup ? var.receipts_datastore_fn_sa_delete_retention_days : null
-  blob_container_delete_retention_days = var.enable_sa_backup ? var.receipts_datastore_fn_sa_delete_retention_days : null
-  blob_storage_policy = var.enable_sa_backup ? {
+  blob_change_feed_retention_in_days = var.enable_sa_backup ? var.receipts_datastore_fn_sa_backup_retention_days : null
+  blob_container_delete_retention_days = var.receipts_datastore_fn_sa_backup_retention_days
+  blob_storage_policy = {
     enable_immutability_policy = false
-    blob_restore_policy_days = var.receipts_datastore_fn_sa_delete_retention_days
-  } : null
+    blob_restore_policy_days = var.receipts_datastore_fn_sa_backup_retention_days
+  }
 
 }
 

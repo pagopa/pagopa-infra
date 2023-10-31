@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "gpd_rg" {
 }
 
 module "flows" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.4.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
   name                            = replace(format("%s-flow-sa", local.product), "-", "")
   account_kind                    = "StorageV2"
@@ -25,12 +25,12 @@ module "flows" {
   blob_delete_retention_days = var.reporting_storage_account.blob_delete_retention_days
 
   blob_change_feed_enabled = var.reporting_storage_account.backup_enabled
-  blob_change_feed_retention_in_days = var.reporting_storage_account.backup_enabled ? var.reporting_storage_account.blob_delete_retention_days : null
-  blob_container_delete_retention_days = var.reporting_storage_account.backup_enabled ? var.reporting_storage_account.blob_delete_retention_days : null
-  blob_storage_policy = var.reporting_storage_account.backup_enabled ? {
+  blob_change_feed_retention_in_days = var.reporting_storage_account.backup_enabled ? var.reporting_storage_account.backup_retention : null
+  blob_container_delete_retention_days = var.reporting_storage_account.backup_retention
+  blob_storage_policy = {
     enable_immutability_policy = false
-    blob_restore_policy_days = var.reporting_storage_account.blob_delete_retention_days
-  } : null
+    blob_restore_policy_days = var.reporting_storage_account.backup_retention
+  }
 
   tags = var.tags
 }
