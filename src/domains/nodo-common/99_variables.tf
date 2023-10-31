@@ -354,19 +354,19 @@ variable "nodo_storico_allowed_ips" {
 
 
 variable "enable_sftp_backup" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "(Optional) Enables nodo sftp storage account backup"
 }
 
 variable "sftp_sa_delete_retention_days" {
-  type = number
-  default = 0
+  type        = number
+  default     = 0
   description = "(Optional) nodo sftp storage delete retention"
 }
 
 variable "sftp_sa_backup_retention_days" {
-  type = number
-  default = 0
+  type        = number
+  default     = 0
   description = "(Optional) nodo sftp storage backup retention"
 }

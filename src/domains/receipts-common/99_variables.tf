@@ -220,7 +220,7 @@ variable "receipts_queue_delay_sec" {
 
 
 variable "enable_sa_backup" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "(Optional) Enables storage account backup PIT restore"
 }

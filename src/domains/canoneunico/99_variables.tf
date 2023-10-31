@@ -183,7 +183,7 @@ variable "storage_account_info" {
 }
 
 variable "enable_canoneunico_backup" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "(Optional) Enables canoneunico storage account backup"
 }

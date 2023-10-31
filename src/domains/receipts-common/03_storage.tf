@@ -87,12 +87,12 @@ module "receipts_datastore_fn_sa" {
   blob_last_access_time_enabled = true
 
 
-  blob_change_feed_enabled = var.enable_sa_backup
-  blob_change_feed_retention_in_days = var.enable_sa_backup ? var.receipts_datastore_fn_sa_backup_retention_days : null
+  blob_change_feed_enabled             = var.enable_sa_backup
+  blob_change_feed_retention_in_days   = var.enable_sa_backup ? var.receipts_datastore_fn_sa_backup_retention_days : null
   blob_container_delete_retention_days = var.receipts_datastore_fn_sa_backup_retention_days
   blob_storage_policy = {
     enable_immutability_policy = false
-    blob_restore_policy_days = var.receipts_datastore_fn_sa_backup_retention_days
+    blob_restore_policy_days   = var.receipts_datastore_fn_sa_backup_retention_days
   }
 
 }

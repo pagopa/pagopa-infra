@@ -1591,13 +1591,13 @@ variable "devops_agent_balance_zones" {
 
 
 variable "enable_logos_backup" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "(Optional) Enables nodo sftp storage account backup"
 }
 
 variable "logos_sa_delete_retention_days" {
-  type = number
-  default = null
+  type        = number
+  default     = null
   description = "(Optional) nodo sftp storage delete retention"
 }

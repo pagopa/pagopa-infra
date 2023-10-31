@@ -19,12 +19,12 @@ module "nodo_re_storage_account" {
 
   blob_delete_retention_days = var.nodo_re_storage_account.blob_delete_retention_days
 
-  blob_change_feed_enabled = var.nodo_re_storage_account.backup_enabled
-  blob_change_feed_retention_in_days = var.nodo_re_storage_account.backup_enabled ? var.nodo_re_storage_account.backup_retention : null
-  blob_container_delete_retention_days =  var.nodo_re_storage_account.backup_retention
-  blob_storage_policy =  {
+  blob_change_feed_enabled             = var.nodo_re_storage_account.backup_enabled
+  blob_change_feed_retention_in_days   = var.nodo_re_storage_account.backup_enabled ? var.nodo_re_storage_account.backup_retention : null
+  blob_container_delete_retention_days = var.nodo_re_storage_account.backup_retention
+  blob_storage_policy = {
     enable_immutability_policy = false
-    blob_restore_policy_days = var.nodo_re_storage_account.backup_retention
+    blob_restore_policy_days   = var.nodo_re_storage_account.backup_retention
   }
 
   tags = var.tags

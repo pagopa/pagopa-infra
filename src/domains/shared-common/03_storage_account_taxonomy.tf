@@ -28,12 +28,12 @@ module "taxonomy_sa" {
   blob_delete_retention_days = var.taxonomy_storage_account.blob_delete_retention_days
 
 
-  blob_change_feed_enabled = var.taxonomy_storage_account.backup_enabled
-  blob_change_feed_retention_in_days = var.taxonomy_storage_account.backup_enabled ? var.taxonomy_storage_account.backup_retention : null
+  blob_change_feed_enabled             = var.taxonomy_storage_account.backup_enabled
+  blob_change_feed_retention_in_days   = var.taxonomy_storage_account.backup_enabled ? var.taxonomy_storage_account.backup_retention : null
   blob_container_delete_retention_days = var.taxonomy_storage_account.backup_retention
-  blob_storage_policy =  {
+  blob_storage_policy = {
     enable_immutability_policy = false
-    blob_restore_policy_days = var.taxonomy_storage_account.backup_retention
+    blob_restore_policy_days   = var.taxonomy_storage_account.backup_retention
   }
 
   network_rules = var.taxonomy_network_rules

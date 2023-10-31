@@ -156,7 +156,7 @@ variable "api_config_reporting_backup_retention_days" {
 }
 
 variable "enable_apiconfig_sa_backup" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "(Optional) Enables apiconfig storage account backup"
 }

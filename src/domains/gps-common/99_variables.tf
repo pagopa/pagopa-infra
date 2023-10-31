@@ -309,36 +309,36 @@ variable "enable_iac_pipeline" {
 }
 
 variable "enable_gpd_payments_backup" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "(Optional) Enables nodo sftp storage account backup"
 }
 
 variable "gpd_payments_sa_delete_retention_days" {
-  type = number
-  default = 0
+  type        = number
+  default     = 0
   description = "(Optional) nodo sftp storage delete retention"
 }
 
 variable "gpd_payments_sa_backup_retention_days" {
-  type = number
-  default = 0
+  type        = number
+  default     = 0
   description = "(Optional) nodo sftp storage backup retention"
 }
 
 variable "reporting_storage_account" {
   type = object({
-    advanced_threat_protection    = bool
-    blob_delete_retention_days    = number
-    blob_versioning_enabled       = bool
-    backup_enabled                = bool
-    backup_retention              = optional(number, 0)
+    advanced_threat_protection = bool
+    blob_delete_retention_days = number
+    blob_versioning_enabled    = bool
+    backup_enabled             = bool
+    backup_retention           = optional(number, 0)
   })
   default = {
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = false
-    blob_delete_retention_days    = 30
-    backup_enabled                = false
-    backup_retention              = 0
+    blob_versioning_enabled    = false
+    advanced_threat_protection = false
+    blob_delete_retention_days = 30
+    backup_enabled             = false
+    backup_retention           = 0
   }
 }

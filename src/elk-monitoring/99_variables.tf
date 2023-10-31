@@ -4,7 +4,7 @@ variable "prefix" {
   type = string
   validation {
     condition = (
-    length(var.prefix) <= 6
+      length(var.prefix) <= 6
     )
     error_message = "Max length is 6 chars."
   }
@@ -18,7 +18,7 @@ variable "env_short" {
   type = string
   validation {
     condition = (
-    length(var.env_short) == 1
+      length(var.env_short) == 1
     )
     error_message = "Length must be 1 chars."
   }
@@ -28,7 +28,7 @@ variable "domain" {
   type = string
   validation {
     condition = (
-    length(var.domain) <= 12
+      length(var.domain) <= 12
     )
     error_message = "Max length is 12 chars."
   }
@@ -43,7 +43,7 @@ variable "location_short" {
   type = string
   validation {
     condition = (
-    length(var.location_short) == 3
+      length(var.location_short) == 3
     )
     error_message = "Length must be 3 chars."
   }
@@ -229,17 +229,17 @@ variable "opentelemetry_operator_helm" {
 
 variable "elk_snapshot_sa" {
   type = object({
-    blob_delete_retention_days    = number
-    blob_versioning_enabled       = bool
-    backup_enabled                = bool
-    blob_versioning_enabled         = bool
-    advanced_threat_protection      = bool
+    blob_delete_retention_days = number
+    blob_versioning_enabled    = bool
+    backup_enabled             = bool
+    blob_versioning_enabled    = bool
+    advanced_threat_protection = bool
   })
   default = {
-    blob_versioning_enabled       = false
-    blob_delete_retention_days    = 0
-    backup_enabled                = false
-    blob_versioning_enabled         = true
-    advanced_threat_protection      = true
+    blob_versioning_enabled    = false
+    blob_delete_retention_days = 0
+    backup_enabled             = false
+    blob_versioning_enabled    = true
+    advanced_threat_protection = true
   }
 }

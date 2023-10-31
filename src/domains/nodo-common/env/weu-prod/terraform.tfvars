@@ -171,6 +171,6 @@ nodo_storico_storage_account = {
 }
 
 
-enable_sftp_backup = true
+enable_sftp_backup            = true
 sftp_sa_delete_retention_days = 31
 sftp_sa_backup_retention_days = 30

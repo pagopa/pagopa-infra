@@ -696,5 +696,5 @@ ingress_elk_load_balancer_ip = "10.1.100.251"
 devops_agent_zones         = [1, 2, 3]
 devops_agent_balance_zones = false
 
-enable_logos_backup = true
+enable_logos_backup            = true
 logos_sa_delete_retention_days = 30
