@@ -10,7 +10,7 @@ module "dns_forwarder_backup_snet" {
 
 # with default image
 module "dns_forwarder_backup_vmss_li" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder_scale_set_vm?ref=dns-forwarder-scaleset-vm"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder_scale_set_vm?ref=v7.20.0"
   count  = var.dns_forwarder_backup_is_enabled.uat || var.dns_forwarder_backup_is_enabled.prod ? 1 : 0
 
   name                = local.dns_forwarder_backup_name
