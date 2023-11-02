@@ -67,14 +67,6 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
-resource "azurerm_key_vault_secret" "ai_connection_string" {
-  name         = "ai-${var.env_short}-connection-string"
-  value        = data.azurerm_application_insights.application_insights.connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
 resource "azurerm_key_vault_secret" "gpd-api-key" {
   name         = "gpd-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -100,6 +92,7 @@ resource "azurerm_key_vault_secret" "api-config-api-key" {
 }
 
 resource "azurerm_key_vault_secret" "aca-api-key" {
+  count        = var.env_short != "p" ? 1 : 0
   name         = "aca-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
