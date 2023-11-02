@@ -150,15 +150,6 @@ resource "azurerm_api_management_api_operation_policy" "io_delete_transaction" {
   xml_content = file("./api/ecommerce-io/v1/_validate_transactions_jwt_token.tpl")
 }
 
-resource "azurerm_api_management_api_operation_policy" "io_get_fees" {
-  api_name            = "${local.project}-ecommerce-io-api-v1"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "calculateFees"
-
-  xml_content = file("./api/ecommerce-io/v1/_validate_transactions_jwt_token.tpl")
-}
-
 resource "azurerm_api_management_api_operation_policy" "io_transaction_authorization_request" {
   api_name            = "${local.project}-ecommerce-io-api-v1"
   resource_group_name = local.pagopa_apim_rg

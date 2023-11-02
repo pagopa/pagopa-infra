@@ -3,25 +3,17 @@
   "info": {
     "version": "0.0.1",
     "title": "Pagopa eCommerce services for app IO",
-    "description": "API's exposed from eCommerce services to app IO.",
+    "description": "API's exposed from eCommerce services to app IO to allow pagoPA payment.\n\nThe payment workflow ends with a outcome returned as query params in a webview, for example \n \n - /outcomes?outcome=0. \n\nThe possible outcome are:\n- SUCCESS(0) → payment completed successfully\n- GENERIC_ERROR(1),\n- AUTH_ERROR(2) → authorization denied\n- INVALID_DATA(3) → incorrect data\n- TIMEOUT(4) → timeout \n- CIRCUIT_ERROR(5) → Unsupported circuit (should never happen)\n- MISSING_FIELDS(6) → missing data (should never happen) \n- INVALID_CARD(7) → expired card (or similar)\n- CANCELED_BY_USER(8) → canceled by the user\n- DUPLICATE_ORDER(9) → Double transaction (should never happen)\n- EXCESSIVE_AMOUNT(10) → Excess of availability \n- ORDER_NOT_PRESENT(11) → (should never happen)\n- INVALID_METHOD(12) → (should never happen)\n- KO_RETRIABLE(13) → transaction failed, but the transaction is theoretically recoverable. For the user it is a KO\n- INVALID_SESSION(14)",
     "contact": {
       "name": "pagoPA - Touchpoints team"
     }
   },
   "tags": [
     {
-      "name": "ecommerce-transactions",
-      "description": "Api's for performing a transaction",
+      "name": "ecommerce-sessions",
+      "description": "Api's for initiate a payment session",
       "externalDocs": {
-        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611287199/-servizio+transactions+service",
-        "description": "Technical specifications"
-      }
-    },
-    {
-      "name": "ecommerce-methods",
-      "description": "Api's for retrieve payment methods for perform transactions",
-      "externalDocs": {
-        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611516433/-servizio+payment+methods+service",
+        "url": "https://TODO",
         "description": "Technical specifications"
       }
     },
@@ -34,10 +26,10 @@
       }
     },
     {
-      "name": "ecommerce-sessions",
-      "description": "Api's for initiate a payment session",
+      "name": "ecommerce-transactions",
+      "description": "Api's for performing a transaction",
       "externalDocs": {
-        "url": "https://TODO",
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611287199/-servizio+transactions+service",
         "description": "Technical specifications"
       }
     }
@@ -204,7 +196,7 @@
           "ecommerce-transactions"
         ],
         "operationId": "newTransaction",
-        "summary": "Make a new transaction",
+        "summary": "Create a new transaction",
         "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
         "security": [
           {
@@ -439,7 +431,7 @@
     },
     "/transactions/{transactionId}/auth-requests": {
       "post": {
-        "summary": "Request authorization",
+        "summary": "Create a new request authorization given a transaction",
         "description": "Request authorization for the transaction identified by payment token",
         "tags": [
           "ecommerce-transactions"
@@ -472,7 +464,7 @@
         },
         "responses": {
           "200": {
-            "description": "Transaction authorization request successfully processed, redirecting client to authorization web page",
+            "description": "Transaction authorization request successfully processed, redirecting client toauthorization web page (webview to open in app)",
             "content": {
               "application/json": {
                 "schema": {
@@ -536,102 +528,6 @@
           }
         }
       }
-    },
-    "/payment-methods/{id}/fees": {
-      "post": {
-        "tags": [
-          "ecommerce-methods"
-        ],
-        "operationId": "calculateFees",
-        "summary": "Calculate payment method fees",
-        "description": "GET with body payload - no resources created: Return the fees for the choosen payment method based on transaction amount etc.\n",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Payment Method ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "maxOccurrences",
-            "in": "query",
-            "description": "max occurrences",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "x-transaction-id-from-client",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The ecommerce transaction id"
-          }
-        ],
-        "security": [
-          {
-            "eCommerceSessionToken": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CalculateFeeRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "New payment method successfully updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CalculateFeeResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Payment method not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -672,7 +568,7 @@
         "minimum": 100,
         "maximum": 600,
         "exclusiveMaximum": true,
-        "example": 200
+        "example": 500
       },
       "PaymentMethodRequest": {
         "type": "object",
@@ -1064,30 +960,17 @@
               "$ref": "#/components/schemas/PaymentNoticeInfo"
             },
             "minItems": 1,
-            "maxItems": 5,
+            "maxItems": 1,
             "example": [
               {
                 "rptId": "77777777777302012387654312384",
-                "amount": 100
-              },
-              {
-                "rptId": "77777777777302012387654312385",
-                "amount": 200
+                "amount": 12000
               }
             ]
-          },
-          "email": {
-            "type": "string"
-          },
-          "idCart": {
-            "description": "Cart identifier provided by creditor institution",
-            "type": "string",
-            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
-          "paymentNotices",
-          "email"
+          "paymentNotices"
         ]
       },
       "NewTransactionResponse": {
@@ -1103,7 +986,7 @@
               "$ref": "#/components/schemas/PaymentInfo"
             },
             "minItems": 1,
-            "maxItems": 5,
+            "maxItems": 1,
             "example": [
               {
                 "rptId": "77777777777302012387654312384",
@@ -1124,26 +1007,6 @@
                     "transferAmount": 100
                   }
                 ]
-              },
-              {
-                "rptId": "77777777777302012387654312385",
-                "paymentToken": "paymentToken2",
-                "reason": "reason2",
-                "amount": 300,
-                "transferList": [
-                  {
-                    "paFiscalCode": "44444444444",
-                    "digitalStamp": true,
-                    "transferCategory": "transferCategory1",
-                    "transferAmount": 200
-                  },
-                  {
-                    "paFiscalCode": "22222222222",
-                    "digitalStamp": false,
-                    "transferCategory": "transferCategory2",
-                    "transferAmount": 100
-                  }
-                ]
               }
             ]
           },
@@ -1157,16 +1020,8 @@
             "description": "transaction client id",
             "type": "string",
             "enum": [
-              "IO",
-              "CHECKOUT",
-              "CHECKOUT_CART",
-              "UNKNOWN"
+              "IO"
             ]
-          },
-          "idCart": {
-            "description": "Cart identifier provided by creditor institution",
-            "type": "string",
-            "example": "idCartFromCreditorInstitution"
           },
           "sendPaymentResultOutcome": {
             "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
@@ -1207,10 +1062,6 @@
           "fee": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
-          "paymentInstrumentId": {
-            "type": "string",
-            "description": "Payment instrument id"
-          },
           "pspId": {
             "type": "string",
             "description": "PSP id"
@@ -1237,7 +1088,6 @@
         "required": [
           "amount",
           "fee",
-          "paymentInstrumentId",
           "pspId",
           "language",
           "isAllCCP",
@@ -1252,8 +1102,11 @@
             "description": "Additional payment authorization details for payment performed with wallet",
             "properties": {
               "detailType": {
-                "description": "fixed value 'wallet'",
-                "type": "string"
+                "description": "fixed value 'WALLET'",
+                "type": "string",
+                "enum": [
+                  "WALLET"
+                ]
               },
               "walletId": {
                 "type": "string",
@@ -1407,166 +1260,6 @@
           "transferAmount"
         ]
       },
-      "CalculateFeeRequest": {
-        "description": "Calculate fee request",
-        "type": "object",
-        "properties": {
-          "touchpoint": {
-            "type": "string",
-            "description": "The touchpoint name"
-          },
-          "bin": {
-            "type": "string",
-            "description": "The user card bin"
-          },
-          "idPspList": {
-            "description": "List of psps",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "paymentAmount": {
-            "description": "The transaction payment amount",
-            "type": "integer",
-            "format": "int64"
-          },
-          "primaryCreditorInstitution": {
-            "description": "The primary creditor institution",
-            "type": "string"
-          },
-          "transferList": {
-            "description": "Transfert list",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TransferListItem"
-            }
-          },
-          "isAllCCP": {
-            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "paymentAmount",
-          "primaryCreditorInstitution",
-          "transferList",
-          "touchpoint",
-          "isAllCCP"
-        ]
-      },
-      "CalculateFeeResponse": {
-        "description": "Calculate fee response",
-        "type": "object",
-        "properties": {
-          "paymentMethodName": {
-            "description": "Payment method name",
-            "type": "string"
-          },
-          "paymentMethodDescription": {
-            "description": "Payment method description",
-            "type": "string"
-          },
-          "paymentMethodStatus": {
-            "$ref": "#/components/schemas/PaymentMethodStatus"
-          },
-          "belowThreshold": {
-            "description": "Boolean value indicating if the payment is below the configured threshold",
-            "type": "boolean"
-          },
-          "bundles": {
-            "description": "Bundle list",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Bundle"
-            }
-          }
-        },
-        "required": [
-          "bundles",
-          "paymentMethodName",
-          "paymentMethodDescription",
-          "paymentMethodStatus"
-        ]
-      },
-      "Bundle": {
-        "description": "Bundle object",
-        "type": "object",
-        "properties": {
-          "abi": {
-            "description": "Bundle ABI code",
-            "type": "string"
-          },
-          "bundleDescription": {
-            "description": "Bundle description",
-            "type": "string"
-          },
-          "bundleName": {
-            "description": "Bundle name",
-            "type": "string"
-          },
-          "idBrokerPsp": {
-            "description": "Bundle PSP broker id",
-            "type": "string"
-          },
-          "idBundle": {
-            "description": "Bundle id",
-            "type": "string"
-          },
-          "idChannel": {
-            "description": "Channel id",
-            "type": "string"
-          },
-          "idCiBundle": {
-            "description": "CI bundle id",
-            "type": "string"
-          },
-          "idPsp": {
-            "description": "PSP id",
-            "type": "string"
-          },
-          "onUs": {
-            "description": "Boolean value indicating if this bundle is an on-us ones",
-            "type": "boolean"
-          },
-          "paymentMethod": {
-            "description": "Payment method",
-            "type": "string"
-          },
-          "primaryCiIncurredFee": {
-            "description": "Primary CI incurred fee",
-            "type": "integer",
-            "format": "int64"
-          },
-          "taxPayerFee": {
-            "description": "Tax payer fee",
-            "type": "integer",
-            "format": "int64"
-          },
-          "touchpoint": {
-            "description": "The touchpoint name",
-            "type": "string"
-          }
-        }
-      },
-      "TransferListItem": {
-        "description": "Transfert list item",
-        "type": "object",
-        "properties": {
-          "creditorInstitution": {
-            "description": "Creditor institution",
-            "type": "string"
-          },
-          "digitalStamp": {
-            "description": "Boolean value indicating if there is digital stamp",
-            "type": "boolean"
-          },
-          "transferCategory": {
-            "description": "Transfer category",
-            "type": "string"
-          }
-        }
-      },
       "PaymentMethodStatus": {
         "type": "string",
         "description": "Payment method status",
@@ -1628,16 +1321,6 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/UpdateAuthorizationRequest"
-            }
-          }
-        }
-      },
-      "CalculateFeeRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/CalculateFeeRequest"
             }
           }
         }

@@ -49,3 +49,37 @@ sku_name        = "P1v3"
 # API Config FE
 api_config_fe_enabled = true
 cname_record_name     = "config"
+
+pod_disruption_budgets = {
+  "apiconfig-selfcare-integration" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "apiconfig-selfcare-integration"
+    }
+  },
+  "pagopaapiconfig-oracle" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaapiconfig"
+    }
+  },
+  "status-app" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "status-app"
+    }
+  },
+}
+
+
+# cache-oracle
+# NOT USED FUTURE NEEDS
+
+# cache-oracleprod
+# NOT USED FUTURE NEEDS
+
+# cache-postgresql
+# NOT USED FUTURE NEEDS
+
+# pagopaapiconfig-postgresql
+# NOT USED FUTURE NEEDS
