@@ -155,7 +155,13 @@ variable "receipts_datastore_fn_sa_advanced_threat_protection" {
 variable "receipts_datastore_fn_sa_delete_retention_days" {
   type        = number
   description = "Number of days to retain deleted."
-  default     = 30
+  default     = 0
+}
+
+variable "receipts_datastore_fn_sa_backup_retention_days" {
+  type        = number
+  description = "Number of days to retain backups."
+  default     = 0
 }
 
 variable "receipts_datastore_fn_sa_tier_to_cool_after_last_access" {
@@ -210,4 +216,11 @@ variable "receipts_queue_delay_sec" {
   type        = number
   description = "The length of time during which the message will be invisible, starting when it is added to the queue."
   default     = 3600
+}
+
+
+variable "enable_sa_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables storage account backup PIT restore"
 }
