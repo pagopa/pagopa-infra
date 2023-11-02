@@ -230,13 +230,11 @@ variable "opentelemetry_operator_helm" {
 variable "elk_snapshot_sa" {
   type = object({
     blob_delete_retention_days = number
-    blob_versioning_enabled    = bool
     backup_enabled             = bool
     blob_versioning_enabled    = bool
     advanced_threat_protection = bool
   })
   default = {
-    blob_versioning_enabled    = false
     blob_delete_retention_days = 0
     backup_enabled             = false
     blob_versioning_enabled    = true

@@ -252,7 +252,6 @@ variable "cosmos_mongo_db_fdr_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -283,7 +282,6 @@ variable "cosmos_mongo_db_fdr_re_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number

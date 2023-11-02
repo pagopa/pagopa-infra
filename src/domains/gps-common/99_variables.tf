@@ -247,7 +247,6 @@ variable "cosmos_gps_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -279,7 +278,6 @@ variable "cosmos_gpd_payments_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
