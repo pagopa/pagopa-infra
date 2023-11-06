@@ -36,7 +36,11 @@
         <when condition="@(((int)((IResponse)context.Variables["pagopaProxyResponse"]).StatusCode) == 200)">
           <set-variable name="idPayment" value="@((string)((IResponse)context.Variables["pagopaProxyResponse"]).Body.As<JObject>()["idPagamento"])" />
           <set-variable  name="sessionToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
-          <set-variable name="walletId" value="@((string) context.Request.Body.As<JObject>()["details"]["walletId"])" />
+          <set-variable name="walletId" value="@{
+                string walletIdUUID = (string) context.Request.Body.As<JObject>()["details"]["walletId"];
+                string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , ""); 
+                return Convert.ToInt64(walletIdHex , 16).ToString();
+            }" />
           <!-- Return url to execute PM webview -->
           <return-response>
             <set-status code="200" reason="OK" />
