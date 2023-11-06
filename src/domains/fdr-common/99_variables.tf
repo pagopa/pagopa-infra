@@ -252,7 +252,6 @@ variable "cosmos_mongo_db_fdr_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -283,7 +282,6 @@ variable "cosmos_mongo_db_fdr_re_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -345,6 +343,8 @@ variable "fdr_storage_account" {
     public_network_access_enabled = bool
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
   })
 
   default = {
@@ -356,6 +356,8 @@ variable "fdr_storage_account" {
     public_network_access_enabled = false
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false
+    backup_enabled                = false
+    backup_retention              = 0
   }
 }
 
@@ -369,6 +371,8 @@ variable "fdr_re_storage_account" {
     public_network_access_enabled = bool
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
   })
 
   default = {
@@ -380,6 +384,8 @@ variable "fdr_re_storage_account" {
     public_network_access_enabled = false
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false
+    backup_enabled                = false
+    backup_retention              = 0
   }
 }
 
