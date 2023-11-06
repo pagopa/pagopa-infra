@@ -1,5 +1,14 @@
 # FdR pagoPA legacy
 
+resource "azurerm_api_management_named_value" "ftp_organization" {
+  name                = "ftp-organization"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  display_name        = "ftp-organization"
+  value               = var.ftp_organization
+}
+
+
 #########
 ## PSP ##
 #########

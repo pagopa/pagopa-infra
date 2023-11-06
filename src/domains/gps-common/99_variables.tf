@@ -74,29 +74,6 @@ variable "gpd_payments_advanced_threat_protection" {
   default     = false
 }
 
-variable "gpd_payments_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
-
-variable "gpd_enable_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
-variable "gpd_reporting_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "gpd_reporting_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
 
 ### External resources
 
@@ -270,7 +247,6 @@ variable "cosmos_gps_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -302,7 +278,6 @@ variable "cosmos_gpd_payments_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -329,4 +304,39 @@ variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
+}
+
+variable "enable_gpd_payments_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "gpd_payments_sa_delete_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage delete retention"
+}
+
+variable "gpd_payments_sa_backup_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage backup retention"
+}
+
+variable "reporting_storage_account" {
+  type = object({
+    advanced_threat_protection = bool
+    blob_delete_retention_days = number
+    blob_versioning_enabled    = bool
+    backup_enabled             = bool
+    backup_retention           = optional(number, 0)
+  })
+  default = {
+    blob_versioning_enabled    = false
+    advanced_threat_protection = false
+    blob_delete_retention_days = 30
+    backup_enabled             = false
+    backup_retention           = 0
+  }
 }

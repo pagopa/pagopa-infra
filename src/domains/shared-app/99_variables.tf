@@ -250,4 +250,18 @@ variable "app_service_pdf_engine_sku_name" {
   description = "app service plan size"
   default     = "S1"
 }
+variable "app_service_pdf_engine_sku_name_java" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
 
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}

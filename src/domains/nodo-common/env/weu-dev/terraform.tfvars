@@ -170,8 +170,10 @@ nodo_re_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
-  blob_delete_retention_days    = 15
+  blob_delete_retention_days    = 0
   public_network_access_enabled = true
+  backup_enabled                = false
+
 }
 
 nodo_verifyko_storage_account = {
@@ -180,6 +182,7 @@ nodo_verifyko_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
-  blob_delete_retention_days    = 15
+  blob_delete_retention_days    = 0
   public_network_access_enabled = true
+  backup_enabled                = false
 }

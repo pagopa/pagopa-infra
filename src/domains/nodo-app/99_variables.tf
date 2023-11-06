@@ -345,3 +345,13 @@ variable "nodo_verifyko_to_tablestorage_function_autoscale" {
   })
   description = "Nodo Verify KO events to Table Storage functions autoscaling parameters"
 }
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}

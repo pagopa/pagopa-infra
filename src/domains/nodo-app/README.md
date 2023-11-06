@@ -170,6 +170,7 @@
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
+| [kubernetes_pod_disruption_budget_v1.nodo](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/pod_disruption_budget_v1) | resource |
 | [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.deployer_binding_2](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
@@ -260,6 +261,7 @@
 | <a name="input_nodo_verifyko_to_tablestorage_function_autoscale"></a> [nodo\_verifyko\_to\_tablestorage\_function\_autoscale](#input\_nodo\_verifyko\_to\_tablestorage\_function\_autoscale) | Nodo Verify KO events to Table Storage functions autoscaling parameters | <pre>object({<br>    default = number<br>    minimum = number<br>    maximum = number<br>  })</pre> | n/a | yes |
 | <a name="input_nodo_verifyko_to_tablestorage_function_subnet"></a> [nodo\_verifyko\_to\_tablestorage\_function\_subnet](#input\_nodo\_verifyko\_to\_tablestorage\_function\_subnet) | Address prefixes subnet | `list(string)` | `null` | no |
 | <a name="input_nodo_verifyko_to_tablestorage_network_policies_enabled"></a> [nodo\_verifyko\_to\_tablestorage\_network\_policies\_enabled](#input\_nodo\_verifyko\_to\_tablestorage\_network\_policies\_enabled) | Network policies enabled | `bool` | `false` | no |
+| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br>    name         = optional(string, null)<br>    minAvailable = optional(number, null)<br>    matchLabels  = optional(map(any), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_route_aks"></a> [route\_aks](#input\_route\_aks) | AKS routing table | <pre>list(object({<br>    name                   = string<br>    address_prefix         = string<br>    next_hop_type          = string<br>    next_hop_in_ip_address = string<br>  }))</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |

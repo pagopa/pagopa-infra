@@ -107,19 +107,19 @@ nodeset_config = {
   data-hot-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_hot"]
-    storage          = "350Gi"
+    storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
   },
   data-warm-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_warm"]
-    storage          = "350Gi"
+    storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-warm"
   },
   data-cold-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
-    storage          = "400Gi"
+    storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-cold"
   }
 }
@@ -127,4 +127,12 @@ nodeset_config = {
 opentelemetry_operator_helm = {
   chart_version = "0.24.3"
   values_file   = "./env/opentelemetry_operator_helm/values.yaml"
+}
+
+elk_snapshot_sa = {
+  blob_versioning_enabled    = true
+  blob_delete_retention_days = 30
+  backup_enabled             = true
+  blob_versioning_enabled    = true
+  advanced_threat_protection = true
 }

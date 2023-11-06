@@ -93,13 +93,14 @@ module "logos_donation_flows_sa" {
   account_replication_type   = "LRS"
   access_tier                = "Hot"
   versioning_name            = "versioning"
-  enable_versioning          = false
+  enable_versioning          = var.enable_logos_backup
   resource_group_name        = azurerm_resource_group.data.name
   location                   = var.location
   advanced_threat_protection = false
   allow_blob_public_access   = false
 
   blob_properties_delete_retention_policy_days = 30
+
 
   tags = var.tags
 }

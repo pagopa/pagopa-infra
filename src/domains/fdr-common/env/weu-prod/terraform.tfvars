@@ -49,7 +49,9 @@ pgres_flex_params = {
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 200
+  max_connections                        = 1700
+  pgbouncer_min_pool_size                = 500
+  pgbouncer_default_pool_size            = 1000
 }
 
 custom_metric_alerts = {
@@ -183,20 +185,24 @@ fdr_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = false
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
 }
 
 fdr_re_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = false
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
 }

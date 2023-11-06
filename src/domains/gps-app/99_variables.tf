@@ -357,3 +357,13 @@ variable "apim_logger_resource_id" {
   description = "Resource id for the APIM logger"
   default     = null
 }
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}

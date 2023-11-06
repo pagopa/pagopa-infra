@@ -64,5 +64,22 @@ taxonomy_function_autoscale = {
 }
 
 # pdf-engine
-cidr_subnet_pdf_engine_app_service = ["10.1.187.0/24"]
-app_service_pdf_engine_sku_name    = "P1v3"
+cidr_subnet_pdf_engine_app_service   = ["10.1.187.0/24"]
+app_service_pdf_engine_sku_name      = "P2v3"
+app_service_pdf_engine_sku_name_java = "P1v3"
+
+pod_disruption_budgets = {
+  "pagopaiuvgenerator" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaiuvgenerator"
+    }
+  },
+
+  "authorizerconfig" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "authorizerconfig"
+    }
+  },
+}
