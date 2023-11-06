@@ -764,10 +764,6 @@
         "description": "Calculate fee request",
         "type": "object",
         "properties": {
-          "walletId": {
-            "type": "string",
-            "description": "wallet id related to user"
-          },
           "paymentToken": {
             "type": "string",
             "description": "paymentToken related to nodo activation"
@@ -804,7 +800,6 @@
           }
         },
         "required": [
-          "walletId",
           "pamentToken",
           "paymentAmount"
         ]

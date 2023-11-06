@@ -923,9 +923,7 @@
         },
         "required": [
           "rptId",
-          "amount",
-          "transferList",
-          "isAllCCP"
+          "amount"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
