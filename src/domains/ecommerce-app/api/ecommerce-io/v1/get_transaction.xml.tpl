@@ -26,6 +26,8 @@
         </send-request>
         <set-variable name="pagopaProxyCcpResponseHttpResponseCode" value="@((int)((IResponse)context.Variables["pagopaProxyCcpResponse"]).StatusCode)" />
         <set-variable name="pagopaProxyResponseBody" value="@(((IResponse)context.Variables["pagopaProxyCcpResponse"]).Body.As<JObject>())" />
+        <cache-lookup-value key="@($"ecommerce:{context.Variables["requestTransactionId"]}-rptId")" variable-name="cacheRptId" caching-type="internal" /> 
+        <cache-lookup-value key="@($"ecommerce:{context.Variables["requestTransactionId"]}-amount")" variable-name="cacheAmount" caching-type="internal" /> 
         <choose>
             <when condition="@((int)context.Variables["pagopaProxyCcpResponseHttpResponseCode"] == 200)">
                 <send-request ignore-error="true" timeout="10" response-variable-name="pmActionsCheckResponse">
@@ -42,8 +44,8 @@
                         eCommerceResponseBody["status"] = "ACTIVATED";
                         eCommerceResponseBody["clientId"] = "IO";
                         JObject payment = new JObject();
-                        //payment["rptId"] = "TODO";
-                        //payment["amount"] = 0;
+                        payment["rptId"] = (string) context.Variables["cacheRptId"];
+                        payment["amount"] = (int) context.Variables["cacheAmount"];
                         payment["paymentToken"] = (string) ((JObject) context.Variables["pagopaProxyResponseBody"])["idPagamento"];
                         JArray payments = new JArray();
                         payments.Add(payment);
