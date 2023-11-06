@@ -4,8 +4,9 @@
         <!-- TODO check payment method according to bpay e PPAY - to define -->
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", ""))" />
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+        <set-variable name="walletId" value="@(context.Request.MatchedParameters["walletId"])" />
         <set-variable name="idWallet" value="@{
-                string walletIdUUID = (string)((JObject) context.Variables["body"])["walletId"];
+                string walletIdUUID = (string)context.Variables["walletId"];
                 string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , ""); 
                 return Convert.ToInt64(walletIdHex , 16).ToString();
            }" />
