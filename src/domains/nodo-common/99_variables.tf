@@ -303,6 +303,8 @@ variable "nodo_re_storage_account" {
     blob_delete_retention_days    = number
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention              = optional(number, 0)
   })
   default = {
     account_kind                  = "StorageV2"
@@ -310,8 +312,10 @@ variable "nodo_re_storage_account" {
     account_replication_type      = "LRS"
     blob_versioning_enabled       = false
     advanced_threat_protection    = false
-    blob_delete_retention_days    = 3653
+    blob_delete_retention_days    = 0
     public_network_access_enabled = false
+    backup_enabled                = false
+    backup_retention              = 0
   }
 }
 
@@ -323,6 +327,10 @@ variable "nodo_storico_storage_account" {
     advanced_threat_protection    = bool
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
+    backup_enabled                = bool
+    blob_delete_retention_days    = number
+    backup_retention              = optional(number, 0)
+
   })
   default = {
     account_kind                  = "StorageV2"
@@ -331,6 +339,10 @@ variable "nodo_storico_storage_account" {
     blob_versioning_enabled       = false
     advanced_threat_protection    = true
     public_network_access_enabled = true
+    backup_enabled                = false
+    blob_delete_retention_days    = 0
+    backup_retention              = 0
+
   }
 }
 
@@ -338,4 +350,23 @@ variable "nodo_storico_allowed_ips" {
   type        = list(string)
   description = "List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed"
   default     = []
+}
+
+
+variable "enable_sftp_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "sftp_sa_delete_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage delete retention"
+}
+
+variable "sftp_sa_backup_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage backup retention"
 }
