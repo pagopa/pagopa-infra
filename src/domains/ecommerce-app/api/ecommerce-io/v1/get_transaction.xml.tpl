@@ -65,7 +65,12 @@
                         eCommerceResponseBody["transactionId"] = (string) context.Variables["requestTransactionId"];
                         eCommerceResponseBody["status"] = "ACTIVATION_REQUESTED";
                         eCommerceResponseBody["payments"] = new JArray();
-                        eCommerceResponseBody["clientId"] = "IO";
+                        JObject payment = new JObject();
+                        payment["rptId"] = (string) context.Variables["cacheRptId"];
+                        payment["amount"] = (int) context.Variables["cacheAmount"];
+                        JArray payments = new JArray();
+                        payments.Add(payment);
+                        eCommerceResponseBody["payments"] = payments;
                         return eCommerceResponseBody.ToString();
                         }
                     </set-body>
