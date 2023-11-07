@@ -1380,13 +1380,12 @@
         "description": "Calculate fee request",
         "type": "object",
         "properties": {
-          "touchpoint": {
+          "paymentToken": {
             "type": "string",
-            "description": "The touchpoint name"
+            "description": "paymentToken related to nodo activation"
           },
-          "bin": {
-            "type": "string",
-            "description": "The user card bin"
+          "language": {
+            "type": "string"
           },
           "idPspList": {
             "description": "List of psps",
@@ -1417,11 +1416,8 @@
           }
         },
         "required": [
-          "paymentAmount",
-          "primaryCreditorInstitution",
-          "transferList",
-          "touchpoint",
-          "isAllCCP"
+          "pamentToken",
+          "paymentAmount"
         ]
       },
       "CalculateFeeResponse": {
