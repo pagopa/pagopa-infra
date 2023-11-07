@@ -14,7 +14,7 @@ locals {
     gpd_service = {
       display_name = "GPD PN Integration"
       description  = "GPD API per Piattaforma Notifiche"
-      path         = "pn-integration/gpd/api"
+      path         = "pn-integration-gpd/api"
     }
   }
 }
