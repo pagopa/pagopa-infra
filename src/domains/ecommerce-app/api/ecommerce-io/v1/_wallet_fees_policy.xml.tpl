@@ -2,7 +2,7 @@
     <inbound>
      <base />
         <!-- TODO check payment method according to bpay e PPAY - to define -->
-        <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", ""))" />
+        <set-variable name="sessionToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="walletId" value="@(context.Request.MatchedParameters["walletId"])" />
         <set-variable name="idWallet" value="@{
@@ -16,7 +16,7 @@
             <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/payments/{(string)context.Variables["idPayment"]}/psps?idWallet={(string)context.Variables["idWallet"]}&language={(string)context.Variables["language"]}&isList=true")</set-url>
             <set-method>GET</set-method>
             <set-header name="Authorization" exists-action="override">
-                <value>@((string)context.Variables.GetValueOrDefault("sessionToken",""))</value>
+                <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken",""))}"</value>
             </set-header>
         </send-request>
         <choose>
