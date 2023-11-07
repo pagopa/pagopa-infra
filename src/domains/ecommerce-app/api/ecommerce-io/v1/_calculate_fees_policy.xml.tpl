@@ -24,6 +24,9 @@
                 <set-variable name="pmPspsResponse" value="@(((IResponse)context.Variables["getPspForCardsResponse"]).Body.As<JObject>(preserveContent: true))" />
                 <return-response>
                     <set-status code="200" reason="OK" />
+                     <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                     </set-header>
                     <set-body>@{
                             JArray psps = (JArray)(((JObject)context.Variables["pmPspsResponse"])["data"]);
                             JObject response = new JObject();
@@ -54,6 +57,9 @@
             <otherwise>
                 <return-response>
                     <set-status code="404" reason="Not found" />
+                     <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                     </set-header>
                     <set-body>{
                             "title": "Unable to get Psps",
                             "status": 404,
