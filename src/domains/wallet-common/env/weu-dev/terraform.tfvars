@@ -57,7 +57,7 @@ cosmos_mongo_db_params = {
 }
 
 cidr_subnet_cosmosdb_wallet = ["10.1.169.0/24"]
-cidr_subnet_redis_wallet    = ["10.1.165.0/24"] //TO BE CHECKED
+cidr_subnet_redis_wallet    = ["10.1.174.0/24"] 
 
 cosmos_mongo_db_wallet_params = {
   enable_serverless  = true
