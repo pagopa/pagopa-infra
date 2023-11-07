@@ -16,7 +16,7 @@
             <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/payments/{(string)context.Variables["idPayment"]}/psps?idWallet={(string)context.Variables["idWallet"]}&language={(string)context.Variables["language"]}&isList=true")</set-url>
             <set-method>GET</set-method>
             <set-header name="Authorization" exists-action="override">
-                <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken",""))}"</value>
+                <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
             </set-header>
         </send-request>
         <choose>

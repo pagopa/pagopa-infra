@@ -543,7 +543,7 @@
           "ecommerce-payment-methods"
         ],
         "operationId": "calculateFees",
-        "summary": "Calculate payment method fees for given amount",
+        "summary": "Calculatefees for given wallet id and amount",
         "description": "GET with body payload - no resources created: Return the fees for the choosen payment method based on payment amount etc.\n",
         "parameters": [
           {
