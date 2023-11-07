@@ -7,7 +7,6 @@
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="rptId" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["rptId"].ToObject<string>())" />
         <set-variable name="amount" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["amount"].Value<int>())" />
-
         <choose>
             <when condition="@(!context.Request.Headers.ContainsKey("Authorization"))">
                 <return-response>
@@ -48,6 +47,8 @@
             </when>
         </choose>
         <set-variable name="ccp" value="@(Guid.NewGuid().ToString("N"))" />
+        <cache-store-value key="@($"ecommerce:{context.Variables["ccp"]}-rptId")"  value="@(((string) context.Variables["rptId"]))" duration="900" caching-type="internal" />
+        <cache-store-value key="@($"ecommerce:{context.Variables["ccp"]}-amount")" value="@(((int) context.Variables["amount"]))" duration="900" caching-type="internal" /> 
         <set-body>
           @{
             JObject pagopaProxyBody = new JObject();
