@@ -82,7 +82,7 @@ resource "azurerm_key_vault_access_policy" "cdn_wallet_kv" {
   
 resource "azurerm_key_vault_secret" "redis_wallet_password" {
   name         = "redis-wallet-password"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  value        = "module.pagopa_wallet_redis.primary_access_key"
   key_vault_id = module.key_vault.id
 
   lifecycle {
