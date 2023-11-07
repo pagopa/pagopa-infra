@@ -177,5 +177,5 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = file("./api/payment-wallet/v1/_wallet_fees_policy.xml.tpl")
+  xml_content = file("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl")
 }
