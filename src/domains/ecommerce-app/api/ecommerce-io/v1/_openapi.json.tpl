@@ -537,7 +537,7 @@
         }
       }
     },
-    "/payment-methods/{walletId}/fees": {
+    "/payment-methods/{id}/fees": {
       "post": {
         "tags": [
           "ecommerce-payment-methods"
@@ -548,12 +548,12 @@
         "parameters": [
           {
             "in": "path",
-            "name": "walletId",
+            "name": "id",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "ID of the wallet for which calculate fees"
+            "description": "The ID of the payment method for which calculate fees"
           },
           {
             "name": "maxOccurrences",
@@ -1380,6 +1380,10 @@
         "description": "Calculate fee request",
         "type": "object",
         "properties": {
+          "walletId": {
+            "type": "string",
+            "description": "ID of the wallet"
+          },
           "paymentToken": {
             "type": "string",
             "description": "paymentToken related to nodo activation"
@@ -1416,6 +1420,7 @@
           }
         },
         "required": [
+          "walletId",
           "pamentToken",
           "paymentAmount"
         ]
