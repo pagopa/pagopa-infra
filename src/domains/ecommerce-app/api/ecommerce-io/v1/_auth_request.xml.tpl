@@ -71,6 +71,11 @@
                         <set-header name="Content-Type" exists-action="override">
                             <value>application/json</value>
                         </set-header>
+                        <set-body>{
+                            "title": "Unable to set Psp",
+                            "status": 502,
+                            "detail": "Unable to set Psp",
+                        }</set-body>
                     </return-response>
                 </otherwise>
             </choose>    
