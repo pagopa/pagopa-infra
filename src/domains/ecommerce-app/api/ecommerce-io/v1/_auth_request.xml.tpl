@@ -44,6 +44,9 @@
           <!-- Return url to execute PM webview -->
           <return-response>
             <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
             <set-body>
                 @{
                     JObject response = new JObject();
@@ -57,6 +60,9 @@
         <otherwise>
             <return-response response-variable-name="existing context variable">
                 <set-status code="404" reason="Not found" />
+                <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+                </set-header>
                 <set-body>{
                     "title": "Unable to execute auth request",
                     "status": 404,
