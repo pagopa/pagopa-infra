@@ -2,8 +2,8 @@
   <inbound>
     <set-variable name="sessionToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
     <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
-    <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
-    <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
+    <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
+    <set-variable name="idPsp" value="@((long)((JObject) context.Variables["body"])["pspId"])" />
     <set-variable name="idWallet" value="@{
             string walletIdUUID = (string)context.Variables["walletId"];
             string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , ""); 
@@ -25,21 +25,25 @@
     <choose>
         <when condition="@(((int)((IResponse)context.Variables["pagopaProxyResponse"]).StatusCode) == 200)">
             <set-variable name="idPayment" value="@((string)((IResponse)context.Variables["pagopaProxyResponse"]).Body.As<JObject>()["idPagamento"])" />
+            <set-variable name="putWalletRequest" value="@{
+                    JObject response = new JObject();      
+                    JObject data = new JObject();           
+                    data["idWallet"] = long.Parse((string)context.Variables["idWallet"]);
+                    data["idPsp"] = (long)context.Variables["idPsp"];
+                    data["idPagamentoFromEC"] = $"{(string)context.Variables["idPayment"]}";
+                    response["data"] = data;
+                    return response.ToString();
+                }" />
             <send-request ignore-error="true" timeout="10" response-variable-name="putWalletForPsp">
                 <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/wallet/{(string)context.Variables["idWallet"]}")</set-url>
                 <set-method>PUT</set-method>
                 <set-header name="Authorization" exists-action="override">
                     <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
                 </set-header>
-                    <set-body>@{
-                        JObject response = new JObject();      
-                        JObject data = new JObject();           
-                        data["idWallet"] = (string)context.Variables["idWallet"];
-                        data["idPsp"] = (string)context.Variables["idPsp"];
-                        data["idPagamentoFromEC"] = (string)context.Variables["idPsp"];
-                        response["data"] = data;
-                        return response.ToString();
-                    }
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>@((string)context.Variables["putWalletRequest"])
                 </set-body>
             </send-request>
 
