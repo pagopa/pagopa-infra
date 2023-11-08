@@ -47,6 +47,10 @@
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
             </set-header>
+            <set-header name="Set-Cookie" exists-action="append">
+                  <value>isEcommerceTransaction=true; path=/pp-restapi-CD;</value>
+                  <value>@($"ecommerceTransactionId={(string)context.Variables["requestTransactionId"]}; path=/pp-restapi-CD;")</value>
+              </set-header>
             <set-body>
                 @{
                     JObject response = new JObject();
