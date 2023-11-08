@@ -3,12 +3,28 @@
   "info": {
     "version": "0.0.1",
     "title": "Pagopa eCommerce services for app IO",
-    "description": "API's exposed from eCommerce services to app IO.",
+    "description": "API's exposed from eCommerce services to app IO to allow pagoPA payment.\n\nThe payment workflow ends with a outcome returned as query params in a webview, for example \n \n - /outcomes?outcome=0. \n\nThe possible outcome are:\n- SUCCESS(0) → payment completed successfully\n- GENERIC_ERROR(1),\n- AUTH_ERROR(2) → authorization denied\n- INVALID_DATA(3) → incorrect data\n- TIMEOUT(4) → timeout \n- CIRCUIT_ERROR(5) → Unsupported circuit (should never happen)\n- MISSING_FIELDS(6) → missing data (should never happen) \n- INVALID_CARD(7) → expired card (or similar)\n- CANCELED_BY_USER(8) → canceled by the user\n- DUPLICATE_ORDER(9) → Double transaction (should never happen)\n- EXCESSIVE_AMOUNT(10) → Excess of availability \n- ORDER_NOT_PRESENT(11) → (should never happen)\n- INVALID_METHOD(12) → (should never happen)\n- KO_RETRIABLE(13) → transaction failed, but the transaction is theoretically recoverable. For the user it is a KO\n- INVALID_SESSION(14)",
     "contact": {
       "name": "pagoPA - Touchpoints team"
     }
   },
   "tags": [
+    {
+      "name": "ecommerce-sessions",
+      "description": "Api's for initiate a payment session",
+      "externalDocs": {
+        "url": "https://TODO",
+        "description": "Technical specifications"
+      }
+    },
+    {
+      "name": "ecommerce-payment-requests",
+      "description": "Api's for initiate a transaction given an array of payment tokens",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611745793/-servizio+payment+requests+service",
+        "description": "Technical specifications"
+      }
+    },
     {
       "name": "ecommerce-transactions",
       "description": "Api's for performing a transaction",
@@ -18,18 +34,10 @@
       }
     },
     {
-      "name": "ecommerce-methods",
-      "description": "Api's for retrieve payment methods for perform transactions",
+      "name": "ecommerce-payment-methods",
+      "description": "Api's for performing a transaction",
       "externalDocs": {
         "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611516433/-servizio+payment+methods+service",
-        "description": "Technical specifications"
-      }
-    },
-    {
-      "name": "ecommerce-payment-requests",
-      "description": "Api's for initiate a transaction given an array of payment tokens",
-      "externalDocs": {
-        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611745793/-servizio+payment+requests+service",
         "description": "Technical specifications"
       }
     }
@@ -44,6 +52,53 @@
     "description": "Design review"
   },
   "paths": {
+    "/sessions": {
+      "post": {
+        "summary": "Create a new payment session token",
+        "description": "Api used to create a payment session token from wallet token",
+        "operationId": "newSessionToken",
+        "tags": [
+          "ecommerce-sessions"
+        ],
+        "security": [
+          {
+            "walletToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New transaction successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewSessionTokenResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Generic error during session token creation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/payment-requests/{rpt_id}": {
       "get": {
         "summary": "Verify single payment notice",
@@ -52,6 +107,11 @@
           "ecommerce-payment-requests"
         ],
         "operationId": "getPaymentRequestInfo",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -60,15 +120,6 @@
             "schema": {
               "type": "string",
               "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
-            },
-            "required": true
-          },
-          {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
-            "schema": {
-              "type": "string"
             },
             "required": true
           }
@@ -153,8 +204,13 @@
           "ecommerce-transactions"
         ],
         "operationId": "newTransaction",
-        "summary": "Make a new transaction",
+        "summary": "Create a new transaction",
         "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -165,17 +221,6 @@
           },
           "required": true
         },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
         "responses": {
           "200": {
             "description": "New transaction successfully created",
@@ -269,7 +314,7 @@
         ],
         "security": [
           {
-            "eCommerceToken": []
+            "eCommerceSessionToken": []
           }
         ],
         "summary": "Get transaction information",
@@ -338,7 +383,7 @@
         ],
         "security": [
           {
-            "eCommerceToken": []
+            "eCommerceSessionToken": []
           }
         ],
         "summary": "Performs the transaction cancellation",
@@ -394,7 +439,7 @@
     },
     "/transactions/{transactionId}/auth-requests": {
       "post": {
-        "summary": "Request authorization",
+        "summary": "Create a new request authorization given a transaction",
         "description": "Request authorization for the transaction identified by payment token",
         "tags": [
           "ecommerce-transactions"
@@ -413,7 +458,7 @@
         ],
         "security": [
           {
-            "eCommerceToken": []
+            "eCommerceSessionToken": []
           }
         ],
         "requestBody": {
@@ -427,7 +472,7 @@
         },
         "responses": {
           "200": {
-            "description": "Transaction authorization request successfully processed, redirecting client to authorization web page",
+            "description": "Transaction authorization request successfully processed, redirecting client toauthorization web page (webview to open in app)",
             "content": {
               "application/json": {
                 "schema": {
@@ -495,20 +540,20 @@
     "/payment-methods/{id}/fees": {
       "post": {
         "tags": [
-          "ecommerce-methods"
+          "ecommerce-payment-methods"
         ],
         "operationId": "calculateFees",
-        "summary": "Calculate payment method fees",
-        "description": "GET with body payload - no resources created: Return the fees for the choosen payment method based on transaction amount etc.\n",
+        "summary": "Calculatefees for given wallet id and amount",
+        "description": "GET with body payload - no resources created: Return the fees for the choosen payment method based on payment amount etc.\n",
         "parameters": [
           {
-            "name": "id",
             "in": "path",
-            "description": "Payment Method ID",
-            "required": true,
+            "name": "id",
             "schema": {
               "type": "string"
-            }
+            },
+            "required": true,
+            "description": "The ID of the payment method for which calculate fees"
           },
           {
             "name": "maxOccurrences",
@@ -518,20 +563,11 @@
             "schema": {
               "type": "integer"
             }
-          },
-          {
-            "name": "x-transaction-id-from-client",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "The ecommerce transaction id"
           }
         ],
         "security": [
           {
-            "eCommerceToken": []
+            "eCommerceSessionToken": []
           }
         ],
         "requestBody": {
@@ -627,7 +663,7 @@
         "minimum": 100,
         "maximum": 600,
         "exclusiveMaximum": true,
-        "example": 200
+        "example": 500
       },
       "PaymentMethodRequest": {
         "type": "object",
@@ -982,9 +1018,7 @@
         },
         "required": [
           "rptId",
-          "amount",
-          "transferList",
-          "isAllCCP"
+          "amount"
         ],
         "example": {
           "rptId": "77777777777302012387654312384",
@@ -1019,30 +1053,17 @@
               "$ref": "#/components/schemas/PaymentNoticeInfo"
             },
             "minItems": 1,
-            "maxItems": 5,
+            "maxItems": 1,
             "example": [
               {
                 "rptId": "77777777777302012387654312384",
-                "amount": 100
-              },
-              {
-                "rptId": "77777777777302012387654312385",
-                "amount": 200
+                "amount": 12000
               }
             ]
-          },
-          "email": {
-            "type": "string"
-          },
-          "idCart": {
-            "description": "Cart identifier provided by creditor institution",
-            "type": "string",
-            "example": "idCartFromCreditorInstitution"
           }
         },
         "required": [
-          "paymentNotices",
-          "email"
+          "paymentNotices"
         ]
       },
       "NewTransactionResponse": {
@@ -1058,7 +1079,7 @@
               "$ref": "#/components/schemas/PaymentInfo"
             },
             "minItems": 1,
-            "maxItems": 5,
+            "maxItems": 1,
             "example": [
               {
                 "rptId": "77777777777302012387654312384",
@@ -1079,26 +1100,6 @@
                     "transferAmount": 100
                   }
                 ]
-              },
-              {
-                "rptId": "77777777777302012387654312385",
-                "paymentToken": "paymentToken2",
-                "reason": "reason2",
-                "amount": 300,
-                "transferList": [
-                  {
-                    "paFiscalCode": "44444444444",
-                    "digitalStamp": true,
-                    "transferCategory": "transferCategory1",
-                    "transferAmount": 200
-                  },
-                  {
-                    "paFiscalCode": "22222222222",
-                    "digitalStamp": false,
-                    "transferCategory": "transferCategory2",
-                    "transferAmount": 100
-                  }
-                ]
               }
             ]
           },
@@ -1112,19 +1113,8 @@
             "description": "transaction client id",
             "type": "string",
             "enum": [
-              "IO",
-              "CHECKOUT",
-              "CHECKOUT_CART",
-              "UNKNOWN"
+              "IO"
             ]
-          },
-          "authToken": {
-            "type": "string"
-          },
-          "idCart": {
-            "description": "Cart identifier provided by creditor institution",
-            "type": "string",
-            "example": "idCartFromCreditorInstitution"
           },
           "sendPaymentResultOutcome": {
             "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
@@ -1165,10 +1155,6 @@
           "fee": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
-          "paymentInstrumentId": {
-            "type": "string",
-            "description": "Payment instrument id"
-          },
           "pspId": {
             "type": "string",
             "description": "PSP id"
@@ -1195,7 +1181,6 @@
         "required": [
           "amount",
           "fee",
-          "paymentInstrumentId",
           "pspId",
           "language",
           "isAllCCP",
@@ -1210,8 +1195,11 @@
             "description": "Additional payment authorization details for payment performed with wallet",
             "properties": {
               "detailType": {
-                "description": "fixed value 'wallet'",
-                "type": "string"
+                "description": "fixed value 'WALLET'",
+                "type": "string",
+                "enum": [
+                  "WALLET"
+                ]
               },
               "walletId": {
                 "type": "string",
@@ -1365,17 +1353,43 @@
           "transferAmount"
         ]
       },
+      "PaymentMethodStatus": {
+        "type": "string",
+        "description": "Payment method status",
+        "enum": [
+          "ENABLED",
+          "DISABLED",
+          "INCOMING"
+        ]
+      },
+      "NewSessionTokenResponse": {
+        "type": "object",
+        "title": "NewSessionTokenResponse",
+        "description": "New session token response body",
+        "properties": {
+          "sessionToken": {
+            "description": "Session token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "sessionToken"
+        ]
+      },
       "CalculateFeeRequest": {
         "description": "Calculate fee request",
         "type": "object",
         "properties": {
-          "touchpoint": {
+          "walletId": {
             "type": "string",
-            "description": "The touchpoint name"
+            "description": "ID of the wallet"
           },
-          "bin": {
+          "paymentToken": {
             "type": "string",
-            "description": "The user card bin"
+            "description": "paymentToken related to nodo activation"
+          },
+          "language": {
+            "type": "string"
           },
           "idPspList": {
             "description": "List of psps",
@@ -1406,11 +1420,9 @@
           }
         },
         "required": [
-          "paymentAmount",
-          "primaryCreditorInstitution",
-          "transferList",
-          "touchpoint",
-          "isAllCCP"
+          "walletId",
+          "pamentToken",
+          "paymentAmount"
         ]
       },
       "CalculateFeeResponse": {
@@ -1524,15 +1536,6 @@
             "type": "string"
           }
         }
-      },
-      "PaymentMethodStatus": {
-        "type": "string",
-        "description": "Payment method status",
-        "enum": [
-          "ENABLED",
-          "DISABLED",
-          "INCOMING"
-        ]
       }
     },
     "requestBodies": {
@@ -1575,24 +1578,18 @@
             }
           }
         }
-      },
-      "CalculateFeeRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/CalculateFeeRequest"
-            }
-          }
-        }
       }
     },
     "securitySchemes": {
-      "eCommerceToken": {
+      "eCommerceSessionToken": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "JWT token received into POST transaction response body (authToken field) "
+        "description": "JWT session token taken from /sessions response body"
+      },
+      "walletToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Wallet token associated to the user"
       }
     }
   }

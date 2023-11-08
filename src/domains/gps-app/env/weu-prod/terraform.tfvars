@@ -63,3 +63,40 @@ apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/r
 
 # gpd database config for gpd-app-service
 pgbouncer_enabled = true
+
+pod_disruption_budgets = {
+  "gpd-core" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "gpd-core"
+    }
+  },
+  "pagopagpdpayments" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopagpdpayments"
+    }
+  },
+
+  "pagopagpsdonationservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopagpsdonationservice"
+    }
+  },
+
+  "pagopareportingorgsenrollment" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopareportingorgsenrollment"
+    }
+  },
+
+  "pagopaspontaneouspayments" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaspontaneouspayments"
+    }
+  },
+}
+

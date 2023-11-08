@@ -3,7 +3,7 @@
   "info": {
     "title": "pagoPA Payment Wallet API",
     "version": "0.0.1",
-    "description": "API to handle payment wallets PagoPA for App IO, where a wallet is triple between user identifier, payment instrument and services (i.e pagoPA, bpd).",
+    "description": "API to handle payment wallets PagoPA for App IO, where a wallet is triple between user identifier, payment instrument and services (i.e pagoPA, bpd).\n\nThe wallet onboarding outcome and walletId are returned as query params to the app IO, for example \n/wallets/{walletId}/outcomes?outcome=0&walletId=123. The possible outcome are:\n- SUCCESS(0)\n- GENERIC_ERROR(1)\n- AUTH_ERROR(2)\n- TIMEOUT(4)\n- CANCELED_BY_USER(8)\n- INVALID_SESSION(14)",
     "termsOfService": "https://pagopa.it/terms/"
   },
   "tags": [
@@ -319,71 +319,6 @@
             "description": "Timeout serving request"
           }
         }
-      },
-      "patch": {
-        "tags": [
-          "wallets"
-        ],
-        "summary": "Partial wallet update",
-        "description": "Update wallet partially",
-        "operationId": "patchWalletById",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "description": "Create a new wallet",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WalletPatchRequest"
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "walletId",
-            "in": "path",
-            "description": "ID of wallet to return",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/WalletId"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Wallet updated successfully"
-          },
-          "400": {
-            "description": "Invalid input id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Wallet not found"
-          },
-          "504": {
-            "description": "Timeout serving request"
-          }
-        }
       }
     }
   },
@@ -417,25 +352,6 @@
           }
         }
       },
-      "PatchService": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "$ref": "#/components/schemas/ServiceName"
-          },
-          "status": {
-            "$ref": "#/components/schemas/ServicePatchStatus"
-          }
-        }
-      },
-      "ServicePatchStatus": {
-        "type": "string",
-        "description": "Enumeration of wallet statuses",
-        "enum": [
-          "ENABLED",
-          "DISABLED"
-        ]
-      },
       "ServiceStatus": {
         "type": "string",
         "description": "Enumeration of wallet statuses",
@@ -463,13 +379,6 @@
             "type": "string",
             "description": "Wallet details discriminator field."
           },
-          "bin": {
-            "description": "Card BIN (first 6 PAN digits)",
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 6,
-            "example": "123456"
-          },
           "maskedPan": {
             "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
             "type": "string",
@@ -496,7 +405,6 @@
         },
         "required": [
           "type",
-          "bin",
           "maskedPan",
           "expiryDate",
           "holder",
@@ -529,22 +437,6 @@
           "abi",
           "maskedEmail"
         ]
-      },
-      "WalletPatchRequest": {
-        "type": "object",
-        "description": "Wallet update request",
-        "items": {
-          "$ref": "#/components/schemas/PatchService"
-        },
-        "properties": {
-          "services": {
-            "type": "array",
-            "description": "List of services to update",
-            "items": {
-              "$ref": "#/components/schemas/PatchService"
-            }
-          }
-        }
       },
       "WalletCreateRequest": {
         "type": "object",
@@ -594,20 +486,8 @@
           "walletId": {
             "$ref": "#/components/schemas/WalletId"
           },
-          "userId": {
-            "type": "string",
-            "description": "user identifier"
-          },
-          "paymentInstrumentId": {
-            "description": "Payment instrument identifier",
-            "type": "string"
-          },
           "paymentMethodId": {
             "description": "Payment method identifier",
-            "type": "string"
-          },
-          "contractId": {
-            "description": "User contract identifier to be used with payment instrument to make a new payment",
             "type": "string"
           },
           "status": {
@@ -653,12 +533,9 @@
         "required": [
           "walletId",
           "paymentMethodId",
-          "userId",
           "status",
           "creationDate",
-          "contractId",
           "updateDate",
-          "type",
           "services"
         ]
       },

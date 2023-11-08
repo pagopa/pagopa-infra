@@ -76,7 +76,7 @@ ingress_elk_load_balancer_ip = "10.1.100.251"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.1.0"
+  version = "4.5.2"
   controller = {
     image = {
       registry     = "k8s.gcr.io"
@@ -107,19 +107,19 @@ nodeset_config = {
   data-hot-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_hot"]
-    storage          = "350Gi"
+    storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
   },
   data-warm-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_warm"]
-    storage          = "350Gi"
+    storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-warm"
   },
   data-cold-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
-    storage          = "400Gi"
+    storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-cold"
   }
 }
@@ -127,4 +127,12 @@ nodeset_config = {
 opentelemetry_operator_helm = {
   chart_version = "0.24.3"
   values_file   = "./env/opentelemetry_operator_helm/values.yaml"
+}
+
+elk_snapshot_sa = {
+  blob_versioning_enabled    = true
+  blob_delete_retention_days = 30
+  backup_enabled             = true
+  blob_versioning_enabled    = true
+  advanced_threat_protection = true
 }
