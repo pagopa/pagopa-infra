@@ -72,29 +72,29 @@
               return "";
           }" />
           <set-variable name="isEcommerceTransaction" value="@{
-              var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
-              var pattern = "isEcommerceTransaction=([\\S]*);";
-
-              var regex = new Regex(pattern, RegexOptions.IgnoreCase);
-              Match match = regex.Match(cookie);
-              if(match.Success && match.Groups.Count == 2)
-              {
-                  return match.Groups[1].Value;
+              var cookieHeader = context.Request.Headers.GetValueOrDefault("Cookie","");
+              string cookieName="isEcommerceTransaction";
+              foreach(string cookie in cookieHeader){
+                int startIdx = cookie.IndexOf(cookieName);
+                if(startIdx>=0){
+                  int endIdx = cookie.IndexOf(';',startIdx);
+                  endIdx = endIdx<0 ? cookie.Length : endIdx;
+                  return cookie.Substring(startIdx, endIdx-startIdx).Split('=')[1];
+                }
               }
-
               return "";
           }" />
           <set-variable name="ecommerceTransactionId" value="@{
               var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
-              var pattern = "ecommerceTransactionId=([\\S]*);";
-
-              var regex = new Regex(pattern, RegexOptions.IgnoreCase);
-              Match match = regex.Match(cookie);
-              if(match.Success && match.Groups.Count == 2)
-              {
-                  return match.Groups[1].Value;
+              string cookieName="ecommerceTransactionId";
+              foreach(string cookie in cookieHeader){
+                int startIdx = cookie.IndexOf(cookieName);
+                if(startIdx>=0){
+                  int endIdx = cookie.IndexOf(';',startIdx);
+                  endIdx = endIdx<0 ? cookie.Length : endIdx;
+                  return cookie.Substring(startIdx, endIdx-startIdx).Split('=')[1];
+                }
               }
-
               return "";
           }" />
           <set-header name="Set-Cookie" exists-action="override">
