@@ -138,3 +138,13 @@ variable "robots_indexed_paths" {
   type        = list(string)
   description = "List of cdn paths to allow robots index"
 }
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}

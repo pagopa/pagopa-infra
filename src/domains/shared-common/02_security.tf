@@ -215,10 +215,40 @@ resource "azurerm_key_vault_secret" "authorizer_integrationtest_invalid_subkey" 
   }
 }
 
+resource "azurerm_key_vault_secret" "pdf_engine_node_subkey" {
+
+  name         = format("pdf-engine-node-subkey")
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 resource "azurerm_key_vault_secret" "pdf_engine_perf_test_subkey" {
   count = var.env_short == "p" ? 0 : 1
 
   name         = format("pdf-engine-%s-perftest-subkey", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+resource "azurerm_key_vault_secret" "pdf_engine_node_perf_test_subkey" {
+  count = var.env_short == "p" ? 0 : 1
+
+  name         = format("pdf-engine-node-%s-perftest-subkey", var.env_short)
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
@@ -270,4 +300,29 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
+}
+
+
+resource "azurerm_key_vault_secret" "elastic_apm_secret_token" {
+  name         = "elastic-apm-secret-token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
+  name         = "nodo5-slack-webhook-url"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }

@@ -67,3 +67,51 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
+
+resource "azurerm_key_vault_access_policy" "cdn_wallet_kv" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
+
+  secret_permissions      = ["Get", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", ]
+}
+
+
+resource "azurerm_key_vault_secret" "redis_wallet_password" {
+  name         = "redis-wallet-password"
+  value        = "module.pagopa_wallet_redis.primary_access_key"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "personal-data-vault-api-key" {
+  name         = "personal-data-vault-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "wallet-jwt-signing-key" {
+  name         = "wallet-jwt-signing-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

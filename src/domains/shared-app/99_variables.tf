@@ -206,17 +206,9 @@ variable "taxonomy_function" {
     always_on                    = bool
     kind                         = string
     sku_size                     = string
-    sku_tier                     = string
     maximum_elastic_worker_count = number
   })
   description = "Taxonomy function"
-  default = {
-    always_on                    = true
-    kind                         = "Linux"
-    sku_size                     = "B1"
-    sku_tier                     = "Basic"
-    maximum_elastic_worker_count = 1
-  }
 }
 
 variable "taxonomy_function_app_image_tag" {
@@ -232,4 +224,44 @@ variable "taxonomy_function_autoscale" {
     maximum = number
   })
   description = "Taxonomy function autoscaling parameters"
+}
+
+# pdf-engine
+variable "cidr_subnet_pdf_engine_app_service" {
+  type        = list(string)
+  description = "CIDR subnet for App Service"
+  default     = null
+}
+
+
+variable "app_service_pdf_engine_autoscale_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "app_service_pdf_engine_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = true
+}
+
+variable "app_service_pdf_engine_sku_name" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
+variable "app_service_pdf_engine_sku_name_java" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
 }

@@ -4,10 +4,10 @@
     "title" : "PagoPA API Debt Position for PN ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie per PN",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.4.7"
+    "version" : "0.9.0"
   },
   "servers" : [ {
-    "url" : "${host}/gpd/api/v1",
+    "url" : "${host}/${service}/gpd/api/v1",
     "description" : "Generated server url"
   } ],
   "tags" : [ {
@@ -47,8 +47,16 @@
           "required" : true
         },
         "responses" : {
-          "500" : {
-            "description" : "Service unavailable.",
+          "422" : {
+            "description" : "Unprocessable payment option.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -57,8 +65,34 @@
               }
             }
           },
-          "400" : {
-            "description" : "Malformed request.",
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No payment option found.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -68,20 +102,26 @@
             }
           },
           "401" : {
-            "description" : "Wrong or missing function key."
-          },
-          "422" : {
-            "description" : "Unprocessable payment option.",
-            "content" : {
-              "application/json" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
                 "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
+                  "type" : "string"
                 }
               }
             }
           },
           "200" : {
             "description" : "Request updated.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -90,8 +130,34 @@
               }
             }
           },
-          "404" : {
-            "description" : "No payment option found.",
+          "209" : {
+            "description" : "Request updated with a payment in progress.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentsModelResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Malformed request.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -106,7 +172,15 @@
         }, {
           "Authorization" : [ ]
         } ]
-      }
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
     },
     "/organizations/{organizationfiscalcode}/paymentoptions/{iuv}" : {
       "get" : {
@@ -129,20 +203,26 @@
           "schema" : {
             "type" : "string"
           }
-        } ],
-        "responses" : {
-          "500" : {
-            "description" : "Service unavailable.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
+        },
+          {
+            "name" : "X-Request-Id",
+            "in" : "header",
+            "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "schema" : {
+              "type" : "string"
             }
-          },
+          } ],
+        "responses" : {
           "200" : {
             "description" : "Obtained payment option details.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -151,15 +231,121 @@
               }
             }
           },
-          "401" : {
-            "description" : "Wrong or missing function key."
-          },
-          "404" : {
-            "description" : "No payment option found.",
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
             "content" : {
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "No payment option found.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
+      }
+    },
+    "/info" : {
+      "get" : {
+        "tags" : [ "Home" ],
+        "summary" : "Return OK if application is started",
+        "operationId" : "healthCheck",
+        "parameters" : [ {
+          "name" : "X-Request-Id",
+          "in" : "header",
+          "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "OK.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AppInfo"
                 }
               }
             }
@@ -271,6 +457,10 @@
             "enum" : [ "PO_UNPAID", "PO_PAID", "PO_PARTIALLY_REPORTED", "PO_REPORTED" ]
           },
           "lastUpdatedDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "lastUpdatedDateNotificationFee" : {
             "type" : "string",
             "format" : "date-time"
           },
@@ -409,6 +599,9 @@
             "type" : "string",
             "enum" : [ "PO_UNPAID", "PO_PAID", "PO_PARTIALLY_REPORTED", "PO_REPORTED" ]
           },
+          "iupd" : {
+            "type" : "string"
+          },
           "type" : {
             "type" : "string",
             "enum" : [ "F", "G" ]
@@ -461,6 +654,20 @@
             "items" : {
               "$ref" : "#/components/schemas/PaymentsTransferModelResponse"
             }
+          }
+        }
+      },
+      "AppInfo" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "environment" : {
+            "type" : "string"
           }
         }
       }

@@ -273,7 +273,7 @@
             "name": "x-pgs-id",
             "schema": {
               "type": "string",
-              "pattern": "XPAY|VPOS"
+              "pattern": "XPAY|VPOS|NPG"
             },
             "required": false,
             "description": "Pgs identifier (populated by APIM policy)"
@@ -570,7 +570,7 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS",
+            "pattern": "XPAY|VPOS|NPG",
             "description": "Pgs identifier"
           }
         },

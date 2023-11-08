@@ -32,3 +32,24 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
+
+pod_disruption_budgets = {
+  "pagopabizeventsdatastore" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopabizeventsdatastore"
+    }
+  },
+  "pagopabizeventsservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopabizeventsservice"
+    }
+  },
+  "pagopanegativebizeventsdatastore" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopanegativebizeventsdatastore"
+    }
+  },
+}

@@ -100,6 +100,12 @@
 | [null_resource.ndp_pagopawfespwfesp_index_template](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.ndp_pagopawfespwfesp_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.ndp_pagopawfespwfesp_kibana_data_view](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.ndp_techsupport_component_template_custom](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.ndp_techsupport_component_template_package](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.ndp_techsupport_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.ndp_techsupport_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.ndp_techsupport_index_template](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.ndp_techsupport_kibana_data_view](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.pagopa_component_template_custom](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.pagopa_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.pagopa_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
@@ -148,9 +154,7 @@
 | <a name="input_elastic_hot_storage"></a> [elastic\_hot\_storage](#input\_elastic\_hot\_storage) | n/a | <pre>object({<br>    storage_type           = string,<br>    allow_volume_expansion = bool,<br>    initialStorageSize     = string<br>  })</pre> | n/a | yes |
 | <a name="input_elastic_node_pool"></a> [elastic\_node\_pool](#input\_elastic\_node\_pool) | AKS node pool user configuration | <pre>object({<br>    enabled               = bool,<br>    name                  = string,<br>    vm_size               = string,<br>    os_disk_type          = string,<br>    os_disk_size_gb       = string,<br>    node_count_min        = number,<br>    node_count_max        = number,<br>    node_labels           = map(any),<br>    node_taints           = list(string),<br>    node_tags             = map(any),<br>    elastic_pool_max_pods = number,<br>  })</pre> | n/a | yes |
 | <a name="input_elastic_warm_storage"></a> [elastic\_warm\_storage](#input\_elastic\_warm\_storage) | n/a | <pre>object({<br>    storage_type           = string,<br>    allow_volume_expansion = bool,<br>    initialStorageSize     = string<br>  })</pre> | n/a | yes |
-| <a name="input_elk_snapshot_advanced_threat_protection"></a> [elk\_snapshot\_advanced\_threat\_protection](#input\_elk\_snapshot\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
-| <a name="input_elk_snapshot_delete_retention_days"></a> [elk\_snapshot\_delete\_retention\_days](#input\_elk\_snapshot\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
-| <a name="input_elk_snapshot_versioning"></a> [elk\_snapshot\_versioning](#input\_elk\_snapshot\_versioning) | Enable sa versioning | `bool` | `false` | no |
+| <a name="input_elk_snapshot_sa"></a> [elk\_snapshot\_sa](#input\_elk\_snapshot\_sa) | n/a | <pre>object({<br>    blob_delete_retention_days = number<br>    backup_enabled             = bool<br>    blob_versioning_enabled    = bool<br>    advanced_threat_protection = bool<br>  })</pre> | <pre>{<br>  "advanced_threat_protection": true,<br>  "backup_enabled": false,<br>  "blob_delete_retention_days": 0,<br>  "blob_versioning_enabled": true<br>}</pre> | no |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |

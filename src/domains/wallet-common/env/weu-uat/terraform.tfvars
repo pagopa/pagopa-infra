@@ -24,8 +24,12 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 ingress_load_balancer_ip = "10.1.100.250"
 
+## DNS
+
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
+dns_zone_prefix          = "uat.payment-wallet"
+dns_zone_platform        = "uat.platform"
 
 ### Cosmos
 
@@ -53,12 +57,20 @@ cosmos_mongo_db_params = {
 }
 
 cidr_subnet_cosmosdb_wallet = ["10.1.169.0/24"]
+cidr_subnet_redis_wallet    = ["10.1.174.0/24"]
 
 cosmos_mongo_db_wallet_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 4000
+  max_throughput     = 1000
   throughput         = 1000
 }
 
 enable_iac_pipeline = true
+
+redis_wallet_params = {
+  capacity = 0
+  sku_name = "Basic"
+  family   = "C"
+  version  = 6
+}

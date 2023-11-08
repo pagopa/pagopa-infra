@@ -44,6 +44,7 @@ variables:
   PROD_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
   AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
   PROD_AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
+  PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN: '$(AZURE_DEVOPS_GITHUB_PR_TOKEN)'
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -54,6 +55,12 @@ resources:
       type: github
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v3.0.0
+      endpoint: 'io-azure-devops-github-ro'
+    #Checkout tests repo that contains e2e tests to be executed after domain apply
+    - repository: pagopaCheckoutTests
+      type: github
+      name: pagopa/pagopa-checkout-tests
+      ref: main
       endpoint: 'io-azure-devops-github-ro'
 
 lockBehavior: sequential
@@ -83,6 +90,19 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+    # E2E test
+    - stage: "E2E_Tests_Checkout_DEV_environment"
+      displayName: '🧪 Running E2E test on DEV env'
+      pool:
+        vmImage: 'ubuntu-latest'
+      dependsOn: dev_apply_ecommerce_app
+      jobs:
+        - job: e2e_tests
+          steps:
+            - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
+              parameters:
+                ENVIRONMENT: DEV
+                CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
 
 
   #
@@ -113,11 +133,26 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+      # E2E test
+    - stage: "E2E_Tests_Checkout_UAT_environment"
+      displayName: '🧪 Running E2E test on UAT env'
+      pool:
+        vmImage: 'ubuntu-latest'
+      dependsOn: uat_apply_ecommerce_app
+      jobs:
+        - job: e2e_tests
+          steps:
+            - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
+              parameters:
+                ENVIRONMENT: UAT
+                CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
+
 
   #
   # PROD
   #
   - ${{ if eq(parameters['PROD'], true) }}:
+
     # PROD ecommerce COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
@@ -142,4 +177,31 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-
+    - stage:
+      displayName: '💻 Dashboards generation GHA'
+      jobs:
+      - job: generate_dashboard
+        steps:
+        - task: Bash@3
+          displayName: 'Dashboard generation'
+          inputs:
+            targetType: "inline"
+            script: |
+              echo "Launching ecommerce dashboard generation apply"
+              body=$(cat <<EOF
+              {
+                  "ref": "main",
+                  "inputs": {
+                      "api-name": "ecommerce-checkout",
+                      "environment": "prod",
+                      "config-options": "{\"branch_ref\": \"$(Build.SourceBranchName)\"}"
+                  }
+              }
+              EOF
+              )
+              echo "GHA trigger body $body"
+              curl -X POST https://api.github.com/repos/pagopa/pagopa-ecommerce-dashboard/actions/workflows/63761953/dispatches \
+              -H 'Content-Type: application/json' \
+              -H 'X-GitHub-Api-Version: 2022-11-28' \
+              -H "Authorization: token ${{ variables.PROD_AZURE_WEBHOOK_DASHBOARD_CREATION_TOKEN }}" \
+              --data "$body"

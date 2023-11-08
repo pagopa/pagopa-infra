@@ -130,10 +130,10 @@ cosmos_nosql_db_params = {
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = false
 
-  backup_continuous_enabled         = false
+  backup_continuous_enabled = false
 
-  events_ttl                        = 2629800 # 1 month in second
-  max_throughput                    = 1000
+  events_ttl     = 2629800 # 1 month in second
+  max_throughput = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
@@ -144,6 +144,9 @@ nodo_re_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
-  blob_delete_retention_days    = 15
+  blob_delete_retention_days    = 0
   public_network_access_enabled = true
+  backup_enabled                = false
+
 }
+

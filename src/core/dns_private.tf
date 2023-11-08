@@ -158,7 +158,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
   tags = var.tags
 }
 
-
 # Private DNS Zone for Postgres Databases
 
 resource "azurerm_private_dns_zone" "postgres" {
@@ -270,8 +269,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_blob_azure
   tags = var.tags
 }
 
-
-
 # DNS private: internal.dev.platform.pagopa.it
 
 resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
@@ -322,6 +319,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_privatelink_mongo
   tags = var.tags
 }
 
+
 # Private DNS Zone for Table Storage Account
 # https://learn.microsoft.com/en-us/azure/storage/common/storage-private-endpoints?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json
 resource "azurerm_private_dns_zone" "table_storage_account" {
@@ -339,4 +337,15 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_azur
   registration_enabled  = false
 
   tags = var.tags
+}
+
+
+resource "azurerm_dns_a_record" "dns_a_forwarder" {
+  count               = var.nat_gateway_enabled ? 1 : 0
+  name                = "forwarder"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = tolist(module.nat_gw[0].public_ip_address)
+  tags                = var.tags
 }

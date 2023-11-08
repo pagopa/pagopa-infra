@@ -367,3 +367,40 @@ resource "azurerm_key_vault_secret" "npg_cards_psp_keys" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "ecommerce_opsgenie_webhook_token" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "ecommerce-opsgenie-webhook-token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "nodo_nodeforpsp_api_key" {
+  name         = "nodo-nodeforpsp-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "nodo_nodeforpm_api_key" {
+  name         = "nodo-nodeforpm-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

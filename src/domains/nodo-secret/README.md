@@ -18,7 +18,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.4.1 |
-| <a name="module_nodocerts_sa"></a> [nodocerts\_sa](#module\_nodocerts\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.4.1 |
+| <a name="module_nodocerts_sa"></a> [nodocerts\_sa](#module\_nodocerts\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 
 ## Resources
 
@@ -69,6 +69,7 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
+| <a name="input_nodo_cert_storage_account"></a> [nodo\_cert\_storage\_account](#input\_nodo\_cert\_storage\_account) | n/a | <pre>object({<br>    advanced_threat_protection    = bool<br>    blob_delete_retention_days    = number<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    backup_enabled                = bool<br>    backup_retention              = optional(number, 0)<br>  })</pre> | <pre>{<br>  "advanced_threat_protection": false,<br>  "backup_enabled": false,<br>  "backup_retention": 0,<br>  "blob_delete_retention_days": 30,<br>  "blob_versioning_enabled": false,<br>  "public_network_access_enabled": false<br>}</pre> | no |
 | <a name="input_pipe_service_principel_application_id"></a> [pipe\_service\_principel\_application\_id](#input\_pipe\_service\_principel\_application\_id) | SP for pipeline application\_id - pagopaspa-pagoPA-projects-[subscriptionid] | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |

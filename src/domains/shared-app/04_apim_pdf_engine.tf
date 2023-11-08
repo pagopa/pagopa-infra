@@ -24,14 +24,25 @@ module "apim_pdf_engine_product" {
 ##  API PDF ENGINE  ##
 #########################
 locals {
-  apim_pdf_engine_service_api = {
+  apim_pdf_engine_service_api = { # java
     display_name          = "PDF Engine Service pagoPA - API"
-    description           = "DF Engine Service pagoPA - API"
+    description           = "PDF Engine Service pagoPA - API"
     path                  = "shared/pdf-engine"
     subscription_required = true
-    service_url           = null
+    service_url           = module.shared_pdf_engine_app_service_java.default_site_hostname
+  }
+  apim_pdf_engine_node_service_api = { # node
+    display_name          = "PDF Engine Node Service pagoPA - API"
+    description           = "PDF Engine Node Service pagoPA - API"
+    path                  = "shared/pdf-engine-node"
+    subscription_required = true
+    service_url           = module.shared_pdf_engine_app_service.default_site_hostname
   }
 }
+
+###################
+# java
+###################
 
 resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
 
@@ -41,7 +52,6 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
   display_name        = local.apim_pdf_engine_service_api.display_name
   versioning_scheme   = "Segment"
 }
-
 
 module "apim_api_pdf_engine_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
@@ -58,7 +68,7 @@ module "apim_api_pdf_engine_api_v1" {
   display_name = local.apim_pdf_engine_service_api.display_name
   path         = local.apim_pdf_engine_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_pdf_engine_service_api.service_url
+  service_url  = null
 
   content_format = "openapi"
   content_value = templatefile("./api/pdf-engine/v1/_openapi.json.tpl", {
@@ -66,6 +76,47 @@ module "apim_api_pdf_engine_api_v1" {
   })
 
   xml_content = templatefile("./api/pdf-engine/v1/_base_policy.xml", {
-    hostname = local.shared_hostname
+    hostname = local.apim_pdf_engine_service_api.service_url
   })
 }
+
+###################
+# node
+###################
+
+resource "azurerm_api_management_api_version_set" "api_pdf_engine_node_api" {
+
+  name                = format("%s-pdf-engine-node-service-api", var.env_short)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_pdf_engine_node_service_api.display_name
+  versioning_scheme   = "Segment"
+}
+module "apim_api_pdf_engine_node_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+
+  name                  = format("%s-pdf-engine-node-service-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_pdf_engine_product.product_id]
+  subscription_required = local.apim_pdf_engine_node_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_pdf_engine_node_api.id
+  api_version           = "v1"
+
+  description  = local.apim_pdf_engine_node_service_api.description
+  display_name = local.apim_pdf_engine_node_service_api.display_name
+  path         = local.apim_pdf_engine_node_service_api.path
+  protocols    = ["https"]
+  service_url  = null
+
+
+  content_format = "openapi"
+  content_value = templatefile("./api/pdf-engine-node/v1/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/pdf-engine-node/v1/_base_policy.xml", {
+    hostname = local.apim_pdf_engine_node_service_api.service_url
+  })
+}
+

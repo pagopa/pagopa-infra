@@ -39,7 +39,7 @@ elastic_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "2" #TODO change to 2 or 3 in prod
+  node_count_min  = "3"
   node_count_max  = "3"
   node_labels = {
     elastic : "eck",
@@ -127,4 +127,12 @@ nodeset_config = {
 opentelemetry_operator_helm = {
   chart_version = "0.24.3"
   values_file   = "./env/opentelemetry_operator_helm/values.yaml"
+}
+
+elk_snapshot_sa = {
+  blob_versioning_enabled    = true
+  blob_delete_retention_days = 30
+  backup_enabled             = true
+  blob_versioning_enabled    = true
+  advanced_threat_protection = true
 }

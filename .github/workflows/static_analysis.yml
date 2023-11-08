@@ -19,20 +19,41 @@ jobs:
           FOLDERS: >
             src/aks-platform
             src/core
+            src/elk-monitoring
+            src/grafana-monitoring
+            src/next-core
+            src/packer
             src/domains/aca-app
             src/domains/aca-common
             src/domains/afm-app
             src/domains/afm-common
+            src/domains/apiconfig-app
+            src/domains/apiconfig-common
             src/domains/bizevents-app
             src/domains/bizevents-common
+            src/domains/canoneunico
+            src/domains/checkout-app
+            src/domains/checkout-common
             src/domains/ecommerce-app
             src/domains/ecommerce-common
+            src/domains/fdr-app
+            src/domains/fdr-common
+            src/domains/fdr-secret
             src/domains/gps-app
             src/domains/gps-common
             src/domains/load-test
+            src/domains/mock-app
+            src/domains/mock-common
             src/domains/nodo-app
             src/domains/nodo-common
+            src/domains/nodo-cron
             src/domains/nodo-secret
+            src/domains/observability
+            src/domains/qi-app
+            src/domains/qi-common
+            src/domains/qi-secrets
+            src/domains/receipts-app
+            src/domains/receipts-common
             src/domains/selfcare-app
             src/domains/selfcare-common
             src/domains/shared-app
@@ -69,5 +90,5 @@ jobs:
       - name: run_pre_commit_terraform
         run: |
           # from https://github.com/antonbabenko/pre-commit-terraform/pkgs/container/pre-commit-terraform
-          TAG=v1.76.0@sha256:50ed39dc67b6a5b198e45fa7b06aa73b50ccc20613bc795f1a7841fd41b2c838
+          TAG=v1.83.5@sha256:fed35dd9347aa3dd3e59a870dbc4500245dae26910d84065a6f66fe61afceaa8
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a

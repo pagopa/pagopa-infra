@@ -67,6 +67,6 @@ module "apim_api_enrolled_orgs_api_v1" {
   })
 
   xml_content = templatefile("./api/enrolled-orgs/v1/_base_policy.xml", {
-    hostname = local.cache_generator_hostname_2
+    hostname = local.authorizer_config_hostname
   })
 }

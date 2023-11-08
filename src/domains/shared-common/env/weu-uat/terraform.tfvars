@@ -79,14 +79,32 @@ cidr_subnet_iuvgenerator_cosmosdb = ["10.1.150.0/24"]
 cidr_subnet_authorizer_cosmosdb   = ["10.1.168.0/24"]
 cidr_subnet_loadtest_agent        = ["10.1.159.0/24"]
 
-cidr_subnet_taxonomy_storage_account = ["10.1.183.0/24"]
+cidr_subnet_taxonomy_storage_account = ["10.1.186.0/24"]
 taxonomy_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
-  public_network_access_enabled = false
+  public_network_access_enabled = true
   blob_delete_retention_days    = 0
+  enable_low_availability_alert = false
+}
+taxonomy_network_rules = {
+  default_action             = "Deny"
+  ip_rules                   = ["18.159.227.69", "3.126.198.129", "18.192.147.151"]
+  virtual_network_subnet_ids = []
+  bypass                     = ["AzureServices"]
+}
+
+cidr_subnet_test_data_storage_account = ["10.1.188.0/24"]
+test_data_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  public_network_access_enabled = true
+  blob_delete_retention_days    = 7
   enable_low_availability_alert = false
 }

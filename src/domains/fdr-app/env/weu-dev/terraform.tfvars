@@ -63,7 +63,7 @@ tls_cert_check_helm = {
 image_name = "reporting-fdr"
 image_tag  = "latest"
 
-apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+apim_fdr_nodo_pagopa_enable = true # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 
 # fdr re
 fdr_re_function = {
@@ -114,3 +114,5 @@ fdr_json_to_xml_function_autoscale = {
   minimum = 1
   maximum = 3
 }
+
+ftp_organization = "55555555555,90000000002,88888888888,11111111111,paStress4,44444444444,19721972197,11111122222,66666666666,55555666666,89898989898,20000000002,11111122223,11223344551,15376371009_FTP"

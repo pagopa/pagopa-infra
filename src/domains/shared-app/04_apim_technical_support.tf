@@ -18,3 +18,21 @@ module "apim_technical_support_product" {
 
   policy_xml = file("./api_product/_technical_support_policy.xml")
 }
+
+##############
+##  Group   ##
+##############
+resource "azurerm_api_management_group" "technical_support_group" {
+  name                = "technical-support-group"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "API Assistenza"
+  description         = "This is the API management group of Technical Support"
+}
+
+resource "azurerm_api_management_product_group" "technical_support_group_association" {
+  product_id          = module.apim_technical_support_product.product_id
+  group_name          = azurerm_api_management_group.technical_support_group.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}

@@ -130,8 +130,24 @@ variable "ecommerce_vpos_psps_list" {
   default     = ""
 }
 
+variable "ecommerce_npg_psps_list" {
+  type        = string
+  description = "psps list using npg as comma separated value"
+  default     = ""
+}
+
 variable "dns_zone_checkout" {
   type        = string
   default     = null
   description = "The checkout dns subdomain."
+}
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
 }

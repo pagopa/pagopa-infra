@@ -49,7 +49,9 @@ pgres_flex_params = {
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 200
+  max_connections                        = 1700
+  pgbouncer_min_pool_size                = 500
+  pgbouncer_default_pool_size            = 1000
 }
 
 custom_metric_alerts = {
@@ -132,11 +134,11 @@ cosmos_mongo_db_fdr_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
   container_default_ttl = 315576000 # 10 year in second
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
@@ -170,7 +172,7 @@ cosmos_mongo_db_fdr_re_params = {
 
   container_default_ttl = 10368000 # 120 days
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
@@ -183,20 +185,24 @@ fdr_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = false
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
 }
 
 fdr_re_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = false
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
 }
