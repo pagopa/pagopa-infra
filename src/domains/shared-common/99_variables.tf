@@ -248,9 +248,11 @@ variable "test_data_storage_account" {
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
   })
+  default = null
 }
 
 variable "cidr_subnet_test_data_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
+  default     = null
 }
