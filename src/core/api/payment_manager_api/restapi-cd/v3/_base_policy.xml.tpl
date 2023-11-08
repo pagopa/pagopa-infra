@@ -71,11 +71,49 @@
 
               return "";
           }" />
+          <set-variable name="isEcommerceTransaction" value="@{
+              var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
+              var pattern = "isEcommerceTransaction=([\\S]*);";
+
+              var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+              Match match = regex.Match(cookie);
+              if(match.Success && match.Groups.Count == 2)
+              {
+                  return match.Groups[1].Value;
+              }
+
+              return "";
+          }" />
+          <set-variable name="ecommerceTransactionId" value="@{
+              var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
+              var pattern = "ecommerceTransactionId=([\\S]*);";
+
+              var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+              Match match = regex.Match(cookie);
+              if(match.Success && match.Groups.Count == 2)
+              {
+                  return match.Groups[1].Value;
+              }
+
+              return "";
+          }" />
           <set-header name="Set-Cookie" exists-action="override">
             <value>walletId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+            <value>isEcommerceTransaction=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+            <value>ecommerceTransactionId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT"</value>
           </set-header>
           <set-header name="location" exists-action="override">
-            <value>@($"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}")</value>
+            <value>@{
+                string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}";
+                string isEcommerceTransaction = (string)context.Variables["isEcommerceTransaction"];
+                string ecommerceTransactionId = (string)context.Variables["ecommerceTransactionId"];
+                if("true".Equals(isEcommerceTransaction)){
+                  string[] splittedOriginalLocation = location.Split('?');
+                  string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
+                  location=$"https://{context.Request.OriginalUrl.Host}/ecommerce/io/v1/transactions/{ecommerceTransactionId}/outcomes?{queryParameters}";
+                }
+                return location;
+              }</value>
           </set-header>
         </when>
       </choose>
