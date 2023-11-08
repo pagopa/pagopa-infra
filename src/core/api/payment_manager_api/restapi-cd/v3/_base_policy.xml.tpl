@@ -72,9 +72,9 @@
               return "";
           }" />
           <set-variable name="isEcommerceTransaction" value="@{
-              var cookieHeader = context.Request.Headers.GetValueOrDefault("Cookie","");
+              string[] cookieHeaderValues = context.Request.Headers.GetValueOrDefault("Cookie","");
               string cookieName="isEcommerceTransaction";
-              foreach(string cookie in cookieHeader){
+              foreach(string cookie in cookieHeaderValues){
                 int startIdx = cookie.IndexOf(cookieName);
                 if(startIdx>=0){
                   int endIdx = cookie.IndexOf(';',startIdx);
@@ -85,9 +85,9 @@
               return "";
           }" />
           <set-variable name="ecommerceTransactionId" value="@{
-              var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
+              string[] cookieHeaderValues = context.Request.Headers.GetValueOrDefault("Cookie","");
               string cookieName="ecommerceTransactionId";
-              foreach(string cookie in cookieHeader){
+              foreach(string cookie in cookieHeaderValues){
                 int startIdx = cookie.IndexOf(cookieName);
                 if(startIdx>=0){
                   int endIdx = cookie.IndexOf(';',startIdx);
