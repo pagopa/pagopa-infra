@@ -95,31 +95,31 @@ nodeset_config = {
   balancer-nodes = {
     count            = "3"
     roles            = []
-    storage          = "20Gi"
+    storage          = "30Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
   },
   master-nodes = {
     count            = "3"
     roles            = ["master"]
-    storage          = "20Gi"
+    storage          = "30Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
   },
   data-hot-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_hot"]
-    storage          = "200Gi"
+    storage          = "220Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-hot"
   },
   data-warm-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_warm"]
-    storage          = "250Gi"
+    storage          = "270Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-warm"
   },
   data-cold-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
-    storage          = "250Gi"
+    storage          = "270Gi"
     storageClassName = "pagopa-u-weu-elk-elastic-aks-storage-cold"
   }
 }
