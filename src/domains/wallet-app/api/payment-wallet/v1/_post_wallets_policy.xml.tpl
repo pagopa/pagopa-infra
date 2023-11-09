@@ -63,6 +63,9 @@
         </when>
       </choose>
       <!-- Post Token PDV END-->
+      <set-header name="x-user-id" exists-action="override">
+          <value>@((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized",""))</value>
+      </set-header>
     </inbound>
     <outbound>
     <base />
