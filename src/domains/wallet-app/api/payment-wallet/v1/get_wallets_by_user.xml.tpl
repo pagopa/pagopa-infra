@@ -111,46 +111,47 @@
                 foreach(JObject paymentMethod in (JArray)paymentMethods["paymentMethods"]){
                     eCommercePaymentMethodIds[paymentMethod["name"].ToString()] = paymentMethod["id"].ToString();
                 } 
-                Object[] wallets = pmWalletResponse["data"].Select(wallet =>{
-                JObject result = new JObject();
-                //convert wallet id (long) to UUID v4 with all bit set to 0 (except for the version).
-                //wallet id long value is stored into UUID latest 8 byte
-                string walletIdHex = ((long)wallet["idWallet"]).ToString("X").PadLeft(16,'0');
-                string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
-                result["walletId"] = walletIdToUuid;
-                string eCommerceWalletType = "";
-                string pmWalletType = (string) wallet["type"];
-                if (eCommerceWalletTypes.ContainsKey(pmWalletType)) {
-                    eCommerceWalletType = eCommerceWalletTypes[pmWalletType];
-                }
-                result["paymentMethodId"] = eCommercePaymentMethodIds[eCommerceWalletType];
-                result["status"] = "VALIDATED";
-                result["creationDate"] = wallet["lastUsage"];
-                result["updateDate"] = wallet["lastUsage"];
-                var convertedServices = new List<JObject>();
-                foreach(JValue service in wallet["services"]){
-                    string serviceName = service.ToString().ToUpper();
-                    if(walletServices.Contains(serviceName)){
-                        JObject converted = new JObject();
-                        converted["name"] = serviceName;
-                        converted["status"] = "ENABLED";
-                        converted["updateDate"] = wallet["lastUsage"];
-                        convertedServices.Add(converted);
-                    }
-                }
-                result["services"] = JArray.FromObject(convertedServices);
-                JObject details = new JObject();
-                details["type"] = eCommerceWalletType;
-                if (eCommerceWalletType == "CARDS") {
-                    details["maskedPan"] = wallet["creditCard"]["pan"];
-                    details["expiryDate"] = $"20{(string)wallet["creditCard"]["expireYear"]}{(string)wallet["creditCard"]["expireMonth"]}";
-                    details["holder"] = wallet["creditCard"]["holder"];
-                    details["brand"] = wallet["creditCard"]["brand"];
-                }
-                result["details"] = details;
+                Object[] wallets = pmWalletResponse["data"]
+                    .Where(wallet =>{
+                       return eCommerceWalletTypes.ContainsKey(wallet["type"]);
+                    })
+                    .Select(wallet =>{
+                            JObject result = new JObject();
+                            //convert wallet id (long) to UUID v4 with all bit set to 0 (except for the version).
+                            //wallet id long value is stored into UUID latest 8 byte
+                            string walletIdHex = ((long)wallet["idWallet"]).ToString("X").PadLeft(16,'0');
+                            string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
+                            result["walletId"] = walletIdToUuid;
+                            string pmWalletType = (string) wallet["type"];
+                            string eCommerceWalletType = eCommerceWalletTypes[pmWalletType];
+                            result["paymentMethodId"] = eCommercePaymentMethodIds[eCommerceWalletType];
+                            result["status"] = "VALIDATED";
+                            result["creationDate"] = wallet["lastUsage"];
+                            result["updateDate"] = wallet["lastUsage"];
+                            var convertedServices = new List<JObject>();
+                            foreach(JValue service in wallet["services"]){
+                                string serviceName = service.ToString().ToUpper();
+                                if(walletServices.Contains(serviceName)){
+                                    JObject converted = new JObject();
+                                    converted["name"] = serviceName;
+                                    converted["status"] = "ENABLED";
+                                    converted["updateDate"] = wallet["lastUsage"];
+                                    convertedServices.Add(converted);
+                                }
+                            }
+                            result["services"] = JArray.FromObject(convertedServices);
+                            JObject details = new JObject();
+                            details["type"] = eCommerceWalletType;
+                            if (eCommerceWalletType == "CARDS") {
+                                details["maskedPan"] = wallet["creditCard"]["pan"];
+                                details["expiryDate"] = $"20{(string)wallet["creditCard"]["expireYear"]}{(string)wallet["creditCard"]["expireMonth"]}";
+                                details["holder"] = wallet["creditCard"]["holder"];
+                                details["brand"] = wallet["creditCard"]["brand"];
+                            }
+                            result["details"] = details;
 
-                return result;
-            }).ToArray();
+                            return result;
+                    }).ToArray();
 
             JObject response = new JObject();
             response["wallets"] = JArray.FromObject(wallets);
