@@ -72,29 +72,25 @@
               return "";
           }" />
           <set-variable name="isEcommerceTransaction" value="@{
-              string[] cookieHeaderValues = context.Request.Headers.GetValueOrDefault("Cookie","");
+              string cookieHeaderValue = context.Request.Headers.GetValueOrDefault("Cookie","");
               string cookieName="isEcommerceTransaction";
-              foreach(string cookie in cookieHeaderValues){
-                int startIdx = cookie.IndexOf(cookieName);
+                int startIdx = cookieHeaderValue.IndexOf(cookieName);
                 if(startIdx>=0){
-                  int endIdx = cookie.IndexOf(';',startIdx);
-                  endIdx = endIdx<0 ? cookie.Length : endIdx;
-                  return cookie.Substring(startIdx, endIdx-startIdx).Split('=')[1];
+                  int endIdx = cookieHeaderValue.IndexOf(';',startIdx);
+                  endIdx = endIdx<0 ? cookieHeaderValue.Length : endIdx;
+                  return cookieHeaderValue.Substring(startIdx, endIdx-startIdx).Split('=')[1];
                 }
-              }
               return "";
           }" />
           <set-variable name="ecommerceTransactionId" value="@{
-              string[] cookieHeaderValues = context.Request.Headers.GetValueOrDefault("Cookie","");
+              string cookieHeaderValue = context.Request.Headers.GetValueOrDefault("Cookie","");
               string cookieName="ecommerceTransactionId";
-              foreach(string cookie in cookieHeaderValues){
-                int startIdx = cookie.IndexOf(cookieName);
+                int startIdx = cookieHeaderValue.IndexOf(cookieName);
                 if(startIdx>=0){
-                  int endIdx = cookie.IndexOf(';',startIdx);
-                  endIdx = endIdx<0 ? cookie.Length : endIdx;
-                  return cookie.Substring(startIdx, endIdx-startIdx).Split('=')[1];
+                  int endIdx = cookieHeaderValue.IndexOf(';',startIdx);
+                  endIdx = endIdx<0 ? cookieHeaderValue.Length : endIdx;
+                  return cookieHeaderValue.Substring(startIdx, endIdx-startIdx).Split('=')[1];
                 }
-              }
               return "";
           }" />
           <set-header name="Set-Cookie" exists-action="override">
