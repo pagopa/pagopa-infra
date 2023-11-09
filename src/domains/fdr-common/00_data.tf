@@ -8,6 +8,3 @@ data "azurerm_resource_group" "rg_api" {
   name = "${local.product}-api-rg"
 }
 
-data "azurerm_resource_group" "data_rg" {
-  name = "${local.product}-data-rg"
-}
