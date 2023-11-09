@@ -58,7 +58,7 @@
                         <set-body>
                             @{
                                 JObject response = new JObject();
-                                response["authorizationUrl"] = $"https://${webview_host}/${webview_path}?transactionId={(string)context.Variables["requestTransactionId"]}#idWallet={(string)context.Variables["idWallet"]}&idPayment={(string)context.Variables["idPayment"]}&sessionToken={(string)context.Variables["sessionToken"]}&language=IT";
+                                response["authorizationUrl"] = $"https://{{wisp2-gov-it}}/${webview_path}?transactionId={(string)context.Variables["requestTransactionId"]}#idWallet={(string)context.Variables["idWallet"]}&idPayment={(string)context.Variables["idPayment"]}&sessionToken={(string)context.Variables["sessionToken"]}&language=IT";
                                 response["authorizationRequestId"] = (string)context.Variables["requestTransactionId"];
                                 return response.ToString();
                             }
