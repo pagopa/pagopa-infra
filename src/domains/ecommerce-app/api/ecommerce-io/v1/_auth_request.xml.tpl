@@ -48,8 +48,8 @@
                 <value>application/json</value>
             </set-header>
             <set-header name="Set-Cookie" exists-action="append">
-                  <value>isEcommerceTransaction=true; path=/pp-restapi-CD;</value>
-                  <value>@($"ecommerceTransactionId={(string)context.Variables["requestTransactionId"]}; path=/pp-restapi-CD;")</value>
+                  <value>isEcommerceTransaction=true; path=/pp-restapi-CD; SameSite=None; Secure</value>
+                  <value>@($"ecommerceTransactionId={(string)context.Variables["requestTransactionId"]}; path=/pp-restapi-CD; SameSite=None; Secure")</value>
               </set-header>
             <set-body>
                 @{
