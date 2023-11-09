@@ -57,6 +57,25 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+
+variable "location_replica" {
+  type        = string
+  description = "One of westeurope, northeurope"
+  default     = "northeurope"
+}
+
+variable "location_replica_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_replica_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+  default     = "neu"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -401,4 +420,19 @@ variable "reporting_fdr_storage_account" {
     blob_versioning_enabled    = false
     blob_delete_retention_days = 30
   }
+}
+
+
+variable "geo_replica_enabled" {
+  type        = bool
+  description = "(Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers"
+  default     = false
+}
+
+
+
+variable "geo_replica_cidr_subnet_postgresql" {
+  type        = list(string)
+  description = "Address prefixes replica subnet postgresql"
+  default     = null
 }
