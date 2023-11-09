@@ -35,3 +35,12 @@ tls_cert_check_helm = {
 
 selfcare_fe_enabled  = true
 robots_indexed_paths = []
+
+pod_disruption_budgets = {
+  "pagopaselfcaremsbackofficebackend" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaselfcaremsbackofficebackend"
+    }
+  },
+}

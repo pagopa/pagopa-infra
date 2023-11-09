@@ -13,7 +13,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_api_config_ica_sa"></a> [api\_config\_ica\_sa](#module\_api\_config\_ica\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.6.1 |
+| <a name="module_api_config_ica_sa"></a> [api\_config\_ica\_sa](#module\_api\_config\_ica\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.17 |
 | <a name="module_letsencrypt_apiconfig"></a> [letsencrypt\_apiconfig](#module\_letsencrypt\_apiconfig) | git::https://github.com/pagopa/azurerm.git//letsencrypt_credential | v3.8.1 |
 
@@ -31,6 +31,7 @@
 | [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.apiconfig_selfcare_integration_api_subscription-key](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.github_token_read_packages](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.nodo5_slack_webhook_url](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.oracle_db_cfg_dev_nexi_password](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.oracle_db_cfg_password](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.oracle_db_cfg_prf_nexi_password](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
@@ -70,11 +71,13 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_api_config_enable_versioning"></a> [api\_config\_enable\_versioning](#input\_api\_config\_enable\_versioning) | Enable sa versioning | `bool` | `false` | no |
 | <a name="input_api_config_reporting_advanced_threat_protection"></a> [api\_config\_reporting\_advanced\_threat\_protection](#input\_api\_config\_reporting\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
+| <a name="input_api_config_reporting_backup_retention_days"></a> [api\_config\_reporting\_backup\_retention\_days](#input\_api\_config\_reporting\_backup\_retention\_days) | Number of days to retain backups. | `number` | `0` | no |
 | <a name="input_api_config_reporting_delete_retention_days"></a> [api\_config\_reporting\_delete\_retention\_days](#input\_api\_config\_reporting\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
+| <a name="input_enable_apiconfig_sa_backup"></a> [enable\_apiconfig\_sa\_backup](#input\_enable\_apiconfig\_sa\_backup) | (Optional) Enables apiconfig storage account backup | `bool` | `false` | no |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
