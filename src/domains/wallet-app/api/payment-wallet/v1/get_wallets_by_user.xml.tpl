@@ -113,7 +113,7 @@
                 } 
                 Object[] wallets = pmWalletResponse["data"]
                     .Where(wallet =>{
-                       return eCommerceWalletTypes.ContainsKey(wallet["type"]);
+                       return eCommerceWalletTypes.ContainsKey((string) wallet["type"]);
                     })
                     .Select(wallet =>{
                             JObject result = new JObject();
