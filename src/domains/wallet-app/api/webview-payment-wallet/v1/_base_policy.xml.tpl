@@ -1,5 +1,19 @@
 <policies>
     <inbound>
+     <cors>
+        <allowed-origins>
+          <origin>${payment_wallet_origin}</origin>
+        </allowed-origins>
+        <allowed-methods>
+          <method>POST</method>
+          <method>GET</method>
+          <method>OPTIONS</method>
+        </allowed-methods>
+        <allowed-headers>
+          <header>Content-Type</header>
+          <header>Authorization</header>
+        </allowed-headers>
+      </cors>
       <base />
       <set-variable name="walletId" value="@{
           return context.Request.MatchedParameters.GetValueOrDefault("walletId","");
