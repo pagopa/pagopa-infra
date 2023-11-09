@@ -380,7 +380,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "PDV Tokenizer generateTokenForFiscalCode invocation failed"
+    | where message contains "Failed to call tokenizer service"
   QUERY
     , "pagopareceiptpdfnotifier" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-notifier/helm/values-prod.yaml
   )
