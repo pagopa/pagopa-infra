@@ -47,6 +47,7 @@
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
             </set-header>
+            <!-- set cookies for redirect to eCommerce outcome url -->
             <set-header name="Set-Cookie" exists-action="append">
                   <value>isEcommerceTransaction=true; path=/pp-restapi-CD; SameSite=None; Secure</value>
                   <value>@($"ecommerceTransactionId={(string)context.Variables["requestTransactionId"]}; path=/pp-restapi-CD; SameSite=None; Secure")</value>
