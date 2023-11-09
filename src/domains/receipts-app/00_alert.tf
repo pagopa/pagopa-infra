@@ -10,7 +10,7 @@ locals {
 
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
 
-  # ENABLE PROD afert deploy 
+  # ENABLE PROD afert deploy
   action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id]) : local.action_groups_default
   # action_groups = local.action_groups_default
 }
@@ -355,5 +355,115 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-unable-to-notify
     threshold = 1
   }
 }
+
+## Alert
+# This alert cover the following error case:
+# 1. PDVTokenizerServiceImpl execution logs that an error using the PDV Tokenizer error has been encountered
+# https://github.com/pagopa/pagopa-receipt-pdf-notifier/blob/26067525b154796962168e661ee932d4e628f1be/src/main/java/it/gov/pagopa/receipt/pdf/notifier/service/impl/PDVTokenizerServiceImpl.java#L89
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-on-notify-alert" {
+  count               = var.env_short != "d" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-tokenizer-error-on-notify"
+  location            = var.location
+
+  action {
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
+    email_subject          = "Failed to recover fiscal code from Tokenizer servi e"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Unable to retrieve plain fiscal code due to PDV Tokenizer service error"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "PDV Tokenizer generateTokenForFiscalCode invocation failed"
+  QUERY
+    , "pagopareceiptpdfnotifier" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-notifier/helm/values-prod.yaml
+  )
+  severity    = 2 // Sev 2	Warning
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+## Alert
+# This alert cover the following error case:
+# 1. PDVTokenizerServiceImpl execution logs that an error has been encountered on the PDV Tokenizer service
+# https://github.com/pagopa/pagopa-receipt-pdf-datatstore/blob/main/src/main/java/it/gov/pagopa/receipt/pdf/datastore/service/impl/PDVTokenizerServiceImpl.java#L80
+resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-on-datastore-alert" {
+  count               = var.env_short != "d" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-tokenizer-error-on-datastore"
+  location            = var.location
+
+  action {
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
+    email_subject          = "Failed to recover fiscal_code token due to error on the PDV Tokenizer service"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Unable to retrieve plain fiscal code due to PDV Tokenizer service error"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "PDV Tokenizer generateTokenForFiscalCode invocation failed"
+  QUERY
+    , "pagopareceiptpdfdatastore" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/6b6c600db4b13ad7cd4b64596ba29fd0f6c38e70/helm/values-prod.yaml#L81C25-L81C50
+  )
+  severity    = 2 // Sev 2	Warning
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 10
+  }
+}
+
+## Alert
+# This alert cover the following error case:
+# 1. AttachmentService execution logs that an error has been encountered on the PDV Tokenizer service
+# https://github.com/pagopa/pagopa-receipt-pdf-service/blob/main/src/main/java/it/gov/pagopa/receipt/pdf/service/service/impl/AttachmentServiceImpl.java#L96
+resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-on-service-alert" {
+  count               = var.env_short != "d" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-tokenizer-error-on-service"
+  location            = var.location
+
+  action {
+    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = local.action_groups
+    email_subject          = "Failed to recover fiscal_code token due to error on the PDV Tokenizer service"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Unable to retrieve plain fiscal code due to PDV Tokenizer service error"
+  enabled        = true
+  query = format(<<-QUERY
+  traces
+    | where cloud_RoleName == "%s"
+    | order by timestamp desc
+    | where message contains "Could not recover fiscal code token for authentication"
+  QUERY
+    , "pagopareceiptpdfservice" # from HELM's parameter WEBSITE_SITE_NAME https://github.com/pagopa/pagopa-receipt-pdf-generator/blob/6b6c600db4b13ad7cd4b64596ba29fd0f6c38e70/helm/values-prod.yaml#L81C25-L81C50
+  )
+  severity    = 2 // Sev 2	Warning
+  frequency   = 15
+  time_window = 15
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 10
+  }
+}
+
 
 
