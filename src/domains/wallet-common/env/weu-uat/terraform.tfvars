@@ -57,6 +57,7 @@ cosmos_mongo_db_params = {
 }
 
 cidr_subnet_cosmosdb_wallet = ["10.1.169.0/24"]
+cidr_subnet_redis_wallet    = ["10.1.174.0/24"]
 
 cosmos_mongo_db_wallet_params = {
   enable_serverless  = false
@@ -66,3 +67,10 @@ cosmos_mongo_db_wallet_params = {
 }
 
 enable_iac_pipeline = true
+
+redis_wallet_params = {
+  capacity = 0
+  sku_name = "Basic"
+  family   = "C"
+  version  = 6
+}

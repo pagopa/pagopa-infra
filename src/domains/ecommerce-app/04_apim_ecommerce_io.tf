@@ -26,7 +26,7 @@ locals {
     display_name          = "eCommerce API for IO App"
     description           = "eCommerce pagoPA API dedicated to IO App for pagoPA payment"
     path                  = "ecommerce/io"
-    subscription_required = var.env_short != "d"
+    subscription_required = var.env_short == "p"
     service_url           = null
   }
 
@@ -169,4 +169,13 @@ resource "azurerm_api_management_api_operation_policy" "io_create_session" {
   operation_id        = "newSessionToken"
 
   xml_content = file("./api/ecommerce-io/v1/_create_new_session.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
+  api_name            = "${local.project}-ecommerce-io-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "calculateFees"
+
+  xml_content = file("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl")
 }
