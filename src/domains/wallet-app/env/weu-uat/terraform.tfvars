@@ -22,8 +22,10 @@ log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 external_domain          = "pagopa.it"
+dns_zone_prefix          = "dev.payment-wallet"
 dns_zone_internal_prefix = "internal.uat.platform"
-apim_dns_zone_prefix     = "uat.platform"
+
+apim_dns_zone_prefix = "uat.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases

@@ -135,3 +135,11 @@ variable "io_backend_base_path" {
   default     = null
   description = "io backend api base path"
 }
+
+# DNS
+
+variable "dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The wallet dns subdomain."
+}
