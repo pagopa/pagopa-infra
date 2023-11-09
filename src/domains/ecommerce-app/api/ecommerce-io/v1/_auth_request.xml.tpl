@@ -47,15 +47,10 @@
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
             </set-header>
-            <!-- set cookies for redirect to eCommerce outcome url -->
-            <set-header name="Set-Cookie" exists-action="append">
-                  <value>isEcommerceTransaction=true; path=/pp-restapi-CD; SameSite=None; Secure</value>
-                  <value>@($"ecommerceTransactionId={(string)context.Variables["requestTransactionId"]}; path=/pp-restapi-CD; SameSite=None; Secure")</value>
-              </set-header>
             <set-body>
                 @{
                     JObject response = new JObject();
-                    response["authorizationUrl"] = $"https://${webview_host}/${webview_path}#idWallet={(string)context.Variables["walletId"]}&idPayment={(string)context.Variables["idPayment"]}&sessionToken={(string)context.Variables["sessionToken"]}&language=IT";
+                    response["authorizationUrl"] = $"https://${webview_host}/${webview_path}#idWallet={(string)context.Variables["walletId"]}&idPayment={(string)context.Variables["idPayment"]}&sessionToken={(string)context.Variables["sessionToken"]}&language=IT&transactionId={(string)context.Variables["requestTransactionId"]}";
                     response["authorizationRequestId"] = (string)context.Variables["requestTransactionId"];
                     return response.ToString();
                 }
