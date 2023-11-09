@@ -35,8 +35,8 @@
                                 JObject psp = new JObject();
                                 psp["abi"] = pmPsp["codiceAbi"];
                                 psp["bundleName"] = pmPsp["ragioneSociale"];
-                                psp["idPsp"] = pmPsp["idPsp"];
-                                psp["idBundle"] = pmPsp["id"];
+                                psp["idPsp"] = pmPsp["id"];
+                                psp["idBundle"] = pmPsp["idPsp"];
                                 psp["taxPayerFee"] = pmPsp["fee"];
                                 pspResponse.Add(psp);
                             }
