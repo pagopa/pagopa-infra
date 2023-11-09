@@ -130,7 +130,7 @@ resource "azurerm_key_vault_secret" "payment-method-api-key" {
 
 resource "azurerm_key_vault_secret" "mongo_wallet_password" {
   name         = "mongo-wallet-password"
-  value        = module.cosmosdb_account_mongodb.primary_key
+  value        = module.cosmosdb_account_mongodb[0].primary_master_key
   key_vault_id = module.key_vault.id
 
   lifecycle {
