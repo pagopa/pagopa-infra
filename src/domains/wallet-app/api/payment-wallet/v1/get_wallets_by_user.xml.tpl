@@ -10,17 +10,20 @@
         <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
           <return-response>
             <set-status code="502" reason="Bad Gateway" />
-        <set-body>
-            {
-               "title": "Error starting session",
-               "status": 502,
-               "detail": "There was an error starting session for input wallet token"
-            }
-        </set-body>
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>
+                {
+                "title": "Error starting session",
+                "status": 502,
+                "detail": "There was an error starting session for input wallet token"
+                }
+            </set-body>
           </return-response>
         </when>
-      </choose>
-      <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
+    </choose>
+    <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
     <!-- START get user wallets -->
     <send-request ignore-error="false" timeout="10" response-variable-name="pmWalletResponse">
         <set-url>{{pm-host}}/pp-restapi-CD/v1/wallet</set-url>
@@ -32,35 +35,40 @@
     <choose>
         <when condition="@(((IResponse)context.Variables["pmWalletResponse"]).StatusCode != 200)">
             <return-response>
-            <set-status code="502" reason="Bad Gateway" />
-            <set-body>
-            {
-               "title": "Error retrieving user wallet data",
-               "status": 502,
-               "detail": "There was an error retrieving user wallet data"
-            }
-            </set-body>
+                <set-status code="502" reason="Bad Gateway" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>
+                    {
+                    "title": "Error retrieving user wallet data",
+                    "status": 502,
+                    "detail": "There was an error retrieving user wallet data"
+                    }
+                </set-body>
             </return-response>
         </when>
     </choose>
     <set-variable name="pmUserWalletResponseBody" value="@(((IResponse)context.Variables["pmWalletResponse"]).Body.As<JObject>())" />
-    <set-variable name="pmUserWalletsNumber" value="@(((JArray)((JObject)context.Variables["pmUserWalletResponseBody"])["data"]).Count)" />
+    <set-variable name="pmUserWalletResponseBodyLength" value="@(((JArray)((JObject)context.Variables["pmUserWalletResponseBody"])["data"]).Count)" />
     <choose>
-        <when condition="@(((int)context.Variables["pmUserWalletsNumber"])==0)">
+        <when condition="@(((int)context.Variables["pmUserWalletResponseBodyLength"])==0)">
             <return-response>
-            <set-status code="404" reason="Wallet not found" />
-            <set-body>
-            {
-               "title": "Wallet not found",
-               "status": 404,
-               "detail": "No wallet found for input wallet token"
-            }
-            </set-body>
+                <set-status code="404" reason="Wallet not found" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>
+                    {
+                    "title": "Wallet not found",
+                    "status": 404,
+                    "detail": "No wallet found for input wallet token"
+                    }
+                </set-body>
             </return-response>
         </when>
     </choose>
     <!-- END get user wallets -->
-
     <!-- START get payment methods -->
     <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
         <set-url>https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-service/payment-methods</set-url>
@@ -70,12 +78,15 @@
         <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode != 200)">
             <return-response>
             <set-status code="502" reason="Bad Gateway" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
             <set-body>
-            {
-               "title": "Error retrieving eCommerce payment methods",
-               "status": 502,
-               "detail": "There was an error retrieving eCommerce payment methods"
-            }
+                {
+                    "title": "Error retrieving eCommerce payment methods",
+                    "status": 502,
+                    "detail": "There was an error retrieving eCommerce payment methods"
+                }
             </set-body>
             </return-response>
         </when>
@@ -104,8 +115,8 @@
                 JObject result = new JObject();
                 //convert wallet id (long) to UUID v4 with all bit set to 0 (except for the version).
                 //wallet id long value is stored into UUID latest 8 byte
-                string walletIdHex = ((long)wallet["idWallet"])`.ToString("X").PadLeft(16,'0');
-		        string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
+                string walletIdHex = ((long)wallet["idWallet"]).ToString("X").PadLeft(16,'0');
+                string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
                 result["walletId"] = walletIdToUuid;
                 string eCommerceWalletType = "";
                 string pmWalletType = (string) wallet["type"];
