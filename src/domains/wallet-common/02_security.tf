@@ -127,3 +127,15 @@ resource "azurerm_key_vault_secret" "payment-method-api-key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "wallet-token-test-key" {
+  name         = "wallet-token-test-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
