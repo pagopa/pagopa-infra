@@ -31,6 +31,14 @@ locals {
     subscription_required = true
     service_url           = null
   }
+
+  apim_receipts_datastore_api = {
+    display_name          = "Receipts Datastore PDF"
+    description           = "API to handle receipts datastore"
+    path                  = "receipts/datastore"
+    subscription_required = true
+    service_url           = null
+  }
 }
 
 resource "azurerm_api_management_api_version_set" "api_receipts_api" {
@@ -66,6 +74,33 @@ module "apim_api_receipts_api_v1" {
   })
 
   xml_content = templatefile("./api/receipt-service/v1/_base_policy.xml", {
+    hostname = local.receipts_hostname
+  })
+}
+
+module "apim_api_receipts_datastore_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+
+  name                  = format("%s-receipts-datastore-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_receipts_product.product_id]
+  subscription_required = local.apim_receipts_datastore_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_receipts_api.id
+  api_version           = "v1"
+
+  description  = local.apim_receipts_datastore_api.description
+  display_name = local.apim_receipts_datastore_api.display_name
+  path         = local.apim_receipts_datastore_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_receipts_datastore_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/receipt-datastore/v1/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/receipt-datastore/v1/_base_policy.xml", {
     hostname = local.receipts_hostname
   })
 }
