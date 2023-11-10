@@ -371,73 +371,6 @@
           "ERROR"
         ]
       },
-      "WalletCardDetails": {
-        "type": "object",
-        "description": "Card payment instrument details",
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "Wallet details discriminator field."
-          },
-          "maskedPan": {
-            "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
-            "type": "string",
-            "example": "123456******9876"
-          },
-          "expiryDate": {
-            "type": "string",
-            "description": "Credit card expiry date. The date format is `YYYYMM`",
-            "pattern": "^\\d{6}$",
-            "example": "203012"
-          },
-          "holder": {
-            "description": "Holder of the card payment instrument",
-            "type": "string"
-          },
-          "brand": {
-            "description": "Payment instrument brand",
-            "type": "string",
-            "enum": [
-              "MASTERCARD",
-              "VISA"
-            ]
-          }
-        },
-        "required": [
-          "type",
-          "maskedPan",
-          "expiryDate",
-          "holder",
-          "brand"
-        ]
-      },
-      "WalletPaypalDetails": {
-        "type": "object",
-        "description": "Paypal instrument details",
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "Wallet details discriminator field."
-          },
-          "abi": {
-            "description": "bank idetifier",
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 5,
-            "example": "12345"
-          },
-          "maskedEmail": {
-            "description": "email masked pan",
-            "type": "string",
-            "example": "test***@***test.it"
-          }
-        },
-        "required": [
-          "type",
-          "abi",
-          "maskedEmail"
-        ]
-      },
       "WalletCreateRequest": {
         "type": "object",
         "description": "Wallet creation request",
@@ -511,23 +444,7 @@
             }
           },
           "details": {
-            "description": "details for the specific payment instrument. This field is disciminated by the type field",
-            "type": "object",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/WalletCardDetails"
-              },
-              {
-                "$ref": "#/components/schemas/WalletPaypalDetails"
-              }
-            ],
-            "discriminator": {
-              "propertyName": "type",
-              "mapping": {
-                "CARDS": "#/components/schemas/WalletCardDetails",
-                "PAYPAL": "#/components/schemas/WalletPaypalDetails"
-              }
-            }
+            "$ref": "#/components/schemas/WalletInfoDetails"
           }
         },
         "required": [
@@ -537,6 +454,84 @@
           "creationDate",
           "updateDate",
           "services"
+        ]
+      },
+      "WalletInfoDetails": {
+        "description": "details for the specific payment instrument. This field is disciminated by the type field",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Card payment instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field.",
+                "enum": [
+                  "CARDS"
+                ]
+              },
+              "maskedPan": {
+                "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
+                "type": "string",
+                "example": "123456******9876"
+              },
+              "expiryDate": {
+                "type": "string",
+                "description": "Credit card expiry date. The date format is `YYYYMM`",
+                "pattern": "^\\d{6}$",
+                "example": "203012"
+              },
+              "holder": {
+                "description": "Holder of the card payment instrument",
+                "type": "string"
+              },
+              "brand": {
+                "description": "Payment instrument brand",
+                "type": "string",
+                "enum": [
+                  "MASTERCARD",
+                  "VISA"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "maskedPan",
+              "expiryDate",
+              "holder",
+              "brand"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Paypal instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field.",
+                "enum": [
+                  "PAYPAL"
+                ]
+              },
+              "abi": {
+                "description": "bank idetifier",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 5,
+                "example": "12345"
+              },
+              "maskedEmail": {
+                "description": "email masked pan",
+                "type": "string",
+                "example": "test***@***test.it"
+              }
+            },
+            "required": [
+              "type",
+              "abi",
+              "maskedEmail"
+            ]
+          }
         ]
       },
       "Wallets": {
