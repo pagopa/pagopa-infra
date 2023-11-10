@@ -206,3 +206,13 @@ fdr_re_storage_account = {
   backup_enabled                = true
   backup_retention              = 30
 }
+
+#
+# replica settings
+#
+geo_replica_enabled                = true
+location_replica                   = "northeurope"
+location_replica_short             = "neu"
+geo_replica_cidr_vnet              = ["10.2.0.0/16"]
+geo_replica_cidr_subnet_postgresql = ["10.2.162.0/24"]
+postgresql_sku_name                = "GP_Gen5_2"
