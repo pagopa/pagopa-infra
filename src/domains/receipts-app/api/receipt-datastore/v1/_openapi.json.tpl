@@ -153,7 +153,7 @@
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
-                  "type": "#/components/schemas/ProblemJson"
+                  "type": "string"
                 }
               }
             }
