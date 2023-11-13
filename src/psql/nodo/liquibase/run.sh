@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+# example to run :
+# sh run.sh dev cfg 3.22.0
+
 TIPO=$1
 SCHEMA=$2
 VERSION=$3
@@ -85,6 +89,7 @@ log-level: INFO
 
 #liquibase --defaultsFile=cfg.properties drop-all
 # liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-3.20.0.xml"
-liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-$VERSION.xml"
+# liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-$VERSION.xml"
+liquibase --defaultsFile=cfg.properties update-sql --contexts="dev" --changelogFile="db.changelog-master-$VERSION.xml"
 
 rm cfg.properties

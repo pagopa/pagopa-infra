@@ -100,7 +100,33 @@ resource "azurerm_key_vault_secret" "api-config-api-key" {
 }
 
 resource "azurerm_key_vault_secret" "aca-api-key" {
+  count        = var.env_short != "p" ? 1 : 0
   name         = "aca-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "aca-load-test-api-key" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "aca-load-test-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 

@@ -465,7 +465,8 @@ module "apim_nodo_per_pm_api_v1_replica_ndp" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_swagger.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_nodo_dei_pagamenti_product_replica_ndp[0].product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_base_policy.xml.tpl", {
@@ -479,7 +480,18 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_rep
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
+  xml_content = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
+    base-url = "https://${local.nodo_hostname}/nodo-replica"
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_replica_ndp" {
+  count               = var.env_short == "p" ? 0 : 1
+  api_name            = format("%s-nodo-per-pm-api-replica-ndp-v1", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "parkedList"
+  xml_content = templatefile("./api/nodopagamenti_api_replica/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     base-url = "https://${local.nodo_hostname}/nodo-replica"
   })
 }

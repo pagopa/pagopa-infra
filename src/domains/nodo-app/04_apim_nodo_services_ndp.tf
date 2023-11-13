@@ -118,6 +118,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
     base-url   = "https://${local.nodo_hostname}/nodo/webservices/input"
     urlenvpath = var.env_short
+    url_aks    = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
 
@@ -133,6 +134,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
     base-url                  = "https://${local.nodo_hostname}/nodo/webservices/input"
     urlenvpath                = var.env_short
     is-nodo-decoupler-enabled = false
+    url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
   })
 }
 
@@ -497,7 +499,8 @@ module "apim_nodo_per_pm_api_v1_ndp" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_nodo_dei_pagamenti_product_ndp.product_id
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
@@ -510,7 +513,17 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_ndp
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_closepayment_policy.xml.tpl", {
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
+    base-url = "https://${local.nodo_hostname}/nodo"
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_ndp" {
+  api_name            = format("%s-nodo-per-pm-api-ndp-v1", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "parkedList"
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     base-url = "https://${local.nodo_hostname}/nodo"
   })
 }

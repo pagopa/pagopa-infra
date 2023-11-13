@@ -74,29 +74,6 @@ variable "gpd_payments_advanced_threat_protection" {
   default     = false
 }
 
-variable "gpd_payments_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
-
-variable "gpd_enable_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
-variable "gpd_reporting_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "gpd_reporting_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted."
-  default     = 30
-}
 
 ### External resources
 
@@ -154,9 +131,88 @@ variable "pgres_flex_params" {
     high_availability_enabled    = bool
     standby_availability_zone    = number
     pgbouncer_enabled            = bool
+    alerts_enabled               = bool
+    max_connections              = number
   })
 
   default = null
+}
+
+variable "pgflex_public_metric_alerts" {
+  description = <<EOD
+  Map of name = criteria objects
+  EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    # "Insights.Container/pods" "Insights.Container/nodes"
+    metric_namespace = string
+    metric_name      = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+    # severity: The severity of this Metric Alert. Possible values are 0, 1, 2, 3 and 4. Defaults to 3. Lower is worst
+    severity = number
+  }))
+
+  default = {
+    cpu_percent = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "cpu_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity         = 2
+    },
+    memory_percent = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "memory_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity         = 2
+    },
+    storage_percent = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "storage_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity         = 2
+    },
+    active_connections = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "active_connections"
+      operator         = "GreaterThan"
+      threshold        = 4000 // 80% of current active connections (5000)
+      severity         = 2
+    },
+    connections_failed = {
+      frequency        = "PT5M"
+      window_size      = "PT30M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Total"
+      metric_name      = "connections_failed"
+      operator         = "GreaterThan"
+      threshold        = 10
+      severity         = 2
+    }
+  }
+
 }
 
 variable "postgresql_network_rules" {
@@ -191,7 +247,6 @@ variable "cosmos_gps_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -223,7 +278,6 @@ variable "cosmos_gpd_payments_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -233,6 +287,10 @@ variable "cosmos_gpd_payments_db_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
+    payments_receipts_table = object({
+      autoscale  = bool
+      throughput = number
+    })
   })
 }
 
@@ -246,4 +304,39 @@ variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
+}
+
+variable "enable_gpd_payments_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "gpd_payments_sa_delete_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage delete retention"
+}
+
+variable "gpd_payments_sa_backup_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage backup retention"
+}
+
+variable "reporting_storage_account" {
+  type = object({
+    advanced_threat_protection = bool
+    blob_delete_retention_days = number
+    blob_versioning_enabled    = bool
+    backup_enabled             = bool
+    backup_retention           = optional(number, 0)
+  })
+  default = {
+    blob_versioning_enabled    = false
+    advanced_threat_protection = false
+    blob_delete_retention_days = 30
+    backup_enabled             = false
+    backup_retention           = 0
+  }
 }

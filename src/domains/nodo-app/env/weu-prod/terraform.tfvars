@@ -39,7 +39,7 @@ nodo_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "2"
+  node_count_min  = "3"
   node_count_max  = "10"
   node_labels = {
   "nodo" = "true", },
@@ -58,6 +58,13 @@ route_aks = [
     #  aks nodo to nexi proxy
     name                   = "aks-outbound-to-nexy-sianet-prod-subnet"
     address_prefix         = "10.102.1.85/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # dev aks nodo oncloud
+    name                   = "aks-outbound-to-nexy-proxy-subnet"
+    address_prefix         = "10.79.20.35/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
   },
@@ -112,10 +119,66 @@ vmss_instance_number = 1
 nodo_re_to_datastore_function = {
   always_on                    = true
   kind                         = "Linux"
-  sku_size                     = "B1"
+  sku_size                     = "P1v3"
   sku_tier                     = "Basic"
   maximum_elastic_worker_count = 0
 }
 nodo_re_to_datastore_function_always_on       = true
 nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]
-nodo_re_to_datastore_network_policies_enabled = false
+nodo_re_to_datastore_network_policies_enabled = true
+nodo_re_to_datastore_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
+
+nodo_re_to_tablestorage_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "P1v3"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
+}
+nodo_re_to_tablestorage_function_subnet          = ["10.1.184.0/24"]
+nodo_re_to_tablestorage_network_policies_enabled = true
+nodo_re_to_tablestorage_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
+
+
+pod_disruption_budgets = {
+  "node-technicalsupport" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "node-technicalsupport"
+    }
+  },
+
+  "nodo" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "nodo"
+    }
+  },
+  "nodo-cfg-data-migration" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "nodo-cfg-data-migration"
+    }
+  },
+
+  "pagopawebbo" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopawebbo"
+    }
+  },
+  "pagopawfespwfesp" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopawfespwfesp"
+    }
+  },
+}

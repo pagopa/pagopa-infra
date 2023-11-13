@@ -34,7 +34,7 @@ tls_cert_check_helm = {
 }
 
 # function_app docker
-reporting_batch_image    = "pagopagpdreportingbatch"
+reporting_batch_image    = "pagopa/pagopa-gpd-reporting-batch"
 reporting_service_image  = "pagopagpdreportingservice"
 reporting_analysis_image = "pagopagpdreportinganalysis"
 
@@ -61,16 +61,42 @@ cname_record_name = "config"
 # APIM
 apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"
 
-# gpd
-gpd_plan_kind                = "Linux"
-gpd_plan_sku_tier            = "PremiumV3"
-gpd_plan_sku_size            = "P1v3"
-gpd_always_on                = true
-gpd_cron_job_enable          = true
-gpd_cron_schedule_valid_to   = "0 */30 * * * *"
-gpd_cron_schedule_expired_to = "0 */40 * * * *"
-gpd_autoscale_minimum        = 1
-gpd_autoscale_maximum        = 3
-gpd_autoscale_default        = 1
 # gpd database config for gpd-app-service
 pgbouncer_enabled = true
+
+pod_disruption_budgets = {
+  "gpd-core" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "gpd-core"
+    }
+  },
+  "pagopagpdpayments" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopagpdpayments"
+    }
+  },
+
+  "pagopagpsdonationservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopagpsdonationservice"
+    }
+  },
+
+  "pagopareportingorgsenrollment" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopareportingorgsenrollment"
+    }
+  },
+
+  "pagopaspontaneouspayments" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaspontaneouspayments"
+    }
+  },
+}
+

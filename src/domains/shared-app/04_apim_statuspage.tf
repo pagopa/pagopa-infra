@@ -43,11 +43,6 @@ resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
   versioning_scheme   = "Segment"
 }
 
-data "azurerm_linux_function_app" "api_config" {
-  name                = format("%s-%s-app-api-config", var.prefix, var.env_short)
-  resource_group_name = format("%s-%s-api-config-rg", var.prefix, var.env_short)
-}
-
 data "azurerm_function_app" "authorizer" {
   name                = format("%s-%s-%s-shared-authorizer-fn", var.prefix, var.env_short, var.location_short)
   resource_group_name = format("%s-%s-%s-shared-rg", var.prefix, var.env_short, var.location_short)
@@ -73,15 +68,15 @@ data "azurerm_function_app" "reporting_service" {
   resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
 }
 
-data "azurerm_linux_function_app" "gpd" {
-  name                = format("%s-%s-app-gpd", var.prefix, var.env_short)
-  resource_group_name = format("%s-%s-gpd-rg", var.prefix, var.env_short)
-}
-
 data "azurerm_linux_function_app" "mockec" {
   count               = var.env_short != "p" ? 1 : 0
   name                = format("%s-%s-app-mock-ec", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-mock-ec-rg", var.prefix, var.env_short)
+}
+
+data "azurerm_linux_web_app" "pdf_engine" {
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
 }
 
 module "apim_api_statuspage_api_v1" {
@@ -112,17 +107,18 @@ module "apim_api_statuspage_api_v1" {
       "afmcalculator"         = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
       "afmmarketplace"        = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
       "afmutils"              = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
-      "apiconfig"             = format("%s/apiconfig/api/v1", data.azurerm_linux_function_app.api_config.default_hostname)
+      "apiconfig"             = format("%s/pagopa-api-config-core-service/o", format(local.aks_path, "apiconfig"))
       "apiconfigcacheo"       = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
       "apiconfigcachep"       = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
       "apiconfigselfcare"     = format("%s/pagopa-api-config-selfcare-integration", format(local.aks_path, "apiconfig"))
       "authorizer"            = format("%s/", data.azurerm_function_app.authorizer.default_hostname)
+      "authorizerconfig"      = format("%s//authorizer-config", format(local.aks_path, "shared"))
       "bizevents"             = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastoreneg" = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastorepos" = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
       "canoneunico"           = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
       "fdrndpnew"             = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
-      "gpd"                   = format("%s/", data.azurerm_linux_function_app.gpd.default_hostname)
+      "gpd"                   = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
       "gpdpayments"           = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
       "gpdenrollment"         = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
       "gpdreportinganalysis"  = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
@@ -133,8 +129,11 @@ module "apim_api_statuspage_api_v1" {
       "mockec"                = var.env_short != "p" ? format("%s/", data.azurerm_linux_function_app.mockec[0].default_hostname) : "NA"
       "mockconfig"            = var.env_short != "p" ? format("%s/pagopa-mock-config-be", format(local.aks_path, "mock")) : "NA"
       "mocker"                = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
-      "pdfengine"             = format("%s/pagopa-pdf-engine", format(local.aks_path, "shared"))
+      "pdfengine"             = format("%s/", data.azurerm_linux_web_app.pdf_engine.default_hostname)
       "receiptpdfdatastore"   = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
+      "receiptpdfgenerator"   = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
+      "receiptpdfnotifier"    = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
+      "receiptpdfservice"     = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
     }), "\"", "\\\"")
   })
 }

@@ -65,3 +65,56 @@ image_name = "reporting-fdr"
 image_tag  = "latest"
 
 apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+
+# fdr re
+fdr_re_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "P1v3"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
+}
+fdr_re_function_always_on                = true
+fdr_re_function_subnet                   = ["10.1.181.0/24"]
+fdr_re_function_network_policies_enabled = false
+fdr_re_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
+
+# fdr xml to json
+fdr_xml_to_json_function_subnet                   = ["10.1.182.0/24"]
+fdr_xml_to_json_function_network_policies_enabled = true
+fdr_xml_to_json_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
+}
+
+fdr_xml_to_json_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
+
+# fdr json to xml
+fdr_json_to_xml_function_subnet                   = ["10.1.185.0/24"]
+fdr_json_to_xml_function_network_policies_enabled = true
+fdr_json_to_xml_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
+}
+
+fdr_json_to_xml_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
+
+ftp_organization = "80078750587,00488410010,97532760580,12300020158"

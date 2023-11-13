@@ -43,6 +43,7 @@ pgres_flex_params = {
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 1048576
   zone                                   = 1
+  standby_ha_zone                        = 2
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
@@ -111,14 +112,14 @@ custom_metric_alerts = {
   }
 }
 
-cosmos_mongo_db_params = {
+cosmos_nosql_db_params = {
   enabled      = true
-  kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 5
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
   server_version                    = "4.0"
@@ -131,18 +132,13 @@ cosmos_mongo_db_params = {
 
   backup_continuous_enabled = false
 
+  events_ttl     = 2629800 # 1 month in second
+  max_throughput = 1000
 }
 
-nodo_storico_allowed_ips     = ["93.63.219.230"]
 cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
 
-cosmos_mongo_db_nodo_re_params = {
-  enable_serverless  = true
-  enable_autoscaling = true
-  max_throughput     = 5000
-  throughput         = 1000
-  events_ttl         = 2592000 # 30 days
-}
+nodo_storico_allowed_ips = ["93.63.219.230"]
 
 nodo_re_storage_account = {
   account_kind                  = "StorageV2"
@@ -150,6 +146,19 @@ nodo_re_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
-  blob_delete_retention_days    = 90
+  blob_delete_retention_days    = 0
   public_network_access_enabled = false
+  backup_enabled                = false
+
+}
+
+nodo_storico_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
+  backup_enabled                = false
+  blob_delete_retention_days    = 0
 }

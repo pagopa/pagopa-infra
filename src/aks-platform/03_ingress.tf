@@ -50,22 +50,6 @@ module "nginx_ingress" {
 
   set = [
     {
-      name  = "controller.image.registry"
-      value = var.nginx_helm.controller.image.registry
-    },
-    {
-      name  = "controller.image.image"
-      value = var.nginx_helm.controller.image.image
-    },
-    {
-      name  = "controller.image.tag"
-      value = var.nginx_helm.controller.image.tag
-    },
-    {
-      name  = "controller.image.digest"
-      value = var.nginx_helm.controller.image.digest
-    },
-    {
       name  = "controller.image.digestChroot"
       value = var.nginx_helm.controller.image.digestchroot
     },
@@ -88,6 +72,10 @@ module "nginx_ingress" {
     {
       name  = "controller.resources.requests.memory"
       value = var.nginx_helm.controller.resources.requests.memory
+    },
+    {
+      name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-health-probe-request-path"
+      value = "/healthz"
     },
     {
       # To overcome 1m size limit of https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-body-size

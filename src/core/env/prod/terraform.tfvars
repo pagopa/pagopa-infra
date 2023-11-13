@@ -47,7 +47,8 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis = ["10.1.163.0/24"]
+cidr_subnet_redis                = ["10.1.163.0/24"]
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -115,9 +116,9 @@ app_gateway_deny_paths = [
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal*",
-  "/payment-manager/pm-per-nodo/.*",
-  "/checkout/io-for-node/.*",
-  "/gpd-payments/.*", # internal use no sub-keys SOAP
+  #  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #"/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
@@ -158,6 +159,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "213.215.138.79", # Softlab L1 Pagamenti VPN
     "82.112.220.178", # Softlab L1 Pagamenti VPN
     "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
   ]
@@ -218,7 +220,7 @@ checkout_function_autoscale_default = 1
 checkout_pagopaproxy_host           = "https://io-p-app-pagopaproxyprod.azurewebsites.net"
 
 # ecommerce ingress hostname
-ecommerce_ingress_hostname = "disabled"
+ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
 
 ehns_sku_name = "Standard"
 
@@ -266,8 +268,10 @@ ehns_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values = ["nodo-dei-pagamenti-log",
-        "nodo-dei-pagamenti-re"]
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
       }
     ],
   },
@@ -311,7 +315,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -336,11 +340,38 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
       }
     ]
   },
   {
-    name              = "nodo-dei-pagamenti-fdr"
+    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["fdr-re-rx"]
+    keys = [
+      {
+        name   = "fdr-re-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-re-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
     partitions        = 32
     message_retention = 7
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
@@ -504,7 +535,40 @@ eventhubs_02 = [
       }
     ]
   },
+  {
+    name              = "quality-improvement-alerts"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-alert-rx", "pagopa-qi-alert-rx-pdnd", "pagopa-qi-alert-rx-debug"]
+    keys = [
+      {
+        name   = "pagopa-qi-alert-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-debug"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
 ]
+
 # acr
 acr_enabled = true
 
@@ -629,3 +693,8 @@ node_forwarder_size            = "P1v3"
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
+devops_agent_zones         = [1, 2, 3]
+devops_agent_balance_zones = false
+
+enable_logos_backup            = true
+logos_sa_delete_retention_days = 30

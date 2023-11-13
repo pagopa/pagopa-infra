@@ -1,4 +1,5 @@
 resource "azurerm_resource_group" "nodo_storico_rg" {
+  count    = var.env_short == "d" ? 0 : 1
   name     = format("%s-storico-rg", local.project)
   location = var.location
 
@@ -6,7 +7,7 @@ resource "azurerm_resource_group" "nodo_storico_rg" {
 }
 
 module "nodo_storico_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
   count  = var.env_short == "d" ? 0 : 1
 
   enable_low_availability_alert = false
@@ -17,13 +18,20 @@ module "nodo_storico_storage_account" {
   account_replication_type        = var.nodo_storico_storage_account.account_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.nodo_storico_storage_account.blob_versioning_enabled
-  resource_group_name             = azurerm_resource_group.nodo_storico_rg.name
+  resource_group_name             = azurerm_resource_group.nodo_storico_rg[0].name
   location                        = var.location
   advanced_threat_protection      = var.nodo_storico_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = var.nodo_storico_storage_account.public_network_access_enabled
 
-  blob_delete_retention_days = 0 # disabled
+  blob_delete_retention_days           = var.nodo_storico_storage_account.blob_delete_retention_days
+  blob_change_feed_enabled             = var.nodo_storico_storage_account.backup_enabled
+  blob_change_feed_retention_in_days   = var.nodo_storico_storage_account.backup_enabled ? var.nodo_storico_storage_account.backup_retention : null
+  blob_container_delete_retention_days = var.nodo_storico_storage_account.backup_retention
+  blob_storage_policy = {
+    enable_immutability_policy = false
+    blob_restore_policy_days   = var.nodo_storico_storage_account.backup_retention
+  }
 
   network_rules = {
     default_action             = "Deny"
@@ -40,7 +48,7 @@ resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
 
   name                = format("%s-storico-private-endpoint", local.project)
   location            = var.location
-  resource_group_name = azurerm_resource_group.nodo_storico_rg.name
+  resource_group_name = azurerm_resource_group.nodo_storico_rg[0].name
   subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
 
   private_dns_zone_group {
@@ -64,6 +72,7 @@ resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
 
 # blob container#1 nodo-storico
 resource "azurerm_storage_container" "storico_container" {
+  count                 = var.env_short == "d" ? 0 : 1
   name                  = "storico"
   storage_account_name  = module.nodo_storico_storage_account[0].name
   container_access_type = "private"

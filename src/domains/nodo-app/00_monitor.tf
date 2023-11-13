@@ -68,7 +68,7 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_moetrics_error" {
     metric_namespace = "Insights.Container/pods"
     metric_name      = "podCount"
     operator         = "GreaterThan"
-    threshold        = 20
+    threshold        = 30
     dimension {
       name     = "kubernetes namespace"
       operator = "Include"
@@ -81,9 +81,6 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_moetrics_error" {
     }
 
   }
-
-
-
 
   action {
     action_group_id    = data.azurerm_monitor_action_group.slack.id

@@ -108,6 +108,7 @@ variable "pgres_flex_params" {
     db_version                             = string
     storage_mb                             = string
     zone                                   = number
+    standby_ha_zone                        = number
     backup_retention_days                  = number
     geo_redundant_backup_enabled           = bool
     create_mode                            = string
@@ -151,6 +152,12 @@ variable "sftp_enable_private_endpoint" {
 variable "cidr_subnet_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
+}
+
+variable "storage_account_snet_private_link_service_network_policies_enabled" {
+  type        = bool
+  description = "If true, create a private link service"
+  default     = true
 }
 
 variable "custom_metric_alerts" {
@@ -252,15 +259,14 @@ variable "ndp_redis_params" {
 }
 
 
-# CosmosDb
+# CosmosDB
 variable "cidr_subnet_cosmosdb_nodo_re" {
   type        = list(string)
   description = "Cosmos DB address space for nodo re."
 }
 
-variable "cosmos_mongo_db_params" {
+variable "cosmos_nosql_db_params" {
   type = object({
-    enabled        = bool
     capabilities   = list(string)
     offer_type     = string
     server_version = string
@@ -272,7 +278,6 @@ variable "cosmos_mongo_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -282,18 +287,12 @@ variable "cosmos_mongo_db_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
+    events_ttl                        = number
+    max_throughput                    = number
   })
 }
 
-variable "cosmos_mongo_db_nodo_re_params" {
-  type = object({
-    enable_serverless  = bool
-    enable_autoscaling = bool
-    throughput         = number
-    max_throughput     = number
-    events_ttl         = number
-  })
-}
+# Nodo RE Storage Account
 
 variable "nodo_re_storage_account" {
   type = object({
@@ -304,6 +303,8 @@ variable "nodo_re_storage_account" {
     blob_delete_retention_days    = number
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention              = optional(number, 0)
   })
   default = {
     account_kind                  = "StorageV2"
@@ -311,8 +312,10 @@ variable "nodo_re_storage_account" {
     account_replication_type      = "LRS"
     blob_versioning_enabled       = false
     advanced_threat_protection    = false
-    blob_delete_retention_days    = 3653
+    blob_delete_retention_days    = 0
     public_network_access_enabled = false
+    backup_enabled                = false
+    backup_retention              = 0
   }
 }
 
@@ -324,6 +327,10 @@ variable "nodo_storico_storage_account" {
     advanced_threat_protection    = bool
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
+    backup_enabled                = bool
+    blob_delete_retention_days    = number
+    backup_retention              = optional(number, 0)
+
   })
   default = {
     account_kind                  = "StorageV2"
@@ -332,6 +339,10 @@ variable "nodo_storico_storage_account" {
     blob_versioning_enabled       = false
     advanced_threat_protection    = true
     public_network_access_enabled = true
+    backup_enabled                = false
+    blob_delete_retention_days    = 0
+    backup_retention              = 0
+
   }
 }
 
@@ -339,4 +350,23 @@ variable "nodo_storico_allowed_ips" {
   type        = list(string)
   description = "List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed"
   default     = []
+}
+
+
+variable "enable_sftp_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "sftp_sa_delete_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage delete retention"
+}
+
+variable "sftp_sa_backup_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage backup retention"
 }

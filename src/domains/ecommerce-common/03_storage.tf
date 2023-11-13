@@ -170,3 +170,282 @@ resource "azurerm_storage_queue" "notifications_service_errors_queue" {
   name                 = "${local.project}-notifications-service-errors-queue"
   storage_account_name = module.ecommerce_storage_deadletter.name
 }
+
+# Ecommerce transient queue alert diagnostic settings
+resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnostics" {
+  count                      = var.env_short == "p" ? 1 : 0
+  name                       = "${module.ecommerce_storage_transient.name}-diagnostics"
+  target_resource_id         = "${module.ecommerce_storage_transient.id}/queueServices/default/"
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  enabled_log {
+    category = "StorageWrite"
+
+    retention_policy {
+      enabled = true
+      days    = 7
+    }
+  }
+  metric {
+    category = "Capacity"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+
+  enabled_log {
+    category = "StorageDelete"
+
+    retention_policy {
+      enabled = true
+      days    = 7
+    }
+  }
+}
+
+locals {
+  queue_transient_alert_props = var.env_short == "p" ? [
+    {
+      "queue_key"   = "transactions-expiration-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transaction-notifications-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "notifications-service-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transaction-notifications-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transactions-close-payment-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transactions-close-payment-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transactions-refund-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transactions-refund-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+  ] : []
+}
+
+# Queue size: Ecommerce - ecommerce queues enqueues rate alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqueue_rate_alert" {
+  for_each            = { for q in local.queue_transient_alert_props : q.queue_key => q }
+  name                = "${local.project}-${each.value.queue_key}-rate-alert"
+  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = module.ecommerce_storage_transient.id
+  description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
+  enabled        = true
+  query = format(<<-QUERY
+    let OpCountForQueue = (operation: string, queueKey: string) {
+      StorageQueueLogs
+      | where OperationName == operation and ObjectKey startswith queueKey
+      | summarize count()
+    };
+    let MessageRateForQueue = (queueKey: string) {
+      OpCountForQueue("PutMessage", queueKey)
+      | join kind=fullouter OpCountForQueue("DeleteMessage", queueKey) on count_
+      | project name = queueKey, Count = count_ - count_1
+    };
+    MessageRateForQueue("%s")
+    | where Count > ${each.value.threshold}
+    QUERY
+    , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
+  )
+  severity    = each.value.severity
+  frequency   = each.value.frequency
+  time_window = each.value.time_window
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
+}
+
+
+# eCommerce deadletter queue alert diagnostic settings
+resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagnostics" {
+  count                      = var.env_short == "p" ? 1 : 0
+  name                       = "${module.ecommerce_storage_deadletter.name}-diagnostics"
+  target_resource_id         = "${module.ecommerce_storage_deadletter.id}/queueServices/default/"
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  enabled_log {
+    category = "StorageWrite"
+
+    retention_policy {
+      enabled = true
+      days    = 7
+    }
+  }
+  metric {
+    category = "Capacity"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
+}
+
+
+locals {
+  queue_deadletter_alert_props = var.env_short == "p" ? [
+    {
+      "queue_key"   = "notifications-service-errors-queue"
+      "severity"    = 3
+      "time_window" = 15
+      "frequency"   = 15
+      "threshold"   = 0
+    },
+    {
+      "queue_key"   = "transactions-dead-letter-queue"
+      "severity"    = 3
+      "time_window" = 15
+      "frequency"   = 15
+      "threshold"   = 0
+    },
+  ] : []
+}
+
+# Queue size: Ecommerce - ecommerce deadletter queues write alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_filling_rate_alert" {
+  for_each            = { for q in local.queue_deadletter_alert_props : q.queue_key => q }
+  name                = "${local.project}-${each.value.queue_key}-rate-alert"
+  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = module.ecommerce_storage_deadletter.id
+  description    = format("Deadletter message write happened in queue %s during the last ${each.value.time_window} mins", replace("${each.value.queue_key}", "-", " "))
+  enabled        = true
+  query = format(<<-QUERY
+      StorageQueueLogs
+      | where OperationName == "PutMessage" and ObjectKey startswith "%s"
+      | summarize count()
+      | where count_ > ${each.value.threshold}
+    QUERY
+    , "/${module.ecommerce_storage_deadletter.name}/${local.project}-${each.value.queue_key}"
+  )
+  severity    = each.value.severity
+  frequency   = each.value.frequency
+  time_window = each.value.time_window
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
+}
+
+locals {
+  storage_accounts_queue_message_count_alert_props = var.env_short == "p" ? [
+    {
+      "storage_account_id"   = "${module.ecommerce_storage_transient.id}"
+      "storage_account_name" = "${module.ecommerce_storage_transient.name}"
+      "severity"             = 1
+      "time_window"          = "PT1H"
+      "frequency"            = "PT15M"
+      "threshold"            = 100
+    },
+    {
+      "storage_account_id"   = "${module.ecommerce_storage_deadletter.id}"
+      "storage_account_name" = "${module.ecommerce_storage_deadletter.name}"
+      "severity"             = 1
+      "time_window"          = "PT1H"
+      "frequency"            = "PT15M"
+      "threshold"            = 10
+    },
+  ] : []
+}
+
+resource "azurerm_monitor_metric_alert" "queue_storage_account_average_messge_count" {
+  for_each = { for q in local.storage_accounts_queue_message_count_alert_props : q.storage_account_id => q }
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${each.value.storage_account_name}] Queue message count average exceeds ${each.value.threshold}"
+  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
+  scopes              = ["${each.value.storage_account_id}/queueServices/default"]
+  description         = "Queue message count average exceeds ${each.value.threshold} for the storage"
+  severity            = each.value.severity
+  window_size         = each.value.time_window
+  frequency           = each.value.frequency
+  auto_mitigate       = false
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftclassicstoragestorageaccountsqueueservices
+  criteria {
+    metric_namespace       = "Microsoft.Storage/storageAccounts/queueServices"
+    metric_name            = "QueueMessageCount"
+    aggregation            = "Average"
+    operator               = "GreaterThan"
+    threshold              = each.value.threshold
+    skip_metric_validation = false
+  }
+}

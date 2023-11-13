@@ -62,11 +62,12 @@ cosmos_gps_db_params = {
 pgres_flex_params = {
 
   private_endpoint_enabled = true
-  sku_name                 = "GP_Standard_D4s_v3"
+  sku_name                 = "GP_Standard_D4ds_v4"
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                   = 32768
+  # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
+  storage_mb                   = 1048576 # 1Tib
   zone                         = 1
   backup_retention_days        = 7
   geo_redundant_backup_enabled = true
@@ -74,7 +75,8 @@ pgres_flex_params = {
   high_availability_enabled    = true
   standby_availability_zone    = 2
   pgbouncer_enabled            = true
-
+  alerts_enabled               = true
+  max_connections              = 5000
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
@@ -94,15 +96,37 @@ cosmos_gpd_payments_db_params = {
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+  private_endpoint_enabled          = true
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = false
 
+  payments_receipts_table = {
+    autoscale  = true
+    throughput = 3000
+  }
+
 }
 
 cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
-enable_iac_pipeline = true
+enable_iac_pipeline                   = true
+gpd_payments_versioning               = true
+enable_gpd_payments_backup            = true
+gpd_payments_sa_delete_retention_days = 31
+gpd_payments_sa_backup_retention_days = 30
+
+
+reporting_storage_account = {
+  blob_versioning_enabled    = true
+  advanced_threat_protection = true
+  blob_delete_retention_days = 31
+  backup_enabled             = true
+  backup_retention           = 30
+}

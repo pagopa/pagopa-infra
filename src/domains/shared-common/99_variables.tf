@@ -134,7 +134,6 @@ variable "cosmos_iuvgenerator_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -185,7 +184,6 @@ variable "cosmos_authorizer_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -207,4 +205,54 @@ variable "github_runner" {
   default = {
     subnet_address_prefixes = ["10.1.164.0/23"]
   }
+}
+
+
+variable "taxonomy_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
+  })
+}
+variable "cidr_subnet_taxonomy_storage_account" {
+  type        = list(string)
+  description = "Storage account network address space."
+}
+variable "taxonomy_network_rules" {
+  type = object({
+    default_action             = string
+    ip_rules                   = list(string)
+    virtual_network_subnet_ids = list(string)
+    bypass                     = set(string)
+  })
+  description = "Network configuration of Taxonomy storage account"
+  default     = null
+}
+
+variable "test_data_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+  })
+  default = null
+}
+
+variable "cidr_subnet_test_data_storage_account" {
+  type        = list(string)
+  description = "Storage account network address space."
+  default     = null
 }

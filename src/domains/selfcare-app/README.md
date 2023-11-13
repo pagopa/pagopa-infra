@@ -16,9 +16,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_api_backoffice_apiConfig_api_v1"></a> [apim\_api\_backoffice\_apiConfig\_api\_v1](#module\_apim\_api\_backoffice\_apiConfig\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.7.0 |
+| <a name="module_apim_api_selfcare_api_subkey_v1"></a> [apim\_api\_selfcare\_api\_subkey\_v1](#module\_apim\_api\_selfcare\_api\_subkey\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.7.0 |
 | <a name="module_apim_api_selfcare_api_v1"></a> [apim\_api\_selfcare\_api\_v1](#module\_apim\_api\_selfcare\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.7.0 |
 | <a name="module_apim_selfcare_product"></a> [apim\_selfcare\_product](#module\_apim\_selfcare\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
+| <a name="module_apim_selfcare_product_subkey"></a> [apim\_selfcare\_product\_subkey](#module\_apim\_selfcare\_product\_subkey) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.7.0 |
 | <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v6.7.0 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.7.0 |
@@ -30,8 +31,8 @@
 | [azurerm_api_management_api.pagopa_token_exchange](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api_operation.pagopa_token_exchange](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api_operation) | resource |
 | [azurerm_api_management_api_operation_policy.pagopa_token_exchange_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_version_set.api_backoffice_apiConfig_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_selfcare_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_selfcare_api_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_certificate) | resource |
 | [azurerm_key_vault_certificate.pagopa_jwt_signing_cert](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/key_vault_certificate) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/key_vault_secret) | resource |
@@ -47,6 +48,7 @@
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
+| [kubernetes_pod_disruption_budget_v1.selfcare](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/pod_disruption_budget_v1) | resource |
 | [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
 | [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/service_account) | resource |
@@ -89,6 +91,7 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
+| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br>    name         = optional(string, null)<br>    minAvailable = optional(number, null)<br>    matchLabels  = optional(map(any), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_robots_indexed_paths"></a> [robots\_indexed\_paths](#input\_robots\_indexed\_paths) | List of cdn paths to allow robots index | `list(string)` | n/a | yes |
 | <a name="input_selfcare_fe_enabled"></a> [selfcare\_fe\_enabled](#input\_selfcare\_fe\_enabled) | selfcare FE enabled | `bool` | `false` | no |
