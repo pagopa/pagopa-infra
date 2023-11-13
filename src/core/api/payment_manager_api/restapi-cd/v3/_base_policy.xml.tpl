@@ -80,7 +80,7 @@
                   endIdx = endIdx<0 ? cookieHeaderValue.Length : endIdx;
                   return cookieHeaderValue.Substring(startIdx, endIdx-startIdx).Split('=')[1];
                 }
-              return "";
+              return "false";
           }" />
           <set-variable name="ecommerceTransactionId" value="@{
               string cookieHeaderValue = context.Request.Headers.GetValueOrDefault("Cookie","");
@@ -93,11 +93,16 @@
                 }
               return "";
           }" />
-          <set-header name="Set-Cookie" exists-action="override">
-            <value>walletId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
-            <value>isEcommerceTransaction=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
-            <value>ecommerceTransactionId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
-          </set-header>
+          <choose>
+            <when condition="@( (string)context.Variables["isEcommerceTransaction"] == "true")">
+              <set-header name="Set-Cookie" exists-action="override">
+                <value>walletId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+                <value>isEcommerceTransaction=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+                <value>ecommerceTransactionId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+              </set-header>
+            </when>
+          </choose>
+          
           <set-header name="location" exists-action="override">
             <value>@{
                 string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}";
