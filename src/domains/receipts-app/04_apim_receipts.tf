@@ -78,6 +78,16 @@ module "apim_api_receipts_api_v1" {
   })
 }
 
+resource "azurerm_api_management_api_version_set" "api_receipts_datastore_api" {
+
+  name                = format("%s-receipts-datastore-service-api", var.env_short)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_receipts_datastore_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+
 module "apim_api_receipts_datastore_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
@@ -86,7 +96,7 @@ module "apim_api_receipts_datastore_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_receipts_product.product_id]
   subscription_required = local.apim_receipts_datastore_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_receipts_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_receipts_datastore_api.id
   api_version           = "v1"
 
   description  = local.apim_receipts_datastore_api.description
