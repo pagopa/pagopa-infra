@@ -37,7 +37,7 @@ module "postgres_flexible_snet" {
 }
 
 module "postgres_flexible_server_fdr" {
-  source                      = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v6.2.1"
+  source                      = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v7.23.0"
   name                        = "${local.project}-flexible-postgresql"
   location                    = azurerm_resource_group.db_rg.location
   resource_group_name         = azurerm_resource_group.db_rg.name
@@ -71,6 +71,13 @@ module "postgres_flexible_server_fdr" {
       webhook_properties = null
     }
   ]
+
+
+  private_dns_registration = var.geo_replica_enabled
+  private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
+  private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
+  private_dns_record_cname = "fdr-db"
+
   tags = var.tags
 }
 

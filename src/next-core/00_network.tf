@@ -15,3 +15,4 @@ data "azurerm_virtual_network" "vnet_integration" {
 data "azurerm_resource_group" "rg_vnet_integration" {
   name = local.vnet_integration_resource_group_name
 }
+

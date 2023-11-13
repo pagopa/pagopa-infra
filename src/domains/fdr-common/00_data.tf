@@ -7,3 +7,4 @@ data "azurerm_api_management" "apim" {
 data "azurerm_resource_group" "rg_api" {
   name = "${local.product}-api-rg"
 }
+

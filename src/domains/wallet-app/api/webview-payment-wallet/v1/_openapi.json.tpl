@@ -286,7 +286,7 @@
             "type": "string",
             "description": "Wallet  verify request details discriminator field.",
             "enum": [
-              "CARD"
+              "CARDS"
             ]
           },
           "iframeUrl": {
