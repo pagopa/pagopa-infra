@@ -11,6 +11,7 @@
         </allowed-methods>
         <allowed-headers>
           <header>Content-Type</header>
+          <header>Authorization</header>
         </allowed-headers>
       </cors>
       <base />
