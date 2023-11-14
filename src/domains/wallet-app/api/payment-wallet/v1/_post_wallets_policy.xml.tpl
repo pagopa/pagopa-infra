@@ -72,6 +72,22 @@
     <choose>
         <when condition="@(context.Response.StatusCode == 201)">
             <!-- Token JWT START-->
+            <set-variable name="walletId" value="@{
+              var redirectUrl = context.Response.Body.As<JObject>()["redirectUrl"];
+              var redirectUriFragment = new Uri(((string)context.Variables.GetValueOrDefault("redirectUrl",""))).Fragment;
+              if(redirectUriFragment.StartsWith("#")) {
+                redirectUriFragment = redirectUriFragment.Substring(1);
+              }
+              var fragments = redirectUriFragment.Split('&');
+              var walletId = "";
+              foreach (var fragment in fragments)
+                {
+                    if(fragment.StartsWith("walletId")) {
+                      walletId = fragment.Split("=");
+                    }
+                }
+                return walletId;
+                }" />
             <set-variable name="x-jwt-token" value="@{
             // Construct the Base64Url-encoded header
             var header = new { typ = "JWT", alg = "HS256" };
@@ -79,8 +95,9 @@
   
             // 2) Construct the Base64Url-encoded payload 
             var exp = new DateTimeOffset(DateTime.Now.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
-            var fiscalCodeTokenized = ((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized","")); // wihich is the value to pass to the payload as a claim? wallet_token?
-            var payload = new { exp, fiscalCodeTokenized }; 
+            var fiscalCodeTokenized = ((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized","")); 
+            var walletId = ((string)context.Variables.GetValueOrDefault("walletId",""));
+            var payload = new { exp, fiscalCodeTokenized, walletId }; 
             var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
   
             // 3) Construct the Base64Url-encoded signature                
