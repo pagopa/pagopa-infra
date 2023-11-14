@@ -318,7 +318,6 @@ variable "cidr_common_private_endpoint_snet" {
   description = "Common Private Endpoint network address space."
 }
 
-
 # apim
 variable "apim_publisher_name" {
   type = string
@@ -1460,7 +1459,6 @@ variable "cosmos_document_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -1575,4 +1573,30 @@ variable "apim_fdr_nodo_pagopa_enable" {
   type        = bool
   default     = false
   description = "Enable Fdr Service Nodo pagoPA side"
+}
+
+variable "devops_agent_zones" {
+  type        = list(number)
+  default     = null
+  description = "(Optional) List of zones in which the scale set for azdo agent will be deployed"
+}
+
+
+variable "devops_agent_balance_zones" {
+  type        = bool
+  default     = false
+  description = "(Optional) True if the devops agent instances must be evenly balanced between the configured zones"
+}
+
+
+variable "enable_logos_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "logos_sa_delete_retention_days" {
+  type        = number
+  default     = null
+  description = "(Optional) nodo sftp storage delete retention"
 }

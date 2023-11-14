@@ -57,11 +57,24 @@
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
 
-        <choose>
-            <when condition="@(${is-fdr-nodo-pagopa-enable})">
+
+      <set-variable name="ftp_organization" value="{{ftp-organization}}" />
+      <set-variable name="is-ftp-enabled" value="@{
+                    var org_list = ((string) context.Variables["ftp_organization"]).Split(',');
+                    var org_fiscal_code = (string) context.Variables["identificativoDominio"];
+                    var is_ftp_enabled = Array.Exists(org_list, e => e == org_fiscal_code);
+                    return is_ftp_enabled;
+                    }" />
+
+      <choose>
+          <!--
+            if is-fdr-nodo-pagopa-enable == true && EC non FTP
+              then backend = fdr
+          -->
+            <when condition="@(${is-fdr-nodo-pagopa-enable} && !(bool)context.Variables["is-ftp-enabled"])">
                 <set-backend-service base-url="${base-url}" />
             </when>
-        </choose>   
+        </choose>
 
     </inbound>
     <backend>

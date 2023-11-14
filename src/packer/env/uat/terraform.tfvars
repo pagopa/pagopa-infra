@@ -13,3 +13,5 @@ tags = {
   Source      = "https://github.com/pagopa/pagopa-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
+
+dns_forwarder_backup_image_version = "v4"

@@ -67,8 +67,7 @@
             "description": "Event identifier"
           },
           "eventTime": {
-            "type": "integer",
-            "format": "int64",
+            "type": "string",
             "description": "Event timestamp in ISO 8601 format"
           },
           "securityToken": {

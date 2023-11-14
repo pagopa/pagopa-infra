@@ -54,10 +54,9 @@ authorizer_functions_autoscale = {
 taxonomy_function_subnet                   = ["10.1.183.0/24"]
 taxonomy_function_network_policies_enabled = false
 taxonomy_function = {
-  always_on                    = false
+  always_on                    = true
   kind                         = "Linux"
   sku_size                     = "B1"
-  sku_tier                     = "Basic"
   maximum_elastic_worker_count = null
 }
 taxonomy_function_autoscale = {

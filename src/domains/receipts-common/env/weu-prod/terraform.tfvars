@@ -61,3 +61,7 @@ cidr_subnet_receipts_datastore_cosmosdb = ["10.1.171.0/24"]
 cidr_subnet_receipts_datastore_storage  = ["10.1.172.0/24"]
 
 enable_iac_pipeline = true
+
+enable_sa_backup                               = true
+receipts_datastore_fn_sa_delete_retention_days = 31
+receipts_datastore_fn_sa_backup_retention_days = 30
