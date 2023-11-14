@@ -32,10 +32,19 @@ extract("FaultCode PA: ([A-Z_]+)", 1, tostring(json_resp["Envelope"]["Body"]["pr
 | where operation_Name == "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc" or operation_Name == "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0" // activatePaymentNotice v1 legacy or auth
 | summarize
 Total=count(),
-Success=countif(resp_outcome == "OK" or faultCode in ("PPT_PAGAMENTO_IN_CORSO","PPT_PAGAMENTO_DUPLICATO", "PPT_STAZIONE_INT_PA_TIMEOUT","PPT_ATTIVAZIONE_IN_CORSO", "PPT_ERRORE_EMESSO_DA_PAA"))
+Success=countif(resp_outcome == "OK"
+or faultCode in (
+"PPT_SINTASSI_EXTRAXSD", "PPT_SINTASSI_XSD", "PPT_DOMINIO_SCONOSCIUTO", "PPT_STAZIONE_INT_PA_SCONOSCIUTA",                  // Errori dati contenuti nell'avviso
+"PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE", "PPT_STAZIONE_INT_PA_TIMEOUT", "PPT_STAZIONE_INT_PA_ERRORE_RESPONSE",                // Errori imputabili all'EC
+"PPT_IBAN_NON_CENSITO", "PAA_SINTASSI_EXTRAXSD", "PAA_SINTASSI_XSD", "PAA_ID_DOMINIO_ERRATO", "PAA_SYSTEM_ERROR"            // Errori imputabili all'EC
+"PAA_ID_INTERMEDIARIO_ERRATO", "PAA_STAZIONE_INT_ERRATA", "PAA_ATTIVA_RPT_IMPORTO_NON_VALIDO", "PPT_ERRORE_EMESSO_DA_PAA",  // Errori imputabili all'EC
+"PAA_PAGAMENTO_IN_CORSO", "PPT_PAGAMENTO_IN_CORSO", "PAA_PAGAMENTO_SCADUTO", "PAA_PAGAMENTO_SCONOSCIUTO",                   // Pagamento in corso, errori avviso
+"PAA_PAGAMENTO_ANNULLATO", "PAA_PAGAMENTO_DUPLICATO", "PPT_PAGAMENTO_DUPLICATO",                                            // Avviso scaduto, sconosciuto, annullato, duplicato
+"PPT_ATTIVAZIONE_IN_CORSO"                                                                                                  // Meccanismo di prenotazione delle attivazioni tramite verificatore
+))
 by bin(timestamp, 5m)
 | extend availability=toreal(Success) / Total
-| where (Total >= 100 and availability < threshold ) or (Total < 100 and availability < 0.80)
+| where (Total >= 100 and availability < threshold ) or (Total > 20 and Total < 100 and availability < 0.80)
 QUERY
   )
 
@@ -108,7 +117,7 @@ extract("FaultCode PA: ([A-Z_]+)", 1, tostring(json_resp["Envelope"]["Body"]["pr
 }
 
 
-# TODO REFINE 
+# TODO REFINE
 
 # ## If the number of fault codes of type PPT_ERRORE_EMESSO_DA_PAA increases, the alert is triggered. The alert takes into account how many PSPs are impacted.
 # resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-pa-error-availability" {
