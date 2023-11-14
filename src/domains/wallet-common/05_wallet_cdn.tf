@@ -48,12 +48,7 @@ module "wallet_fe_cdn" {
       {
         action = "Overwrite"
         name   = "Content-Security-Policy"
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s *.nexigroup.com", var.dns_zone_prefix, var.external_domain)
-      },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy"
-        value  = " https://acardste.vaservices.eu:*;"
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s *.nexigroup.com;", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
