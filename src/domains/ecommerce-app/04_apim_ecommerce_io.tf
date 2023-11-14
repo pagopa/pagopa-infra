@@ -176,7 +176,7 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl", {ecommerce-basepath = local.ecommerce_hostname})
+  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl", { ecommerce-basepath = local.ecommerce_hostname })
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" {
