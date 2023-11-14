@@ -45,14 +45,15 @@ locals {
 
 ## Function nodo_re_to_tablestorage
 module "nodo_re_to_tablestorage_function" {
+  count  = var.enable_nodo_re ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
 
-  resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
+  resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg[0].name
   name                = "${local.project}-re-ts-fn"
 
   location          = var.location
   health_check_path = "/info"
-  subnet_id         = module.nodo_re_to_tablestorage_function_snet.id
+  subnet_id         = module.nodo_re_to_tablestorage_function_snet[0].id
   runtime_version   = "~4"
 
   system_identity_enabled = true
@@ -95,22 +96,22 @@ module "nodo_re_to_tablestorage_function" {
 }
 
 module "nodo_re_to_tablestorage_function_slot_staging" {
-  count = var.env_short == "p" ? 1 : 0
+  count = var.enable_nodo_re && var.env_short == "p" ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
 
-  app_service_plan_id                      = module.nodo_re_to_tablestorage_function.app_service_plan_id
-  function_app_id                          = module.nodo_re_to_tablestorage_function.id
-  storage_account_name                     = module.nodo_re_to_tablestorage_function.storage_account_name
-  storage_account_access_key               = module.nodo_re_to_tablestorage_function.storage_account.primary_access_key
+  app_service_plan_id                      = module.nodo_re_to_tablestorage_function[0].app_service_plan_id
+  function_app_id                          = module.nodo_re_to_tablestorage_function[0].id
+  storage_account_name                     = module.nodo_re_to_tablestorage_function[0].storage_account_name
+  storage_account_access_key               = module.nodo_re_to_tablestorage_function[0].storage_account.primary_access_key
   name                                     = "staging"
-  resource_group_name                      = azurerm_resource_group.nodo_re_to_datastore_rg.name
+  resource_group_name                      = azurerm_resource_group.nodo_re_to_datastore_rg[0].name
   location                                 = var.location
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   always_on                                = var.nodo_re_to_tablestorage_function.always_on
   health_check_path                        = "/info"
   runtime_version                          = "~4"
-  subnet_id                                = module.nodo_re_to_tablestorage_function_snet.id
+  subnet_id                                = module.nodo_re_to_tablestorage_function_snet[0].id
 
   # App settings
   app_settings = local.function_re_to_tablestorage_app_settings
@@ -130,11 +131,11 @@ module "nodo_re_to_tablestorage_function_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "nodo_re_to_tablestorage_function" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${module.nodo_re_to_tablestorage_function.name}-autoscale"
-  resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
+  count               = var.enable_nodo_re && var.env_short == "p" ? 1 : 0
+  name                = "${module.nodo_re_to_tablestorage_function[0].name}-autoscale"
+  resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg[0].name
   location            = var.location
-  target_resource_id  = module.nodo_re_to_tablestorage_function.app_service_plan_id
+  target_resource_id  = module.nodo_re_to_tablestorage_function[0].app_service_plan_id
 
   profile {
     name = "default"
@@ -148,7 +149,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_tablestorage_function" 
     rule {
       metric_trigger {
         metric_name        = "CpuPercentage"
-        metric_resource_id = module.nodo_re_to_tablestorage_function.app_service_plan_id
+        metric_resource_id = module.nodo_re_to_tablestorage_function[0].app_service_plan_id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
@@ -168,7 +169,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_re_to_tablestorage_function" 
     rule {
       metric_trigger {
         metric_name        = "CpuPercentage"
-        metric_resource_id = module.nodo_re_to_tablestorage_function.app_service_plan_id
+        metric_resource_id = module.nodo_re_to_tablestorage_function[0].app_service_plan_id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"

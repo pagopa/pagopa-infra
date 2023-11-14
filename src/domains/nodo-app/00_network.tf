@@ -9,6 +9,7 @@ data "azurerm_subnet" "aks_snet" {
 }
 
 module "nodo_re_to_datastore_function_snet" {
+  count                                     = var.enable_nodo_re ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                                      = "${local.project}-nodo-re-to-datastore-fn-snet"
   address_prefixes                          = var.nodo_re_to_datastore_function_subnet
@@ -31,6 +32,7 @@ module "nodo_re_to_datastore_function_snet" {
 }
 
 module "nodo_re_to_tablestorage_function_snet" {
+  count                                     = var.enable_nodo_re ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                                      = "${local.project}-nodo-re-to-tablestorage-fn-snet"
   address_prefixes                          = var.nodo_re_to_tablestorage_function_subnet
