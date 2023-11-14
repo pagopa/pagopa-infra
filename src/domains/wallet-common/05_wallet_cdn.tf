@@ -58,7 +58,7 @@ module "wallet_fe_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy"
-        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' *.platform.pagopa.it *.sia.eu *.nexigroup.com;"
+        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' *.platform.pagopa.it *.nexigroup.com;"
       },
       {
         action = "Append"
