@@ -32,7 +32,7 @@ module "nodo_re_storage_account" {
 }
 
 resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
-  count = var.enable_nodo_re && var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : 1
 
   name                = "${local.project}-re-private-endpoint"
   location            = var.location

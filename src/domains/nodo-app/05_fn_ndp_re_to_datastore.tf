@@ -1,23 +1,27 @@
 # info for cosmosdb nosql
 data "azurerm_cosmosdb_account" "nodo_re_cosmosdb_nosql" {
+  count               = var.enable_nodo_re ? 1 : 0
   name                = "${local.project}-re-cosmos-nosql-account"
   resource_group_name = format("%s-db-rg", local.project)
 }
 
 data "azurerm_cosmosdb_sql_database" "nodo_re_cosmosdb_nosql_db" {
+  count               = var.enable_nodo_re ? 1 : 0
   name                = "nodo_re"
-  resource_group_name = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.resource_group_name
-  account_name        = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.name
+  resource_group_name = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql[0].resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql[0].name
 }
 
 # info for event hub
 data "azurerm_eventhub" "pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re" {
+  count               = var.enable_nodo_re ? 1 : 0
   name                = "nodo-dei-pagamenti-re"
   resource_group_name = "${local.product}-msg-rg"
   namespace_name      = "${local.product}-evh-ns01"
 }
 
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx" {
+  count               = var.enable_nodo_re ? 1 : 0
   name                = "nodo-dei-pagamenti-re-to-datastore-rx"
   namespace_name      = "${local.product}-evh-ns01"
   eventhub_name       = "nodo-dei-pagamenti-re"
@@ -61,11 +65,11 @@ locals {
 
     DOCKER_REGISTRY_SERVER_URL = local.docker_settings.DOCKER_REGISTRY_SERVER_URL
 
-    COSMOS_CONN_STRING        = "AccountEndpoint=https://${local.project}-re-cosmos-nosql-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql.primary_key}"
+    COSMOS_CONN_STRING        = var.enable_nodo_re ? "AccountEndpoint=https://${local.project}-re-cosmos-nosql-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.nodo_re_cosmosdb_nosql[0].primary_key}" : ""
     COSMOS_DB_NAME            = "nodo_re"
     COSMOS_DB_COLLECTION_NAME = "events"
 
-    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx.primary_connection_string
+    EVENTHUB_CONN_STRING = var.enable_nodo_re ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx[0].primary_connection_string : ""
   }
 
   docker_settings = {
@@ -167,7 +171,7 @@ module "nodo_re_to_datastore_function_slot_staging" {
 resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {
   count               = var.enable_nodo_re && var.env_short == "p" ? 1 : 0
   name                = "${module.nodo_re_to_datastore_function[0].name}-autoscale"
-  resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg.name
+  resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg[0].name
   location            = var.location
   target_resource_id  = module.nodo_re_to_datastore_function[0].app_service_plan_id
 
