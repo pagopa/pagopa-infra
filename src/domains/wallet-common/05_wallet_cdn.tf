@@ -63,7 +63,7 @@ module "wallet_fe_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy"
-        value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it data:;"
+        value  = "img-src 'self' https://assets.cdn.io.italia.it data:;"
       },
       {
         action = "Append"
