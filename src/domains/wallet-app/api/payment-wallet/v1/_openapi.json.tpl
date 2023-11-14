@@ -320,93 +320,6 @@
           }
         }
       }
-    },
-    "/wallets/{walletId}/fees": {
-      "post": {
-        "tags": [
-          "wallets"
-        ],
-        "operationId": "calculateFees",
-        "summary": "Calculate wallet fees for given amount",
-        "description": "GET with body payload - no resources created: Return the fees for the choosen wallet based on payment amount etc.\n",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "walletId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "ID of wallet to return ID"
-          },
-          {
-            "name": "maxOccurrences",
-            "in": "query",
-            "description": "max occurrences",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CalculateFeeRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "New payment method successfully updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CalculateFeeResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Payment method not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -456,73 +369,6 @@
           "CREATED",
           "DELETED",
           "ERROR"
-        ]
-      },
-      "WalletCardDetails": {
-        "type": "object",
-        "description": "Card payment instrument details",
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "Wallet details discriminator field."
-          },
-          "maskedPan": {
-            "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
-            "type": "string",
-            "example": "123456******9876"
-          },
-          "expiryDate": {
-            "type": "string",
-            "description": "Credit card expiry date. The date format is `YYYYMM`",
-            "pattern": "^\\d{6}$",
-            "example": "203012"
-          },
-          "holder": {
-            "description": "Holder of the card payment instrument",
-            "type": "string"
-          },
-          "brand": {
-            "description": "Payment instrument brand",
-            "type": "string",
-            "enum": [
-              "MASTERCARD",
-              "VISA"
-            ]
-          }
-        },
-        "required": [
-          "type",
-          "maskedPan",
-          "expiryDate",
-          "holder",
-          "brand"
-        ]
-      },
-      "WalletPaypalDetails": {
-        "type": "object",
-        "description": "Paypal instrument details",
-        "properties": {
-          "type": {
-            "type": "string",
-            "description": "Wallet details discriminator field."
-          },
-          "abi": {
-            "description": "bank idetifier",
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 5,
-            "example": "12345"
-          },
-          "maskedEmail": {
-            "description": "email masked pan",
-            "type": "string",
-            "example": "test***@***test.it"
-          }
-        },
-        "required": [
-          "type",
-          "abi",
-          "maskedEmail"
         ]
       },
       "WalletCreateRequest": {
@@ -598,23 +444,7 @@
             }
           },
           "details": {
-            "description": "details for the specific payment instrument. This field is disciminated by the type field",
-            "type": "object",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/WalletCardDetails"
-              },
-              {
-                "$ref": "#/components/schemas/WalletPaypalDetails"
-              }
-            ],
-            "discriminator": {
-              "propertyName": "type",
-              "mapping": {
-                "CARDS": "#/components/schemas/WalletCardDetails",
-                "PAYPAL": "#/components/schemas/WalletPaypalDetails"
-              }
-            }
+            "$ref": "#/components/schemas/WalletInfoDetails"
           }
         },
         "required": [
@@ -624,6 +454,84 @@
           "creationDate",
           "updateDate",
           "services"
+        ]
+      },
+      "WalletInfoDetails": {
+        "description": "details for the specific payment instrument. This field is disciminated by the type field",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Card payment instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field.",
+                "enum": [
+                  "CARDS"
+                ]
+              },
+              "maskedPan": {
+                "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
+                "type": "string",
+                "example": "123456******9876"
+              },
+              "expiryDate": {
+                "type": "string",
+                "description": "Credit card expiry date. The date format is `YYYYMM`",
+                "pattern": "^\\d{6}$",
+                "example": "203012"
+              },
+              "holder": {
+                "description": "Holder of the card payment instrument",
+                "type": "string"
+              },
+              "brand": {
+                "description": "Payment instrument brand",
+                "type": "string",
+                "enum": [
+                  "MASTERCARD",
+                  "VISA"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "maskedPan",
+              "expiryDate",
+              "holder",
+              "brand"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Paypal instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field.",
+                "enum": [
+                  "PAYPAL"
+                ]
+              },
+              "abi": {
+                "description": "bank idetifier",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 5,
+                "example": "12345"
+              },
+              "maskedEmail": {
+                "description": "email masked pan",
+                "type": "string",
+                "example": "test***@***test.it"
+              }
+            },
+            "required": [
+              "type",
+              "abi",
+              "maskedEmail"
+            ]
+          }
         ]
       },
       "Wallets": {
@@ -757,162 +665,6 @@
             "type": "integer",
             "format": "int64",
             "minimum": 0
-          }
-        }
-      },
-      "CalculateFeeRequest": {
-        "description": "Calculate fee request",
-        "type": "object",
-        "properties": {
-          "paymentToken": {
-            "type": "string",
-            "description": "paymentToken related to nodo activation"
-          },
-          "language": {
-            "type": "string"
-          },
-          "idPspList": {
-            "description": "List of psps",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "paymentAmount": {
-            "description": "The transaction payment amount",
-            "type": "integer",
-            "format": "int64"
-          },
-          "primaryCreditorInstitution": {
-            "description": "The primary creditor institution",
-            "type": "string"
-          },
-          "transferList": {
-            "description": "Transfert list",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TransferListItem"
-            }
-          },
-          "isAllCCP": {
-            "description": "Flag for the inclusion of Poste bundles. false -> excluded, true -> included",
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "pamentToken",
-          "paymentAmount"
-        ]
-      },
-      "CalculateFeeResponse": {
-        "description": "Calculate fee response",
-        "type": "object",
-        "properties": {
-          "paymentMethodName": {
-            "description": "Payment method name",
-            "type": "string"
-          },
-          "paymentMethodDescription": {
-            "description": "Payment method description",
-            "type": "string"
-          },
-          "paymentMethodStatus": {
-            "$ref": "#/components/schemas/PaymentMethodStatus"
-          },
-          "belowThreshold": {
-            "description": "Boolean value indicating if the payment is below the configured threshold",
-            "type": "boolean"
-          },
-          "bundles": {
-            "description": "Bundle list",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Bundle"
-            }
-          }
-        },
-        "required": [
-          "bundles",
-          "paymentMethodName",
-          "paymentMethodDescription",
-          "paymentMethodStatus"
-        ]
-      },
-      "Bundle": {
-        "description": "Bundle object",
-        "type": "object",
-        "properties": {
-          "abi": {
-            "description": "Bundle ABI code",
-            "type": "string"
-          },
-          "bundleDescription": {
-            "description": "Bundle description",
-            "type": "string"
-          },
-          "bundleName": {
-            "description": "Bundle name",
-            "type": "string"
-          },
-          "idBrokerPsp": {
-            "description": "Bundle PSP broker id",
-            "type": "string"
-          },
-          "idBundle": {
-            "description": "Bundle id",
-            "type": "string"
-          },
-          "idChannel": {
-            "description": "Channel id",
-            "type": "string"
-          },
-          "idCiBundle": {
-            "description": "CI bundle id",
-            "type": "string"
-          },
-          "idPsp": {
-            "description": "PSP id",
-            "type": "string"
-          },
-          "onUs": {
-            "description": "Boolean value indicating if this bundle is an on-us ones",
-            "type": "boolean"
-          },
-          "paymentMethod": {
-            "description": "Payment method",
-            "type": "string"
-          },
-          "primaryCiIncurredFee": {
-            "description": "Primary CI incurred fee",
-            "type": "integer",
-            "format": "int64"
-          },
-          "taxPayerFee": {
-            "description": "Tax payer fee",
-            "type": "integer",
-            "format": "int64"
-          },
-          "touchpoint": {
-            "description": "The touchpoint name",
-            "type": "string"
-          }
-        }
-      },
-      "TransferListItem": {
-        "description": "Transfert list item",
-        "type": "object",
-        "properties": {
-          "creditorInstitution": {
-            "description": "Creditor institution",
-            "type": "string"
-          },
-          "digitalStamp": {
-            "description": "Boolean value indicating if there is digital stamp",
-            "type": "boolean"
-          },
-          "transferCategory": {
-            "description": "Transfer category",
-            "type": "string"
           }
         }
       }

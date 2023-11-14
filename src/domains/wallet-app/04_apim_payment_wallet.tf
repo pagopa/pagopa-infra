@@ -105,15 +105,6 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods" {
   )
 }
 
-resource "azurerm_api_management_api_operation_policy" "wallet_calculate_fee" {
-  api_name            = "${local.project}-payment-wallet-api-v1"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "calculateFees"
-
-  xml_content = file("./api/payment-wallet/v1/_wallet_fees_policy.xml.tpl")
-}
-
 #################################################
 ## API wallet notifications service            ##
 #################################################
@@ -209,7 +200,8 @@ module "apim_webview_payment_wallet_api_v1" {
   })
 
   xml_content = templatefile("./api/webview-payment-wallet/v1/_base_policy.xml.tpl", {
-    hostname = local.wallet_hostname
+    hostname              = local.wallet_hostname
+    payment_wallet_origin = "https://${var.dns_zone_prefix}.${var.external_domain}/"
   })
 }
 

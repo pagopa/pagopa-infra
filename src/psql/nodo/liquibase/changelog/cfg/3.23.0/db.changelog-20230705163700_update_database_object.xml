@@ -19,11 +19,18 @@
 	<!-- As per the PostgreSQL documentation:  -->
 	<!-- https://www.postgresql.org/docs/12/sql-createview.html -->
 	<!-- https://github.com/liquibase/liquibase/issues/2732#issuecomment-1092612725 -->
+	<!--  
 	<changeSet author="liquibase" id="202307061638_before">
 		<dropView viewName="iban_validi_per_pa"/>
 	</changeSet>
+	-->
 
 	<changeSet author="liquibase" id="202307061638">
+	    <renameView    
+            newViewName="iban_validi_per_pa_old"  
+            oldViewName="iban_validi_per_pa"  
+        />  
+        
 		<createView fullDefinition="false"
 			viewName="iban_validi_per_pa" replaceIfExists="true">
 	   SELECT mas.fk_pa,

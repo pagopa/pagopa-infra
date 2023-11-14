@@ -63,6 +63,9 @@
         </when>
       </choose>
       <!-- Post Token PDV END-->
+      <set-header name="x-user-id" exists-action="override">
+          <value>@((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized",""))</value>
+      </set-header>
     </inbound>
     <outbound>
     <base />
@@ -91,7 +94,7 @@
             <set-body>@{ 
                 JObject inBody = context.Response.Body.As<JObject>(); 
                 var redirectUrl = inBody["redirectUrl"];
-                inBody["redirectUrl"] = redirectUrl + "#" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
+                inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
                 return inBody.ToString(); 
             }</set-body>
         </when>

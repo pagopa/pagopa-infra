@@ -157,7 +157,6 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   operation_id        = "requestTransactionAuthorization"
 
   xml_content = templatefile("./api/ecommerce-io/v1/_auth_request.xml.tpl", {
-    webview_host = local.apim_hostname
     webview_path = "ecommerce/io-webview/v1/pay"
   })
 }
@@ -169,4 +168,22 @@ resource "azurerm_api_management_api_operation_policy" "io_create_session" {
   operation_id        = "newSessionToken"
 
   xml_content = file("./api/ecommerce-io/v1/_create_new_session.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
+  api_name            = "${local.project}-ecommerce-io-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "calculateFees"
+
+  xml_content = file("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" {
+  api_name            = "${local.project}-ecommerce-io-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getTransactionOutcome"
+
+  xml_content = file("./api/ecommerce-io/v1/_transaction_outcome.xml.tpl")
 }
