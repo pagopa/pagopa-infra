@@ -71,11 +71,50 @@
 
               return "";
           }" />
-          <set-header name="Set-Cookie" exists-action="override">
-            <value>walletId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
-          </set-header>
+          <set-variable name="isEcommerceTransaction" value="@{
+              string cookieHeaderValue = context.Request.Headers.GetValueOrDefault("Cookie","");
+              string cookieName="isEcommerceTransaction";
+                int startIdx = cookieHeaderValue.IndexOf(cookieName);
+                if(startIdx>=0){
+                  int endIdx = cookieHeaderValue.IndexOf(';',startIdx);
+                  endIdx = endIdx<0 ? cookieHeaderValue.Length : endIdx;
+                  return cookieHeaderValue.Substring(startIdx, endIdx-startIdx).Split('=')[1];
+                }
+              return "false";
+          }" />
+          <set-variable name="ecommerceTransactionId" value="@{
+              string cookieHeaderValue = context.Request.Headers.GetValueOrDefault("Cookie","");
+              string cookieName="ecommerceTransactionId";
+                int startIdx = cookieHeaderValue.IndexOf(cookieName);
+                if(startIdx>=0){
+                  int endIdx = cookieHeaderValue.IndexOf(';',startIdx);
+                  endIdx = endIdx<0 ? cookieHeaderValue.Length : endIdx;
+                  return cookieHeaderValue.Substring(startIdx, endIdx-startIdx).Split('=')[1];
+                }
+              return "";
+          }" />
+          <choose>
+            <when condition="@( (string)context.Variables["isEcommerceTransaction"] == "true")">
+              <set-header name="Set-Cookie" exists-action="override">
+                <value>walletId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+                <value>isEcommerceTransaction=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+                <value>ecommerceTransactionId=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+              </set-header>
+            </when>
+          </choose>
+          
           <set-header name="location" exists-action="override">
-            <value>@($"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}")</value>
+            <value>@{
+                string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}";
+                string isEcommerceTransaction = (string)context.Variables["isEcommerceTransaction"];
+                string ecommerceTransactionId = (string)context.Variables["ecommerceTransactionId"];
+                if("true".Equals(isEcommerceTransaction)){
+                  string[] splittedOriginalLocation = location.Split('?');
+                  string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
+                  location=$"https://{context.Request.OriginalUrl.Host}/ecommerce/io/v1/transactions/{ecommerceTransactionId}/outcomes?{queryParameters}";
+                }
+                return location;
+              }</value>
           </set-header>
         </when>
       </choose>
