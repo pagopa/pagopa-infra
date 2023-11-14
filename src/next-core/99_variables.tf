@@ -1,6 +1,7 @@
 locals {
-  product = "${var.prefix}-${var.env_short}"
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product             = "${var.prefix}-${var.env_short}"
+  project             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  geo_replica_project = "${var.prefix}-${var.env_short}-${var.geo_replica_location_short}-${var.domain}-replica"
 
   monitor_appinsights_name        = "${local.product}-appinsights"
   monitor_action_group_slack_name = "SlackPagoPA"
@@ -12,6 +13,8 @@ locals {
 
   vnet_core_name                = "${local.product}-vnet"
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
+
+  data_resource_group_name = "${local.product}-data-rg"
 
   vnet_integration_name                = "${local.product}-vnet-integration"
   vnet_integration_resource_group_name = "${local.product}-vnet-rg"
@@ -130,14 +133,50 @@ variable "dns_zone_internal_prefix" {
 # dns forwarder
 #
 variable "dns_forwarder_backup_is_enabled" {
-  type = object({
-    uat  = optional(bool, false)
-    prod = optional(bool, false)
-  })
+  type        = bool
   description = "Allow to enable or disable dns forwarder backup"
 }
 
 variable "dns_forwarder_vm_image_name" {
   type        = string
   description = "Image name for dns forwarder"
+  default     = null
 }
+
+
+#
+# replica variables
+#
+variable "geo_replica_enabled" {
+  type        = bool
+  description = "(Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers"
+  default     = false
+}
+
+variable "geo_replica_location" {
+  type        = string
+  description = "(Optional) Location of the geo replica"
+  default     = "northeurope"
+}
+
+variable "geo_replica_location_short" {
+  type        = string
+  description = "(Optional) Short Location of the geo replica"
+  default     = "neu"
+}
+
+variable "geo_replica_cidr_vnet" {
+  type        = list(string)
+  description = "(Required) Cidr block for replica vnet address space"
+  default     = null
+}
+
+variable "geo_replica_ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
+}
+
+
