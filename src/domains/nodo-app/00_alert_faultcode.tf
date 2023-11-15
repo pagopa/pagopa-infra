@@ -1,3 +1,14 @@
+locals {
+
+  action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+
+  # ENABLE PROD afert deploy
+  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id]) : local.action_groups_default
+  # action_groups = local.action_groups_default
+
+}
+
+
 ## Responses that return OK and those with one of these error codes
 ## ["PPT_PAGAMENTO_IN_CORSO","PPT_PAGAMENTO_DUPLICATO", "PPT_STAZIONE_INT_PA_TIMEOUT","PPT_ATTIVAZIONE_IN_CORSO", "PPT_ERRORE_EMESSO_DA_PAA"]
 ## are considered positive. The others are considered failure.
@@ -11,7 +22,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availab
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -80,7 +91,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-specifi
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
