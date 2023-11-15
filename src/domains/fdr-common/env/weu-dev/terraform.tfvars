@@ -190,3 +190,10 @@ fdr_re_storage_account = {
   blob_delete_retention_days    = 30
   enable_low_availability_alert = false
 }
+
+
+#
+# replica settings
+#
+geo_replica_enabled = false
+

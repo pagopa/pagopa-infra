@@ -40,13 +40,11 @@ data "azurerm_private_dns_zone" "storage" {
 }
 
 resource "azurerm_private_dns_zone" "adf" {
-
   name                = "privatelink.datafactory.azure.net"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "adf_vnet" {
-
   name                  = "${local.project}-adf-private-dns-zone-link"
   resource_group_name   = data.azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.adf.name
@@ -60,6 +58,7 @@ data "azurerm_subnet" "private_endpoint_snet" {
 }
 
 data "azurerm_subnet" "nodo_re_to_datastore_function_snet" {
+  count                = var.enable_nodo_re ? 1 : 0
   name                 = "${local.project}-nodo-re-to-datastore-fn-snet"
   virtual_network_name = data.azurerm_virtual_network.vnet.name
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
@@ -103,6 +102,7 @@ module "storage_account_snet" {
 
 # CosmosDB subnet
 module "cosmosdb_nodo_re_snet" {
+  count                = var.enable_nodo_re ? 1 : 0
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_nodo_re
