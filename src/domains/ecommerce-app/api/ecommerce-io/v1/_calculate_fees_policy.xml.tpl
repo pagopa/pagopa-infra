@@ -22,7 +22,7 @@
                 <choose>
                     <when condition="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAL"))">
                         <send-request ignore-error="true" timeout="10" response-variable-name="getPspForCardsResponse">
-                            <set-url>@($"{{pm-host}}/pp-restapi-CD/v3//paypal/psps")</set-url>
+                            <set-url>@($"{{pm-host}}/pp-restapi-CD/v3/paypal/psps")</set-url>
                             <set-method>GET</set-method>
                             <set-header name="Authorization" exists-action="override">
                                 <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
