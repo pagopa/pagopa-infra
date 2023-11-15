@@ -1,11 +1,15 @@
 <policies>
     <inbound>
       <!-- Extract payment method name for create redirectUrl -->
+      <set-variable  name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <set-variable name="requestBody" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
       <set-variable name="paymentMethodId" value="@((string)((JObject) context.Variables["requestBody"])["paymentMethodId"])" />
       <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
           <set-url>@("https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-service/payment-methods/" + context.Variables["paymentMethodId"])</set-url>
           <set-method>GET</set-method>
+          <set-header name="x-client-id" exists-action="override">
+              <value>IO</value>
+          </set-header>
       </send-request>
       <choose>
           <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode != 200)">
@@ -25,18 +29,18 @@
           </when>
       </choose>
       <set-variable name="paymentMethodsResponseBody" value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
-      <set-variable name="paymentMethodName" value="@((string)((JObject) context.Variables["paymentMethodsResponseBody"])["name"])" />
+      <set-variable name="paymentMethodTypeCode" value="@((string)((JObject) context.Variables["paymentMethodsResponseBody"])["paymentTypeCode"])" />
       <set-variable name="redirectUrlPrefix" value="@{
-              string returnedPaymentMethodName = (string)context.Variables["paymentMethodName"];
-              var paymentMethodNameTypes = new Dictionary<string, string>
+              string returnedPaymentMethodTypeCode = (string)context.Variables["paymentMethodTypeCode"];
+              var paymentMethodTypeCodes = new Dictionary<string, string>
                   {
-                      { "CARDS", "pm-onboarding/creditcard" },
+                      { "CP", "pm-onboarding/creditcard" },
                       { "BPAY", "pm-onboarding/bpay" },
-                      { "PPAL", "pm-onboarding/paypal" }
+                      { "PPAY", "pm-onboarding/paypal" }
                   };
 
-              if (paymentMethodNameTypes.ContainsKey(returnedPaymentMethodName)) {
-                  return paymentMethodNameTypes[returnedPaymentMethodName];
+              if (paymentMethodTypeCodes.ContainsKey(returnedPaymentMethodTypeCode)) {
+                  return paymentMethodTypeCodes[returnedPaymentMethodTypeCode];
               }
               return "";
       }" />
