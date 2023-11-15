@@ -273,3 +273,9 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+variable "enable_nodo_re" {
+  type        = bool
+  default     = false
+  description = "Enables dumping nodo re"
+}
