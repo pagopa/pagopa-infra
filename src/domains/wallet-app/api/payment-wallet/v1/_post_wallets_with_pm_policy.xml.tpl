@@ -39,13 +39,12 @@
                       { "PPAY", "pm-onboarding/paypal" }
                   };
 
-              if (paymentMethodTypeCodes.ContainsKey(returnedPaymentMethodTypeCode)) {
-                  return paymentMethodTypeCodes[returnedPaymentMethodTypeCode];
-              }
-              return "";
+              string redirectUrlPrefix;
+              paymentMethodTypeCodes.TryGetValue(returnedPaymentMethodTypeCode, out redirectUrlPrefix);
+              return redirectUrlPrefix;
       }" />
       <choose>
-        <when condition="@((string)context.Variables.GetValueOrDefault("redirectUrlPrefix","") == "")">
+        <when condition="@((string)context.Variables["redirectUrlPrefix"] == null)">
             <return-response>
                <set-status code="502" reason="Bad Gateway" />
                <set-header name="Content-Type" exists-action="override">
