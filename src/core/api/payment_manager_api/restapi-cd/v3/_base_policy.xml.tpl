@@ -51,6 +51,7 @@
                     string walletId = walletParam != null && walletParam.Split('=').Length == 2 ? walletParam.Split('=')[1] : "";
                     return walletId;
                 }" />
+              <set-variable name="isWalletOnboarding" value="true" />
               <set-header name="Set-Cookie" exists-action="append">
                   <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
               </set-header>
@@ -102,20 +103,32 @@
               </set-header>
             </when>
           </choose>
-          
-          <set-header name="location" exists-action="override">
-            <value>@{
-                string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}";
-                string isEcommerceTransaction = (string)context.Variables["isEcommerceTransaction"];
-                string ecommerceTransactionId = (string)context.Variables["ecommerceTransactionId"];
-                if("true".Equals(isEcommerceTransaction)){
-                  string[] splittedOriginalLocation = location.Split('?');
-                  string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                  location=$"https://{context.Request.OriginalUrl.Host}/ecommerce/io/v1/transactions/{ecommerceTransactionId}/outcomes?{queryParameters}";
-                }
-                return location;
-              }</value>
-          </set-header>
+
+          <choose>
+            <when condition="@( (string)context.Variables["isEcommerceTransaction"] == "true")">
+              <set-header name="location" exists-action="override">
+                <value>@{
+                    string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}";
+                    string ecommerceTransactionId = (string)context.Variables["ecommerceTransactionId"];
+                    string[] splittedOriginalLocation = location.Split('?');
+                    string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
+                    location=$"https://{context.Request.OriginalUrl.Host}/ecommerce/io/v1/transactions/{ecommerceTransactionId}/outcomes?{queryParameters}";
+                    return location;
+                  }</value>
+              </set-header>
+            </when>
+            <when condition="@( (string)context.Variables["isWalletOnboarding"] == "true")">
+              <set-header name="location" exists-action="override">
+                <value>@{
+                    string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}";
+                    string[] splittedOriginalLocation = location.Split('?');
+                    string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
+                    location=$"https://{context.Request.OriginalUrl.Host}/pp-restapi-CD/v3/webview/logout/bye?outcomes={queryParameters}";
+                    return location;
+                  }</value>
+              </set-header>
+            </when>
+          </choose>
         </when>
       </choose>
     </outbound>
