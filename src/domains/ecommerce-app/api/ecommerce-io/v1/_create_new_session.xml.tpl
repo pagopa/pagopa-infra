@@ -5,6 +5,9 @@
         <when condition="@(((string)context.Variables["walletToken"]) == "")">
             <return-response>
                 <set-status code="401" reason="Unauthorized" />
+                <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+                </set-header>
                 <set-body>
                 {
                     "status": 401,
@@ -24,6 +27,9 @@
         <when condition="@(((IResponse)context.Variables["pmSessionResponse"]).StatusCode != 200)">
          <return-response>
                 <set-status code="401" reason="Unauthorized" />
+                <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+                </set-header>
                 <set-body>
                     {
                     "status": 401,
@@ -40,6 +46,9 @@
         <when condition="@(((string)context.Variables["sessionToken"]) != "")">
          <return-response>
                 <set-status code="200" reason="OK" />
+                <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+                </set-header>
                 <set-body>
                     @{
                     JObject response = new JObject();
@@ -52,6 +61,9 @@
         <otherwise>
          <return-response>
                 <set-status code="401" reason="Unauthorized" />
+                <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+                </set-header>
                 <set-body>
                     {
                     "status": 401,

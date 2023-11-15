@@ -7,11 +7,13 @@
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="rptId" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["rptId"].ToObject<string>())" />
         <set-variable name="amount" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["amount"].Value<int>())" />
-
         <choose>
             <when condition="@(!context.Request.Headers.ContainsKey("Authorization"))">
                 <return-response>
                     <set-status code="401" reason="Unauthorized" />
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                    </set-header>
                     <set-body>
                       {
                         "status": 401,
@@ -31,6 +33,9 @@
             <when condition="@(((int) context.Variables["numberOfPaymentNotices"]) > 1)">
                 <return-response>
                     <set-status code="422" reason="Unprocessable Entity" />
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                    </set-header>
                     <set-body>
                       {
                         "status": 422,
@@ -42,6 +47,8 @@
             </when>
         </choose>
         <set-variable name="ccp" value="@(Guid.NewGuid().ToString("N"))" />
+        <cache-store-value key="@($"ecommerce:{context.Variables["ccp"]}-rptId")"  value="@(((string) context.Variables["rptId"]))" duration="900" caching-type="internal" />
+        <cache-store-value key="@($"ecommerce:{context.Variables["ccp"]}-amount")" value="@(((int) context.Variables["amount"]))" duration="900" caching-type="internal" /> 
         <set-body>
           @{
             JObject pagopaProxyBody = new JObject();
@@ -70,6 +77,7 @@
 
               JObject eCommerceResponseBody = new JObject();
               eCommerceResponseBody["transactionId"] = (string) context.Variables["ccp"];
+              eCommerceResponseBody["status"] = "ACTIVATION_REQUESTED";
               eCommerceResponseBody["payments"] = payments;
               eCommerceResponseBody["clientId"] = "IO";
 
@@ -78,6 +86,9 @@
           </when>
           <otherwise>
             <set-status code="502" reason="Bad Gateway" />
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+            </set-header>
             <set-body>
               {
                 "status": 502,

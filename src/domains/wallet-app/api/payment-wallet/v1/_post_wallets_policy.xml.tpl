@@ -91,7 +91,7 @@
             <set-body>@{ 
                 JObject inBody = context.Response.Body.As<JObject>(); 
                 var redirectUrl = inBody["redirectUrl"];
-                inBody["redirectUrl"] = redirectUrl + "#" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
+                inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
                 return inBody.ToString(); 
             }</set-body>
         </when>
