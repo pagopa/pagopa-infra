@@ -111,7 +111,7 @@ resource "azurerm_api_management_api_operation_policy" "onboarding_outcome" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "getOnboardingOutcome"
 
-  xml_content = file("./api/ecommerce-io/v1/_onboarding_outcome.xml.tpl")
+  xml_content = file("./api/payment-wallet/v1/_onboarding_outcome.xml.tpl")
 }
 
 #################################################
