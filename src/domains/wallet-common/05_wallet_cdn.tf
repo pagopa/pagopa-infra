@@ -73,25 +73,6 @@ module "wallet_fe_cdn" {
     ]
   }
 
-  delivery_rule_rewrite = [{
-    name  = "RewriteRulesForReactRouting"
-    order = 1
-
-    conditions = [{
-      condition_type   = "url_file_extension_condition"
-      operator         = "LessThan"
-      match_values     = ["1"]
-      transforms       = []
-      negate_condition = false
-    }]
-
-    url_rewrite_action = {
-      source_pattern          = "/"
-      destination             = "/index.html"
-      preserve_unmatched_path = false
-    }
-  }]
-
   tags = var.tags
 }
 
