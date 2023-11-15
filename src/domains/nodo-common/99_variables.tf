@@ -424,3 +424,9 @@ variable "sftp_sa_backup_retention_days" {
   default     = 0
   description = "(Optional) nodo sftp storage backup retention"
 }
+
+variable "enable_nodo_re" {
+  type        = bool
+  default     = false
+  description = "Enables dumping nodo re"
+}

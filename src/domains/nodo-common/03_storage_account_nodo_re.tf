@@ -3,6 +3,7 @@ data "azurerm_resource_group" "nodo_re_to_datastore_rg" {
 }
 
 module "nodo_re_storage_account" {
+  count  = var.enable_nodo_re ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
   name                            = replace(format("%s-re-2-data-st", local.project), "-", "")
@@ -31,7 +32,7 @@ module "nodo_re_storage_account" {
 }
 
 resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : var.enable_nodo_re ? 1 : 0
 
   name                = "${local.project}-re-private-endpoint"
   location            = var.location
@@ -45,7 +46,7 @@ resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-re-private-service-connection"
-    private_connection_resource_id = module.nodo_re_storage_account.id
+    private_connection_resource_id = var.enable_nodo_re ? module.nodo_re_storage_account[0].id : "https://private/connection/fake/path"
     is_manual_connection           = false
     subresource_names              = ["table"]
   }
@@ -59,6 +60,7 @@ resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
 
 # table#1 nodo-re
 resource "azurerm_storage_table" "nodo_re_table" {
+  count                = var.enable_nodo_re ? 1 : 0
   name                 = "events"
-  storage_account_name = module.nodo_re_storage_account.name
+  storage_account_name = module.nodo_re_storage_account[0].name
 }
