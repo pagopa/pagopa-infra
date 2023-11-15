@@ -81,7 +81,7 @@ locals {
 
 ## Function nodo_re_to_datastore
 module "nodo_re_to_datastore_function" {
-  count  = var.enable_nodo_re ? 1 : 0
+  count = var.enable_nodo_re ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
 
