@@ -1,10 +1,16 @@
 <policies>
   <inbound>
     <base />
+    <set-variable name="requestTransactionId" value="@(context.Request.Url.Query.GetValueOrDefault("transactionId",""))" />
     <return-response>
       <set-status code="200" />
       <set-header name="Content-Type" exists-action="override">
           <value>text/html</value>
+      </set-header>
+      <!-- set cookies for redirect to eCommerce outcome url -->
+      <set-header name="Set-Cookie" exists-action="append">
+        <value>isEcommerceTransaction=true; path=/pp-restapi-CD;</value>
+        <value>@($"ecommerceTransactionId={(string)context.Variables["requestTransactionId"]}; path=/pp-restapi-CD;")</value>
       </set-header>
       <set-body template="liquid">
         <html>
