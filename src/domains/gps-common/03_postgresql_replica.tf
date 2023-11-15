@@ -23,24 +23,24 @@ module "postgres_flexible_snet_replica" {
 
 
 
-module "postgresql_nodo_replica_db" {
+module "postgresql_gpd_replica_db" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server_replica?ref=v7.22.0"
   count  = var.geo_replica_enabled ? 1 : 0
 
   name                = "${local.project_replica}-flexible-postgresql"
-  resource_group_name = azurerm_resource_group.db_rg.name
+  resource_group_name = data.azurerm_resource_group.flex_data[0].name
   location            = var.location_replica
 
   private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
   delegated_subnet_id      = module.postgres_flexible_snet_replica[0].id
-  private_endpoint_enabled = var.pgres_flex_params.pgres_flex_private_endpoint_enabled
+  private_endpoint_enabled = var.pgres_flex_params.private_endpoint_enabled
 
   sku_name = var.pgres_flex_params.sku_name
 
   high_availability_enabled = false
-  pgbouncer_enabled         = var.pgres_flex_params.pgres_flex_pgbouncer_enabled
+  pgbouncer_enabled         = var.pgres_flex_params.pgbouncer_enabled
 
-  source_server_id = module.postgres_flexible_server.id
+  source_server_id = module.postgres_flexible_server_private[0].id
 
   diagnostic_settings_enabled = false
 
