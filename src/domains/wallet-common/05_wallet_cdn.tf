@@ -47,33 +47,28 @@ module "wallet_fe_cdn" {
       # Content-Security-Policy
       {
         action = "Overwrite"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = format("default-src 'self'; connect-src 'self' https://api.${var.dns_zone_platform}.${var.external_domain} https://api-eu.mixpanel.com")
+        name   = "Content-Security-Policy"
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s *.nexigroup.com;", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
+        name   = "Content-Security-Policy"
+        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' *.platform.pagopa.it *.nexigroup.com;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
+        name   = "Content-Security-Policy"
+        value  = "img-src 'self' https://assets.cdn.io.italia.it data:;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "img-src 'self' https://cdn.cookielaw.org www.gstatic.com/recaptcha data:;"
+        name   = "Content-Security-Policy"
+        value  = "script-src 'self' 'unsafe-inline';"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/;"
-      },
-      {
-        action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
+        name   = "Content-Security-Policy"
+        value  = "style-src 'self' 'unsafe-inline'; worker-src blob:;"
       }
     ]
   }
