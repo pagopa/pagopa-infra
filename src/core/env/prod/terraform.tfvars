@@ -347,7 +347,7 @@ eventhubs = [
 #        listen = true
 #        send   = false
 #        manage = false
-      }
+#      }
     ]
   },
   {

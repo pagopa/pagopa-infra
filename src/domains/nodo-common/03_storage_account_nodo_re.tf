@@ -32,7 +32,7 @@ module "nodo_re_storage_account" {
 }
 
 resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : var.enable_nodo_re ? 1 : 0
 
   name                = "${local.project}-re-private-endpoint"
   location            = var.location
@@ -46,7 +46,7 @@ resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-re-private-service-connection"
-    private_connection_resource_id = module.nodo_re_storage_account[0].id
+    private_connection_resource_id = var.enable_nodo_re ? module.nodo_re_storage_account[0].id : "https://private/connection/fake/path"
     is_manual_connection           = false
     subresource_names              = ["table"]
   }
