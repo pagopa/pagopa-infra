@@ -6,7 +6,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datasto
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups
     email_subject          = "AppException on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
@@ -40,7 +40,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablest
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups
     email_subject          = "AppException on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
@@ -74,7 +74,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datasto
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups
     email_subject          = "CosmosException on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
@@ -110,7 +110,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablest
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups
     email_subject          = "Persistence exception on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
