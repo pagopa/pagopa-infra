@@ -20,7 +20,7 @@
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 200)">
                 <set-variable name="paymentTypeCode" value="@((string)((JObject)((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())["paymentTypeCode"])" />
                 <choose>
-                    <when condition="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAL"))">
+                    <when condition="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAY"))">
                         <send-request ignore-error="true" timeout="10" response-variable-name="getPspForCardsResponse">
                             <set-url>@($"{{pm-host}}/pp-restapi-CD/v3/paypal/psps")</set-url>
                             <set-method>GET</set-method>
