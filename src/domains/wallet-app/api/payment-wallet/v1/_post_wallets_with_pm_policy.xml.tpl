@@ -1,7 +1,20 @@
 <policies>
     <inbound>
-      <!-- Extract payment method name for create redirectUrl -->
+      <!-- Session PM START-->
       <set-variable  name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
+      <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
+          <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
+          <set-method>GET</set-method>
+      </send-request>
+       <choose>
+        <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
+          <return-response>
+            <set-status code="502" reason="Bad Gateway" />
+          </return-response>
+        </when>
+      </choose>
+      <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
+      <!-- Extract payment method name for create redirectUrl -->
       <set-variable name="requestBody" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
       <set-variable name="paymentMethodId" value="@((string)((JObject) context.Variables["requestBody"])["paymentMethodId"])" />
       <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
@@ -61,20 +74,6 @@
         </when>
       </choose>
       <!-- End extract payment method name for create redirectUrl -->
-
-      <!-- Session PM START-->
-      <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
-          <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
-          <set-method>GET</set-method>
-      </send-request>
-       <choose>
-        <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
-          <return-response>
-            <set-status code="502" reason="Bad Gateway" />
-          </return-response>
-        </when>
-      </choose>
-      <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
       <return-response>
         <set-status code="201" />
         <set-header name="Content-Type" exists-action="override">
