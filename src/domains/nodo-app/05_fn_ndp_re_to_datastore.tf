@@ -40,7 +40,8 @@ data "azurerm_subnet" "apim_vnet" {
 }
 
 resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
-  count    = var.enable_nodo_re ? 1 : 0
+  count = var.enable_nodo_re || var.env_short != "d" ? 1 : 0
+
   name     = format("%s-re-to-datastore-rg", local.project)
   location = var.location
 

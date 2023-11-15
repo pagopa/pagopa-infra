@@ -178,7 +178,7 @@ nodo_re_storage_account = {
   blob_versioning_enabled       = true
   advanced_threat_protection    = true
   blob_delete_retention_days    = 31
-  public_network_access_enabled = false
+  public_network_access_enabled = true
   backup_enabled                = true
   backup_retention              = 30
 
@@ -191,7 +191,7 @@ nodo_verifyko_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
   blob_delete_retention_days    = 0
-  public_network_access_enabled = false
+  public_network_access_enabled = true
   backup_enabled                = true
   backup_retention              = 30
 }
