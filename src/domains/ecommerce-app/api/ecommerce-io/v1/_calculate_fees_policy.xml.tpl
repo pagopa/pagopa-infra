@@ -21,39 +21,40 @@
         </send-request>
         <choose>
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 200)">
-                <set-variable name="paymentTypeCode" value="@((string)((JObject)((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())["paymentTypeCode"])" />
-                <choose>
-                    <when condition="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAY"))">
-                        <send-request ignore-error="true" timeout="10" response-variable-name="getPspForCardsResponse">
-                            <set-url>@($"{{pm-host}}/pp-restapi-CD/v3/paypal/psps")</set-url>
-                            <set-method>GET</set-method>
-                            <set-header name="Authorization" exists-action="override">
-                                <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
-                            </set-header>
-                        </send-request>
-                    </when>
-                    <when condition="@(((string)context.Variables["paymentTypeCode"]).Equals("CP") || ((string)context.Variables["paymentTypeCode"]).Equals("BPAY"))">
-                        <send-request ignore-error="true" timeout="10" response-variable-name="getPspForCardsResponse">
-                            <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/payments/{(string)context.Variables["idPayment"]}/psps?idWallet={(string)context.Variables["idWallet"]}&language={(string)context.Variables["language"]}&isList=true")</set-url>
-                            <set-method>GET</set-method>
-                            <set-header name="Authorization" exists-action="override">
-                                <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
-                            </set-header>
-                        </send-request>
-                    </when>
-                    <otherwise>
-                        <return-response>
-                            <set-status code="501" reason="Not implemented" />
-                            <set-header name="Content-Type" exists-action="override">
-                                <value>application/json</value>
-                            </set-header>
-                            <set-body>{
-                                "title": "Unable to handle payment method",
-                                "status": 501,
-                                "detail": "Payment method not handled",
-                            }</set-body>
-                        </return-response>
-                    </otherwise>
+                <set-variable name="paymentMethod" value="@((JObject)((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
+                <set-variable name="paymentTypeCode" value="@((string)((JObject)context.Variables["paymentMethod"])["paymentTypeCode"])" />
+                    <choose>
+                      <when condition="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAY"))">
+                          <send-request ignore-error="true" timeout="10" response-variable-name="getPspForCardsResponse">
+                              <set-url>@($"{{pm-host}}/pp-restapi-CD/v3/paypal/psps")</set-url>
+                              <set-method>GET</set-method>
+                              <set-header name="Authorization" exists-action="override">
+                                  <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
+                              </set-header>
+                          </send-request>
+                      </when>
+                      <when condition="@(((string)context.Variables["paymentTypeCode"]).Equals("CP") || ((string)context.Variables["paymentTypeCode"]).Equals("BPAY"))">
+                          <send-request ignore-error="true" timeout="10" response-variable-name="getPspForCardsResponse">
+                              <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/payments/{(string)context.Variables["idPayment"]}/psps?idWallet={(string)context.Variables["idWallet"]}&language={(string)context.Variables["language"]}&isList=true")</set-url>
+                              <set-method>GET</set-method>
+                              <set-header name="Authorization" exists-action="override">
+                                  <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
+                              </set-header>
+                          </send-request>
+                      </when>
+                      <otherwise>
+                          <return-response>
+                              <set-status code="501" reason="Not implemented" />
+                              <set-header name="Content-Type" exists-action="override">
+                                  <value>application/json</value>
+                              </set-header>
+                              <set-body>{
+                                  "title": "Unable to handle payment method",
+                                  "status": 501,
+                                  "detail": "Payment method not handled",
+                              }</set-body>
+                          </return-response>
+                      </otherwise>
                 </choose>
                 <choose>
                     <when condition="@(((int)((IResponse)context.Variables["getPspForCardsResponse"]).StatusCode) == 200)">
@@ -81,9 +82,9 @@
                                         }
                                         pspResponse.Add(psp);
                                     }
-                                    response["paymentMethodName"] = "CARDS";
-                                    response["paymentMethodDescription"] = "Carte di credito o debito";
-                                    response["paymentMethodStatus"] = "ENABLED";
+                                    response["paymentMethodName"] = ((string)((JObject)context.Variables["paymentMethod"])["name"]);
+                                    response["paymentMethodDescription"] = ((string)((JObject)context.Variables["paymentMethod"])["description"]);
+                                    response["paymentMethodStatus"] = ((string)((JObject)context.Variables["paymentMethod"])["status"]);
                                     response["belowThreshold"] = "false";
                                     response["bundles"] = (JArray)pspResponse;
                                     return response.ToString();
