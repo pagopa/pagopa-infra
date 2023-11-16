@@ -73,6 +73,9 @@
     <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
         <set-url>https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-service/payment-methods</set-url>
         <set-method>GET</set-method>
+        <set-header name="X-Client-id" exists-action="override">
+            <value>IO</value>
+        </set-header>
     </send-request>
     <choose>
         <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode != 200)">
@@ -110,7 +113,7 @@
                 JObject paymentMethods = (JObject)context.Variables["paymentMethodsResponseBody"];
                 foreach(JObject paymentMethod in (JArray)paymentMethods["paymentMethods"]){
                     eCommercePaymentMethodIds[paymentMethod["name"].ToString()] = paymentMethod["id"].ToString();
-                } 
+                }
                 Object[] wallets = pmWalletResponse["data"]
                     .Where(wallet =>{
                        return eCommerceWalletTypes.ContainsKey((string) wallet["type"]);
