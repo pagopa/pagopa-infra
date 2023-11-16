@@ -54,9 +54,13 @@
               <set-header name="Set-Cookie" exists-action="append">
                   <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
               </set-header>
-              <set-header name="Set-Cookie" exists-action="append">
-                 <value>@($"isWalletOnboarding=true; Path=/pp-restapi-CD")</value>
-              </set-header>
+              <choose>
+                <when condition="@( (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}" )">
+                  <set-header name="Set-Cookie" exists-action="append">
+                    <value>@($"isWalletOnboarding=true; Path=/pp-restapi-CD")</value>
+                  </set-header>
+                </when>
+              </choose>
           </when>
       </choose>
       <choose>
