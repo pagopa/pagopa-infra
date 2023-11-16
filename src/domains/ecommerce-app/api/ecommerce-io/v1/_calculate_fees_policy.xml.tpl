@@ -44,14 +44,14 @@
                       </when>
                       <otherwise>
                           <return-response>
-                              <set-status code="501" reason="Not implemented" />
+                              <set-status code="502" reason="Bad Gateway" />
                               <set-header name="Content-Type" exists-action="override">
                                   <value>application/json</value>
                               </set-header>
                               <set-body>{
-                                  "title": "Unable to handle payment method",
-                                  "status": 501,
-                                  "detail": "Payment method not handled",
+                                  "title": "Bad Gateway",
+                                  "status": 502,
+                                  "detail": "Bad Gateway",
                               }</set-body>
                           </return-response>
                       </otherwise>
