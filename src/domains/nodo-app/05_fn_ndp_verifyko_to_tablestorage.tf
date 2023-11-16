@@ -1,7 +1,7 @@
 
-data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns02_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tablestorage-rx" {
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tablestorage-rx" {
   name                = "nodo-dei-pagamenti-verify-ko-tablestorage-rx"
-  namespace_name      = "${local.product}-evh-ns02"
+  namespace_name      = "${local.product}-evh-ns01"
   eventhub_name       = "nodo-dei-pagamenti-verify-ko"
   resource_group_name = "${local.product}-msg-rg"
 }
@@ -30,7 +30,7 @@ locals {
 
     DOCKER_REGISTRY_SERVER_URL = local.verifyko_ts_docker_settings.DOCKER_REGISTRY_SERVER_URL
 
-    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tablestorage-rx.primary_connection_string
+    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tablestorage-rx.primary_connection_string
 
     TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.nodo_verifyko_storage.primary_connection_string
     BLOB_STORAGE_CONN_STRING    = data.azurerm_storage_account.nodo_verifyko_storage.primary_connection_string
