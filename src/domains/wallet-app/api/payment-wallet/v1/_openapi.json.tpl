@@ -531,6 +531,52 @@
               "abi",
               "maskedEmail"
             ]
+          },
+          {
+            "type": "object",
+            "description": "Paypal instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field.",
+                "enum": [
+                  "BANCOMATPAY"
+                ]
+              },
+              "maskedNumber": {
+                "description": "masked number",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20,
+                "example": "+3938*******202"
+              },
+              "groupCode": {
+                "description": "bank group code",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 5,
+                "example": "12345"
+              },
+              "instituteCode":{
+                "description": "institute code",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 5,
+                "example": "12345"
+              },
+              "bankName":{
+                "description": "bank name",
+                "type": "string",
+                "example": "banca di banca"
+              }
+            },
+            "required": [
+              "type",
+              "maskedNumber",
+              "groupCode",
+              "instituteCode",
+              "bankName"
+            ]
           }
         ]
       },

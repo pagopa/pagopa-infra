@@ -107,7 +107,9 @@
                 var walletServices = new List<String>{"PAGOPA"};
                 var eCommerceWalletTypes = new Dictionary<string, string>
                     {
-                        { "CREDIT_CARD", "CARDS" }
+                        { "CREDIT_CARD", "CARDS" },
+                        { "EXTERNAL_PS", "BANCOMATPAY" },
+                        { "PAYPAL", "PAYPAL" }
                     };
                 var eCommercePaymentMethodIds = new Dictionary<string, string>();
                 JObject paymentMethods = (JObject)context.Variables["paymentMethodsResponseBody"];
@@ -150,6 +152,16 @@
                                 details["expiryDate"] = $"20{(string)wallet["creditCard"]["expireYear"]}{(string)wallet["creditCard"]["expireMonth"]}";
                                 details["holder"] = wallet["creditCard"]["holder"];
                                 details["brand"] = wallet["creditCard"]["brand"];
+                            }
+                            if (eCommerceWalletType == "PAYPAL") {
+                                details["abi"] = "TO BE REPLACED";
+                                details["maskedEmail"] = "TO BE REPLACED";
+                            }
+                            if (eCommerceWalletType == "BANCOMATPAY") {
+                                details["maskedNumber"] = wallet["bpay"]["numberObfuscated"];
+                                details["groupCode"] = wallet["bpay"]["groupCode"];
+                                details["instituteCode"] = wallet["bpay"]["instituteCode"];
+                                details["bankName"] = wallet["bpay"]["bankName"];
                             }
                             result["details"] = details;
 
