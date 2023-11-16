@@ -152,7 +152,7 @@ resource "azurerm_key_vault_secret" "npg_service_api_key" {
     ]
   }
 }
-  
+
 resource "azurerm_key_vault_secret" "wallet-token-test-key" {
   count        = var.env_short != "p" ? 1 : 0
   name         = "wallet-token-test-key"
