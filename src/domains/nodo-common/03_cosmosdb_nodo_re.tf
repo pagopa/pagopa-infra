@@ -62,7 +62,7 @@ locals {
 
 # cosmosdb container for nodo re datastore
 module "cosmosdb_account_nodo_re_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
   for_each = {
     for c in local.nodo_re_containers : c.name => c if var.enable_nodo_re
   }

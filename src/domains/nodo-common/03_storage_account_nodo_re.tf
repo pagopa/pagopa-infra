@@ -1,4 +1,7 @@
 data "azurerm_resource_group" "nodo_re_to_datastore_rg" {
+  count = var.enable_nodo_re || var.env_short != "d" ? 1 : 0
+
+
   name = format("%s-re-to-datastore-rg", local.project)
 }
 
@@ -12,7 +15,7 @@ module "nodo_re_storage_account" {
   account_replication_type        = var.nodo_re_storage_account.account_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.nodo_re_storage_account.blob_versioning_enabled
-  resource_group_name             = data.azurerm_resource_group.nodo_re_to_datastore_rg.name
+  resource_group_name             = data.azurerm_resource_group.nodo_re_to_datastore_rg[0].name
   location                        = var.location
   advanced_threat_protection      = var.nodo_re_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
@@ -36,7 +39,7 @@ resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
 
   name                = "${local.project}-re-private-endpoint"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.nodo_re_to_datastore_rg.name
+  resource_group_name = data.azurerm_resource_group.nodo_re_to_datastore_rg[0].name
   subnet_id           = module.storage_account_snet.id
 
   private_dns_zone_group {
