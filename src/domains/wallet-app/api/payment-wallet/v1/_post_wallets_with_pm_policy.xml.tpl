@@ -81,7 +81,7 @@
         </set-header>
         <set-body>@{
             return new JObject(
-                          new JProperty("redirectUrl", $"https://${env}.payment-wallet.pagopa.it/" + $"{(string)context.Variables["redirectUrlPrefix"]}" + $"#sessionToken={((string)((JObject) context.Variables["pmSession"])["data"]["sessionToken"])}")
+                        new JProperty("redirectUrl", $"https://${env}.payment-wallet.pagopa.it/{(string)context.Variables["redirectUrlPrefix"]}#sessionToken={((string)((JObject) context.Variables["pmSession"])["data"]["sessionToken"])}")
                 ).ToString();
         }</set-body>
       </return-response>
