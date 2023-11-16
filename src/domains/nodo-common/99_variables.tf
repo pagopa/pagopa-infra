@@ -264,8 +264,39 @@ variable "cidr_subnet_cosmosdb_nodo_re" {
   type        = list(string)
   description = "Cosmos DB address space for nodo re."
 }
+variable "cidr_subnet_cosmosdb_nodo_verifyko" {
+  type        = list(string)
+  description = "Cosmos DB address space for nodo re."
+}
 
 variable "cosmos_nosql_db_params" {
+  type = object({
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    events_ttl                        = number
+    max_throughput                    = number
+  })
+}
+
+variable "verifyko_cosmos_nosql_db_params" {
   type = object({
     capabilities   = list(string)
     offer_type     = string
@@ -319,6 +350,29 @@ variable "nodo_re_storage_account" {
   }
 }
 
+# Nodo Verify KO store Storage Account
+
+variable "nodo_verifyko_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+  })
+  default = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = false
+    blob_delete_retention_days    = 3653
+    public_network_access_enabled = false
+  }
+}
+
 variable "nodo_storico_storage_account" {
   type = object({
     account_kind                  = string
@@ -369,4 +423,10 @@ variable "sftp_sa_backup_retention_days" {
   type        = number
   default     = 0
   description = "(Optional) nodo sftp storage backup retention"
+}
+
+variable "enable_nodo_re" {
+  type        = bool
+  default     = false
+  description = "Enables dumping nodo re"
 }
