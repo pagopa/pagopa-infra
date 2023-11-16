@@ -289,7 +289,7 @@ module "apim_pm_restapicd_api_v3" {
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi-cd/v3/_base_policy.xml.tpl", {
-    payment_wallet_origin = var.env_short == "p" ? "https://payment-wallet.${var.external_domain}" : "https://${var.env}.payment-wallet.${var.external_domain}"
+    payment_wallet_origin = var.env_short == "p" ? "https://payment-wallet.${var.external_domain}/" : "https://${var.env}.payment-wallet.${var.external_domain}/"
   })
 }
 
