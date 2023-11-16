@@ -45,7 +45,7 @@ module "postgres_flexible_server_fdr" {
   private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
   delegated_subnet_id         = var.env_short != "d" ? module.postgres_flexible_snet.id : null
   high_availability_enabled   = var.pgres_flex_params.pgres_flex_ha_enabled
-  standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_params.zone : null
+  standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_params.standby_zone : null
   pgbouncer_enabled           = var.pgres_flex_params.pgres_flex_pgbouncer_enabled
   diagnostic_settings_enabled = var.pgres_flex_params.pgres_flex_diagnostic_settings_enabled
   administrator_login         = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
@@ -58,6 +58,7 @@ module "postgres_flexible_server_fdr" {
   backup_retention_days        = var.pgres_flex_params.backup_retention_days
   geo_redundant_backup_enabled = var.pgres_flex_params.geo_redundant_backup_enabled
   create_mode                  = var.pgres_flex_params.create_mode
+
 
   log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
   custom_metric_alerts       = var.custom_metric_alerts
@@ -73,7 +74,7 @@ module "postgres_flexible_server_fdr" {
   ]
 
 
-  private_dns_registration = var.geo_replica_enabled
+  private_dns_registration = var.postgres_dns_registration_enabled
   private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
   private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
   private_dns_record_cname = "fdr-db"
