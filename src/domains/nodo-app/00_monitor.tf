@@ -28,6 +28,8 @@ data "azurerm_monitor_action_group" "email" {
 }
 
 data "azurerm_monitor_action_group" "opsgenie" {
+  count = var.env_short == "p" ? 1 : 0
+
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_opsgenie_name
 }
@@ -68,7 +70,7 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_moetrics_error" {
     metric_namespace = "Insights.Container/pods"
     metric_name      = "podCount"
     operator         = "GreaterThan"
-    threshold        = 20
+    threshold        = 30
     dimension {
       name     = "kubernetes namespace"
       operator = "Include"

@@ -1,9 +1,13 @@
 data "azurerm_resource_group" "nodo_re_to_datastore_rg" {
+  count = var.enable_nodo_re || var.env_short != "d" ? 1 : 0
+
+
   name = format("%s-re-to-datastore-rg", local.project)
 }
 
 module "nodo_re_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
+  count  = var.enable_nodo_re ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
   name                            = replace(format("%s-re-2-data-st", local.project), "-", "")
   account_kind                    = var.nodo_re_storage_account.account_kind
@@ -11,7 +15,7 @@ module "nodo_re_storage_account" {
   account_replication_type        = var.nodo_re_storage_account.account_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.nodo_re_storage_account.blob_versioning_enabled
-  resource_group_name             = data.azurerm_resource_group.nodo_re_to_datastore_rg.name
+  resource_group_name             = data.azurerm_resource_group.nodo_re_to_datastore_rg[0].name
   location                        = var.location
   advanced_threat_protection      = var.nodo_re_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
@@ -19,15 +23,23 @@ module "nodo_re_storage_account" {
 
   blob_delete_retention_days = var.nodo_re_storage_account.blob_delete_retention_days
 
+  blob_change_feed_enabled             = var.nodo_re_storage_account.backup_enabled
+  blob_change_feed_retention_in_days   = var.nodo_re_storage_account.backup_enabled ? var.nodo_re_storage_account.backup_retention : null
+  blob_container_delete_retention_days = var.nodo_re_storage_account.backup_retention
+  blob_storage_policy = {
+    enable_immutability_policy = false
+    blob_restore_policy_days   = var.nodo_re_storage_account.backup_retention
+  }
+
   tags = var.tags
 }
 
 resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
+  count = var.env_short == "d" ? 0 : var.enable_nodo_re ? 1 : 0
 
   name                = "${local.project}-re-private-endpoint"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.nodo_re_to_datastore_rg.name
+  resource_group_name = data.azurerm_resource_group.nodo_re_to_datastore_rg[0].name
   subnet_id           = module.storage_account_snet.id
 
   private_dns_zone_group {
@@ -37,7 +49,7 @@ resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-re-private-service-connection"
-    private_connection_resource_id = module.nodo_re_storage_account.id
+    private_connection_resource_id = var.enable_nodo_re ? module.nodo_re_storage_account[0].id : "https://private/connection/fake/path"
     is_manual_connection           = false
     subresource_names              = ["table"]
   }
@@ -51,6 +63,7 @@ resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
 
 # table#1 nodo-re
 resource "azurerm_storage_table" "nodo_re_table" {
+  count                = var.enable_nodo_re ? 1 : 0
   name                 = "events"
-  storage_account_name = module.nodo_re_storage_account.name
+  storage_account_name = module.nodo_re_storage_account[0].name
 }

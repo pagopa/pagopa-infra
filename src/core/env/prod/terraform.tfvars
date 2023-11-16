@@ -47,7 +47,8 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis = ["10.1.163.0/24"]
+cidr_subnet_redis                = ["10.1.163.0/24"]
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -115,8 +116,8 @@ app_gateway_deny_paths = [
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal*",
-#  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
-#  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
   #"/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
@@ -314,7 +315,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"] #, "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -334,18 +335,19 @@ eventhubs = [
         send   = false
         manage = false
       },
-      {
-        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
-        listen = true
-        send   = false
-        manage = false
-      }
+      #     disabled because at the moment not used
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      },
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      }
     ]
   },
   {
@@ -534,7 +536,72 @@ eventhubs_02 = [
       }
     ]
   },
+  {
+    name              = "quality-improvement-alerts"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-alert-rx", "pagopa-qi-alert-rx-pdnd", "pagopa-qi-alert-rx-debug"]
+    keys = [
+      {
+        name   = "pagopa-qi-alert-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-debug"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-verify-ko"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-verify-ko-to-datastore-rx", "nodo-dei-pagamenti-verify-ko-to-tablestorage-rx", "nodo-dei-pagamenti-verify-ko-test-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-test-rx" # re->anywhere for test
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
 ]
+
 # acr
 acr_enabled = true
 
@@ -659,3 +726,8 @@ node_forwarder_size            = "P1v3"
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
+devops_agent_zones         = [1, 2, 3]
+devops_agent_balance_zones = false
+
+enable_logos_backup            = true
+logos_sa_delete_retention_days = 30

@@ -56,6 +56,12 @@ resources:
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v3.0.0
       endpoint: 'io-azure-devops-github-ro'
+    #Checkout tests repo that contains e2e tests to be executed after domain apply
+    - repository: pagopaCheckoutTests
+      type: github
+      name: pagopa/pagopa-checkout-tests
+      ref: main
+      endpoint: 'io-azure-devops-github-ro'
 
 lockBehavior: sequential
 stages:
@@ -84,6 +90,19 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+    # E2E test
+    - stage: "E2E_Tests_Checkout_DEV_environment"
+      displayName: '🧪 Running E2E test on DEV env'
+      pool:
+        vmImage: 'ubuntu-latest'
+      dependsOn: dev_apply_ecommerce_app
+      jobs:
+        - job: e2e_tests
+          steps:
+            - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
+              parameters:
+                ENVIRONMENT: DEV
+                CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
 
 
   #
@@ -114,6 +133,20 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+      # E2E test
+    - stage: "E2E_Tests_Checkout_UAT_environment"
+      displayName: '🧪 Running E2E test on UAT env'
+      pool:
+        vmImage: 'ubuntu-latest'
+      dependsOn: uat_apply_ecommerce_app
+      jobs:
+        - job: e2e_tests
+          steps:
+            - template: .devops/azure-templates/e2e-tests.yaml@pagopaCheckoutTests
+              parameters:
+                ENVIRONMENT: UAT
+                CHECKOUT_RESOURCE_REPO_NAME: pagopaCheckoutTests
+
 
   #
   # PROD
@@ -143,17 +176,17 @@ stages:
         AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-    
+
     - stage:
       displayName: '💻 Dashboards generation GHA'
-      jobs: 
+      jobs:
       - job: generate_dashboard
         steps:
-        - task: Bash@3 
+        - task: Bash@3
           displayName: 'Dashboard generation'
           inputs:
             targetType: "inline"
-            script: | 
+            script: |
               echo "Launching ecommerce dashboard generation apply"
               body=$(cat <<EOF
               {

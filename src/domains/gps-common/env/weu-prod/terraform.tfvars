@@ -96,7 +96,11 @@ cosmos_gpd_payments_db_params = {
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
-  additional_geo_locations          = []
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
   private_endpoint_enabled          = true
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = true
@@ -112,4 +116,17 @@ cosmos_gpd_payments_db_params = {
 
 cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
-enable_iac_pipeline = true
+enable_iac_pipeline                   = true
+gpd_payments_versioning               = true
+enable_gpd_payments_backup            = true
+gpd_payments_sa_delete_retention_days = 31
+gpd_payments_sa_backup_retention_days = 30
+
+
+reporting_storage_account = {
+  blob_versioning_enabled    = true
+  advanced_threat_protection = true
+  blob_delete_retention_days = 31
+  backup_enabled             = true
+  backup_retention           = 30
+}

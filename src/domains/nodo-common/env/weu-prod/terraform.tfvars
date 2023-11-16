@@ -45,7 +45,7 @@ pgres_flex_params = {
   zone                                   = 1
   standby_ha_zone                        = 3
   backup_retention_days                  = 7
-  geo_redundant_backup_enabled           = false
+  geo_redundant_backup_enabled           = true
   create_mode                            = "Default"
   pgres_flex_private_endpoint_enabled    = true
   pgres_flex_ha_enabled                  = true
@@ -139,7 +139,35 @@ cosmos_nosql_db_params = {
   max_throughput = 20000
 }
 
-cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
+verifyko_cosmos_nosql_db_params = {
+  kind         = "GlobalDocumentDB"
+  capabilities = []
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = true
+
+  events_ttl     = 10368000 # 120 days
+  max_throughput = 20000
+}
+
+cidr_subnet_cosmosdb_nodo_re       = ["10.1.170.0/24"]
+cidr_subnet_cosmosdb_nodo_verifyko = ["10.1.173.0/24"]
 
 nodo_storico_allowed_ips = ["93.63.219.230"]
 
@@ -147,8 +175,42 @@ nodo_re_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 31
+  public_network_access_enabled = true
+  backup_enabled                = true
+  backup_retention              = 30
+
+}
+
+nodo_verifyko_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
   blob_delete_retention_days    = 0
-  public_network_access_enabled = false
+  public_network_access_enabled = true
+  backup_enabled                = true
+  backup_retention              = 30
 }
+
+
+nodo_storico_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
+  backup_enabled                = true
+  blob_delete_retention_days    = 31
+  backup_retention              = 30
+
+}
+
+
+enable_sftp_backup            = true
+sftp_sa_delete_retention_days = 31
+sftp_sa_backup_retention_days = 30

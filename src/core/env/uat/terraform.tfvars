@@ -39,7 +39,10 @@ cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
 cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # cidr_subnet_gps_cosmosdb             = ["10.1.149.0/24"]
-cidr_subnet_node_forwarder = ["10.1.158.0/24"]
+cidr_subnet_node_forwarder       = ["10.1.158.0/24"]
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
+
+
 
 # specific
 cidr_subnet_redis = ["10.1.163.0/24"]
@@ -99,9 +102,9 @@ app_gateway_deny_paths = [
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal/.*",
-#  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
-#  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
-#  "/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
@@ -309,7 +312,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"] #, "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -329,18 +332,19 @@ eventhubs = [
         send   = false
         manage = false
       },
-      {
-        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
-        listen = true
-        send   = false
-        manage = false
-      }
+#     disabled because at the moment not used
+#      {
+#        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+#        listen = true
+#        send   = false
+#        manage = false
+#      },
+#      {
+#        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+#        listen = true
+#        send   = false
+#        manage = false
+#      }
     ]
   },
   {
@@ -561,6 +565,38 @@ eventhubs_02 = [
       }
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-verify-ko"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-verify-ko-to-datastore-rx", "nodo-dei-pagamenti-verify-ko-to-tablestorage-rx", "nodo-dei-pagamenti-verify-ko-test-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-test-rx" # re->anywhere for test
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
 ]
 
 # acr
