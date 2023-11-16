@@ -154,6 +154,7 @@ variable "pgres_flex_params" {
     db_version                             = string
     storage_mb                             = string
     zone                                   = number
+    standby_zone                           = optional(number, 1)
     backup_retention_days                  = number
     geo_redundant_backup_enabled           = bool
     create_mode                            = string
@@ -429,6 +430,12 @@ variable "geo_replica_enabled" {
   default     = false
 }
 
+
+variable "postgres_dns_registration_enabled" {
+  type        = bool
+  description = "(Optional) If true, adds a CNAME record for the database FQDN in the db private dns"
+  default     = false
+}
 
 
 variable "geo_replica_cidr_subnet_postgresql" {

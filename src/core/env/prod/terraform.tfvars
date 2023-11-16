@@ -315,7 +315,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"] #, "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -335,18 +335,19 @@ eventhubs = [
         send   = false
         manage = false
       },
-      {
-        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
-        listen = true
-        send   = false
-        manage = false
-      }
+      #     disabled because at the moment not used
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      },
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      }
     ]
   },
   {
@@ -480,6 +481,38 @@ eventhubs = [
       },
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-verify-ko"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-verify-ko-to-datastore-rx", "nodo-dei-pagamenti-verify-ko-to-tablestorage-rx", "nodo-dei-pagamenti-verify-ko-test-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-test-rx" # re->anywhere for test
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
 ]
 
 eventhubs_02 = [
@@ -566,7 +599,7 @@ eventhubs_02 = [
         manage = false
       }
     ]
-  },
+  }
 ]
 
 # acr

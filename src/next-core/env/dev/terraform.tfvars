@@ -37,5 +37,6 @@ dns_forwarder_backup_is_enabled = false
 #
 # replica settings
 #
-geo_replica_enabled = false
+geo_replica_enabled          = false
+postgres_private_dns_enabled = false
 
