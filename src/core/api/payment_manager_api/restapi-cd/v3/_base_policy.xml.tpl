@@ -51,9 +51,11 @@
                     string walletId = walletParam != null && walletParam.Split('=').Length == 2 ? walletParam.Split('=')[1] : "";
                     return walletId;
                 }" />
-              <set-variable name="isWalletOnboarding" value="true" />
               <set-header name="Set-Cookie" exists-action="append">
                   <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
+              </set-header>
+              <set-header name="Set-Cookie" exists-action="append">
+                 <value>@($"isWalletOnboarding=true; Path=/pp-restapi-CD")</value>
               </set-header>
           </when>
       </choose>
@@ -72,6 +74,18 @@
 
               return "";
           }" />
+           <set-variable name="isWalletOnboarding" value="@{
+              var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
+              var pattern = "isWalletOnboarding=([\\S]*);";
+              var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+              Match match = regex.Match(cookie);
+              if(match.Success && match.Groups.Count == 2)
+              {
+                  return match.Groups[1].Value;
+              }
+
+              return "";
+           }" />
           <set-variable name="isEcommerceTransaction" value="@{
               string cookieHeaderValue = context.Request.Headers.GetValueOrDefault("Cookie","");
               string cookieName="isEcommerceTransaction";
