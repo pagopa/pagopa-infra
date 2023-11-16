@@ -405,6 +405,19 @@ resource "azurerm_key_vault_secret" "nodo_nodeforpm_api_key" {
   }
 }
 
+resource "azurerm_key_vault_secret" "wallet-token-test-key" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "wallet-token-test-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 resource "azurerm_key_vault_secret" "wallet-token-test-creditcard-key" {
   count        = var.env_short != "p" ? 1 : 0
   name         = "wallet-token-test-creditcard-key"
