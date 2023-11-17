@@ -75,7 +75,7 @@ module "wallet_fe_cdn" {
 
   delivery_rule_rewrite = [{
     name  = "RewriteRulesForReactRouting"
-    order = 1
+    order = 2
 
     conditions = [{
       condition_type   = "url_file_extension_condition"
