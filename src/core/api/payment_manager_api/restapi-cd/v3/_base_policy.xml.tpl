@@ -27,7 +27,7 @@
       <set-backend-service base-url="@((string)context.Variables["backend-base-url"])" />
       <!-- cookie for walletId for new wallet backward compatible -->
       <choose>
-        <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") && context.Request.Body != null ) ">
+        <when condition="@( (context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") || context.Request.Url.Path.EndsWith("/webview/paypal/onboarding/psp")) && context.Request.Body != null ) ">
           <set-variable name="requestBody" value="@(context.Request.Body.As<string>(preserveContent: true))" />
         </when>
       </choose>
@@ -64,23 +64,19 @@
               </choose>
           </when>
            <!-- Paypal onboarding -->
-          <when condition="@( context.Request.Url.Path.EndsWith("/webview/paypal/onboarding/psp") )">
-              <set-variable name="sessionToken" value="@{
-                 string requestBody = ((string)context.Variables["requestBody"]);
-                 string sessionTokenParam = requestBody!=null && requestBody.Split('&').Length >= 2 ? requestBody.Split('&')[1] : "";
-                 string sessionToken = sessionTokenParam != null && sessionTokenParam.Split('=').Length == 2 ? sessionTokenParam.Split('=')[1] : "";
-                 return sessionToken;
-              }" />
-              <choose>
-                <when condition="@( (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}" )">
-                   <set-header name="Set-Cookie" exists-action="append">
-                     <value>@($"sessionToken={(string)context.Variables.GetValueOrDefault<string>("sessionToken","")}; Path=/pp-restapi-CD; HttpOnly")</value>
-                   </set-header>
-                  <set-header name="Set-Cookie" exists-action="append">
-                    <value>@($"isPaypalOnboarding=true; Path=/pp-restapi-CD")</value>
-                  </set-header>
-                </when>
-              </choose>
+          <when condition="@( context.Request.Url.Path.EndsWith("/webview/paypal/onboarding/psp") && (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}")">
+               <set-variable name="sessionToken" value="@{
+                  string requestBody = ((string)context.Variables["requestBody"]);
+                  string sessionTokenParam = requestBody!=null && requestBody.Split('&').Length >= 2 ? requestBody.Split('&')[1] : "";
+                  string sessionToken = sessionTokenParam != null && sessionTokenParam.Split('=').Length == 2 ? sessionTokenParam.Split('=')[1] : "";
+                  return sessionToken;
+               }" />
+               <set-header name="Set-Cookie" exists-action="append">
+                 <value>@($"sessionToken={(string)context.Variables.GetValueOrDefault<string>("sessionToken","")}; Path=/pp-restapi-CD; HttpOnly")</value>
+               </set-header>
+              <set-header name="Set-Cookie" exists-action="append">
+                <value>@($"isPaypalOnboarding=true; Path=/pp-restapi-CD")</value>
+              </set-header>
           </when>
       </choose>
       <choose>
