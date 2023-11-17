@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "rg_velero_backup" {
 
 
 module "velero" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero?ref=v7.24.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero?ref=v7.27.0"
 
   count = var.enable_velero_backup ? 1 : 0
 
@@ -29,6 +29,10 @@ module "velero" {
   # required if use_storage_private_endpoint = true
   storage_account_private_dns_zone_id = data.azurerm_private_dns_zone.storage_account_private_dns_zone.id
   private_endpoint_subnet_id = data.azurerm_subnet.private_endpoint_subnet.id
+
+  enable_sa_backup = var.velero_sa_backup_enabled
+  sa_backup_retention_days = var.velero_sa_backup_retention_days
+
 
   tags = var.tags
 }
