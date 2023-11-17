@@ -28,7 +28,7 @@
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
-          <set-body template="liquid">
+          <set-body>
             {
                 "outcome": "OK"
             }
