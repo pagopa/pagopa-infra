@@ -74,7 +74,7 @@
               <choose>
                 <when condition="@( (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}" )">
                    <set-header name="Set-Cookie" exists-action="append">
-                     <value>@($"sessionToken={(string)context.Variables.GetValueOrDefault<string>("sessionToken","")}; Path=/pp-restapi-CD")</value>
+                     <value>@($"sessionToken={(string)context.Variables.GetValueOrDefault<string>("sessionToken","")}; Path=/pp-restapi-CD; HttpOnly")</value>
                    </set-header>
                   <set-header name="Set-Cookie" exists-action="append">
                     <value>@($"isPaypalOnboarding=true; Path=/pp-restapi-CD")</value>
@@ -179,12 +179,12 @@
             </when>
             <when condition="@( (string)context.Variables["isPaypalOnboarding"] == "true")">
               <set-header name="Set-Cookie" exists-action="override">
-                <value>sessionToken=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+                <value>sessionToken=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly</value>
                 <value>isPaypalOnboarding=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
               </set-header>
                <!-- Extract outcome -->
               <set-variable name="outcome" value="@{
-                 string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}
+                 string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}";
                  string[] splittedOriginalLocation = location.Split('?');
                  string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
                  var pattern = "outcome=([\\S]*);";
@@ -238,8 +238,8 @@
                         <set-variable name="walletId" value="@{
                          JArray wallets = (JArray)(((JObject)context.Variables["walletResponseJson"])["data"]);
                          foreach (JObject wallet in wallets) {
-                           if(wallet["walletType"] == "Paypal") {
-                             return wallet["idWallet"]
+                           if(((string)wallet["walletType"]).Equals("PayPal")) {
+                             return wallet["idWallet"];
                            }
                          }
                          return "";
