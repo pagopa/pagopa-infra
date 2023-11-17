@@ -10,9 +10,9 @@ data "azurerm_cosmosdb_sql_database" "nodo_verifyko_cosmosdb_nosql_db" {
   account_name        = data.azurerm_cosmosdb_account.nodo_verifyko_cosmosdb_nosql.name
 }
 
-data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns02_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx" {
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx" {
   name                = "nodo-dei-pagamenti-verify-ko-datastore-rx"
-  namespace_name      = "${local.product}-evh-ns02"
+  namespace_name      = "${local.product}-evh-ns01"
   eventhub_name       = "nodo-dei-pagamenti-verify-ko"
   resource_group_name = "${local.product}-msg-rg"
 }
@@ -46,7 +46,7 @@ locals {
     COSMOS_DB_NAME            = "nodo_verifyko"
     COSMOS_DB_COLLECTION_NAME = "events"
 
-    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string
+    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string
   }
 
   verifyko_ds_docker_settings = {
