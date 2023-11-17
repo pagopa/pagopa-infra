@@ -550,13 +550,6 @@
                 "maxLength": 20,
                 "example": "+3938*******202"
               },
-              "groupCode": {
-                "description": "bank group code",
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 5,
-                "example": "12345"
-              },
               "instituteCode":{
                 "description": "institute code",
                 "type": "string",
@@ -573,7 +566,6 @@
             "required": [
               "type",
               "maskedNumber",
-              "groupCode",
               "instituteCode",
               "bankName"
             ]
