@@ -183,7 +183,7 @@
                  string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}";
                  string[] splittedOriginalLocation = location.Split('?');
                  string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                 var pattern = "outcome=([\\S]*);";
+                 var pattern = "outcome=([\\S]*)";
                  var regex = new Regex(pattern, RegexOptions.IgnoreCase);
                  Match match = regex.Match(queryParameters);
                  if(match.Success && match.Groups.Count == 2)
@@ -198,12 +198,13 @@
                     <!-- Extract sessionToken -->
                     <set-variable name="sessionToken" value="@{
                        var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
-                       var pattern = "sessionToken=([\\S]*);";
+                       var pattern = "sessionToken=([\\S]*)";
                        var regex = new Regex(pattern, RegexOptions.IgnoreCase);
                        Match match = regex.Match(cookie);
                        if(match.Success && match.Groups.Count == 2)
                        {
-                           return match.Groups[1].Value;
+                           var sessionToken = (string)match.Groups[1].Value;
+                           return sessionToken.Substring(0, sessionToken.Length -1);
                        }
 
                        return "";
@@ -213,7 +214,7 @@
                         <set-url>{{pm-host}}/pp-restapi-CD/v3/wallet</set-url>
                         <set-method>GET</set-method>
                         <set-header name="Authorization" exists-action="override">
-                            <value>Bearer @((string)context.Variables["sessionToken"])</value>
+                             <value>@("Bearer " + (string)context.Variables["sessionToken"])</value>
                         </set-header>
                     </send-request>
                      <choose>
@@ -235,7 +236,7 @@
                          JArray wallets = (JArray)(((JObject)context.Variables["walletResponseJson"])["data"]);
                          foreach (JObject wallet in wallets) {
                            if(((string)wallet["walletType"]).Equals("PayPal")) {
-                             return wallet["idWallet"];
+                             return ((string)wallet["idWallet"]);
                            }
                          }
                          return "";
@@ -256,7 +257,7 @@
                 <otherwise>
                   <set-header name="location" exists-action="override">
                   <value>@{
-                      string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletId","")}";
+                      string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}";
                       string[] splittedOriginalLocation = location.Split('?');
                       string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
                       location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
