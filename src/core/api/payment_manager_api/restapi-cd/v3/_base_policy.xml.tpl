@@ -44,6 +44,7 @@
       </choose>
       <!-- cookie for walletId for new wallet backward compatible -->
       <choose>
+          <!-- Credit card onboarding -->
           <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") )">
               <set-variable name="walletId" value="@{
                     string requestBody = ((string)context.Variables["requestBody"]);
@@ -58,6 +59,25 @@
                 <when condition="@( (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}" )">
                   <set-header name="Set-Cookie" exists-action="append">
                     <value>@($"isWalletOnboarding=true; Path=/pp-restapi-CD")</value>
+                  </set-header>
+                </when>
+              </choose>
+          </when>
+           <!-- Paypal onboarding -->
+          <when condition="@( context.Request.Url.Path.EndsWith("/webview/paypal/onboarding/psp") )">
+              <set-variable name="sessionToken" value="@{
+                 string requestBody = ((string)context.Variables["requestBody"]);
+                 string sessionTokenParam = requestBody!=null && requestBody.Split('&').Length >= 2 ? requestBody.Split('&')[1] : "";
+                 string sessionToken = sessionTokenParam != null && sessionTokenParam.Split('=').Length == 2 ? sessionTokenParam.Split('=')[1] : "";
+                 return sessionToken;
+              }" />
+              <choose>
+                <when condition="@( (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}" )">
+                   <set-header name="Set-Cookie" exists-action="append">
+                     <value>@($"sessionToken={(string)context.Variables.GetValueOrDefault<string>("sessionToken","")}; Path=/pp-restapi-CD")</value>
+                   </set-header>
+                  <set-header name="Set-Cookie" exists-action="append">
+                    <value>@($"isPaypalOnboarding=true; Path=/pp-restapi-CD")</value>
                   </set-header>
                 </when>
               </choose>
@@ -90,6 +110,18 @@
 
               return "";
            }" />
+           <set-variable name="isPaypalOnboarding" value="@{
+             var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
+             var pattern = "isPaypalOnboarding=([\\S]*);";
+             var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+             Match match = regex.Match(cookie);
+             if(match.Success && match.Groups.Count == 2)
+             {
+                 return match.Groups[1].Value;
+             }
+
+             return "";
+          }" />
           <set-variable name="isEcommerceTransaction" value="@{
               string cookieHeaderValue = context.Request.Headers.GetValueOrDefault("Cookie","");
               string cookieName="isEcommerceTransaction";
@@ -144,6 +176,99 @@
                     return location;
                   }</value>
               </set-header>
+            </when>
+            <when condition="@( (string)context.Variables["isPaypalOnboarding"] == "true")">
+              <set-header name="Set-Cookie" exists-action="override">
+                <value>sessionToken=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+                <value>isPaypalOnboarding=; path=/pp-restapi-CD; expires=Thu, 01 Jan 1970 00:00:00 GMT</value>
+              </set-header>
+               <!-- Extract outcome -->
+              <set-variable name="outcome" value="@{
+                 string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}
+                 string[] splittedOriginalLocation = location.Split('?');
+                 string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
+                 var pattern = "outcome=([\\S]*);";
+                 var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+                 Match match = regex.Match(queryParameters);
+                 if(match.Success && match.Groups.Count == 2)
+                 {
+                    return match.Groups[1].Value;
+                 }
+                 return "";
+              }" />
+
+              <choose>
+                <when condition="@((string)context.Variables["outcome"] == "0")">
+                    <!-- Extract sessionToken -->
+                    <set-variable name="sessionToken" value="@{
+                       var cookie = context.Request.Headers.GetValueOrDefault("Cookie","");
+                       var pattern = "sessionToken=([\\S]*);";
+                       var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+                       Match match = regex.Match(cookie);
+                       if(match.Success && match.Groups.Count == 2)
+                       {
+                           return match.Groups[1].Value;
+                       }
+
+                       return "";
+                    }" />
+                     <!-- Get wallets by sessionToken -->
+                     <send-request ignore-error="true" timeout="10" response-variable-name="wallet-response" mode="new">
+                        <set-url>{{pm-host}}/pp-restapi-CD/v3/wallet</set-url>
+                        <set-method>GET</set-method>
+                        <set-header name="Authorization" exists-action="override">
+                            <value>Bearer @((string)context.Variables["sessionToken"])</value>
+                        </set-header>
+                    </send-request>
+                     <choose>
+                      <when condition="@(((IResponse)context.Variables["wallet-response"]).StatusCode != 200)">
+                        <set-header name="location" exists-action="override">
+                          <value>@{
+                            string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletId","")}";
+                            string[] splittedOriginalLocation = location.Split('?');
+                            string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
+                            location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                            return location;
+                          }</value>
+                        </set-header>
+                      </when>
+                      <otherwise>
+                        <set-variable name="walletResponseJson" value="@(((IResponse)context.Variables["wallet-response"]).Body.As<JObject>())" />
+                        <!-- Retrieve walletId -->
+                        <set-variable name="walletId" value="@{
+                         JArray wallets = (JArray)(((JObject)context.Variables["walletResponseJson"])["data"]);
+                         foreach (JObject wallet in wallets) {
+                           if(wallet["walletType"] == "Paypal") {
+                             return wallet["idWallet"]
+                           }
+                         }
+                         return "";
+                        }" />
+
+                        <set-header name="location" exists-action="override">
+                          <value>@{
+                              string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletId","")}";
+                              string[] splittedOriginalLocation = location.Split('?');
+                              string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
+                              location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                              return location;
+                            }</value>
+                        </set-header>
+                      </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+                  <set-header name="location" exists-action="override">
+                  <value>@{
+                      string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletId","")}";
+                      string[] splittedOriginalLocation = location.Split('?');
+                      string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
+                      location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                      return location;
+                    }</value>
+                  </set-header>
+                </otherwise>
+              </choose>
             </when>
           </choose>
         </when>
