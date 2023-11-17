@@ -154,8 +154,11 @@
                                 details["brand"] = wallet["info"]["brand"];
                             }
                             if (eCommerceWalletType == "PAYPAL") {
-                                details["abi"] = wallet["info"]["pspinfo"][0]["abi"];
-                                details["maskedEmail"] = wallet["info"]["pspinfo"][0]["email"];
+                                var info = (JObject)(wallet["info"]);
+                                var pspArray = (JArray)(info["pspInfo"]);
+                                var pspInfo = (JObject)(pspArray[0]);
+                                details["abi"] = pspInfo["abi"];
+                                details["maskedEmail"] = pspInfo["email"];
                             }
                             if (eCommerceWalletType == "BANCOMATPAY") {
                                 details["maskedNumber"] = wallet["info"]["numberObfuscated"];
