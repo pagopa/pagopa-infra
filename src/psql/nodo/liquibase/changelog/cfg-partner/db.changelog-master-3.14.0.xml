@@ -7,7 +7,7 @@
 
   <include file="./db.changelog-master-3.10.0.xml"/>
 
-  <include file="../cfg/${version}/db.changelog-20230314090150_target_columns.xml"                    labels="${version}"/>
-  <include file="../cfg${version}/db.changelog-20230221101400_add_unique_constraint.xml"             labels="${version}"/>
+  <include file="./${version}/db.changelog-20230314090150_target_columns.xml"                    labels="${version}"/>
+  <include file="./${version}/db.changelog-20230221101400_add_unique_constraint.xml"             labels="${version}"/>
 
 </databaseChangeLog>

@@ -5,6 +5,8 @@
 
   <property name="version" value="3.24.0" global="false"/>
 
-  <include file="../cfg/${version}/db.changelog-20231115000000.xml" labels="${version}"/>
+  <include file="./db.changelog-master-3.23.0.xml"/>
+
+  <include file="./${version}/db.changelog-20231003000000_stand-in.xml" labels="${version}" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

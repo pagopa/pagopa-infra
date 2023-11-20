@@ -606,14 +606,14 @@ CREATE OR REPLACE VIEW ${schema}.RGS_RPT(STATI_TIMESTAMP,XML_TIMESTAMP,IUV,CCP,I
             STATI.STATO,
             RTXML.FK_RT,
             RTXML.XML_CONTENT
-            FROM  ${schemaOnline}.RT_XML RTXML
-            JOIN STATI_RPT_SNAPSHOT STATI ON (RTXML.CCP=STATI.CCP AND RTXML.IDENT_DOMINIO=STATI.ID_DOMINIO AND RTXML.IUV=STATI.IUV )
+            FROM ${schemaOnline}.RT_XML RTXML
+            JOIN ${schemaOnline}.STATI_RPT_SNAPSHOT STATI ON (RTXML.CCP=STATI.CCP AND RTXML.IDENT_DOMINIO=STATI.ID_DOMINIO AND RTXML.IUV=STATI.IUV )
             WHERE STATI.STATO IN ('RT_ACCETTATA_PA','RT_RIFIUTATA_PA')</createView>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-27">
         <createView fullDefinition="true" viewName="V_RGS_RT">CREATE OR REPLACE VIEW ${schema}.V_RGS_RT(TEXT,DATA_REPORT) AS SELECT REPLACE(REPLACE('&lt;CONTAINER&gt;'|| XML_CONTENT || '&lt;/CONTAINER&gt;', chr(10), ''), chr(13), '')||chr(13) as TEXT,
             STATI_TIMESTAMP AS DATA_REPORT
-            FROM RGS_RT</createView>
+            FROM ${schema}.RGS_RT</createView>
     </changeSet>
 
 
