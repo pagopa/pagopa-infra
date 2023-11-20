@@ -1,7 +1,7 @@
 
 locals {
 
-  # listeners
+  # 1.listeners
   listeners = {
     api = {
       protocol           = "Https"
@@ -15,6 +15,23 @@ locals {
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+          ""
+        )
+      }
+    }
+
+    apix = {
+      protocol           = "Https"
+      host               = format("apix.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_apix_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_platformx.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platformx.version}",
           ""
         )
       }
@@ -142,12 +159,18 @@ locals {
     }
   }
 
-  # routes
+  # 2.routes
 
   routes = {
     api = {
       listener              = "api"
       backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+
+    apix = {
+      listener              = "apix"
+      backend               = "apimx"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
 
@@ -241,7 +264,7 @@ module "app_gw" {
   subnet_id    = module.appgateway_snet.id
   public_ip_id = azurerm_public_ip.appgateway_public_ip.id
 
-  # Configure backends
+  # Configure 3.backends
   backends = {
     apim = {
       protocol                    = "Https"
@@ -252,6 +275,18 @@ module "app_gw" {
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 30 # workaround for FDR - set to 10s after new Fdr service deployed
+      pick_host_name_from_backend = false
+    }
+
+    apimx = {
+      protocol                    = "Https"
+      host                        = trim(azurerm_dns_a_record.dns_a_apix.fqdn, ".")
+      port                        = 443
+      ip_addresses                = module.apim.private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_apix.fqdn]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apimx"
+      request_timeout             = 300 # workaround for FDR - set to 10s after new Fdr service deployed
       pick_host_name_from_backend = false
     }
 

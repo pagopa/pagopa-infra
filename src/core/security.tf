@@ -138,6 +138,11 @@ data "azurerm_key_vault_certificate" "app_gw_platform" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "app_gw_platformx" {
+  name         = var.app_gateway_apix_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_certificate" "app_gw_platform_prf" {
   count = (var.dns_zone_prefix_prf == "") ? 0 : 1
 

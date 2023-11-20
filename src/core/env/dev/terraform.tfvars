@@ -79,6 +79,7 @@ apim_alerts_enabled = false
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
+app_gateway_apix_certificate_name       = "apix-dev-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"

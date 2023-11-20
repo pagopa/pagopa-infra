@@ -461,6 +461,10 @@ variable "app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
 }
+variable "app_gateway_apix_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault ( where 'x' stay for heavy payload )"
+}
 
 variable "app_gateway_prf_certificate_name" {
   type        = string
