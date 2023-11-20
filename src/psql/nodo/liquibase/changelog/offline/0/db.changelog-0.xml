@@ -563,7 +563,8 @@
             JOIN ${schema}.BINARY_FILE BF ON (RC.FK_BINARY_FILE=BF.ID)</createView>
     </changeSet>
     <changeSet author="liquibase" id="1666281309642-23">
-        <createView fullDefinition="true" viewName="RGS_RPT">CREATE OR REPLACE VIEW ${schema}.RGS_RPT(STATI_TIMESTAMP,XML_TIMESTAMP,IUV,CCP,IDENT_DOMINIO,FK_CARRELLO,FK_RPT,STATO,XML_CONTENT) AS SELECT
+        <createView fullDefinition="true" viewName="RGS_RPT">
+CREATE OR REPLACE VIEW ${schema}.RGS_RPT(STATI_TIMESTAMP,XML_TIMESTAMP,IUV,CCP,IDENT_DOMINIO,FK_CARRELLO,FK_RPT,STATO,XML_CONTENT) AS SELECT
             STATI.INSERTED_TIMESTAMP AS STATI_TIMESTAMP,
             RPTXML.INSERTED_TIMESTAMP AS XML_TIMESTAMP,
             RPTXML.IUV,
@@ -577,11 +578,17 @@
             JOIN ${schema}.V_STATI_RPT STATI ON (RPTXML.CCP=STATI.CCP AND RPTXML.IDENT_DOMINIO=STATI.ID_DOMINIO AND RPTXML.IUV=STATI.IUV AND RPTXML.ID_SESSIONE=STATI.ID_SESSIONE)
             WHERE STATI.STATO IN ('RPT_ACCETTATA_PSP','RPT_RIFIUTATA_PSP')</createView>
     </changeSet>
-<!--    <changeSet author="liquibase" id="1666281309642-24">-->
-<!--        <createView fullDefinition="true" viewName="V_RGS_RENDICONTAZIONE">CREATE OR REPLACE VIEW ${schema}.V_RGS_RENDICONTAZIONE(TEXT,DATA_REPORT) AS SELECT REPLACE(REPLACE('&lt;CONTAINER&gt;'|| REPLACE("XML_FILE_CONTENT,chr(0)) || '&lt;/CONTAINER&gt;', chr(10), ''), chr(13), '')||chr(13) as TEXT,-->
-<!--            "DATA_ORA_FLUSSO" AS DATA_REPORT-->
-<!--            FROM ${schema}.RGS_RENDICONTAZIONE</createView>-->
-<!--    </changeSet>-->
+
+    <changeSet author="liquibase" id="1666281309642-24">
+        <createView fullDefinition="true" viewName="V_RGS_RENDICONTAZIONE">CREATE OR REPLACE VIEW ${schema}.V_RGS_RENDICONTAZIONE(TEXT,DATA_REPORT) AS SELECT
+                                                                                REPLACE(
+                                                                                  REPLACE('&lt;CONTAINER&gt;'||
+                                                                                          REGEXP_REPLACE(XML_FILE_CONTENT, E'[\\n\\r]+', '', 'g')
+                                                                                    || '&lt;/CONTAINER&gt;', chr(10), ''),
+                                                                                  chr(13), '') || chr(13) as TEXT, DATA_ORA_FLUSSO AS DATA_REPORT FROM ${schema}.RGS_RENDICONTAZIONE
+        </createView>
+    </changeSet>
+
 <!--    <changeSet author="liquibase" id="1666281309642-25">-->
 <!--        <createView fullDefinition="true" viewName="TRANSAZIONI">CREATE OR REPLACE VIEW ${schema}.TRANSAZIONI(STATO,ID,ID_SESSIONE,IDENT_DOMINIO,IUV,CCP,INSERTED_TIMESTAMP,UPDATED_TIMESTAMP,PSP,INTERMEDIARIOPA,INTERMEDIARIOPSP,CANALE,TIPO_VERSAMENTO,RICEVUTA_PM,SOMMA_VERSAMENTI,FK_CARRELLO,ESITO,STAZ_INTERMEDIARIOPA,COD_ESITO) AS SELECT STATI.STATO, RPT.ID, RPT.ID_SESSIONE, RPT.IDENT_DOMINIO, RPT.IUV, RPT.CCP, RPT.INSERTED_TIMESTAMP, STATI.UPDATED_TIMESTAMP, RPT.PSP, RPT.INTERMEDIARIOPA,-->
 <!--            RPT.INTERMEDIARIOPSP, RPT.CANALE, RPT.TIPO_VERSAMENTO, RPT.RICEVUTA_PM, RPT.SOMMA_VERSAMENTI, RPT.FK_CARRELLO, RT.ESITO, RPT.STAZ_INTERMEDIARIOPA, RT.COD_ESITO"-->
@@ -589,25 +596,25 @@
 <!--            LEFT JOIN ${schema}.RT" RT ON (RPT.IDENT_DOMINIO=RT.IDENT_DOMINIO" AND RPT.IUV=RT.IUV" AND RPT.CCP=RT.CCP)-->
 <!--            JOIN ${schema}.STATI_RPT_SNAPSHOT" STATI ON (RPT.CCP=STATI.CCP" AND RPT.IDENT_DOMINIO=STATI.ID_DOMINIO" AND RPT.IUV=STATI.IUV" AND RPT.ID_SESSIONE=STATI.ID_SESSIONE)</createView>-->
 <!--    </changeSet>-->
-<!--    <changeSet author="liquibase" id="1666281309642-26">-->
-<!--        <createView fullDefinition="true" viewName="RGS_RT">CREATE OR REPLACE VIEW ${schema}.RGS_RT(STATI_TIMESTAMP,XML_TIMESTAMP,IUV,CCP,IDENT_DOMINIO,STATO,FK_RT,XML_CONTENT) AS SELECT-->
-<!--            STATI.INSERTED_TIMESTAMP AS STATI_TIMESTAMP,-->
-<!--            RTXML.INSERTED_TIMESTAMP AS XML_TIMESTAMP,-->
-<!--            RTXML.IUV,-->
-<!--            RTXML.CCP,-->
-<!--            RTXML.IDENT_DOMINIO,-->
-<!--            STATI.STATO,-->
-<!--            RTXML.FK_RT,-->
-<!--            RTXML.XML_CONTENT-->
-<!--            FROM  ${schemaOnline}.RT_XML RTXML-->
-<!--            JOIN STATI_RPT_SNAPSHOT STATI ON (RTXML.CCP=STATI.CCP AND RTXML.IDENT_DOMINIO=STATI.ID_DOMINIO AND RTXML.IUV=STATI.IUV )-->
-<!--            WHERE STATI.STATO IN ('RT_ACCETTATA_PA','RT_RIFIUTATA_PA')</createView>-->
-<!--    </changeSet>-->
-<!--    <changeSet author="liquibase" id="1666281309642-27">-->
-<!--        <createView fullDefinition="true" viewName="V_RGS_RT">CREATE OR REPLACE VIEW ${schema}.V_RGS_RT(TEXT,DATA_REPORT) AS SELECT REPLACE(REPLACE('&lt;CONTAINER&gt;'|| XML_CONTENT || '&lt;/CONTAINER&gt;', chr(10), ''), chr(13), '')||chr(13) as TEXT,-->
-<!--            STATI_TIMESTAMP AS DATA_REPORT-->
-<!--            FROM RGS_RT</createView>-->
-<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281309642-26">
+        <createView fullDefinition="true" viewName="RGS_RT">CREATE OR REPLACE VIEW ${schema}.RGS_RT(STATI_TIMESTAMP,XML_TIMESTAMP,IUV,CCP,IDENT_DOMINIO,STATO,FK_RT,XML_CONTENT) AS SELECT
+            STATI.INSERTED_TIMESTAMP AS STATI_TIMESTAMP,
+            RTXML.INSERTED_TIMESTAMP AS XML_TIMESTAMP,
+            RTXML.IUV,
+            RTXML.CCP,
+            RTXML.IDENT_DOMINIO,
+            STATI.STATO,
+            RTXML.FK_RT,
+            RTXML.XML_CONTENT
+            FROM ${schemaOnline}.RT_XML RTXML
+            JOIN ${schemaOnline}.STATI_RPT_SNAPSHOT STATI ON (RTXML.CCP=STATI.CCP AND RTXML.IDENT_DOMINIO=STATI.ID_DOMINIO AND RTXML.IUV=STATI.IUV )
+            WHERE STATI.STATO IN ('RT_ACCETTATA_PA','RT_RIFIUTATA_PA')</createView>
+    </changeSet>
+    <changeSet author="liquibase" id="1666281309642-27">
+        <createView fullDefinition="true" viewName="V_RGS_RT">CREATE OR REPLACE VIEW ${schema}.V_RGS_RT(TEXT,DATA_REPORT) AS SELECT REPLACE(REPLACE('&lt;CONTAINER&gt;'|| XML_CONTENT || '&lt;/CONTAINER&gt;', chr(10), ''), chr(13), '')||chr(13) as TEXT,
+            STATI_TIMESTAMP AS DATA_REPORT
+            FROM ${schema}.RGS_RT</createView>
+    </changeSet>
 
 
     <changeSet author="liquibase" id="1666281309642-62">
@@ -660,10 +667,10 @@
 <!--            JOIN  ${schemaOnline}.STATI_RPT_SNAPSHOT STATI ON (RT.CCP=STATI.CCP AND RT.IDENT_DOMINIO=STATI.ID_DOMINIO AND RT.IUV=STATI.IUV)-->
 <!--            WHERE STATI.STATO IN ('RT_ACCETTATA_PA','RT_ESITO_SCONOSCIUTO_PA','RT_INVIATA_PA')</createView>-->
 <!--    </changeSet>-->
-<!--    <changeSet author="liquibase" id="1666281309642-70">-->
-<!--        <createView fullDefinition="true" viewName="V_RGS_RPT">CREATE OR REPLACE VIEW ${schema}.V_RGS_RPT(TEXT,DATA_REPORT) AS SELECT-->
-<!--            REPLACE(REPLACE('&lt;CONTAINER&gt;'|| XML_CONTENT || '&lt;/CONTAINER&gt;', chr(10), ''), chr(13), '')||chr(13) as TEXT,-->
-<!--            STATI_TIMESTAMP AS DATA_REPORT-->
-<!--            FROM RGS_RPT</createView>-->
-<!--    </changeSet>-->
+    <changeSet author="liquibase" id="1666281309642-70">
+        <createView fullDefinition="true" viewName="V_RGS_RPT">CREATE OR REPLACE VIEW ${schema}.V_RGS_RPT(TEXT,DATA_REPORT) AS SELECT
+            REPLACE(REPLACE('&lt;CONTAINER&gt;'|| XML_CONTENT || '&lt;/CONTAINER&gt;', chr(10), ''), chr(13), '')||chr(13) as TEXT,
+            STATI_TIMESTAMP AS DATA_REPORT
+            FROM RGS_RPT</createView>
+    </changeSet>
 </databaseChangeLog>
