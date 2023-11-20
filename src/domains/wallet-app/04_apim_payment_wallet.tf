@@ -89,7 +89,7 @@ resource "azurerm_api_management_api_operation_policy" "post_wallets" {
   operation_id        = "createWallet"
 
   xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl", {
-    env = var.env,
+    env                = var.env,
     ecommerce-basepath = local.ecommerce_hostname
     }) : templatefile("./api/payment-wallet/v1/_post_wallets_policy.xml.tpl", {
     env = var.env, pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path
