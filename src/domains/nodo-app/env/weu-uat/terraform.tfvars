@@ -131,3 +131,34 @@ nodo_re_to_tablestorage_function_autoscale = {
   minimum = 1
   maximum = 10
 }
+
+nodo_verifyko_to_datastore_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
+}
+nodo_verifyko_to_datastore_function_always_on       = true
+nodo_verifyko_to_datastore_function_subnet          = ["10.1.188.0/24"]
+nodo_verifyko_to_datastore_network_policies_enabled = true
+nodo_verifyko_to_datastore_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
+
+nodo_verifyko_to_tablestorage_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
+}
+nodo_verifyko_to_tablestorage_function_subnet          = ["10.1.189.0/24"]
+nodo_verifyko_to_tablestorage_network_policies_enabled = true
+nodo_verifyko_to_tablestorage_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
