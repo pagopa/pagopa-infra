@@ -3,7 +3,7 @@
     <set-variable name="sessionToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
     <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
     <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
-    <set-variable name="idPsp" value="@((long)((JObject) context.Variables["body"])["pspId"])" />
+    <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
     <set-variable name="idWallet" value="@{
             string walletIdUUID = (string)context.Variables["walletId"];
             string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , ""); 
@@ -13,7 +13,15 @@
         var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
         return transactionId;
     }" />
-    
+    <!-- get wallet type -->
+    <send-request response-variable-name="wallet" timeout="10">
+        <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/wallet/{(string)context.Variables["idWallet"]}")</set-url>
+        <set-method>GET</set-method>
+        <set-header name="Authorization" exists-action="override">
+            <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
+        </set-header>
+    </send-request>
+    <set-variable name="walletType" value="@((string)((JObject) context.Variables["wallet"])["data"]["type"])" />
     <!-- Check ccp/idPagamento given transactionId -->
     <send-request response-variable-name="pagopaProxyResponse" timeout="10">
         <set-url>@("{{pagopa-appservice-proxy-url}}/payment-activations/" + context.Variables["requestTransactionId"])</set-url>
@@ -23,86 +31,99 @@
         </set-header>
     </send-request>
     <choose>
-        <when condition="@(((int)((IResponse)context.Variables["pagopaProxyResponse"]).StatusCode) == 200)">
-            <set-variable name="idPayment" value="@((string)((IResponse)context.Variables["pagopaProxyResponse"]).Body.As<JObject>()["idPagamento"])" />
-            <set-variable name="putWalletRequest" value="@{
-                    JObject response = new JObject();      
-                    JObject data = new JObject();           
-                    data["idWallet"] = long.Parse((string)context.Variables["idWallet"]);
-                    data["idPsp"] = (long)context.Variables["idPsp"];
-                    data["idPagamentoFromEC"] = $"{(string)context.Variables["idPayment"]}";
-                    response["data"] = data;
-                    return response.ToString();
-                }" />
-            <send-request ignore-error="true" timeout="10" response-variable-name="putWalletForPsp">
-                <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/wallet/{(string)context.Variables["idWallet"]}")</set-url>
-                <set-method>PUT</set-method>
-                <set-header name="Authorization" exists-action="override">
-                    <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
-                </set-header>
-                <set-header name="Content-Type" exists-action="override">
-                    <value>application/json</value>
-                </set-header>
-                <set-body>@((string)context.Variables["putWalletRequest"])
-                </set-body>
-            </send-request>
-
-            <choose>
-                <when condition="@(((int)((IResponse)context.Variables["putWalletForPsp"]).StatusCode) == 200)">
-                    <!-- Return url to execute PM webview -->
-                    <return-response>
-                        <set-status code="200" reason="OK" />
-                        <set-header name="Content-Type" exists-action="override">
-                            <value>application/json</value>
-                        </set-header>
-                        <set-body>
-                            @{
-                                JObject response = new JObject();
-                                response["authorizationUrl"] = $"https://{{wisp2-gov-it}}/${webview_path}?transactionId={(string)context.Variables["requestTransactionId"]}#idWallet={(string)context.Variables["idWallet"]}&idPayment={(string)context.Variables["idPayment"]}&sessionToken={(string)context.Variables["sessionToken"]}&language=IT";
-                                response["authorizationRequestId"] = (string)context.Variables["requestTransactionId"];
-                                return response.ToString();
-                            }
-                        </set-body>
-                    </return-response>
-                </when>
-                <otherwise>
-                    <return-response>
-                        <set-status code="502" reason="Bad gateway" />
-                        <set-header name="Content-Type" exists-action="override">
-                            <value>application/json</value>
-                        </set-header>
-                        <set-body>{
-                            "title": "Unable to set Psp",
-                            "status": 502,
-                            "detail": "Unable to set Psp",
+    <when condition="@((string)(context.Variables["walletType"]) == "CREDIT_CARD")">
+        <choose>
+            <when condition="@(((int)((IResponse)context.Variables["pagopaProxyResponse"]).StatusCode) == 200)">
+                <set-variable name="idPayment" value="@((string)((IResponse)context.Variables["pagopaProxyResponse"]).Body.As<JObject>()["idPagamento"])" />
+                <set-variable name="putWalletRequest" value="@{
+                JObject response = new JObject();      
+                JObject data = new JObject();           
+                data["idWallet"] = long.Parse((string)context.Variables["idWallet"]);
+                data["idPsp"] = (long)context.Variables["idPsp"];
+                data["idPagamentoFromEC"] = $"{(string)context.Variables["idPayment"]}";
+                response["data"] = data;
+                return response.ToString();
+            }" />
+                <send-request ignore-error="true" timeout="10" response-variable-name="putWalletForPsp">
+                    <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/wallet/{(string)context.Variables["idWallet"]}")</set-url>
+                    <set-method>PUT</set-method>
+                    <set-header name="Authorization" exists-action="override">
+                        <value>@($"Bearer {(string)context.Variables.GetValueOrDefault("sessionToken","")}")</value>
+                    </set-header>
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@((string)context.Variables["putWalletRequest"])</set-body>
+                </send-request>
+                <choose>
+                    <when condition="@(((int)((IResponse)context.Variables["putWalletForPsp"]).StatusCode) == 200)">
+                        <!-- Return url to execute PM webview -->
+                        <return-response>
+                            <set-status code="200" reason="OK" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>@{
+                            JObject response = new JObject();
+                            response["authorizationUrl"] = $"https://{{wisp2-gov-it}}/ecommerce/io-webview/v1/pay?transactionId={(string)context.Variables["requestTransactionId"]}#idWallet={(string)context.Variables["idWallet"]}&idPayment={(string)context.Variables["idPayment"]}&sessionToken={(string)context.Variables["sessionToken"]}&language=IT";
+                            response["authorizationRequestId"] = (string)context.Variables["requestTransactionId"];
+                            return response.ToString();
                         }</set-body>
-                    </return-response>
-                </otherwise>
-            </choose>    
-            
-        </when>
-        <otherwise>
-            <return-response response-variable-name="existing context variable">
-                <set-status code="404" reason="Not found" />
-                <set-header name="Content-Type" exists-action="override">
-                  <value>application/json</value>
-                </set-header>
-                <set-body>{
-                    "title": "Unable to execute auth request",
-                    "status": 404,
-                    "detail": "Transaction not found",
-                }</set-body>
-            </return-response>
-        </otherwise>
-    </choose>
-
-  </inbound>
-
-  <outbound>
-    <base />
-  </outbound>
-
-  <backend>
-      <base />
-  </backend>
+                        </return-response>
+                    </when>
+                    <otherwise>
+                        <return-response>
+                            <set-status code="502" reason="Bad gateway" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>{
+                        "title": "Unable to set Psp",
+                        "status": 502,
+                        "detail": "Unable to set Psp",
+                    }</set-body>
+                        </return-response>
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                <return-response response-variable-name="existing context variable">
+                    <set-status code="404" reason="Not found" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>{
+                "title": "Unable to execute auth request",
+                "status": 404,
+                "detail": "Transaction not found",
+            }</set-body>
+                </return-response>
+            </otherwise>
+        </choose>
+    </when>
+    <otherwise>
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>@{
+            JObject response = new JObject();
+            response["authorizationUrl"] = $"https://{{wisp2-gov-it}}/ecommerce/io-webview/v1/pay?transactionId={(string)context.Variables["requestTransactionId"]}#idWallet={(string)context.Variables["idWallet"]}&idPayment={(string)context.Variables["idPayment"]}&sessionToken={(string)context.Variables["sessionToken"]}&language=IT";
+            response["authorizationRequestId"] = (string)context.Variables["requestTransactionId"];
+            return response.ToString();
+        }</set-body>
+        </return-response>
+    </otherwise>
+</choose>
+</inbound>
+<outbound>
+<base />
+</outbound>
+<backend>
+<base />
+</backend>
+<on-error>
+<base />
+</on-error>
 </policies>
