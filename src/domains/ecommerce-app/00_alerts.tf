@@ -84,7 +84,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce Transactions service PATCH auth request KO detected"
+  description    = "eCommerce Transactions service PATCH auth request KO detected, more than 10 KO in 30 minute time window"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics 
