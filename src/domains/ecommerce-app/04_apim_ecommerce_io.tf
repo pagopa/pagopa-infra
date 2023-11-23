@@ -157,7 +157,7 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   operation_id        = "requestTransactionAuthorization"
 
   xml_content = templatefile("./api/ecommerce-io/v1/_auth_request.xml.tpl", {
-    webview_path = "ecommerce/io-webview/v1/pay"
+    authurl-basepath = var.env_short == "d" ? local.ecommerce_hostname : "{{wisp2-gov-it}}"
   })
 }
 
