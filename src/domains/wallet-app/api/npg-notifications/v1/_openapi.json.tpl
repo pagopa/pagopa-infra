@@ -34,7 +34,7 @@
           "walletNotifications"
         ],
         "summary": "Update Wallet on NPG payment instrument creation",
-        "description": "Update Wallet on NPG payment instrument creation",
+        "description": "Update Wallet on NPG onboarding authorization response",
         "operationId": "notifyWallet",
         "parameters": [
           {
