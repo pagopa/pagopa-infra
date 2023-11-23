@@ -45,7 +45,7 @@
       <!-- cookie for walletId for new wallet backward compatible -->
       <choose>
           <!-- Credit card onboarding -->
-          <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") )">
+          <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") && (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}")">
               <set-variable name="walletId" value="@{
                     string requestBody = ((string)context.Variables["requestBody"]);
                     string walletParam = requestBody!=null && requestBody.Split('&').Length >= 1 ? requestBody.Split('&')[0] : "";
@@ -55,13 +55,9 @@
               <set-header name="Set-Cookie" exists-action="append">
                   <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
               </set-header>
-              <choose>
-                <when condition="@( (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}" )">
-                  <set-header name="Set-Cookie" exists-action="append">
-                    <value>@($"isWalletOnboarding=true; Path=/pp-restapi-CD")</value>
-                  </set-header>
-                </when>
-              </choose>
+              <set-header name="Set-Cookie" exists-action="append">
+                  <value>@($"isWalletOnboarding=true; Path=/pp-restapi-CD")</value>
+              </set-header>
           </when>
            <!-- Paypal onboarding -->
           <when condition="@( context.Request.Url.Path.EndsWith("/webview/paypal/onboarding/psp") && (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}")">
