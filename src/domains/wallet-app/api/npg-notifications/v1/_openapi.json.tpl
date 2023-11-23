@@ -28,7 +28,7 @@
     }
   ],
   "paths": {
-    "/wallets/{walletId}/sessions/{orderId}": {
+    "/wallets/{walletId}/sessions/{orderId}/notifications": {
       "post": {
         "tags": [
           "walletNotifications"
