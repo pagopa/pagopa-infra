@@ -80,6 +80,10 @@ resource "azurerm_api_management_api_operation_policy" "get_wallets_for_user" {
     ecommerce-basepath = local.ecommerce_hostname
   })
 
+  xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_get_wallets_by_user_with_pm.xml.tpl", {
+    ecommerce-basepath = local.ecommerce_hostname
+  }) : file("./api/payment-wallet/v1/_get_wallets_by_user.xml.tpl")
+
 }
 
 resource "azurerm_api_management_api_operation_policy" "post_wallets" {
