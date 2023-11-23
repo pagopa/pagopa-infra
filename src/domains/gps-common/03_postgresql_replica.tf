@@ -27,7 +27,7 @@ module "postgresql_gpd_replica_db" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server_replica?ref=v7.22.0"
   count  = var.geo_replica_enabled ? 1 : 0
 
-  name                = "${local.project_replica}-flexible-postgresql"
+  name                = "${local.project_replica}-pgflex"
   resource_group_name = data.azurerm_resource_group.flex_data[0].name
   location            = var.location_replica
 
