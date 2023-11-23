@@ -89,7 +89,8 @@ resource "azurerm_api_management_api_operation_policy" "post_wallets" {
   operation_id        = "createWallet"
 
   xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl", {
-    env = var.env
+    env                = var.env,
+    ecommerce-basepath = local.ecommerce_hostname
     }) : templatefile("./api/payment-wallet/v1/_post_wallets_policy.xml.tpl", {
     env = var.env, pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path
   })
@@ -103,6 +104,15 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods" {
 
   xml_content = templatefile("./api/payment-wallet/v1/_get_payment_methods_policy.xml.tpl", { ecommerce_hostname = local.ecommerce_hostname }
   )
+}
+
+resource "azurerm_api_management_api_operation_policy" "onboarding_outcome" {
+  api_name            = "${local.project}-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getOnboardingOutcome"
+
+  xml_content = file("./api/payment-wallet/v1/_onboarding_outcome.xml.tpl")
 }
 
 #################################################

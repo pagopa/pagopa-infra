@@ -99,9 +99,15 @@ module "receipts_datastore_cosmosdb_database" {
 ### Containers
 locals {
   receipts_datastore_cosmosdb_containers = [
+    # {
+    #   name               = "fake",
+    #   partition_key_path = "/fakeid",
+    #   default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
+    #   autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+    # },
     {
       name               = "receipts",
-      partition_key_path = "/eventId",
+      partition_key_path = "/id",
       default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
     },
