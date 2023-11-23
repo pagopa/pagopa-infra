@@ -72,22 +72,7 @@
     <choose>
         <when condition="@(context.Response.StatusCode == 201)">
             <!-- Token JWT START-->
-            <set-variable name="walletId" value="@{
-              var redirectUrl = context.Response.Body.As<JObject>()["redirectUrl"];
-              var redirectUriFragment = new Uri(((string)context.Variables.GetValueOrDefault("redirectUrl",""))).Fragment;
-              if(redirectUriFragment.StartsWith("#")) {
-                redirectUriFragment = redirectUriFragment.Substring(1);
-              }
-              var fragments = redirectUriFragment.Split('&');
-              var walletId = "";
-              foreach (var fragment in fragments)
-                {
-                    if(fragment.StartsWith("walletId")) {
-                      walletId = fragment.Split("=");
-                    }
-                }
-                return walletId;
-                }" />
+            <set-variable name="walletId" value="@{context.Response.Body.As<JObject>(preserveContent: true)["walletId"];"/>
             <set-variable name="x-jwt-token" value="@{
             // Construct the Base64Url-encoded header
             var header = new { typ = "JWT", alg = "HS256" };
@@ -109,7 +94,7 @@
         }" />
             <!-- Token JWT END-->
             <set-body>@{ 
-                JObject inBody = context.Response.Body.As<JObject>(); 
+                JObject inBody = context.Response.Body.As<JObject>(preserveContent: true); 
                 var redirectUrl = inBody["redirectUrl"];
                 inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
                 return inBody.ToString(); 
