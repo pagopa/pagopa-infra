@@ -106,6 +106,15 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods" {
   )
 }
 
+resource "azurerm_api_management_api_operation_policy" "onboarding_outcome" {
+  api_name            = "${local.project}-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getOnboardingOutcome"
+
+  xml_content = file("./api/payment-wallet/v1/_onboarding_outcome.xml.tpl")
+}
+
 #################################################
 ## API wallet notifications service            ##
 #################################################
