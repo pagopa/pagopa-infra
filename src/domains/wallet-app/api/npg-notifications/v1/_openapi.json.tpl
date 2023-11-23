@@ -33,7 +33,7 @@
         "tags": [
           "walletNotifications"
         ],
-        "summary": "Update Wallet on NPG payment instrument creation",
+        "summary": "Update Wallet on NPG onboarding authorization response",
         "description": "Update Wallet on NPG onboarding authorization response",
         "operationId": "notifyWallet",
         "parameters": [
