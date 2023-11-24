@@ -170,7 +170,7 @@ locals {
 
     apix = {
       listener              = "apix"
-      backend               = "apimx"
+      backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
 
@@ -274,7 +274,7 @@ module "app_gw" {
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 30 # workaround for FDR - set to 10s after new Fdr service deployed
+      request_timeout             = 30 # could be set to 10s after apimx listner 
       pick_host_name_from_backend = false
     }
 
@@ -285,8 +285,8 @@ module "app_gw" {
       ip_addresses                = module.apim.private_ip_addresses
       fqdns                       = [azurerm_dns_a_record.dns_a_apix.fqdn]
       probe                       = "/status-0123456789abcdef"
-      probe_name                  = "probe-apimx"
-      request_timeout             = 300 # workaround for FDR - set to 10s after new Fdr service deployed
+      probe_name                  = "probe-apim"
+      request_timeout             = 300 # long timeout for heavy api request ( ex. FDR flow managment )
       pick_host_name_from_backend = false
     }
 
