@@ -1,99 +1,70 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "PagoPA API configuration ${service}",
-    "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
-    "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.54.2"
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "core",
+    "description" : "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
+    "termsOfService" : "https://www.pagopa.gov.it/",
+    "version" : "0.56.10-1-PAGOPA-1342-massive-iban-upload"
   },
-  "servers": [
-    {
-      "url": "${host}/apiconfig/api/v1"
-    },
-    {
-      "url": "https://{host}/{basePath}",
-      "variables": {
-        "basePath": {
-          "default": "apiconfig/auth/api/v1",
-          "enum": [
-            "apiconfig/auth/api/v1",
-            "apiconfig/api/v1"
-          ]
-        },
-        "host": {
-          "default": "api.dev.platform.pagopa.it",
-          "enum": [
-            "api.dev.platform.pagopa.it",
-            "api.uat.platform.pagopa.it",
-            "api.platform.pagopa.it"
-          ]
-        }
+  "servers" : [ {
+    "url" : "http://localhost:8080"
+  }, {
+    "url" : "https://{host}/{basePath}",
+    "variables" : {
+      "host" : {
+        "enum" : [ "api.dev.platform.pagopa.it", "api.uat.platform.pagopa.it", "api.platform.pagopa.it" ],
+        "default" : "api.dev.platform.pagopa.it"
+      },
+      "basePath" : {
+        "enum" : [ "apiconfig/auth/api/v1", "apiconfig/api/v1" ],
+        "default" : "apiconfig/auth/api/v1"
       }
     }
-  ],
-  "tags": [
-    {
-      "description": "Everything about Payment Service Providers",
-      "name": "Payment Service Providers"
-    },
-    {
-      "description": "Everything about Iban",
-      "name": "Ibans"
-    },
-    {
-      "description": "Everything about Batch Operation",
-      "name": "Batch Operation"
-    },
-    {
-      "description": "Everything about Creditor Institution",
-      "name": "Creditor Institutions"
-    },
-    {
-      "description": "Everything about Configuration",
-      "name": "Configuration"
-    },
-    {
-      "description": "Everything about Cache",
-      "name": "Cache"
-    },
-    {
-      "description": "Everything about Utilities",
-      "name": "Utilities"
-    },
-    {
-      "description": "Refresh and trigger job for node configuration",
-      "name": "Refresh Operation"
-    }
-  ],
-  "paths": {
-    "/batchoperation/creditorinstitution-station/loading": {
-      "parameters": [
-        {
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "in": "header",
-          "name": "X-Request-Id",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "post": {
-        "operationId": "manageCIStationRelationship",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "CSV file regarding CI-Station relationship to manage"
+  } ],
+  "tags" : [ {
+    "name" : "Payment Service Providers",
+    "description" : "Everything about Payment Service Providers"
+  }, {
+    "name" : "Ibans",
+    "description" : "Everything about Iban"
+  }, {
+    "name" : "Batch Operation",
+    "description" : "Everything about Batch Operation"
+  }, {
+    "name" : "Creditor Institutions",
+    "description" : "Everything about Creditor Institution"
+  }, {
+    "name" : "Configuration",
+    "description" : "Everything about Configuration"
+  }, {
+    "name" : "Cache",
+    "description" : "Everything about Cache"
+  }, {
+    "name" : "Utilities",
+    "description" : "Everything about Utilities"
+  }, {
+    "name" : "Refresh Operation",
+    "description" : "Refresh and trigger job for node configuration"
+  } ],
+  "paths" : {
+    "/batchoperation/creditorinstitution-station/loading" : {
+      "post" : {
+        "tags" : [ "Batch Operation" ],
+        "summary" : "Update a CSV file containing the relationship between Creditor Institution and Station",
+        "operationId" : "manageCIStationRelationship",
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "required" : [ "file" ],
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "description" : "CSV file regarding CI-Station relationship to manage",
+                    "format" : "binary"
                   }
-                },
-                "required": [
-                  "file"
-                ]
+                }
               }
             }
           },
@@ -406,8 +377,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "CODE",
-            "enum" : [ "CODE", "NAME" ]
+            "enum" : [ "CODE", "NAME" ],
+            "default" : "CODE"
           }
         }, {
           "name" : "ordering",
@@ -416,8 +387,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "DESC",
-            "enum" : [ "ASC", "DESC" ]
+            "enum" : [ "ASC", "DESC" ],
+            "default" : "DESC"
           }
         } ],
         "responses" : {
@@ -1097,8 +1068,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "CODE",
-            "enum" : [ "CODE", "NAME" ]
+            "enum" : [ "CODE", "NAME" ],
+            "default" : "CODE"
           }
         }, {
           "name" : "ordering",
@@ -1107,8 +1078,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "DESC",
-            "enum" : [ "ASC", "DESC" ]
+            "enum" : [ "ASC", "DESC" ],
+            "default" : "DESC"
           }
         } ],
         "responses" : {
@@ -3204,8 +3175,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "DESC",
-            "enum" : [ "ASC", "DESC" ]
+            "enum" : [ "ASC", "DESC" ],
+            "default" : "DESC"
           }
         } ],
         "responses" : {
@@ -8643,8 +8614,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "CODE",
-            "enum" : [ "CODE", "NAME" ]
+            "enum" : [ "CODE", "NAME" ],
+            "default" : "CODE"
           }
         }, {
           "name" : "ordering",
@@ -8653,8 +8624,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "DESC",
-            "enum" : [ "ASC", "DESC" ]
+            "enum" : [ "ASC", "DESC" ],
+            "default" : "DESC"
           }
         } ],
         "responses" : {
@@ -12929,8 +12900,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "CODE",
-            "enum" : [ "CODE", "NAME" ]
+            "enum" : [ "CODE", "NAME" ],
+            "default" : "CODE"
           }
         }, {
           "name" : "ordering",
@@ -12939,8 +12910,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "DESC",
-            "enum" : [ "ASC", "DESC" ]
+            "enum" : [ "ASC", "DESC" ],
+            "default" : "DESC"
           }
         } ],
         "responses" : {
@@ -14822,8 +14793,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "IT",
-            "enum" : [ "IT", "EN", "FR", "DE", "SL" ]
+            "enum" : [ "IT", "EN", "FR", "DE", "SL" ],
+            "default" : "IT"
           }
         }, {
           "name" : "conventionCode",
@@ -15001,8 +14972,8 @@
           "required" : false,
           "schema" : {
             "type" : "string",
-            "default" : "DESC",
-            "enum" : [ "ASC", "DESC" ]
+            "enum" : [ "ASC", "DESC" ],
+            "default" : "DESC"
           }
         } ],
         "responses" : {
