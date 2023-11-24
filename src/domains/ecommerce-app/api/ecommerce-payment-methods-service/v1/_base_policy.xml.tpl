@@ -9,6 +9,11 @@
                   <value>CHECKOUT</value>
               </set-header>
           </when>
+          <when condition="@(context.User != null && context.User.Groups.Select(g => g.Id).Contains("payment-wallet"))">
+              <set-header name="x-client-id" exists-action="override">
+                  <value>IO</value>
+              </set-header>
+          </when>
       </choose>
       <!-- Handle X-Client-Id END -->
       <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-payment-methods-service" />
