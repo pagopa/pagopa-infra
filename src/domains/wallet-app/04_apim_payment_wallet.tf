@@ -1,4 +1,15 @@
 ##############
+## Groups ##
+##############
+
+resource "azurerm_api_management_group" "payment-wallet" {
+  name                = "payment-wallet"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "Payment Wallet"
+}
+
+##############
 ## Products ##
 ##############
 
