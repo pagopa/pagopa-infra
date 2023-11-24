@@ -1,4 +1,15 @@
 ##############
+## Groups ##
+##############
+
+resource "azurerm_api_management_group" "payment-wallet" {
+  name                = "payment-wallet"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "Payment Wallet"
+}
+
+##############
 ## Products ##
 ##############
 
@@ -145,7 +156,7 @@ module "apim_wallet_service_notifications_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_payment_wallet_product.product_id]
   subscription_required = local.apim_payment_wallet_notifications_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.wallet_notifications_service_api.id
+  version_set_id        = azurerm_api_management_api_version_set.npg_notifications_api.id
   api_version           = "v1"
 
   description  = local.apim_payment_wallet_notifications_service_api.description
