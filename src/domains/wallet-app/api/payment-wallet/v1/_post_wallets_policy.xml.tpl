@@ -72,7 +72,7 @@
     <choose>
         <when condition="@(context.Response.StatusCode == 201)">
             <!-- Token JWT START-->
-            <set-variable name="walletId" value="@((string)((JObject)(context.Response.Body.As<JObject>())["walletId"]))" />
+            <set-variable name="walletId" value="@((string)((context.Response.Body.As<JObject>(preserveContent: true))["walletId"]))" />
             <set-variable name="x-jwt-token" value="@{
             // Construct the Base64Url-encoded header
             var header = new { typ = "JWT", alg = "HS256" };
