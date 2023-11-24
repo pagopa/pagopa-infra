@@ -19,7 +19,15 @@
                 }</set-body>
           </return-response>
         </when>
-      </choose>  
+      </choose>
+      <set-header name="Authorization" exists-action="override">
+      <value> 
+          @{
+              JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
+              return "Bearer " + (string)requestBody["securityToken"];
+          }
+      </value>
+      </set-header>  
       <set-body>
           @{
             JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
