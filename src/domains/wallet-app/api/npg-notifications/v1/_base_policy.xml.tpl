@@ -4,9 +4,9 @@
       <set-variable name="orderIdPathParam" value="@(context.Request.MatchedParameters["orderId"])" />
       <set-variable name="walletId" value="@(context.Request.MatchedParameters["walletId"])" />
       <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
-      <set-variable name="orderIdBodyParam" value="@((string)((JObject)requestBody["operation"])["orderId"])" />
+      <set-variable name="orderIdBodyParam" value="@((string)((JObject)((JObject)context.Variables["npgNotificationRequestBody"])["operation"])["orderId"])" />
       <choose>  
-        <when condition="@((string)context.Variables["orderIdPathParam"] != (string)context.Variables["orderIdBodyParam"])">
+        <when condition="@(((string)context.Variables["orderIdPathParam"]).Equals((string)context.Variables["orderIdBodyParam"]) != true)">
           <return-response>
             <set-status code="400" reason="orderId mismatch" />
             <set-header name="Content-Type" exists-action="override">
