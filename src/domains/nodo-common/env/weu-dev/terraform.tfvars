@@ -186,7 +186,7 @@ standin_cosmos_nosql_db_params = {
 
 cidr_subnet_cosmosdb_nodo_re       = ["10.1.170.0/24"]
 cidr_subnet_cosmosdb_nodo_verifyko = ["10.1.173.0/24"]
-cidr_subnet_cosmosdb_standin       = ["10.1.176.0/24"]
+cidr_subnet_cosmosdb_standin       = ["10.1.190.0/24"]
 
 
 nodo_re_storage_account = {
