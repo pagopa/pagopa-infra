@@ -26,7 +26,7 @@
     <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
     <!-- START get user wallets -->
     <send-request ignore-error="false" timeout="10" response-variable-name="pmWalletResponse">
-        <set-url>{{pm-host}}/pp-restapi-CD/v1/wallet</set-url>
+        <set-url>{{pm-host}}/pp-restapi-CD/v3/wallet</set-url>
         <set-method>GET</set-method>
         <set-header name="Authorization" exists-action="override">
             <value>@($"Bearer {((JObject)context.Variables["pmSession"])["data"]["sessionToken"].ToString()}")</value>
@@ -107,7 +107,9 @@
                 var walletServices = new List<String>{"PAGOPA"};
                 var eCommerceWalletTypes = new Dictionary<string, string>
                     {
-                        { "CREDIT_CARD", "CARDS" }
+                        { "Card", "CARDS" },
+                        { "BPay", "BANCOMATPAY" },
+                        { "PayPal", "PAYPAL" }
                     };
                 var eCommercePaymentMethodIds = new Dictionary<string, string>();
                 JObject paymentMethods = (JObject)context.Variables["paymentMethodsResponseBody"];
@@ -116,7 +118,7 @@
                 }
                 Object[] wallets = pmWalletResponse["data"]
                     .Where(wallet =>{
-                       return eCommerceWalletTypes.ContainsKey((string) wallet["type"]);
+                       return eCommerceWalletTypes.ContainsKey((string) wallet["walletType"]);
                     })
                     .Select(wallet =>{
                             JObject result = new JObject();
@@ -125,20 +127,20 @@
                             string walletIdHex = ((long)wallet["idWallet"]).ToString("X").PadLeft(16,'0');
                             string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
                             result["walletId"] = walletIdToUuid;
-                            string pmWalletType = (string) wallet["type"];
+                            string pmWalletType = (string) wallet["walletType"];
                             string eCommerceWalletType = eCommerceWalletTypes[pmWalletType];
                             result["paymentMethodId"] = eCommercePaymentMethodIds[eCommerceWalletType];
                             result["status"] = "VALIDATED";
-                            result["creationDate"] = wallet["lastUsage"];
-                            result["updateDate"] = wallet["lastUsage"];
+                            result["creationDate"] = wallet["createDate"];
+                            result["updateDate"] = wallet["createDate"];
                             var convertedServices = new List<JObject>();
-                            foreach(JValue service in wallet["services"]){
+                            foreach(JValue service in wallet["enableableFunctions"]){
                                 string serviceName = service.ToString().ToUpper();
                                 if(walletServices.Contains(serviceName)){
                                     JObject converted = new JObject();
                                     converted["name"] = serviceName;
                                     converted["status"] = "ENABLED";
-                                    converted["updateDate"] = wallet["lastUsage"];
+                                    converted["updateDate"] = wallet["createDate"];
                                     convertedServices.Add(converted);
                                 }
                             }
@@ -146,10 +148,22 @@
                             JObject details = new JObject();
                             details["type"] = eCommerceWalletType;
                             if (eCommerceWalletType == "CARDS") {
-                                details["maskedPan"] = wallet["creditCard"]["pan"];
-                                details["expiryDate"] = $"20{(string)wallet["creditCard"]["expireYear"]}{(string)wallet["creditCard"]["expireMonth"]}";
-                                details["holder"] = wallet["creditCard"]["holder"];
-                                details["brand"] = wallet["creditCard"]["brand"];
+                                details["maskedPan"] = $"************{wallet["info"]["blurredNumber"]}";
+                                details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
+                                details["holder"] = wallet["info"]["holder"];
+                                details["brand"] = wallet["info"]["brand"];
+                            }
+                            if (eCommerceWalletType == "PAYPAL") {
+                                var info = (JObject)(wallet["info"]);
+                                var pspArray = (JArray)(info["pspInfo"]);
+                                var pspInfo = (JObject)(pspArray[0]);
+                                details["abi"] = pspInfo["abi"];
+                                details["maskedEmail"] = pspInfo["email"];
+                            }
+                            if (eCommerceWalletType == "BANCOMATPAY") {
+                                details["maskedNumber"] = wallet["info"]["numberObfuscated"];
+                                details["instituteCode"] = wallet["info"]["instituteCode"];
+                                details["bankName"] = wallet["info"]["bankName"];
                             }
                             result["details"] = details;
 

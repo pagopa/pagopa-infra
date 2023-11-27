@@ -23,8 +23,9 @@
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 200)">
                 <set-variable name="paymentMethod" value="@((JObject)((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
                 <set-variable name="paymentTypeCode" value="@((string)((JObject)context.Variables["paymentMethod"])["paymentTypeCode"])" />
+                <set-variable name="isPayPal" value="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAY"))" />
                     <choose>
-                      <when condition="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAY"))">
+                      <when condition="@((bool)context.Variables["isPayPal"])">
                           <send-request ignore-error="true" timeout="10" response-variable-name="getPspForCardsResponse">
                               <set-url>@($"{{pm-host}}/pp-restapi-CD/v3/paypal/psps")</set-url>
                               <set-method>GET</set-method>
@@ -65,6 +66,7 @@
                                 <value>application/json</value>
                             </set-header>
                             <set-body>@{
+                                    bool isPayPal = (bool)context.Variables["isPayPal"];
                                     JArray psps = (JArray)(((JObject)context.Variables["pmPspsResponse"])["data"]);
                                     JObject response = new JObject();
                                     JArray pspResponse = new JArray();
@@ -72,13 +74,14 @@
                                         JObject psp = new JObject();
                                         psp["abi"] = pmPsp["codiceAbi"];
                                         psp["bundleName"] = pmPsp["ragioneSociale"];
-                                        psp["idPsp"] = pmPsp["id"];
-                                        psp["idBundle"] = pmPsp["idPsp"];
-                                        if(pmPsp["fee"] != null) {
+                                        if(isPayPal) {
+                                            psp["taxPayerFee"] = pmPsp["maxFee"];
+                                            psp["idPsp"] = pmPsp["idPsp"];
+                                            psp["idBundle"] = pmPsp["idPsp"];
+                                        } else {
                                           psp["taxPayerFee"] = pmPsp["fee"];
-                                        }
-                                        if(pmPsp["maxFee"] != null) {
-                                          psp["taxPayerFee"] = pmPsp["maxFee"];
+                                          psp["idPsp"] = pmPsp["id"];
+                                          psp["idBundle"] = pmPsp["idPsp"];
                                         }
                                         pspResponse.Add(psp);
                                     }
