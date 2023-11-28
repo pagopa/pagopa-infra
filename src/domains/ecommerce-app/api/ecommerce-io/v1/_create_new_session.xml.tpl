@@ -20,7 +20,7 @@
       </choose>
       <choose>
         <!-- Session PM START-->
-        <when condition="@("false".Equals("${ecommerce_io_with_pm_enabled}"))">
+        <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
           <send-request ignore-error="true" timeout="10" response-variable-name="pmSessionResponse" mode="new">
               <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
               <set-method>GET</set-method>
