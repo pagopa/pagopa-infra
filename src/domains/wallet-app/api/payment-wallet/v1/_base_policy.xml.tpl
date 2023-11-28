@@ -9,8 +9,8 @@
       </validate-jwt>
       <set-variable name="xUserId" value="@{
         var jwt = (Jwt)context.Variables["jwtToken"];
-        if(jwt.Claims.ContainsKey("x-user-id")){
-            return jwt.Claims["x-user-id"][0];
+        if(jwt.Claims.ContainsKey("userId")){
+            return jwt.Claims["userId"][0];
         }
         return "";
         }"
