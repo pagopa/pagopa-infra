@@ -1,4 +1,15 @@
 ##############
+## Groups ##
+##############
+
+resource "azurerm_api_management_group" "payment-wallet" {
+  name                = "payment-wallet"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "Payment Wallet"
+}
+
+##############
 ## Products ##
 ##############
 
@@ -70,15 +81,14 @@ module "apim_payment_wallet_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_wallets_for_user" {
-  count               = var.payment_wallet_with_pm_enabled ? 1 : 0
   api_name            = "${local.project}-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "getWalletsByIdUser"
 
-  xml_content = templatefile("./api/payment-wallet/v1/get_wallets_by_user.xml.tpl", {
+  xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_get_wallets_by_user_with_pm.xml.tpl", {
     ecommerce-basepath = local.ecommerce_hostname
-  })
+  }) : templatefile("./api/payment-wallet/v1/_get_wallets_by_user.xml.tpl", { pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path })
 
 }
 
@@ -145,7 +155,7 @@ module "apim_wallet_service_notifications_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_payment_wallet_product.product_id]
   subscription_required = local.apim_payment_wallet_notifications_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.wallet_notifications_service_api.id
+  version_set_id        = azurerm_api_management_api_version_set.npg_notifications_api.id
   api_version           = "v1"
 
   description  = local.apim_payment_wallet_notifications_service_api.description
