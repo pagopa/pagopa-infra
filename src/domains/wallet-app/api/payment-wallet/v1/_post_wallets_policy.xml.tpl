@@ -72,6 +72,7 @@
     <choose>
         <when condition="@(context.Response.StatusCode == 201)">
             <!-- Token JWT START-->
+            <set-variable name="walletId" value="@((string)((context.Response.Body.As<JObject>(preserveContent: true))["walletId"]))" />
             <set-variable name="x-jwt-token" value="@{
             // Construct the Base64Url-encoded header
             var header = new { typ = "JWT", alg = "HS256" };
@@ -79,8 +80,9 @@
   
             // 2) Construct the Base64Url-encoded payload 
             var exp = new DateTimeOffset(DateTime.Now.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
-            var fiscalCodeTokenized = ((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized","")); // wihich is the value to pass to the payload as a claim? wallet_token?
-            var payload = new { exp, fiscalCodeTokenized }; 
+            var fiscalCodeTokenized = ((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized","")); 
+            var walletId = ((string)context.Variables.GetValueOrDefault("walletId",""));
+            var payload = new { exp, fiscalCodeTokenized, walletId }; 
             var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
   
             // 3) Construct the Base64Url-encoded signature                
@@ -92,9 +94,10 @@
         }" />
             <!-- Token JWT END-->
             <set-body>@{ 
-                JObject inBody = context.Response.Body.As<JObject>(); 
+                JObject inBody = context.Response.Body.As<JObject>(preserveContent: true); 
                 var redirectUrl = inBody["redirectUrl"];
                 inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
+                inBody.Remove("walletId");
                 return inBody.ToString(); 
             }</set-body>
         </when>
