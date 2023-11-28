@@ -38,7 +38,7 @@
         }"
       />
       <set-header name="x-user-id" exists-action="override">
-          <value>>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
+          <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
       </set-header>
       <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
     </inbound>
