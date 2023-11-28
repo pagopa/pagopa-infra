@@ -206,15 +206,6 @@
         "operationId": "getSessionWallet",
         "parameters": [
           {
-            "name": "x-user-id",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
             "name": "walletId",
             "in": "path",
             "description": "ID of wallet to return",
