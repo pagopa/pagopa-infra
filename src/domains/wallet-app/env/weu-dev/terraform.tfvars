@@ -34,6 +34,6 @@ tls_cert_check_helm = {
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
-payment_wallet_with_pm_enabled = true
+payment_wallet_with_pm_enabled = false
 pdv_api_base_path              = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
 io_backend_base_path           = "https://portal.test.pagopa.gov.it/pmmockserviceapi"

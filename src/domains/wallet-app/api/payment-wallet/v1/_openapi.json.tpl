@@ -216,6 +216,9 @@
           "404": {
             "description": "Wallet not found"
           },
+          "502": {
+            "description": "Bad gateway"
+          },
           "504": {
             "description": "Timeout serving request"
           }
