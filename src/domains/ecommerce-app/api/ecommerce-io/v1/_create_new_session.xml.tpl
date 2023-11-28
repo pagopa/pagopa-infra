@@ -113,7 +113,7 @@
             <!-- Token JWT START-->
             <set-variable name="sessionToken" value="@{
               // Construct the Base64Url-encoded header
-              var header = new { typ = "JWT", alg = "HS2512" };
+              var header = new { typ = "JWT", alg = "HS512" };
               var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
     
               // 2) Construct the Base64Url-encoded payload 
@@ -123,7 +123,7 @@
               var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
     
               // 3) Construct the Base64Url-encoded signature                
-              var signature = new HMACSHA256(Encoding.UTF8.GetBytes("{{ecommerce-io-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
+              var signature = new HMACSHA512(Encoding.UTF8.GetBytes("{{ecommerce-io-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
               var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
     
               // 4) Return the HMAC SHA512-signed JWT as the value for the Authorization header
