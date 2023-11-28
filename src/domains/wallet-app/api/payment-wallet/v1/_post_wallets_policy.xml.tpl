@@ -44,9 +44,9 @@
         </when>
       </choose>
       <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
-      <set-variable name="fiscalCodeTokenized" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
+      <set-variable name="userId" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
       <choose>
-        <when condition="@(String.IsNullOrEmpty((string)context.Variables["fiscalCodeTokenized"]))">
+        <when condition="@(String.IsNullOrEmpty((string)context.Variables["userId"]))">
             <return-response>
                 <set-status code="502" />
                 <set-header name="Content-Type" exists-action="override">
@@ -64,7 +64,7 @@
       </choose>
       <!-- Post Token PDV END-->
       <set-header name="x-user-id" exists-action="override">
-          <value>@((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized",""))</value>
+          <value>@((string)context.Variables.GetValueOrDefault("userId",""))</value>
       </set-header>
     </inbound>
     <outbound>
@@ -80,9 +80,9 @@
   
             // 2) Construct the Base64Url-encoded payload 
             var exp = new DateTimeOffset(DateTime.Now.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
-            var fiscalCodeTokenized = ((string)context.Variables.GetValueOrDefault("fiscalCodeTokenized","")); 
+            var userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
             var walletId = ((string)context.Variables.GetValueOrDefault("walletId",""));
-            var payload = new { exp, fiscalCodeTokenized, walletId }; 
+            var payload = new { exp, userId, walletId }; 
             var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
   
             // 3) Construct the Base64Url-encoded signature                
