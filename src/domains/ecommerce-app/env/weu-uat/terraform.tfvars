@@ -38,3 +38,5 @@ ecommerce_vpos_psps_list = "ATPIITM1,ABI36080,NIPSITR1,BIC36019,CHARITY_AMEX,CRG
 ecommerce_npg_psps_list  = ""
 
 dns_zone_checkout = "uat.checkout"
+
+io_backend_base_path = "https://portal.test.pagopa.gov.it/pmmockserviceapi"

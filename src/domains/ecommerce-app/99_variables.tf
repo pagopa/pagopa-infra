@@ -151,3 +151,9 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+variable "io_backend_base_path" {
+  type        = string
+  default     = null
+  description = "io backend api base path"
+}
