@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-receipt-pdf-datastore" />
+        <set-backend-service base-url="https://${hostname}/pagopa-receipt-pdf-helpdesk" />
     </inbound>
     <outbound>
         <base />
