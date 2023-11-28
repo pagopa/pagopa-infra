@@ -9,6 +9,7 @@
 
   <include file="./${version}/db.changelog-20230705163700_update_database_object.xml" labels="${version}"/>
   <include file="./${version}/db.changelog-20231003153700_rename_column.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20231128000000_update_iban_master.xml.xml" labels="${version}"/>
 
 
 </databaseChangeLog>
