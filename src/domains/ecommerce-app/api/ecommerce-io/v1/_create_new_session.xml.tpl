@@ -20,7 +20,7 @@
       </choose>
       <choose>
         <!-- Session PM START-->
-        <when condition="@("false".Equals("${payment_wallet_with_pm_enabled}"))">
+        <when condition="@("false".Equals("${ecommerce_io_with_pm_enabled}"))">
           <send-request ignore-error="true" timeout="10" response-variable-name="pmSessionResponse" mode="new">
               <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
               <set-method>GET</set-method>
@@ -73,7 +73,7 @@
               <set-url>${pdv_api_base_path}/tokens</set-url>
               <set-method>PUT</set-method>
               <set-header name="x-api-key" exists-action="override">
-                  <value>{{ecommercepersonal-data-vault-api-key}}</value>
+                  <value>{{ecommerce-personal-data-vault-api-key}}</value>
               </set-header>
               <set-body>@{
                 JObject requestBody = (JObject)context.Variables["userAuth"];
@@ -118,7 +118,7 @@
     
               // 2) Construct the Base64Url-encoded payload 
               var exp = new DateTimeOffset(DateTime.Now.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
-              var fiscalCodeTokenized = ((string)context.Variables.GetValueOrDefault("userId","")); 
+              var userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
               var payload = new { exp, userId }; 
               var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
     

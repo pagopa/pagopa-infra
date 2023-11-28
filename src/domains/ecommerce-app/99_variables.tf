@@ -157,3 +157,15 @@ variable "io_backend_base_path" {
   default     = null
   description = "io backend api base path"
 }
+
+variable "ecommerce_io_with_pm_enabled" {
+  type        = bool
+  default     = false
+  description = "ecommerce for IO using Payment Manager enabled"
+}
+
+variable "pdv_api_base_path" {
+  type        = string
+  default     = null
+  description = "Personal data vault api base path"
+}

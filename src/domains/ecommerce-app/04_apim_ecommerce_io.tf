@@ -195,9 +195,10 @@ resource "azurerm_api_management_api_operation_policy" "io_create_session" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "newSessionToken"
 
-  xml_content = templatefile("./api/ecommerce-io/v1/_create_new_session.xml.tpl",{
-    payment_wallet_with_pm_enabled = var.payment_wallet_with_pm_enabled,
-    io_backend_base_path           = var.io_backend_base_path
+  xml_content = templatefile("./api/ecommerce-io/v1/_create_new_session.xml.tpl", {
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+    io_backend_base_path         = var.io_backend_base_path
+    pdv_api_base_path            = var.pdv_api_base_path
   })
 }
 
