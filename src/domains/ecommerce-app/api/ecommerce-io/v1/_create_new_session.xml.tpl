@@ -123,7 +123,7 @@
               var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
     
               // 3) Construct the Base64Url-encoded signature                
-              var signature = new HMACSHA512(Encoding.UTF8.GetBytes("{{ecommerce-io-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
+              var signature = new HMACSHA512(Convert.FromBase64String("{{ecommerce-io-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
               var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
     
               // 4) Return the HMAC SHA512-signed JWT as the value for the Authorization header
