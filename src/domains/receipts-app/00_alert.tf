@@ -300,7 +300,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-to-notify-in-re
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Retry on notification to IO error for a receipt"
+  description    = "Retry on notification to IO error for a receipt, more than 20 errors every quarter"
   enabled        = true
   query = format(<<-QUERY
   traces
@@ -314,8 +314,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-to-notify-in-re
   frequency   = 15
   time_window = 15
   trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
+    operator = "GreaterThanOrEqual"
+    # threshold = 1
+    threshold = 20
   }
 }
 
@@ -370,11 +371,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-
   action {
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     action_group           = local.action_groups
-    email_subject          = "Failed to recover fiscal code from Tokenizer servi e"
+    email_subject          = "Failed to recover fiscal code from Tokenizer service"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Unable to retrieve plain fiscal code due to PDV Tokenizer service error"
+  description    = "Unable to retrieve plain fiscal code due to PDV Tokenizer service error, more than 20 errors every quarter"
   enabled        = true
   query = format(<<-QUERY
   traces
@@ -388,8 +389,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-
   frequency   = 15
   time_window = 15
   trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
+    operator = "GreaterThanOrEqual"
+    # threshold = 1
+    threshold = 20
   }
 }
 
