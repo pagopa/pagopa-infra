@@ -68,3 +68,38 @@ AzureDiagnostics
   }
 }
 
+
+
+# eCommerce transaction service: KO for PATCH auth requests
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_service_auth_request_ko" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-transactions-service-auth-request-ko"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    email_subject          = "[eCommerce] Transactions service PATCH auth request KO"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce Transactions service PATCH auth request KO detected, more than 10 KO in 30 minute time window"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics 
+| where url_s startswith "https://api.platform.pagopa.it/ecommerce/transaction-auth-requests-service/v1/transactions/"
+| where method_s == "PATCH"
+| where responseCode_d >= 500
+| project TimeGenerated, responseCode_d
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 10
+  }
+}
+
