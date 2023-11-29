@@ -259,6 +259,31 @@ variable "cosmos_gps_db_params" {
   })
 }
 
+variable "cosmos_gpd_db_params" {
+  type = object({
+    kind           = string
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+  })
+}
+
 variable "cidr_subnet_gps_cosmosdb" {
   type        = list(string)
   description = "Cosmos DB address space"
@@ -360,7 +385,8 @@ variable "gpd_ip_rules" {
 
 variable "gpd_enable_private_endpoint" {
   type        = bool
-  description = "If true, create a private endpoint for the SFTP storage account"
+  description = "If true, create a private endpoint for the GPD storage account"
+  default     = false
 }
 
 variable "storage_account_snet_private_link_service_network_policies_enabled" {
@@ -372,4 +398,5 @@ variable "storage_account_snet_private_link_service_network_policies_enabled" {
 variable "cidr_subnet_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
+  default     = ["10.1.152.16/29"]
 }
