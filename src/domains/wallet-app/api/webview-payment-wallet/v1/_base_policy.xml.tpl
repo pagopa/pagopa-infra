@@ -20,7 +20,7 @@
       }" />
         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
           <issuer-signing-keys>
-              <key>@(Convert.ToBase64String(Encoding.UTF8.GetBytes({{wallet-jwt-signing-key}})))</key>
+              <key>{{wallet-jwt-signing-key}}</key>
           </issuer-signing-keys>
           <required-claims>
             <claim name="walletId" match="any">
