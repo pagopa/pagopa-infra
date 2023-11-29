@@ -571,8 +571,9 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-dns_a_reconds_dbnodo_ips           = ["10.70.67.18"] # db onCloud
-private_dns_zone_db_nodo_pagamenti = "d.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips                       = ["10.70.67.18"] # db onCloud
+dns_a_reconds_dbnodonexipostgres_ips           = ["10.222.214.176"] # db onPrem PostgreSQL
+private_dns_zone_db_nodo_pagamenti             = "d.db-nodo-pagamenti.com"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
