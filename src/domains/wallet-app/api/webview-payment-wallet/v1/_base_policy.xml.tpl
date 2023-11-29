@@ -24,7 +24,7 @@
               <key>{{wallet-jwt-signing-key}}</key>
           </issuer-signing-keys>
           <required-claims>
-            <claim name="walletId" match="any">
+            <claim name="walletId" match="all">
               <value>@((string)context.Variables.GetValueOrDefault("walletId",""))</value>
             </claim>
          </required-claims>
