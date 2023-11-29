@@ -1,7 +1,8 @@
 <policies>
     <inbound>
-      <base />
-      <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
+        <return-response>
+            <set-status code="200" reason="OK" />          
+        </return-response>
     </inbound>
     <outbound>
       <base />
