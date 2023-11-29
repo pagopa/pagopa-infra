@@ -235,52 +235,437 @@
       ]
     }
   },
+  "/recoverNotNotified": {
+      "put": {
+        "tags": [
+          "Receipts REST APIs"
+        ],
+        "summary": "Recover a receipt, or group of, in IO_ERROR_TO_NOTIFY or GENERATED status",
+        "operationId": "recoverNotNotified",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotNotifiedRecoveryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfull Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Receipt with id 235392957832338457-0000-0000-0000-0131 and eventId 76abb1f1-c9f9-4ead-9e66-12fec4d51042 restored in status GENERATED with success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request invalid input.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Please select at least one status to recover"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested receipt not found.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Unable to retrieve the receipt with eventId 76abb1f1-c9f9-4ead-9e66-12fec4d51042"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The requested receipts is not in a status that can be elaborated.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "The requested receipt with eventId 76abb1f1-c9f9-4ead-9e66-12fec4d51042 is not in the expected status"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "/toReviewed": {
+      "put": {
+        "tags": [
+          "Receipts REST APIs"
+        ],
+        "summary": "Recover a receipt, or group of, in TO_REVIEW status",
+        "operationId": "toReviewed",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptToReviewedRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfull Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "OK"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Receipt not found.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/regenerateReceiptPdf": {
+      "put": {
+        "tags": [
+          "Receipts REST APIs"
+        ],
+        "summary": "Regenerate Receipt PDF",
+        "operationId": "recoverFailed",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegenerateReceiptRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfull Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "OK"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Receipt or BizEvent not found.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error processing the request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+  },
   "components": {
     "schemas": {
       "AppInfo": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "pagopa-receipt-pdf-helpdesk"
           },
           "version": {
-            "type": "string"
+            "type": "string",
+            "example": "1.0.0"
           },
           "environment": {
-            "type": "string"
+            "type": "string",
+            "example": "azure-fn"
+          }
+        }
+      },
+      "ReceiptToReviewedRequest": {
+        "type": "object",
+        "description": "The request body for toReviewed API. The field eventId when not provided enable the massive operation",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Id of the event to start recovering, if not specified enable massive operation",
+            "example" : "76abb1f1-c9f9-4ead-9e66-12fec4d51042"
           }
         }
       },
       "ReceiptFailedRecoveryRequest": {
         "type": "object",
+        "description": "The request body for recoverFailed API. The field eventId when not provided enable the massive operation",
         "properties": {
           "eventId": {
-             "type": "string",
-             "description": "Id of the event to start recovering (optional)"
+            "type": "string",
+            "description": "Id of the event to start recovering, if not specified enable massive operation",
+            "example" : "76abb1f1-c9f9-4ead-9e66-12fec4d51042"
           }
         }
       },
-      "ProblemJson": {
+      "RegenerateReceiptRequest": {
         "type": "object",
+        "description": "The request body for regenerateReceipt API. The field eventId when not provided enable the massive operation",
         "properties": {
-          "title": {
+          "eventId": {
             "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
+            "description": "Id of the event to start recovering, if not specified enable massive operation",
+            "example" : "76abb1f1-c9f9-4ead-9e66-12fec4d51042"
           }
         }
+      },
+      "NotNotifiedRecoveryRequest": {
+        "type": "object",
+        "description": "The request body for recoverNotNotified API, at least one of generatedStatus or ioErrorToNotifyStatus must be true. The field eventId when not provided enable the massive operation",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Id of the event to start recovering, if not specified enable massive operation",
+            "example" : "76abb1f1-c9f9-4ead-9e66-12fec4d51042"
+          },
+          "generatedStatus": {
+            "type": "boolean",
+            "description": "true to recover the receipts in GENERATED status, false otherwise",
+            "example" : true
+          },
+          "ioErrorToNotifyStatus": {
+            "type": "boolean",
+            "description": "true to recover the receipts in IO_ERROR_TO_NOTIFY status, false otherwise",
+            "example" : true
+          }
+        },
+        "required": ["generatedStatus", "ioErrorToNotifyStatus"]
       }
     },
     "securitySchemes": {
