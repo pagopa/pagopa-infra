@@ -71,6 +71,7 @@ pgres_flex_params = {
   pgbouncer_enabled            = true
   alerts_enabled               = false
   max_connections              = 5000
+  enable_private_dns_registration = true
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
