@@ -11,6 +11,11 @@
       "url": "https://${hostname}"
     }
   ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
   "paths": {
     "/wallets/{walletId}/auth-data": {
       "get": {
@@ -148,6 +153,13 @@
         "maximum": 600,
         "exclusiveMaximum": true,
         "example": 502
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
       }
     }
   }
