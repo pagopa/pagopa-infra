@@ -15,6 +15,7 @@
         </allowed-headers>
       </cors>
       <base />
+      <set-header name="x-user-id" exists-action="delete" />
       <set-variable name="walletId" value="@{
           return context.Request.MatchedParameters.GetValueOrDefault("walletId","");
       }" />
