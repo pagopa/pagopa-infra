@@ -42,8 +42,8 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid input id",
+          "404": {
+            "description": "Wallet not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -52,11 +52,25 @@
               }
             }
           },
-          "404": {
-            "description": "Wallet not found"
+          "500": {
+            "description": "internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "504": {
-            "description": "Timeout serving request"
+            "description": "Timeout serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
