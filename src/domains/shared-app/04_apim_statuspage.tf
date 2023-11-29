@@ -134,6 +134,7 @@ module "apim_api_statuspage_api_v1" {
       "receiptpdfgenerator"   = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
       "receiptpdfnotifier"    = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
       "receiptpdfservice"     = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
+      "receiptpdfhelpdesk"    = format("%s/pagopa-receipt-pdf-helpdesk", format(local.aks_path, "receipts"))
     }), "\"", "\\\"")
   })
 }
