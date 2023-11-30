@@ -92,3 +92,7 @@ pod_disruption_budgets = {
     }
   },
 }
+
+io_backend_base_path         = ""
+ecommerce_io_with_pm_enabled = false
+pdv_api_base_path            = ""
