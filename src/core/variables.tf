@@ -841,6 +841,12 @@ variable "dns_a_reconds_dbnodo_prf_ips" {
   default     = []
 }
 
+variable "dns_a_reconds_dbnodonexipostgres_prf_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
 variable "private_dns_zone_db_nodo_pagamenti" {
   type    = string
   default = "dev.db-nodo-pagamenti.com"

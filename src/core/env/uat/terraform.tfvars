@@ -606,6 +606,7 @@ acr_enabled = true
 dns_a_reconds_dbnodo_ips                      = ["10.70.73.10"] # db onCloud
 dns_a_reconds_dbnodo_prf_ips                  = ["10.70.73.20"] # db onCloud prf
 dns_a_reconds_dbnodonexipostgres_ips          = ["10.222.214.174"] # db onPrem PostgreSQL
+dns_a_reconds_dbnodonexipostgres_prf_ips      = ["10.222.214.184"] # db onPrem PostgreSQL
 private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
 
 
