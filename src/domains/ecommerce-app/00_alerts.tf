@@ -1,29 +1,12 @@
-resource "azurerm_resource_group" "rg_ecommerce_alerts" {
-  count    = var.env_short == "p" ? 1 : 0
-  name     = "${local.project}-alerts-rg"
-  location = var.location
-  tags     = var.tags
+data "azurerm_resource_group" "rg_ecommerce_alerts" {
+  count = var.env_short == "p" ? 1 : 0
+  name  = "${local.project}-alerts-rg"
 }
 
-data "azurerm_key_vault_secret" "monitor_ecommerce_opsgenie_webhook_key" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "ecommerce-opsgenie-webhook-token"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-resource "azurerm_monitor_action_group" "ecommerce_opsgenie" {
+data "azurerm_monitor_action_group" "ecommerce_opsgenie" {
   count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = data.azurerm_resource_group.rg_ecommerce_alerts[0].name
   name                = "EcomOpsgenie"
-  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
-  short_name          = "EcomOpsgenie"
-
-  webhook_receiver {
-    name                    = "EcommerceOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_ecommerce_opsgenie_webhook_key[0].value}"
-    use_common_alert_schema = true
-  }
-
-  tags = var.tags
 }
 
 data "azurerm_api_management" "apim" {
@@ -36,11 +19,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
   count = var.env_short == "p" ? 1 : 0
 
   name                = "ecommerce-for-checkout-availability-alert"
-  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  resource_group_name = data.azurerm_resource_group.rg_ecommerce_alerts[0].name
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "[eCommerce] Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -75,11 +58,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
   count = var.env_short == "p" ? 1 : 0
 
   name                = "ecommerce-transactions-service-auth-request-ko"
-  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  resource_group_name = data.azurerm_resource_group.rg_ecommerce_alerts[0].name
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "[eCommerce] Transactions service PATCH auth request KO"
     custom_webhook_payload = "{}"
   }
