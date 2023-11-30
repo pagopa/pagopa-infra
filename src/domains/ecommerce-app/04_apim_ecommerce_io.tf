@@ -208,7 +208,14 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl", { ecommerce-basepath = local.ecommerce_hostname })
+  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl", 
+    { 
+      ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+      ecommerce-basepath = local.ecommerce_hostname 
+      wallet-basepath = local.wallet_hostname
+    }
+  )
+
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" {
@@ -218,4 +225,18 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" 
   operation_id        = "getTransactionOutcome"
 
   xml_content = file("./api/ecommerce-io/v1/_transaction_outcome.xml.tpl")
+}
+
+data "azurerm_key_vault_secret" "ecommerce_io_api_key_wallet" {
+  name         = "ecommerce-io-api-key-wallet"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value"  "ecommerce-io-api-key-wallet" {
+  name                =  "ecommerce-io-api-key-wallet"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        =  "ecommerce-io-api-key-wallet"
+  value               = data.azurerm_key_vault_secret.ecommerce_io_api_key_wallet.value
+  secret              = true
 }
