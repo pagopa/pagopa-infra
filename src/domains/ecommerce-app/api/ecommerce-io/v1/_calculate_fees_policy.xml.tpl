@@ -151,7 +151,7 @@
                 <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}/auth-data")</set-url>
                 <set-method>GET</set-method>
                 <set-header name="ocp-apim-subscription-key" exists-action="override">
-                    <value>{{ocp-apim-subscription-key}}</value>
+                    <value>{{ecommerce_io_api_key_wallet}}</value>
                 </set-header>
             </send-request>
             <choose>
