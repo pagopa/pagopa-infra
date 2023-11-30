@@ -23,53 +23,71 @@
         <when condition="@(${is-nodo-auth-pwd-replace})">
             <set-variable name="password" value="{{nodoAuthPassword}}" />
             <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction"))" />
-            <set-body>
-              @{
-              // get request body content
-              XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
-              XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
-              // get primitive
-              XElement primitive = (XElement) body.FirstNode;
-              var soapAction = (string)context.Variables["soapAction"];
-              var primitives = new string[]{"nodoInviaRPT", "nodoInviaCarrelloRPT"};
-              if (primitives.Contains(soapAction)) {
-              // get prev field
-              XElement password = primitive.Descendants("password").FirstOrDefault();
-              String passwordValue = ((string)context.Variables["password"]);
-              if (password != null) {
-              password.Value = passwordValue;
-              } else {
-              password = XElement.Parse("<password>" + passwordValue + "</password>");
-              primitive.AddFirst(password);
-              }
-              }
-              else {
-              // get prev field
-              XElement prevField = primitive.Descendants("idChannel").FirstOrDefault();
-              if (prevField == null) {
-              prevField = primitive.Descendants("identificativoCanale").FirstOrDefault();
-              }
-              if (prevField == null) {
-              prevField = primitive.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
-              }
-              // if password exists then set default password
-              // otherwise add a password field with default value
-              XElement password = primitive.Descendants("password").FirstOrDefault();
-              String passwordValue = ((string) context.Variables["password"]);
-              if (password != null) {
-              password.Value = passwordValue;
-              } else {
-              password = XElement.Parse("<password>" + passwordValue + "</password>");
-              prevField.AddAfterSelf(password);
-              }
-              }
 
-              return doc.ToString();
-              }
-            </set-body>
             <set-header name="X-Forwarded-For" exists-action="override">
-              <value>{{xForwardedFor}}</value>
-            </set-header>
+                <value>{{xForwardedFor}}</value>
+              </set-header>
+
+            <choose>
+                <!-- Check if the content type is XML -->
+                <when condition="@(context.Request.Headers.GetValueOrDefault("Content-Type", "").ToLowerInvariant().Contains("application/xml")
+                                            || context.Request.Headers.GetValueOrDefault("Content-Type", "").ToLowerInvariant().Contains("text/xml"))">
+
+                    <set-body>
+                                  @{
+                                  // get request body content
+                                  XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+                                  try {
+                                    XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+                                    // get primitive
+                                    XElement primitive = (XElement) body.FirstNode;
+                                    var soapAction = (string)context.Variables["soapAction"];
+                                    var primitives = new string[]{"nodoInviaRPT", "nodoInviaCarrelloRPT"};
+                                    if (primitives.Contains(soapAction)) {
+                                    // get prev field
+                                    XElement password = primitive.Descendants("password").FirstOrDefault();
+                                    String passwordValue = ((string)context.Variables["password"]);
+                                    if (password != null) {
+                                    password.Value = passwordValue;
+                                    } else {
+                                    password = XElement.Parse("<password>" + passwordValue + "</password>");
+                                    primitive.AddFirst(password);
+                                    }
+                                    }
+                                    else {
+                                    // get prev field
+                                    XElement prevField = primitive.Descendants("idChannel").FirstOrDefault();
+                                    if (prevField == null) {
+                                    prevField = primitive.Descendants("identificativoCanale").FirstOrDefault();
+                                    }
+                                    if (prevField == null) {
+                                    prevField = primitive.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
+                                    }
+                                    // if password exists then set default password
+                                    // otherwise add a password field with default value
+                                    XElement password = primitive.Descendants("password").FirstOrDefault();
+                                    String passwordValue = ((string) context.Variables["password"]);
+                                    if (password != null) {
+                                    password.Value = passwordValue;
+                                    } else {
+                                    password = XElement.Parse("<password>" + passwordValue + "</password>");
+                                    prevField.AddAfterSelf(password);
+                                    }
+                                    }
+                                  }
+                                  catch (Exception e)
+                                  {
+                                    //  do nothing
+                                  }
+                                  return doc.ToString();;
+                                  }
+                                </set-body>
+                </when>
+                <!-- If the content type is not XML, do nothing or apply other policies as needed -->
+                <otherwise />
+            </choose>
+
+
         </when>
         <otherwise>
             <!-- blacklist for appgateway-snet  -->
@@ -77,7 +95,7 @@
               <address-range from="${address-range-from}" to="${address-range-to}"/>
             </ip-filter>
         </otherwise>
-    </choose>    
+    </choose>
 
 
     <!-- read decoupler configuration json -->
