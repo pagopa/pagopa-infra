@@ -227,17 +227,3 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" 
 
   xml_content = file("./api/ecommerce-io/v1/_transaction_outcome.xml.tpl")
 }
-
-data "azurerm_key_vault_secret" "ecommerce_io_api_key_wallet" {
-  name         = "ecommerce-io-api-key-wallet"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-resource "azurerm_api_management_named_value"  "ecommerce-io-api-key-wallet" {
-  name                =  "ecommerce-io-api-key-wallet"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        =  "ecommerce-io-api-key-wallet"
-  value               = data.azurerm_key_vault_secret.ecommerce_io_api_key_wallet.value
-  secret              = true
-}
