@@ -23,7 +23,7 @@
                     inBody.Remove("paymentToken");
                     inBody.Remove("language");
                     inBody.Add("bin", bin);
-                    inBody.Add("touchpint","IO")
+                    inBody.Add("touchpint","IO");
                     return inBody.ToString(); 
                 }</set-body>
             </when>
