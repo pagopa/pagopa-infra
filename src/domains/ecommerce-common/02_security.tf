@@ -417,3 +417,15 @@ resource "azurerm_key_vault_secret" "wallet-token-test-key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "ecommerce-io-jwt-signing-key" {
+  name         = "ecommerce-io-jwt-signing-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
