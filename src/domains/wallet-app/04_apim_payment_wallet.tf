@@ -1,4 +1,15 @@
 ##############
+## Groups ##
+##############
+
+resource "azurerm_api_management_group" "payment-wallet" {
+  name                = "payment-wallet"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "Payment Wallet"
+}
+
+##############
 ## Products ##
 ##############
 
@@ -70,15 +81,14 @@ module "apim_payment_wallet_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_wallets_for_user" {
-  count               = var.payment_wallet_with_pm_enabled ? 1 : 0
   api_name            = "${local.project}-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "getWalletsByIdUser"
 
-  xml_content = templatefile("./api/payment-wallet/v1/get_wallets_by_user.xml.tpl", {
+  xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_get_wallets_by_user_with_pm.xml.tpl", {
     ecommerce-basepath = local.ecommerce_hostname
-  })
+  }) : templatefile("./api/payment-wallet/v1/_get_wallets_by_user.xml.tpl", { pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path })
 
 }
 
@@ -89,7 +99,8 @@ resource "azurerm_api_management_api_operation_policy" "post_wallets" {
   operation_id        = "createWallet"
 
   xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_post_wallets_with_pm_policy.xml.tpl", {
-    env = var.env
+    env                = var.env,
+    ecommerce-basepath = local.ecommerce_hostname
     }) : templatefile("./api/payment-wallet/v1/_post_wallets_policy.xml.tpl", {
     env = var.env, pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path
   })
@@ -105,25 +116,34 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods" {
   )
 }
 
+resource "azurerm_api_management_api_operation_policy" "onboarding_outcome" {
+  api_name            = "${local.project}-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getOnboardingOutcome"
+
+  xml_content = file("./api/payment-wallet/v1/_onboarding_outcome.xml.tpl")
+}
+
 #################################################
 ## API wallet notifications service            ##
 #################################################
 locals {
-  apim_wallet_notifications_service_api = {
-    display_name          = "pagoPA - wallet notifications API"
-    description           = "API to support wallet notifications service"
-    path                  = "wallet-notifications-service"
-    subscription_required = true
+  apim_payment_wallet_notifications_service_api = {
+    display_name          = "wallet pagoPA - NPG notifications API"
+    description           = "API to support npg notifications related to onboarding"
+    path                  = "payment-wallet-notifications"
+    subscription_required = false
     service_url           = null
   }
 }
 
-# Wallet notifications service APIs
-resource "azurerm_api_management_api_version_set" "wallet_notifications_service_api" {
-  name                = "${local.project}-notifications-service-api"
+# NPG notifications service APIs
+resource "azurerm_api_management_api_version_set" "npg_notifications_api" {
+  name                = "${local.project}-npg-notifications-api"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_wallet_notifications_service_api.display_name
+  display_name        = local.apim_payment_wallet_notifications_service_api.display_name
   versioning_scheme   = "Segment"
 }
 
@@ -134,22 +154,22 @@ module "apim_wallet_service_notifications_api_v1" {
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_payment_wallet_product.product_id]
-  subscription_required = local.apim_wallet_notifications_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.wallet_notifications_service_api.id
+  subscription_required = local.apim_payment_wallet_notifications_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.npg_notifications_api.id
   api_version           = "v1"
 
-  description  = local.apim_wallet_notifications_service_api.description
-  display_name = local.apim_wallet_notifications_service_api.display_name
-  path         = local.apim_wallet_notifications_service_api.path
+  description  = local.apim_payment_wallet_notifications_service_api.description
+  display_name = local.apim_payment_wallet_notifications_service_api.display_name
+  path         = local.apim_payment_wallet_notifications_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_wallet_notifications_service_api.service_url
+  service_url  = local.apim_payment_wallet_notifications_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/npg/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/npg-notifications/v1/_openapi.json.tpl", {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/npg/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/npg-notifications/v1/_base_policy.xml.tpl", {
     hostname = local.wallet_hostname
   })
 }

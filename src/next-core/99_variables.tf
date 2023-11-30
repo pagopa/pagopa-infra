@@ -179,4 +179,10 @@ variable "geo_replica_ddos_protection_plan" {
   default = null
 }
 
+variable "postgres_private_dns_enabled" {
+  type        = bool
+  description = "(Optional) If true creates a private dns that can be used to access the postgres databases"
+  default     = false
+}
+
 

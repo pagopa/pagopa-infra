@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Receipts Datastore",
-    "description": "Microservice for exposing REST APIs about receipts datastore.",
+    "title": "Receipts Healthcheck",
+    "description": "Microservice for exposing REST APIs about receipts Healthcheck.",
     "termsOfService": "https://www.pagopa.gov.it/",
     "version": "0.0.2-4"
   },
@@ -133,7 +133,7 @@
         "tags": [
           "Receipts REST APIs"
         ],
-        "summary": "Retrieve the attachment related to the receipt with the tp_id.",
+        "summary": "Recover failed receipts.",
         "operationId": "recoverFailed",
         "parameters": [],
         "requestBody": {
