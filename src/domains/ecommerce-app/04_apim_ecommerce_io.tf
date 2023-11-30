@@ -98,7 +98,8 @@ module "apim_ecommerce_io_api_v1" {
   })
 
   xml_content = templatefile("./api/ecommerce-io/v1/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_ingress_hostname   = local.ecommerce_hostname
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
   })
 }
 
