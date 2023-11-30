@@ -236,6 +236,10 @@ resource "azurerm_api_management_group" "afm_calculator" {
   display_name        = "AFM Calculator for Node"
 }
 
+#################
+## NAMED VALUE ##
+#################
+
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   count               = var.checkout_enabled ? 1 : 0
   name                = "pagopa-fn-checkout-url"
@@ -300,6 +304,49 @@ resource "azurerm_api_management_named_value" "schema_ip_nodo_postgresql" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "schema-ip-nodo-postgresql"
   value               = var.schema_ip_nodo_postgresql
+}
+
+# 8. Nodo PostgreSQL PagoPA
+resource "azurerm_api_management_named_value" "schema_ip_nodo_postgresql_pagopa" {
+  name                = "schema-ip-nodo-postgresql-pagopa"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "schema-ip-nodo-postgresql-pagopa"
+  value               = var.env_short == "p" ? "https://weu${var.env}.nodo.internal.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}": "https://weu${var.env}.nodo.internal.${var.env}.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}"
+}
+
+resource "azurerm_api_management_named_value" "default_nodo_backend" {
+  name                = "default-nodo-backend"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "default-nodo-backend"
+  #  TODO fix prod ip and set default nexi
+  #  value               = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+  value               = var.env_short == "p" ? "https://{{ip-nodo}}" : azurerm_api_management_named_value.schema_ip_nodo_postgresql_pagopa.value
+}
+
+resource "azurerm_api_management_named_value" "default_nodo_id" {
+  name                = "default-nodo-id"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "default-nodo-id"
+  value               = var.default_node_id
+}
+
+resource "azurerm_api_management_named_value" "enable_nm3_decoupler_switch" {
+  name                = "enable-nm3-decoupler-switch"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "enable-nm3-decoupler-switch"
+  value               = var.apim_enable_nm3_decoupler_switch
+}
+
+resource "azurerm_api_management_named_value" "enable_routing_decoupler_switch" {
+  name                = "enable-routing-decoupler-switch"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "enable-routing-decoupler-switch"
+  value               = var.apim_enable_routing_decoupler_switch
 }
 
 # 1. PPT LMI

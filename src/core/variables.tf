@@ -390,6 +390,22 @@ variable "apim_nodo_auth_decoupler_enable" {
   description = "Apply decoupler to nodo-auth product apim policy"
 }
 
+variable "apim_enable_nm3_decoupler_switch" {
+  type        = bool
+  default     = false
+  description = "Enable switch backend address in NM3 algorithm logic"
+}
+
+variable "apim_enable_routing_decoupler_switch" {
+  type        = bool
+  default     = false
+  description = "Enable switch backend address in Routing algorithm logic"
+}
+variable "default_node_id" {
+  type        = string
+  description = "Default NodeId according to default base url"
+}
+
 ## Redis cache
 variable "redis_cache_params" {
   type = object({
