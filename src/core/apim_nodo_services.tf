@@ -1,6 +1,7 @@
 ###############
 ## Decoupler ##
 ###############
+# named value containing primitive names for routing algorithm
 resource "azurerm_api_management_named_value" "node_decoupler_primitives" {
   name                = "node-decoupler-primitives"
   api_management_name = module.apim.name
@@ -9,6 +10,7 @@ resource "azurerm_api_management_named_value" "node_decoupler_primitives" {
   value               = var.node_decoupler_primitives
 }
 
+# convert configuration from JSON to XML
 resource "null_resource" "decoupler_configuration_from_json_2_xml" {
 
   triggers = {
@@ -20,10 +22,11 @@ resource "null_resource" "decoupler_configuration_from_json_2_xml" {
 }
 
 
+# fragment for loading configuration inside policy
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
-# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
 resource "azapi_resource" "decoupler_configuration" {
-  # provider  = azapi.apim
+
   depends_on = [null_resource.decoupler_configuration_from_json_2_xml]
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
@@ -43,8 +46,8 @@ resource "azapi_resource" "decoupler_configuration" {
   }
 }
 
+# decoupler algorithm fragment
 resource "azapi_resource" "decoupler_algorithm" {
-  # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-algorithm"
   parent_id = module.apim.id
@@ -62,8 +65,8 @@ resource "azapi_resource" "decoupler_algorithm" {
   }
 }
 
+# fragment for managing outbound policy if primitive is activatePayment or activateIO
 resource "azapi_resource" "decoupler_activate_outbound" {
-  # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-activate-outbound"
   parent_id = module.apim.id
@@ -82,7 +85,6 @@ resource "azapi_resource" "decoupler_activate_outbound" {
 }
 
 resource "azapi_resource" "on_erro_soap_handler" {
-  # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "onerror-soap-req"
   parent_id = module.apim.id
@@ -133,7 +135,6 @@ module "apim_nodo_dei_pagamenti_product" {
 }
 
 locals {
-
   api_nodo_product = [
     azurerm_api_management_api.apim_node_for_psp_api_v1.name,
     azurerm_api_management_api.apim_nodo_per_psp_api_v1.name,

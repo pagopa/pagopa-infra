@@ -63,7 +63,7 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
-# nodo dei pagamenti
+# Nodo dei Pagamenti
 
 variable "nodo_pagamenti_enabled" {
   type        = bool
@@ -110,6 +110,17 @@ variable "nodo_pagamenti_subkey_required" {
   description = "Enabled subkeys for nodo dei pagamenti api"
   default     = false
 }
+
+variable "schema_ip_nodo_postgresql" {
+  type        = string
+  description = "Nodo Pagamenti schema://ip"
+}
+
+variable "base_path_nodo_postgresql_nexi_onprem" {
+  type        = string
+  description = "base nodo postgresql Nexi on prem"
+}
+
 
 # 1. PPT LMI
 # 2. SYNC

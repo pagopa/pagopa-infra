@@ -293,6 +293,15 @@ resource "azurerm_api_management_named_value" "base_path_nodo_oncloud" {
   value               = var.base_path_nodo_oncloud
 }
 
+# 7. Nodo PostgreSQL Nexi
+resource "azurerm_api_management_named_value" "schema_ip_nodo_postgresql" {
+  name                = "schema-ip-nodo-postgresql"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "schema-ip-nodo-postgresql"
+  value               = var.schema_ip_nodo_postgresql
+}
+
 # 1. PPT LMI
 resource "azurerm_api_management_named_value" "base_path_nodo_ppt_lmi" {
   name                = "base-path-ppt-lmi"
