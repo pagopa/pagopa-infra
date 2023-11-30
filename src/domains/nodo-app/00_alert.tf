@@ -359,7 +359,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-responsetime"
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups_default
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -399,7 +399,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-availability"
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -442,7 +442,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-auth-response
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups_default
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -481,7 +481,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-auth-availabi
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie.id]
+    action_group           = local.action_groups
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }

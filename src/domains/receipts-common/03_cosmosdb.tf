@@ -5,6 +5,30 @@ resource "azurerm_resource_group" "receipts_rg" {
   tags = var.tags
 }
 
+
+locals {
+
+  action_groups_default = [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    }
+  ]
+
+  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [{
+    action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
+    webhook_properties = null
+  }]) : local.action_groups_default
+}
+
+
+
+
+
 module "receipts_datastore_cosmosdb_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                 = "${local.project}-datastore-cosmosdb-snet"
@@ -47,6 +71,10 @@ module "receipts_datastore_cosmosdb_account" {
 
   ip_range = ""
 
+  enable_provisioned_throughput_exceeded_alert = var.env_short == "p" ? true : false
+
+  action = local.action_groups
+
   # add data.azurerm_subnet.<my_service>.id
   # allowed_virtual_network_subnet_ids = var.receipts_datastore_cosmos_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
   allowed_virtual_network_subnet_ids = []
@@ -71,9 +99,15 @@ module "receipts_datastore_cosmosdb_database" {
 ### Containers
 locals {
   receipts_datastore_cosmosdb_containers = [
+    # {
+    #   name               = "fake",
+    #   partition_key_path = "/fakeid",
+    #   default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
+    #   autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+    # },
     {
       name               = "receipts",
-      partition_key_path = "/eventId",
+      partition_key_path = "/id",
       default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
       autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
     },
@@ -106,4 +140,55 @@ module "receipts_datastore_cosmosdb_containers" {
   default_ttl         = lookup(each.value, "default_ttl", null)
 
   autoscale_settings = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+}
+
+resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.receipts_datastore_cosmosdb_account.name}] Normalized RU Exceeded"
+  resource_group_name = azurerm_resource_group.receipts_rg.name
+  scopes              = [module.receipts_datastore_cosmosdb_account.id]
+  description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "NormalizedRUConsumption"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [azurerm_resource_group.receipts_rg.location]
+    }
+
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
+  }
+
+  tags = var.tags
 }

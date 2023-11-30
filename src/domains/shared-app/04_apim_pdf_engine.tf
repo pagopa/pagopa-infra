@@ -24,14 +24,14 @@ module "apim_pdf_engine_product" {
 ##  API PDF ENGINE  ##
 #########################
 locals {
-  apim_pdf_engine_service_api = {
+  apim_pdf_engine_service_api = { # java
     display_name          = "PDF Engine Service pagoPA - API"
     description           = "PDF Engine Service pagoPA - API"
     path                  = "shared/pdf-engine"
     subscription_required = true
-    service_url           = null
+    service_url           = module.shared_pdf_engine_app_service_java.default_site_hostname
   }
-  apim_pdf_engine_node_service_api = {
+  apim_pdf_engine_node_service_api = { # node
     display_name          = "PDF Engine Node Service pagoPA - API"
     description           = "PDF Engine Node Service pagoPA - API"
     path                  = "shared/pdf-engine-node"
@@ -39,6 +39,10 @@ locals {
     service_url           = module.shared_pdf_engine_app_service.default_site_hostname
   }
 }
+
+###################
+# java
+###################
 
 resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
 
@@ -48,7 +52,6 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
   display_name        = local.apim_pdf_engine_service_api.display_name
   versioning_scheme   = "Segment"
 }
-
 
 module "apim_api_pdf_engine_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
@@ -65,7 +68,7 @@ module "apim_api_pdf_engine_api_v1" {
   display_name = local.apim_pdf_engine_service_api.display_name
   path         = local.apim_pdf_engine_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_pdf_engine_service_api.service_url
+  service_url  = null
 
   content_format = "openapi"
   content_value = templatefile("./api/pdf-engine/v1/_openapi.json.tpl", {
@@ -73,10 +76,13 @@ module "apim_api_pdf_engine_api_v1" {
   })
 
   xml_content = templatefile("./api/pdf-engine/v1/_base_policy.xml", {
-    hostname = local.shared_hostname
+    hostname = local.apim_pdf_engine_service_api.service_url
   })
 }
 
+###################
+# node
+###################
 
 resource "azurerm_api_management_api_version_set" "api_pdf_engine_node_api" {
 

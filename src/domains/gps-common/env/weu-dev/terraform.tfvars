@@ -67,6 +67,7 @@ pgres_flex_params = {
   pgbouncer_enabled            = true
   alerts_enabled               = false
   max_connections              = 1000
+  enable_private_dns_registration = false
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
@@ -110,4 +111,5 @@ cosmos_gpd_payments_db_params = {
 
 cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
-enable_iac_pipeline = true
+enable_iac_pipeline                   = true
+gpd_payments_sa_delete_retention_days = 0

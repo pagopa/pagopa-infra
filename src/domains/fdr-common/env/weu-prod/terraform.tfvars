@@ -42,14 +42,17 @@ pgres_flex_params = {
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 32768
   zone                                   = 1
+  standby_zone                           = 2
   backup_retention_days                  = 7
-  geo_redundant_backup_enabled           = false
+  geo_redundant_backup_enabled           = true
   create_mode                            = "Default"
   pgres_flex_private_endpoint_enabled    = true
-  pgres_flex_ha_enabled                  = false
+  pgres_flex_ha_enabled                  = true
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 200
+  max_connections                        = 1700
+  pgbouncer_min_pool_size                = 500
+  pgbouncer_default_pool_size            = 1000
 }
 
 custom_metric_alerts = {
@@ -183,20 +186,34 @@ fdr_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = false
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
 }
 
 fdr_re_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = false
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
 }
+
+#
+# replica settings
+#
+geo_replica_enabled                = true
+location_replica                   = "northeurope"
+location_replica_short             = "neu"
+geo_replica_cidr_subnet_postgresql = ["10.2.162.0/24"]
+postgresql_sku_name                = "GP_Gen5_2"
+postgres_dns_registration_enabled  = true

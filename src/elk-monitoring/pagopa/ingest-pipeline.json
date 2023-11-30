@@ -6,6 +6,22 @@
         "add_to_root": true,
         "ignore_failure": true
       }
+    },
+    {
+      "convert": {
+        "field": "responseTime",
+        "type": "long",
+        "target_field": "response_time",
+        "ignore_missing": true
+      }
+    },
+    {
+      "convert": {
+        "field": "httpCode",
+        "type": "integer",
+        "target_field": "http_code",
+        "ignore_missing": true
+      }
     }
   ]
 }

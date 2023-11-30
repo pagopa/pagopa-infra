@@ -68,15 +68,16 @@ pgres_flex_params = {
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
   storage_mb                   = 1048576 # 1Tib
-  zone                         = 1
+  zone                         = 2
   backup_retention_days        = 7
   geo_redundant_backup_enabled = true
   create_mode                  = "Default"
   high_availability_enabled    = true
-  standby_availability_zone    = 2
+  standby_availability_zone    = 1
   pgbouncer_enabled            = true
   alerts_enabled               = true
   max_connections              = 5000
+  enable_private_dns_registration = true
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
@@ -96,7 +97,11 @@ cosmos_gpd_payments_db_params = {
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
-  additional_geo_locations          = []
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
   private_endpoint_enabled          = true
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = true
@@ -112,4 +117,24 @@ cosmos_gpd_payments_db_params = {
 
 cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
-enable_iac_pipeline = true
+enable_iac_pipeline                   = true
+gpd_payments_versioning               = true
+enable_gpd_payments_backup            = true
+gpd_payments_sa_delete_retention_days = 31
+gpd_payments_sa_backup_retention_days = 30
+
+
+reporting_storage_account = {
+  blob_versioning_enabled    = true
+  advanced_threat_protection = true
+  blob_delete_retention_days = 31
+  backup_enabled             = true
+  backup_retention           = 30
+}
+
+
+geo_replica_enabled                = true
+location_replica                   = "northeurope"
+location_replica_short             = "neu"
+geo_replica_cidr_subnet_postgresql = ["10.2.141.0/24"]
+postgresql_sku_name                = "GP_Gen5_2"

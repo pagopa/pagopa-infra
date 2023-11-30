@@ -48,7 +48,9 @@ pgres_flex_params = {
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 200
+  max_connections                        = 1700
+  pgbouncer_min_pool_size                = 100
+  pgbouncer_default_pool_size            = 100
 }
 
 custom_metric_alerts = {
@@ -188,3 +190,11 @@ fdr_re_storage_account = {
   blob_delete_retention_days    = 30
   enable_low_availability_alert = false
 }
+
+
+#
+# replica settings
+#
+geo_replica_enabled               = false
+postgres_dns_registration_enabled = false
+
