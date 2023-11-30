@@ -56,7 +56,7 @@ data "azurerm_private_dns_zone" "postgres" {
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private" {
   count  = var.env_short != "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v6.11.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v7.23.0"
 
   name = format("%s-gpd-pgflex", local.product)
 
@@ -106,6 +106,11 @@ module "postgres_flexible_server_private" {
       webhook_properties = null
     }
   ] : []
+
+  private_dns_registration = var.pgres_flex_params.enable_private_dns_registration
+  private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
+  private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
+  private_dns_record_cname = "gpd-db"
 }
 
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
