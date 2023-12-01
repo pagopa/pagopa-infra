@@ -121,15 +121,12 @@
                     </otherwise>
                 </choose>
             </when>
-            <otherwise>
-                <base />
-            </otherwise>
         </choose>    
     </inbound>
     <outbound>
         <base />
         <choose>
-            <when condition="@(context.Response.StatusCode == 200)">
+            <when condition="@("false".Equals("${ecommerce_io_with_pm_enabled}") && context.Response.StatusCode == 200)">
                 <set-body>@{ 
                     JObject inBody = context.Response.Body.As<JObject>(preserveContent: true); 
                     var authorizationUrl = inBody["authorizationUrl"];
