@@ -7,10 +7,9 @@
 <fragment>
   <trace source="primitive-type" severity="information">@((string) context.Variables["primitiveType"])</trace>
   <set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
-  <trace source="enable_nm3_switch" severity="information">@((string) context.Variables["enable_nm3_switch"])</trace>
   <set-variable name="enable_routing_switch" value="{{enable-routing-decoupler-switch}}" />
   <choose>
-    <!-- eveluate routing algorithm -->
+    <!-- evaluate routing algorithm -->
     <when condition="@(((string)context.Variables["primitiveType"]).Equals("ROUTING"))">
     <set-variable name="configuration" value="@{
     JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
@@ -44,6 +43,11 @@
   </choose>
 </when>
 <when condition="@(((string)context.Variables["primitiveType"]).Equals("NM3"))">
+<set-variable name="configuration" value="@{
+    JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
+    JArray sorted = new JArray(json_configuration.OrderBy(obj => (int)obj["list_priority"]));
+    return sorted.ToString();
+    }" />
   <!-- read request info -->
 <choose>
 <when condition="@(((string)context.Variables["soapAction"]).Equals("sendPaymentOutcome"))">
@@ -118,37 +122,41 @@ new JProperty("ttl", 1)
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
 
                             var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                            foreach (JObject item in configuration) {
-                                bool brokerPspFound = false;
-                                bool ciFound = false;
+                            bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true");
+if (enable_nm3_switch) {
+foreach (JObject item in configuration) {
+bool brokerPspFound = false;
+bool ciFound = false;
 
-                                var brokerPsps = item.GetValue("broker_psps").ToList();
-                                var cis = item.GetValue("cis").ToList();
+var brokerPsps = item.GetValue("broker_psps").ToList();
+var cis = item.GetValue("cis").ToList();
 
-                                if (brokerPsps.Count == 0 || (brokerPsps.Count > 0 && brokerPsps.Contains(requestData.GetValue("brokerPsp")))) {
-                                    brokerPspFound = true;
-                                }
+if (brokerPsps.Count == 0 || (brokerPsps.Count > 0 && brokerPsps.Contains(requestData.GetValue("brokerPsp")))) {
+brokerPspFound = true;
+}
 
-                                if (cis.Count == 0 || (cis.Count > 0 && cis.Contains(requestData.GetValue("ci")))) {
-                                    ciFound = true;
-                                }
+if (cis.Count == 0 || (cis.Count > 0 && cis.Contains(requestData.GetValue("ci")))) {
+ciFound = true;
+}
 
-                                if (brokerPspFound && ciFound) {
-                                    return new JObject(
-                                        new JProperty("nodeId", item.GetValue("node_id").ToString()),
-                                        new JProperty("nodeUri", item.GetValue("node_uri").ToString()),
-                                        new JProperty("ttl", requestData.GetValue("ttl"))
-                                    ).ToString();
-                                }
-                            }
+if (brokerPspFound && ciFound) {
+return new JObject(
+new JProperty("nodeId", item.GetValue("node_id").ToString()),
+new JProperty("nodeUri", item.GetValue("node_uri").ToString()),
+new JProperty("ttl", requestData.GetValue("ttl"))
+).ToString();
+}
+}
+}
+var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "");
+var baseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
+return new JObject(
+new JProperty("nodeId", baseNodeId),
+new JProperty("nodeUri", baseUrl),
+new JProperty("ttl", requestData.GetValue("ttl"))
+).ToString();
 
-                            return new JObject(
-                                        new JProperty("nodeId", "NONE"),
-                                        new JProperty("nodeUri", "NONE"),
-                                        new JProperty("ttl", 1)
-                                    ).ToString();
-
-                        }" />
+}" />
 <!-- set base url -->
 <choose>
   <!-- if enable_nm3_decoupler_switch == true -->
@@ -203,11 +211,12 @@ new JProperty("ttl", 1)
                                     ).ToString();
                                 }
                             }
-
-                            return new JObject(
-                                        new JProperty("nodeId", "NONE"),
-                                        new JProperty("nodeUri", "NONE"),
-                                        new JProperty("ttl", 1)
+                                var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
+                                var baseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "NONE");
+                                return new JObject(
+                                    new JProperty("nodeId", baseNodeId),
+                                    new JProperty("nodeUri", baseUrl),
+                                    new JProperty("ttl", 3600)
                                     ).ToString();
 
                         }" />
