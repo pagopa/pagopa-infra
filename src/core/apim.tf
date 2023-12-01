@@ -315,14 +315,33 @@ resource "azurerm_api_management_named_value" "schema_ip_nodo_postgresql_pagopa"
   value               = var.env_short == "p" ? "https://weu${var.env}.nodo.internal.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}": "https://weu${var.env}.nodo.internal.${var.env}.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}"
 }
 
+# DEFAULT NODO CONFIGURATION
 resource "azurerm_api_management_named_value" "default_nodo_backend" {
   name                = "default-nodo-backend"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "default-nodo-backend"
-  #  TODO fix prod ip and set default nexi
-  #  value               = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
-  value               = var.env_short == "p" ? "https://{{ip-nodo}}" : azurerm_api_management_named_value.schema_ip_nodo_postgresql_pagopa.value
+  #    value               = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+  value               = var.env_short == "p" ? "https://${azurerm_api_management_named_value.ip_nodo_value.value}" : "http://${azurerm_api_management_named_value.aks_lb_nexi.value}${azurerm_api_management_named_value.base_path_nodo_oncloud}"
+  #  value               = var.env_short == "p" ? "https://{{ip-nodo}}" : azurerm_api_management_named_value.schema_ip_nodo_postgresql_pagopa.value
+}
+
+resource "azurerm_api_management_named_value" "default_nodo_backend_prf" {
+  name                = "default-nodo-backend-prf"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "default-nodo-backend-prf"
+  value               = var.env_short == "u" ? "http://${azurerm_api_management_named_value.aks_lb_nexi.value}/nodo-prf" : ""
+  # /webservices/input is set in API policy
+}
+
+resource "azurerm_api_management_named_value" "default_nodo_backend_dev_nexi" {
+  name                = "default-nodo-backend-dev-nexi"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "default-nodo-backend-dev-nexi"
+  value               = var.env_short == "d" ? "http://${azurerm_api_management_named_value.aks_lb_nexi.value}/nodo-dev" : ""
+  # /webservices/input is set in API policy
 }
 
 resource "azurerm_api_management_named_value" "default_nodo_id" {

@@ -19,7 +19,9 @@
 
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" /> <!-- PRF -->
+                <set-backend-service base-url="@{
+                    return context.Variables.GetValueOrDefault<string>("default-nodo-backend-prf", "") + "/webservices/input";
+                }" />
             </when>
         </choose>
     </inbound>

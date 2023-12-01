@@ -15,79 +15,68 @@
     <base/>
     <choose>
       <when condition="@(context.Request.Body != null)">
+          <!-- copy request body into renewrequest variable -->
           <set-variable name="renewrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
       </when>
     </choose>
     <!-- read decoupler configuration json -->
     <choose>
         <when condition="@(${is-nodo-auth-pwd-replace})">
+            <!-- the following block code is to override password XML element with default nodoAuthPassword -->
             <set-variable name="password" value="{{nodoAuthPassword}}" />
             <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction"))" />
-
+            <set-body>
+              @{
+                                                // get request body content
+                                                XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+                                                try {
+                                                  XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+                                                  // get primitive
+                                                  XElement primitive = (XElement) body.FirstNode;
+                                                  var soapAction = (string)context.Variables["soapAction"];
+                                                  var primitives = new string[]{"nodoInviaRPT", "nodoInviaCarrelloRPT"};
+                                                  if (primitives.Contains(soapAction)) {
+                                                  // get prev field
+                                                  XElement password = primitive.Descendants("password").FirstOrDefault();
+                                                  String passwordValue = ((string)context.Variables["password"]);
+                                                  if (password != null) {
+                                                  password.Value = passwordValue;
+                                                  } else {
+                                                  password = XElement.Parse("<password>" + passwordValue + "</password>");
+                                                  primitive.AddFirst(password);
+                                                  }
+                                                  }
+                                                  else {
+                                                  // get prev field
+                                                  XElement prevField = primitive.Descendants("idChannel").FirstOrDefault();
+                                                  if (prevField == null) {
+                                                  prevField = primitive.Descendants("identificativoCanale").FirstOrDefault();
+                                                  }
+                                                  if (prevField == null) {
+                                                  prevField = primitive.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
+                                                  }
+                                                  // if password exists then set default password
+                                                  // otherwise add a password field with default value
+                                                  XElement password = primitive.Descendants("password").FirstOrDefault();
+                                                  String passwordValue = ((string) context.Variables["password"]);
+                                                  if (password != null) {
+                                                  password.Value = passwordValue;
+                                                  } else {
+                                                  password = XElement.Parse("<password>" + passwordValue + "</password>");
+                                                  prevField.AddAfterSelf(password);
+                                                  }
+                                                  }
+                                                }
+                                                catch (Exception e)
+                                                {
+                                                  //  do nothing
+                                                }
+                                                return doc.ToString();;
+                                                }
+            </set-body>
             <set-header name="X-Forwarded-For" exists-action="override">
-                <value>{{xForwardedFor}}</value>
-              </set-header>
-
-            <choose>
-                <!-- Check if the content type is XML -->
-                <when condition="@(context.Request.Headers.GetValueOrDefault("Content-Type", "").ToLowerInvariant().Contains("application/xml")
-                                            || context.Request.Headers.GetValueOrDefault("Content-Type", "").ToLowerInvariant().Contains("text/xml"))">
-
-                    <set-body>
-                                  @{
-                                  // get request body content
-                                  XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
-                                  try {
-                                    XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
-                                    // get primitive
-                                    XElement primitive = (XElement) body.FirstNode;
-                                    var soapAction = (string)context.Variables["soapAction"];
-                                    var primitives = new string[]{"nodoInviaRPT", "nodoInviaCarrelloRPT"};
-                                    if (primitives.Contains(soapAction)) {
-                                    // get prev field
-                                    XElement password = primitive.Descendants("password").FirstOrDefault();
-                                    String passwordValue = ((string)context.Variables["password"]);
-                                    if (password != null) {
-                                    password.Value = passwordValue;
-                                    } else {
-                                    password = XElement.Parse("<password>" + passwordValue + "</password>");
-                                    primitive.AddFirst(password);
-                                    }
-                                    }
-                                    else {
-                                    // get prev field
-                                    XElement prevField = primitive.Descendants("idChannel").FirstOrDefault();
-                                    if (prevField == null) {
-                                    prevField = primitive.Descendants("identificativoCanale").FirstOrDefault();
-                                    }
-                                    if (prevField == null) {
-                                    prevField = primitive.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
-                                    }
-                                    // if password exists then set default password
-                                    // otherwise add a password field with default value
-                                    XElement password = primitive.Descendants("password").FirstOrDefault();
-                                    String passwordValue = ((string) context.Variables["password"]);
-                                    if (password != null) {
-                                    password.Value = passwordValue;
-                                    } else {
-                                    password = XElement.Parse("<password>" + passwordValue + "</password>");
-                                    prevField.AddAfterSelf(password);
-                                    }
-                                    }
-                                  }
-                                  catch (Exception e)
-                                  {
-                                    //  do nothing
-                                  }
-                                  return doc.ToString();;
-                                  }
-                                </set-body>
-                </when>
-                <!-- If the content type is not XML, do nothing or apply other policies as needed -->
-                <otherwise />
-            </choose>
-
-
+              <value>{{xForwardedFor}}</value>
+            </set-header>
         </when>
         <otherwise>
             <!-- blacklist for appgateway-snet  -->
@@ -99,9 +88,12 @@
 
 
     <!-- read decoupler configuration json -->
-    <include-fragment fragment-id="decoupler-configuration" />
+    <include-fragment fragment-id="decoupler-configuration-test" />
     <!-- the following is the default baseUrl -->
+    <!--<set-variable name="baseUrl" value="${base-url}" />-->
     <set-variable name="baseUrl" value="${base-url}" />
+    <!--<set-variable name="baseUrl" value="${base-url}" />-->
+    <set-variable name="baseNodeId" value="${base-node-id}" />
     <!-- used for convention in the cache key -->
     <set-variable name="domain" value="nodo" />
     <!-- used for debugging -->
@@ -109,6 +101,7 @@
       var configuration = JArray.Parse(((string) context.Variables["configuration"]));
       return configuration.FirstOrDefault()["node_id"].Value<string>();
       }</trace>
+    <!-- load primitives from the related named valued -->
     <set-variable name="primitives" value="{{node-decoupler-primitives}}" />
     <set-variable name="soapAction" value="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Replace("\"",""))" />
     <set-variable name="primitiveType" value="@{
@@ -130,7 +123,7 @@
             return "NOTSET";
         }" />
     <!-- apply algorithm logic -->
-    <include-fragment fragment-id="decoupler-algorithm" />
+    <include-fragment fragment-id="decoupler-algorithm-test" />
     <trace source="base-url" severity="information">@((string)context.Variables["baseUrl"])</trace>
 
     <!-- set backend service url -->

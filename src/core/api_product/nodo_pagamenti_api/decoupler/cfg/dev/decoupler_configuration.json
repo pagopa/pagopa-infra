@@ -13,7 +13,7 @@
     "description": "Nodo Azure PagoPA",
     "node_uri": "https://weudev.nodo.internal.dev.platform.pagopa.it/nodo",
     "routing": 0,
-    "broker_psps": ["07338820967"],
+    "broker_psps": [],
     "cis": ["15376371009"],
     "list_priority": 2
   },
