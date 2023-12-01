@@ -20,18 +20,18 @@ locals {
       }
     }
 
-    apix = {
+    fdr = {
       protocol           = "Https"
-      host               = format("apix.%s.%s", var.dns_zone_prefix, var.external_domain)
+      host               = format("fdr.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_apix_certificate_name
+        name = var.app_gateway_fdr_certificate_name
         id = replace(
-          data.azurerm_key_vault_certificate.app_gw_platformx.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_platformx.version}",
+          data.azurerm_key_vault_certificate.app_gw_platform_fdr.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platform_fdr.version}",
           ""
         )
       }
@@ -168,8 +168,8 @@ locals {
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
 
-    apix = {
-      listener              = "apix"
+    fdr = {
+      listener              = "fdr"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
@@ -274,16 +274,16 @@ module "app_gw" {
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 30 # could be set to 10s after apimx listner 
+      request_timeout             = 30
       pick_host_name_from_backend = false
     }
 
-    apimx = {
+    apimfdr = {
       protocol                    = "Https"
-      host                        = trim(azurerm_dns_a_record.dns_a_apix.fqdn, ".")
+      host                        = trim(azurerm_dns_a_record.dns_a_fdr.fqdn, ".")
       port                        = 443
       ip_addresses                = module.apim.private_ip_addresses
-      fqdns                       = [azurerm_dns_a_record.dns_a_apix.fqdn]
+      fqdns                       = [azurerm_dns_a_record.dns_a_fdr.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 300 # long timeout for heavy api request ( ex. FDR flow managment )
@@ -445,6 +445,30 @@ module "app_gw" {
           response_header_configurations = []
           url                            = null
         },
+        {
+          name          = "http-deny-path-only-fdr"
+          rule_sequence = 4
+          conditions = [
+            {
+              variable    = "var_host"
+              pattern     = format("fdr.%s.%s", var.dns_zone_prefix, var.external_domain)
+              ignore_case = true
+              negate      = false
+            },
+            {
+              variable    = "http_req_SOAPAction"
+              pattern     = join("|", var.app_gateway_allowed_fdr_soap_action)
+              ignore_case = true
+              negate      = true
+            },
+          ]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+        },
       ]
     },
     {
@@ -467,7 +491,38 @@ module "app_gw" {
           }
         },
       ]
-    }
+    },
+    # {
+    #   name = "rewrite-rule-set-fdr"
+    #   rewrite_rules = [
+    #     {
+    #       name          = "http-deny-path-only-fdr"
+    #       rule_sequence = 4
+    #       conditions = [
+    #         {
+    #           variable    = "var_host"
+    #           # pattern     = join("|", var.app_gateway_deny_paths)
+    #           pattern     = "fdr.dev.platform.pagopa.it"
+    #           ignore_case = true
+    #           negate      = false
+    #         },
+    #         {
+    #           variable    = "var_uri_path"
+    #           # pattern     = join("|", var.app_gateway_deny_paths)
+    #           pattern     = "/nodo/node-for-psp/*"
+    #           ignore_case = true
+    #           negate      = false
+    #         },
+    #       ]
+    #       request_header_configurations  = []
+    #       response_header_configurations = []
+    #       url = {
+    #         path         = "notfound"
+    #         query_string = null
+    #       }
+    #     },
+    #   ]
+    # },    
   ]
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]

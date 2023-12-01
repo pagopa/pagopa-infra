@@ -461,9 +461,9 @@ variable "app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
 }
-variable "app_gateway_apix_certificate_name" {
+variable "app_gateway_fdr_certificate_name" {
   type        = string
-  description = "Application gateway api certificate name on Key Vault ( where 'x' stay for heavy payload )"
+  description = "Application gateway api certificate name on Key Vault ( 'fdr' is used for heavy FdR payload )"
 }
 
 variable "app_gateway_prf_certificate_name" {
@@ -560,6 +560,12 @@ variable "app_gateway_allowed_paths_pagopa_onprem_only" {
     ips   = list(string)
   })
   description = "Allowed paths from pagopa onprem only"
+}
+
+variable "app_gateway_allowed_fdr_soap_action" {
+  type        = list(string)
+  description = "Allowed SOAPAction header for fdr platform fqdn"
+  default     = ["nodoInviaFlussoRendicontazione", "nodoChiediFlussoRendicontazione", "nodoChiediElencoFlussiRendicontazione"]
 }
 
 # Azure DevOps Agent

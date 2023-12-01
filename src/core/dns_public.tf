@@ -99,8 +99,8 @@ resource "azurerm_dns_a_record" "dns_a_api" {
   tags                = var.tags
 }
 
-resource "azurerm_dns_a_record" "dns_a_apix" {
-  name                = "apix"
+resource "azurerm_dns_a_record" "dns_a_fdr" {
+  name                = "fdr"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec

@@ -81,6 +81,7 @@ redis_cache_enabled            = true
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
+app_gateway_fdr_certificate_name        = "fdr-uat-platform-pagopa-it"
 app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
