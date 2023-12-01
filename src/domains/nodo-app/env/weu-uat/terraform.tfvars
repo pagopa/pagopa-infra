@@ -97,14 +97,14 @@ route_aks = [
     next_hop_in_ip_address = "10.230.9.150"
   },
   {
-    #  dev aks nodo nexi postgres onprem
+    # uat aks nodo nexi postgres onprem
     name                   = "aks-outbound-to-nexi-postgres-onprem-subnet"
     address_prefix         = "10.222.214.174/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.9.150"
   },
   {
-    #  dev aks nodo nexi postgres onprem
+    #  prf aks nodo nexi postgres onprem
     name                   = "aks-outbound-to-nexi-postgres-prf-onprem-subnet"
     address_prefix         = "10.222.214.184/32"
     next_hop_type          = "VirtualAppliance"
