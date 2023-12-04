@@ -118,6 +118,19 @@ locals {
       ]
       shard_key = "_id"
     },
+    {
+      name = "dead-letter-events"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["insertionDate", "queueName"]
+          unique = false
+        }
+      ]
+      shard_key = "_id"
+    },
   ]
 }
 
