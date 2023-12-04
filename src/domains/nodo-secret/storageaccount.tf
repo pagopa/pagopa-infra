@@ -4,7 +4,7 @@ module "nodocerts_sa" {
   name                     = replace("${local.product}-${var.domain}-nodocerts-sa", "-", "") # nodocerts<dev|uat|prod>
   account_kind             = "StorageV2"
   account_tier             = "Standard"
-  account_replication_type = "LRS"
+  account_replication_type = var.certs_storage_account_replication_type
   access_tier              = "Hot"
   blob_versioning_enabled  = var.nodo_cert_storage_account.blob_versioning_enabled
 
