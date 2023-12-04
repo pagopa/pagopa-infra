@@ -111,9 +111,9 @@ variable "nodo_pagamenti_subkey_required" {
   default     = false
 }
 
-variable "schema_ip_nodo_postgresql" {
+variable "schema_ip_nexi" {
   type        = string
-  description = "Nodo Pagamenti schema://ip"
+  description = "Nodo Pagamenti Nexi schema://ip"
 }
 
 variable "base_path_nodo_postgresql_nexi_onprem" {

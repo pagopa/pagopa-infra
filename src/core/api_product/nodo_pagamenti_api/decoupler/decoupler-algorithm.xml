@@ -37,6 +37,7 @@
                         return context.Variables.GetValueOrDefault<string>("baseUrl", "");
       }" />
     </when>
+    <!-- TODO remove after test -->
     <otherwise>
       <trace source="skip-set-base-user-routing" severity="information">skipped set base url routing</trace>
     </otherwise>
@@ -123,40 +124,40 @@ new JProperty("ttl", 1)
 
                             var requestData = JObject.Parse((string)context.Variables["requestData"]);
                             bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true");
-if (enable_nm3_switch) {
-foreach (JObject item in configuration) {
-bool brokerPspFound = false;
-bool ciFound = false;
+                            if (enable_nm3_switch) {
+                            foreach (JObject item in configuration) {
+                            bool brokerPspFound = false;
+                            bool ciFound = false;
 
-var brokerPsps = item.GetValue("broker_psps").ToList();
-var cis = item.GetValue("cis").ToList();
+                            var brokerPsps = item.GetValue("broker_psps").ToList();
+                            var cis = item.GetValue("cis").ToList();
 
-if (brokerPsps.Count == 0 || (brokerPsps.Count > 0 && brokerPsps.Contains(requestData.GetValue("brokerPsp")))) {
-brokerPspFound = true;
-}
+                            if (brokerPsps.Count == 0 || (brokerPsps.Count > 0 && brokerPsps.Contains(requestData.GetValue("brokerPsp")))) {
+                            brokerPspFound = true;
+                            }
 
-if (cis.Count == 0 || (cis.Count > 0 && cis.Contains(requestData.GetValue("ci")))) {
-ciFound = true;
-}
+                            if (cis.Count == 0 || (cis.Count > 0 && cis.Contains(requestData.GetValue("ci")))) {
+                            ciFound = true;
+                            }
 
-if (brokerPspFound && ciFound) {
-return new JObject(
-new JProperty("nodeId", item.GetValue("node_id").ToString()),
-new JProperty("nodeUri", item.GetValue("node_uri").ToString()),
-new JProperty("ttl", requestData.GetValue("ttl"))
-).ToString();
-}
-}
-}
-var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "");
-var baseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
-return new JObject(
-new JProperty("nodeId", baseNodeId),
-new JProperty("nodeUri", baseUrl),
-new JProperty("ttl", requestData.GetValue("ttl"))
-).ToString();
+                            if (brokerPspFound && ciFound) {
+                            return new JObject(
+                            new JProperty("nodeId", item.GetValue("node_id").ToString()),
+                            new JProperty("nodeUri", item.GetValue("node_uri").ToString()),
+                            new JProperty("ttl", requestData.GetValue("ttl"))
+                            ).ToString();
+                            }
+                            }
+                            }
+                            var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "");
+                            var baseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
+                            return new JObject(
+                            new JProperty("nodeId", baseNodeId),
+                            new JProperty("nodeUri", baseUrl),
+                            new JProperty("ttl", requestData.GetValue("ttl"))
+                            ).ToString();
 
-}" />
+                            }" />
 <!-- set base url -->
 <choose>
   <!-- if enable_nm3_decoupler_switch == true -->
@@ -232,6 +233,7 @@ new JProperty("ttl", requestData.GetValue("ttl"))
   }" />
 </when>
 <otherwise>
+  <!-- TODO remove after test -->
   <trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
 </otherwise>
 </choose>

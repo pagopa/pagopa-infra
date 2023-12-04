@@ -10,11 +10,7 @@
                     <rewrite-uri template="/webservices/input/" copy-unmatched-params="true" />
                 </when>
                 </choose>
-
             </when>
-            <otherwise>
-                <set-backend-service base-url="${base-url}" />
-            </otherwise>
         </choose>
 
         <choose>

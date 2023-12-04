@@ -145,7 +145,8 @@ nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,001031
 nodo_pagamenti_url     = "http://10.70.66.200/nodo-sit/webservices/input"
 ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/sit/webservices/input shall use lb_aks
 lb_aks                 = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
-schema_ip_nodo_postgresql = "10.79.20.32"
+
+schema_ip_nexi         = "http://10.70.66.200"
 
 base_path_nodo_oncloud        = "/nodo-sit"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-sit-NOT-FOUND"

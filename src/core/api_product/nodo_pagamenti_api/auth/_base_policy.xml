@@ -13,6 +13,7 @@
 <policies>
   <inbound>
     <base />
+    <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
     <set-variable name="password" value="{{nodoAuthPassword}}" />
     <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction"))" />
     <set-body>

@@ -89,11 +89,9 @@
 
     <!-- read decoupler configuration json -->
     <include-fragment fragment-id="decoupler-configuration-test" />
-    <!-- the following is the default baseUrl -->
-    <!--<set-variable name="baseUrl" value="${base-url}" />-->
-    <set-variable name="baseUrl" value="${base-url}" />
-    <!--<set-variable name="baseUrl" value="${base-url}" />-->
-    <set-variable name="baseNodeId" value="${base-node-id}" />
+    <!-- the following is the default baseUrl and baseNodeId -->
+    <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
+    <set-variable name="baseNodeId" value="{{default-nodo-id}}" />
     <!-- used for convention in the cache key -->
     <set-variable name="domain" value="nodo" />
     <!-- used for debugging -->

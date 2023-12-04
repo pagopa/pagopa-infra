@@ -12,7 +12,8 @@
 -->
 <policies>
     <inbound>
-        <base />    
+        <base />
+        <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
         <!-- blacklist for appgateway-snet  -->
         <ip-filter action="forbid">
             <address-range from="${address-range-from}" to="${address-range-to}" />
