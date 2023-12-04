@@ -2,12 +2,12 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Pagopa eCommerce services for assistance api",
+    "title": "Pagopa eCommerce helpdesk service api",
     "description": "This microservice that expose eCommerce services for assistance api."
   },
   "servers": [
     {
-      "url": "https://${host}"
+      "url": "https://${hostname}"
     }
   ],
   "tags": [
@@ -66,7 +66,7 @@
           "PM"
         ],
         "operationId": "pmSearchTransaction",
-        "summary": "Search transaction by input parameters",
+        "summary": "PM search transaction by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/PmSearchTransactionRequest"
@@ -144,7 +144,7 @@
           "eCommerce"
         ],
         "operationId": "ecommerceSearchTransaction",
-        "summary": "Search transaction by input parameters",
+        "summary": "Ecommerce search transaction by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/EcommerceSearchTransactionRequest"
@@ -222,7 +222,7 @@
           "helpDesk"
         ],
         "operationId": "helpDeskSearchTransaction",
-        "summary": "Search transaction by input parameters",
+        "summary": "Technical helpdesk search transaction by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/SearchTransactionRequest"
