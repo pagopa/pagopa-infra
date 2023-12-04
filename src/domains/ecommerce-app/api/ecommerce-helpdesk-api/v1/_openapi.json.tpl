@@ -2,12 +2,12 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Pagopa eCommerce helpdesk service api",
+    "title": "Pagopa eCommerce services for assistance api",
     "description": "This microservice that expose eCommerce services for assistance api."
   },
   "servers": [
     {
-      "url": "https://${hostname}"
+      "url": "https://${host}"
     }
   ],
   "tags": [
@@ -15,7 +15,7 @@
       "name": "PM",
       "description": "Api's for performing transaction search on PM DB",
       "externalDocs": {
-        "url": "TODO",
+        "url": "https://pagopa.atlassian.net/wiki/spaces/PPA/pages/417106103/Design+Review+L+S+PM",
         "description": "Technical specifications"
       }
     },
@@ -23,15 +23,15 @@
       "name": "eCommerce",
       "description": "Api's for performing transaction search on ecommerce DB",
       "externalDocs": {
-        "url": "TODO",
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
         "description": "Technical specifications"
       }
     },
     {
       "name": "helpDesk",
-      "description": "Api's for performing transaction search on ecommerce DB",
+      "description": "Api's for performing transaction search on both PM and ecommerce DB",
       "externalDocs": {
-        "url": "TODO",
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
         "description": "Technical specifications"
       }
     }
@@ -66,7 +66,7 @@
           "PM"
         ],
         "operationId": "pmSearchTransaction",
-        "summary": "PM search transaction by input parameters",
+        "summary": "Search transaction by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/PmSearchTransactionRequest"
@@ -144,7 +144,7 @@
           "eCommerce"
         ],
         "operationId": "ecommerceSearchTransaction",
-        "summary": "Ecommerce search transaction by input parameters",
+        "summary": "Search transaction by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/EcommerceSearchTransactionRequest"
@@ -222,7 +222,7 @@
           "helpDesk"
         ],
         "operationId": "helpDeskSearchTransaction",
-        "summary": "Technical helpdesk search transaction by input parameters",
+        "summary": "Search transaction by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/SearchTransactionRequest"
@@ -234,6 +234,84 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SearchTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ecommerce/searchDeadLetterEvents": {
+      "post": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "required": true,
+            "description": "Searched page number, starting from 0"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 10
+            },
+            "required": true,
+            "description": "Max element per page"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SearchDeadLetterEventRequest"
+        },
+        "tags": [
+          "eCommerce"
+        ],
+        "operationId": "ecommerceSearchDeadLetterEvents",
+        "summary": "Search dead letter by input parameters",
+        "description": "GET with body payload - no resources created",
+        "responses": {
+          "200": {
+            "description": "Transactions found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchDeadLetterEventResponse"
                 }
               }
             }
@@ -519,7 +597,7 @@
             "type": "string"
           },
           "eventStatus": {
-            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/transactions-api.yaml#/components/schemas/TransactionStatus"
+            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/v1/transactions-api.yaml#/components/schemas/TransactionStatus"
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
@@ -709,6 +787,78 @@
             "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
           }
         }
+      },
+      "SearchDeadLetterEventResponse": {
+        "type": "object",
+        "description": "Dead letter event response",
+        "properties": {
+          "deadLetterEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeadLetterEvent"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        },
+        "required": [
+          "deadLetterEvents",
+          "page"
+        ]
+      },
+      "DeadLetterEvent": {
+        "type": "object",
+        "description": "Dead letter event",
+        "properties": {
+          "queueName": {
+            "type": "string",
+            "description": "Name of the dead letter event source queue"
+          },
+          "data": {
+            "type": "string",
+            "description": "Dead letter event data"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Dead letter event insertion date time"
+          }
+        },
+        "required": [
+          "queueName",
+          "data",
+          "timestamp"
+        ]
+      },
+      "DeadLetterSearchEventSource": {
+        "type": "string",
+        "enum": [
+          "ALL",
+          "ECOMMERCE",
+          "NOTIFICATIONS_SERVICE"
+        ],
+        "description": "Dead letter event source"
+      },
+      "DeadLetterSearchDateTimeRange": {
+        "type": "object",
+        "description": "Dead letter date time filter",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Search start date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Search end date"
+          }
+        },
+        "required": [
+          "startDate",
+          "endDate"
+        ]
       }
     },
     "requestBodies": {
@@ -881,6 +1031,43 @@
                 "value": {
                   "type": "TRANSACTION_ID",
                   "transactionId": "transactionId"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SearchDeadLetterEventRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "$ref": "#/components/schemas/DeadLetterSearchEventSource"
+                },
+                "timeRange": {
+                  "$ref": "#/components/schemas/DeadLetterSearchDateTimeRange"
+                }
+              },
+              "required": [
+                "source"
+              ]
+            },
+            "examples": {
+              "search by source without time range": {
+                "value": {
+                  "source": "ALL"
+                }
+              },
+              "search by source with time range": {
+                "value": {
+                  "source": "ALL",
+                  "timeRange": {
+                    "startDate": "2023-01-01T00:00:00.000Z",
+                    "endDate": "2023-01-01T02:00:00.000Z"
+                  }
                 }
               }
             }
