@@ -93,6 +93,6 @@ pod_disruption_budgets = {
   },
 }
 
-io_backend_base_path         = ""
+io_backend_base_path         = "https://disabled"
 ecommerce_io_with_pm_enabled = false
-pdv_api_base_path            = ""
+pdv_api_base_path            = "https://disabled"
