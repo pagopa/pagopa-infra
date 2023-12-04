@@ -126,6 +126,18 @@
                     </otherwise>
                 </choose>
             </when>
+            <otherwise>
+                <set-body>@{ 
+                    JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
+                    JObject requestBodyDetails = new JObject(
+                        new JProperty("detailType", "wallet"),
+                        new JProperty("walletId", ((JObject) context.Variables["requestBody"])["walletId"])
+                    );
+                    requestBody.Remove("walletId");
+                    requestBody["details"] = requestBodyDetails;
+                    return requestBody.ToString(); 
+                }</set-body>
+            </otherwise>
         </choose>    
     </inbound>
     <outbound>
