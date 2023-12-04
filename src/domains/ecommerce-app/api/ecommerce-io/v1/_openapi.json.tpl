@@ -1226,8 +1226,10 @@
             "type": "boolean",
             "description": "Check flag for psp validation"
           },
-          "details": {
-            "$ref": "#/components/schemas/PaymentInstrumentDetail"
+          "walletId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "User wallet id"
           }
         },
         "required": [
@@ -1236,38 +1238,7 @@
           "pspId",
           "language",
           "isAllCCP",
-          "details"
-        ]
-      },
-      "PaymentInstrumentDetail": {
-        "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
-        "oneOf": [
-          {
-            "type": "object",
-            "description": "Additional payment authorization details for payment performed with wallet",
-            "properties": {
-              "detailType": {
-                "description": "fixed value 'WALLET'",
-                "type": "string",
-                "enum": [
-                  "WALLET"
-                ]
-              },
-              "walletId": {
-                "type": "string",
-                "format": "uuid",
-                "description": "User wallet id"
-              }
-            },
-            "required": [
-              "detailType",
-              "walletId"
-            ],
-            "example": {
-              "detailType": "wallet",
-              "walletId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-            }
-          }
+          "walletId"
         ]
       },
       "UpdateAuthorizationRequest": {
