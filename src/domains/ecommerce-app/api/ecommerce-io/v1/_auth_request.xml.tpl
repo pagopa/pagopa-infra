@@ -1,5 +1,10 @@
 <policies>
     <inbound>
+        <base />
+        <set-header name="x-pgs-id" exists-action="delete" />
+        <set-header name="x-pgs-id" exists-action="override">
+            <value>NPG</value>
+        </set-header>
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
         <choose>
             <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
