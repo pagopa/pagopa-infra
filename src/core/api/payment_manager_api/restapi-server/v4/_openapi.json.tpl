@@ -437,7 +437,12 @@
             "type": "string"
           },
           "origin": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "WISP"
+            ]
           },
           "rrn": {
             "type": "string"
