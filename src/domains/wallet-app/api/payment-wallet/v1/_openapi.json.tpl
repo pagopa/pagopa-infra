@@ -325,7 +325,7 @@
       }
     },
     "/wallets/{walletId}/services": {
-      "post": {
+      "put": {
         "tags": [
           "wallets"
         ],
