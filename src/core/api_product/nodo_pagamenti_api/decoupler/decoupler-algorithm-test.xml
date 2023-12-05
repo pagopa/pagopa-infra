@@ -122,7 +122,7 @@ new JProperty("ttl", 1)
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
 
                             var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                            bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true");
+                            bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
 if (enable_nm3_switch) {
 foreach (JObject item in configuration) {
 bool brokerPspFound = false;
