@@ -6,7 +6,7 @@
     "routing": 100,
     "broker_psps": [],
     "cis": [],
-    "list_priority": 1
+    "list_priority": 3
   },
   {
     "node_id": "NDP001DEV",
@@ -15,7 +15,7 @@
     "routing": 0,
     "broker_psps": [],
     "cis": ["15376371009"],
-    "list_priority": 2
+    "list_priority": 1
   },
   {
     "node_id": "NDP004IT",
@@ -23,7 +23,7 @@
     "node_uri": "https://10.79.20.32/sit",
     "routing": 0,
     "broker_psps": [],
-    "cis": [],
-    "list_priority": 3
+    "cis": ["66666666666"],
+    "list_priority": 2
   }
 ]
