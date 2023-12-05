@@ -240,7 +240,7 @@ stages:
               --log-level=${{ parameters.lbLogLevel }} \
               validate -Dschema=$(WFESP_SCHEMA)
             displayName: "wfeps db validate"
-      - job: prd_approval
+      - job: approval
         dependsOn: liquibase_status_job
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
         pool: server
@@ -257,8 +257,8 @@ stages:
               onTimeout: 'reject'
       - job: initialization
         pool: $(poolImage)
-        dependsOn: [liquibase_status_job,prd_approval]
-        condition: or(and(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'it'),eq('${{ parameters.k8sEnv }}', 'prf'),eq('${{ parameters.k8sEnv }}', 'uat'), not(failed('liquibase_status_job'))),and(eq('${{ parameters.k8sEnv }}', 'prd'),not(failed('prd_approval'))))
+        dependsOn: [liquibase_status_job,approval]
+        condition: and(not(failed('liquibase_status_job')), not(failed('approval')))
         displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
         steps:
           - checkout: self
