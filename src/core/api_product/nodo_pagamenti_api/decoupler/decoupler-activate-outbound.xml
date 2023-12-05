@@ -34,8 +34,5 @@
         </when>
       </choose>
     </when>
-    <otherwise>
-      <trace source="activate-otherwise" severity="information">otherwise</trace>
-    </otherwise>
   </choose>
 </fragment>
