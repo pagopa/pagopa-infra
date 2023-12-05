@@ -88,7 +88,7 @@
 
 
     <!-- read decoupler configuration json -->
-    <include-fragment fragment-id="decoupler-configuration-test" />
+    <include-fragment fragment-id="decoupler-configuration" />
     <!-- the following is the default baseUrl and baseNodeId -->
     <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
     <set-variable name="baseNodeId" value="{{default-nodo-id}}" />
@@ -121,7 +121,7 @@
             return "NOTSET";
         }" />
     <!-- apply algorithm logic -->
-    <include-fragment fragment-id="decoupler-algorithm-test" />
+    <include-fragment fragment-id="decoupler-algorithm" />
     <trace source="base-url" severity="information">@((string)context.Variables["baseUrl"])</trace>
 
     <!-- set backend service url -->
