@@ -200,7 +200,8 @@ module "apim_nodo_wfesp_api" {
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
     apim_base_path      = "/redirect"
-    base-url            = var.env_short == "p" ? "http://10.79.20.23:81" : "http://{{aks-lb-nexi}}{{base-path-wfesp}}"
+#    TODO prod is a variant in this case!
+    base-url            = var.env_short == "p" ? "http://10.79.20.23:81" : "{{schema-ip-nexi}}{{base-path-wfesp}}"
   })
 
 }
@@ -346,7 +347,6 @@ module "apim_nodo_web_bo_api" {
     allowed_ip_8        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
     allowed_ip_9        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
   })
-
 }
 
 
