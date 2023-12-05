@@ -1,15 +1,23 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Receipts Healthcheck",
-    "description": "Microservice for exposing REST APIs about receipts Healthcheck.",
+    "title": "Receipts Helpdesk",
+    "description": "Microservice for exposing REST APIs about receipts helpdesk.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.0.2-4"
+    "version": "0.5.1"
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
-      "description": "Generated server url"
+      "url": "https://api.dev.platform.pagopa.it/receipts/helpdesk/v1/",
+      "description": "DEV url"
+    },
+    {
+      "url": "https://api.uat.platform.pagopa.it/receipts/helpdesk/v1/",
+      "description": "UAT url"
+    },
+    {
+      "url": "https://api.platform.pagopa.it/receipts/helpdesk/v1/",
+      "description": "PROD url"
     }
   ],
   "tags": [],
@@ -20,7 +28,7 @@
           "Home"
         ],
         "summary": "health check",
-        "description": "Return OK if application is started",
+        "description": "Return the application info, if the application is started",
         "operationId": "healthCheck",
         "responses": {
           "200": {
@@ -41,37 +49,8 @@
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -92,20 +71,13 @@
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
+          "default": {
+            "description": "Unexpected error.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -128,16 +100,27 @@
         }
       ]
     },
-    "/receipts/{bizvent-id}/recover-failed": {
-      "post": {
+    "/receipts/{event-id}": {
+      "get": {
         "tags": [
-          "Receipts REST APIs"
+          "API-getReceipt"
         ],
-        "summary": "Recover failed receipts (single).",
-        "operationId": "recoverFailedSingle",
+        "summary": "Retrieve from CosmosDB the receipt with the given bizEvent id",
+        "operationId": "GetReceipt",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "event-id",
+            "description": "BizEvent id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Succesfull Calls.",
+            "description": "Successful Calls.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -145,21 +128,17 @@
                   "type": "string"
                 }
               }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
+            },
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/Receipt"
                 }
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
+          "400": {
+            "description": "Bad request",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -176,19 +155,8 @@
               }
             }
           },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable.",
+          "404": {
+            "description": "Receipt not found",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -201,6 +169,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -220,28 +199,624 @@
           "schema": {
             "type": "string"
           }
+        }
+      ]
+    },
+    "/receipts/organizations/{organization-fiscal-code}/iuvs/{iuv}": {
+      "get": {
+        "tags": [
+          "API-getReceipt"
+        ],
+        "summary": "Retrieve from CosmosDB the receipt with the given organization fiscal code and IUV",
+        "operationId": "GetReceiptByOrganizationFiscalCodeAndIUV",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organization-fiscal-code",
+            "description": "Fiscal code of the organization relative to the payment in the receipt",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "iuv",
+            "description": "IUV relative to the payment in the receipt",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Receipt not found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
         },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
         {
-          "in": "path",
-          "name": "bizevent-id",
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
           "schema": {
             "type": "string"
+          }
+        }
+      ]
+    },
+    "/pdf-receipts/{file-name}": {
+      "get": {
+        "tags": [
+          "API-getReceiptPdf"
+        ],
+        "summary": "Retrieve from Blob storage the receipt pdf with the given filename",
+        "operationId": "GetReceiptPdf",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "file-name",
+            "description": "PDF filename",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte",
+                  "description": "Receipt's pdf"
+                }
+              }
+            }
           },
-          "required": true,
-          "description": "Biz Event ID to use for recovery"
+          "400": {
+            "description": "Bad request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Receipt's pdf not found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/errors-toreview/{event-id}": {
+      "get": {
+        "tags": [
+          "API-getErrorsToReview"
+        ],
+        "summary": "Retrieve from CosmosDB the receiptError with the given bizEvent id",
+        "operationId": "GetReceiptError",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "event-id",
+            "description": "Biz event id.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Receipt error not found.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Receipt could not be updated with the new attachments",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/receipts-error/{event-id}/reviewed": {
+      "post": {
+        "tags": [
+          "API-toReview"
+        ],
+        "summary": "Recover a receipt, or group of, in TO_REVIEW status",
+        "operationId": "ReceiptToReviewed",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "event-id",
+            "description": "BizEvent id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "ReceiptError with id 76abb1f1-c9f9-4ead-9e66-12fec4d51042 and bizEventId 09iuu1f1-c9f9-4ead-9e66-56yuc4d55671 updated to status REVIEWED with success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "ReceiptError not found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error processing the request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/receipts/{event-id}/recover-failed": {
+      "post": {
+        "tags": [
+          "API-recoverFailed"
+        ],
+        "summary": "Recover a receipt in FAILED, NOT_QUEUE_SENT or INSERTED status",
+        "operationId": "RecoverFailedReceipt",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "event-id",
+            "description": "BizEvent id.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Receipt with eventId 76abb1f1-c9f9-4ead-9e66-12fec4d51042 recovered"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Receipt or BizEvent not found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error processing the request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
         }
       ]
     },
     "/receipts/recover-failed": {
       "post": {
         "tags": [
-          "Receipts REST APIs"
+          "API-recoverFailed"
         ],
-        "summary": "Recover failed receipts (massive).",
-        "operationId": "recoverFailedMassive",
+        "summary": "Recover a group of receipts in FAILED, NOT_QUEUE_SENT or INSERTED status",
+        "operationId": "RecoverFailedReceiptMassive",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
         "responses": {
           "200": {
-            "description": "Succesfull Calls.",
+            "description": "Successful Calls.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -249,21 +824,18 @@
                   "type": "string"
                 }
               }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
+            },
+            "content": {
+              "text/plain": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "Recovered 10 receipts"
                 }
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
+          "400": {
+            "description": "Bad request",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -276,23 +848,12 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
                 }
               }
             }
           },
           "500": {
-            "description": "Service unavailable.",
+            "description": "Error processing the request",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -305,6 +866,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -324,28 +896,36 @@
           "schema": {
             "type": "string"
           }
-        },
-        {
-          "in": "query",
-          "name": "status",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "Status to recover"
         }
       ]
     },
-    "/receipts/{bizvent-id}/recover-not-notified": {
+    "/receipts/{event-id}/recover-not-notified": {
       "post": {
         "tags": [
-          "Receipts REST APIs"
+          "API-recoverNotNotified"
         ],
-        "summary": "Recover not notified receipts (single).",
-        "operationId": "recoverNotifiedSingle",
+        "summary": "Recover a receipt in IO_ERROR_TO_NOTIFY or GENERATED status",
+        "operationId": "RecoverNotNotifiedReceipt",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "event-id",
+            "description": "BizEvent id.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
         "responses": {
           "200": {
-            "description": "Succesfull Calls.",
+            "description": "Successful Calls.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -353,21 +933,18 @@
                   "type": "string"
                 }
               }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
+            },
+            "content": {
+              "text/plain": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "Receipt with id 235392957832338457-0000-0000-0000-0131 and eventId 76abb1f1-c9f9-4ead-9e66-12fec4d51042 restored in status GENERATED with success"
                 }
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
+          "400": {
+            "description": "Bad request",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -384,19 +961,26 @@
               }
             }
           },
-          "429": {
-            "description": "Too many requests.",
+          "404": {
+            "description": "Requested receipt not found.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
           "500": {
-            "description": "Service unavailable.",
+            "description": "The requested receipts is not in a status that can be elaborated.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -409,6 +993,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -428,28 +1023,35 @@
           "schema": {
             "type": "string"
           }
-        },
-        {
-          "in": "path",
-          "name": "bizevent-id",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "Biz Event ID to use for recovery"
         }
       ]
     },
     "/receipts/recover-not-notified": {
       "post": {
         "tags": [
-          "Receipts REST APIs"
+          "API-recoverNotNotified"
         ],
-        "summary": "Recover not notified receipts (single).",
-        "operationId": "recoverNotifiedSingle",
+        "summary": "Recover a group of receipt in IO_ERROR_TO_NOTIFY or GENERATED status",
+        "operationId": "RecoverNotNotifiedReceiptMassive",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
         "responses": {
           "200": {
-            "description": "Succesfull Calls.",
+            "description": "Successful Calls.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -457,21 +1059,18 @@
                   "type": "string"
                 }
               }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
+            },
+            "content": {
+              "text/plain": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "Restored 10 receipt with success"
                 }
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
+          "400": {
+            "description": "Bad request",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -484,23 +1083,12 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
                 }
               }
             }
           },
           "500": {
-            "description": "Service unavailable.",
+            "description": "The requested receipts is not in a status that can be elaborated.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -513,6 +1101,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -532,50 +1131,36 @@
           "schema": {
             "type": "string"
           }
-        },
-        {
-          "in": "query",
-          "name": "status",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "Status to recover"
         }
       ]
     },
-    "/receipts-error/{bizvent-id}/reviewed": {
+    "/receipts/{event-id}/regenerate-receipt-pdf": {
       "post": {
         "tags": [
-          "Receipts REST APIs"
+          "API-regenerateReceiptPdf"
         ],
-        "summary": "Put receipt error on review",
-        "operationId": "reviewError",
+        "summary": "Regenerate and update pdf attachment of the receipt with the given bizEvent id",
+        "operationId": "RegenerateReceiptPdf",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "event-id",
+            "description": "BizEvent id.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
         "responses": {
           "200": {
-            "description": "Succesfull Calls.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unable to process the request.",
+            "description": "Successful Calls.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -585,26 +1170,16 @@
               }
             },
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "example": "OK"
                 }
               }
             }
           },
           "500": {
-            "description": "Service unavailable.",
+            "description": "Receipt could not be updated with the new attachments",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -617,6 +1192,17 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -636,443 +1222,9 @@
           "schema": {
             "type": "string"
           }
-        },
-        {
-          "in": "path",
-          "name": "bizevent-id",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "Biz Event ID to use for recovery"
         }
       ]
-    },
-    "/receipts/{bizvent-id}/regenerate-receipt-pdf": {
-      "post": {
-        "tags": [
-          "Receipts REST APIs"
-        ],
-        "summary": "Regenerate Receipt PDF",
-        "operationId": "regeneratePDF",
-        "responses": {
-          "200": {
-            "description": "Succesfull Calls.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "in": "path",
-          "name": "bizevent-id",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "Biz Event ID to use for recovery"
-        }
-      ]
-    },
-    "/errors-toreview/{bizvent-id}": {
-      "get": {
-        "tags": [
-          "Receipts REST APIs"
-        ],
-        "summary": "Get Error to Review",
-        "operationId": "errorToReview",
-        "responses": {
-          "200": {
-            "description": "Succesfull Calls.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "in": "path",
-          "name": "bizevent-id",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "Biz Event ID to use for recovery"
-        }
-      ]
-    },
-    "/receipts/{bizvent-id}": {
-      "get": {
-        "tags": [
-          "Receipts REST APIs"
-        ],
-        "summary": "Get Receipt From Event Id",
-        "operationId": "getReceipt",
-        "responses": {
-          "200": {
-            "description": "Succesfull Calls.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "in": "path",
-          "name": "bizevent-id",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "Biz Event ID to use for recovery"
-        }
-      ]
-    },
-    "/receipts/organizations/{organizationfiscalcode}/iuvs/{iuv}": {
-      "get": {
-        "tags": [
-          "Receipts REST APIs"
-        ],
-        "summary": "Get Receipt From Org. Fiscal Code and IUV",
-        "operationId": "getReceiptFromOrgIuv",
-        "responses": {
-          "200": {
-            "description": "Succesfull Calls.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "in": "path",
-          "name": "iuv",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "IUV to use for receipt recovery"
-        },
-        {
-          "in": "path",
-          "name": "organizationfiscalcode",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "OrganizationFiscalCode to use for receipt recovery"
-        },
-      ]
-    },
+    }
   },
   "components": {
     "schemas": {
@@ -1093,35 +1245,199 @@
           }
         }
       },
-      "ProblemJson": {
+      "Receipt": {
         "type": "object",
         "properties": {
-          "type": {
+          "eventId": {
             "type": "string",
-            "format": "uri",
-            "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
-            "default": "about:blank",
-            "example": "https://example.com/problem/constraint-violation"
+            "example": "712341f1-124419-4ead-9e66-12124fdsf"
           },
-          "title": {
+          "id": {
             "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+            "example": "76abb1f1-c9f9-4ead-9e66-12fec4d51042"
+          },
+          "version": {
+            "type": "string",
+            "example": "2.0"
+          },
+          "eventData": {
+            "type": "object",
+            "properties": {
+              "payerFiscalCode": {
+                "type": "string",
+                "example": "XXXVVV00Q00Z000A"
+              },
+              "debtorFiscalCode": {
+                "type": "string",
+                "example": "XXXVVV00Q00Z000A"
+              },
+              "transactionCreationDate": {
+                "type": "string",
+                "example": "01/01/1970"
+              },
+              "amount": {
+                "type": "string",
+                "example": "2000"
+              },
+              "cart": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CartItem"
+                }
+              }
+            }
+          },
+          "ioMessageData": {
+            "type": "object",
+            "properties": {
+              "idMessageDebtor": {
+                "type": "string",
+                "example": "82397589u2c8h3rc234ndd324uf"
+              },
+              "idMessagePayer": {
+                "type": "string",
+                "example": "82397589u2c8h3rc234ndd324uf"
+              }
+            }
           },
           "status": {
-            "$ref": "#/components/schemas/HttpStatusCode"
-          },
-          "detail": {
             "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the\nproblem.",
-            "example": "There was an error processing the request"
+            "example": "INSERTED"
           },
-          "instance": {
-            "type": "string",
-            "format": "uri",
-            "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
+          "mdAttach": {
+            "$ref": "#/components/schemas/ReceiptMetadata"
+          },
+          "mdAttachPayer": {
+            "type": "object",
+            "$ref": "#/components/schemas/ReceiptMetadata"
+          },
+          "numRetry": {
+            "type": "integer",
+            "description": "The number of times the receipt tried to generate and failed",
+            "format": "int32",
+            "example": 1
+          },
+          "reasonErr": {
+            "$ref": "#/components/schemas/ReasonErr"
+          },
+          "reasonErrPayer": {
+            "$ref": "#/components/schemas/ReasonErr"
+          },
+          "notificationNumRetry": {
+            "type": "integer",
+            "description": "The number of times the receipt tried to be notified and failed",
+            "format": "int32",
+            "example": 1
+          },
+          "inserted_at": {
+            "type": "integer",
+            "description": "Timestamp when the receipt was set to status INSERTED",
+            "format": "int64",
+            "example": 1701766842
+          },
+          "generated_at": {
+            "type": "integer",
+            "description": "Timestamp when the receipt was set to status GENERATED",
+            "format": "int64",
+            "example": 1701766842
+          },
+          "notified_at": {
+            "type": "integer",
+            "description": "Timestamp when the receipt was set to status NOTIFIED",
+            "format": "int64",
+            "example": 1701766842
           }
         }
       },
+      "CartItem": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string",
+            "example": "Payment object"
+          },
+          "payeeName": {
+            "type": "string",
+            "example": "Payee name"
+          }
+        }
+      },
+      "ReceiptMetadata": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "pagopa-receipt.pdf"
+          },
+          "url": {
+            "type": "string",
+            "example": "pagopa-receipt.pdf"
+          }
+        }
+      },
+      "ReasonErr": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code",
+            "format": "int32",
+            "example": 400
+          },
+          "message": {
+            "type": "string",
+            "example": "Error message"
+          }
+        }
+      },
+      "ReceiptError": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "712341f1-124419-4ead-9e66-12124fdsf"
+          },
+          "bizEventId": {
+            "type": "string",
+            "example": "76abb1f1-c9f9-4ead-9e66-12fec4d51042"
+          },
+          "messagePayload": {
+            "type": "string",
+            "example": "TWVzc2FnZSBwYXlsb2FkIGJhc2UgNjQ="
+          },
+          "messageError": {
+            "type": "string",
+            "example": "Message error description"
+          },
+          "status": {
+            "type": "string",
+            "example": "TO_REVIEW"
+          }
+        }
+      },
+      "ProblemJson": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized)",
+            "example": "Bad Request"
+          },
+          "status": {
+            "maximum": 600,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 400
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem.",
+            "example": "The request is invalid"
+          }
+        }
+      }
     },
     "securitySchemes": {
       "ApiKey": {
