@@ -179,6 +179,8 @@ nodo_pagamenti_url     = "https://10.70.74.200/nodo-uat/webservices/input"
 ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/input shall use lb_aks
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
+schema_ip_nexi         = "http://10.70.74.200"
+
 base_path_nodo_oncloud        = "/nodo-uat"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-uat-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-uat/syncWisp"

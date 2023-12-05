@@ -265,6 +265,7 @@ resource "azurerm_api_management_named_value" "ecblacklist_value" {
   value               = var.nodo_pagamenti_ec
 }
 
+# don't use it in policy -> schema_ip_nexi
 resource "azurerm_api_management_named_value" "urlnodo_value" {
   name                = "urlnodo"
   api_management_name = module.apim.name
@@ -273,6 +274,7 @@ resource "azurerm_api_management_named_value" "urlnodo_value" {
   value               = var.nodo_pagamenti_url
 }
 
+# don't use it in policy -> schema_ip_nexi
 resource "azurerm_api_management_named_value" "ip_nodo_value" { # TEMP used only for onPrem shall be replace with "aks_lb_nexi"
   name                = "ip-nodo"
   api_management_name = module.apim.name
@@ -281,6 +283,7 @@ resource "azurerm_api_management_named_value" "ip_nodo_value" { # TEMP used only
   value               = var.ip_nodo
 }
 
+# don't use it in policy -> schema_ip_nexi
 resource "azurerm_api_management_named_value" "aks_lb_nexi" {
   name                = "aks-lb-nexi"
   api_management_name = module.apim.name
@@ -298,7 +301,7 @@ resource "azurerm_api_management_named_value" "base_path_nodo_oncloud" {
 }
 
 # 7. schema://IP Nexi
-# it replaces http://{{aks-lb-nexi}}
+# it replaces http://{{aks-lb-nexi}}, https://{{ip-nodo}}
 resource "azurerm_api_management_named_value" "schema_ip_nexi" {
   name                = "schema-ip-nexi"
   api_management_name = module.apim.name
@@ -322,7 +325,8 @@ resource "azurerm_api_management_named_value" "default_nodo_backend" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "default-nodo-backend"
-  value               = var.env_short == "p" ? "https://${azurerm_api_management_named_value.ip_nodo_value.value}" : "${azurerm_api_management_named_value.schema_ip_nexi.value}${azurerm_api_management_named_value.base_path_nodo_oncloud}"
+  # in PROD Nodo have not the context-path
+  value               = var.env_short == "p" ? azurerm_api_management_named_value.schema_ip_nexi.value : "${azurerm_api_management_named_value.schema_ip_nexi.value}${azurerm_api_management_named_value.base_path_nodo_oncloud}"
 }
 
 resource "azurerm_api_management_named_value" "default_nodo_backend_prf" {
@@ -339,7 +343,7 @@ resource "azurerm_api_management_named_value" "default_nodo_backend_dev_nexi" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "default-nodo-backend-dev-nexi"
-  value               = var.env_short == "d" ? "http://${azurerm_api_management_named_value.aks_lb_nexi.value}/nodo-dev" : ""
+  value               = var.env_short == "d" ? "${azurerm_api_management_named_value.schema_ip_nexi.value}/nodo-dev" : ""
   # /webservices/input is set in API policy
 }
 

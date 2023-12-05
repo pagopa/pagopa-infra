@@ -192,6 +192,8 @@ nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
 ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
+schema_ip_nexi         = "https://10.79.20.34"
+
 base_path_nodo_oncloud        = "/nodo-prd"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
