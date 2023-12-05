@@ -362,14 +362,14 @@ locals {
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15
-      "threshold"   = 0
+      "threshold"   = 15
     },
     {
       "queue_key"   = "transactions-dead-letter-queue"
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15
-      "threshold"   = 0
+      "threshold"   = 15
     },
   ] : []
 }
@@ -414,7 +414,7 @@ locals {
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
-      "threshold"            = 100
+      "threshold"            = 1000
     },
     {
       "storage_account_id"   = "${module.ecommerce_storage_deadletter.id}"
@@ -422,7 +422,7 @@ locals {
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
-      "threshold"            = 10
+      "threshold"            = 200
     },
   ] : []
 }

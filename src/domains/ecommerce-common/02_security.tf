@@ -435,7 +435,7 @@ resource "azurerm_key_vault_secret" "ecommerce_storage_dead_letter_account_key" 
   value        = module.ecommerce_storage_deadletter.primary_access_key
   key_vault_id = module.key_vault.id
 }
-    
+
 resource "azurerm_key_vault_secret" "wallet-api-key" {
   name         = "wallet-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
