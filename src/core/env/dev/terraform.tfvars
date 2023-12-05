@@ -135,7 +135,7 @@ apim_nodo_auth_decoupler_enable = true
 
 apim_enable_nm3_decoupler_switch      = false
 apim_enable_routing_decoupler_switch  = false
-default_node_id = "NDP001DEV"
+default_node_id = "NDP002SIT"
 
 apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
