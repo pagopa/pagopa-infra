@@ -181,3 +181,11 @@ sh terraform.sh apply uat \
 -target=module.apim_nodo_web_bo_dev_api_history
 
 
+
+# NODO PER PM
+sh terraform.sh apply uat \
+-target=azurerm_api_management_api_version_set.nodo_per_pm_api \
+-target=module.apim_nodo_per_pm_api_v1 \
+-target=azurerm_api_management_api_operation_policy.close_payment_api_v1 \
+-target=azurerm_api_management_api_operation_policy.parked_list_api_v1 \
+-target=module.apim_nodo_per_pm_api_v2

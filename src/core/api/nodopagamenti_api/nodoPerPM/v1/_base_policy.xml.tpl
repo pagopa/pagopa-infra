@@ -3,12 +3,12 @@
         <base />
 
         <!-- REST API, backend-url set in product API -->
+        <trace source="BASE_URL_POLICY_API" severity="information">@((string) context.Variables["baseUrl"])</trace>
+
 
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
-                <set-backend-service base-url="@{
-                    return context.Variables.GetValueOrDefault<string>("default-nodo-backend-prf", "");
-                  }" />
+                <set-backend-service base-url="{{default-nodo-backend-prf}}" />
             </when>
         </choose>
     </inbound>
