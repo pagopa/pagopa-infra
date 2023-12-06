@@ -131,11 +131,11 @@
                     JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
                     JObject requestBodyDetails = new JObject(
                         new JProperty("detailType", "wallet"),
-                        new JProperty("walletId", ((JObject) context.Variables["requestBody"])["walletId"])
+                        new JProperty("walletId", requestBody["walletId"])
                     );
-                    requestBody.Remove("walletId");
                     requestBody["details"] = requestBodyDetails;
-                    return requestBody.ToString(); 
+                    requestBody.Remove("walletId");
+                    return requestBody.ToString();  
                 }</set-body>
             </otherwise>
         </choose>    
