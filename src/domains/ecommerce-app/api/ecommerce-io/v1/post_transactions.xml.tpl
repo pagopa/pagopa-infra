@@ -69,7 +69,7 @@
             <set-body>@{ 
                 string milliseconds = DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
                 JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
-                requestBody["orderId"] = "E" + Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 17-milliseconds.Lenght()) + milliseconds;
+                requestBody["orderId"] = "E" + Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 17-milliseconds.Length) + milliseconds;
                 return requestBody.ToString();  
             }</set-body>
           </otherwise>
