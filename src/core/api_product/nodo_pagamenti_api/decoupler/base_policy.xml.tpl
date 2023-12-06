@@ -106,8 +106,8 @@
             string[] primitives = ((string) context.Variables["primitives"]).Split(',');
 
             string verifyPaymentNotice = "verifyPaymentNotice";
-            string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment"};
-            string sendPaymentOutcome = "sendPaymentOutcome";
+            string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
+            string[] sendPaymentOutcome = new string[] {"sendPaymentOutcome", "sendPaymentOutcomeV2"};
 
             bool analyzeRequest = false;
 
@@ -115,7 +115,7 @@
             if (primitives.Contains(soapAction)) {
                 return "ROUTING";
             }
-            else if (activatePayment.Contains(soapAction) || soapAction.Equals(verifyPaymentNotice) || soapAction.Equals(sendPaymentOutcome)) {
+            else if (activatePayment.Contains(soapAction) || soapAction.Equals(verifyPaymentNotice) || sendPaymentOutcome.Contains(soapAction)) {
                 return "NM3";
             }
             return "NOTSET";

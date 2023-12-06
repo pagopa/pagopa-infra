@@ -51,7 +51,11 @@
     }" />
   <!-- read request info -->
 <choose>
-<when condition="@(((string)context.Variables["soapAction"]).Equals("sendPaymentOutcome"))">
+<!--<when condition="@(((string)context.Variables["soapAction"]).Equals("sendPaymentOutcome"))">-->
+<when condition="@{
+  string[] sendPaymentOutcome = new string[] {"sendPaymentOutcome", "sendPaymentOutcomeV2"};
+  return sendPaymentOutcome.Contains((string)context.Variables["soapAction"]);
+}">
 <set-variable name="requestData" value="@{
                             // retrieve data from request body
                             XElement request = context.Request.Body.As<XElement>(preserveContent: true);

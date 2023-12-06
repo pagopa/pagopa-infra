@@ -61,11 +61,11 @@ sh terraform.sh apply uat \
 sh terraform.sh apply uat \
 -target=null_resource.decoupler_configuration_from_json_2_xml
 
-sh terraform.sh apply uat \
+sh terraform.sh apply dev \
 -target=azapi_resource.decoupler_algorithm \
+-target=azapi_resource.decoupler_activate_outbound \
 -target=azapi_resource.decoupler_configuration \
 -target=azurerm_api_management_named_value.node_decoupler_primitives \
--target=azapi_resource.decoupler_activate_outbound \
 -target=azapi_resource.on_erro_soap_handler
 
 sh terraform.sh apply uat \
