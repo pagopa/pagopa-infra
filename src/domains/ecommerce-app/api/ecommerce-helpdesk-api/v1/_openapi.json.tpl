@@ -56,6 +56,7 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
+              "maximum": 20,
               "default": 10
             },
             "required": true,
@@ -134,6 +135,7 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
+              "maximum": 20,
               "default": 10
             },
             "required": true,
@@ -212,6 +214,7 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
+              "maximum": 20,
               "default": 10
             },
             "required": true,
@@ -290,6 +293,7 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
+              "maximum": 20,
               "default": 10
             },
             "required": true,
@@ -619,6 +623,14 @@
           },
           "brand": {
             "type": "string"
+          },
+          "authorizationRequestId": {
+            "type": "string",
+            "description": "Authorization request id"
+          },
+          "paymentGateway": {
+            "type": "string",
+            "description": "Payment gateway used to perform transaction"
           }
         },
         "example": {
@@ -632,7 +644,9 @@
           "rrn": "rrn",
           "authorizationCode": "auth code",
           "paymentMethodName": "payment method name",
-          "brand": "brand"
+          "brand": "brand",
+          "authorizationRequestId": "authorizationRequestId",
+          "paymentGateway": "VPOS"
         }
       },
       "PaymentInfo": {
