@@ -4,8 +4,8 @@
 
         <!-- REST API -->
         <set-backend-service base-url="@{
-            return context.Variables.GetValueOrDefault<string>("default-nodo-backend-dev-nexi", "");
-          }" />
+                    return context.Variables.GetValueOrDefault<string>("default-nodo-backend-dev-nexi", "");
+                  }" />
 
     </inbound>
     <backend>
