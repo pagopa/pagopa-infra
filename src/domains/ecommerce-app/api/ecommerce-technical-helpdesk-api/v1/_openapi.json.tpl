@@ -40,6 +40,7 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
+              "maximum": 20,
               "default": 10
             },
             "required": true,
