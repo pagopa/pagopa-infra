@@ -393,7 +393,7 @@ module "apim_pagopa_ecommerce_helpdesk_service_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "helpdesk_pgs_xpay" {
-  api_name            = "${local.project}-helpdesk-service-api"
+  api_name            = "${local.project}-helpdesk-service-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "pgsGetXpayAuthorization"
@@ -402,12 +402,12 @@ resource "azurerm_api_management_api_operation_policy" "helpdesk_pgs_xpay" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "helpdesk_pgs_vpos" {
-  api_name            = "${local.project}-helpdesk-service-api"
+  api_name            = "${local.project}-helpdesk-service-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "pgsGetVposAuthorization"
 
-  xml_content = file("/api/ecommerce-helpdesk-api/v1/_pgs_search.xml.tpl")
+  xml_content = file("./api/ecommerce-helpdesk-api/v1/_pgs_search.xml.tpl")
 }
 
 ##############################
