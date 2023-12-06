@@ -1,13 +1,10 @@
 <policies>
     <inbound>
         <base />
-        <set-header name="X-Client-Id" exists-action="override">
-          <value>CLIENT_IO</value>
-        </set-header>
+        <set-header name="X-Client-Id" exists-action="delete" />
         <choose>
           <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
             <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
-
             <rewrite-uri template="/payment-activations" />
             <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
             <set-variable name="rptId" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["rptId"].ToObject<string>())" />
@@ -63,14 +60,22 @@
                 return pagopaProxyBody.ToString();
               }
             </set-body>
+            <set-header name="X-Client-Id" exists-action="override">
+              <value>CLIENT_IO</value>
+            </set-header>
           </when>
           <otherwise>
             <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
+            <!-- Maybe here add a backend call to the get user to get user email -->
             <set-body>@{ 
                 JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
                 requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
+                requestBody["email"] = "gianluca.ciuffa@pagopa.it"; //Check how to retrieve and if this email has to be passed from frontend or not
                 return requestBody.ToString();  
             }</set-body>
+            <set-header name="X-Client-Id" exists-action="override">
+              <value>IO</value>
+            </set-header>
           </otherwise>
         </choose>
     </inbound>
