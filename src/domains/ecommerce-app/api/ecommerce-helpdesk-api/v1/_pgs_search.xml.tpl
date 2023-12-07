@@ -1,7 +1,5 @@
 <policies>
     <inbound>
-        <base />
-        <set-variable name="backend-base-url" value="@($"{{pm-host}}/payment-gateway")" />
         <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
         <choose>
             <when condition="@(context.Request.Url.Path.Contains("xpay"))">
@@ -11,6 +9,7 @@
                 <rewrite-uri template="@(((string)context.Variables["requestPath"]).Replace("pgs/vpos","vpos"))" />
             </when>
         </choose>
+        <set-backend-service base-url="@($"{{pm-host}}/payment-gateway")" />
     </inbound>
     <outbound>
         <base/>
