@@ -204,6 +204,11 @@
         "summary": "Get a session wallet",
         "description": "This endpoint returns an object containing data related to wallet session identified by orderId and walletId.",
         "operationId": "getSessionWallet",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "walletId",

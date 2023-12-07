@@ -12,10 +12,10 @@
   ],
   "tags": [
     {
-      "name": "Technical helpDesk",
-      "description": "Api's for performing transaction search on pm or ecommerce DB",
+      "name": "helpDesk",
+      "description": "Api's for performing transaction search on both PM and ecommerce DB",
       "externalDocs": {
-        "url": "TODO",
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
         "description": "Technical specifications"
       }
     }
@@ -40,6 +40,7 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
+              "maximum": 20,
               "default": 10
             },
             "required": true,
@@ -347,7 +348,7 @@
             "type": "string"
           },
           "eventStatus": {
-            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/transactions-api.yaml#/components/schemas/TransactionStatus"
+            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/v1/transactions-api.yaml#/components/schemas/TransactionStatus"
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
@@ -369,6 +370,14 @@
           },
           "brand": {
             "type": "string"
+          },
+          "authorizationRequestId": {
+            "type": "string",
+            "description": "Authorization request id"
+          },
+          "paymentGateway": {
+            "type": "string",
+            "description": "Payment gateway used to perform transaction"
           }
         },
         "example": {
@@ -382,7 +391,9 @@
           "rrn": "rrn",
           "authorizationCode": "auth code",
           "paymentMethodName": "payment method name",
-          "brand": "brand"
+          "brand": "brand",
+          "authorizationRequestId": "authorizationRequestId",
+          "paymentGateway": "VPOS"
         }
       },
       "PaymentInfo": {
