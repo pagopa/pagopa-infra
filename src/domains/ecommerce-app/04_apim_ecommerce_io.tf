@@ -191,7 +191,8 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   operation_id        = "requestTransactionAuthorization"
 
   xml_content = templatefile("./api/ecommerce-io/v1/_auth_request.xml.tpl", {
-    authurl-basepath = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
+    authurl-basepath             = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
   })
 }
 
@@ -214,7 +215,14 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl", { ecommerce-basepath = local.ecommerce_hostname })
+  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl",
+    {
+      ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+      ecommerce-basepath           = local.ecommerce_hostname
+      wallet-basepath              = local.wallet_hostname
+    }
+  )
+
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" {
