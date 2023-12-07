@@ -8,7 +8,7 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
-    DOCKER_REGISTRY_SERVER_URL = "https://ghcr.io"
+    DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
     IMAGE_NAME                 = "pagopa/pagopa-platform-authorizer"
 
     COSMOS_CONN_STRING                    = data.azurerm_key_vault_secret.authorizer_cosmos_connection_string.value
