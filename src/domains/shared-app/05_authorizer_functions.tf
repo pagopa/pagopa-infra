@@ -50,7 +50,7 @@ data "azurerm_resource_group" "shared_rg" {
 }
 
 module "authorizer_function_app" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.6.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.29.0"
 
   resource_group_name                      = data.azurerm_resource_group.shared_rg.name
   name                                     = "${local.project}-authorizer-fn"
@@ -85,7 +85,7 @@ module "authorizer_function_app" {
   app_service_plan_info = {
     kind                         = var.authorizer_functions_app_sku.kind
     sku_size                     = var.authorizer_functions_app_sku.sku_size
-    maximum_elastic_worker_count = 1
+    maximum_elastic_worker_count = 0
     worker_count                 = 1
     zone_balancing_enabled       = false
   }
