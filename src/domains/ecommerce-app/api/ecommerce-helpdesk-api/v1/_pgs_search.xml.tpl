@@ -19,7 +19,7 @@
             <set-variable name="responseBody" value="@(context.Response.Body.As<JObject>())" />
             <set-body>@{
                 return new JObject(
-                    new JProperty("status", (string) ((JObject) context.Variables["responseBody"])["status"]),
+                    new JProperty("status", (string) ((JObject) context.Variables["responseBody"])["status"])
                 ).ToString();
             }</set-body>
           </when>
