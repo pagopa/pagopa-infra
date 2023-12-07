@@ -70,7 +70,7 @@
             <set-body>@{ 
                 JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
                 requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
-                requestBody["email"] = "gianluca.ciuffa@pagopa.it"; //Check how to retrieve and if this email has to be passed from frontend or not
+                requestBody["email"] = "emailemail@test.it"; //Check how to retrieve and if this email has to be passed from frontend or not
                 return requestBody.ToString();  
             }</set-body>
             <set-header name="X-Client-Id" exists-action="override">
