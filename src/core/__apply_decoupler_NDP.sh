@@ -1,7 +1,7 @@
 # DISMISSIONE LMI
 # DEV DONE
 # UAT DONE
-# PROD
+# PROD NESSUNA MODIFICA
 sh terraform.sh apply prod \
 -target=module.apim_nodo_ppt_lmi_product \
 -target=azurerm_api_management_api_version_set.nodo_ppt_lmi_api \
@@ -14,8 +14,8 @@ sh terraform.sh apply prod \
 # DISMISSIONE PSP-FOR-NODE
 # DEV DONE
 # UAT DONE
-# PROD
-sh terraform.sh apply uat \
+# PROD DONE
+sh terraform.sh apply prod \
 -target=azurerm_api_management_api_version_set.psp_for_node_api \
 -target=azurerm_api_management_api.apim_psp_for_node_api_v1 \
 -target=azurerm_api_management_api_policy.apim_psp_for_node_policy \
@@ -30,8 +30,8 @@ sh terraform.sh apply uat \
 # DISMISSIONE ALL-IN-ONE
 # DEV DONE
 # UAT DONE
-# PROD
-sh terraform.sh apply uat \
+# PROD DONE
+sh terraform.sh apply prod \
 -target=module.apim_nodo_oncloud_product \
 -target=module.apim_nodo_oncloud_api \
 -target=module.apim_nodo_oncloud_dev_product \
@@ -46,9 +46,9 @@ sh terraform.sh apply uat \
 # DEV DONE
 # UAT DONE
 # PROD
-sh terraform.sh apply uat \
+sh terraform.sh apply prod \
 -target=azurerm_api_management_named_value.schema_ip_nexi \
--target=azurerm_api_management_named_value.schema_ip_nodo_postgresql_pagopa \
+-target=azurerm_api_management_named_value.schema_ip_nodo_pagopa \
 -target=azurerm_api_management_named_value.default_nodo_backend \
 -target=azurerm_api_management_named_value.default_nodo_backend_prf \
 -target=azurerm_api_management_named_value.default_nodo_backend_dev_nexi \
@@ -58,7 +58,7 @@ sh terraform.sh apply uat \
 
 ##############
 # DECOUPLER
-sh terraform.sh apply uat \
+sh terraform.sh apply prod \
 -target=null_resource.decoupler_configuration_from_json_2_xml
 
 sh terraform.sh apply dev \
