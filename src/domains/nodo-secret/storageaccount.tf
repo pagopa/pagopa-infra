@@ -16,7 +16,7 @@ module "nodocerts_sa" {
 
 
   blob_change_feed_enabled             = var.nodo_cert_storage_account.backup_enabled
-  blob_change_feed_retention_in_days   = var.nodo_cert_storage_account.backup_enabled ? var.nodo_cert_storage_account.backup_retention : null
+  blob_change_feed_retention_in_days   = var.nodo_cert_storage_account.backup_enabled ? var.nodo_cert_storage_account.backup_retention + 1 : null
   blob_container_delete_retention_days = var.nodo_cert_storage_account.backup_retention
   blob_storage_policy = {
     enable_immutability_policy = false
