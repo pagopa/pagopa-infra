@@ -196,14 +196,14 @@
         }
       }
     },
-    "/wallets/{walletId}/outcomes": {
+    "/wallets/{walletId}/sessions/{orderId}": {
       "get": {
         "tags": [
           "payment-wallet-webview"
         ],
-        "summary": "Get wallet onboarding result",
-        "description": "Get wallet onboarding result and walletId as query params to return ii to the app IO, for example \n/wallets/{walletId}/outcomes?outcome=0&walletId=123. The possible outcome are:\n- SUCCESS(0)\n- GENERIC_ERROR(1)\n- AUTH_ERROR(2)\n- TIMEOUT(4)\n- CANCELED_BY_USER(8)\n- INVALID_SESSION(14)",
-        "operationId": "getWalletOutcomesById",
+        "summary": "Get a session wallet",
+        "description": "This endpoint returns an object containing data related to wallet session identified by orderId and walletId.",
+        "operationId": "getSessionWallet",
         "security": [
           {
             "bearerAuth": []
@@ -213,19 +213,35 @@
           {
             "name": "walletId",
             "in": "path",
-            "description": "ID of wallet",
+            "description": "ID of wallet to return",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/WalletId"
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "ID of npg order",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrderId"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Form fields retrieved successfully"
+            "description": "Session Wallet created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionWalletRetrieveResponse"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid input id",
+            "description": "Formally invalid input",
             "content": {
               "application/json": {
                 "schema": {
@@ -255,7 +271,24 @@
             }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal server error serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "504": {
             "description": "Timeout serving request"
@@ -359,6 +392,37 @@
         "required": [
           "orderId",
           "cardFormFields"
+        ]
+      },
+      "SessionWalletRetrieveResponse": {
+        "type": "object",
+        "description": "Data related to session wallet",
+        "properties": {
+          "orderId": {
+            "type": "string"
+          },
+          "walletId": {
+            "type": "string"
+          },
+          "isFinalOutcome": {
+            "type": "boolean"
+          },
+          "outcome": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              4,
+              8,
+              14
+            ]
+          }
+        },
+        "required": [
+          "orderId",
+          "walletId",
+          "isFinalOutcome"
         ]
       },
       "Field": {
