@@ -285,7 +285,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -362,14 +362,14 @@ locals {
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15
-      "threshold"   = 0
+      "threshold"   = 15
     },
     {
       "queue_key"   = "transactions-dead-letter-queue"
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15
-      "threshold"   = 0
+      "threshold"   = 15
     },
   ] : []
 }
@@ -382,7 +382,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -414,7 +414,7 @@ locals {
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
-      "threshold"            = 100
+      "threshold"            = 1000
     },
     {
       "storage_account_id"   = "${module.ecommerce_storage_deadletter.id}"
@@ -422,13 +422,25 @@ locals {
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
-      "threshold"            = 10
+      "threshold"            = 200
     },
   ] : []
 }
 
 resource "azurerm_monitor_metric_alert" "queue_storage_account_average_messge_count" {
   for_each = { for q in local.storage_accounts_queue_message_count_alert_props : q.storage_account_id => q }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
+  }
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${each.value.storage_account_name}] Queue message count average exceeds ${each.value.threshold}"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name

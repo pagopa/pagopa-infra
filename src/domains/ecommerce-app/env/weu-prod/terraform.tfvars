@@ -79,12 +79,6 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "pagopaecommercetransactionsservice"
     }
   },
-  "pagopaecommercetxschedulerservice" = {
-    minAvailable = 1
-    matchLabels = {
-      "app.kubernetes.io/instance" = "pagopaecommercetransactionsschedulerservice"
-    }
-  },
   "pagopanotificationsservice" = {
     minAvailable = 1
     matchLabels = {
