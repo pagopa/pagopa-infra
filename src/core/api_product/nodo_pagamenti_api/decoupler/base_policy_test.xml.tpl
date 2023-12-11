@@ -88,8 +88,8 @@
 
 
     <!-- read decoupler configuration json -->
-    <include-fragment fragment-id="decoupler-configuration" />
-    <!-- the following is the default baseUrl and baseNodeId -->
+    <include-fragment fragment-id="decoupler-configuration-test" />
+    <!-- the following is the default baseUrl -->
     <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
     <set-variable name="baseNodeId" value="{{default-nodo-id}}" />
     <!-- used for convention in the cache key -->
@@ -106,8 +106,8 @@
             string[] primitives = ((string) context.Variables["primitives"]).Split(',');
 
             string verifyPaymentNotice = "verifyPaymentNotice";
-            string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
-            string[] sendPaymentOutcome = new string[] {"sendPaymentOutcome", "sendPaymentOutcomeV2"};
+            string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment"};
+            string sendPaymentOutcome = "sendPaymentOutcome";
 
             bool analyzeRequest = false;
 
@@ -115,13 +115,13 @@
             if (primitives.Contains(soapAction)) {
                 return "ROUTING";
             }
-            else if (activatePayment.Contains(soapAction) || soapAction.Equals(verifyPaymentNotice) || sendPaymentOutcome.Contains(soapAction)) {
+            else if (activatePayment.Contains(soapAction) || soapAction.Equals(verifyPaymentNotice) || soapAction.Equals(sendPaymentOutcome)) {
                 return "NM3";
             }
             return "NOTSET";
         }" />
     <!-- apply algorithm logic -->
-    <include-fragment fragment-id="decoupler-algorithm" />
+    <include-fragment fragment-id="decoupler-algorithm-test" />
     <trace source="base-url" severity="information">@((string)context.Variables["baseUrl"])</trace>
 
     <!-- set backend service url -->

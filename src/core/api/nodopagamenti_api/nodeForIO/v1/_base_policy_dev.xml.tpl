@@ -1,11 +1,9 @@
 <policies>
     <inbound>
         <base />
-        <choose>
-            <when condition="@(${is-fdr-nodo-pagopa-enable})">
-                <set-backend-service base-url="${base-url}" />
-            </when>
-        </choose>  
+
+        <set-backend-service base-url="{{default-nodo-backend-dev-nexi}}/webservices/input" />
+
     </inbound>
     <backend>
         <base />

@@ -8,7 +8,7 @@
   <trace source="activate-outbound" severity="information">outbound</trace>
   <choose>
     <when condition="@{
-            string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment"};
+            string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
             var soapAction = (string)context.Variables["soapAction"];
             return activatePayment.Contains(soapAction);
         }">
@@ -34,8 +34,5 @@
         </when>
       </choose>
     </when>
-    <otherwise>
-      <trace source="activate-otherwise" severity="information">otherwise</trace>
-    </otherwise>
   </choose>
 </fragment>

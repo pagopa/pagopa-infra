@@ -135,7 +135,7 @@
                     <when condition="@{
                     var eclist = ((string) context.Variables["ecs"]).Split(',');
                     var idEC = (string) context.Variables["fiscalCode"];
-                    var isFiscalCodeNotInBlackList = !Array.Exists(eclist, e => e == idEC); 
+                    var isFiscalCodeNotInBlackList = !Array.Exists(eclist, e => e == idEC);
                     //      se non è in blacklist e NON è nella dynamic => call apiconfig
                     return  ( isFiscalCodeNotInBlackList && !context.Variables.ContainsKey("dynamicGoodEc") )  ;
                     }">
@@ -165,7 +165,7 @@
                                         if (stationVers != "2" ) {
                                             isAllv2 = false;
                                             break;
-                                        } 
+                                        }
                                     }
                                     return isAllv2;
                                 }" />
@@ -204,7 +204,7 @@
                 if (context.Variables.ContainsKey("dynamicGoodEc") && (Convert.ToBoolean(context.Variables["dynamicGoodEc"]))) {
                     eclist = eclist.Append((string) context.Variables["fiscalCode"]).ToArray();;
                 }
-                
+
 
                 var idEC = (string) context.Variables["fiscalCode"];
 
@@ -216,7 +216,6 @@
             }">
                         <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
-                            <!-- <set-url>${base-url}</set-url> -->
                             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
@@ -609,20 +608,7 @@
                 </choose>
             </otherwise>
         </choose>
-        <!-- <choose>
-            <when condition="@(${is-nodo-decoupler-enabled})">
-            </when>
-            <otherwise>
-                <set-backend-service base-url="${base-url}" />
-            </otherwise>
-        </choose>   
-        
-        <choose>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf/webservices/input" />
-            </when>
-        </choose> -->
-        
+
     </inbound>
     <backend>
         <base />

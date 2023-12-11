@@ -53,10 +53,10 @@
       </when>
     </choose>
 
-    <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-web-bo}}" />
+    <set-backend-service base-url="{{schema-ip-nexi}}{{base-path-web-bo}}" />
     <choose>
         <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-            <set-backend-service base-url="http://{{aks-lb-nexi}}/web-bo-prf" />
+            <set-backend-service base-url="{{schema-ip-nexi}}/web-bo-prf" />
         </when>
     </choose>
 
