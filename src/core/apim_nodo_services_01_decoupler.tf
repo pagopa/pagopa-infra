@@ -65,25 +65,6 @@ resource "azapi_resource" "decoupler_algorithm" {
   }
 }
 
-# TODO remove the following and copy content into decoupler_algorithm
-resource "azapi_resource" "decoupler_algorithm_test" {
-  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
-  name      = "decoupler-algorithm-test"
-  parent_id = module.apim.id
-
-  body = jsonencode({
-    properties = {
-      description = "Logic about NPD decoupler"
-      format      = "rawxml"
-      value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-algorithm-test.xml")
-    }
-  })
-
-  lifecycle {
-    ignore_changes = [output]
-  }
-}
-
 # fragment for managing outbound policy if primitive is activatePayment or activateIO
 resource "azapi_resource" "decoupler_activate_outbound" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
