@@ -13,7 +13,7 @@ tags = {
 lock_enable = true
 
 # monitoring
-law_sku               = "PerGB2018"
+law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
 law_retention_in_days = 30
 law_daily_quota_gb    = -1
 

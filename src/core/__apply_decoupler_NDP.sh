@@ -45,7 +45,7 @@ sh terraform.sh apply prod \
 # CREAZIONE NAMED VALUE
 # DEV DONE
 # UAT DONE
-# PROD
+# PROD DONE
 sh terraform.sh apply prod \
 -target=azurerm_api_management_named_value.schema_ip_nexi \
 -target=azurerm_api_management_named_value.schema_ip_nodo_pagopa \
@@ -61,14 +61,14 @@ sh terraform.sh apply prod \
 sh terraform.sh apply prod \
 -target=null_resource.decoupler_configuration_from_json_2_xml
 
-sh terraform.sh apply dev \
+sh terraform.sh apply prod \
 -target=azapi_resource.decoupler_algorithm \
 -target=azapi_resource.decoupler_activate_outbound \
 -target=azapi_resource.decoupler_configuration \
 -target=azurerm_api_management_named_value.node_decoupler_primitives \
 -target=azapi_resource.on_erro_soap_handler
 
-sh terraform.sh apply uat \
+sh terraform.sh apply prod \
 -target=module.apim_nodo_dei_pagamenti_product_auth \
 -target=azurerm_api_management_product_api.apim_nodo_dei_pagamenti_product_api_auth \
 -target=azurerm_api_management_named_value.nodo_auth_password_value \
