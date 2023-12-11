@@ -2,7 +2,7 @@
 # DEV DONE
 # UAT DONE
 # PROD
-sh terraform.sh apply uat \
+sh terraform.sh apply prod \
 -target=module.apim_nodo_ppt_lmi_product \
 -target=azurerm_api_management_api_version_set.nodo_ppt_lmi_api \
 -target=module.apim_nodo_ppt_lmi_api \
@@ -182,6 +182,8 @@ sh terraform.sh apply uat \
 
 
 
+
+# Non applicare
 # NODO PER PM
 sh terraform.sh apply dev \
 -target=azurerm_api_management_api_version_set.nodo_per_pm_api \

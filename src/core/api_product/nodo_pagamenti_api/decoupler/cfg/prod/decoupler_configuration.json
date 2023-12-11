@@ -14,7 +14,7 @@
     "node_uri": "https://weuprod.nodo.internal.platform.pagopa.it/nodo",
     "routing": 0,
     "broker_psps": [],
-    "cis": ["80023530167"],
+    "cis": ["00874410376"],
     "list_priority": 1
   },
   {
@@ -23,7 +23,7 @@
     "node_uri": "https://10.79.20.25",
     "routing": 0,
     "broker_psps": [],
-    "cis": ["00874410376"],
+    "cis": ["96289850586"],
     "list_priority": 2
   }
 ]
