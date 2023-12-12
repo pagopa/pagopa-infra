@@ -252,3 +252,15 @@ resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
   value               = data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value
   secret              = true
 }
+
+resource "azurerm_api_management_api_operation_policy" "get_psps_for_payment_method" {
+  api_name            = module.apim_webview_payment_wallet_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getPspsForPaymentMethod"
+
+  xml_content = templatefile("./api/webview-payment-wallet/v1/get_psps_policy.xml.tpl", {
+    gec_hostname       = var.env_short == "p" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it"
+    ecommerce_hostname = local.ecommerce_hostname
+  })
+}
