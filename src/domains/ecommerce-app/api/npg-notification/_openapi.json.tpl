@@ -25,12 +25,12 @@
           },
           {
             "in": "query",
-            "name": "paymentMethodId",
+            "name": "sessionToken",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "Payment method ID used for transaction"
+            "description": "Session token used to validate path params"
           }
         ],
         "requestBody": {
