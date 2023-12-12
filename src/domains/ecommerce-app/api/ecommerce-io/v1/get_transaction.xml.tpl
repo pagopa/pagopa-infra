@@ -5,15 +5,11 @@
                 <origin>*</origin>
             </allowed-origins>
             <allowed-methods>
-                <method>POST</method>
                 <method>GET</method>
-                <method>OPTIONS</method>
-                <method>DELETE</method>
             </allowed-methods>
             <allowed-headers>
                 <header>Content-Type</header>
                 <header>Authorization</header>
-                <header>x-transaction-id-from-client</header>
             </allowed-headers>
         </cors>
         <base />
