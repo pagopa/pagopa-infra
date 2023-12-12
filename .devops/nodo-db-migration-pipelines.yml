@@ -61,8 +61,8 @@ variables:
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
 #    JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-#    JDBC_URL: jdbc:postgresql://nodo-db.p.internal.postgresql.pagopa.it:6432/nodo?sslmode=require&prepareThreshold=0
-    JDBC_URL: jdbc:postgresql://prova-p-nodo-pgflex.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://nodo-db.p.internal.postgresql.pagopa.it:6432/nodo?sslmode=require&prepareThreshold=0
+#    JDBC_URL: jdbc:postgresql://prova-p-nodo-pgflex.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-p-nodo-kv
     poolImage: 'pagopa-prod-linux-infra'
   APPROVE_NOTIFY_GROUP: '[pagoPA-iac]\pagopa-iac-externals-team'
