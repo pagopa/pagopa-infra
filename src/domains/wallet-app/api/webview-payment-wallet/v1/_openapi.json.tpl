@@ -295,6 +295,39 @@
           }
         }
       }
+    },
+    "/payment-methods/{paymentMethodId}/psps": {
+      "parameters": [
+        {
+          "name": "paymentMethodId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "getPspsForPaymentMethod",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PSPs returned for the requested payment method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BundleOption"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -444,6 +477,67 @@
             "type": "string",
             "format": "uri",
             "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
+          }
+        }
+      },
+      "BundleOption": {
+        "type": "object",
+        "properties": {
+          "belowThreshold": {
+            "type": "boolean",
+            "description": "if true (the payment amount is lower than the threshold value) the bundles onus is not calculated (always false)"
+          },
+          "bundleOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transfer"
+            }
+          }
+        }
+      },
+      "Transfer": {
+        "type": "object",
+        "properties": {
+          "abi": {
+            "type": "string"
+          },
+          "bundleDescription": {
+            "type": "string"
+          },
+          "bundleName": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idBundle": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idCiBundle": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
+          },
+          "paymentMethod": {
+            "type": "string"
+          },
+          "primaryCiIncurredFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "taxPayerFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "touchpoint": {
+            "type": "string"
           }
         }
       },
