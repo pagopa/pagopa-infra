@@ -160,7 +160,7 @@ module "reporting_batch_function" {
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = "LRS"
+    account_replication_type          = var.env_short == "p" ? "ZRS" : "LRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
@@ -238,7 +238,7 @@ module "reporting_service_function" {
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = "LRS"
+    account_replication_type          = var.env_short == "p" ? "ZRS" : "LRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
@@ -326,7 +326,7 @@ module "reporting_analysis_function" {
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = "LRS"
+    account_replication_type          = var.env_short == "p" ? "ZRS" : "LRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
