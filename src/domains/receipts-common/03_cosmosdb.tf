@@ -120,7 +120,7 @@ locals {
       conflict_resolution_policy = {
         mode = "Custom",
         path = null,
-        procedure = "azurerm_cosmosdb_sql_stored_procedure"
+        procedure = "dbs/db/colls/cart-for-receipts/sprocs/cart-for-receipts-merge-procedure"
       }
     },
     {
@@ -188,6 +188,7 @@ function resolver(incomingItem, existingItem, isTombstone, conflictingItems) {
          mergedData = mergedData.concat(conflictingItems[i].cartPaymentId);
          mergedData = mergedData.filter((item, pos) => mergedData.indexOf(item) === pos);
       }
+      incomingItem.cartPaymentId = mergedData;
       tryDelete(conflictingItems, incomingItem, existingItem);
    }
 
