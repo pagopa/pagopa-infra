@@ -115,3 +115,28 @@ module "apim_api_debt_positions_api_v1" {
 
   xml_content = file("./api/gpd_api/debt-position-services/v1/_base_policy.xml")
 }
+
+module "apim_api_debt_positions_api_v2" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+
+  name                  = format("%s-debt-positions-service-api", local.product)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_debt_positions_product.product_id, module.apim_aca_integration_product.product_id, module.apim_gpd_integration_product.product_id]
+  subscription_required = local.apim_debt_positions_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_debt_positions_api.id
+  api_version           = "v2"
+
+  description  = local.apim_debt_positions_service_api.description
+  display_name = local.apim_debt_positions_service_api.display_name
+  path         = local.apim_debt_positions_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_debt_positions_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/gpd_api/debt-position-services/v2/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = file("./api/gpd_api/debt-position-services/v2/_base_policy.xml")
+}
