@@ -52,7 +52,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 20
   }
 
 }
@@ -90,7 +90,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-datastore-not-s
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 20
   }
 }
 
@@ -126,7 +126,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-cart-event-disc
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 20
   }
 }
 
@@ -166,7 +166,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-in-error-alert"
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 20
   }
 }
 
@@ -202,7 +202,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-missing-bizeven
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 20
   }
 }
 
@@ -238,7 +238,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-engine-resp
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 20
   }
 }
 
@@ -274,7 +274,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-save-to-blo
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 20
   }
 }
 
@@ -353,7 +353,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-unable-to-notify
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 20
   }
 }
 
@@ -427,7 +427,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 20
   }
 }
 
@@ -463,7 +463,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipt-tokenizer-error-
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 20
   }
 }
 

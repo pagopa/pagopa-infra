@@ -71,7 +71,7 @@ module "receipts_datastore_fn_sa" {
   name                       = replace(format("%s-fn-sa", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
-  account_replication_type   = "LRS"
+  account_replication_type   = var.env_short == "p" ? "ZRS" : "LRS"
   access_tier                = "Hot"
   blob_versioning_enabled    = var.enable_sa_backup
   resource_group_name        = azurerm_resource_group.st_receipts_rg.name
