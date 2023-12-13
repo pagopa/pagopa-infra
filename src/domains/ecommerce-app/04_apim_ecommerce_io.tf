@@ -158,7 +158,10 @@ resource "azurerm_api_management_api_operation_policy" "io_create_transaction" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "newTransaction"
 
-  xml_content = file("./api/ecommerce-io/v1/post_transactions.xml.tpl")
+  xml_content = templatefile("./api/ecommerce-io/v1/post_transactions.xml.tpl", {
+    ecommerce_ingress_hostname   = local.ecommerce_hostname
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_get_transaction_info" {
@@ -167,7 +170,9 @@ resource "azurerm_api_management_api_operation_policy" "io_get_transaction_info"
   api_management_name = local.pagopa_apim_name
   operation_id        = "getTransactionInfo"
 
-  xml_content = file("./api/ecommerce-io/v1/get_transaction.xml.tpl")
+  xml_content = templatefile("./api/ecommerce-io/v1/get_transaction.xml.tpl", {
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_delete_transaction" {
@@ -186,7 +191,8 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   operation_id        = "requestTransactionAuthorization"
 
   xml_content = templatefile("./api/ecommerce-io/v1/_auth_request.xml.tpl", {
-    authurl-basepath = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
+    authurl-basepath             = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
   })
 }
 
@@ -209,7 +215,14 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl", { ecommerce-basepath = local.ecommerce_hostname })
+  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl",
+    {
+      ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+      ecommerce-basepath           = local.ecommerce_hostname
+      wallet-basepath              = local.wallet_hostname
+    }
+  )
+
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" {
