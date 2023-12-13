@@ -65,3 +65,17 @@ resource "azurerm_api_management_api_operation_policy" "npg_notifications_policy
     hostname = var.env_short == "p" ? "disabled" : local.ecommerce_hostname
   })
 }
+
+data "azurerm_key_vault_secret" "npg_notification_jwt_secret" {
+  name         = "npg-notification-signing-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "npg_notification_jwt_secret" {
+  name                = "npg-notification-jwt-secret"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "npg-notification-jwt-secret"
+  value               = data.azurerm_key_vault_secret.npg_notification_jwt_secret.value
+  secret              = true
+}
