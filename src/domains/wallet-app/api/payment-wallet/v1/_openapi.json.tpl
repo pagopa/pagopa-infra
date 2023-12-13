@@ -216,6 +216,9 @@
           "404": {
             "description": "Wallet not found"
           },
+          "502": {
+            "description": "Bad gateway"
+          },
           "504": {
             "description": "Timeout serving request"
           }
@@ -314,6 +317,78 @@
           },
           "404": {
             "description": "Wallet not found"
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      }
+    },
+    "/wallets/{walletId}/services": {
+      "put": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Update wallet services and their status",
+        "description": "Update wallet services",
+        "operationId": "updateWalletServicesById",
+        "requestBody": {
+          "description": "Update wallet services for the specified wallet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletServiceUpdateRequest"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "walletId",
+            "in": "path",
+            "description": "ID of wallet to return",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/WalletId"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Wallet updated successfully"
+          },
+          "400": {
+            "description": "Invalid input id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Wallet not found"
+          },
+          "409": {
+            "description": "Wallet request is inconsistent with global service status (e.g. the user requested a service to be enabled but the service has a global status of disabled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletServicesPartialUpdate"
+                }
+              }
+            }
           },
           "504": {
             "description": "Timeout serving request"
@@ -454,6 +529,70 @@
           "walletId",
           "redirectUrl"
         ]
+      },
+      "WalletService": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ServiceName"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WalletServiceStatus"
+          }
+        }
+      },
+      "WalletServiceStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet statuses",
+        "enum": [
+          "ENABLED",
+          "DISABLED"
+        ]
+      },
+      "WalletServiceUpdateRequest": {
+        "type": "object",
+        "description": "Wallet update request",
+        "properties": {
+          "services": {
+            "type": "array",
+            "description": "List of services to update",
+            "items": {
+              "$ref": "#/components/schemas/WalletService"
+            }
+          }
+        }
+      },
+      "WalletServicesPartialUpdate": {
+        "type": "object",
+        "description": "Response for wallet services partial update due to status conflicts",
+        "properties": {
+          "updatedServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WalletService"
+            }
+          },
+          "failedServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            }
+          }
+        },
+        "example": {
+          "updatedServices": [
+            {
+              "name": "PAGOPA",
+              "status": "ENABLED"
+            }
+          ],
+          "failedServices": [
+            {
+              "name": "PARI",
+              "status": "DISABLED"
+            }
+          ]
+        }
       },
       "WalletInfo": {
         "type": "object",

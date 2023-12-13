@@ -1,14 +1,16 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-receipt-pdf-datastore" />
+
+        <set-backend-service base-url="{{default-nodo-backend-dev-nexi}}/webservices/input" />
+
     </inbound>
-    <outbound>
-        <base />
-    </outbound>
     <backend>
         <base />
     </backend>
+    <outbound>
+        <base />
+    </outbound>
     <on-error>
         <base />
     </on-error>

@@ -212,8 +212,8 @@ resource "azurerm_key_vault_secret" "payment_manager_subscription_key" {
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "elastic-apm-secret-token" {
-  name         = "payment-manager-subscription-key"
+resource "azurerm_key_vault_secret" "elastic_otl_secret_token" {
+  name         = "elastic-otl-secret-token"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 

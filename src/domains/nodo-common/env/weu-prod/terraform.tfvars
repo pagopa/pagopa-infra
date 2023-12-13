@@ -52,6 +52,7 @@ pgres_flex_params = {
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = true
   max_connections                        = 5000
+  enable_private_dns_registration        = true
 }
 
 sftp_account_replication_type = "LRS"
@@ -214,3 +215,10 @@ nodo_storico_storage_account = {
 enable_sftp_backup            = true
 sftp_sa_delete_retention_days = 31
 sftp_sa_backup_retention_days = 30
+
+
+geo_replica_enabled                = true
+location_replica                   = "northeurope"
+location_replica_short             = "neu"
+geo_replica_cidr_subnet_postgresql = ["10.2.160.0/24"]
+postgresql_sku_name                = "GP_Gen5_2"

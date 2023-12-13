@@ -32,10 +32,10 @@
         <!-- <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-wfesp}}/redirect" /> -->
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/wfesp-prf/redirect" />
+                <set-backend-service base-url="{{schema-ip-nexi}}/wfesp-prf/redirect" />
             </when>
-        </choose>   
-        
+        </choose>
+
         <set-variable name="external-scheme" value="https" />
 
         <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.<ENV>.platform.pagopa.it -->
@@ -43,7 +43,7 @@
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
                 <set-variable name="external-host" value="api.prf.platform.pagopa.it" />
             </when>
-        </choose>  
+        </choose>
 
 
         <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /wfesp/api/v1 -->

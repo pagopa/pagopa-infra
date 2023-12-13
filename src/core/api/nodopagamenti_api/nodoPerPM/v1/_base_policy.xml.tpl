@@ -2,18 +2,12 @@
     <inbound>
         <base />
 
-        <choose>
-            <when condition="@(${is-nodo-decoupler-enabled})">
-                <!-- URL by decoupler -->
-            </when>
-            <otherwise>
-                <set-backend-service base-url="${base-url}" />
-            </otherwise>
-        </choose>   
-        
+        <!-- REST API, backend-url set in product API -->
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/nodo-prf" /> <!-- PRF -->
+                <set-backend-service base-url="@{
+                    return context.Variables.GetValueOrDefault<string>("default-nodo-backend-prf", "");
+                  }" />
             </when>
         </choose>
     </inbound>

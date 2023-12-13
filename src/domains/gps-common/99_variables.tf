@@ -133,6 +133,7 @@ variable "pgres_flex_params" {
     pgbouncer_enabled            = bool
     alerts_enabled               = bool
     max_connections              = number
+    enable_private_dns_registration        = optional(bool, false)
   })
 
   default = null
@@ -339,4 +340,36 @@ variable "reporting_storage_account" {
     backup_enabled             = false
     backup_retention           = 0
   }
+}
+
+
+variable "geo_replica_enabled" {
+  type        = bool
+  description = "(Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers"
+  default     = false
+}
+
+
+variable "geo_replica_cidr_subnet_postgresql" {
+  type        = list(string)
+  description = "Address prefixes replica subnet postgresql"
+  default     = null
+}
+
+variable "location_replica" {
+  type        = string
+  description = "One of westeurope, northeurope"
+  default     = "northeurope"
+}
+
+variable "location_replica_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_replica_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+  default     = "neu"
 }
