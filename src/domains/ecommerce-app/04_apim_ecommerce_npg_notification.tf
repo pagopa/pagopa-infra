@@ -66,16 +66,16 @@ resource "azurerm_api_management_api_operation_policy" "npg_notifications_policy
   })
 }
 
-data "azurerm_key_vault_secret" "ecommerce_sessions_jwt_secret" {
-  name         = "sessions-jwt-secret"
+data "azurerm_key_vault_secret" "npg_notification_jwt_secret" {
+  name         = "npg-notification-signing-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-resource "azurerm_api_management_named_value" "ecommerce_jwt_signing_key" {
-  name                = "ecommerce-jwt-signing-key"
+resource "azurerm_api_management_named_value" "npg_notification_jwt_secret" {
+  name                = "npg-notification-jwt-secret"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "ecommerce-jwt-signing-key"
-  value               = data.azurerm_key_vault_secret.ecommerce_sessions_jwt_secret.value
+  display_name        = "npg-notification-jwt-secret"
+  value               = data.azurerm_key_vault_secret.npg_notification_jwt_secret.value
   secret              = true
 }

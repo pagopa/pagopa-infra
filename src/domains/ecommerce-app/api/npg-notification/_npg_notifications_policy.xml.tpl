@@ -5,7 +5,7 @@
         <set-variable name="orderId" value="@(context.Request.MatchedParameters["orderId"])" />
         <validate-jwt query-param-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="jwtToken">
         <issuer-signing-keys>
-            <key>{{ecommerce-jwt-signing-key}}</key>
+            <key>{{npg-notification-jwt-secret}}</key>
         </issuer-signing-keys>
         <required-claims>
           <claim name="orderId" match="all">
