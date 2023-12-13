@@ -43,10 +43,19 @@
                 DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
                 timestampOperation = dateTimeOffset.ToString("o");
             }
+            string paymentCircuit = (string)operation["paymentCircuit"];
+            JObject additionalData = (JObject)operation["additionalData"];
+            JObject details = null;
+            if(paymentCircuit == "PAYPAL" && additionalData != null){
+                details = new JObject();
+                details["type"] = "PAYPAL";
+                details["maskedEmail"] = (string)additionalData["maskedEmail"]; //TODO to be changed with the correct NPG additional data field
+            }
             JObject request = new JObject();
             request["timestampOperation"] = timestampOperation;
             request["operationResult"] = operationResult;
             request["operationId"] = operationId;
+            request["details"] = details;
             return request.ToString();
           }
       </set-body>
