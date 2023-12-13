@@ -236,6 +236,10 @@ resource "azurerm_api_management_group" "afm_calculator" {
   display_name        = "AFM Calculator for Node"
 }
 
+#################
+## NAMED VALUE ##
+#################
+
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   count               = var.checkout_enabled ? 1 : 0
   name                = "pagopa-fn-checkout-url"
@@ -261,6 +265,7 @@ resource "azurerm_api_management_named_value" "ecblacklist_value" {
   value               = var.nodo_pagamenti_ec
 }
 
+# don't use it in policy -> schema_ip_nexi
 resource "azurerm_api_management_named_value" "urlnodo_value" {
   name                = "urlnodo"
   api_management_name = module.apim.name
@@ -269,6 +274,7 @@ resource "azurerm_api_management_named_value" "urlnodo_value" {
   value               = var.nodo_pagamenti_url
 }
 
+# don't use it in policy -> schema_ip_nexi
 resource "azurerm_api_management_named_value" "ip_nodo_value" { # TEMP used only for onPrem shall be replace with "aks_lb_nexi"
   name                = "ip-nodo"
   api_management_name = module.apim.name
@@ -277,6 +283,7 @@ resource "azurerm_api_management_named_value" "ip_nodo_value" { # TEMP used only
   value               = var.ip_nodo
 }
 
+# don't use it in policy -> schema_ip_nexi
 resource "azurerm_api_management_named_value" "aks_lb_nexi" {
   name                = "aks-lb-nexi"
   api_management_name = module.apim.name
@@ -291,6 +298,77 @@ resource "azurerm_api_management_named_value" "base_path_nodo_oncloud" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "base-path-nodo-oncloud"
   value               = var.base_path_nodo_oncloud
+}
+
+# 7. schema://IP Nexi
+# it replaces http://{{aks-lb-nexi}}, https://{{ip-nodo}}
+resource "azurerm_api_management_named_value" "schema_ip_nexi" {
+  name                = "schema-ip-nexi"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "schema-ip-nexi"
+  value               = var.schema_ip_nexi
+}
+
+# 8. Nodo PagoPA
+resource "azurerm_api_management_named_value" "schema_ip_nodo_pagopa" {
+  name                = "schema-ip-nodo-pagopa"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "schema-ip-nodo-pagopa"
+  value               = var.env_short == "p" ? "https://weu${var.env}.nodo.internal.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}": "https://weu${var.env}.nodo.internal.${var.env}.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}"
+}
+
+# DEFAULT NODO CONFIGURATION
+resource "azurerm_api_management_named_value" "default_nodo_backend" {
+  name                = "default-nodo-backend"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "default-nodo-backend"
+  # in PROD Nodo have not the context-path
+  value               = var.env_short == "p" ? azurerm_api_management_named_value.schema_ip_nexi.value : "${azurerm_api_management_named_value.schema_ip_nexi.value}${azurerm_api_management_named_value.base_path_nodo_oncloud.value}"
+}
+
+resource "azurerm_api_management_named_value" "default_nodo_backend_prf" {
+  name                = "default-nodo-backend-prf"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "default-nodo-backend-prf"
+  value               = var.env_short == "u" ? "${azurerm_api_management_named_value.schema_ip_nexi.value}/nodo-prf" : "fake.address"
+  # /webservices/input is set in API policy
+}
+
+resource "azurerm_api_management_named_value" "default_nodo_backend_dev_nexi" {
+  name                = "default-nodo-backend-dev-nexi"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "default-nodo-backend-dev-nexi"
+  value               = var.env_short == "d" ? "${azurerm_api_management_named_value.schema_ip_nexi.value}/nodo-dev" : "fake.address"
+  # /webservices/input is set in API policy
+}
+
+resource "azurerm_api_management_named_value" "default_nodo_id" {
+  name                = "default-nodo-id"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "default-nodo-id"
+  value               = var.default_node_id
+}
+
+resource "azurerm_api_management_named_value" "enable_nm3_decoupler_switch" {
+  name                = "enable-nm3-decoupler-switch"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "enable-nm3-decoupler-switch"
+  value               = var.apim_enable_nm3_decoupler_switch
+}
+
+resource "azurerm_api_management_named_value" "enable_routing_decoupler_switch" {
+  name                = "enable-routing-decoupler-switch"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "enable-routing-decoupler-switch"
+  value               = var.apim_enable_routing_decoupler_switch
 }
 
 # 1. PPT LMI
