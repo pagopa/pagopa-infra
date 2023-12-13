@@ -121,19 +121,19 @@ variable "cidr_subnet_pg_flex_dbms" {
 # Postgres Flexible
 variable "pgres_flex_params" {
   type = object({
-    private_endpoint_enabled     = bool
-    sku_name                     = string
-    db_version                   = string
-    storage_mb                   = string
-    zone                         = number
-    backup_retention_days        = number
-    geo_redundant_backup_enabled = bool
-    high_availability_enabled    = bool
-    standby_availability_zone    = number
-    pgbouncer_enabled            = bool
-    alerts_enabled               = bool
-    max_connections              = number
-    enable_private_dns_registration        = optional(bool, false)
+    private_endpoint_enabled        = bool
+    sku_name                        = string
+    db_version                      = string
+    storage_mb                      = string
+    zone                            = number
+    backup_retention_days           = number
+    geo_redundant_backup_enabled    = bool
+    high_availability_enabled       = bool
+    standby_availability_zone       = number
+    pgbouncer_enabled               = bool
+    alerts_enabled                  = bool
+    max_connections                 = number
+    enable_private_dns_registration = optional(bool, false)
   })
 
   default = null
@@ -400,6 +400,7 @@ variable "cidr_subnet_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
   default     = ["10.1.152.16/29"]
+}
 
 variable "geo_replica_enabled" {
   type        = bool
