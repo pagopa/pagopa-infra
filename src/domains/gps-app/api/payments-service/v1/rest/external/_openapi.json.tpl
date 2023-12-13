@@ -4,7 +4,7 @@
     "title": "PagoPA API Payments",
     "description": "Payments",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.8.0-1-PAGOPA-1140-sviluppo-gpd-payments-gestione-enti-pluri-intermediati"
+    "version": "0.12.2-1-fix-retention-date"
   },
   "servers": [
     {
@@ -210,6 +210,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "segregationCodes",
+            "in": "query",
+            "description": "Segregation codes for which broker is authorized",
+            "required": false,
+            "schema": {
+              "pattern": "\\d{2}(,\\d{2})*",
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -326,6 +336,16 @@
               "type": "string"
             },
             "example": "ABC123"
+          },
+          {
+            "name": "segregationCodes",
+            "in": "query",
+            "description": "Segregation codes for which broker is authorized",
+            "required": false,
+            "schema": {
+              "pattern": "\\d{2}(,\\d{2})*",
+              "type": "string"
+            }
           }
         ],
         "responses": {
