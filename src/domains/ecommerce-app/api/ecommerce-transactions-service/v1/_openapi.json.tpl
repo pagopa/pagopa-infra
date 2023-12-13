@@ -626,6 +626,9 @@
               },
               {
                 "$ref": "#/components/schemas/CardsAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/WalletAuthRequestDetails"
               }
             ],
             "discriminator": {
@@ -633,7 +636,8 @@
               "mapping": {
                 "postepay": "#/components/schemas/PostePayAuthRequestDetails",
                 "card": "#/components/schemas/CardAuthRequestDetails",
-                "cards": "#/components/schemas/CardsAuthRequestDetails"
+                "cards": "#/components/schemas/CardsAuthRequestDetails",
+                "wallet": "#/components/schemas/WalletAuthRequestDetails"
               }
             }
           }
@@ -754,6 +758,28 @@
         "example": {
           "detailType": "cards",
           "sessionId": "session-id"
+        }
+      },
+      "WalletAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for wallet NPG authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'wallet'",
+            "type": "string"
+          },
+          "walletId": {
+            "type": "string",
+            "description": "The user wallet id"
+          }
+        },
+        "required": [
+          "detailType",
+          "walletId"
+        ],
+        "example": {
+          "detailType": "wallet",
+          "walletId": "walletId"
         }
       },
       "RequestAuthorizationResponse": {

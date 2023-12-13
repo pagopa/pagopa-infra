@@ -27,12 +27,12 @@
             </expose-headers>
         </cors>
         <base />
-        <set-backend-service base-url="http://{{aks-lb-nexi}}{{base-path-sync}}" />
+        <set-backend-service base-url="{{schema-ip-nexi}}{{base-path-sync}}" />
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
-                <set-backend-service base-url="http://{{aks-lb-nexi}}/sync-cron-prf" />
+                <set-backend-service base-url="{{schema-ip-nexi}}/sync-cron-prf" />
             </when>
-        </choose>   
+        </choose>
 
         <set-variable name="external-scheme" value="https" />
         <set-variable name="external-host" value="${dns_pagopa_platform}" /> <!-- api.<ENV>.platform.pagopa.it -->
@@ -40,8 +40,8 @@
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Contains("prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Contains("prf.platform.pagopa.it"))">
                 <set-variable name="external-host" value="api.prf.platform.pagopa.it" />
             </when>
-        </choose>  
-        
+        </choose>
+
         <set-variable name="external-context-path" value="${apim_base_path}" /> <!-- /sync/api/v1 -->
         <choose>
             <when condition="@(Regex.IsMatch(context.Request.OriginalUrl.Path, @"^\${apim_base_path}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
