@@ -20,7 +20,7 @@ module "canoneunico_function" {
     registry_username = data.azurerm_container_registry.login_server.admin_username
   }
 
-  storage_account_info = var.storage_account_info
+  storage_account_info = var.function_storage_account_info
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "java"

@@ -20,7 +20,7 @@ module "api_config_ica_sa" {
   name                            = replace(format("%s-sa", local.project), "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
-  account_replication_type        = "ZRS"
+  account_replication_type        = var.api_config_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.api_config_enable_versioning
   resource_group_name             = data.azurerm_resource_group.api_config_rg.name

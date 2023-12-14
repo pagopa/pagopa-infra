@@ -1,7 +1,7 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project         = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   project_replica = "${var.prefix}-${var.env_short}-${var.location_replica_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  product         = "${var.prefix}-${var.env_short}"
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
