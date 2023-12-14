@@ -512,7 +512,8 @@
             "type": "string"
           },
           "idCiBundle": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "idPsp": {
             "type": "string"
@@ -532,6 +533,9 @@
             "format": "int64"
           },
           "touchpoint": {
+            "type": "string"
+          },
+          "pspBusinessName": {
             "type": "string"
           }
         }
