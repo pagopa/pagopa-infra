@@ -87,6 +87,7 @@
 | <a name="input_receipts_max_retry_queuing"></a> [receipts\_max\_retry\_queuing](#input\_receipts\_max\_retry\_queuing) | Max retry queuing when the node calling fails. | `number` | `5` | no |
 | <a name="input_receipts_queue_delay_sec"></a> [receipts\_queue\_delay\_sec](#input\_receipts\_queue\_delay\_sec) | The length of time during which the message will be invisible, starting when it is added to the queue. | `number` | `3600` | no |
 | <a name="input_receipts_queue_retention_sec"></a> [receipts\_queue\_retention\_sec](#input\_receipts\_queue\_retention\_sec) | The maximum time to allow the message to be in the queue. | `number` | `86400` | no |
+| <a name="input_receipts_storage_account_replication_type"></a> [receipts\_storage\_account\_replication\_type](#input\_receipts\_storage\_account\_replication\_type) | (Optional) Receipts datastore storage account replication type | `string` | `"LRS"` | no |
 | <a name="input_receipts_tier_to_archive_after_days_since_last_access_time_greater_than"></a> [receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than](#input\_receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than) | Number of days since last access to blob before moving to archive tier | `number` | `730` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 

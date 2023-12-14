@@ -186,9 +186,9 @@ apim_nodo_auth_decoupler_enable = true
 apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 
-apim_enable_nm3_decoupler_switch      = false
-apim_enable_routing_decoupler_switch  = false
-default_node_id = "NDP003PROD"
+apim_enable_nm3_decoupler_switch     = false
+apim_enable_routing_decoupler_switch = false
+default_node_id                      = "NDP003PROD"
 
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -197,7 +197,7 @@ nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
 ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
-schema_ip_nexi         = "https://10.79.20.34"
+schema_ip_nexi = "https://10.79.20.34"
 
 base_path_nodo_oncloud        = "/nodo-prd"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
@@ -615,9 +615,9 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-dns_a_reconds_dbnodo_ips              = ["10.102.35.58", "10.102.35.57"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
-dns_a_reconds_dbnodonexipostgres_ips  = ["10.222.209.84"] # db onPrem PostgreSQL
-private_dns_zone_db_nodo_pagamenti    = "p.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips             = ["10.102.35.58", "10.102.35.57"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
+dns_a_reconds_dbnodonexipostgres_ips = ["10.222.209.84"]                # db onPrem PostgreSQL
+private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
@@ -741,3 +741,19 @@ devops_agent_balance_zones = false
 
 enable_logos_backup            = true
 logos_sa_delete_retention_days = 30
+
+function_app_storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "ZRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
+}
+
+
+logic_app_storage_account_replication_type       = "LRS"
+logos_donations_storage_account_replication_type = "GZRS"
+buyer_banks_storage_account_replication_type     = "GZRS"
+cdn_storage_account_replication_type             = "GRS"
+backup_storage_replication_type                  = "GRS"
+fdr_flow_sa_replication_type                     = "ZRS"

@@ -95,6 +95,7 @@
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_robots_indexed_paths"></a> [robots\_indexed\_paths](#input\_robots\_indexed\_paths) | List of cdn paths to allow robots index | `list(string)` | n/a | yes |
 | <a name="input_selfcare_fe_enabled"></a> [selfcare\_fe\_enabled](#input\_selfcare\_fe\_enabled) | selfcare FE enabled | `bool` | `false` | no |
+| <a name="input_selfcare_storage_replication_type"></a> [selfcare\_storage\_replication\_type](#input\_selfcare\_storage\_replication\_type) | (Optional) Selfcare cdn storage account replication type | `string` | `"GRS"` | no |
 | <a name="input_spa"></a> [spa](#input\_spa) | spa root dirs | `list(string)` | <pre>[<br>  "ui"<br>]</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |

@@ -74,6 +74,8 @@ module "selfcare_cdn" {
 
   querystring_caching_behaviour = "BypassCaching"
 
+  storage_account_replication_type = var.selfcare_storage_replication_type
+
   global_delivery_rule = {
     cache_expiration_action       = []
     cache_key_query_string_action = []
