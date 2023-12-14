@@ -101,7 +101,7 @@
                             var value = (JObject) item.value;
                             var index = item.i;
 
-                            if (value["idCiBundle"] == null) {
+                            if (value["idCiBundle"].Type == JTokenType.Null) {
                                 value.Remove("idCiBundle");
                             }
                         }
