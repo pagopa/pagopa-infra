@@ -1,17 +1,5 @@
 <policies>
     <inbound>
-        <cors>
-            <allowed-origins>
-                <origin>*</origin>
-            </allowed-origins>
-            <allowed-methods>
-                <method>GET</method>
-            </allowed-methods>
-            <allowed-headers>
-                <header>Content-Type</header>
-                <header>Authorization</header>
-            </allowed-headers>
-        </cors>
         <base />
         <choose>
         <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
