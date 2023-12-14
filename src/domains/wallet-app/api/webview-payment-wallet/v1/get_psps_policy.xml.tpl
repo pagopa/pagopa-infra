@@ -97,12 +97,11 @@
                 <set-body>
                     @{
                         var response = context.Response.Body.As<JObject>();
-                        foreach (var item in response["bundleOptions"].Select((value, i) => new { i, value })) {
-                            var value = (JObject) item.value;
-                            var index = item.i;
+                        foreach (var value in response["bundleOptions"]) {
+                            var bundle = (JObject) value;
 
-                            if (value["idCiBundle"].Type == JTokenType.Null) {
-                                value.Remove("idCiBundle");
+                            if (bundle["idCiBundle"].Type == JTokenType.Null) {
+                                bundle.Remove("idCiBundle");
                             }
                         }
 
