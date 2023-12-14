@@ -741,3 +741,19 @@ devops_agent_balance_zones = false
 
 enable_logos_backup            = true
 logos_sa_delete_retention_days = 30
+
+function_app_storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "ZRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
+}
+
+
+logic_app_storage_account_replication_type       = "LRS"
+logos_donations_storage_account_replication_type = "GZRS"
+buyer_banks_storage_account_replication_type     = "GZRS"
+cdn_storage_account_replication_type             = "GRS"
+backup_storage_replication_type                  = "GRS"
+fdr_flow_sa_replication_type                     = "ZRS"

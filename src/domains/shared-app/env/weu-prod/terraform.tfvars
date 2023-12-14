@@ -63,6 +63,9 @@ taxonomy_function_autoscale = {
   maximum = 3
 }
 
+
+function_app_storage_account_replication_type = "GZRS"
+
 # pdf-engine
 cidr_subnet_pdf_engine_app_service   = ["10.1.187.0/24"]
 app_service_pdf_engine_sku_name      = "P2v3"

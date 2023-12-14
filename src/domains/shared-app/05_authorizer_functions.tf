@@ -92,6 +92,13 @@ module "authorizer_function_app" {
   }
 
   storage_account_name = replace(format("%s-auth-st", local.project), "-", "")
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = var.function_app_storage_account_replication_type
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
 

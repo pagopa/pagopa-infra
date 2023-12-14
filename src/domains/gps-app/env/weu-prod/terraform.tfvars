@@ -100,3 +100,11 @@ pod_disruption_budgets = {
   },
 }
 
+
+fn_app_storage_account_info = {
+  account_replication_type = "GZRS"
+  account_kind               = "StorageV2"
+  account_tier               = "Standard"
+  access_tier                = "Hot"
+  advanced_threat_protection_enable = true
+}

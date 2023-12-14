@@ -50,13 +50,7 @@ module "buyerbanks_function" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_info = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = "LRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
-  }
+  storage_account_info = var.function_app_storage_account_info
 
   storage_account_name = replace(format("%s-st-fnbuyerbanks", local.project), "-", "")
 
@@ -191,7 +185,7 @@ module "buyerbanks_storage" {
   name                       = replace(format("%s-buyerbanks-storage", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
-  account_replication_type   = "LRS"
+  account_replication_type   = var.buyer_banks_storage_account_replication_type
   access_tier                = "Hot"
   versioning_name            = "versioning"
   enable_versioning          = var.buyerbanks_enable_versioning

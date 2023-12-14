@@ -157,13 +157,7 @@ module "reporting_batch_function" {
     registry_username = null
     registry_password = null
   }
-  storage_account_info = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = var.env_short == "p" ? "ZRS" : "LRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
-  }
+  storage_account_info                     = var.fn_app_storage_account_info
   always_on                                = var.reporting_batch_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
@@ -235,13 +229,7 @@ module "reporting_service_function" {
   #    worker_count                 = 1
   #    zone_balancing_enabled       = false
   #  }
-  storage_account_info = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = var.env_short == "p" ? "ZRS" : "LRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
-  }
+  storage_account_info                     = var.fn_app_storage_account_info
   always_on                                = var.reporting_service_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
@@ -323,13 +311,7 @@ module "reporting_analysis_function" {
     registry_username = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
     registry_password = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
-  storage_account_info = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = var.env_short == "p" ? "ZRS" : "LRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
-  }
+  storage_account_info = var.fn_app_storage_account_info
   ## DEDICATED SERVICE PLAN
   #  app_service_plan_name = "${local.project}-plan-analysis-fn"
   #  app_service_plan_info = {

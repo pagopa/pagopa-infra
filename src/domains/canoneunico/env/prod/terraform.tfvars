@@ -38,6 +38,22 @@ canoneunico_queue_message_delay = 3600 // in seconds = 1h
 
 canoneunico_runtime_version = "~3"
 
+storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+}
+
+function_storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "GZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+}
+
 canoneunico_delete_retention_days = 31
 canoneunico_backup_retention_days = 30
 enable_canoneunico_backup         = true
@@ -45,10 +61,3 @@ canoneunico_enable_versioning     = true
 
 # storage
 storage_queue_private_endpoint_enabled = true
-storage_account_info = {
-  account_kind                      = "StorageV2"
-  account_tier                      = "Standard"
-  account_replication_type          = "LRS"
-  access_tier                       = "Hot"
-  advanced_threat_protection_enable = true
-}

@@ -15,7 +15,7 @@ resource "azurerm_storage_account" "elk_snapshot_sa" {
   resource_group_name      = azurerm_resource_group.elk_rg.name
   location                 = azurerm_resource_group.elk_rg.location
   account_tier             = "Standard"
-  account_replication_type = "LRS"
+  account_replication_type = var.snapshot_storage_replication_type
 
   blob_properties {
     change_feed_enabled = var.elk_snapshot_sa.backup_enabled

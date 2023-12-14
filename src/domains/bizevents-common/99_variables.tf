@@ -181,3 +181,9 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
+
+variable "storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) biz event fn storage account replication type"
+}

@@ -307,6 +307,13 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
+
+variable "storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Fn app storage acocunt replication type"
+}
+
 variable "enable_gpd_payments_backup" {
   type        = bool
   default     = false
