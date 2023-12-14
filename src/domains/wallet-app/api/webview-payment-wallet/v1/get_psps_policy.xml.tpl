@@ -17,8 +17,8 @@
 
         <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
 
-        <set-backend-service base-url="https://${gec_hostname}/pagopa-afm-marketplace-service" />
-        <rewrite-uri template="/calculator-service/v1/fees" />
+        <set-backend-service base-url="https://${gec_hostname}/pagopa-afm-calculator-service" />
+        <rewrite-uri template="fees" />
         <set-method>POST</set-method>
 
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
