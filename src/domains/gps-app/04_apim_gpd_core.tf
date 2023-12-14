@@ -48,6 +48,31 @@ module "apim_api_gpd_api" {
   xml_content = file("./api/gpd_api/v1/_base_policy.xml")
 }
 
+module "apim_api_gpd_api_v2" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+
+  name                  = format("%s-api-gpd-api", var.env_short)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_gpd_product.product_id]
+  subscription_required = false
+  api_version           = "v2"
+  version_set_id        = azurerm_api_management_api_version_set.api_gpd_api.id
+  service_url           = local.gpd_core_service_url
+
+  description  = "Api Gestione Posizione Debitorie"
+  display_name = "GPD pagoPA"
+  path         = "gpd/api"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/gpd_api/v2/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = file("./api/gpd_api/v2/_base_policy.xml")
+}
+
 resource "azurerm_api_management_api_version_set" "api_gpd_api" {
   name                = format("%s-api-gpd-api", var.env_short)
   api_management_name = local.pagopa_apim_name
