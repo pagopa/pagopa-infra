@@ -90,7 +90,28 @@
         </set-body>
     </inbound>
     <outbound>
-        <base />  
+        <base />
+
+        <choose>
+            <when condition="@(context.Response.StatusCode == 200)">
+                <set-body>
+                    @{
+                        var response = context.Response.Body.As<JObject>();
+                        foreach (var item in response["bundleOptions"].Select((value, i) => new { i, value })) {
+                            var value = (JObject) item.value;
+                            var index = item.i;
+
+                            if (value["idCiBundle"] == null) {
+                                value.Remove("idCiBundle");
+                            }
+                        }
+
+                        return response.ToString();
+                    }
+                </set-body>
+            </when>
+        </choose>
+
     </outbound>
     <backend>
         <base />
