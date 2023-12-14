@@ -21,7 +21,7 @@ module "payments_receipt_sa" {
 
 
   blob_change_feed_enabled             = var.enable_gpd_payments_backup
-  blob_change_feed_retention_in_days   = var.enable_gpd_payments_backup ? var.gpd_payments_sa_backup_retention_days +1 : null
+  blob_change_feed_retention_in_days   = var.enable_gpd_payments_backup ? var.gpd_payments_sa_backup_retention_days + 1 : null
   blob_container_delete_retention_days = var.gpd_payments_sa_backup_retention_days
   blob_storage_policy = {
     enable_immutability_policy = false

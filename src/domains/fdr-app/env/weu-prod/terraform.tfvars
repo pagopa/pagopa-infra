@@ -29,11 +29,11 @@ app_service_plan_info = {
 fn_app_runtime_version = "~3"
 
 storage_account_info = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = "GZRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "GZRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
 }
 
 ### External resources
