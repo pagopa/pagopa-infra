@@ -260,7 +260,8 @@ resource "azurerm_api_management_api_operation_policy" "get_psps_for_payment_met
   operation_id        = "getPspsForPaymentMethod"
 
   xml_content = templatefile("./api/webview-payment-wallet/v1/get_psps_policy.xml.tpl", {
-    gec_hostname       = var.env_short == "p" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it"
-    ecommerce_hostname = local.ecommerce_hostname
+    payment_wallet_origin = "https://${var.dns_zone_prefix}.${var.external_domain}/"
+    gec_hostname          = var.env_short == "p" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it"
+    ecommerce_hostname    = local.ecommerce_hostname
   })
 }

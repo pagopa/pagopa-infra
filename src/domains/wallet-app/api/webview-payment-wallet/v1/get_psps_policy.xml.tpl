@@ -1,11 +1,25 @@
 <policies>
     <inbound>
-        <base />
+        <cors>
+            <allowed-origins>
+                <origin>${payment_wallet_origin}</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>POST</method>
+                <method>GET</method>
+                <method>OPTIONS</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>Content-Type</header>
+                <header>Authorization</header>
+            </allowed-headers>
+        </cors>
+
+        <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
 
         <set-backend-service base-url="https://${gec_hostname}/pagopa-afm-marketplace-service" />
         <rewrite-uri template="/calculator-service/v1/fees" />
         <set-method>POST</set-method>
-        <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
 
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
             <set-url>@("https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods/" + context.Request.MatchedParameters["paymentMethodId"])</set-url>

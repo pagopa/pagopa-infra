@@ -310,11 +310,6 @@
       ],
       "get": {
         "operationId": "getPspsForPaymentMethod",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "PSPs returned for the requested payment method",
