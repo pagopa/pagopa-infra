@@ -19,8 +19,7 @@ module "cosmosdb_account_standin" {
   is_virtual_network_filter_enabled = var.standin_cosmos_nosql_db_params.is_virtual_network_filter_enabled
   ip_range                          = ""
 
-  # allowed_virtual_network_subnet_ids = var.standin_cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.standin_to_datastore_function_snet.id]
-  allowed_virtual_network_subnet_ids = []
+  allowed_virtual_network_subnet_ids = var.standin_cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   enable_automatic_failover = true
 
@@ -50,21 +49,21 @@ locals {
       partition_key_path = "/PartitionKey",
       default_ttl        = var.standin_cosmos_nosql_db_params.events_ttl
       autoscale_settings = {
-        max_throughput = var.cosmos_nosql_db_params.max_throughput
+        max_throughput = var.standin_cosmos_nosql_db_params.max_throughput
       }
     },{
       name               = "station_data",
       partition_key_path = "/PartitionKey",
       default_ttl        = var.standin_cosmos_nosql_db_params.events_ttl
       autoscale_settings = {
-        max_throughput = var.cosmos_nosql_db_params.max_throughput
+        max_throughput = var.standin_cosmos_nosql_db_params.max_throughput
       }
     },{
       name               = "events",
       partition_key_path = "/PartitionKey",
       default_ttl        = var.standin_cosmos_nosql_db_params.events_ttl
       autoscale_settings = {
-        max_throughput = var.cosmos_nosql_db_params.max_throughput
+        max_throughput = var.standin_cosmos_nosql_db_params.max_throughput
       }
     },{
       name               = "stand_in_stations",
@@ -77,7 +76,7 @@ locals {
   ]
 }
 
-# cosmosdb container for nodo re datastore
+# cosmosdb container for stand-in datastore
 module "cosmosdb_account_standin_containers" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
   for_each = { for c in local.standin_containers : c.name => c }
