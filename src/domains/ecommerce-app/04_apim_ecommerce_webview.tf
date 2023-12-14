@@ -1,13 +1,13 @@
-data "azurerm_key_vault_secret" "ecommerce_io_jwt_signing_key" {
+data "azurerm_key_vault_secret" "ecommerce_webview_jwt_signing_key" {
   name         = "ecommerce-io-jwt-signing-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-resource "azurerm_api_management_named_value" "ecommerce-io-jwt-signing-key" {
-  name                = "ecommerce-io-jwt-signing-key"
+resource "azurerm_api_management_named_value" "ecommerce-webview-jwt-signing-key" {
+  name                = "ecommerce-webview-jwt-signing-key"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "ecommerce-io-jwt-signing-key"
+  display_name        = "ecommerce-webview-jwt-signing-key"
   value               = data.azurerm_key_vault_secret.personal_data_vault_api_key_secret.value
   secret              = true
 }
@@ -46,10 +46,10 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "apim_ecommerce_webview_api" {
-  name                = "${local.project}-ecommerce-io-api"
+  name                = "${local.project}-ecommerce-webview-api"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_ecommerce_io_api.display_name
+  display_name        = local.apim_ecommerce_webview_api.display_name
   versioning_scheme   = "Segment"
 }
 
@@ -61,7 +61,7 @@ module "apim_ecommerce_webview_api_v1" {
   api_management_name   = local.pagopa_apim_name
   product_ids           = [module.apim_ecommerce_webview_product.product_id]
   subscription_required = local.apim_ecommerce_webview_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.ecommerce_webview_api_v1.id
+  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_webview_api.id
   api_version           = "v1"
   service_url           = local.apim_ecommerce_webview_api.service_url
 
@@ -75,7 +75,7 @@ module "apim_ecommerce_webview_api_v1" {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/ecommerce-io/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/ecommerce-webview/v1/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }

@@ -19,7 +19,7 @@
     <!-- Session eCommerce START-->
     <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
         <issuer-signing-keys>
-            <key>{{ecommerce-io-jwt-signing-key}}</key>
+            <key>{{ecommerce-webview-jwt-signing-key}}</key>
         </issuer-signing-keys>
         <required-claims>
             <claim name="userId" />
