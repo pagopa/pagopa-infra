@@ -45,7 +45,7 @@
                     </set-body>
                 </return-response>
             </when>
-            <otherwise>
+            <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode != 200)">
                 <return-response>
                     <set-status code="502" reason="Bad Gateway" />
                     <set-header name="Content-Type" exists-action="override">
@@ -59,19 +59,31 @@
                         }
                     </set-body>
                 </return-response>
-            </otherwise>
+            </when>
         </choose>
         <set-variable name="paymentMethodsResponseBody" value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
         <set-variable name="paymentMethodTypeCode" value="@((string)((JObject) context.Variables["paymentMethodsResponseBody"])["paymentTypeCode"])" />
+
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
 
         <set-body>
             @{
                 var requestBody = new JObject();
                 requestBody["touchpoint"] = "IO";
                 requestBody["paymentMethod"] = (string) context.Variables["paymentMethodTypeCode"];
-                requestBody["paymentAmount"] = 0;
+                requestBody["paymentAmount"] = 1;
                 requestBody["isAllCcp"] = false;
-                requestBody["transferList"] = new JArray();
+                requestBody["primaryCreditorInstitution"] = "";
+
+                var transfer = new JObject();
+                transfer["creditorInstitution"] = "";
+                transfer["digitalStamp"] = false;
+
+                var transferList = new JArray();
+                transferList.Add(transfer);
+                requestBody["transferList"] = transferList;
 
                 return requestBody.ToString();
             }
