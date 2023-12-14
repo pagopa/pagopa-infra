@@ -15,52 +15,10 @@ jobs:
           fetch-depth: 0
 
       - name: init_terraform_folders
-        env:
-          FOLDERS: >
-            src/aks-platform
-            src/core
-            src/elk-monitoring
-            src/grafana-monitoring
-            src/next-core
-            src/packer
-            src/domains/aca-app
-            src/domains/aca-common
-            src/domains/afm-app
-            src/domains/afm-common
-            src/domains/apiconfig-app
-            src/domains/apiconfig-common
-            src/domains/bizevents-app
-            src/domains/bizevents-common
-            src/domains/canoneunico
-            src/domains/checkout-app
-            src/domains/checkout-common
-            src/domains/ecommerce-app
-            src/domains/ecommerce-common
-            src/domains/fdr-app
-            src/domains/fdr-common
-            src/domains/fdr-secret
-            src/domains/gps-app
-            src/domains/gps-common
-            src/domains/load-test
-            src/domains/mock-app
-            src/domains/mock-common
-            src/domains/nodo-app
-            src/domains/nodo-common
-            src/domains/nodo-cron
-            src/domains/nodo-secret
-            src/domains/observability
-            src/domains/qi-app
-            src/domains/qi-common
-            src/domains/qi-secrets
-            src/domains/receipts-app
-            src/domains/receipts-common
-            src/domains/selfcare-app
-            src/domains/selfcare-common
-            src/domains/shared-app
-            src/domains/shared-common
-            src/domains/wallet-app
-            src/domains/wallet-common
         run: |
+          FOLDERS=$(grep -rl --include='*.tf' --exclude-dir='.terraform' '^' . | xargs -I{} dirname {} | sort -u)
+          echo "FOLDERS=${FOLDERS}"
+
           pids=()
 
           TAG=$(cat .terraform-version)
