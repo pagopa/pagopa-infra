@@ -63,7 +63,7 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
-# nodo dei pagamenti
+# Nodo dei Pagamenti
 
 variable "nodo_pagamenti_enabled" {
   type        = bool
@@ -110,6 +110,17 @@ variable "nodo_pagamenti_subkey_required" {
   description = "Enabled subkeys for nodo dei pagamenti api"
   default     = false
 }
+
+variable "schema_ip_nexi" {
+  type        = string
+  description = "Nodo Pagamenti Nexi schema://ip"
+}
+
+variable "base_path_nodo_postgresql_nexi_onprem" {
+  type        = string
+  description = "base nodo postgresql Nexi on prem"
+}
+
 
 # 1. PPT LMI
 # 2. SYNC
@@ -377,6 +388,22 @@ variable "apim_nodo_auth_decoupler_enable" {
   type        = bool
   default     = false
   description = "Apply decoupler to nodo-auth product apim policy"
+}
+
+variable "apim_enable_nm3_decoupler_switch" {
+  type        = bool
+  default     = false
+  description = "Enable switch backend address in NM3 algorithm logic"
+}
+
+variable "apim_enable_routing_decoupler_switch" {
+  type        = bool
+  default     = false
+  description = "Enable switch backend address in Routing algorithm logic"
+}
+variable "default_node_id" {
+  type        = string
+  description = "Default NodeId according to default base url"
 }
 
 ## Redis cache

@@ -20,7 +20,7 @@ module "api_config_ica_sa" {
   name                            = replace(format("%s-sa", local.project), "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
-  account_replication_type        = "LRS"
+  account_replication_type        = "ZRS"
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.api_config_enable_versioning
   resource_group_name             = data.azurerm_resource_group.api_config_rg.name
@@ -32,7 +32,7 @@ module "api_config_ica_sa" {
 
 
   blob_change_feed_enabled             = var.enable_apiconfig_sa_backup
-  blob_change_feed_retention_in_days   = var.enable_apiconfig_sa_backup ? var.api_config_reporting_backup_retention_days : null
+  blob_change_feed_retention_in_days   = var.enable_apiconfig_sa_backup ? var.api_config_reporting_backup_retention_days + 1 : null
   blob_container_delete_retention_days = var.api_config_reporting_backup_retention_days
   blob_storage_policy = {
     enable_immutability_policy = false
