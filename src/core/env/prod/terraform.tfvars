@@ -739,8 +739,6 @@ ingress_elk_load_balancer_ip = "10.1.100.251"
 devops_agent_zones         = [1, 2, 3]
 devops_agent_balance_zones = false
 
-enable_logos_backup            = true
-logos_sa_delete_retention_days = 30
 
 function_app_storage_account_info = {
   account_kind                      = "StorageV2"
@@ -752,7 +750,6 @@ function_app_storage_account_info = {
 
 
 logic_app_storage_account_replication_type       = "LRS"
-logos_donations_storage_account_replication_type = "GZRS"
 buyer_banks_storage_account_replication_type     = "GZRS"
 cdn_storage_account_replication_type             = "GRS"
 backup_storage_replication_type                  = "GRS"
