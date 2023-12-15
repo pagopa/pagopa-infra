@@ -23,7 +23,7 @@ resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint" {
 
   name                = "${local.project}-verifyko-private-endpoint"
   location            = var.location
-  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg
+  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   subnet_id           = module.storage_account_snet.id
 
   private_dns_zone_group {
