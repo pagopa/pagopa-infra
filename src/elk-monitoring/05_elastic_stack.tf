@@ -87,7 +87,7 @@ module "elastic_stack" {
     kubernetes_secret.snapshot_secret
   ]
 
-  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.21.0"
+  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=elastic-heap-space"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
