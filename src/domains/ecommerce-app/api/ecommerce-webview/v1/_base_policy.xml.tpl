@@ -14,8 +14,6 @@
       </allowed-headers>
     </cors>
     <base />
-    <set-header name="x-client-id" exists-action="delete" />
-    <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     <!-- Session eCommerce START-->
     <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
         <issuer-signing-keys>
