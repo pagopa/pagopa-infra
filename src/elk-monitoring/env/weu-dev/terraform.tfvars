@@ -117,9 +117,9 @@ nodeset_config = {
     roles            = ["ingest", "data_content", "data_hot"]
     storage          = "100Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
-    requestMemory    = "4Gi"
+    requestMemory    = "3Gi"
     requestCPU       = "1"
-    limitsMemory     = "5Gi"
+    limitsMemory     = "4Gi"
     limitsCPU        = "2"
   },
   data-warm-nodes = {
@@ -127,9 +127,9 @@ nodeset_config = {
     roles            = ["ingest", "data_content", "data_warm"]
     storage          = "100Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-warm"
-    requestMemory    = "4Gi"
+    requestMemory    = "3Gi"
     requestCPU       = "1"
-    limitsMemory     = "5Gi"
+    limitsMemory     = "4Gi"
     limitsCPU        = "2"
   },
   data-cold-nodes = {
@@ -137,9 +137,9 @@ nodeset_config = {
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
     storage          = "100Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-cold"
-    requestMemory    = "4Gi"
+    requestMemory    = "3Gi"
     requestCPU       = "1"
-    limitsMemory     = "5Gi"
+    limitsMemory     = "4Gi"
     limitsCPU        = "2"
   }
 }
