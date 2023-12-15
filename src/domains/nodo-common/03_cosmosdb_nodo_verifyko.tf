@@ -1,9 +1,16 @@
+resource "azurerm_resource_group" "nodo_verifyko_to_datastore_rg" {
+  name     = "${local.project}-verifyko-to-datastore-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
 module "cosmosdb_account_nodo_verifyko" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
   domain              = var.domain
   name                = "${local.project}-verifyko-cosmos-account"
   location            = var.location
-  resource_group_name = azurerm_resource_group.db_rg.name
+  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
 
   offer_type       = var.verifyko_cosmos_nosql_db_params.offer_type
   kind             = var.verifyko_cosmos_nosql_db_params.kind
@@ -38,7 +45,7 @@ module "cosmosdb_account_nodo_verifyko" {
 module "cosmosdb_account_nodo_verifyko_db" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
   name                = "nodo_verifyko"
-  resource_group_name = azurerm_resource_group.db_rg.name
+  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   account_name        = module.cosmosdb_account_nodo_verifyko.name
 }
 
@@ -62,7 +69,7 @@ module "cosmosdb_account_nodo_verifyko_containers" {
   for_each = { for c in local.nodo_verify_ko_containers : c.name => c }
 
   name                = each.value.name
-  resource_group_name = azurerm_resource_group.db_rg.name
+  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   account_name        = module.cosmosdb_account_nodo_verifyko.name
   database_name       = module.cosmosdb_account_nodo_verifyko_db.name
   partition_key_path  = each.value.partition_key_path

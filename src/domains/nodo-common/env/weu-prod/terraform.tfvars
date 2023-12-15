@@ -191,8 +191,8 @@ nodo_verifyko_storage_account = {
   account_replication_type      = "GZRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
-  blob_delete_retention_days    = 0
-  public_network_access_enabled = true
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
   backup_enabled                = true
   backup_retention              = 30
 }

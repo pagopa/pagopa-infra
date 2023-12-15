@@ -2,7 +2,7 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datastore_appexception" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "${module.nodo_verifyko_to_datastore_function.name}-app-exception"
-  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
+  resource_group_name = data.azurerm_resource_group.nodo_verify_ko_rg.name
   location            = var.location
 
   action {
@@ -36,7 +36,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datasto
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablestorage_appexception" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "${module.nodo_verifyko_to_tablestorage_function.name}-app-exception"
-  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
+  resource_group_name = data.azurerm_resource_group.nodo_verify_ko_rg.name
   location            = var.location
 
   action {
@@ -70,7 +70,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablest
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datastore_cosmosexception" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "${module.nodo_verifyko_to_datastore_function.name}-cosmosexception"
-  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
+  resource_group_name = data.azurerm_resource_group.nodo_verify_ko_rg.name
   location            = var.location
 
   action {
@@ -106,7 +106,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datasto
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablestorage_persistenceexception" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "${module.nodo_verifyko_to_tablestorage_function.name}-persistence-exception"
-  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
+  resource_group_name = data.azurerm_resource_group.nodo_verify_ko_rg.name
   location            = var.location
 
   action {

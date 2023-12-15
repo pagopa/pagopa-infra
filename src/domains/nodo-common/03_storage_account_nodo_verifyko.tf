@@ -1,7 +1,3 @@
-data "azurerm_resource_group" "nodo_verifyko_to_datastore_rg" {
-  name = format("%s-verifyko-to-datastore-rg", local.project)
-}
-
 module "nodo_verifyko_storage_account" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
 
@@ -11,7 +7,7 @@ module "nodo_verifyko_storage_account" {
   account_replication_type        = var.nodo_verifyko_storage_account.account_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.nodo_verifyko_storage_account.blob_versioning_enabled
-  resource_group_name             = data.azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
+  resource_group_name             = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
   location                        = var.location
   advanced_threat_protection      = var.nodo_verifyko_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
@@ -27,7 +23,7 @@ resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint" {
 
   name                = "${local.project}-verifyko-private-endpoint"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.nodo_re_to_datastore_rg[0].name
+  resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg
   subnet_id           = module.storage_account_snet.id
 
   private_dns_zone_group {
