@@ -51,10 +51,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SessionInputData"
+                "$ref": "#/components/schemas/CreateSessionInputData"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -466,51 +467,40 @@
           }
         ]
       },
+      "CreateSessionInputData": {
+        "$ref": "#/components/schemas/SessionInputData"
+      },
       "SessionInputData": {
-        "type": "object",
-        "description": "Data needed to create  session",
+        "description": "Session input data",
         "oneOf": [
           {
-            "$ref": "#/components/schemas/SessionInputCardData"
+            "type": "object",
+            "description": "Data required to initialize a card onboarding session",
+            "properties": {
+              "paymentMethodType": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "paymentMethodType"
+            ]
           },
           {
-            "$ref": "#/components/schemas/SessionInputPayPalData"
+            "type": "object",
+            "description": "Data required to initialize a PayPal onboarding session",
+            "properties": {
+              "paymentMethodType": {
+                "type": "string"
+              },
+              "pspId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "paymentMethodType",
+              "pspId"
+            ]
           }
-        ],
-        "discriminator": {
-          "propertyName": "paymentMethodType",
-          "mapping": {
-            "cards": "#/components/schemas/SessionInputCardData",
-            "paypal": "#/components/schemas/SessionInputPayPalData"
-          }
-        }
-      },
-      "SessionInputCardData": {
-        "type": "object",
-        "description": "Data required to initialize a card onboarding session",
-        "properties": {
-          "paymentMethodType": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "paymentMethodType"
-        ]
-      },
-      "SessionInputPayPalData": {
-        "type": "object",
-        "description": "Data required to initialize a PayPal onboarding session",
-        "properties": {
-          "paymentMethodType": {
-            "type": "string"
-          },
-          "pspId": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "paymentMethodType",
-          "pspId"
         ]
       },
       "SessionWalletRetrieveResponse": {
