@@ -44,9 +44,9 @@
                 timestampOperation = dateTimeOffset.ToString("o");
             }
             string paymentCircuit = (string)operation["paymentCircuit"];
-            JObject additionalData = (JObject)operation["additionalData"];
             JObject details = null;
-            if(paymentCircuit == "PAYPAL" && additionalData != null){
+            if(paymentCircuit == "PAYPAL"){
+                JObject additionalData = (JObject)operation["additionalData"];
                 details = new JObject();
                 details["type"] = "PAYPAL";
                 details["maskedEmail"] = (string)additionalData["maskedEmail"]; //TODO to be changed with the correct NPG additional data field
