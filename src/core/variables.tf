@@ -1644,19 +1644,6 @@ variable "devops_agent_balance_zones" {
 }
 
 
-variable "enable_logos_backup" {
-  type        = bool
-  default     = false
-  description = "(Optional) Enables nodo sftp storage account backup"
-}
-
-variable "logos_sa_delete_retention_days" {
-  type        = number
-  default     = null
-  description = "(Optional) nodo sftp storage delete retention"
-}
-
-
 variable "logic_app_storage_account_replication_type" {
   type        = string
   default     = "LRS"
@@ -1680,13 +1667,6 @@ variable "function_app_storage_account_info" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
-}
-
-
-variable "logos_donations_storage_account_replication_type" {
-  type        = string
-  default     = "LRS"
-  description = "(Optional) Logos donations storage account replication type"
 }
 
 variable "buyer_banks_storage_account_replication_type" {
