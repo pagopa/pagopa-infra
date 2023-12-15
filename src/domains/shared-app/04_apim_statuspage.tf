@@ -1,3 +1,13 @@
+data "azurerm_storage_account" "pagopa_selfcare_fe_sa" {
+  name                = replace("${var.prefix}-${var.env_short}-selfcare-sa", "-", "")
+  resource_group_name = format("%s-%s-fe-rg", var.prefix, var.env_short)
+}
+
+data "azurerm_storage_account" "pagopa_apiconfig_fe_sa" {
+  name                = replace("${var.prefix}-${var.env_short}-${var.location_short}-apiconfig-sa", "-", "")
+  resource_group_name = format("%s-%s-api-config-rg", var.prefix, var.env_short)
+}
+
 ##############
 ## Products ##
 ##############
@@ -32,8 +42,8 @@ locals {
     service_url           = null
   }
   aks_path           = var.env == "prod" ? "weuprod.%s.internal.platform.pagopa.it" : "weu${var.env}.%s.internal.${var.env}.platform.pagopa.it"
-  fe_backoffice_path = "pagopa${var.env_short}selfcaresa.z6.web.core.windows.net/ui/version.json"
-  fe_apiconfig_path  = "pagopa${var.env_short}apiconfigfesa.z6.web.core.windows.net/ui/version.json"
+  fe_backoffice_path = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_selfcare_fe_sa.primary_web_host), "/{2}", "/")
+  fe_apiconfig_path  = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_apiconfig_fe_sa.primary_web_host), "/{2}", "/")
 }
 
 resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
