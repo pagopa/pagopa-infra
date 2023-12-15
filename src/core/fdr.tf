@@ -7,7 +7,7 @@ module "fdr_flows_sa" {
   name                       = replace(format("%s-fdr-flows-sa", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
-  account_replication_type   = "LRS"
+  account_replication_type   = var.fdr_flow_sa_replication_type
   access_tier                = "Hot"
   versioning_name            = "versioning"
   enable_versioning          = var.fdr_enable_versioning
@@ -125,7 +125,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_parsing_0_flows_aler
     | where cloud_RoleName == "%s"
     | where message  matches regex "with.*flows"
     | extend flussi = extract("END opt2ehub.*with(.*)flows", 1, message)
-    | where toint(flussi) == 0  
+    | where toint(flussi) == 0
   QUERY
     , module.reporting_fdr_function.name
   )

@@ -90,7 +90,7 @@ module "logos_donation_flows_sa" {
   name                       = replace(format("%s-logos-donation-sa", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
-  account_replication_type   = "LRS"
+  account_replication_type   = var.logos_donations_storage_account_replication_type
   access_tier                = "Hot"
   versioning_name            = "versioning"
   enable_versioning          = var.enable_logos_backup

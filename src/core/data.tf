@@ -14,7 +14,7 @@ module "backupstorage" {
   name                     = replace(format("%s-backupstorage", local.project), "-", "")
   account_kind             = "BlobStorage"
   account_tier             = "Standard"
-  account_replication_type = "GRS"
+  account_replication_type = var.backup_storage_replication_type
   access_tier              = "Cool"
   enable_versioning        = true
   versioning_name          = "versioning"

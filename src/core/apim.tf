@@ -316,7 +316,7 @@ resource "azurerm_api_management_named_value" "schema_ip_nodo_pagopa" {
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "schema-ip-nodo-pagopa"
-  value               = var.env_short == "p" ? "https://weu${var.env}.nodo.internal.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}": "https://weu${var.env}.nodo.internal.${var.env}.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}"
+  value               = var.env_short == "p" ? "https://weu${var.env}.nodo.internal.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}" : "https://weu${var.env}.nodo.internal.${var.env}.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}"
 }
 
 # DEFAULT NODO CONFIGURATION
@@ -326,7 +326,7 @@ resource "azurerm_api_management_named_value" "default_nodo_backend" {
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "default-nodo-backend"
   # in PROD Nodo have not the context-path
-  value               = var.env_short == "p" ? azurerm_api_management_named_value.schema_ip_nexi.value : "${azurerm_api_management_named_value.schema_ip_nexi.value}${azurerm_api_management_named_value.base_path_nodo_oncloud.value}"
+  value = var.env_short == "p" ? azurerm_api_management_named_value.schema_ip_nexi.value : "${azurerm_api_management_named_value.schema_ip_nexi.value}${azurerm_api_management_named_value.base_path_nodo_oncloud.value}"
 }
 
 resource "azurerm_api_management_named_value" "default_nodo_backend_prf" {

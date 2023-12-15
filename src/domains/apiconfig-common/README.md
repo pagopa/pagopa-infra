@@ -70,6 +70,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_api_config_enable_versioning"></a> [api\_config\_enable\_versioning](#input\_api\_config\_enable\_versioning) | Enable sa versioning | `bool` | `false` | no |
+| <a name="input_api_config_replication_type"></a> [api\_config\_replication\_type](#input\_api\_config\_replication\_type) | (Optional) Api config storage account replication type | `string` | `"LRS"` | no |
 | <a name="input_api_config_reporting_advanced_threat_protection"></a> [api\_config\_reporting\_advanced\_threat\_protection](#input\_api\_config\_reporting\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
 | <a name="input_api_config_reporting_backup_retention_days"></a> [api\_config\_reporting\_backup\_retention\_days](#input\_api\_config\_reporting\_backup\_retention\_days) | Number of days to retain backups. | `number` | `0` | no |
 | <a name="input_api_config_reporting_delete_retention_days"></a> [api\_config\_reporting\_delete\_retention\_days](#input\_api\_config\_reporting\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |

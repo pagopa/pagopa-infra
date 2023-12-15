@@ -109,6 +109,8 @@ module "fdr_re_function" {
 
   storage_account_name = replace(format("%s-re-fn-sa", local.project), "-", "")
 
+  storage_account_info = var.storage_account_info
+
   app_settings = local.function_re_to_datastore_app_settings
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
