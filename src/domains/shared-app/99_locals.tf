@@ -114,6 +114,10 @@ locals {
     MAX_CONNECTIONS_PER_ROUTE = 40
     CONN_TIMEOUT              = 8
 
+    # waitForRender params
+    CHECK_SIZE_INTERVAL        = 100
+    MIN_STABLE_SIZE_ITERATIONS = 3
+
   }
 
   shared_pdf_engine_app_settings_java = {
@@ -166,8 +170,6 @@ locals {
     OTEL_LOGS_EXPORTER                = "none"
     OTEL_TRACES_SAMPLER               = "always_on"
     JAVA_TOOL_OPTIONS                 = "-javaagent:/home/site/wwwroot/jmx_prometheus_javaagent-0.19.0.jar=12345:/home/site/wwwroot/config.yaml -javaagent:/home/site/wwwroot/opentelemetry-javaagent.jar"
-    CHECK_SIZE_INTERVAL               = 100
-    MIN_STABLE_SIZE_ITERATIONS        = 3
     OTEL_EXPORTER_OTLP_HEADERS        = data.azurerm_key_vault_secret.elastic_otel_token_header.value
     PDF_ENGINE_NODE_SUBKEY            = data.azurerm_key_vault_secret.pdf_engine_node_subkey.value
 
