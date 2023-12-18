@@ -73,6 +73,21 @@
                     </set-body>
                 </return-response>
             </when>
+            <when condition="@(((string) ((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>()["status"]) != "ENABLED")">
+                <return-response>
+                    <set-status code="422" reason="Unprocessable Entity" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                        {
+                            "title": "Payment method is not enabled",
+                            "status": 422,
+                            "detail": "The payment method associated to this wallet is not currently enabled"
+                        }
+                    </set-body>
+                </return-response>
+            </when>
             <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode != 200)">
                 <return-response>
                     <set-status code="502" reason="Bad Gateway" />
