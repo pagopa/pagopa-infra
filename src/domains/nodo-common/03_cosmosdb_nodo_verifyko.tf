@@ -26,8 +26,7 @@ module "cosmosdb_account_nodo_verifyko" {
   is_virtual_network_filter_enabled = var.verifyko_cosmos_nosql_db_params.is_virtual_network_filter_enabled
   ip_range                          = ""
 
-  # allowed_virtual_network_subnet_ids = var.verifyko_cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.nodo_verifyko_to_datastore_function_snet.id]
-  allowed_virtual_network_subnet_ids = []
+  allowed_virtual_network_subnet_ids = var.verifyko_cosmos_nosql_db_params.public_network_access_enabled ? [] : [module.cosmosdb_nodo_verifyko_snet.id]
 
   enable_automatic_failover = true
 
