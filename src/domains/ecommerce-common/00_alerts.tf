@@ -55,8 +55,7 @@ AzureDiagnostics
     Success=countif(responseCode_d < 500 or url_s startswith "https://api.platform.pagopa.it/ecommerce/checkout/v1/payment-requests" and ( responseCode_d == 502 or responseCode_d == 504))
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| extend Watermark=99
-| project Watermark, Availability, Time
+| where toint(Availability) < 90
   QUERY
   )
   severity    = 1
