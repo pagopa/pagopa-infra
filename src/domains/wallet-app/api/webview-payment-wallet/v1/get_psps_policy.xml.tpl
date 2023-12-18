@@ -7,7 +7,7 @@
         <set-method>POST</set-method>
 
         <send-request ignore-error="false" timeout="10" response-variable-name="walletResponse">
-            <set-url>@("https://${ecommerce_hostname}/payment-wallet/v1/wallets" + context.Variables["walletId"])</set-url>
+            <set-url>@("https://${wallet_hostname}/pagopa-wallet-service/wallets/" + context.Variables["walletId"])</set-url>
             <set-method>GET</set-method>
             <set-header name="Authorization">
                 <value>@(context.Request.Headers["Authorization"][0])</value>
@@ -47,7 +47,7 @@
             </when>
         </choose>
 
-        <set-variable name="paymentMethodId" value="@(((JObject) context.Variables["walletResponse"])["paymentMethodId"])" />
+        <set-variable name="paymentMethodId" value="@(((IResponse) context.Variables["walletResponse"]).Body.As<JObject>()["paymentMethodId"])" />
 
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
             <set-url>@("https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods/" + context.Variables["paymentMethodId"])</set-url>
@@ -57,8 +57,10 @@
             </set-header>
         </send-request>
 
+        <set-variable name="paymentMethodsResponseBody" value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
+
         <choose>
-            <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode == 404)">
+            <when condition="@(((IResponse) context.Variables["paymentMethodsResponse"]).StatusCode == 404)">
                 <return-response>
                     <set-status code="404" reason="Not Found" />
                     <set-header name="Content-Type" exists-action="override">
@@ -104,7 +106,7 @@
                 </return-response>
             </when>
         </choose>
-        <set-variable name="paymentMethodsResponseBody" value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
+
         <set-variable name="paymentMethodTypeCode" value="@((string)((JObject) context.Variables["paymentMethodsResponseBody"])["paymentTypeCode"])" />
 
         <set-header name="Content-Type" exists-action="override">

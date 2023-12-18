@@ -263,5 +263,6 @@ resource "azurerm_api_management_api_operation_policy" "get_psps_for_wallet" {
     payment_wallet_origin = "https://${var.dns_zone_prefix}.${var.external_domain}/"
     gec_hostname          = var.env_short == "p" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it"
     ecommerce_hostname    = local.ecommerce_hostname
+    wallet_hostname       = local.wallet_hostname
   })
 }
