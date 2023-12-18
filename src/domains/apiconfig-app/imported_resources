@@ -1,5 +1,4 @@
 module.apim_api_config_product
-resource.azurerm_api_management_group.apiconfig_grp
 resource.azurerm_api_management_api_version_set.api_config_api
 module.apim_api_config_api
 resource.azurerm_api_management_authorization_server.apiconfig-oauth2
