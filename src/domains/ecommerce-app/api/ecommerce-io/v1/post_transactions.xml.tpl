@@ -65,40 +65,18 @@
             </set-header>
           </when>
           <otherwise>
-          <!-- Get User IO START-->
-          <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
-              <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
-              <set-method>GET</set-method>
-              <set-header name="Accept" exists-action="override">
-                <value>application/json</value>
-              </set-header>
-              <set-header name="Authorization" exists-action="override">
-                <value>@("Bearer " + (string)context.Variables.GetValueOrDefault("walletToken"))</value>
-              </set-header>
-          </send-request>
-          <choose>
-            <when condition="@(((IResponse)context.Variables["user-auth-body"]).StatusCode != 200)">
-              <return-response>
-                <set-status code="502" reason="Bad Gateway" />
-              </return-response>
-            </when>
-          </choose>
-          <set-variable name="userAuth" value="@(((IResponse)context.Variables["user-auth-body"]).Body.As<JObject>())" />
-          <!-- Get User IO END-->
-            <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
-            <!-- Maybe here add a backend call to the get user to get user email -->
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
+          <!-- Read email from JWT START-->
+          <set-variable name="email" value="@{
+            var authHeader = context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ","");
+            return authHeader.AsJwt()?.Claims.GetValueOrDefault("email", "");
+        }" />
+          <!-- Read email from JWT END-->
             <set-body>@{ 
-                JObject userAuth = (JObject)context.Variables["userAuth"];
-                String spidEmail = (String)userAuth["spidEmail"];
-                String noticeEmail = (String)userAuth["noticeEmail"];
-                JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
-                requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
-                if(String.IsNullOrEmpty(noticeEmail)) {
-                  requestBody["email"] = spidEmail;
-                } else {
-                  requestBody["email"] = noticeEmail;
-                }
-                return requestBody.ToString();  
+              JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
+              requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
+              requestBody["email"] = (String)context.Variables["email"];
+              return requestBody.ToString(); 
             }</set-body>
             <set-header name="X-Client-Id" exists-action="override">
               <value>IO</value>
