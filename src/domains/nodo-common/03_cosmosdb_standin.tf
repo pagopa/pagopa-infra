@@ -66,7 +66,14 @@ locals {
       autoscale_settings = {
         max_throughput = var.cosmos_nosql_db_params.max_throughput
       }
-    },
+    },{
+      name               = "stand_in_stations",
+      partition_key_path = "/PartitionKey",
+      default_ttl        = var.standin_cosmos_nosql_db_params.events_ttl
+      autoscale_settings = {
+        max_throughput = var.cosmos_nosql_db_params.max_throughput
+      }
+    }
   ]
 }
 
