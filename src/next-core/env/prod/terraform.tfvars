@@ -49,3 +49,8 @@ geo_replica_ddos_protection_plan = {
 }
 
 postgres_private_dns_enabled = true
+
+
+enable_logos_backup                              = true
+logos_backup_retention                           = 30
+logos_donations_storage_account_replication_type = "GZRS"

@@ -256,6 +256,12 @@ variable "app_service_pdf_engine_sku_name_java" {
   default     = "S1"
 }
 
+variable "function_app_storage_account_replication_type" {
+  type        = string
+  default     = "ZRS"
+  description = "(Optional) Storage account replication type used for function apps"
+}
+
 variable "pod_disruption_budgets" {
   type = map(object({
     name         = optional(string, null)

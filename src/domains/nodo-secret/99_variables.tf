@@ -144,6 +144,8 @@ variable "certs_storage_account_replication_type" {
   description = "(Optional) Certificates storage account replication type"
 }
 
+
+
 variable "nodo_cert_storage_account" {
   type = object({
     advanced_threat_protection    = bool

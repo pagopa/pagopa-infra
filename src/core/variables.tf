@@ -1132,6 +1132,22 @@ variable "reporting_fdr_blobs_retention_days" {
   default     = 30
 }
 
+variable "reporting_fdr_storage_account_info" {
+  type = object({
+    account_tier                      = string
+    account_replication_type          = string
+    access_tier                       = string
+    advanced_threat_protection_enable = bool
+  })
+
+  default = {
+    account_tier                      = "Standard"
+    account_replication_type          = "ZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+}
+
 #  gestione posizioni debitorie
 variable "gpd_plan_kind" {
   type        = string
@@ -1628,14 +1644,51 @@ variable "devops_agent_balance_zones" {
 }
 
 
-variable "enable_logos_backup" {
-  type        = bool
-  default     = false
-  description = "(Optional) Enables nodo sftp storage account backup"
+variable "logic_app_storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Storage account replication type used for function apps"
 }
 
-variable "logos_sa_delete_retention_days" {
-  type        = number
-  default     = null
-  description = "(Optional) nodo sftp storage delete retention"
+
+variable "function_app_storage_account_info" {
+  type = object({
+    account_kind                      = optional(string, "StorageV2")
+    account_tier                      = optional(string, "Standard")
+    account_replication_type          = optional(string, "LRS")
+    access_tier                       = optional(string, "Hot")
+    advanced_threat_protection_enable = optional(bool, true)
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+}
+
+variable "buyer_banks_storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Buyer banks storage account replication type"
+}
+
+variable "cdn_storage_account_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Cdn storage account replication type"
+}
+
+variable "backup_storage_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Backup storage account replication type"
+}
+
+variable "fdr_flow_sa_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Fdr flow storage account replication type"
 }

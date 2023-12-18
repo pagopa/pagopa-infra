@@ -133,11 +133,11 @@ prostgresql_db_mockpsp = "mock-psp"
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
 
-apim_enable_nm3_decoupler_switch      = false
-apim_enable_routing_decoupler_switch  = false
-default_node_id = "NDP002SIT"
+apim_enable_nm3_decoupler_switch     = false
+apim_enable_routing_decoupler_switch = false
+default_node_id                      = "NDP002SIT"
 
-apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725"
@@ -146,7 +146,7 @@ nodo_pagamenti_url     = "http://10.70.66.200/nodo-sit/webservices/input"
 ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/sit/webservices/input shall use lb_aks
 lb_aks                 = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
 
-schema_ip_nexi         = "http://10.70.66.200"
+schema_ip_nexi = "http://10.70.66.200"
 
 base_path_nodo_oncloud        = "/nodo-sit"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-sit-NOT-FOUND"
@@ -297,19 +297,19 @@ eventhubs = [
         send   = false
         manage = false
       },
-#     disabled because at the moment not used
-#      {
-#        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
-#        listen = true
-#        send   = false
-#        manage = false
-#      },
-#      {
-#        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
-#        listen = true
-#        send   = false
-#        manage = false
-#      }
+      #     disabled because at the moment not used
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      },
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      }
     ]
   },
   {
@@ -580,9 +580,9 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-dns_a_reconds_dbnodo_ips                       = ["10.70.67.18"] # db onCloud
-dns_a_reconds_dbnodonexipostgres_ips           = ["10.222.214.176"] # db onPrem PostgreSQL
-private_dns_zone_db_nodo_pagamenti             = "d.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips             = ["10.70.67.18"]    # db onCloud
+dns_a_reconds_dbnodonexipostgres_ips = ["10.222.214.176"] # db onPrem PostgreSQL
+private_dns_zone_db_nodo_pagamenti   = "d.db-nodo-pagamenti.com"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"

@@ -53,6 +53,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_az_nodo_sa_share_name_firmatore"></a> [az\_nodo\_sa\_share\_name\_firmatore](#input\_az\_nodo\_sa\_share\_name\_firmatore) | Azure storage account share name | `string` | n/a | yes |
 | <a name="input_cacerts_path"></a> [cacerts\_path](#input\_cacerts\_path) | Java cacerts | `string` | n/a | yes |
+| <a name="input_certs_storage_account_replication_type"></a> [certs\_storage\_account\_replication\_type](#input\_certs\_storage\_account\_replication\_type) | (Optional) Certificates storage account replication type | `string` | `"LRS"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |

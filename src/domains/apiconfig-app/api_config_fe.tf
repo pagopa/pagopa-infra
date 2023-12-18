@@ -26,6 +26,8 @@ module "api_config_fe_cdn" {
   https_rewrite_enabled = true
   lock_enabled          = false
 
+  storage_account_replication_type = var.cdn_storage_account_replication_type
+
   index_document     = "index.html"
   error_404_document = "not_found.html"
 
