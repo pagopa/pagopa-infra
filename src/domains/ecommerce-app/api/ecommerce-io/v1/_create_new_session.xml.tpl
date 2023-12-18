@@ -116,10 +116,16 @@
               var header = new { typ = "JWT", alg = "HS512" };
               var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
     
+              //Read email and pass it to tje JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
+              JObject userAuth = (JObject)context.Variables["userAuth"];
+              String spidEmail = (String)userAuth["spid_email"];
+              String noticeEmail = (String)userAuth["notice_email"];
+              String email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
+
               // 2) Construct the Base64Url-encoded payload 
               var exp = new DateTimeOffset(DateTime.Now.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
               var userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
-              var payload = new { exp, userId }; 
+              var payload = new { exp, userId, email }; 
               var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
     
               // 3) Construct the Base64Url-encoded signature                
