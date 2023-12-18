@@ -161,6 +161,7 @@ resource "azurerm_api_management_api_operation_policy" "io_create_transaction" {
   xml_content = templatefile("./api/ecommerce-io/v1/post_transactions.xml.tpl", {
     ecommerce_ingress_hostname   = local.ecommerce_hostname
     ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+    io_backend_base_path         = var.io_backend_base_path
   })
 }
 
