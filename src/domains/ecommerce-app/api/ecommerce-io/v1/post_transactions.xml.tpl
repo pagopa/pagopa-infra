@@ -89,11 +89,11 @@
             <!-- Maybe here add a backend call to the get user to get user email -->
             <set-body>@{ 
                 JObject userAuth = (JObject)context.Variables["userAuth"];
-                String spidEmail = userAuth["spidEmail"];
-                String noticeEmail = userAuth["noticeEmail"];
+                String spidEmail = (String)userAuth["spidEmail"];
+                String noticeEmail = (String)userAuth["noticeEmail"];
                 JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
                 requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
-                if(noticeEmail.IsNullOrEmpty()) {
+                if(String.IsNullOrEmpty(noticeEmail)) {
                   requestBody["email"] = spidEmail;
                 } else {
                   requestBody["email"] = noticeEmail;
