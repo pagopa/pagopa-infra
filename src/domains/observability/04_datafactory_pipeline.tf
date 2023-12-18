@@ -172,14 +172,14 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_IMPORT_ESITI" {
 
   variables = {
     date_trigger = "",
-    date_start = "",
-    date_end = "",
-    date_only = ""
+    date_start   = "",
+    date_end     = "",
+    date_only    = ""
   }
- 
+
   activities_json = "[${templatefile("datafactory/pipelines/KPI_FDR_IMPORT_ESITI.json", {
     cosmos_dataset  = "SMO_COSMOS_BIZEVENTS_OK_DataSet"
-    esiti_dataset = "SMO_KPI_ESITI_DAILY_DataSet"
+    esiti_dataset   = "SMO_KPI_ESITI_DAILY_DataSet"
     details_dataset = "SMO_KPI_RENDICONTAZIONI_DETAILS_DataSet"
   })}]"
 
@@ -217,18 +217,18 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_IMPORT_ESITI_Manuale"
   # activities_json = file("datafactory/pipelines/KPI_TPNP.json")
 
   parameters = {
-    date_trigger     = ""
+    date_trigger = ""
   }
 
   variables = {
     date_start = "",
-    date_end = "",
-    date_only = ""
+    date_end   = "",
+    date_only  = ""
   }
- 
+
   activities_json = "[${templatefile("datafactory/pipelines/KPI_FDR_IMPORT_ESITI_Manuale.json", {
     cosmos_dataset  = "SMO_COSMOS_BIZEVENTS_OK_DataSet"
-    esiti_dataset = "SMO_KPI_ESITI_DAILY_DataSet"
+    esiti_dataset   = "SMO_KPI_ESITI_DAILY_DataSet"
     details_dataset = "SMO_KPI_RENDICONTAZIONI_DETAILS_DataSet"
   })}]"
 
@@ -257,17 +257,17 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_IMPORT_ESITI_DAILY_Ma
 
   parameters = {
     date_trigger = "",
-    nh = 24
+    nh           = 24
   }
 
   variables = {
-    i = "",
-    _i = "",
+    i          = "",
+    _i         = "",
     date_start = ""
   }
- 
+
   activities_json = "[${templatefile("datafactory/pipelines/KPI_FDR_IMPORT_ESITI_DAILY_Manuale.json", {
-    reference_pipeline  = "SMO_KPI_FDR_IMPORT_ESITI_Manuale_Pipeline"
+    reference_pipeline = "SMO_KPI_FDR_IMPORT_ESITI_Manuale_Pipeline"
   })}]"
 
   depends_on = [
@@ -287,11 +287,11 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_FDR_RENDICONTAZIONI" {
 
   variables = {
     date_trigger = "",
-    date_start = "",
-    date_end = "",
-    date_only = ""
+    date_start   = "",
+    date_end     = "",
+    date_only    = ""
   }
- 
+
   activities_json = "[${templatefile("datafactory/pipelines/KPI_FDR_RENDICONTAZIONI.json", {
     inputdataset  = "SMO_KPI_RENDICONTAZIONI_DETAILS_DataSet"
     outputdataset = "SMO_KPI_RENDICONTAZIONI_DataSet"
@@ -313,7 +313,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_FDR_RENDICONTAZION
   activated = true
   time_zone = "W. Europe Standard Time"
   schedule {
-    hours  = [3]
+    hours   = [3]
     minutes = [0]
   }
 
