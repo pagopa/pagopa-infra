@@ -37,7 +37,7 @@ locals {
 
     DOCKER_REGISTRY_SERVER_URL = local.verifyko_ds_docker_settings.DOCKER_REGISTRY_SERVER_URL
 
-    COSMOS_CONN_STRING        = "AccountEndpoint=https://${local.project}-verifyko-cosmos-nosql-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.nodo_verifyko_cosmosdb_nosql.primary_key}"
+    COSMOS_CONN_STRING        = "AccountEndpoint=https://${local.project}-verifyko-cosmos-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.nodo_verifyko_cosmosdb_nosql.primary_key}"
     COSMOS_DB_NAME            = "nodo_verifyko"
     COSMOS_DB_COLLECTION_NAME = "events"
 
