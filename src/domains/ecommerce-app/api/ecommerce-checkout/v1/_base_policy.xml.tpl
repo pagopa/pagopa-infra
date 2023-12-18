@@ -4,6 +4,7 @@
       <cors>
         <allowed-origins>
           <origin>${checkout_origin}</origin>
+          <origin>https://dev.checkout.pagopa.it</origin>
         </allowed-origins>
         <allowed-methods>
           <method>POST</method>
