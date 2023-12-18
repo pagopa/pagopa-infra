@@ -443,7 +443,7 @@
             "description": "Session data returned by `createSessionWallet` operation in case of a credit card session",
             "properties": {
               "paymentMethodType": {
-                "type": "string"
+                "$ref": "#/components/schemas/SessionWalletCreateResponseCardsDataType"
               },
               "cardFormFields": {
                 "type": "array",
@@ -462,7 +462,7 @@
             "description": "Session data returned by `createSessionWallet` operation in case of a credit card session",
             "properties": {
               "paymentMethodType": {
-                "type": "string"
+                "$ref": "#/components/schemas/SessionWalletCreateResponseApmDataType"
               },
               "redirectUrl": {
                 "type": "string",
@@ -470,6 +470,20 @@
               }
             }
           }
+        ]
+      },
+      "SessionWalletCreateResponseCardsDataType": {
+        "description": "Create session wallet response data type discriminator for cards onboarding",
+        "type": "string",
+        "enum": [
+          "cards"
+        ]
+      },
+      "SessionWalletCreateResponseApmDataType": {
+        "description": "Create session wallet response data type discriminator for apm onboarding",
+        "type": "string",
+        "enum": [
+          "apm"
         ]
       },
       "CreateSessionInputData": {
@@ -483,7 +497,7 @@
             "description": "Data required to initialize a card onboarding session",
             "properties": {
               "paymentMethodType": {
-                "type": "string"
+                "$ref": "#/components/schemas/SessionInputDataTypeCards"
               }
             },
             "required": [
@@ -495,7 +509,7 @@
             "description": "Data required to initialize a PayPal onboarding session",
             "properties": {
               "paymentMethodType": {
-                "type": "string"
+                "$ref": "#/components/schemas/SessionInputDataTypePaypal"
               },
               "pspId": {
                 "type": "string"
@@ -506,6 +520,20 @@
               "pspId"
             ]
           }
+        ]
+      },
+      "SessionInputDataTypeCards": {
+        "description": "Discriminator used to identify session input data for cards onboarding",
+        "type": "string",
+        "enum": [
+          "cards"
+        ]
+      },
+      "SessionInputDataTypePaypal": {
+        "description": "Discriminator used to identify session input data for paypal onboarding",
+        "type": "string",
+        "enum": [
+          "paypal"
         ]
       },
       "SessionWalletRetrieveResponse": {
