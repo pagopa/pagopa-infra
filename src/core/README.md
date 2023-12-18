@@ -123,7 +123,6 @@
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v1.0.90 |
 | <a name="module_logic_app_biz_evt_sa"></a> [logic\_app\_biz\_evt\_sa](#module\_logic\_app\_biz\_evt\_sa) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.0.28 |
 | <a name="module_logic_app_biz_evt_snet"></a> [logic\_app\_biz\_evt\_snet](#module\_logic\_app\_biz\_evt\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
-| <a name="module_logos_donation_flows_sa"></a> [logos\_donation\_flows\_sa](#module\_logos\_donation\_flows\_sa) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.0.28 |
 | <a name="module_monitor"></a> [monitor](#module\_monitor) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_nat_gw"></a> [nat\_gw](#module\_nat\_gw) | git::https://github.com/pagopa/azurerm.git//nat_gateway | v1.0.90 |
 | <a name="module_node_forwarder_app_service"></a> [node\_forwarder\_app\_service](#module\_node\_forwarder\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service | v3.4.0 |
@@ -460,27 +459,14 @@
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.data_contributor_role](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.data_contributor_role_donations](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/role_assignment) | resource |
-| [azurerm_storage_blob.donation_logo10](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_blob) | resource |
-| [azurerm_storage_blob.donation_logo7](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_blob) | resource |
-| [azurerm_storage_blob.donation_logo8](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_blob) | resource |
-| [azurerm_storage_blob.donation_logo9](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_blob) | resource |
 | [azurerm_storage_container.apim_backup](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.banks](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_container.donation_logo10](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_container.donation_logo7](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_container.donation_logo8](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_container.donation_logo9](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.fdr_rend_flow](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.fdr_rend_flow_out](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_management_policy.backups](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_management_policy) | resource |
 | [azurerm_storage_management_policy.buyerbanks_storage_lifeclycle_policies](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_management_policy) | resource |
 | [azurerm_storage_management_policy.storage_account_fdr_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_management_policy) | resource |
 | [azurerm_user_assigned_identity.appgateway](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/user_assigned_identity) | resource |
-| [null_resource.change_auth_donations_blob_container_logo10](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.change_auth_donations_blob_container_logo7](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.change_auth_donations_blob_container_logo8](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.change_auth_donations_blob_container_logo9](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.change_auth_fdr_blob_container](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.decoupler_configuration_from_json_2_xml](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [random_id.dns_forwarder_hash](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
@@ -683,7 +669,6 @@
 | <a name="input_ehns_zone_redundant"></a> [ehns\_zone\_redundant](#input\_ehns\_zone\_redundant) | Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones). | `bool` | `false` | no |
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Enable Azure DevOps agent. | `bool` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
-| <a name="input_enable_logos_backup"></a> [enable\_logos\_backup](#input\_enable\_logos\_backup) | (Optional) Enables nodo sftp storage account backup | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | Contains env description in extend format (dev,uat,prod) | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_eventhub_enabled"></a> [eventhub\_enabled](#input\_eventhub\_enabled) | eventhub enable? | `bool` | `false` | no |
@@ -734,8 +719,6 @@
 | <a name="input_logic_app_biz_evt_plan_sku_size"></a> [logic\_app\_biz\_evt\_plan\_sku\_size](#input\_logic\_app\_biz\_evt\_plan\_sku\_size) | App service plan sku size | `string` | `"WS1"` | no |
 | <a name="input_logic_app_biz_evt_plan_sku_tier"></a> [logic\_app\_biz\_evt\_plan\_sku\_tier](#input\_logic\_app\_biz\_evt\_plan\_sku\_tier) | App service plan sku tier | `string` | `"WorkflowStandard"` | no |
 | <a name="input_logic_app_storage_account_replication_type"></a> [logic\_app\_storage\_account\_replication\_type](#input\_logic\_app\_storage\_account\_replication\_type) | (Optional) Storage account replication type used for function apps | `string` | `"LRS"` | no |
-| <a name="input_logos_donations_storage_account_replication_type"></a> [logos\_donations\_storage\_account\_replication\_type](#input\_logos\_donations\_storage\_account\_replication\_type) | (Optional) Logos donations storage account replication type | `string` | `"LRS"` | no |
-| <a name="input_logos_sa_delete_retention_days"></a> [logos\_sa\_delete\_retention\_days](#input\_logos\_sa\_delete\_retention\_days) | (Optional) nodo sftp storage delete retention | `number` | `null` | no |
 | <a name="input_nat_gateway_enabled"></a> [nat\_gateway\_enabled](#input\_nat\_gateway\_enabled) | Nat Gateway enabled | `bool` | `false` | no |
 | <a name="input_nat_gateway_public_ips"></a> [nat\_gateway\_public\_ips](#input\_nat\_gateway\_public\_ips) | Number of public outbound ips | `number` | `1` | no |
 | <a name="input_node_decoupler_primitives"></a> [node\_decoupler\_primitives](#input\_node\_decoupler\_primitives) | Node decoupler primitives | `string` | `"nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"` | no |
