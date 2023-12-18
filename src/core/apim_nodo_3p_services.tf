@@ -132,8 +132,8 @@ module "apim_nodo_wfesp_api" {
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
     apim_base_path      = "/redirect"
-#    TODO prod is a variant in this case!
-    base-url            = var.env_short == "p" ? "http://10.79.20.23:81" : "{{schema-ip-nexi}}{{base-path-wfesp}}"
+    #    TODO prod is a variant in this case!
+    base-url = var.env_short == "p" ? "http://10.79.20.23:81" : "{{schema-ip-nexi}}{{base-path-wfesp}}"
   })
 
 }
