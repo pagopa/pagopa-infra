@@ -307,10 +307,10 @@
         }
       }
     },
-    "/payment-methods/{paymentMethodId}/psps": {
+    "/wallets/{walletId}/psps": {
       "parameters": [
         {
-          "name": "paymentMethodId",
+          "name": "walletId",
           "in": "path",
           "required": true,
           "schema": {
@@ -320,10 +320,15 @@
         }
       ],
       "get": {
-        "operationId": "getPspsForPaymentMethod",
+        "operationId": "getPspsForWallet",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "PSPs returned for the requested payment method",
+            "description": "PSPs returned for the requested wallet",
             "content": {
               "application/json": {
                 "schema": {
