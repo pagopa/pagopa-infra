@@ -743,14 +743,14 @@ devops_agent_balance_zones = false
 function_app_storage_account_info = {
   account_kind                      = "StorageV2"
   account_tier                      = "Standard"
-  account_replication_type          = "ZRS"
+  account_replication_type          = "GZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
 }
 
 
-logic_app_storage_account_replication_type       = "LRS"
-buyer_banks_storage_account_replication_type     = "GZRS"
-cdn_storage_account_replication_type             = "GRS"
-backup_storage_replication_type                  = "GRS"
-fdr_flow_sa_replication_type                     = "ZRS"
+logic_app_storage_account_replication_type   = "LRS"
+buyer_banks_storage_account_replication_type = "GZRS"
+cdn_storage_account_replication_type         = "GRS"
+backup_storage_replication_type              = "GRS"
+fdr_flow_sa_replication_type                 = "ZRS"
