@@ -75,7 +75,7 @@
                     </set-body>
                 </return-response>
             </when>
-            <when condition="@(((string) ((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>()["status"]) != "ENABLED")">
+            <when condition="@(((string) ((JObject) context.Variables["paymentMethodsResponseBody"])["status"]) != "ENABLED")">
                 <return-response>
                     <set-status code="422" reason="Unprocessable Entity" />
                     <set-header name="Content-Type" exists-action="override">
