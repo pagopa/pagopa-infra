@@ -186,3 +186,20 @@ variable "postgres_private_dns_enabled" {
 }
 
 
+variable "logos_donations_storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Logos donations storage account replication type"
+}
+
+variable "enable_logos_backup" {
+  type        = bool
+  default     = true
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "logos_backup_retention" {
+  type        = number
+  default     = 7
+  description = "(Optional) Blob backup retention"
+}
