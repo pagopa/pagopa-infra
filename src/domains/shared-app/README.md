@@ -131,6 +131,8 @@
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.shared_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.taxonomy_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/resource_group) | data source |
+| [azurerm_storage_account.pagopa_apiconfig_fe_sa](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/storage_account) | data source |
+| [azurerm_storage_account.pagopa_selfcare_fe_sa](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.taxonomy_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/storage_account) | data source |
 | [azurerm_subnet.apim_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/subscription) | data source |
