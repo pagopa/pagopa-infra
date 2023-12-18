@@ -140,7 +140,7 @@ cosmos_nosql_db_params = {
 verifyko_cosmos_nosql_db_params = {
   enabled      = true
   kind         = "GlobalDocumentDB"
-  capabilities = ["EnableServerless"]
+  capabilities = []
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"
@@ -196,4 +196,6 @@ nodo_verifyko_storage_account = {
   advanced_threat_protection    = true
   blob_delete_retention_days    = 90
   public_network_access_enabled = true
+  backup_enabled                = false
+  backup_retention_days         = 0
 }

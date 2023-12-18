@@ -41,7 +41,7 @@ module "cosmosdb_account_nodo_verifyko" {
   tags = var.tags
 }
 
-# cosmosdb database for nodo_re
+# cosmosdb database for nodo_verify_ko
 module "cosmosdb_account_nodo_verifyko_db" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
   name                = "nodo_verifyko"

@@ -90,7 +90,7 @@ module "nodo_verifyko_to_datastore_function" {
     sku_size                     = var.nodo_verifyko_to_datastore_function.sku_size
     maximum_elastic_worker_count = var.nodo_verifyko_to_datastore_function.maximum_elastic_worker_count
     worker_count                 = 1
-    zone_balancing_enabled       = false
+    zone_balancing_enabled       = var.nodo_verifyko_to_datastore_function.zone_balancing_enabled
   }
 
   storage_account_name = replace("${local.project}-vko-2-ds-fn-sa", "-", "")

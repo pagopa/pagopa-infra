@@ -278,15 +278,9 @@ variable "nodo_verifyko_to_datastore_function" {
     sku_size                     = string
     sku_tier                     = string
     maximum_elastic_worker_count = number
+    zone_balancing_enabled       = bool
   })
   description = "Nodo Verify KO events to datastore function"
-  default = {
-    always_on                    = true
-    kind                         = "Linux"
-    sku_size                     = "B1"
-    sku_tier                     = "Basic"
-    maximum_elastic_worker_count = 1
-  }
 }
 
 variable "nodo_verifyko_to_datastore_function_subnet" {

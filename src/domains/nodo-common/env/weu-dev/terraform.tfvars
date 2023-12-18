@@ -186,4 +186,5 @@ nodo_verifyko_storage_account = {
   blob_delete_retention_days    = 0
   public_network_access_enabled = true
   backup_enabled                = false
+  backup_retention_days         = 0
 }
