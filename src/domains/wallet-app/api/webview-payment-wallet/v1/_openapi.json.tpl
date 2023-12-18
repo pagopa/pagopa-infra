@@ -46,6 +46,17 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Session input data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionInputData"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Session Wallet created successfully",
@@ -296,10 +307,10 @@
         }
       }
     },
-    "/payment-methods/{paymentMethodId}/psps": {
+    "/wallets/{walletId}/psps": {
       "parameters": [
         {
-          "name": "paymentMethodId",
+          "name": "walletId",
           "in": "path",
           "required": true,
           "schema": {
@@ -309,10 +320,15 @@
         }
       ],
       "get": {
-        "operationId": "getPspsForPaymentMethod",
+        "operationId": "getPspsForWallet",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "PSPs returned for the requested payment method",
+            "description": "PSPs returned for the requested wallet",
             "content": {
               "application/json": {
                 "schema": {
@@ -410,16 +426,114 @@
           "orderId": {
             "type": "string"
           },
-          "cardFormFields": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Field"
-            }
+          "sessionData": {
+            "$ref": "#/components/schemas/SessionWalletCreateResponseData"
           }
         },
         "required": [
           "orderId",
-          "cardFormFields"
+          "sessionData"
+        ]
+      },
+      "SessionWalletCreateResponseData": {
+        "description": "Session wallet create response data",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Session data returned by `createSessionWallet` operation in case of a credit card session",
+            "properties": {
+              "paymentMethodType": {
+                "$ref": "#/components/schemas/SessionWalletCreateResponseCardsDataType"
+              },
+              "cardFormFields": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Field"
+                }
+              }
+            },
+            "required": [
+              "paymentMethodType",
+              "cardFormFields"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Session data returned by `createSessionWallet` operation in case of a credit card session",
+            "properties": {
+              "paymentMethodType": {
+                "$ref": "#/components/schemas/SessionWalletCreateResponseApmDataType"
+              },
+              "redirectUrl": {
+                "type": "string",
+                "format": "url"
+              }
+            }
+          }
+        ]
+      },
+      "SessionWalletCreateResponseCardsDataType": {
+        "description": "Create session wallet response data type discriminator for cards onboarding",
+        "type": "string",
+        "enum": [
+          "cards"
+        ]
+      },
+      "SessionWalletCreateResponseApmDataType": {
+        "description": "Create session wallet response data type discriminator for apm onboarding",
+        "type": "string",
+        "enum": [
+          "apm"
+        ]
+      },
+      "CreateSessionInputData": {
+        "$ref": "#/components/schemas/SessionInputData"
+      },
+      "SessionInputData": {
+        "description": "Session input data",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Data required to initialize a card onboarding session",
+            "properties": {
+              "paymentMethodType": {
+                "$ref": "#/components/schemas/SessionInputDataTypeCards"
+              }
+            },
+            "required": [
+              "paymentMethodType"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Data required to initialize a PayPal onboarding session",
+            "properties": {
+              "paymentMethodType": {
+                "$ref": "#/components/schemas/SessionInputDataTypePaypal"
+              },
+              "pspId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "paymentMethodType",
+              "pspId"
+            ]
+          }
+        ]
+      },
+      "SessionInputDataTypeCards": {
+        "description": "Discriminator used to identify session input data for cards onboarding",
+        "type": "string",
+        "enum": [
+          "cards"
+        ]
+      },
+      "SessionInputDataTypePaypal": {
+        "description": "Discriminator used to identify session input data for paypal onboarding",
+        "type": "string",
+        "enum": [
+          "paypal"
         ]
       },
       "SessionWalletRetrieveResponse": {

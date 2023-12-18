@@ -1,36 +1,66 @@
 <policies>
     <inbound>
-        <cors>
-            <allowed-origins>
-                <origin>${payment_wallet_origin}</origin>
-            </allowed-origins>
-            <allowed-methods>
-                <method>POST</method>
-                <method>GET</method>
-                <method>OPTIONS</method>
-            </allowed-methods>
-            <allowed-headers>
-                <header>Content-Type</header>
-                <header>Authorization</header>
-            </allowed-headers>
-        </cors>
-
-        <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+        <base />
 
         <set-backend-service base-url="https://${gec_hostname}/pagopa-afm-calculator-service" />
         <rewrite-uri template="fees" />
         <set-method>POST</set-method>
 
+        <send-request ignore-error="false" timeout="10" response-variable-name="walletResponse">
+            <set-url>@("https://${wallet_hostname}/pagopa-wallet-service/wallets/" + context.Variables["walletId"])</set-url>
+            <set-method>GET</set-method>
+            <set-header name="Authorization">
+                <value>@(context.Request.Headers["Authorization"][0])</value>
+            </set-header>
+        </send-request>
+
+        <choose>
+            <when condition="@(((IResponse)context.Variables["walletResponse"]).StatusCode == 404)">
+                <return-response>
+                    <set-status code="404" reason="Not Found" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                        {
+                            "title": "Wallet not found",
+                            "status": 404,
+                            "detail": "Couldn't find the requested wallet"
+                        }
+                    </set-body>
+                </return-response>
+            </when>
+            <when condition="@(((IResponse)context.Variables["walletResponse"]).StatusCode != 200)">
+                <return-response>
+                    <set-status code="502" reason="Bad Gateway" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                        {
+                            "title": "Error retrieving wallet",
+                            "status": 502,
+                            "detail": "There was an error while retrieving wallet"
+                        }
+                    </set-body>
+                </return-response>
+            </when>
+        </choose>
+
+        <set-variable name="paymentMethodId" value="@(((IResponse) context.Variables["walletResponse"]).Body.As<JObject>()["paymentMethodId"])" />
+
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-            <set-url>@("https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods/" + context.Request.MatchedParameters["paymentMethodId"])</set-url>
+            <set-url>@("https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods/" + context.Variables["paymentMethodId"])</set-url>
             <set-method>GET</set-method>
             <set-header name="x-client-id" exists-action="override">
                 <value>IO</value>
             </set-header>
         </send-request>
 
+        <set-variable name="paymentMethodsResponseBody" value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
+
         <choose>
-            <when condition="@(((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode == 404)">
+            <when condition="@(((IResponse) context.Variables["paymentMethodsResponse"]).StatusCode == 404)">
                 <return-response>
                     <set-status code="404" reason="Not Found" />
                     <set-header name="Content-Type" exists-action="override">
@@ -41,6 +71,21 @@
                             "title": "Payment method not found",
                             "status": 404,
                             "detail": "Couldn't find the provided payment method"
+                        }
+                    </set-body>
+                </return-response>
+            </when>
+            <when condition="@(((string) ((JObject) context.Variables["paymentMethodsResponseBody"])["status"]) != "ENABLED")">
+                <return-response>
+                    <set-status code="422" reason="Unprocessable Entity" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                        {
+                            "title": "Payment method is not enabled",
+                            "status": 422,
+                            "detail": "The payment method associated to this wallet is not currently enabled"
                         }
                     </set-body>
                 </return-response>
@@ -61,7 +106,7 @@
                 </return-response>
             </when>
         </choose>
-        <set-variable name="paymentMethodsResponseBody" value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
+
         <set-variable name="paymentMethodTypeCode" value="@((string)((JObject) context.Variables["paymentMethodsResponseBody"])["paymentTypeCode"])" />
 
         <set-header name="Content-Type" exists-action="override">
