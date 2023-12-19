@@ -99,20 +99,43 @@
             "description": "Payment method identifier",
             "type": "string"
           },
-          "bin": {
-            "type": "string",
-            "description": "Bin of user card"
-          },
           "brand": {
-            "description": "The card brand name",
+            "description": "The payment method brand name",
             "type": "string"
+          },
+          "paymentMethodData": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "paymentMethodType": {
+                    "type": "string",
+                    "enum": ["apm"]
+                  }
+                },
+                "required": ["paymentMethodType"]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "paymentMethodType": {
+                    "type": "string",
+                    "enum": ["cards"]
+                  },
+                  "bin": {
+                    "type": "string"
+                  }
+                },
+                "required": ["paymentMethodType", "bin"]
+              }
+            ]
           }
         },
         "required": [
           "walletId",
           "contractId",
-          "bin",
-          "brand"
+          "brand",
+          "paymentMethodData"
         ]
       },
       "ProblemJson": {
