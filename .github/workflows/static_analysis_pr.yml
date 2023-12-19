@@ -1,8 +1,8 @@
-name: Static Analysis
+name: Static Analysis PR
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
 
           TAG=$(cat .terraform-version)
           docker pull hashicorp/terraform:$TAG
-          
+            
           for f in $FOLDERS; do
             pushd "$(pwd)/${f}"
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend

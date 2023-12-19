@@ -29,21 +29,6 @@
         </cors>
         <base />
         <set-backend-service base-url="https://${hostname}/pagopa-api-config-core-service/o" />
-
-        <choose>
-            <when condition="@(context.User == null || !context.User.Groups.Select(g => g.Id).Contains("api-config-be-writer"))">
-                <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
-                <set-variable name="isPost" value="@(context.Request.Method.Equals("POST"))" />
-                <set-variable name="isXsd" value="@(context.Request.Url.Path.Contains("xsd"))" />
-                <choose>
-                    <when condition="@(!context.Variables.GetValueOrDefault<bool>("isGet") && !(context.Variables.GetValueOrDefault<bool>("isPost") && context.Variables.GetValueOrDefault<bool>("isXsd")))">
-                        <return-response>
-                            <set-status code="403" reason="Unauthorized, you have read-only access" />
-                        </return-response>
-                    </when>
-                </choose>
-            </when>
-        </choose>
     </inbound>
     <outbound>
         <base />

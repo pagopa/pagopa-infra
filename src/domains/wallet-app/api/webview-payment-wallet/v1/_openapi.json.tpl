@@ -46,6 +46,17 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Session input data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionInputData"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Session Wallet created successfully",
@@ -295,6 +306,39 @@
           }
         }
       }
+    },
+    "/wallets/{walletId}/psps": {
+      "parameters": [
+        {
+          "name": "walletId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "getPspsForWallet",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "PSPs returned for the requested wallet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BundleOption"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -382,16 +426,114 @@
           "orderId": {
             "type": "string"
           },
-          "cardFormFields": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Field"
-            }
+          "sessionData": {
+            "$ref": "#/components/schemas/SessionWalletCreateResponseData"
           }
         },
         "required": [
           "orderId",
-          "cardFormFields"
+          "sessionData"
+        ]
+      },
+      "SessionWalletCreateResponseData": {
+        "description": "Session wallet create response data",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Session data returned by `createSessionWallet` operation in case of a credit card session",
+            "properties": {
+              "paymentMethodType": {
+                "$ref": "#/components/schemas/SessionWalletCreateResponseCardsDataType"
+              },
+              "cardFormFields": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Field"
+                }
+              }
+            },
+            "required": [
+              "paymentMethodType",
+              "cardFormFields"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Session data returned by `createSessionWallet` operation in case of a credit card session",
+            "properties": {
+              "paymentMethodType": {
+                "$ref": "#/components/schemas/SessionWalletCreateResponseApmDataType"
+              },
+              "redirectUrl": {
+                "type": "string",
+                "format": "url"
+              }
+            }
+          }
+        ]
+      },
+      "SessionWalletCreateResponseCardsDataType": {
+        "description": "Create session wallet response data type discriminator for cards onboarding",
+        "type": "string",
+        "enum": [
+          "cards"
+        ]
+      },
+      "SessionWalletCreateResponseApmDataType": {
+        "description": "Create session wallet response data type discriminator for apm onboarding",
+        "type": "string",
+        "enum": [
+          "apm"
+        ]
+      },
+      "CreateSessionInputData": {
+        "$ref": "#/components/schemas/SessionInputData"
+      },
+      "SessionInputData": {
+        "description": "Session input data",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Data required to initialize a card onboarding session",
+            "properties": {
+              "paymentMethodType": {
+                "$ref": "#/components/schemas/SessionInputDataTypeCards"
+              }
+            },
+            "required": [
+              "paymentMethodType"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Data required to initialize a PayPal onboarding session",
+            "properties": {
+              "paymentMethodType": {
+                "$ref": "#/components/schemas/SessionInputDataTypePaypal"
+              },
+              "pspId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "paymentMethodType",
+              "pspId"
+            ]
+          }
+        ]
+      },
+      "SessionInputDataTypeCards": {
+        "description": "Discriminator used to identify session input data for cards onboarding",
+        "type": "string",
+        "enum": [
+          "cards"
+        ]
+      },
+      "SessionInputDataTypePaypal": {
+        "description": "Discriminator used to identify session input data for paypal onboarding",
+        "type": "string",
+        "enum": [
+          "paypal"
         ]
       },
       "SessionWalletRetrieveResponse": {
@@ -444,6 +586,71 @@
             "type": "string",
             "format": "uri",
             "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
+          }
+        }
+      },
+      "BundleOption": {
+        "type": "object",
+        "properties": {
+          "belowThreshold": {
+            "type": "boolean",
+            "description": "if true (the payment amount is lower than the threshold value) the bundles onus is not calculated (always false)"
+          },
+          "bundleOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transfer"
+            }
+          }
+        }
+      },
+      "Transfer": {
+        "type": "object",
+        "properties": {
+          "abi": {
+            "type": "string"
+          },
+          "bundleDescription": {
+            "type": "string"
+          },
+          "bundleName": {
+            "type": "string"
+          },
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idBundle": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "idCiBundle": {
+            "type": "string",
+            "nullable": true
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
+          },
+          "paymentMethod": {
+            "type": "string"
+          },
+          "primaryCiIncurredFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "taxPayerFee": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "touchpoint": {
+            "type": "string"
+          },
+          "pspBusinessName": {
+            "type": "string"
           }
         }
       },

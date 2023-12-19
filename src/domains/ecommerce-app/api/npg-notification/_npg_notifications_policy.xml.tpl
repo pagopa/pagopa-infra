@@ -16,11 +16,21 @@
       <!-- end validation policy -->
       <!-- start policy variables -->
       <set-variable name="transactionId" value="@{
-            var jwt = (Jwt)context.Variables["jwtToken"];
-            if(jwt.Claims.ContainsKey("transactionId")){
-                return jwt.Claims["transactionId"][0];
-            }
-            return "";
+           var jwt = (Jwt)context.Variables["jwtToken"];
+           if(jwt.Claims.ContainsKey("transactionId")){
+               string uuidString = jwt.Claims["transactionId"][0];
+               uuidString = uuidString.Replace("-", "");
+               byte[] transactionIdBase64 = new byte[uuidString.Length / 2];
+               for (int i = 0; i < transactionIdBase64.Length; i++)
+               {
+                   transactionIdBase64[i] = Convert.ToByte(uuidString.Substring(i * 2, 2), 16);
+               }
+               return Convert.ToBase64String(transactionIdBase64)
+                   .Replace('+', '-')
+                   .Replace('/', '_')
+                   .Replace("=", "");
+           }
+           return "";
         }" />
         <set-variable name="paymentMethodId" value="@{
             var jwt = (Jwt)context.Variables["jwtToken"];
