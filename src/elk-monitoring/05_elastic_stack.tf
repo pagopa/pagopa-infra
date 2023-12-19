@@ -18,7 +18,7 @@ resource "azurerm_storage_account" "elk_snapshot_sa" {
   account_replication_type = var.snapshot_storage_replication_type
 
   blob_properties {
-    change_feed_enabled = var.elk_snapshot_sa.backup_enabled
+    change_feed_enabled = false
     dynamic "container_delete_retention_policy" {
       for_each = var.elk_snapshot_sa.backup_enabled ? [1] : []
       content {
