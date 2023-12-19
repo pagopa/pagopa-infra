@@ -2,68 +2,29 @@ name: Static Analysis
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
   static_analysis:
     runs-on: ubuntu-22.04
 
     steps:
-      # from https://github.com/actions/checkout/commits/main
-      - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 #v4.1.1
         with:
           persist-credentials: false
           fetch-depth: 0
 
       - name: init_terraform_folders
-        env:
-          FOLDERS: >
-            src/aks-platform
-            src/core
-            src/elk-monitoring
-            src/grafana-monitoring
-            src/next-core
-            src/packer
-            src/domains/aca-app
-            src/domains/aca-common
-            src/domains/afm-app
-            src/domains/afm-common
-            src/domains/apiconfig-app
-            src/domains/apiconfig-common
-            src/domains/bizevents-app
-            src/domains/bizevents-common
-            src/domains/canoneunico
-            src/domains/checkout-app
-            src/domains/checkout-common
-            src/domains/ecommerce-app
-            src/domains/ecommerce-common
-            src/domains/fdr-app
-            src/domains/fdr-common
-            src/domains/fdr-secret
-            src/domains/gps-app
-            src/domains/gps-common
-            src/domains/load-test
-            src/domains/mock-app
-            src/domains/mock-common
-            src/domains/nodo-app
-            src/domains/nodo-common
-            src/domains/nodo-cron
-            src/domains/nodo-secret
-            src/domains/observability
-            src/domains/qi-app
-            src/domains/qi-common
-            src/domains/qi-secrets
-            src/domains/receipts-app
-            src/domains/receipts-common
-            src/domains/selfcare-app
-            src/domains/selfcare-common
-            src/domains/shared-app
-            src/domains/shared-common
-            src/domains/wallet-app
-            src/domains/wallet-common
         run: |
+          FOLDERS=$(grep -rl --include='*.tf' --exclude-dir='.terraform' '^' . | xargs -I{} dirname {} | sort -u)
+          echo "FOLDERS=${FOLDERS}"
+
           pids=()
 
           TAG=$(cat .terraform-version)
+          docker pull hashicorp/terraform:$TAG
+          
           for f in $FOLDERS; do
             pushd "$(pwd)/${f}"
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend

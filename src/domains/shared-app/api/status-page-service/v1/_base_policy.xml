@@ -29,11 +29,17 @@
                       return (string)services[context.Variables["product"]];
                   }" />
           <choose>
-            <when condition="@(context.Variables["baseUrl"] != null)">
-            <set-backend-service base-url="@{
-                          var services = JObject.Parse((string)context.Variables["services"]);
-                          return "https://" + (string)services[context.Variables["product"]];
-            }" />
+            <when condition="@(context.Variables["baseUrl"] != null && ((string)context.Variables["product"]).EndsWith("-fe"))">
+              <set-backend-service base-url="@{
+                                var services = JObject.Parse((string)context.Variables["services"]);
+                                return "https://" + (string)services[context.Variables["product"]] + "?";
+              }" />
+            </when>
+            <when condition="@(context.Variables["baseUrl"] != null && !((string)context.Variables["product"]).EndsWith("-fe"))">
+              <set-backend-service base-url="@{
+                                var services = JObject.Parse((string)context.Variables["services"]);
+                                return "https://" + (string)services[context.Variables["product"]];
+              }" />
             </when>
             <otherwise>
               <return-response>
