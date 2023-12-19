@@ -145,10 +145,17 @@ module "cosmosdb_nodo_verifyko_snet" {
   ]
 }
 
-# CosmosDB subnet
+# Stand-In
+resource "azurerm_resource_group" "standin_rg" {
+  name     = "${local.project}-standin-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
 module "cosmosdb_standin_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
-  name                 = "${local.project}-standin-cosmosb-snet"
+  name                 = "${local.project}-standin-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_standin
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
@@ -160,3 +167,4 @@ module "cosmosdb_standin_snet" {
     "Microsoft.AzureCosmosDB",
   ]
 }
+

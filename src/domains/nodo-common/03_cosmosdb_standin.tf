@@ -3,7 +3,7 @@ module "cosmosdb_account_standin" {
   domain              = var.domain
   name                = "${local.project}-standin-cosmos-account"
   location            = var.location
-  resource_group_name = azurerm_resource_group.db_rg.name
+  resource_group_name = azurerm_resource_group.standin_rg.name
 
   offer_type       = var.standin_cosmos_nosql_db_params.offer_type
   kind             = var.standin_cosmos_nosql_db_params.kind
@@ -37,7 +37,7 @@ module "cosmosdb_account_standin" {
 module "cosmosdb_account_standin_db" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
   name                = "standin"
-  resource_group_name = azurerm_resource_group.db_rg.name
+  resource_group_name = azurerm_resource_group.standin_rg.name
   account_name        = module.cosmosdb_account_standin.name
 }
 
@@ -82,7 +82,7 @@ module "cosmosdb_account_standin_containers" {
   for_each = { for c in local.standin_containers : c.name => c }
 
   name                = each.value.name
-  resource_group_name = azurerm_resource_group.db_rg.name
+  resource_group_name = azurerm_resource_group.standin_rg.name
   account_name        = module.cosmosdb_account_standin.name
   database_name       = module.cosmosdb_account_standin_db.name
   partition_key_path  = each.value.partition_key_path
