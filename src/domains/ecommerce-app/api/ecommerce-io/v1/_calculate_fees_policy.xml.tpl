@@ -197,13 +197,13 @@
                     </when>
                 </choose>
                 <set-body>@{ 
-                    var bin = (string)context.Variables["bin"];
+                    var bin = (string)context.Variables.GetValueOrDefault("bin", "");
                     JObject inBody = (JObject)context.Variables["body"]; 
                     inBody.Remove("walletId");
                     inBody.Remove("paymentToken");
                     inBody.Remove("language");
                     inBody.Add("touchpoint","IO");
-                    if(String.IsNullOrEmpty(bin)) {
+                    if(!String.IsNullOrEmpty(bin)) {
                         inBody.Add("bin", bin);
                     }
                     return inBody.ToString(); 
