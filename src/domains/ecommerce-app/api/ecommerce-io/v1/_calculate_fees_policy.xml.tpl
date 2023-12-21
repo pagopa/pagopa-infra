@@ -165,7 +165,7 @@
                             <when condition="@(((int)((IResponse)context.Variables["authDataResponse"]).StatusCode) == 200)">
                                 <set-variable name="authDataBody" value="@((JObject)((IResponse)context.Variables["authDataResponse"]).Body.As<JObject>())" />
                                 <!-- <set-variable name="contractId" value="@((string)((JObject)context.Variables["authDataBody"])["contractId"])" NO NEED FOR THIS MOMENT /> -->
-                                <set-variable name="bin" value="@((string)((JObject)context.Variables["authDataBody"])["bin"])" />
+                                <set-variable name="bin" value="@((string)((JObject)context.Variables["authDataBody"])["paymentMethodData"]["bin"])" />
                             </when>
                             <when condition="@(((int)((IResponse)context.Variables["authDataResponse"]).StatusCode) == 404)">
                                 <return-response>
