@@ -42,7 +42,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WalletInfo"
+                  "$ref": "#/components/schemas/WalletAuthData"
                 }
               }
             }
@@ -88,7 +88,7 @@
         "type": "string",
         "format": "uuid"
       },
-      "WalletInfo": {
+      "WalletAuthData": {
         "type": "object",
         "description": "Wallet information",
         "properties": {
@@ -100,42 +100,60 @@
             "type": "string"
           },
           "brand": {
-            "description": "The payment method brand name",
+            "description": "The card brand name",
             "type": "string"
           },
           "paymentMethodData": {
             "oneOf": [
               {
-                "type": "object",
-                "properties": {
-                  "paymentMethodType": {
-                    "type": "string",
-                    "enum": ["apm"]
-                  }
-                },
-                "required": ["paymentMethodType"]
+                "$ref": "#/components/schemas/WalletAuthCardData"
               },
               {
-                "type": "object",
-                "properties": {
-                  "paymentMethodType": {
-                    "type": "string",
-                    "enum": ["cards"]
-                  },
-                  "bin": {
-                    "type": "string"
-                  }
-                },
-                "required": ["paymentMethodType", "bin"]
+                "$ref": "#/components/schemas/WalletAuthAPMData"
               }
-            ]
+            ],
+            "discriminator": {
+              "propertyName": "paymentMethodType",
+              "mapping": {
+                "cards": "#/components/schemas/WalletAuthCardData",
+                "apm": "#/components/schemas/WalletAuthAPMData"
+              }
+            }
           }
         },
         "required": [
-          "walletId",
           "contractId",
           "brand",
           "paymentMethodData"
+        ]
+      },
+      "WalletAuthCardData": {
+        "x-discriminator-value": "cards",
+        "type": "object",
+        "properties": {
+          "paymentMethodType": {
+            "type": "string"
+          },
+          "bin": {
+            "type": "string",
+            "description": "Bin of user card"
+          }
+        },
+        "required": [
+          "paymentMethodType",
+          "bin"
+        ]
+      },
+      "WalletAuthAPMData": {
+        "x-discriminator-value": "apm",
+        "type": "object",
+        "properties": {
+          "paymentMethodType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentMethodType"
         ]
       },
       "ProblemJson": {
