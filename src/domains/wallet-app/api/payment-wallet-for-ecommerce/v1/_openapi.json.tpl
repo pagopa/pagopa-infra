@@ -104,6 +104,7 @@
             "type": "string"
           },
           "paymentMethodData": {
+            "type": "object",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/WalletAuthCardData"
