@@ -128,7 +128,6 @@
         ]
       },
       "WalletAuthCardData": {
-        "x-discriminator-value": "cards",
         "type": "object",
         "properties": {
           "paymentMethodType": {
@@ -145,7 +144,6 @@
         ]
       },
       "WalletAuthAPMData": {
-        "x-discriminator-value": "apm",
         "type": "object",
         "properties": {
           "paymentMethodType": {
