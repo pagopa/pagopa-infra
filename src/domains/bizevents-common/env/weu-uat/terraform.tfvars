@@ -43,11 +43,14 @@ bizevents_datastore_cosmos_db_params = {
   enable_free_tier                 = false
 
   private_endpoint_enabled      = true
-  public_network_access_enabled = false
+  public_network_access_enabled = true
 
   additional_geo_locations = []
 
-  is_virtual_network_filter_enabled = true
+  is_virtual_network_filter_enabled = false
+
+  //set ip_range_filter to allow azure services (0.0.0.0) and azure portal.
+  ip_range_filter = "104.42.195.92,40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26,0.0.0.0"
 
   backup_continuous_enabled = false
 
