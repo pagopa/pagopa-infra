@@ -45,7 +45,7 @@ module "bizevents_datastore_cosmosdb_account" {
 
   is_virtual_network_filter_enabled = var.bizevents_datastore_cosmos_db_params.is_virtual_network_filter_enabled
 
-  ip_range = ""
+  ip_range = var.bizevents_datastore_cosmos_db_params.ip_range_filter
 
   # add data.azurerm_subnet.<my_service>.id
   # allowed_virtual_network_subnet_ids = var.bizevents_datastore_cosmos_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
