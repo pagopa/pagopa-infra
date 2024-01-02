@@ -39,9 +39,11 @@ cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
 cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder           = ["10.1.158.0/24"]
-
 # specific
 cidr_subnet_redis = ["10.1.163.0/24"]
+# zabbix
+cidr_subnet_tools_cae  = ["10.1.252.0/23"] #placeholders
+cidr_subnet_pg_flex_zabbix = ["10.1.254.0/24"] #placeholders
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
