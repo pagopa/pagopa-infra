@@ -69,13 +69,13 @@ data "azurerm_subnet" "nodo_re_to_datastore_function_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet.name
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 }
-/*
-data "azurerm_subnet" "nodo_verifyko_to_datastore_function_snet" {
-  name                 = "${local.project}-nodo-verifyko-to-datastore-fn-snet"
-  virtual_network_name = data.azurerm_virtual_network.vnet.name
-  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-}
-*/
+
+#data "azurerm_subnet" "nodo_verifyko_to_datastore_function_snet" {
+#  name                 = "${local.project}-nodo-verifyko-to-datastore-fn-snet"
+#  virtual_network_name = data.azurerm_virtual_network.vnet.name
+#  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+#}
+
 data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
   name                = "privatelink.redis.cache.windows.net"
   resource_group_name = local.vnet_resource_group_name
@@ -132,7 +132,7 @@ module "cosmosdb_nodo_re_snet" {
 # CosmosDB subnet
 module "cosmosdb_nodo_verifyko_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
-  name                 = "${local.project}-verifyko-cosmosb-snet"
+  name                 = "${local.project}-verifyko-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_nodo_verifyko
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
