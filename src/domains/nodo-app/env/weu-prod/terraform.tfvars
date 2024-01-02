@@ -161,7 +161,7 @@ nodo_verifyko_to_datastore_function = {
   kind                         = "Linux"
   sku_size                     = "P1v3"
   sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
+  maximum_elastic_worker_count = 1
   zone_balancing_enabled       = true
 }
 nodo_verifyko_to_datastore_function_always_on       = true
@@ -178,7 +178,7 @@ nodo_verifyko_to_tablestorage_function = {
   kind                         = "Linux"
   sku_size                     = "P1v3"
   sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
+  maximum_elastic_worker_count = 1
   zone_balancing_enabled       = true
 }
 nodo_verifyko_to_tablestorage_function_subnet          = ["10.1.189.0/24"]

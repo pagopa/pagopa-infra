@@ -10,6 +10,14 @@ data "azurerm_resource_group" "nodo_verify_ko_rg" {
   name = "${local.project}-verifyko-to-datastore-rg"
 }
 
+#resource "azurerm_resource_group" "nodo_verifyko_to_datastore_rg_TMP" {
+#  name     = "${local.project}-verifyko-to-datastore-rg-TMP"
+#  location = var.location
+#
+#  tags = var.tags
+#}
+
+
 # info for table storage
 data "azurerm_storage_account" "nodo_verifyko_storage" {
   name                = replace(format("%s-vko-2-data-st", local.project), "-", "")
