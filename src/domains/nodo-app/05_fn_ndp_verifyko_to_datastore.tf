@@ -89,7 +89,7 @@ module "nodo_verifyko_to_datastore_function" {
     kind                         = var.nodo_verifyko_to_datastore_function.kind
     sku_size                     = var.nodo_verifyko_to_datastore_function.sku_size
     maximum_elastic_worker_count = var.nodo_verifyko_to_datastore_function.maximum_elastic_worker_count
-    worker_count                 = 1
+    worker_count                 = var.env_short == "p" ? 3 : 1
     zone_balancing_enabled       = var.nodo_verifyko_to_datastore_function.zone_balancing_enabled
   }
 
@@ -156,14 +156,21 @@ resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_datastore_functio
 
     rule {
       metric_trigger {
-        metric_name        = "CpuPercentage"
-        metric_resource_id = module.nodo_verifyko_to_datastore_function.app_service_plan_id
+        metric_name        = "IncomingMessages"
+        metric_namespace   = "microsoft.eventhub/namespaces"
+        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
         time_aggregation   = "Average"
         operator           = "GreaterThan"
-        threshold          = 75
+        threshold          = 100
+
+        dimensions {
+          name     = "EntityName"
+          operator = "Equals"
+          values   = ["nodo-dei-pagamenti-verify-ko"]
+        }
       }
 
       scale_action {
@@ -176,14 +183,21 @@ resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_datastore_functio
 
     rule {
       metric_trigger {
-        metric_name        = "CpuPercentage"
-        metric_resource_id = module.nodo_verifyko_to_datastore_function.app_service_plan_id
+        metric_name        = "IncomingMessages"
+        metric_namespace   = "microsoft.eventhub/namespaces"
+        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
         time_aggregation   = "Average"
         operator           = "LessThan"
         threshold          = 30
+
+        dimensions {
+          name     = "EntityName"
+          operator = "Equals"
+          values   = ["nodo-dei-pagamenti-verify-ko"]
+        }
       }
 
       scale_action {

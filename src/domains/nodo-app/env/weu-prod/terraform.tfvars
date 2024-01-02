@@ -161,7 +161,7 @@ nodo_verifyko_to_datastore_function = {
   kind                         = "Linux"
   sku_size                     = "P1v3"
   sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 1
+  maximum_elastic_worker_count = 3
   zone_balancing_enabled       = true
 }
 nodo_verifyko_to_datastore_function_always_on       = true
