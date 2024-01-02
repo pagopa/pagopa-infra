@@ -203,3 +203,12 @@ variable "logos_backup_retention" {
   default     = 7
   description = "(Optional) Blob backup retention"
 }
+
+#
+# Feature flags
+#
+variable "is_resource" {
+  type = object({
+    container_app_tools_cae = optional(bool, false),
+  })
+}
