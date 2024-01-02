@@ -1,5 +1,5 @@
 # general
-prefix         = "cstar"
+prefix         = "pagopa"
 env_short      = "d"
 env            = "dev"
 location       = "westeurope"
@@ -9,24 +9,19 @@ domain         = "zabbix"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
-  Owner       = "cstar"
+  Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/cstar-infrastructure"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-cidr_subnet_pg_flex_zabbix = ["10.1.249.0/24"]
-cidr_subnet_zabbix_server  = ["10.1.250.0/24"]
-
-
-image_rg_name = "cstar-d-azdoa-rg"
-image_name    = "cstar-d-azdo-agent-ubuntu2204-image-v2"
+# zabbix
+cidr_subnet_pg_flex_zabbix = ["10.1.254.0/24"]
 
 #
 # Feature Flag
 #
 is_resource = {
   zabbix_pgflexi_enabled = true
+  zabbix_kv_enabled = true
 }
 
-aks_name                = "cstar-d-weu-dev01-aks"
-aks_resource_group_name = "cstar-d-weu-dev01-aks-rg"

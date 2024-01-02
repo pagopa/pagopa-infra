@@ -7,17 +7,12 @@ locals {
 
   dns_zone_private_name_postgres = "privatelink.postgres.database.azure.com"
 
-  # Service account
-  azure_devops_app_service_account_name        = "azure-devops"
-  azure_devops_app_service_account_secret_name = "${local.azure_devops_app_service_account_name}-token"
+  # aks_name                = var.aks_name
+  # aks_resource_group_name = var.aks_resource_group_name
 
-  aks_name                = var.aks_name
-  aks_resource_group_name = var.aks_resource_group_name
-
-  internal_dns_zone_name                = "internal.dev.cstar.pagopa.it"
-  internal_dns_zone_resource_group_name = "cstar-d-vnet-rg"
-  ingress_hostname_prefix               = "dev01.zabbix"
-
+  # internal_dns_zone_name                = "internal.dev.cstar.pagopa.it"
+  # internal_dns_zone_resource_group_name = "cstar-d-vnet-rg"
+  # ingress_hostname_prefix               = "dev01.zabbix"
 }
 
 variable "prefix" {
@@ -77,48 +72,49 @@ variable "tags" {
   }
 }
 
-variable "cidr_subnet_zabbix_server" {
-  type        = list(string)
-  description = "Subnet for zabbix vm"
-}
+# variable "cidr_subnet_zabbix_server" {
+#   type        = list(string)
+#   description = "Subnet for zabbix vm"
+# }
 
 variable "cidr_subnet_pg_flex_zabbix" {
   type        = list(any)
   description = "values for cidr_subnet_pg_flex_zabbix"
 }
 
-variable "image_rg_name" {
-  type        = string
-  description = "Resource group name that contains the image"
-}
+# variable "image_rg_name" {
+#   type        = string
+#   description = "Resource group name that contains the image"
+# }
 
-variable "image_name" {
-  type        = string
-  description = "Image name"
-}
+# variable "image_name" {
+#   type        = string
+#   description = "Image name"
+# }
 
 #
 # Feature flags
 #
 variable "is_resource" {
   type = object({
-    zabbix_pgflexi_enabled = bool,
+    zabbix_kv_enabled = optional(bool, false),
+    zabbix_pgflexi_enabled = optional(bool, false),
   })
 }
 
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
+# variable "k8s_kube_config_path_prefix" {
+#   type    = string
+#   default = "~/.kube"
+# }
 
 ### Aks
 
-variable "aks_name" {
-  type        = string
-  description = "AKS cluster name"
-}
+# variable "aks_name" {
+#   type        = string
+#   description = "AKS cluster name"
+# }
 
-variable "aks_resource_group_name" {
-  type        = string
-  description = "AKS cluster resource name"
-}
+# variable "aks_resource_group_name" {
+#   type        = string
+#   description = "AKS cluster resource name"
+# }
