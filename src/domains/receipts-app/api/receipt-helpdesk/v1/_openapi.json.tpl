@@ -100,6 +100,108 @@
         }
       ]
     },
+    "/receipts/io-message/{message-id}": {
+      "get": {
+        "tags": [
+          "API-getReceiptMessage"
+        ],
+        "summary": "Retrieve from CosmosDB the receipt message with the given message id",
+        "operationId": "GetReceiptMessage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "message-id",
+            "description": "Message id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOMessage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Receipt not found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/receipts/{event-id}": {
       "get": {
         "tags": [
@@ -1387,6 +1489,19 @@
           "message": {
             "type": "string",
             "example": "Error message"
+          }
+        }
+      },
+      "IOMessage": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "example": "712341f1-124419-4ead-9e66-12124fdsf"
+          },
+          "messageId": {
+            "type": "string",
+            "example": "76abb1f1-c9f9-4ead-9e66-12fec4d51042"
           }
         }
       },

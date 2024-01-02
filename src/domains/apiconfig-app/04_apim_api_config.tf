@@ -20,13 +20,6 @@ module "apim_api_config_product" {
 }
 
 
-resource "azurerm_api_management_group" "apiconfig_grp" {
-  name                = "api-config-be-writer"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "ApiConfig Writer"
-}
-
 
 ##############
 ##    API   ##

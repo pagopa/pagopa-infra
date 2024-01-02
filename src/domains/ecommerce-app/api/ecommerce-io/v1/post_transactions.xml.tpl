@@ -65,13 +65,18 @@
             </set-header>
           </when>
           <otherwise>
-            <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
-            <!-- Maybe here add a backend call to the get user to get user email -->
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
+          <!-- Read email from JWT START-->
+          <set-variable name="email" value="@{
+            var authHeader = context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ","");
+            return authHeader.AsJwt()?.Claims.GetValueOrDefault("email", "");
+        }" />
+          <!-- Read email from JWT END-->
             <set-body>@{ 
-                JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
-                requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
-                requestBody["email"] = "emailemail@test.it"; //Check how to retrieve and if this email has to be passed from frontend or not
-                return requestBody.ToString();  
+              JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
+              requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
+              requestBody["email"] = (String)context.Variables["email"];
+              return requestBody.ToString(); 
             }</set-body>
             <set-header name="X-Client-Id" exists-action="override">
               <value>IO</value>
