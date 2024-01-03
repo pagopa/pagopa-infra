@@ -162,6 +162,7 @@ module "receipts_datastore_cosmosdb_containers" {
 module "azurerm_cosmosdb_sql_stored_procedure" {
   # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=7eea8d90faa331e7f3efc90edf396917120197b7"
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure"
+  depends_on          = [module.receipts_datastore_cosmosdb_containers]
   name                = "cart-for-receipts-merge-procedure"
   resource_group_name = azurerm_resource_group.receipts_rg.name
   account_name        = module.receipts_datastore_cosmosdb_account.name
