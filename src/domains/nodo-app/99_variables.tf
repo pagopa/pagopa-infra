@@ -316,6 +316,7 @@ variable "nodo_verifyko_to_tablestorage_function" {
     sku_size                     = string
     sku_tier                     = string
     maximum_elastic_worker_count = number
+    zone_balancing_enabled       = bool
   })
   description = "Nodo Verify KO events to table storage function"
 }
