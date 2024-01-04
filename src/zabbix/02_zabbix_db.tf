@@ -5,7 +5,11 @@ resource "random_password" "zabbix_pg_admin_password" {
   length      = 8
   special     = true
   upper       = false
-  min_numeric = 5
+  min_numeric = 1
+  min_special = 1
+  min_upper = 1
+  min_lower = 1
+  override_special = "-"
 }
 
 resource "azurerm_key_vault_secret" "zabbix_pg_admin_password" {
@@ -15,14 +19,14 @@ resource "azurerm_key_vault_secret" "zabbix_pg_admin_password" {
   value        = random_password.zabbix_pg_admin_password.result
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault[0].id
 }
 
 # Postgres Flexible Server subnet
 module "zabbix_pg_flexible_snet" {
   count = var.is_resource.zabbix_pgflexi_enabled ? 1 : 0
 
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.35.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.35.1"
   name                                      = "${local.project}-pg-snet"
   address_prefixes                          = var.cidr_subnet_pg_flex_zabbix
   resource_group_name                       = data.azurerm_resource_group.rg_vnet_core.name
@@ -45,7 +49,7 @@ module "zabbix_pgflex_dev" {
 
   count = var.is_resource.zabbix_pgflexi_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v7.35.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v7.35.1"
 
   name                = "${local.project}-pgflex"
   location            = azurerm_resource_group.zabbix.location
@@ -56,7 +60,7 @@ module "zabbix_pgflex_dev" {
   # private_dns_zone_id      = data.azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id
   # delegated_subnet_id      = module.zabbix_pg_flexible_snet.id
 
-  administrator_login    = "zabbix"
+  administrator_login    = "postgres"
   administrator_password = random_password.zabbix_pg_admin_password.result
 
   sku_name   = "B_Standard_B1ms"
