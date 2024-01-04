@@ -100,7 +100,7 @@ nodeset_config = {
     requestMemory    = "2Gi"
     requestCPU       = "1"
     limitsMemory     = "2Gi"
-    limitsCPU        = "2" 
+    limitsCPU        = "2"
   },
   master-nodes = {
     count            = "3"
@@ -110,7 +110,7 @@ nodeset_config = {
     requestMemory    = "2Gi"
     requestCPU       = "1"
     limitsMemory     = "2Gi"
-    limitsCPU        = "2" 
+    limitsCPU        = "2"
   },
   data-hot-nodes = {
     count            = "3"

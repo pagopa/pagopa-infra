@@ -2,13 +2,13 @@
 # KeyVault
 #
 resource "random_password" "zabbix_pg_admin_password" {
-  length      = 8
-  special     = true
-  upper       = false
-  min_numeric = 1
-  min_special = 1
-  min_upper = 1
-  min_lower = 1
+  length           = 8
+  special          = true
+  upper            = false
+  min_numeric      = 1
+  min_special      = 1
+  min_upper        = 1
+  min_lower        = 1
   override_special = "-"
 }
 

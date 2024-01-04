@@ -7,7 +7,7 @@ locals {
 
   dns_zone_private_name_postgres = "privatelink.postgres.database.azure.com"
 
-  tools_container_app_env = "pagopa-${var.env_short}-tools-cae"
+  tools_container_app_env    = "pagopa-${var.env_short}-tools-cae"
   tools_container_app_env_rg = "pagopa-${var.env_short}-core-tools-rg"
 }
 
@@ -88,7 +88,7 @@ variable "cidr_subnet_pg_flex_zabbix" {
 #
 variable "is_resource" {
   type = object({
-    zabbix_kv_enabled = optional(bool, false),
+    zabbix_kv_enabled      = optional(bool, false),
     zabbix_pgflexi_enabled = optional(bool, false),
   })
 }

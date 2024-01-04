@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "sec_rg" {
-    count = var.is_resource.zabbix_kv_enabled ? 1 : 0
+  count = var.is_resource.zabbix_kv_enabled ? 1 : 0
 
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "sec_rg" {
 
 module "key_vault" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v7.35.1"
-    count = var.is_resource.zabbix_kv_enabled ? 1 : 0
+  count  = var.is_resource.zabbix_kv_enabled ? 1 : 0
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg[0].location
@@ -22,7 +22,7 @@ module "key_vault" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "ad_group_policy" {
-    count = var.is_resource.zabbix_kv_enabled ? 1 : 0
+  count = var.is_resource.zabbix_kv_enabled ? 1 : 0
 
   key_vault_id = module.key_vault[0].id
 

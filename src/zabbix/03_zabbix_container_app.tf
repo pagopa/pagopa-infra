@@ -5,7 +5,7 @@ resource "azurerm_container_app" "zabbix_server" {
   revision_mode                = "Single"
 
   secret {
-    name = "secret-postgres-password"
+    name  = "secret-postgres-password"
     value = random_password.zabbix_pg_admin_password.result
   }
 
@@ -20,40 +20,40 @@ resource "azurerm_container_app" "zabbix_server" {
       memory = "2Gi"
 
       env {
-        name = "ZBX_STARTJAVAPOLLERS"
+        name  = "ZBX_STARTJAVAPOLLERS"
         value = 10
       }
       env {
-        name = "ZBX_SERVICEMANAGERSYNCFREQUENCY"
+        name  = "ZBX_SERVICEMANAGERSYNCFREQUENCY"
         value = 15
       }
       #
       # DB
       #
       env {
-        name = "DB_SERVER_HOST"
+        name  = "DB_SERVER_HOST"
         value = "pagopa-${var.env_short}-weu-zabbix-pgflex.postgres.database.azure.com"
       }
       env {
-        name = "POSTGRES_DB"
+        name  = "POSTGRES_DB"
         value = "zabbix"
       }
       env {
-        name = "POSTGRES_USER"
+        name  = "POSTGRES_USER"
         value = "postgres"
       }
       env {
-        name = "POSTGRES_PASSWORD"
+        name        = "POSTGRES_PASSWORD"
         secret_name = "secret-postgres-password"
       }
 
       liveness_probe {
         failure_count_threshold = 10
         interval_seconds        = 10
-                initial_delay           = 10
+        initial_delay           = 10
 
-        port                    = 10051
-        transport               = "TCP"
+        port      = 10051
+        transport = "TCP"
       }
 
       readiness_probe {
@@ -69,8 +69,8 @@ resource "azurerm_container_app" "zabbix_server" {
   ingress {
     external_enabled = false
     target_port      = 10051
-    exposed_port      = 10051
-    transport = "tcp"
+    exposed_port     = 10051
+    transport        = "tcp"
     traffic_weight {
       latest_revision = true
       percentage      = 100
@@ -86,7 +86,7 @@ resource "azurerm_container_app" "zabbix_frontend" {
   revision_mode                = "Single"
 
   secret {
-    name = "secret-postgres-password"
+    name  = "secret-postgres-password"
     value = random_password.zabbix_pg_admin_password.result
   }
 
@@ -101,30 +101,30 @@ resource "azurerm_container_app" "zabbix_frontend" {
       memory = "0.5Gi"
 
       env {
-        name = "ZBX_SERVER_HOST"
+        name  = "ZBX_SERVER_HOST"
         value = azurerm_container_app.zabbix_server.name
       }
       env {
-        name = "PHP_TZ"
+        name  = "PHP_TZ"
         value = "Europe/Rome"
       }
       #
       # DB
       #
       env {
-        name = "DB_SERVER_HOST"
+        name  = "DB_SERVER_HOST"
         value = "pagopa-${var.env_short}-weu-zabbix-pgflex.postgres.database.azure.com"
       }
       env {
-        name = "POSTGRES_DB"
+        name  = "POSTGRES_DB"
         value = "zabbix"
       }
       env {
-        name = "POSTGRES_USER"
+        name  = "POSTGRES_USER"
         value = "postgres"
       }
       env {
-        name = "POSTGRES_PASSWORD"
+        name        = "POSTGRES_PASSWORD"
         secret_name = "secret-postgres-password"
       }
 
@@ -166,7 +166,7 @@ resource "azurerm_container_app" "zabbix_agent" {
   revision_mode                = "Single"
 
   secret {
-    name = "secret-postgres-password"
+    name  = "secret-postgres-password"
     value = random_password.zabbix_pg_admin_password.result
   }
 
@@ -181,29 +181,29 @@ resource "azurerm_container_app" "zabbix_agent" {
       memory = "0.5Gi"
 
       env {
-        name = "ZBX_PASSIVESERVERS"
+        name  = "ZBX_PASSIVESERVERS"
         value = "0.0.0.0/0"
       }
       env {
-        name = "ZBX_STARTAGENTS"
+        name  = "ZBX_STARTAGENTS"
         value = 1
       }
       env {
-        name = "ZBX_PASSIVE_ALLOW"
+        name  = "ZBX_PASSIVE_ALLOW"
         value = true
       }
       env {
-        name = "ZBX_ACTIVE_ALLOW"
+        name  = "ZBX_ACTIVE_ALLOW"
         value = true
       }
 
       liveness_probe {
         failure_count_threshold = 10
         interval_seconds        = 10
-                initial_delay           = 10
+        initial_delay           = 10
 
-        port                    = 10050
-        transport               = "TCP"
+        port      = 10050
+        transport = "TCP"
       }
 
       readiness_probe {
@@ -218,8 +218,8 @@ resource "azurerm_container_app" "zabbix_agent" {
   ingress {
     external_enabled = false
     target_port      = 10050
-    exposed_port      = 10050
-    transport = "tcp"
+    exposed_port     = 10050
+    transport        = "tcp"
     traffic_weight {
       latest_revision = true
       percentage      = 100

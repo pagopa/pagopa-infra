@@ -22,6 +22,6 @@ cidr_subnet_pg_flex_zabbix = ["10.1.254.0/24"]
 #
 is_resource = {
   zabbix_pgflexi_enabled = true
-  zabbix_kv_enabled = true
+  zabbix_kv_enabled      = true
 }
 

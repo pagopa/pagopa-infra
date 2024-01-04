@@ -15,11 +15,11 @@ resource "azurerm_subnet" "tools_cae_subnet" {
 }
 
 resource "azurerm_container_app_environment" "tools_cae" {
-    count = var.is_resource.container_app_tools_cae ? 1 : 0
+  count = var.is_resource.container_app_tools_cae ? 1 : 0
 
   name                       = "${local.product}-tools-cae"
   location                   = azurerm_resource_group.tools_rg[0].location
   resource_group_name        = azurerm_resource_group.tools_rg[0].name
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
-  infrastructure_subnet_id = azurerm_subnet.tools_cae_subnet.id
+  infrastructure_subnet_id   = azurerm_subnet.tools_cae_subnet.id
 }
