@@ -71,11 +71,11 @@ resource "azurerm_storage_blob" "gpd_upload_dirs" {
   type                   = "Block"
 }
 
-resource "azurerm_storage_management_policy" "example" {
+resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {
   storage_account_id = module.gpd_sa.id
 
   rule {
-    name    = "rule1"
+    name    = "Gpd upload blob sa policy"
     enabled = true
     filters {
       prefix_match = ["gpd-upload/input", "gpd-upload/output"]
