@@ -16,7 +16,7 @@ tags = {
 }
 
 ### Network
-cidr_subnet_tools_cae  = ["10.1.252.0/23"]
+cidr_subnet_tools_cae  = ["10.1.248.0/23"]
 
 ### External resources
 

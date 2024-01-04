@@ -73,6 +73,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "cidr_subnet_tools_cae" {
+  type        = list(string)
+  description = "Tool container app env, network address space."
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"

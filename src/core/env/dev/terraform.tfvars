@@ -42,7 +42,7 @@ cidr_subnet_node_forwarder           = ["10.1.158.0/24"]
 # specific
 cidr_subnet_redis = ["10.1.163.0/24"]
 # zabbix
-cidr_subnet_tools_cae  = ["10.1.252.0/23"] #placeholders
+cidr_subnet_tools_cae  = ["10.1.248.0/23"] #placeholders
 cidr_subnet_pg_flex_zabbix = ["10.1.254.0/24"] #placeholders
 
 # integration vnet
