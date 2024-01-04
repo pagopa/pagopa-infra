@@ -13,8 +13,9 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_azurerm_cosmosdb_sql_stored_procedure"></a> [azurerm\_cosmosdb\_sql\_stored\_procedure](#module\_azurerm\_cosmosdb\_sql\_stored\_procedure) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure | PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure |
 | <a name="module_receipts_datastore_cosmosdb_account"></a> [receipts\_datastore\_cosmosdb\_account](#module\_receipts\_datastore\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.7.0 |
-| <a name="module_receipts_datastore_cosmosdb_containers"></a> [receipts\_datastore\_cosmosdb\_containers](#module\_receipts\_datastore\_cosmosdb\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v6.7.0 |
+| <a name="module_receipts_datastore_cosmosdb_containers"></a> [receipts\_datastore\_cosmosdb\_containers](#module\_receipts\_datastore\_cosmosdb\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure |
 | <a name="module_receipts_datastore_cosmosdb_database"></a> [receipts\_datastore\_cosmosdb\_database](#module\_receipts\_datastore\_cosmosdb\_database) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.7.0 |
 | <a name="module_receipts_datastore_cosmosdb_snet"></a> [receipts\_datastore\_cosmosdb\_snet](#module\_receipts\_datastore\_cosmosdb\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
 | <a name="module_receipts_datastore_fn_sa"></a> [receipts\_datastore\_fn\_sa](#module\_receipts\_datastore\_fn\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
