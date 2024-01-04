@@ -431,3 +431,13 @@ variable "location_replica_short" {
   description = "One of wue, neu"
   default     = "neu"
 }
+
+variable "gpd_sa_tier_to_archive" {
+  type        = number
+  description = "Number of days after which the blob is moved to archive"
+}
+
+variable "gpd_sa_delete" {
+  type        = number
+  description = "Number of days after which the blob is deleted"
+}

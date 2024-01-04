@@ -70,3 +70,27 @@ resource "azurerm_storage_blob" "gpd_upload_dirs" {
   storage_container_name = azurerm_storage_container.gpd_upload_container.name
   type                   = "Block"
 }
+
+resource "azurerm_storage_management_policy" "example" {
+  storage_account_id = module.gpd_sa.id
+
+  rule {
+    name    = "rule1"
+    enabled = true
+    filters {
+      prefix_match = ["gpd-upload/input", "gpd-upload/output"]
+      blob_types   = ["blockBlob"]
+      # match_blob_index_tag {
+      #   name      = "tag1"
+      #   operation = "=="
+      #   value     = "val1"
+      # }
+    }
+    actions {
+      base_blob {
+        tier_to_archive_after_days_since_modification_greater_than = var.gpd_sa_tier_to_archive
+        delete_after_days_since_modification_greater_than          = var.gpd_sa_delete
+      }
+    }
+  }
+}
