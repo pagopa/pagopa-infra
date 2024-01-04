@@ -7,12 +7,8 @@ locals {
 
   dns_zone_private_name_postgres = "privatelink.postgres.database.azure.com"
 
-  # aks_name                = var.aks_name
-  # aks_resource_group_name = var.aks_resource_group_name
-
-  # internal_dns_zone_name                = "internal.dev.cstar.pagopa.it"
-  # internal_dns_zone_resource_group_name = "cstar-d-vnet-rg"
-  # ingress_hostname_prefix               = "dev01.zabbix"
+  tools_container_app_env = "pagopa-${var.env_short}-tools-cae"
+  tools_container_app_env_rg = "pagopa-${var.env_short}-core-tools-rg"
 }
 
 variable "prefix" {
@@ -72,11 +68,6 @@ variable "tags" {
   }
 }
 
-# variable "cidr_subnet_zabbix_server" {
-#   type        = list(string)
-#   description = "Subnet for zabbix vm"
-# }
-
 variable "cidr_subnet_pg_flex_zabbix" {
   type        = list(any)
   description = "values for cidr_subnet_pg_flex_zabbix"
@@ -101,20 +92,3 @@ variable "is_resource" {
     zabbix_pgflexi_enabled = optional(bool, false),
   })
 }
-
-# variable "k8s_kube_config_path_prefix" {
-#   type    = string
-#   default = "~/.kube"
-# }
-
-### Aks
-
-# variable "aks_name" {
-#   type        = string
-#   description = "AKS cluster name"
-# }
-
-# variable "aks_resource_group_name" {
-#   type        = string
-#   description = "AKS cluster resource name"
-# }
