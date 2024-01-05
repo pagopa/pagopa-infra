@@ -14,6 +14,8 @@
                 <set-variable name="paymentMethod" value="@((JObject)((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
                 <set-variable name="paymentTypeCode" value="@((string)((JObject)context.Variables["paymentMethod"])["paymentTypeCode"])" />
                 <set-variable name="isPayPal" value="@(((string)context.Variables["paymentTypeCode"]).Equals("PPAL"))" />
+                <set-variable name="isBancomatPay" value="@(((string)context.Variables["paymentTypeCode"]).Equals("BPAY"))" />
+                <set-variable name="isCard" value="@(((string)context.Variables["paymentTypeCode"]).Equals("CP"))" />
             </when>
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 404)">
                 <return-response>
@@ -37,7 +39,7 @@
                     <set-body>{
                         "title": "Bad gateway",
                         "status": 502,
-                        "detail": "Payment method not found",
+                        "detail": "Payment method not available",
                     }</set-body>
                 </return-response>
             </otherwise>
@@ -72,7 +74,7 @@
                             </set-header>
                         </send-request>
                     </when>
-                    <when condition="@(((string)context.Variables["paymentTypeCode"]).Equals("CP") || ((string)context.Variables["paymentTypeCode"]).Equals("BPAY"))">
+                    <when condition="@((bool)context.Variables["isCard"] || (bool)context.Variables["isBancomatPay"])">
                         <send-request ignore-error="true" timeout="10" response-variable-name="getPspForCardsResponse">
                             <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/payments/{(string)context.Variables["idPayment"]}/psps?idWallet={(string)context.Variables["idWallet"]}&language={(string)context.Variables["language"]}&isList=true")</set-url>
                             <set-method>GET</set-method>
@@ -90,7 +92,7 @@
                             <set-body>{
                                 "title": "Bad Gateway",
                                 "status": 502,
-                                "detail": "Bad Gateway",
+                                "detail": "PSP not available",
                             }</set-body>
                         </return-response>
                     </otherwise>
@@ -156,7 +158,7 @@
                 <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
                 <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
                 <choose>
-                    <when condition="@(!(bool)context.Variables["isPayPal"])">
+                    <when condition="@((bool)context.Variables["isCard"])">
                         <send-request ignore-error="false" timeout="10" response-variable-name="authDataResponse">
                             <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}/auth-data")</set-url>
                             <set-method>GET</set-method>
@@ -189,7 +191,7 @@
                                     <set-body>{
                                         "title": "Bad gateway",
                                         "status": 502,
-                                        "detail": "Payment method not found",
+                                        "detail": "Wallet not available",
                                     }</set-body>
                                 </return-response>
                             </otherwise>
