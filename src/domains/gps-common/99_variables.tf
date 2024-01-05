@@ -314,6 +314,12 @@ variable "storage_account_replication_type" {
   description = "(Optional) Fn app storage acocunt replication type"
 }
 
+variable "flow_storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Reporting storage acocunt replication type"
+}
+
 variable "enable_gpd_payments_backup" {
   type        = bool
   default     = false
