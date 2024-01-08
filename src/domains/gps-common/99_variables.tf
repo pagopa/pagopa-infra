@@ -307,19 +307,6 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-
-variable "storage_account_replication_type" {
-  type        = string
-  default     = "LRS"
-  description = "(Optional) Fn app storage acocunt replication type"
-}
-
-variable "flow_storage_account_replication_type" {
-  type        = string
-  default     = "LRS"
-  description = "(Optional) Reporting storage acocunt replication type"
-}
-
 variable "enable_gpd_payments_backup" {
   type        = bool
   default     = false
@@ -353,36 +340,4 @@ variable "reporting_storage_account" {
     backup_enabled             = false
     backup_retention           = 0
   }
-}
-
-
-variable "geo_replica_enabled" {
-  type        = bool
-  description = "(Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers"
-  default     = false
-}
-
-
-variable "geo_replica_cidr_subnet_postgresql" {
-  type        = list(string)
-  description = "Address prefixes replica subnet postgresql"
-  default     = null
-}
-
-variable "location_replica" {
-  type        = string
-  description = "One of westeurope, northeurope"
-  default     = "northeurope"
-}
-
-variable "location_replica_short" {
-  type = string
-  validation {
-    condition = (
-      length(var.location_replica_short) == 3
-    )
-    error_message = "Length must be 3 chars."
-  }
-  description = "One of wue, neu"
-  default     = "neu"
 }
