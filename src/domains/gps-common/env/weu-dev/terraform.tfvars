@@ -142,3 +142,4 @@ storage_account_snet_private_link_service_network_policies_enabled = false
 
 gpd_sa_tier_to_archive = 1
 gpd_sa_delete          = 2
+
