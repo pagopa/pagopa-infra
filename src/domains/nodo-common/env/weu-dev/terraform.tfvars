@@ -207,8 +207,9 @@ nodo_verifyko_storage_account = {
   account_tier                  = "Standard"
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
-  advanced_threat_protection    = false
+  advanced_threat_protection    = true
   blob_delete_retention_days    = 0
   public_network_access_enabled = true
   backup_enabled                = false
+  backup_retention_days         = 0
 }

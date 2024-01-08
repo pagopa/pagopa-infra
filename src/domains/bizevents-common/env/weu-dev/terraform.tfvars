@@ -47,6 +47,8 @@ bizevents_datastore_cosmos_db_params = {
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = false
 
+  ip_range_filter = ""
+
   backup_continuous_enabled = false
 
   container_default_ttl = 2629800 # 1 month in second

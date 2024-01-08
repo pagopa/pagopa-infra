@@ -137,7 +137,7 @@ cosmos_nosql_db_params = {
   backup_continuous_enabled = true
 
   events_ttl     = 10368000 # 120 days
-  max_throughput = 20000
+  max_throughput = 2000
 }
 
 verifyko_cosmos_nosql_db_params = {
@@ -150,7 +150,7 @@ verifyko_cosmos_nosql_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
   additional_geo_locations = [{
     location          = "northeurope"
@@ -164,7 +164,7 @@ verifyko_cosmos_nosql_db_params = {
   backup_continuous_enabled = true
 
   events_ttl     = 10368000 # 120 days
-  max_throughput = 20000
+  max_throughput = 2000
 }
 
 standin_cosmos_nosql_db_params = {
@@ -219,12 +219,12 @@ nodo_verifyko_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
-  blob_delete_retention_days    = 0
-  public_network_access_enabled = true
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
   backup_enabled                = true
-  backup_retention              = 30
+  backup_retention_days         = 30
 }
 
 
