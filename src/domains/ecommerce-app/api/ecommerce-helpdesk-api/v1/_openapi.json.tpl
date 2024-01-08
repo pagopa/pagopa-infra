@@ -124,12 +124,12 @@
         }
       }
     },
-    "/pm/searchPaymentMethods": {
+    "/pm/searchPaymentMethod": {
       "post": {
         "tags": [
           "PM"
         ],
-        "operationId": "pmSearchPaymentMethods",
+        "operationId": "pmSearchPaymentMethod",
         "summary": "Search payment method by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
@@ -337,12 +337,12 @@
         }
       }
     },
-    "/helpdesk/searchPaymentMethods": {
+    "/helpdesk/searchPaymentMethod": {
       "post": {
         "tags": [
           "helpDesk"
         ],
-        "operationId": "helpDeskSearchPaymentMethods",
+        "operationId": "helpDeskSearchPaymentMethod",
         "summary": "Search payment methods by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
