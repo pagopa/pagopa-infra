@@ -658,10 +658,12 @@
           },
           "creationDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The creation date"
           },
           "ppayEmail": {
-            "type": "string"
+            "type": "string",
+            "description": "Email linked to the paypal account"
           }
         },
         "required": [
@@ -681,13 +683,16 @@
           },
           "creationDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The creation date"
           },
           "bankName": {
-            "type": "string"
+            "type": "string",
+            "description": "The identifying name of the bank"
           },
           "bankState": {
-            "type": "string"
+            "type": "string",
+            "description": "The bank state"
           }
         },
         "required": [
@@ -707,16 +712,20 @@
           },
           "creationDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The creation date"
           },
           "idPsp": {
-            "type": "string"
+            "type": "string",
+            "description": "The identifier of the psp"
           },
           "cardBin": {
-            "type": "string"
+            "type": "string",
+            "description": "The card bin number"
           },
           "cardNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "The card number obfuscated"
           }
         },
         "required": [
@@ -735,13 +744,16 @@
           },
           "creationDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The creation date"
           },
           "bancomatAbi": {
-            "type": "string"
+            "type": "string",
+            "description": "The bancomat abi"
           },
           "bancomatNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "The bancomat number"
           }
         },
         "required": [
@@ -760,16 +772,20 @@
           },
           "creationDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The creation date"
           },
           "idPsp": {
-            "type": "string"
+            "type": "string",
+            "description": "The identifier of the psp"
           },
           "bpayName": {
-            "type": "string"
+            "type": "string",
+            "description": "Name of the institution providing the service"
           },
           "bpayPhoneNumber": {
-            "type": "string"
+            "type": "string",
+            "description": "Phone number connected to the BancomatPay account"
           }
         },
         "required": [
@@ -788,13 +804,12 @@
           },
           "creationDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The creation date"
           },
           "idPsp": {
-            "type": "string"
-          },
-          "uidSatispay": {
-            "type": "string"
+            "type": "string",
+            "description": "The identifier of the psp"
           }
         },
         "required": [
@@ -813,10 +828,12 @@
           },
           "creationDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The creation date"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "A description of the generic method"
           }
         },
         "required": [
@@ -867,22 +884,28 @@
         "description": "SearchPaymentMethodResponse",
         "properties": {
           "fiscalCode": {
-            "type": "string"
+            "type": "string",
+            "description": "The user fiscal code"
           },
           "notificationEmail": {
-            "type": "string"
+            "type": "string",
+            "description": "The user notification email"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the user"
           },
           "surname": {
-            "type": "string"
+            "type": "string",
+            "description": "The surname of the user"
           },
           "username": {
-            "type": "string"
+            "type": "string",
+            "description": "The username of the user"
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "description": "The user state."
           },
           "paymentMethods": {
             "type": "array",
