@@ -177,4 +177,17 @@ resource "azurerm_key_vault_secret" "paypal_psp_api_key" {
   }
 }
 
+resource "azurerm_key_vault_secret" "user-wallet-token-for-tests" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "user-wallet-token-for-tests"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 
