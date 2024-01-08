@@ -96,7 +96,7 @@ locals {
   gpd_cosmosdb_containers = [
     {
       name               = "gpd_upload_status",
-      partition_key_path = "/fileID",
+      partition_key_path = "/fiscalCode",
       autoscale_settings = { max_throughput = 1000 }
     },
   ]

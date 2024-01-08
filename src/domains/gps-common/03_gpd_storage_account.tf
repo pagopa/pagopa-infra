@@ -57,16 +57,16 @@ resource "azurerm_private_endpoint" "gpd_blob" {
   tags = var.tags
 }
 
-resource "azurerm_storage_container" "input" {
-  name                  = "input"
+resource "azurerm_storage_container" "gpd_upload_container" {
+  name                  = "gpd-upload"
   storage_account_name  = module.gpd_sa.name
   container_access_type = "private"
 }
 
-resource "azurerm_storage_blob" "input_dirs" {
-  for_each               = toset(["Inbox", "output"])
-  name                   = format("%s/.test", each.key)
+resource "azurerm_storage_blob" "gpd_upload_dirs" {
+  for_each               = toset(["input", "output"])
+  name                   = format("%s/.blob", each.key)
   storage_account_name   = module.gpd_sa.name
-  storage_container_name = azurerm_storage_container.input.name
+  storage_container_name = azurerm_storage_container.gpd_upload_container.name
   type                   = "Block"
 }

@@ -155,9 +155,13 @@ reporting_storage_account = {
   backup_retention           = 30
 }
 
-
 geo_replica_enabled                = true
 location_replica                   = "northeurope"
 location_replica_short             = "neu"
 geo_replica_cidr_subnet_postgresql = ["10.2.141.0/24"]
 postgresql_sku_name                = "GP_Gen5_2"
+
+gpd_account_replication_type                                       = "GZRS"
+gpd_enable_private_endpoint                                        = false
+gpd_disable_network_rules                                          = true
+storage_account_snet_private_link_service_network_policies_enabled = false
