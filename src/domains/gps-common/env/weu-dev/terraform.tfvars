@@ -140,6 +140,6 @@ gpd_enable_private_endpoint                                        = false
 gpd_disable_network_rules                                          = true
 storage_account_snet_private_link_service_network_policies_enabled = false
 
-gpd_sa_tier_to_archive = 3
-gpd_sa_delete          = 7
+gpd_sa_tier_to_archive = 1
+gpd_sa_delete          = 2
 
