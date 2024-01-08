@@ -895,7 +895,7 @@
         }
       ]
     },
-    "/cart/{cart-id}/recover-failed": {
+    "/carts/{cart-id}/recover-failed": {
       "post": {
         "tags": [
           "API-recoverFailedCart"
