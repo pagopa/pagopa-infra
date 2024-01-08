@@ -150,7 +150,7 @@
                     if(authorizationUrl.Contains("checkout.pagopa.it")){
                         authorizationUrl = authorizationUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("sessionToken",""));
                     }
-                    inBody["authorizationUrl"] = authorizationUrl
+                    inBody["authorizationUrl"] = authorizationUrl;
                     return inBody.ToString(); 
                 }</set-body>
             </when>
