@@ -80,6 +80,11 @@ resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {
     filters {
       prefix_match = ["gpd-upload/input", "gpd-upload/output"]
       blob_types   = ["blockBlob"]
+      # match_blob_index_tag {
+      #   name      = "tag1"
+      #   operation = "=="
+      #   value     = "val1"
+      # }
     }
     actions {
       base_blob {
