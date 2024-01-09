@@ -100,7 +100,7 @@ nodeset_config = {
     requestMemory    = "1Gi"
     requestCPU       = "1"
     limitsMemory     = "2Gi"
-    limitsCPU        = "1" 
+    limitsCPU        = "1"
   },
   master-nodes = {
     count            = "3"

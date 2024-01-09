@@ -599,7 +599,7 @@ eventhubs_02 = [
         manage = false
       }
     ]
-  }  
+  }
 ]
 
 # acr
