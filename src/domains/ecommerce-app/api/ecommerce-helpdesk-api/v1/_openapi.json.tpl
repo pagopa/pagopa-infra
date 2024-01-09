@@ -130,7 +130,7 @@
           "PM"
         ],
         "operationId": "pmSearchPaymentMethod",
-        "summary": "Search payment method by input parameters",
+        "summary": "PM search payment methods by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/SearchPaymentMethodRequest"
@@ -343,7 +343,7 @@
           "helpDesk"
         ],
         "operationId": "helpDeskSearchPaymentMethod",
-        "summary": "Search payment methods by input parameters",
+        "summary": "Technical helpdesk search payment methods by input parameters",
         "description": "GET with body payload - no resources created",
         "requestBody": {
           "$ref": "#/components/requestBodies/SearchPaymentMethodRequest"
