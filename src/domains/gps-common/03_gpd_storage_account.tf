@@ -5,24 +5,17 @@ module "gpd_sa" {
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = azurerm_resource_group.gpd_rg.location
 
-  public_network_access_enabled = true
+  public_network_access_enabled = var.gpd_sa_public_network_access_enabled
   is_sftp_enabled               = true
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = var.gpd_account_replication_type
   access_tier                   = "Hot"
   is_hns_enabled                = true
+  advanced_threat_protection    = true
 
-  blob_versioning_enabled = false
-
-  #  blob_delete_retention_days = var.gpd_sa_delete_retention_days
-  #  blob_change_feed_enabled = var.enable_gpd_backup
-  #  blob_change_feed_retention_in_days = var.enable_gpd_backup ? var.gpd_sa_backup_retention_days : null
-  #  blob_container_delete_retention_days =  var.gpd_sa_backup_retention_days
-  #  blob_storage_policy ={
-  #    enable_immutability_policy = false
-  #    blob_restore_policy_days = var.gpd_sa_backup_retention_days
-  #  }
+  blob_versioning_enabled       = false
+  blob_last_access_time_enabled = true
 
   network_rules = {
     default_action             = var.gpd_disable_network_rules ? "Allow" : "Deny"
@@ -80,11 +73,6 @@ resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {
     filters {
       prefix_match = ["gpd-upload/input", "gpd-upload/output"]
       blob_types   = ["blockBlob"]
-      # match_blob_index_tag {
-      #   name      = "tag1"
-      #   operation = "=="
-      #   value     = "val1"
-      # }
     }
     actions {
       base_blob {

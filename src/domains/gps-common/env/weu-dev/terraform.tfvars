@@ -50,28 +50,6 @@ cosmos_gps_db_params = {
   backup_continuous_enabled = false
 }
 
-# CosmosDB GPD
-cosmos_gpd_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = ["EnableServerless"]
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "Strong"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = false
-
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
-
-  backup_continuous_enabled = false
-}
-
 # Postgres Flexible
 pgres_flex_params = {
   private_endpoint_enabled = false
@@ -139,6 +117,7 @@ gpd_account_replication_type                                       = "LRS"
 gpd_enable_private_endpoint                                        = false
 gpd_disable_network_rules                                          = true
 storage_account_snet_private_link_service_network_policies_enabled = false
+gpd_sa_public_network_access_enabled                               = true
 
 gpd_sa_tier_to_archive = 1
 gpd_sa_delete          = 2
