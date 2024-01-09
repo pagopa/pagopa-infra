@@ -233,6 +233,25 @@ variable "storage_account_info" {
   }
 }
 
+# Storage account
+variable "reporting_fdr_storage_account_info" {
+  type = object({
+    account_kind                      = string
+    account_tier                      = string
+    account_replication_type          = string
+    access_tier                       = string
+    advanced_threat_protection_enable = bool
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+}
+
 # App service plan
 variable "app_service_plan_info" {
   type = object({

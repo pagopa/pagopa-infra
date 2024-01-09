@@ -202,6 +202,108 @@
         }
       ]
     },
+    "/receipts/io-message/{message-id}": {
+      "get": {
+        "tags": [
+          "API-getReceiptMessage"
+        ],
+        "summary": "Retrieve from CosmosDB the receipt message with the given message id",
+        "operationId": "GetReceiptMessage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "message-id",
+            "description": "Message id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOMessage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Receipt not found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/receipts/organizations/{organization-fiscal-code}/iuvs/{iuv}": {
       "get": {
         "tags": [
@@ -433,6 +535,15 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "isCart",
+            "description": "Boolean to determine if the id refers to a cart",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
           }
         ],
         "responses": {
@@ -450,6 +561,126 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ReceiptError"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Receipt error not found.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Receipt could not be updated with the new attachments",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cart/{cart-id}": {
+      "get": {
+        "tags": [
+          "API-getCart"
+        ],
+        "summary": "Retrieve from CosmosDB the cart with the given cart id",
+        "operationId": "GetCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart-id",
+            "description": "Cart id.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartForReceipt"
                 }
               }
             }
@@ -664,6 +895,241 @@
         }
       ]
     },
+    "/carts/{cart-id}/recover-failed": {
+      "post": {
+        "tags": [
+          "API-recoverFailedCart"
+        ],
+        "summary": "Recover a cart in FAILED or INSERTED status",
+        "operationId": "RecoverFailedCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cart-id",
+            "description": "Cart id.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Receipt with eventId 76abb1f1-c9f9-4ead-9e66-12fec4d51042 recovered"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Receipt or BizEvent not found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error processing the request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/carts/recover-failed": {
+      "post": {
+        "tags": [
+          "API-recoverCartFailed"
+        ],
+        "summary": "Recover a group of cart in FAILED, or INSERTED status",
+        "operationId": "RecoverFailedCartMassive",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Calls.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Recovered 10 carts"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error processing the request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/receipts/{event-id}/recover-failed": {
       "post": {
         "tags": [
@@ -680,6 +1146,15 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "isCart",
+            "description": "Boolean to determine if the id refers to a cart",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
           }
         ],
         "requestBody": {
@@ -915,6 +1390,15 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "isCart",
+            "description": "Boolean to determine if the id refers to a cart",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
           }
         ],
         "requestBody": {
@@ -1150,6 +1634,15 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "isCart",
+            "description": "Boolean to determine if the id refers to a cart",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
           }
         ],
         "requestBody": {
@@ -1390,6 +1883,19 @@
           }
         }
       },
+      "IOMessage": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "example": "712341f1-124419-4ead-9e66-12124fdsf"
+          },
+          "messageId": {
+            "type": "string",
+            "example": "76abb1f1-c9f9-4ead-9e66-12fec4d51042"
+          }
+        }
+      },
       "ReceiptError": {
         "type": "object",
         "properties": {
@@ -1412,6 +1918,37 @@
           "status": {
             "type": "string",
             "example": "TO_REVIEW"
+          }
+        }
+      },
+      "CartForReceipt": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": "712341"
+          },
+          "cartPaymentId": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "76abb1f1-c9f9-4ead-9e66-12fec4d51042"
+            }
+          },
+          "totalNotice": {
+            "type": "integer",
+            "example": "3"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "INSERTED",
+              "FAILED",
+              "SENT"
+            ]
+          },
+          "reasonError": {
+            "$ref": "#/components/schemas/ReasonErr"
           }
         }
       },
