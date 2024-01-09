@@ -696,6 +696,88 @@
           }
         }
       ]
+    },
+    "/transactions": {
+      "get": {
+        "tags": [
+          "transaction-controller"
+        ],
+        "summary": "A list biz-event is recovered and defined in the structure of a transaction referred from IO",
+        "operationId": "getTransactionsUsingGET",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/transactions/{id}": {
+      "get": {
+        "tags": [
+          "transaction-controller"
+        ],
+        "summary": "A biz-event is recovered and defined in the structure of a transaction referred from IO",
+        "operationId": "getTransactionUsingGET",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -1280,6 +1362,155 @@
           }
         }
       },
+      "TransactionListResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "start": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "title": "TransactionListResponse"
+      },
+      "TransactionResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Transaction"
+          }
+        },
+        "title": "TransactionResponse"
+      },
+      "Transaction": {
+        "type": "object",
+        "properties": {
+         "accountingStatus": {
+           "type": "integer",
+           "format": "int64"
+         },
+         "amount": {
+           "$ref": "#/components/schemas/Amount"
+         },
+         "authorizationCode": {
+           "type": "string"
+         },
+         "created": {
+           "type": "string",
+           "format": "date-time"
+         },
+         "description": {
+           "type": "string"
+         },
+         "detailsList": {
+           "type": "array",
+           "items": {
+             "$ref": "#/components/schemas/Dettaglio"
+           }
+         },
+         "directAcquirer": {
+           "type": "boolean"
+         },
+         "error": {
+           "type": "boolean"
+         },
+         "fee": {
+           "$ref": "#/components/schemas/Amount"
+         },
+         "grandTotal": {
+           "$ref": "#/components/schemas/Amount"
+         },
+         "id": {
+           "type": "integer",
+           "format": "int64"
+         },
+         "idPayment": {
+           "type": "integer",
+           "format": "int64"
+         },
+         "idStatus": {
+           "type": "integer",
+           "format": "int64"
+         },
+         "idWallet": {
+           "type": "integer",
+           "format": "int64"
+         },
+         "merchant": {
+           "type": "string"
+         },
+         "nodoIdPayment": {
+           "type": "string"
+         },
+         "numAut": {
+           "type": "string"
+         },
+         "orderNumber": {
+           "type": "integer",
+           "format": "int64"
+         },
+         "paymentCancelled": {
+           "type": "boolean"
+         },
+         "paymentModel": {
+           "type": "integer",
+           "format": "int64"
+         },
+         "pspId": {
+           "type": "integer",
+           "format": "int64"
+         },
+         "pspInfo": {
+           "$ref": "#/components/schemas/PspInfo"
+         },
+         "rrn": {
+           "type": "string"
+         },
+         "spcNodeDescription": {
+           "type": "string"
+         },
+         "spcNodeStatus": {
+           "type": "integer",
+           "format": "int64"
+         },
+         "statusMessage": {
+           "type": "string"
+         },
+         "success": {
+           "type": "boolean"
+         },
+         "token": {
+           "type": "string"
+         },
+         "updated": {
+           "type": "string",
+           "format": "date-time"
+         },
+         "urlCheckout3ds": {
+           "type": "string"
+         },
+         "urlRedirectPSP": {
+           "type": "string"
+         }
+       },
+       "title": "Transaction"
+      },
       "TransactionDetails": {
         "type": "object",
         "properties": {
@@ -1293,6 +1524,39 @@
             "$ref": "#/components/schemas/WalletItem"
           }
         }
+      },
+      "Dettaglio": {
+        "type": "object",
+        "properties": {
+          "CCP": {
+            "type": "string"
+          },
+          "IUV": {
+            "type": "string"
+          },
+          "codicePagatore": {
+            "type": "string"
+          },
+          "enteBeneficiario": {
+            "type": "string"
+          },
+          "idDominio": {
+            "type": "string"
+          },
+          "idPayment": {
+            "type": "string"
+          },
+          "importo": {
+            "type": "number"
+          },
+          "nomePagatore": {
+            "type": "string"
+          },
+          "tipoPagatore": {
+            "type": "string"
+          }
+        },
+        "title": "Dettaglio"
       },
       "Transfer": {
         "type": "object",
@@ -1398,6 +1662,40 @@
             "$ref": "#/components/schemas/AuthRequest"
           }
         }
+      },
+      "Amount": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "currencyNumber": {
+            "type": "string"
+          },
+          "decimalDigits": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "title": "Amount"
+      },
+      "PspInfo": {
+        "type": "object",
+        "properties": {
+          "codiceAbi": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "ragioneSociale": {
+            "type": "string"
+          }
+        },
+        "title": "PspInfo"
       },
       "Link": {
         "type": "object",
