@@ -393,7 +393,7 @@ variable "nodo_verifyko_storage_account" {
     blob_delete_retention_days    = number
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
-    backup_enabled                 = bool
+    backup_enabled                = bool
     backup_retention_days         = number
   })
 }

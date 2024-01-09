@@ -96,12 +96,13 @@
                         string operationResult = (string)operation["operationResult"];
                         string orderId = (string)operation["orderId"];
                         string operationId = (string)operation["operationId"];
-                        JObject additionalData = (JObject)operation["additionalData"];
+                        var additionalData = operation["additionalData"];
                         string authorizationCode = null;
                         string rrn = null;
-                        if(additionalData !=null){
-                            authorizationCode = (string)additionalData["authorizationCode"];
-                            rrn = (string)additionalData["rrn"];
+                        if(additionalData.Type != JTokenType.Null){
+                            JObject receivedAdditionalData = (JObject)additionalData;
+                            authorizationCode = (string)receivedAdditionalData["authorizationCode"];
+                            rrn = (string)receivedAdditionalData["rrn"];
                         }
                         string paymentEndToEndId = (string)operation["paymentEndToEndId"];
                         string operationTime = (string)operation["operationTime"];
