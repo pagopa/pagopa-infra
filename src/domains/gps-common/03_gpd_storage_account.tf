@@ -1,7 +1,7 @@
-module "gpd_sa" {
+module "gpd_sa_sftp" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
-  name                = replace("${local.project}-gpd-sa", "-", "")
+  name                = replace("${local.project}-gpd-sa-sftp", "-", "")
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = azurerm_resource_group.gpd_rg.location
 
@@ -14,7 +14,7 @@ module "gpd_sa" {
   is_hns_enabled                = true
   advanced_threat_protection    = true
 
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = var.gpd_sa_blob_versioning_enabled
   blob_last_access_time_enabled = true
 
   network_rules = {
@@ -30,14 +30,14 @@ module "gpd_sa" {
 resource "azurerm_private_endpoint" "gpd_blob" {
   count = var.gpd_enable_private_endpoint ? 1 : 0
 
-  name                = "${module.gpd_sa.name}-blob-endpoint"
+  name                = "${module.gpd_sa_sftp.name}-blob-endpoint"
   resource_group_name = azurerm_resource_group.gpd_rg.name
   location            = azurerm_resource_group.gpd_rg.location
   subnet_id           = module.storage_account_snet.id
 
   private_service_connection {
-    name                           = "${module.gpd_sa.name}-blob-endpoint"
-    private_connection_resource_id = module.gpd_sa.id
+    name                           = "${module.gpd_sa_sftp.name}-blob-endpoint"
+    private_connection_resource_id = module.gpd_sa_sftp.id
     is_manual_connection           = false
     subresource_names              = ["blob"]
   }
@@ -52,20 +52,20 @@ resource "azurerm_private_endpoint" "gpd_blob" {
 
 resource "azurerm_storage_container" "gpd_upload_container" {
   name                  = "gpd-upload"
-  storage_account_name  = module.gpd_sa.name
+  storage_account_name  = module.gpd_sa_sftp.name
   container_access_type = "private"
 }
 
 resource "azurerm_storage_blob" "gpd_upload_dirs" {
   for_each               = toset(["input", "output"])
-  name                   = format("%s/.blob", each.key)
-  storage_account_name   = module.gpd_sa.name
+  name                   = "${each.key}/.blob"
+  storage_account_name   = module.gpd_sa_sftp.name
   storage_container_name = azurerm_storage_container.gpd_upload_container.name
   type                   = "Block"
 }
 
 resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {
-  storage_account_id = module.gpd_sa.id
+  storage_account_id = module.gpd_sa_sftp.id
 
   rule {
     name    = "Gpd upload blob sa policy"

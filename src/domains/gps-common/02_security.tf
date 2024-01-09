@@ -457,7 +457,7 @@ resource "azurerm_key_vault_secret" "gpd_core_key_for_upload" {
 
 resource "azurerm_key_vault_secret" "gpd_upload_sa_connection_string" {
   name         = "gpd-upload-sa-connection-string"
-  value        = module.gpd_sa.primary_connection_string
+  value        = module.gpd_sa_sftp.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

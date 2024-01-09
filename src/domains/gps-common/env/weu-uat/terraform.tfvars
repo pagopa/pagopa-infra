@@ -110,7 +110,10 @@ cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 enable_iac_pipeline                   = true
 gpd_payments_sa_delete_retention_days = 0
 
-gpd_account_replication_type                                       = "ZRS"
+# GPD Storage Account SFTP
+gpd_account_replication_type                                       = "GRS"
+cidr_subnet_gpd_storage_account                                    = ["10.1.152.16/29"]
+gpd_sa_blob_versioning_enabled                                     = true
 gpd_enable_private_endpoint                                        = false
 gpd_disable_network_rules                                          = true
 storage_account_snet_private_link_service_network_policies_enabled = false

@@ -35,8 +35,8 @@ data "azurerm_private_dns_zone" "storage" {
 # Azure Storage subnet
 module "storage_account_snet" {
   source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
-  name                                          = format("%s-storage-account-snet", local.project)
-  address_prefixes                              = var.cidr_subnet_storage_account
+  name                                          = "${local.project}-storage-account-snet"
+  address_prefixes                              = var.cidr_subnet_gpd_storage_account
   resource_group_name                           = local.vnet_resource_group_name
   virtual_network_name                          = data.azurerm_virtual_network.vnet.name
   service_endpoints                             = ["Microsoft.Storage"]

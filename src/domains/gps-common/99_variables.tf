@@ -359,6 +359,11 @@ variable "gpd_account_replication_type" {
   description = "Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. Changing this forces a new resource to be created when types LRS, GRS and RAGRS are changed to ZRS, GZRS or RAGZRS and vice versa"
 }
 
+variable "gpd_sa_blob_versioning_enabled" {
+  type        = bool
+  description = "If true blob object versioning is enabled"
+}
+
 variable "gpd_disable_network_rules" {
   type        = bool
   description = "If false, allow any connection from outside the vnet"
@@ -383,10 +388,9 @@ variable "storage_account_snet_private_link_service_network_policies_enabled" {
   default     = true
 }
 
-variable "cidr_subnet_storage_account" {
+variable "cidr_subnet_gpd_storage_account" {
   type        = list(string)
   description = "Storage account network address space."
-  default     = ["10.1.152.16/29"]
 }
 
 variable "gpd_sa_tier_to_archive" {

@@ -17,7 +17,7 @@ locals {
 
 ## API ##
 resource "azurerm_api_management_api_version_set" "apim_gpd_upload_api" {
-  name                = format("%s-gpd-upload-api", var.env_short)
+  name                = "${var.env_short}-gpd-upload-api"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = local.apim_gpd_upload_api.display_name
@@ -27,7 +27,7 @@ resource "azurerm_api_management_api_version_set" "apim_gpd_upload_api" {
 module "apim_gpd_upload_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
 
-  name                  = format("%s-gpd-upload-api", local.product)
+  name                  = "${local.product}-gpd-upload-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_debt_positions_product.product_id, module.apim_gpd_integration_product.product_id]

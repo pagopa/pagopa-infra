@@ -51,7 +51,7 @@ module "apim_api_gpd_api" {
 module "apim_api_gpd_api_v2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
 
-  name                  = format("%s-api-gpd-api", var.env_short)
+  name                  = "${var.env_short}-api-gpd-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_gpd_product.product_id]
