@@ -704,6 +704,26 @@
         ],
         "summary": "A list biz-event is recovered and defined in the structure of a transaction referred from IO",
         "operationId": "getTransactionsUsingGET",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Start offset value for paged list recovery",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Size value for paged list recovery",
+            "required": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
