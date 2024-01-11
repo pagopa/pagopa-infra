@@ -589,6 +589,54 @@
         }
       }
     },
+    "/payment-methods": {
+      "get": {
+        "tags": [
+          "ecommerce-payment-methods"
+        ],
+        "operationId": "getAllPaymentMethods",
+        "summary": "Retrieve all Payment Methods",
+        "description": "API for retrieve payment method",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "description": "Payment Amount",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/payment-methods/{id}/fees": {
       "post": {
         "tags": [
@@ -1557,6 +1605,67 @@
           "transferCategory": {
             "description": "Transfer category",
             "type": "string"
+          }
+        }
+      },
+      "PaymentMethodResponse": {
+        "type": "object",
+        "description": "Payment method Response",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Payment method ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Payment method name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Payment method description"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Payment method asset name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "paymentTypeCode": {
+            "type": "string",
+            "description": "Payment method type code"
+          },
+          "ranges": {
+            "description": "Payment amount range in eurocents",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/Range"
+            }
+          },
+          "isOnboardable": {
+            "type": "boolean",
+            "description": "Denotes whether a payment method can be onbordered. If the field is not present by default it is not onbordableDenotes whether a payment method can be onbordered"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "status",
+          "paymentTypeCode",
+          "ranges"
+        ]
+      },
+      "PaymentMethodsResponse": {
+        "type": "object",
+        "description": "Payment methods response",
+        "properties": {
+          "paymentMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodResponse"
+            }
           }
         }
       }
