@@ -1,10 +1,10 @@
 #################################### [NDP] ####################################
 locals {
+  ## stand_in_manager
+  ndp_stand_in_manager_key = "pagopastandinmanager"
 
-  ## nodo stand-in manager
-  ndp_stand_in_manager_key = "pagopa-stand-in-manager"
-
-  ndp_stand_in_manager_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
+  ndp_stand_in_manager_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_stand_in_manager_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
+  ndp_stand_in_manager_ilm_policy      = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name        = local.ndp_stand_in_manager_key,
     managed     = false,
     policy_name = local.default_snapshot_policy_key
@@ -21,10 +21,28 @@ locals {
     component_template_custom  = "${local.ndp_stand_in_manager_key}@custom"
   }), "\""), "\""), "'", "'\\''")
 
+
   ndp_stand_in_manager_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
     name = local.ndp_stand_in_manager_key
   }), "\""), "\""), "'", "'\\''")
+}
 
+resource "null_resource" "ndp_stand_in_manager_ingest_pipeline" {
+  depends_on = [null_resource.ndp_kibana_space]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X PUT "${local.elastic_url}/_ingest/pipeline/${local.ndp_stand_in_manager_key}" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '${local.ndp_stand_in_manager_ingest_pipeline}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
 }
 
 resource "null_resource" "ndp_stand_in_manager_ilm_policy" {
