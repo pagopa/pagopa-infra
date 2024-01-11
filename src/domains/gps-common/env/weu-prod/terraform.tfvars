@@ -119,7 +119,7 @@ cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
 enable_iac_pipeline                   = true
 storage_account_replication_type      = "GZRS"
-flow_storage_account_replication_type = "ZRS"
+flow_storage_account_replication_type = "GZRS"
 gpd_payments_versioning               = true
 enable_gpd_payments_backup            = true
 gpd_payments_sa_delete_retention_days = 31

@@ -99,6 +99,13 @@ module "nodo_verifyko_to_tablestorage_function" {
   }
 
   storage_account_name = replace("${local.project}-vko-2-ts-fn-sa", "-", "")
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = var.function_app_storage_account_replication_type
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
 
   app_settings = local.function_verifyko_to_tablestorage_app_settings
 
