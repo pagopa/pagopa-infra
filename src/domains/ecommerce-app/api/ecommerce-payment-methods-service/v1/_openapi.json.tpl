@@ -685,6 +685,10 @@
             "items": {
               "$ref": "#/components/schemas/Range"
             }
+          },
+          "isOnboardable": {
+            "type": "boolean",
+            "description": "Denotes whether a payment method can be onbordered. If the field is not present by default it is not onbordable"
           }
         },
         "required": [
