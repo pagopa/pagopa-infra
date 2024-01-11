@@ -700,49 +700,136 @@
     "/transactions": {
       "get": {
         "tags": [
-          "transaction-controller"
+          "IO Transactions REST APIs"
         ],
-        "summary": "A list biz-event is recovered and defined in the structure of a transaction referred from IO",
-        "operationId": "getTransactionsUsingGET",
+        "summary": "Recover paged transaction list from Biz Event data.",
+        "operationId": "getPagedTransactions",
         "parameters": [
           {
-            "in": "query",
             "name": "start",
+            "in": "query",
+            "description": "page start offset",
+            "required": true,
             "schema": {
               "type": "integer"
-            },
-            "description": "Start offset value for paged list recovery",
-            "required": true
+            }
           },
           {
-            "in": "query",
             "name": "size",
+            "in": "query",
+            "description": "page size",
+            "required": false,
             "schema": {
               "type": "integer"
-            },
-            "description": "Size value for paged list recovery",
-            "required": false
+            }
+          },
+          {
+            "name": "x-fiscal-code",
+            "in": "header",
+            "description": "User Fiscal Code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Obtained transaction list.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionListResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionListItem"
+                  }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Not found the receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process the request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -750,46 +837,148 @@
             "ApiKey": []
           }
         ]
-      }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     },
     "/transactions/{id}": {
       "get": {
         "tags": [
-          "transaction-controller"
+          "IO Transactions REST APIs"
         ],
-        "summary": "A biz-event is recovered and defined in the structure of a transaction referred from IO",
-        "operationId": "getTransactionUsingGET",
+        "summary": "Recover paged transaction detail from Biz Event data.",
+        "operationId": "getBizEventTransactionDetail",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "id",
+            "description": "Id referencing either a single biz-event, or the idTransaction",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "integer"
+            }
+          },
+          {
+            "name": "isCart",
+            "in": "query",
+            "description": "determines if the id comes fromn a single biz-event, or from a group related to the same cart idTransaction",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "x-fiscal-code",
+            "in": "header",
+            "description": "User Fiscal Code",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Obtained transaction list.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionResponse"
+                  "$ref": "#/components/schemas/TransactionDetail"
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Not found the receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process the request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -797,7 +986,290 @@
             "ApiKey": []
           }
         ]
-      }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/transactions/{id}/pdf": {
+      "get": {
+        "tags": [
+          "IO Transactions REST APIs"
+        ],
+        "summary": "Recover or create pdf receipt for the transaction.",
+        "operationId": "getBizEventTransactionReceiptPDF",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id referencing either a single biz-event, or the idTransaction",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-fiscal-code",
+            "in": "header",
+            "description": "User Fiscal Code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Obtained transaction list.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdfResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found the receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process the request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/transactions/{id}/disable": {
+      "patch": {
+        "tags": [
+          "IO Transactions REST APIs"
+        ],
+        "summary": "disable transaction with provided id.",
+        "operationId": "disableBizEventTransactionWithId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id referencing either a single biz-event, or the idTransaction",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-fiscal-code",
+            "in": "header",
+            "description": "User Fiscal Code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "transaction disabled.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found the receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process the request.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     }
   },
   "components": {
@@ -1382,155 +1854,6 @@
           }
         }
       },
-      "TransactionListResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Transaction"
-            }
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "start": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "total": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "title": "TransactionListResponse"
-      },
-      "TransactionResponse": {
-        "type": "object",
-        "required": [
-          "data"
-        ],
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/Transaction"
-          }
-        },
-        "title": "TransactionResponse"
-      },
-      "Transaction": {
-        "type": "object",
-        "properties": {
-         "accountingStatus": {
-           "type": "integer",
-           "format": "int64"
-         },
-         "amount": {
-           "$ref": "#/components/schemas/Amount"
-         },
-         "authorizationCode": {
-           "type": "string"
-         },
-         "created": {
-           "type": "string",
-           "format": "date-time"
-         },
-         "description": {
-           "type": "string"
-         },
-         "detailsList": {
-           "type": "array",
-           "items": {
-             "$ref": "#/components/schemas/Dettaglio"
-           }
-         },
-         "directAcquirer": {
-           "type": "boolean"
-         },
-         "error": {
-           "type": "boolean"
-         },
-         "fee": {
-           "$ref": "#/components/schemas/Amount"
-         },
-         "grandTotal": {
-           "$ref": "#/components/schemas/Amount"
-         },
-         "id": {
-           "type": "integer",
-           "format": "int64"
-         },
-         "idPayment": {
-           "type": "integer",
-           "format": "int64"
-         },
-         "idStatus": {
-           "type": "integer",
-           "format": "int64"
-         },
-         "idWallet": {
-           "type": "integer",
-           "format": "int64"
-         },
-         "merchant": {
-           "type": "string"
-         },
-         "nodoIdPayment": {
-           "type": "string"
-         },
-         "numAut": {
-           "type": "string"
-         },
-         "orderNumber": {
-           "type": "integer",
-           "format": "int64"
-         },
-         "paymentCancelled": {
-           "type": "boolean"
-         },
-         "paymentModel": {
-           "type": "integer",
-           "format": "int64"
-         },
-         "pspId": {
-           "type": "integer",
-           "format": "int64"
-         },
-         "pspInfo": {
-           "$ref": "#/components/schemas/PspInfo"
-         },
-         "rrn": {
-           "type": "string"
-         },
-         "spcNodeDescription": {
-           "type": "string"
-         },
-         "spcNodeStatus": {
-           "type": "integer",
-           "format": "int64"
-         },
-         "statusMessage": {
-           "type": "string"
-         },
-         "success": {
-           "type": "boolean"
-         },
-         "token": {
-           "type": "string"
-         },
-         "updated": {
-           "type": "string",
-           "format": "date-time"
-         },
-         "urlCheckout3ds": {
-           "type": "string"
-         },
-         "urlRedirectPSP": {
-           "type": "string"
-         }
-       },
-       "title": "Transaction"
-      },
       "TransactionDetails": {
         "type": "object",
         "properties": {
@@ -1544,39 +1867,6 @@
             "$ref": "#/components/schemas/WalletItem"
           }
         }
-      },
-      "Dettaglio": {
-        "type": "object",
-        "properties": {
-          "CCP": {
-            "type": "string"
-          },
-          "IUV": {
-            "type": "string"
-          },
-          "codicePagatore": {
-            "type": "string"
-          },
-          "enteBeneficiario": {
-            "type": "string"
-          },
-          "idDominio": {
-            "type": "string"
-          },
-          "idPayment": {
-            "type": "string"
-          },
-          "importo": {
-            "type": "number"
-          },
-          "nomePagatore": {
-            "type": "string"
-          },
-          "tipoPagatore": {
-            "type": "string"
-          }
-        },
-        "title": "Dettaglio"
       },
       "Transfer": {
         "type": "object",
@@ -1683,40 +1973,6 @@
           }
         }
       },
-      "Amount": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "integer"
-          },
-          "currency": {
-            "type": "string"
-          },
-          "currencyNumber": {
-            "type": "string"
-          },
-          "decimalDigits": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "title": "Amount"
-      },
-      "PspInfo": {
-        "type": "object",
-        "properties": {
-          "codiceAbi": {
-            "type": "string"
-          },
-          "idPsp": {
-            "type": "string"
-          },
-          "ragioneSociale": {
-            "type": "string"
-          }
-        },
-        "title": "PspInfo"
-      },
       "Link": {
         "type": "object",
         "properties": {
@@ -1726,6 +1982,143 @@
           "templated": {
             "type": "boolean"
           }
+        }
+      },
+"TransactionListItem": {
+        "required": [
+          "transactionId",
+          "payeeName",
+          "subject",
+          "amount",
+          "transactionDate",
+          "isCart"
+        ],
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "contains either the biz-event id, or the transactionDetails.transaction.idTransaction value stored in the biz-event data"
+          },
+          "payeeName": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "transactionDate": {
+            "type": "string"
+          },
+          "isCart": {
+            "type": "boolean",
+            "description": "boolean that defines if the transaction is from a cart (the transactionId comes from the idTransaction value)"
+          }
+        }
+      },
+      "TransactionDetail": {
+        "required": [
+          "transactionId",
+          "payeeName",
+          "subject",
+          "amount",
+          "transactionDate",
+          "cartItem"
+        ],
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "contains either the biz-event id, or the transactionDetails.transaction.idTransaction value stored in the biz-event data"
+          },
+          "payeeName": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "transactonDate": {
+            "type": "string"
+          },
+          "payerName": {
+            "type": "string"
+          },
+          "payerTaxCode": {
+            "type": "string"
+          },
+          "accountHolder": {
+            "type": "string"
+          },
+          "authCode": {
+            "type": "string"
+          },
+          "rnn": {
+            "type": "string"
+          },
+          "fee": {
+            "type": "string"
+          },
+          "paymentMethod": {
+            "type": "string"
+          },
+          "pspName": {
+            "type": "string"
+          },
+          "opsOrigin": {
+            "type": "string",
+            "enum": [
+              "INTERNAL",
+              "PAYMENT_MANAGER"
+            ]
+          },
+          "carts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CartItem"
+            }
+          }
+        }
+      },
+      "CartItem": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "payeeName": {
+            "type": "string"
+          },
+          "payeeTaxCode": {
+            "type": "string"
+          },
+          "debtorName": {
+            "type": "string"
+          },
+          "debtorTaxCode": {
+            "type": "string"
+          },
+          "refNumberValue": {
+            "type": "string"
+          },
+          "refNumberType": {
+            "type": "string"
+          }
+        }
+      },
+      "PdfResponse": {
+        "type": "object",
+        "properties": {
+          "errorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "httpStatusDescription": {
+            "type": "string"
+          },
+          "httpStatusCode": {},
+          "appErrorCode": {},
+          "errors": {}
         }
       }
     },
