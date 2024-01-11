@@ -1785,6 +1785,9 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment amount range in eurocents",
             "type": "array",
@@ -1792,10 +1795,6 @@
             "items": {
               "$ref": "#/components/schemas/Range"
             }
-          },
-          "isOnboardable": {
-            "type": "boolean",
-            "description": "Denotes whether a payment method can be onbordered.If the field is not present by default it is not onbordable"
           }
         },
         "required": [
@@ -1805,7 +1804,7 @@
           "status",
           "paymentTypeCode",
           "ranges",
-          "isOnboardable"
+          "methodManagement"
         ]
       },
       "PaymentMethodsResponse": {
@@ -2196,6 +2195,15 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Payment method management type",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT"
         ]
       }
     },
