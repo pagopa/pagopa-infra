@@ -1654,7 +1654,8 @@
           "description",
           "status",
           "paymentTypeCode",
-          "ranges"
+          "ranges",
+          "isOnboardable"
         ]
       },
       "PaymentMethodsResponse": {
