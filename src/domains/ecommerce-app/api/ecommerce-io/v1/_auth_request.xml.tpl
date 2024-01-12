@@ -6,14 +6,14 @@
             <value>NPG</value>
         </set-header>
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
+        <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
         <choose>
             <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
                 <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
-                <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
                 <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
                 <set-variable name="idWallet" value="@{
                     string walletIdUUID = (string)context.Variables["walletId"];
-                    string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , ""); 
+                    string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , "");
                     return Convert.ToInt64(walletIdHex , 16).ToString();
                 }" />
                 <set-variable name="requestTransactionId" value="@{
@@ -61,8 +61,8 @@
                         <choose>
                             <when condition="@((string)(context.Variables["walletType"]) == "CREDIT_CARD")">
                                 <set-variable name="putWalletRequest" value="@{
-                                JObject response = new JObject();      
-                                JObject data = new JObject();           
+                                JObject response = new JObject();
+                                JObject data = new JObject();
                                 data["idWallet"] = long.Parse((string)context.Variables["idWallet"]);
                                 data["idPsp"] = long.Parse((string)context.Variables["idPsp"]);
                                 data["idPagamentoFromEC"] = $"{(string)context.Variables["idPayment"]}";
@@ -127,31 +127,45 @@
                 </choose>
             </when>
             <otherwise>
-                <set-body>@{ 
-                    JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
-                    JObject requestBodyDetails = new JObject(
-                        new JProperty("detailType", "wallet"),
-                        new JProperty("walletId", requestBody["walletId"])
-                    );
-                    requestBody["details"] = requestBodyDetails;
-                    requestBody.Remove("walletId");
-                    return requestBody.ToString();  
-                }</set-body>
+              <choose>
+                <when condition="@(String.IsNullOrEmpty((string)context.Variables["walletId"]))">
+                    <set-body>@{
+                        JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
+                        JObject requestBodyDetails = new JObject(
+                            new JProperty("detailType", "apm"),
+                        );
+                        requestBody["details"] = requestBodyDetails;
+                        return requestBody.ToString();
+                    }</set-body>
+                </when>
+                <otherwise>
+                    <set-body>@{
+                        JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
+                        JObject requestBodyDetails = new JObject(
+                            new JProperty("detailType", "wallet"),
+                            new JProperty("walletId", requestBody["walletId"])
+                        );
+                        requestBody["details"] = requestBodyDetails;
+                        requestBody.Remove("walletId");
+                        return requestBody.ToString();
+                    }</set-body>
+                </otherwise>
+              </choose>
             </otherwise>
-        </choose>    
+        </choose>
     </inbound>
     <outbound>
         <base />
         <choose>
             <when condition="@("false".Equals("${ecommerce_io_with_pm_enabled}") && context.Response.StatusCode == 200)">
-                <set-body>@{ 
-                    JObject inBody = context.Response.Body.As<JObject>(preserveContent: true); 
+                <set-body>@{
+                    JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
                     var authorizationUrl = (string)inBody["authorizationUrl"];
                     if(authorizationUrl.Contains("checkout.pagopa.it")){
                         authorizationUrl = authorizationUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("sessionToken",""));
                     }
                     inBody["authorizationUrl"] = authorizationUrl;
-                    return inBody.ToString(); 
+                    return inBody.ToString();
                 }</set-body>
             </when>
         </choose>
