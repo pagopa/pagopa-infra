@@ -1237,8 +1237,7 @@
           "fee",
           "pspId",
           "language",
-          "isAllCCP",
-          "walletId"
+          "isAllCCP"
         ]
       },
       "UpdateAuthorizationRequest": {
