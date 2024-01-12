@@ -116,3 +116,25 @@ module "mongdb_collection_products" {
 
   lock_enable = true
 }
+
+module "mongdb_collection_brokeribans" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+
+  name                = "brokerIbans"
+  resource_group_name = azurerm_resource_group.bopagopa_rg.name
+
+  cosmosdb_mongo_account_name  = module.bopagopa_cosmosdb_mongo_account.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pagopa_backoffice.name
+
+  indexes = [{
+    keys   = ["_id"]
+    unique = true
+    },
+    {
+      keys   = ["brokerCode"]
+      unique = true
+    }
+  ]
+
+  lock_enable = true
+}
