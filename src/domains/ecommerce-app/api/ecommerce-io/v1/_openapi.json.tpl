@@ -1443,7 +1443,6 @@
           }
         },
         "required": [
-          "paymentToken",
           "paymentAmount"
         ]
       },
