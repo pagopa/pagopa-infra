@@ -46,10 +46,9 @@
             string paymentCircuit = (string)operation["paymentCircuit"];
             JObject details = null;
             if(paymentCircuit == "PAYPAL"){
-                JObject additionalData = (JObject)operation["additionalData"];
                 details = new JObject();
                 details["type"] = "PAYPAL";
-                details["maskedEmail"] = (string)additionalData["maskedEmail"]; //TODO to be changed with the correct NPG additional data field
+                details["maskedEmail"] = (string)operation["paymentInstrumentInfo"];
             }
             JObject request = new JObject();
             request["timestampOperation"] = timestampOperation;
