@@ -6,10 +6,10 @@
             <value>NPG</value>
         </set-header>
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
-        <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
         <choose>
             <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
                 <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+                <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
                 <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
                 <set-variable name="idWallet" value="@{
                     string walletIdUUID = (string)context.Variables["walletId"];
@@ -127,30 +127,25 @@
                 </choose>
             </when>
             <otherwise>
-              <choose>
-                <when condition="@(String.IsNullOrEmpty((string)context.Variables["walletId"]))">
-                    <set-body>@{
-                        JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
-                        JObject requestBodyDetails = new JObject(
-                            new JProperty("detailType", "apm"),
-                        );
-                        requestBody["details"] = requestBodyDetails;
-                        return requestBody.ToString();
-                    }</set-body>
-                </when>
-                <otherwise>
-                    <set-body>@{
-                        JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
-                        JObject requestBodyDetails = new JObject(
-                            new JProperty("detailType", "wallet"),
-                            new JProperty("walletId", requestBody["walletId"])
-                        );
-                        requestBody["details"] = requestBodyDetails;
-                        requestBody.Remove("walletId");
-                        return requestBody.ToString();
-                    }</set-body>
-                </otherwise>
-              </choose>
+              <set-body>@{
+                  JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
+                  var walletId = requestBody["walletId"];
+                  JObject requestBodyDetails = null;
+                  if(walletId != null){
+                      requestBody.Remove("walletId");
+                      requestBodyDetails=new JObject(
+                          new JProperty("detailType", "wallet"),
+                          new JProperty("walletId", requestBody["walletId"])
+                      );
+                  }else{
+                      requestBodyDetails=new JObject(
+                          new JProperty("detailType", "apm"),
+                          new JProperty("walletId", requestBody["walletId"])
+                      );
+                  }
+                  requestBody["details"] = requestBodyDetails;
+                  return requestBody.ToString();
+              }</set-body>
             </otherwise>
         </choose>
     </inbound>
