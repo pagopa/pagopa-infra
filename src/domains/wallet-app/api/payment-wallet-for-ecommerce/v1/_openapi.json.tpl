@@ -42,7 +42,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WalletInfo"
+                  "$ref": "#/components/schemas/WalletAuthData"
                 }
               }
             }
@@ -88,7 +88,7 @@
         "type": "string",
         "format": "uuid"
       },
-      "WalletInfo": {
+      "WalletAuthData": {
         "type": "object",
         "description": "Wallet information",
         "properties": {
@@ -99,20 +99,60 @@
             "description": "Payment method identifier",
             "type": "string"
           },
+          "brand": {
+            "description": "The card brand name",
+            "type": "string"
+          },
+          "paymentMethodData": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/WalletAuthCardData"
+              },
+              {
+                "$ref": "#/components/schemas/WalletAuthAPMData"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "paymentMethodType",
+              "mapping": {
+                "cards": "#/components/schemas/WalletAuthCardData",
+                "apm": "#/components/schemas/WalletAuthAPMData"
+              }
+            }
+          }
+        },
+        "required": [
+          "contractId",
+          "brand",
+          "paymentMethodData"
+        ]
+      },
+      "WalletAuthCardData": {
+        "type": "object",
+        "properties": {
+          "paymentMethodType": {
+            "type": "string"
+          },
           "bin": {
             "type": "string",
             "description": "Bin of user card"
-          },
-          "brand": {
-            "description": "The card brand name",
+          }
+        },
+        "required": [
+          "paymentMethodType",
+          "bin"
+        ]
+      },
+      "WalletAuthAPMData": {
+        "type": "object",
+        "properties": {
+          "paymentMethodType": {
             "type": "string"
           }
         },
         "required": [
-          "walletId",
-          "contractId",
-          "bin",
-          "brand"
+          "paymentMethodType"
         ]
       },
       "ProblemJson": {
