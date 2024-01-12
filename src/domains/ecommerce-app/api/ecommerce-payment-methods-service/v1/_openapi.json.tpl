@@ -200,19 +200,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "x-client-id",
-            "in": "header",
-            "description": "client id related to a given touchpoint",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "IO",
-                "CHECKOUT"
-              ]
-            }
           }
         ],
         "responses": {
