@@ -629,6 +629,9 @@
               },
               {
                 "$ref": "#/components/schemas/WalletAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/ApmAuthRequestDetails"
               }
             ],
             "discriminator": {
@@ -637,7 +640,8 @@
                 "postepay": "#/components/schemas/PostePayAuthRequestDetails",
                 "card": "#/components/schemas/CardAuthRequestDetails",
                 "cards": "#/components/schemas/CardsAuthRequestDetails",
-                "wallet": "#/components/schemas/WalletAuthRequestDetails"
+                "wallet": "#/components/schemas/WalletAuthRequestDetails",
+                "apm": "#/components/schemas/ApmAuthRequestDetails"
               }
             }
           }
@@ -780,6 +784,22 @@
         "example": {
           "detailType": "wallet",
           "walletId": "walletId"
+        }
+      },
+      "ApmAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for payment apm authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'apm'",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detailType"
+        ],
+        "example": {
+          "detailType": "apm"
         }
       },
       "RequestAuthorizationResponse": {
