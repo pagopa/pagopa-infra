@@ -127,7 +127,7 @@
                 </choose>
             </when>
             <otherwise>
-              <set-body>@{
+                <set-body>@{
                   JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
                   var walletId = requestBody["walletId"];
                   JObject requestBodyDetails = null;
@@ -135,12 +135,11 @@
                       requestBody.Remove("walletId");
                       requestBodyDetails=new JObject(
                           new JProperty("detailType", "wallet"),
-                          new JProperty("walletId", requestBody["walletId"])
+                          new JProperty("walletId", walletId)
                       );
                   }else{
                       requestBodyDetails=new JObject(
-                          new JProperty("detailType", "apm"),
-                          new JProperty("walletId", requestBody["walletId"])
+                          new JProperty("detailType", "apm")
                       );
                   }
                   requestBody["details"] = requestBodyDetails;
