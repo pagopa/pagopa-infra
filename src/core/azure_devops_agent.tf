@@ -88,7 +88,7 @@ module "azdoa_loadtest_li" {
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
 
-  vm_sku              = "Standard_D8ds_v5"
+  vm_sku = "Standard_D8ds_v5"
 
   tags = var.tags
 }
