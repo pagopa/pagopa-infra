@@ -40,6 +40,7 @@ cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # cidr_subnet_gps_cosmosdb             = ["10.1.149.0/24"]
 cidr_subnet_node_forwarder       = ["10.1.158.0/24"]
+cidr_subnet_loadtest_agent        = ["10.1.159.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 
