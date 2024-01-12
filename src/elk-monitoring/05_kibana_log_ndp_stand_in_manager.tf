@@ -46,7 +46,7 @@ resource "null_resource" "ndp_stand_in_manager_ingest_pipeline" {
 }
 
 resource "null_resource" "ndp_stand_in_manager_ilm_policy" {
-  depends_on = [null_resource.snapshot_policy]
+  depends_on = [null_resource.ndp_stand_in_manager_ingest_pipeline, null_resource.snapshot_policy]
 
   triggers = {
     always_run = "${timestamp()}"
